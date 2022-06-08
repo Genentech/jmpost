@@ -1,0 +1,18 @@
+options(
+    repos = c(CRAN = "https://packagemanager.rstudio.com/all/latest"),
+    download.file.method = "libcurl"
+)
+
+# https://docs.rstudio.com/rspm/admin/serving-binaries/#binaries-r-configuration-linux
+options(
+    HTTPUserAgent = sprintf(
+        "R/%s R (%s)",
+        getRversion(),
+        paste(
+            getRversion(),
+            R.version["platform"],
+            R.version["arch"],
+            R.version["os"]
+        )
+    )
+)

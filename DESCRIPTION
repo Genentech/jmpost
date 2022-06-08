@@ -1,10 +1,14 @@
 Package: jmpost
-Title: What the Package Does (One Line, Title Case)
+Title: TODO
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Craig", "Gower-Page", email = "craig.gower-page@roche.com", role = c("aut", "cre")),
+    person("Georgios", "Kazantzidis", email = "georgios.kazantzidis@roche.com", role = c("aut")),
+    person("Xiaoyan", "Fang", email = "xiaoyan.fang@roche.com", role = "aut"),
+    person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
+    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
+    )
+Description: TODO
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
