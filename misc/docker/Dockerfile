@@ -61,26 +61,26 @@ RUN Rscript -e 'cmdstanr::install_cmdstan(Sys.getenv("CMDSTAN"))'
 
 # Install other required libraries
 RUN Rscript -e 'options(warn=2); install.packages(c(\
-    "rstan"\
-    "tidyverse"\
-    "devtools"\
-    "pec"\
-    "flexsurv"\
-    "survminer"\
-    "broom"\
-    "patchwork"\
-    "tictoc"\
-    "rriskDistributions"\
-    "posterior"\
-    "bayesplot"\
-    "SurvMetrics"\
-    "igraph"\
-    "nimble"\
-    "mvtnorm"\
-    "coda"\
-    "pracma"\
-    "bfp"\
-    "fields"\
+    "rstan",\
+    "tidyverse",\
+    "devtools",\
+    "pec",\
+    "flexsurv",\
+    "survminer",\
+    "broom",\
+    "patchwork",\
+    "tictoc",\
+    "rriskDistributions",\
+    "posterior",\
+    "bayesplot",\
+    "SurvMetrics",\
+    "igraph",\
+    "nimble",\
+    "mvtnorm",\
+    "coda",\
+    "pracma",\
+    "bfp",\
+    "fields",\
     "psfmi"\
     ))'
 
