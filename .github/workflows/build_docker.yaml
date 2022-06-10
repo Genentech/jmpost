@@ -47,13 +47,13 @@ jobs:
       - name: debug
         run: |
           echo push = ${{ github.event_name == 'push' }}
-          echo tag = ${{ env.REGISTRY }}/${{ github.repository_owner }}/jmpost:latest
+          echo tag = ${{ env.REGISTRY }}/genentech/jmpost:latest
       - name: Build and push image 
         uses: docker/build-push-action@v2
         with:
           context: ./misc/docker
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/jmpost:latest
+          tags: ${{ env.REGISTRY }}/genentech/jmpost:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -64,3 +64,4 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
