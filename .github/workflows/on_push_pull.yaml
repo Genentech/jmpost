@@ -4,10 +4,10 @@ on:
   pull_request:
     branches: [main, master]
 
-name: R-CMD-check
+name: on_push_pull
 
 jobs:
-  R-CMD-check:
+  testthat:
     runs-on: ubuntu-latest
 
     name: ubuntu-latest-rcmd-check
@@ -46,6 +46,7 @@ jobs:
       - name: Check Is Clean
         shell: bash
         run: |
+          git config --global --add safe.directory $(pwd)
           git status
           if [ -z "$(git status --porcelain)" ]; then
             echo "Is Clean"
