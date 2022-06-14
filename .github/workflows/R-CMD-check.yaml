@@ -19,6 +19,9 @@ jobs:
           # - {os: macOS-latest,   r: 'release'}
           # - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
+    
+    container:
+      image: ghcr.io/genentech/jmpost:latest
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -40,3 +43,30 @@ jobs:
           extra-packages: rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v1
+  
+  is-documented:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/genentech/jmpost:latest
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Document Code
+        run: |
+          options(crayon.enabled = TRUE, cli.dynamic = FALSE)
+          devtools::document()
+        shell: Rscript {0}
+      
+      - name: Check Is Clean
+        shell: bash
+        run: |
+          git status
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Is Clean"
+          else
+            echo "Changed Detected"
+            exit 2
+          fi
+
