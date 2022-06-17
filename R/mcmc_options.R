@@ -10,12 +10,12 @@
 
 
 McmcOptions <- function(chains = 4,
-                        parallel_chains = getOption("mc.cores", 1),
-                        iter_warmup = NULL,
-                        iter_sampling = NULL,
-                        thin = NULL,
-                        max_treedepth = NULL,
-                        adapt_delta = NULL
+                        parallel_chains = 4,
+                        iter_warmup = 200,
+                        iter_sampling = 500,
+                        thin = 1,
+                        max_treedepth = 12,
+                        adapt_delta = .9
                         ){
 
     .mcmc_options(chains = chains,
