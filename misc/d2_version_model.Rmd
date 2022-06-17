@@ -1,0 +1,12 @@
+---
+title: "D2 version model"
+output: html_document
+date: '2022-06-17'
+---
+
+
+$SLD =\Psi_{BSLD}(\Psi_{\phi}+exp(-\Psi_{ks}t)+(1-\Psi_{\phi})exp(\Psi_{kg}t))$
+
+$\Psi_{\phi} = logit^{-1}(logit(\mu_{\phi_{arm}})+\tilde{\eta_{\phi}}\omega_{\phi}) $
+
+$\Psi_{BSLD} = exp(log(\mu_{BSLD_{study}}) + \tilde{\eta}_{BSLD}\omega_{BSLD}) $

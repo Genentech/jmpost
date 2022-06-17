@@ -18,7 +18,7 @@ setMethod("jm_compile",
     jm_model(
       cmdstan_mod = cmdstan_model(stan_file = file.path(
         dirname(getwd()),
-        "jmstan/stan_model.stan"
+        "jmpost/inst/stanmodels/stan_model.stan"
       )),
       prior = object@prior,
       model = object@model,
