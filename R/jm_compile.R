@@ -12,7 +12,7 @@ setMethod("jm_compile",
   function(object) {
     cmdstanr::write_stan_file(as_charc(object),
       basename = "stan_model.stan",
-      dir = getwd()
+      dir = paste0(getwd(), "/inst/stanmodels")
     )
 
     jm_model(

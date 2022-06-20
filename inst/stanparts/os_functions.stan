@@ -89,3 +89,4 @@
   row_vector get_cond_survival(real cens_surv_prob, row_vector uncond_surv_probs) {
     row_vector[cols(uncond_surv_probs)] result = fmin(1.0, uncond_surv_probs / cens_surv_prob);
     return result;
+  }

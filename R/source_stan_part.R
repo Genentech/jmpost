@@ -6,6 +6,6 @@ source_stan_part <- function(filename) {
         filename,
         package = "jmpost"
     )
-    readChar(absolute_filename, file.info(absolute_filename)$size)
+    readLines(absolute_filename)
 }
 

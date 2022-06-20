@@ -45,21 +45,6 @@ jm_post_class <- setClass("JMpost",
                           contains = "JMModel"
 )
 
-jm_data <- setClass(
-  "JMdata",
-  representation(
-    data_sld = "data.frame",
-    data_os = "data.frame",
-    data = "list",
-    vars = "list"
-  )
-)
-
-
-
-
-
-
 hazard_link <- setClass("HazardLink",
                         contains = "StanAll",
                         representation(
@@ -79,3 +64,17 @@ hazard_link <- setClass("HazardLink",
   "gauss_legendre",
   representation(values = "list")
 )
+
+
+jm_data <- setClass(
+    "JMdata",
+    representation(
+        data_sld = "data.frame",
+        data_os = "data.frame",
+        data = "list",
+        vars = "list",
+        nodes = "gauss_legendre"
+    ),
+    prototype(nodes = gauss_legendre())
+)
+

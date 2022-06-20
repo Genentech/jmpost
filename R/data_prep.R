@@ -6,14 +6,16 @@ gauss_legendre <- function(n = 15,
 }
 
 
-setGeneric("data_prep", def = function(object, formula) {
+setGeneric("data_prep", def = function(object,
+                                       os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER) {
   standardGeneric("data_prep")
 })
 
 setMethod("data_prep",
   signature(object = "JMdata"),
   value = "JMdata",
-  function(object) {
+  function(object,
+           os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER ) {
     cens_threshold <- 2.5
 
     # Derive sparse matrices.
@@ -33,9 +35,25 @@ setMethod("data_prep",
     # Timepoints for OS hazard and survival function estimation to generate predictions.
     os_pred_times <- seq(from = 0.001, to = 2, length = 100)
 
-    os_cov_design <- model.matrix(~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER, data = object@data_os)
+    os_cov_design <- model.matrix(os_formula , data = object@data_os)
+
+    # each of the different treatment arms.
+    treat_arms <- unique(object@data_os[, object@vars$os_arm, drop = T])
+
+    studies_name <- unique(object@data_os[, object@vars$os_study_id, drop = T])
+
+    # The patients in each of the different treatment arms.
+    n_index_per_arm <- c()
+    for( i in 1:length(treat_arms)){
+        n_index_per_arm[i] <- sum(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i])
+    }
 
 
+    index_per_arm <- c()
+    for( i in 1:length(treat_arms)){
+        index_per_arm <- c(index_per_arm,
+                           which(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i]))
+    }
 
     jm_data(
       data_sld = object@data_sld,
@@ -48,16 +66,18 @@ setMethod("data_prep",
         Nind_dead = sum(object@data_os[, object@vars$overall_survival_death] == 1),
 
         # Index vectors.
-        ind_index = object@data_sld$USUBJID_INDEX,
+        ind_index = object@data_sld[, object@vars$ID_INDEX, drop = TRUE],
         obs_y_index = which(object@data_sld[, object@vars$longitudinal] >= cens_threshold),
         cens_y_index = which(object@data_sld[, object@vars$longitudinal] < cens_threshold),
-        dead_ind_index = which(object@data_os[, object@vars$overall_survival_death] == 1),
-        n_studies = 3L,
-        study_index = as.numeric(factor(object@data_os$STUDYID, levels = c("GO29293", "GO29294", "WO39613"))),
-        n_arms = 6L,
-        arm_index = as.numeric(factor(object@data_os$ARM, levels = c("IMV210_A", "IMV211_A", "MOR_A", "MOR_AT", "MOR_ASG", "MOR_AEV"))),
-        n_save_individual = sum(object@data_os$STUDYID == "WO39613"),
-        index_save_individual = which(object@data_os$STUDYID == "WO39613"),
+        dead_ind_index = which(object@data_os[, object@vars$overall_survival_death, drop = TRUE] == 1),
+        n_studies = length(studies_name),
+        study_index = as.numeric(factor(object@data_os[, object@vars$os_study_id, drop = TRUE],
+                                        levels = studies_name)),
+        n_arms = length(treat_arms),
+        arm_index = as.numeric(factor(object@data_os[, object@vars$os_arm, drop = TRUE],
+                                      levels = treat_arms )),
+        n_save_individual = sum(object@data_os[, object@vars$os_study_id] == "WO39613"),
+        index_save_individual = which(object@data_os[, object@vars$os_study_id] == "WO39613"),
         n_sld_par_shared = 3L,
         sld_par_shared = 1:3,
         n_sld_par_separate = 3L,
@@ -65,26 +85,13 @@ setMethod("data_prep",
         arm_to_study_index = c(1L, 2L, 3L, 3L, 3L, 3L),
 
         # The patients in each of the four different treatment arms.
-        n_index_per_arm = c(
-          sum(object@data_os$ARM == "IMV210_A"),
-          sum(object@data_os$ARM == "IMV211_A"),
-          sum(object@data_os$ARM == "MOR_A"),
-          sum(object@data_os$ARM == "MOR_AT"),
-          sum(object@data_os$ARM == "MOR_ASG"),
-          sum(object@data_os$ARM == "MOR_AEV")
-        ),
-        index_per_arm = c(
-          which(object@data_os$ARM == "IMV210_A"),
-          which(object@data_os$ARM == "IMV211_A"),
-          which(object@data_os$ARM == "MOR_A"),
-          which(object@data_os$ARM == "MOR_AT"),
-          which(object@data_os$ARM == "MOR_ASG"),
-          which(object@data_os$ARM == "MOR_AEV")
-        ),
+        n_index_per_arm = n_index_per_arm,
+
+        index_per_arm = index_per_arm,
 
         # Tumor assessment values and time points.
         Yobs = object@data_sld[, object@vars$longitudinal, drop = TRUE],
-        Tobs = object@data_sld$AYR,
+        Tobs = object@data_sld[, object@vars$AYR, drop = TRUE],
         Ythreshold = cens_threshold,
 
         # Matrix of individuals x observed tumor assessments.
@@ -104,7 +111,7 @@ setMethod("data_prep",
         u_mat_inds_cens_y = sparse_mat_inds_cens_y$u,
 
         # Survival data.
-        Times = object@data_os$AYR,
+        Times = object@data_os[, object@vars$AYR, drop = TRUE],
         Death = object@data_os[, object@vars$overall_survival_death, drop = TRUE],
         os_cov_design = os_cov_design,
         p_os_cov_design = ncol(os_cov_design),
@@ -114,9 +121,9 @@ setMethod("data_prep",
         n_os_pred_times = length(os_pred_times),
 
         # Integration paramaters.
-        n_nodes = length(gauss_legendre()@values$nodes),
-        nodes = gauss_legendre()@values$nodes,
-        weights = gauss_legendre()@values$weights
+        n_nodes = length(object@nodes@values$nodes),
+        nodes = object@nodes@values$nodes,
+        weights = object@nodes@values$weights
       )
     )
   }
