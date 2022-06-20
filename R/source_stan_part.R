@@ -2,7 +2,7 @@
 
 source_stan_part <- function(filename) {
     absolute_filename <- system.file(
-        "inst/stanparts",
+        "stanparts",
         filename,
         package = "jmpost"
     )

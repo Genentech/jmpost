@@ -12,14 +12,12 @@ setMethod("jm_compile",
   function(object) {
     cmdstanr::write_stan_file(as_charc(object),
       basename = "stan_model.stan",
-      dir = paste0(getwd(), "/inst/stanmodels")
+      dir = paste0(system.file(package = "jmpost"), "/stanmodels")
     )
 
     jm_model(
-      cmdstan_mod = cmdstan_model(stan_file = file.path(
-        dirname(getwd()),
-        "jmpost/inst/stanmodels/stan_model.stan"
-      )),
+      cmdstan_mod = cmdstan_model(stan_file = system.file("stanmodels/stan_model.stan",
+                                                          package = "jmpost")),
       prior = object@prior,
       model = object@model,
       functions = object@functions,
