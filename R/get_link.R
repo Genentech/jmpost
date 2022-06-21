@@ -1,4 +1,5 @@
-
+#' @export
+#' @importFrom stringr str_detect
 
 
 setGeneric(name = "get_link_TTG", def = function(long_model, beta_ttg = "normal(0,5)", init = 0, ...) standardGeneric("get_link_TTG"))

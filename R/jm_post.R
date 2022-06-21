@@ -1,4 +1,5 @@
 #' @export
+#' @import cmdstanr
 
 setGeneric("jm_post", function(object, data, formula, options) {
   standardGeneric("jm_post")

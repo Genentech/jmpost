@@ -1,4 +1,7 @@
 #' @export
+#' @import survival
+
+
 
 setGeneric("KM", function(object) {
   standardGeneric("KM")
