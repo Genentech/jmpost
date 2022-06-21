@@ -5,8 +5,20 @@ date: '2022-06-17'
 ---
 
 
-## SLD Model
+# SLD Model
 
+
+$$
+y_{ij} \sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2)
+$$
+
+Where:
+
+* $y_{ij}$ is the observed tumour mesasurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+
+
+## Expected SLD
 
 $$
 SLD_{ij} =b_{i}
@@ -28,7 +40,7 @@ Where:
 * $\phi_i$ is the proportion of cells affected by the treatment
 
 
-### SLD Parameters Model
+## Expected SLD Parameters
 
 $$
 \begin{aligned}
@@ -60,6 +72,8 @@ Where:
 * $\Omega_{x}$ is the variance for the random effects on parameter $x$
 
 
+## Expected SLD Hyper-parameters
+
 
 $$
 \begin{aligned}
@@ -76,10 +90,10 @@ Where:
 * $\sigma_x$ is the variance of the parameter distribution
 
 
-### Priors
+## Priors
 
 $$
-\begin{align}
+\begin{aligned}
 \eta_{bi} &\sim \mathcal{N}(0,5) \\
 \eta_{si} &\sim \mathcal{N}(0,5) \\
 \eta_{gi} &\sim \mathcal{N}(0,5) \\
@@ -99,11 +113,11 @@ $$
 \sigma_s &\sim Lognormal(0,0.5); \\
 \sigma_g &\sim Lognormal(0,0.5); \\
 \sigma_{\phi} &\sim Lognormal(0,0.5);
-\end{align}
+\end{aligned}
 $$
 
 
-## OS model
+# OS model
 
 $$
 h_i(t) = h_0(t) * 
@@ -123,7 +137,7 @@ Where:
 
 
 
-### Derivative of the SLD Trajectory
+## Derivative of the SLD Trajectory
 
     
 $$
@@ -145,7 +159,7 @@ Where:
 (See the "SLD Model" section for full details)
 
 
-### Time to Growth
+## Time to Growth
 
 
 $$
@@ -165,10 +179,10 @@ Where:
 * $\phi_i$ is the proportion of cells affected by the treatment
 
 
-### Baseline Hazard
+## Baseline Hazard
 
 $$
-\begin{align}
+\begin{aligned}
 t &\sim \text{Log-Logistic}(\lambda, p) 
 \\
 \\
@@ -191,7 +205,7 @@ S_0(t) &= \frac{
 }{
     1 + (\lambda t)^p
 }
-\end{align}
+\end{aligned}
 $$
 
 Where:
@@ -202,7 +216,7 @@ Where:
 
 
 
-### Priors
+## Priors
 
 $$
 \begin{aligned}
