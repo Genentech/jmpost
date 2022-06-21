@@ -3,21 +3,22 @@
 
 
 
-setGeneric("KM", function(object) {
+setGeneric("KM", function(jmdata) {
   standardGeneric("KM")
 })
 
 
 setMethod("KM",
-  signature(object = "JMpost"),
+  signature(jmdata = "JMdata"),
   value = "numeric",
   function(object) {
-    rel_vals <- str_detect(object@data$ARM, "MO")
+    rel_vals <- c(rep(FALSE, 770), rep(TRUE,89))
+
     fit <- survfit(Surv(
-      object@data$AYR[!rel_vals],
-      object@data$DEATH[!rel_vals]
+        jmdata@data_os[!rel_vals, jmdata@vars$AYR, drop = TRUE],
+        jmdata@data_os[!rel_vals, jmdata@vars$overall_survival_death, drop = TRUE]
     ) ~ 1)
 
-    summary(fit, times = object@data$os_pred_times)$surv
+    summary(fit, times = seq(from = 0.001, to = 2, length = 100))$surv
   }
 )

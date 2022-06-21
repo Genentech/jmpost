@@ -3,11 +3,11 @@
 jm_data <- setClass(
     "JMdata",
     representation(
-        data_sld = "data.frame",
-        data_os = "data.frame",
-        data = "list",
-        vars = "list",
-        shared_treatement = "character"
+        data_sld = "data.frame", # the sld data frame for the longitudinal dat a
+        data_os = "data.frame",  # the overall survival data frame for the os model
+        data = "list", # to be filled with the modified data list later
+        vars = "list", # map of the variables
+        shared_treatement = "character" # which is the treatment group
     )
 )
 

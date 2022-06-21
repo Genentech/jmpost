@@ -17,6 +17,11 @@ stan_all <- setClass(
   )
 )
 
+# TemplatedStanOS: class specifically for premature overall survival models
+temp_stan_os <- setClass("TemplatedStanOS",
+                         contains = "StanAll"
+)
+
 # StanOS: class specifically for overall survival models
 stan_os <- setClass("StanOS",
   contains = "StanAll"
@@ -44,7 +49,7 @@ setOldClass("CmdStanMCMC")
 
 
 jm_post_class <- setClass("JMpost",
-                          slots = c(cmdstan_fit = "CmdStanMCMC", data_list = "list"),
+                          slots = c(cmdstan_fit = "CmdStanMCMC", data_list = "list", vars_map = "list"),
                           contains = "JMModel"
 )
 

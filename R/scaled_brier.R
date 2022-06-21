@@ -1,16 +1,17 @@
 #' @export
 
-setGeneric("scaled_brier", function(object) {
+setGeneric("scaled_brier", function(object, jmdata ) {
   standardGeneric("scaled_brier")
 })
 
 
 setMethod("scaled_brier",
-  signature(object = "JMpost"),
+  signature(object = "JMpost",
+            jmdata = "JMdata"),
   value = "numeric",
-  function(object) {
-    KMref <- KM(object)
-    rel_vals <- str_detect(object@data$ARM, "MO")
+  function(object, jmdata) {
+    KMref <- KM(jmdata)
+    rel_vals <- c(rep(FALSE, 770), rep(TRUE,89))
 
     save_ind_unconditional_survival <- object@cmdstan_fit$draws("save_ind_unconditional_survival",
       format = "draws_matrix"
@@ -18,12 +19,12 @@ setMethod("scaled_brier",
 
     mean_sur_probs <- matrix(
       data = NA,
-      ncol = object@data$n_times,
-      nrow = object@data$n_pat
+      ncol = 100,
+      nrow = 9
     )
 
-    for (i in c(1:object@data$n_pat)) {
-      for (k in 1:object@data$n_times) {
+    for (i in c(1:9)) {
+      for (k in 1:100) {
         temp_mean <- mean(save_ind_unconditional_survival[, i * k])
         mean_sur_probs[i, k] <- temp_mean
       }
@@ -31,9 +32,9 @@ setMethod("scaled_brier",
 
 
     brier <- BS(
-      timepoints = object@data$os_pred_times,
-      times = object@data$AYR[rel_vals],
-      status = object@data$DEATH[rel_vals],
+      timepoints = seq(from = 0.001, to = 2, length = n_times),
+      times = jmdata@data_os[rel_vals, jmdata@vars$longitudinal],
+      status = jmdata@data_os[rel_vals, jmdata@vars$overall_survival_death],
       pred = mean_sur_probs,
       cause = 1
     )

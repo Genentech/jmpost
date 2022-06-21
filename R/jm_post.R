@@ -36,6 +36,7 @@ setMethod("jm_post",
             adapt_delta = options@adapt_delta
         ),
         data_list = .data@data,
+        vars_map = data@vars,
         cmdstan_mod = object@cmdstan_mod,
         prior = object@prior,
         model = object@model,

@@ -9,9 +9,11 @@ setGeneric("parametrize", function(osmod, link) {
 
 setMethod(
   "parametrize",
-  signature(osmod = "StanOS", link = "HazardLink"),
+  signature(osmod = "temp_stan_os", link = "HazardLink"),
   function(osmod, link) {
-    newOS <- osmod
+      newOS <- stan_os(data = osmod@data,
+                       model = osmod@model,
+                       includes = osmod@includes)
 
     newOS@functions <- str_replace_all(
       string = osmod@functions,

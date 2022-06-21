@@ -60,8 +60,8 @@ setMethod("data_prep",
       )
     }
 
-    arm_study_trt <- unique(osd_final[, c(object@vars$os_arm, object@vars$os_study_id, object@vars$treatment)])
-    arm_to_study_index <- as.integer(factor(arm_study_trt[, object@vars$os_study_id]))
+    arm_study_trt <- unique(object@data_os[, c(object@vars$os_arm, object@vars$os_study_id, object@vars$treatment)])
+    arm_to_study_index <- as.integer(factor(arm_study_trt[, object@vars$os_study_id, drop = TRUE]))
 
     sld_par_shared <- which(arm_study_trt[, object@vars$treatment] == object@shared_treatement)
     sld_par_separate <- which(arm_study_trt[, object@vars$treatment] != object@shared_treatement)
