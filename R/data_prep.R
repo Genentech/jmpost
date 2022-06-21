@@ -3,17 +3,23 @@
 
 
 setGeneric("data_prep", def = function(object,
-                                       os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER,
-                                       options = mcmc_options()) {
+                                       os_formula,
+                                       options,
+                                       index_save_ind ) {
   standardGeneric("data_prep")
 })
 
 setMethod("data_prep",
-  signature(object = "JMdata"),
+  signature(
+    object = "JMdata",
+    options = "mcmc_options"
+  ),
   value = "JMdata",
   function(object,
-           os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER,
-           options = mcmc_options()) {
+           os_formula,
+           options,
+           index_save_ind) {
+
     cens_threshold <- 2.5
 
     # Derive sparse matrices.
@@ -33,7 +39,7 @@ setMethod("data_prep",
     # Timepoints for OS hazard and survival function estimation to generate predictions.
     os_pred_times <- seq(from = 0.001, to = 2, length = 100)
 
-    os_cov_design <- model.matrix(os_formula , data = object@data_os)
+    os_cov_design <- model.matrix(os_formula, data = object@data_os)
 
     # each of the different treatment arms.
     treat_arms <- unique(object@data_os[, object@vars$os_arm, drop = T])
@@ -42,15 +48,17 @@ setMethod("data_prep",
 
     # The patients in each of the different treatment arms.
     n_index_per_arm <- c()
-    for( i in 1:length(treat_arms)){
-        n_index_per_arm[i] <- sum(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i])
+    for (i in 1:length(treat_arms)) {
+      n_index_per_arm[i] <- sum(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i])
     }
 
 
     index_per_arm <- c()
-    for( i in 1:length(treat_arms)){
-        index_per_arm <- c(index_per_arm,
-                           which(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i]))
+    for (i in 1:length(treat_arms)) {
+      index_per_arm <- c(
+        index_per_arm,
+        which(object@data_os[, object@vars$os_arm, drop = TRUE] == treat_arms[i])
+      )
     }
 
     jm_data(
@@ -70,12 +78,14 @@ setMethod("data_prep",
         dead_ind_index = which(object@data_os[, object@vars$overall_survival_death, drop = TRUE] == 1),
         n_studies = length(studies_name),
         study_index = as.numeric(factor(object@data_os[, object@vars$os_study_id, drop = TRUE],
-                                        levels = studies_name)),
+          levels = studies_name
+        )),
         n_arms = length(treat_arms),
         arm_index = as.numeric(factor(object@data_os[, object@vars$os_arm, drop = TRUE],
-                                      levels = treat_arms )),
-        n_save_individual = sum(object@data_os[, object@vars$os_study_id] == "WO39613"),
-        index_save_individual = which(object@data_os[, object@vars$os_study_id] == "WO39613"),
+          levels = treat_arms
+        )),
+        n_save_individual = length(index_save_ind),
+        index_save_individual = index_save_ind,
         n_sld_par_shared = 3L,
         sld_par_shared = 1:3,
         n_sld_par_separate = 3L,
@@ -84,7 +94,6 @@ setMethod("data_prep",
 
         # The patients in each of the four different treatment arms.
         n_index_per_arm = n_index_per_arm,
-
         index_per_arm = index_per_arm,
 
         # Tumor assessment values and time points.

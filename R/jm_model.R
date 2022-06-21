@@ -20,13 +20,18 @@ setMethod("jm_complete",
     priors <- priors[!duplicated(names(priors))]
 
     stan_all(
-      functions = paste0(object1@functions, object2@functions),
-      data = paste0(object1@data, object2@data),
+      functions = paste0(paste0(object1@functions, collapse = "\n"),
+                         paste0(object2@functions, collapse = "\n")),
+      data = paste0(paste0(object1@data, collapse = "\n"),
+                    paste0(object2@data, collapse = "\n")),
       prior = priors,
       model = convert_to_model(priors),
-      parameters = paste0(object1@parameters, object2@parameters),
-      transformed_parameters = paste0(object1@transformed_parameters, object2@transformed_parameters),
-      generated_quantities = paste0(object1@generated_quantities, object2@generated_quantities),
+      parameters = paste0(paste0(object1@parameters, collapse = "\n"),
+                          paste0(object2@parameters, collapse = "\n")),
+      transformed_parameters = paste0( paste0(object1@transformed_parameters, collapse = "\n"),
+                                       paste0(object2@transformed_parameters, collapse = "\n")),
+      generated_quantities = paste0( paste0(object1@generated_quantities, collapse = "\n"),
+                                     paste0(object2@generated_quantities, collapse = "\n")),
       includes = unique(c(object1@includes, object2@includes)),
       inits = append(object1@inits, object2@inits)
     )
