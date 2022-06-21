@@ -5,7 +5,7 @@
 setGeneric("data_prep", def = function(object,
                                        os_formula,
                                        options,
-                                       index_save_ind ) {
+                                       index_save_ind) {
   standardGeneric("data_prep")
 })
 
@@ -19,7 +19,6 @@ setMethod("data_prep",
            os_formula,
            options,
            index_save_ind) {
-
     cens_threshold <- 2.5
 
     # Derive sparse matrices.
@@ -61,6 +60,13 @@ setMethod("data_prep",
       )
     }
 
+    arm_study_trt <- unique(osd_final[, c(object@vars$os_arm, object@vars$os_study_id, object@vars$treatment)])
+    arm_to_study_index <- as.integer(factor(arm_study_trt[, object@vars$os_study_id]))
+
+    sld_par_shared <- which(arm_study_trt[, object@vars$treatment] == object@shared_treatement)
+    sld_par_separate <- which(arm_study_trt[, object@vars$treatment] != object@shared_treatement)
+
+
     jm_data(
       data_sld = object@data_sld,
       data_os = object@data_os,
@@ -86,11 +92,11 @@ setMethod("data_prep",
         )),
         n_save_individual = length(index_save_ind),
         index_save_individual = index_save_ind,
-        n_sld_par_shared = 3L,
-        sld_par_shared = 1:3,
-        n_sld_par_separate = 3L,
-        sld_par_separate = 4:6,
-        arm_to_study_index = c(1L, 2L, 3L, 3L, 3L, 3L),
+        n_sld_par_shared = length(sld_par_shared),
+        sld_par_shared = sld_par_shared,
+        n_sld_par_separate = length(sld_par_separate),
+        sld_par_separate = sld_par_separate,
+        arm_to_study_index = arm_to_study_index,
 
         # The patients in each of the four different treatment arms.
         n_index_per_arm = n_index_per_arm,

@@ -62,13 +62,5 @@ hazard_link <- setClass("HazardLink",
 .exponential_long_model <- setClass("ExponentialLongModel", contains = "StanLong")
 
 
-jm_data <- setClass(
-    "JMdata",
-    representation(
-        data_sld = "data.frame",
-        data_os = "data.frame",
-        data = "list",
-        vars = "list"
-    )
-)
+
 
