@@ -1,5 +1,5 @@
 
-
+#' @export
 exponential_long_model <- function(functions = long_fun,
                                    data = long_data,
                                    parameters = long_parameters,

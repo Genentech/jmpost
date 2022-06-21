@@ -1,4 +1,4 @@
-
+#' @export
 
 # jm_compile: Function that compiles the model
 setGeneric("jm_compile", function(object) {

@@ -1,3 +1,6 @@
+#' @export
+
+
 
 setGeneric("parametrize", function(osmod, link) {
   standardGeneric("parametrize")

@@ -1,3 +1,5 @@
+#' @export
+
 # as_charc: Generic function for converting a stanAll object to a character vector
 setGeneric("as_charc", function(object) {
   standardGeneric("as_charc")

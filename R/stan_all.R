@@ -1,3 +1,6 @@
+#' @export
+
+
 # StanAll: class containing all sections for a stan model
 stan_all <- setClass(
   "StanAll",
@@ -59,22 +62,13 @@ hazard_link <- setClass("HazardLink",
 .exponential_long_model <- setClass("ExponentialLongModel", contains = "StanLong")
 
 
-
-.gauss_legendre <- setClass(
-  "gauss_legendre",
-  representation(values = "list")
-)
-
-
 jm_data <- setClass(
     "JMdata",
     representation(
         data_sld = "data.frame",
         data_os = "data.frame",
         data = "list",
-        vars = "list",
-        nodes = "gauss_legendre"
-    ),
-    prototype(nodes = gauss_legendre())
+        vars = "list"
+    )
 )
 

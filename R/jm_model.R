@@ -1,3 +1,5 @@
+#' @export
+
 setGeneric("jm_complete", def = function(object1, object2) {
   standardGeneric("jm_complete")
 })

@@ -1,4 +1,4 @@
-
+#' @export
 
 setGeneric("KM", function(object) {
   standardGeneric("KM")

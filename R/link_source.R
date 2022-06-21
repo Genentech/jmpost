@@ -1,3 +1,5 @@
+#' @export
+
 
 link_arguments <- c(
   "TTG" = " real beta_ttg,",

@@ -1,5 +1,6 @@
+#' @export
 
-setGeneric("jm_post", function(object, data, options) {
+setGeneric("jm_post", function(object, data, formula, options) {
   standardGeneric("jm_post")
 })
 
@@ -11,9 +12,13 @@ setMethod("jm_post",
     options = "mcmc_options"
   ),
   value = "JMpost",
-  function(object, data, options) {
+  function(object, data, formula, options) {
+
     inits <- replicate(1, object@inits, simplify = FALSE)
-    .data <- data_prep(data)
+
+    .data <- data_prep(data = data,
+                       os_formula = formula,
+                       options = options)
 
     jm_post_class(
       cmdstan_fit = object@cmdstan_mod$sample(

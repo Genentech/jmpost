@@ -1,3 +1,5 @@
+#' @export
+
 vars <- function(longitudinal = "AVAL",
                  ID = "USUBJID",
                  overall_survival_death = "DEATH",

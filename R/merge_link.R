@@ -1,3 +1,5 @@
+#' @export
+
 setGeneric("merge_link", def = function(link1, link2, additive = TRUE) {
   standardGeneric("merge_link")
 })

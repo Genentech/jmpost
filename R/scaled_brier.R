@@ -1,4 +1,4 @@
-
+#' @export
 
 setGeneric("scaled_brier", function(object) {
   standardGeneric("scaled_brier")

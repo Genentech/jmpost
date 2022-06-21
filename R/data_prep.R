@@ -1,13 +1,10 @@
+#' @export
 
-
-gauss_legendre <- function(n = 15,
-                           kind = "legendre") {
-  .gauss_legendre(values = statmod::gauss.quad(n = n, kind = kind))
-}
 
 
 setGeneric("data_prep", def = function(object,
-                                       os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER) {
+                                       os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER,
+                                       options = mcmc_options()) {
   standardGeneric("data_prep")
 })
 
@@ -15,7 +12,8 @@ setMethod("data_prep",
   signature(object = "JMdata"),
   value = "JMdata",
   function(object,
-           os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER ) {
+           os_formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER,
+           options = mcmc_options()) {
     cens_threshold <- 2.5
 
     # Derive sparse matrices.
@@ -121,9 +119,9 @@ setMethod("data_prep",
         n_os_pred_times = length(os_pred_times),
 
         # Integration paramaters.
-        n_nodes = length(object@nodes@values$nodes),
-        nodes = object@nodes@values$nodes,
-        weights = object@nodes@values$weights
+        n_nodes = length(options@gauss_legendre@values$nodes),
+        nodes = options@gauss_legendre@values$nodes,
+        weights = options@gauss_legendre@values$weights
       )
     )
   }
