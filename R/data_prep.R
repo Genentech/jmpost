@@ -5,7 +5,8 @@
 setGeneric("data_prep", def = function(object,
                                        os_formula,
                                        options,
-                                       index_save_ind) {
+                                       index_save_ind,
+                                       predictions) {
   standardGeneric("data_prep")
 })
 
@@ -18,7 +19,8 @@ setMethod("data_prep",
   function(object,
            os_formula,
            options,
-           index_save_ind) {
+           index_save_ind,
+           predictions) {
     cens_threshold <- 2.5
 
     # Derive sparse matrices.
@@ -36,7 +38,7 @@ setMethod("data_prep",
 
 
     # Timepoints for OS hazard and survival function estimation to generate predictions.
-    os_pred_times <- seq(from = 0.001, to = 2, length = 100)
+    os_pred_times <- predictions
 
     os_cov_design <- model.matrix(os_formula, data = object@data_os)
 
@@ -61,7 +63,7 @@ setMethod("data_prep",
     }
 
     arm_study_trt <- unique(object@data_os[, c(object@vars$os_arm, object@vars$os_study_id, object@vars$treatment)])
-    arm_to_study_index <- as.integer(factor(arm_study_trt[, object@vars$os_study_id, drop = TRUE]))
+    arm_to_study_values <- as.integer(factor(arm_study_trt[, object@vars$os_study_id, drop = TRUE]))
 
     sld_par_shared <- which(arm_study_trt[, object@vars$treatment] == object@shared_treatement)
     sld_par_separate <- which(arm_study_trt[, object@vars$treatment] != object@shared_treatement)
@@ -96,7 +98,7 @@ setMethod("data_prep",
         sld_par_shared = sld_par_shared,
         n_sld_par_separate = length(sld_par_separate),
         sld_par_separate = sld_par_separate,
-        arm_to_study_index = arm_to_study_index,
+        arm_to_study_index = arm_to_study_values,
 
         # The patients in each of the four different treatment arms.
         n_index_per_arm = n_index_per_arm,

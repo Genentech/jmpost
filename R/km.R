@@ -1,5 +1,5 @@
 #' @export
-#' @import survival
+#' @importFrom survival survfit
 
 
 

@@ -1,7 +1,8 @@
 #' @export
 #' @import cmdstanr
 
-setGeneric("jm_post", function(object, data, formula, options, index_save_ind) {
+setGeneric("jm_post",
+           function(object, data, formula, options, index_save_ind, predictions) {
   standardGeneric("jm_post")
 })
 
@@ -13,14 +14,16 @@ setMethod("jm_post",
     options = "mcmc_options"
   ),
   value = "JMpost",
-  function(object, data, formula, options, index_save_ind) {
+  function(object, data, formula, options, index_save_ind,
+           predictions = seq(from = 0.001, to = 2, length = 100)) {
 
     inits <- replicate(1, object@inits, simplify = FALSE)
 
     .data <- data_prep(object = data,
                        os_formula = formula,
                        options = options,
-                       index_save_ind = index_save_ind)
+                       index_save_ind = index_save_ind,
+                       predictions = predictions)
 
     jm_post_class(
         cmdstan_fit = object@cmdstan_mod$sample(
