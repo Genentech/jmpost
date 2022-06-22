@@ -12,4 +12,5 @@ Under construction!
 ## Development Documentation
 
 [Object structure & workflow diagram](https://app.diagrams.net/#G1S3gYsHKLgPlq_Tq64RYKsshSLL9ufcjD)
+[Initial model specification](https://genentech.github.io/jmpost/)
 
