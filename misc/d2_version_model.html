@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-06-17" />
+  <title>D2 version model</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+// $(document).ready( function(){
+//     var obs = $("h1, h2, h3, h4, h5, h6") ;
+//     for (i = 0 ; i < obs.length ; i ++ ){
+//         var htmlid = obs[i].text()
+//         htmlid = htmlid.replace(/ /g, "-")
+//         htmlid = htmlid.toLowerCase()
+//         obs[i].html("<a href='#" + htmlid + "'>" + obs[i].text() + "</a>")   
+//     }
+// })
+
+</script>
+
+<style>
+/*
+    Buttondown
+    A Markdown/MultiMarkdown/Pandoc HTML output CSS stylesheet
+    Author: Ryan Gray
+    Date: 15 Feb 2011
+    Revised: 21 Feb 2012
+   
+    General style is clean, with minimal re-definition of the defaults or 
+    overrides of user font settings. The body text and header styles are 
+    left alone except title, author and date classes are centered. A Pandoc TOC 
+    is not printed, URLs are printed after hyperlinks in parentheses. 
+    Block quotes are italicized. Tables are lightly styled with lines above 
+    and below the table and below the header with a boldface header. Code 
+    blocks are line wrapped. 
+
+    All elements that Pandoc and MultiMarkdown use should be listed here, even 
+    if the style is empty so you can easily add styling to anything.
+    
+    There are some elements in here for HTML5 output of Pandoc, but I have not 
+    gotten around to testing that yet.
+*/
+
+/* NOTES:
+
+    Stuff tried and failed:
+    
+    It seems that specifying font-family:serif in Safari will always use 
+    Times New Roman rather than the user's preferences setting.
+    
+    Making the font size different or a fixed value for print in case the screen 
+    font size is making the print font too big: Making font-size different for 
+    print than for screen causes horizontal lines to disappear in math when using 
+    MathJax under Safari.
+*/
+
+/* ---- Front Matter ---- */
+
+/* Pandoc header DIV. Contains .title, .author and .date. Comes before div#TOC. 
+   Only appears if one of those three are in the document.
+*/
+
+div#header, header
+    {
+    /* Put border on bottom. Separates it from TOC or body that comes after it. */
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 0.5em;
+    }
+
+.title /* Pandoc title header (h1.title) */
+    {
+    text-align: center;
+    }
+
+.author, .date /* Pandoc author(s) and date headers (h2.author and h3.date) */
+    {
+    text-align: center;
+    }
+
+/* Pandoc table of contents DIV when using the --toc option.
+   NOTE: this doesn't support Pandoc's --id-prefix option for #TOC and #header. 
+   Probably would need to use div[id$='TOC'] and div[id$='header'] as selectors.
+*/
+
+div#TOC, nav#TOC
+    {
+    /* Put border on bottom to separate it from body. */
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 0.5em;
+    }
+
+@media print
+    {
+    div#TOC, nav#TOC
+        {
+        /* Don't display TOC in print */
+        display: none;
+        }
+    }
+
+/* ---- Headers and sections ---- */
+
+h1, h2, h3, h4, h5, h6
+{
+    font-family: "Helvetica Neue", Helvetica, "Liberation Sans", Calibri, Arial, sans-serif; /* Sans-serif headers */
+
+    /* font-family: "Liberation Serif", "Georgia", "Times New Roman", serif; /* Serif headers */
+
+    page-break-after: avoid; /* Firefox, Chrome, and Safari do not support the property value "avoid" */
+}
+
+/* Pandoc with --section-divs option */
+
+div div, section section /* Nested sections */
+    {
+    margin-left: 2em; /* This will increasingly indent nested header sections */
+    }
+
+p {}
+
+blockquote
+    { 
+    font-style: italic;
+    }
+
+li /* All list items */
+    {
+    }
+
+li > p /* Loosely spaced list item */
+    {
+    margin-top: 1em; /* IE: lack of space above a <li> when the item is inside a <p> */
+    }
+
+ul /* Whole unordered list */
+    {
+    }
+
+ul li /* Unordered list item */
+    {
+    }
+
+ol /* Whole ordered list */
+    {
+    }
+
+ol li /* Ordered list item */
+    {
+    }
+
+hr {}
+
+/* ---- Some span elements --- */
+
+sub /* Subscripts. Pandoc: H~2~O */
+    {
+    }
+
+sup /* Superscripts. Pandoc: The 2^nd^ try. */
+    {
+    }
+    
+em /* Emphasis. Markdown: *emphasis* or _emphasis_ */
+    {
+    }
+    
+em > em /* Emphasis within emphasis: *This is all *emphasized* except that* */
+    {
+    font-style: normal;
+    }
+
+strong /* Markdown **strong** or __strong__ */
+    {
+    }
+
+/* ---- Links (anchors) ---- */
+
+a /* All links */
+    {
+    /* Keep links clean. On screen, they are colored; in print, they do nothing anyway. */
+    text-decoration: none;
+    }
+
+@media screen
+    {
+    a:hover
+        {
+        /* On hover, we indicate a bit more that it is a link. */
+        text-decoration: underline;
+        }
+    }
+
+@media print
+    {
+    a   {
+        /* In print, a colored link is useless, so un-style it. */
+        color: black;
+        background: transparent;
+        }
+        
+    a[href^="http://"]:after, a[href^="https://"]:after
+        {
+        /* However, links that go somewhere else, might be useful to the reader,
+           so for http and https links, print the URL after what was the link 
+           text in parens
+        */
+        content: " (" attr(href) ") ";
+        font-size: 90%;
+        }
+    }
+
+/* ---- Images ---- */
+
+img
+    {
+    /* Let it be inline left/right where it wants to be, but verticality make 
+       it in the middle to look nicer, but opinions differ, and if in a multi-line 
+       paragraph, it might not be so great. 
+    */
+    vertical-align: middle;
+    }
+
+div.figure /* Pandoc figure-style image */
+    {
+    /* Center the image and caption */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-style: italic;
+    }
+
+p.caption /* Pandoc figure-style caption within div.figure */
+    {
+    /* Inherits div.figure props by default */
+    }
+
+/* ---- Code blocks and spans ---- */
+
+pre, code 
+    {
+    background-color: #fdf7ee;
+    /* BEGIN word wrap */
+    /* Need all the following to word wrap instead of scroll box */
+    /* This will override the overflow:auto if present */
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    /* END word wrap */
+    }
+
+pre /* Code blocks */
+    {
+    /* Distinguish pre blocks from other text by more than the font with a background tint. */
+    padding: 0.5em; /* Since we have a background color */
+    border-radius: 5px; /* Softens it */
+    /* Give it a some definition */
+    border: 1px solid #aaa;
+    /* Set it off left and right, seems to look a bit nicer when we have a background */
+    margin-left:  0.5em;
+    margin-right: 0.5em;
+    }
+
+@media screen
+    {
+    pre
+        {
+        /* On screen, use an auto scroll box for long lines, unless word-wrap is enabled */
+        white-space: pre;
+        overflow: auto;
+        /* Dotted looks better on screen and solid seems to print better. */
+        border: 1px dotted #777;
+        }
+    }
+
+code /* All inline code spans */
+    {
+    }
+
+p > code, li > code /* Code spans in paragraphs and tight lists */
+    {
+    /* Pad a little from adjacent text */
+    padding-left:  2px;
+    padding-right: 2px;
+    }
+    
+li > p code /* Code span in a loose list */
+    {
+    /* We have room for some more background color above and below */
+    padding: 2px;
+    }
+
+/* ---- Math ---- */
+
+span.math /* Pandoc inline math default and --jsmath inline math */
+    {
+    /* Tried font-style:italic here, and it messed up MathJax rendering in some browsers. Maybe don't mess with at all. */
+    }
+    
+div.math /* Pandoc --jsmath display math */
+    {
+    }
+    
+span.LaTeX /* Pandoc --latexmathml math */
+    {
+    } 
+
+eq /* Pandoc --gladtex math */
+    {
+    } 
+
+/* ---- Tables ---- */
+
+/*  A clean textbook-like style with horizontal lines above and below and under 
+    the header. Rows highlight on hover to help scanning the table on screen.
+*/
+
+table
+    {
+    border-collapse: collapse;
+    border-spacing: 0; /* IE 6 */
+
+    border-bottom: 2pt solid #000;
+    border-top: 2pt solid #000; /* The caption on top will not have a bottom-border */
+
+    /* Center */
+    margin-left: auto;
+    margin-right: auto;
+    }
+    
+thead /* Entire table header */
+    {
+    border-bottom: 1pt solid #000;
+    background-color: #eee; /* Does this BG print well? */
+    }
+
+tr.header /* Each header row */
+    {
+    } 
+
+tbody /* Entire table  body */
+    {
+    }
+
+/* Table body rows */
+
+tr  {
+    }
+tr.odd:hover, tr.even:hover /* Use .odd and .even classes to avoid styling rows in other tables */
+    {
+    background-color: #eee;
+    }
+    
+/* Odd and even rows */
+tr.odd {}
+tr.even {}
+
+td, th /* Table cells and table header cells */
+    { 
+    vertical-align: top; /* Word */
+    vertical-align: baseline; /* Others */
+    padding-left:   0.5em;
+    padding-right:  0.5em;
+    padding-top:    0.2em;
+    padding-bottom: 0.2em;
+    }
+    
+/* Removes padding on left and right of table for a tight look. Good if thead has no background color*/
+/*
+tr td:last-child, tr th:last-child
+    {
+    padding-right: 0;
+    }
+tr td:first-child, tr th:first-child 
+    {
+    padding-left: 0;
+    }
+*/
+
+th /* Table header cells */
+    {
+    font-weight: bold; 
+    }
+
+tfoot /* Table footer (what appears here if caption is on top?) */
+    {
+    }
+
+caption /* This is for a table caption tag, not the p.caption Pandoc uses in a div.figure */
+    {
+    caption-side: top;
+    border: none;
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 0.3em; /* Good for when on top */
+    padding-bottom: 0.2em;
+    }
+
+/* ---- Definition lists ---- */
+
+dl /* The whole list */
+    {
+    border-top: 2pt solid black;
+    padding-top: 0.5em;
+    border-bottom: 2pt solid black;
+    }
+
+dt /* Definition term */
+    {
+    font-weight: bold;
+    }
+
+dd+dt /* 2nd or greater term in the list */
+    {
+    border-top: 1pt solid black;
+    padding-top: 0.5em;
+    }
+    
+dd /* A definition */
+    {
+    margin-bottom: 0.5em;
+    }
+
+dd+dd /* 2nd or greater definition of a term */
+    {
+    border-top: 1px solid black; /* To separate multiple definitions */
+    }
+    
+/* ---- Footnotes ---- */
+
+a.footnote, a.footnoteRef { /* Pandoc, MultiMarkdown footnote links */
+    font-size: small; 
+    vertical-align: text-top;
+}
+
+a[href^="#fnref"], a.reversefootnote /* Pandoc, MultiMarkdown, ?? footnote back links */
+    {
+    }
+
+@media print
+    {
+    a[href^="#fnref"], a.reversefootnote /* Pandoc, MultiMarkdown */
+        {
+        /* Don't display these at all in print since the arrow is only something to click on */
+        display: none;
+        }
+    }
+    
+div.footnotes /* Pandoc footnotes div at end of the document */
+    {
+    }
+    
+div.footnotes li[id^="fn"] /* A footnote item within that div */
+    {
+    }
+
+/* You can class stuff as "noprint" to not print. 
+   Useful since you can't set this media conditional inside an HTML element's 
+   style attribute (I think), and you don't want to make another stylesheet that 
+   imports this one and adds a class just to do this.
+*/
+
+@media print
+    {
+    .noprint
+        {
+        display:none;
+        }
+    }
+
+</style>
+
+<style>
+h1, h2, h3, h4, h5 {
+    padding-top: 20px;
+    padding-bottom:10px;
+}
+
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+    color: #2fa4e7;
+}
+
+
+h1, .h1 {
+    font-size: 2rem;
+}
+  
+  
+h2, .h2 {
+    font-size: 1.5rem;
+}
+  
+  
+h3, .h3 {
+    font-size: 1.25rem;
+}
+  
+  
+h4, .h4 {
+    font-size: 1rem;
+}
+  
+
+h5, .h5, h6, .h6 {
+    font-size: 1rem;
+}
+  
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+
+body {
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+img {
+    max-width: 800px;
+    display: block;
+    margin: auto;
+}
+
+</style>
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">D2 version model</h1>
+<p class="date">2022-06-17</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#sld-model" id="toc-sld-model"><span
+class="toc-section-number">1</span> SLD Model</a>
+<ul>
+<li><a href="#expected-sld" id="toc-expected-sld"><span
+class="toc-section-number">1.1</span> Expected SLD</a></li>
+<li><a href="#expected-sld-parameters"
+id="toc-expected-sld-parameters"><span
+class="toc-section-number">1.2</span> Expected SLD Parameters</a></li>
+<li><a href="#expected-sld-hyper-parameters"
+id="toc-expected-sld-hyper-parameters"><span
+class="toc-section-number">1.3</span> Expected SLD
+Hyper-parameters</a></li>
+<li><a href="#priors" id="toc-priors"><span
+class="toc-section-number">1.4</span> Priors</a></li>
+</ul></li>
+<li><a href="#os-model" id="toc-os-model"><span
+class="toc-section-number">2</span> OS model</a>
+<ul>
+<li><a href="#derivative-of-the-sld-trajectory"
+id="toc-derivative-of-the-sld-trajectory"><span
+class="toc-section-number">2.1</span> Derivative of the SLD
+Trajectory</a></li>
+<li><a href="#time-to-growth" id="toc-time-to-growth"><span
+class="toc-section-number">2.2</span> Time to Growth</a></li>
+<li><a href="#baseline-hazard" id="toc-baseline-hazard"><span
+class="toc-section-number">2.3</span> Baseline Hazard</a></li>
+<li><a href="#priors-1" id="toc-priors-1"><span
+class="toc-section-number">2.4</span> Priors</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="sld-model"><span
+class="header-section-number">1</span> SLD Model</h1>
+<p><span class="math display">\[
+y_{ij} \sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(y_{ij}\)</span> is the observed tumour
+mesasurements</li>
+<li><span class="math inline">\(SLD_{ij}\)</span> is the expected sum of
+longest diameter for subject <span class="math inline">\(i\)</span> at
+time point <span class="math inline">\(j\)</span></li>
+</ul>
+<h2 data-number="1.1" id="expected-sld"><span
+class="header-section-number">1.1</span> Expected SLD</h2>
+<p><span class="math display">\[
+SLD_{ij} =b_{i}
+\left[
+    \phi_i e^{-s_{i}t_{ij}}+
+    (1-\phi_{i}) e^ {g_{i}t_{ij}}
+\right]
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(i\)</span> is the subject index</li>
+<li><span class="math inline">\(j\)</span> is the visit index</li>
+<li><span class="math inline">\(t_{ij}\)</span> is the time since first
+treatment for subject <span class="math inline">\(i\)</span> at visit
+<span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(SLD_{ij}\)</span> is the observed SLD
+measurement for subject <span class="math inline">\(i\)</span> at visit
+<span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(b_i\)</span> is the Baseline SLD
+measurement</li>
+<li><span class="math inline">\(s_i\)</span> is the kinetics shrinkage
+parameter</li>
+<li><span class="math inline">\(g_i\)</span> is the kinetics tumour
+growth parameter</li>
+<li><span class="math inline">\(\phi_i\)</span> is the proportion of
+cells affected by the treatment</li>
+</ul>
+<h2 data-number="1.2" id="expected-sld-parameters"><span
+class="header-section-number">1.2</span> Expected SLD Parameters</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\phi_i &amp;= \text{logit}^{-1}\left(
+    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \Omega_{\phi}
+\right)
+\\
+s_i &amp;= \exp\left(
+    \ln(m_{s l_i}) + \eta_{s i} * \Omega_{s}
+\right)
+\\
+g_i &amp;= \exp\left(
+    \ln(m_{g l_i}) + \eta_{g i} * \Omega_{g}
+\right)
+\\
+b_i &amp;= \exp\left(
+    \ln(m_{b l_i}) + \eta_{b i} * \Omega_{b}
+\right)
+\end{aligned}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(i\)</span> is the subject index</li>
+<li><span class="math inline">\(l_i\)</span> is the group/treatment
+index for subject <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(m_{xl_i}\)</span> is the mean for
+parameter <span class="math inline">\(x\)</span> in group <span
+class="math inline">\(l_i\)</span></li>
+<li><span class="math inline">\(\eta_{xi}\)</span> is a random effects
+offset on parameter <span class="math inline">\(x\)</span> for subject
+<span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\Omega_{x}\)</span> is the variance for
+the random effects on parameter <span
+class="math inline">\(x\)</span></li>
+</ul>
+<h2 data-number="1.3" id="expected-sld-hyper-parameters"><span
+class="header-section-number">1.3</span> Expected SLD
+Hyper-parameters</h2>
+<p><span class="math display">\[
+\begin{aligned}
+m_{s l_i} &amp;\sim \text{Lognormal}(\mu_s, \sigma_{s}) \\
+m_{g l_i} &amp;\sim \text{Lognormal}(\mu_g, \sigma_{g}) \\
+\text{logit}(m_{\phi l_i}) &amp;\sim
+\mathcal{N}(\text{logit}(\mu_{\phi}), \sigma_{\phi})
+\end{aligned}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(l_i\)</span> is the group/treatment
+index for subject <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\mu_x\)</span> is the mean of the
+parameter distribution</li>
+<li><span class="math inline">\(\sigma_x\)</span> is the variance of the
+parameter distribution</li>
+</ul>
+<h2 data-number="1.4" id="priors"><span
+class="header-section-number">1.4</span> Priors</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\eta_{bi} &amp;\sim \mathcal{N}(0,5) \\
+\eta_{si} &amp;\sim \mathcal{N}(0,5) \\
+\eta_{gi} &amp;\sim \mathcal{N}(0,5) \\
+\eta_{\phi i} &amp;\sim \mathcal{N}(0,5) \\
+\\
+\Omega_{b} &amp;\sim \text{Lognormal}(0,1);\\
+\Omega_{s} &amp;\sim \text{Lognormal}(0,1);\\
+\Omega_{g} &amp;\sim \text{Lognormal}(0,1);\\
+\Omega_{\phi} &amp;\sim \text{Lognormal}(0,1);\\
+\\
+\mu_{bi} &amp;\sim \text{Lognormal}(55,5); \\
+\\
+\mu_s &amp;\sim \text{Lognormal}(1,0.5); \\
+\mu_g &amp;\sim \text{Lognormal}(-0.36,1); \\
+\mu_{\phi} &amp;\sim Beta(5,5); \\
+\\
+\sigma_s &amp;\sim Lognormal(0,0.5); \\
+\sigma_g &amp;\sim Lognormal(0,0.5); \\
+\sigma_{\phi} &amp;\sim Lognormal(0,0.5);
+\end{aligned}
+\]</span></p>
+<h1 data-number="2" id="os-model"><span
+class="header-section-number">2</span> OS model</h1>
+<p><span class="math display">\[
+h_i(t) = h_0(t) *
+e^{\beta f_{i}(t)} *  
+e^{\gamma g_{i}}*
+e^{\beta_{c}X_i}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(h_i(t)\)</span> is the overall survival
+hazard function</li>
+<li><span class="math inline">\(h_0(t)\)</span> is the baseline hazard
+function</li>
+<li><span class="math inline">\(f_i(t)\)</span> is the derivative of the
+SLD trajectory for subject <span class="math inline">\(i\)</span> at
+time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(g_i\)</span> is the time to growth for
+subject <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(X_i\)</span> is the matrix of covariates
+at each visit for subject <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\beta\)</span>, <span
+class="math inline">\(\gamma\)</span> &amp; <span
+class="math inline">\(\beta_{c}\)</span> are the strength coefficients
+for the derivative of the SLD trajectory, the time to growth and the
+subjects covariates respectively</li>
+</ul>
+<h2 data-number="2.1" id="derivative-of-the-sld-trajectory"><span
+class="header-section-number">2.1</span> Derivative of the SLD
+Trajectory</h2>
+<p><span class="math display">\[
+f_i(t_{ij}) = b_i
+\left[
+    (1-\phi_i)  g_i  e^{g_i  t_{ij}} -
+    \phi_i  s_i  e^{-s_i  t_{ij}}
+\right]
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(f_i(t_ij)\)</span> is the derivative of
+the SLD model at time <span class="math inline">\(t_{ij}\)</span></li>
+<li><span class="math inline">\(b_i\)</span> is the Baseline SLD
+measurement</li>
+<li><span class="math inline">\(s_i\)</span> is the kinetics shrinkage
+parameter</li>
+<li><span class="math inline">\(g_i\)</span> is the kinetics tumour
+growth parameter</li>
+<li><span class="math inline">\(\phi_i\)</span> is the proportion of
+cells affected by the treatment</li>
+</ul>
+<p>(See the “SLD Model” section for full details)</p>
+<h2 data-number="2.2" id="time-to-growth"><span
+class="header-section-number">2.2</span> Time to Growth</h2>
+<p><span class="math display">\[
+g_i = \frac{
+    \text{logit}(\phi_i) + log(s_i g_i^{-1})
+}{
+    s_i + g_i
+}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(g_i\)</span> is the time to growth for
+subject <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(b_i\)</span> is the Baseline SLD
+measurement</li>
+<li><span class="math inline">\(s_i\)</span> is the kinetics shrinkage
+parameter</li>
+<li><span class="math inline">\(g_i\)</span> is the kinetics tumour
+growth parameter</li>
+<li><span class="math inline">\(\phi_i\)</span> is the proportion of
+cells affected by the treatment</li>
+</ul>
+<h2 data-number="2.3" id="baseline-hazard"><span
+class="header-section-number">2.3</span> Baseline Hazard</h2>
+<p><span class="math display">\[
+\begin{aligned}
+t &amp;\sim \text{Log-Logistic}(\lambda, p)
+\\
+\\
+f_0(t) &amp;= \frac{
+    \lambda p (\lambda t)^{p-1}
+} {
+    (1 + (\lambda t)^p)^2
+}
+\\
+\\
+h_0(t) &amp;= \frac{
+    \lambda p (\lambda t) ^{p -1}
+}{
+    1 + (\lambda t) ^p
+}
+\\
+\\
+S_0(t) &amp;= \frac{
+    1
+}{
+    1 + (\lambda t)^p
+}
+\end{aligned}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(f_(t)\)</span> is the probability
+density function</li>
+<li><span class="math inline">\(h_0(t)\)</span> is the hazard
+distribution function</li>
+<li><span class="math inline">\(S_0(t)\)</span> is the survival
+distribution function</li>
+</ul>
+<h2 data-number="2.4" id="priors-1"><span
+class="header-section-number">2.4</span> Priors</h2>
+<p><span class="math display">\[
+\begin{aligned}
+p &amp;\sim \text{Gamma}(2, 0.5)
+\\
+\lambda^{-1} &amp;\sim \text{Lognormal}(0, 5)
+\\
+\beta &amp;\sim \mathcal{N}(0,5)
+\\
+\gamma &amp;\sim \mathcal{N}(0,5)
+\\
+\beta_c &amp;\sim \mathcal{N}(0, 5)
+\end{aligned}
+\]</span></p>
+</body>
+</html>

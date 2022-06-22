@@ -1,0 +1,235 @@
+---
+title: "D2 version model"
+output: html_document
+date: '2022-06-17'
+---
+
+
+# SLD Model
+
+
+$$
+y_{ij} \sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2)
+$$
+
+Where:
+
+* $y_{ij}$ is the observed tumour mesasurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+
+
+## Expected SLD
+
+$$
+SLD_{ij} =b_{i}
+\left[
+    \phi_i e^{-s_{i}t_{ij}}+
+    (1-\phi_{i}) e^ {g_{i}t_{ij}}
+\right]
+$$
+
+Where: 
+
+* $i$ is the subject index
+* $j$ is the visit index
+* $t_{ij}$ is the time since first treatment for subject $i$ at visit $j$
+* $SLD_{ij}$ is the observed SLD measurement for subject $i$ at visit $j$
+* $b_i$ is the Baseline SLD measurement
+* $s_i$ is the kinetics shrinkage parameter
+* $g_i$ is the kinetics tumour growth parameter
+* $\phi_i$ is the proportion of cells affected by the treatment
+
+
+## Expected SLD Parameters
+
+$$
+\begin{aligned}
+\phi_i &= \text{logit}^{-1}\left(
+    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \Omega_{\phi}
+\right) 
+\\
+s_i &= \exp\left(
+    \ln(m_{s l_i}) + \eta_{s i} * \Omega_{s}
+\right) 
+\\
+g_i &= \exp\left(
+    \ln(m_{g l_i}) + \eta_{g i} * \Omega_{g}
+\right) 
+\\
+b_i &= \exp\left(
+    \ln(m_{b l_i}) + \eta_{b i} * \Omega_{b}
+\right)
+\end{aligned}
+$$
+
+
+Where:
+
+* $i$ is the subject index
+* $l_i$ is the group/treatment index for subject $i$
+* $m_{xl_i}$ is the mean for parameter $x$ in group $l_i$
+* $\eta_{xi}$ is a random effects offset on parameter $x$ for subject $i$
+* $\Omega_{x}$ is the variance for the random effects on parameter $x$
+
+
+## Expected SLD Hyper-parameters
+
+
+$$
+\begin{aligned}
+m_{s l_i} &\sim \text{Lognormal}(\mu_s, \sigma_{s}) \\
+m_{g l_i} &\sim \text{Lognormal}(\mu_g, \sigma_{g}) \\
+\text{logit}(m_{\phi l_i}) &\sim \mathcal{N}(\text{logit}(\mu_{\phi}), \sigma_{\phi})
+\end{aligned}
+$$
+
+Where:
+
+* $l_i$ is the group/treatment index for subject $i$
+* $\mu_x$ is the mean of the parameter distribution
+* $\sigma_x$ is the variance of the parameter distribution
+
+
+## Priors
+
+$$
+\begin{aligned}
+\eta_{bi} &\sim \mathcal{N}(0,5) \\
+\eta_{si} &\sim \mathcal{N}(0,5) \\
+\eta_{gi} &\sim \mathcal{N}(0,5) \\
+\eta_{\phi i} &\sim \mathcal{N}(0,5) \\
+\\
+\Omega_{b} &\sim \text{Lognormal}(0,1);\\
+\Omega_{s} &\sim \text{Lognormal}(0,1);\\
+\Omega_{g} &\sim \text{Lognormal}(0,1);\\
+\Omega_{\phi} &\sim \text{Lognormal}(0,1);\\
+\\
+\mu_{bi} &\sim \text{Lognormal}(55,5); \\
+\\
+\mu_s &\sim \text{Lognormal}(1,0.5); \\
+\mu_g &\sim \text{Lognormal}(-0.36,1); \\ 
+\mu_{\phi} &\sim Beta(5,5); \\
+\\
+\sigma_s &\sim Lognormal(0,0.5); \\
+\sigma_g &\sim Lognormal(0,0.5); \\
+\sigma_{\phi} &\sim Lognormal(0,0.5);
+\end{aligned}
+$$
+
+
+# OS model
+
+$$
+h_i(t) = h_0(t) * 
+e^{\beta f_{i}(t)} *  
+e^{\gamma g_{i}}* 
+e^{\beta_{c}X_i}
+$$
+
+Where:
+
+* $h_i(t)$ is the overall survival hazard function
+* $h_0(t)$ is the baseline hazard function
+* $f_i(t)$ is the derivative of the SLD trajectory for subject $i$ at time $t$
+* $g_i$ is the time to growth for subject $i$
+* $X_i$ is the matrix of covariates at each visit for subject $i$
+* $\beta$, $\gamma$ & $\beta_{c}$ are the strength coefficients for the derivative of the SLD trajectory, the time to growth and the subjects covariates respectively 
+
+
+
+## Derivative of the SLD Trajectory
+
+    
+$$
+f_i(t_{ij}) = b_i 
+\left[
+    (1-\phi_i)  g_i  e^{g_i  t_{ij}} - 
+    \phi_i  s_i  e^{-s_i  t_{ij}}
+\right]
+$$
+
+Where:
+
+* $f_i(t_ij)$ is the derivative of the SLD model at time $t_{ij}$
+* $b_i$ is the Baseline SLD measurement
+* $s_i$ is the kinetics shrinkage parameter
+* $g_i$ is the kinetics tumour growth parameter
+* $\phi_i$ is the proportion of cells affected by the treatment
+
+(See the "SLD Model" section for full details)
+
+
+## Time to Growth
+
+
+$$
+g_i = \frac{
+    \text{logit}(\phi_i) + log(s_i g_i^{-1})
+}{
+    s_i + g_i
+}
+$$
+
+Where:
+
+* $g_i$ is the time to growth for subject $i$
+* $b_i$ is the Baseline SLD measurement
+* $s_i$ is the kinetics shrinkage parameter
+* $g_i$ is the kinetics tumour growth parameter
+* $\phi_i$ is the proportion of cells affected by the treatment
+
+
+## Baseline Hazard
+
+$$
+\begin{aligned}
+t &\sim \text{Log-Logistic}(\lambda, p) 
+\\
+\\
+f_0(t) &= \frac{
+    \lambda p (\lambda t)^{p-1}
+} {
+    (1 + (\lambda t)^p)^2
+} 
+\\ 
+\\
+h_0(t) &= \frac{
+    \lambda p (\lambda t) ^{p -1}
+}{
+    1 + (\lambda t) ^p
+}
+\\
+\\
+S_0(t) &= \frac{
+    1
+}{
+    1 + (\lambda t)^p
+}
+\end{aligned}
+$$
+
+Where:
+
+* $f_(t)$ is the probability density function
+* $h_0(t)$ is the hazard distribution function
+* $S_0(t)$ is the survival distribution function
+
+
+
+## Priors
+
+$$
+\begin{aligned}
+p &\sim \text{Gamma}(2, 0.5)
+\\
+\lambda^{-1} &\sim \text{Lognormal}(0, 5)
+\\
+\beta &\sim \mathcal{N}(0,5)
+\\
+\gamma &\sim \mathcal{N}(0,5)
+\\
+\beta_c &\sim \mathcal{N}(0, 5)
+\end{aligned}
+$$
+
+
