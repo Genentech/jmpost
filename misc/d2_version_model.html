@@ -628,19 +628,19 @@ class="header-section-number">1.2</span> Expected SLD Parameters</h2>
 <p><span class="math display">\[
 \begin{aligned}
 \phi_i &amp;= \text{logit}^{-1}\left(
-    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \Omega_{\phi}
+    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \omega_{\phi}
 \right)
 \\
 s_i &amp;= \exp\left(
-    \ln(m_{s l_i}) + \eta_{s i} * \Omega_{s}
+    \ln(m_{s l_i}) + \eta_{s i} * \omega_{s}
 \right)
 \\
 g_i &amp;= \exp\left(
-    \ln(m_{g l_i}) + \eta_{g i} * \Omega_{g}
+    \ln(m_{g l_i}) + \eta_{g i} * \omega_{g}
 \right)
 \\
 b_i &amp;= \exp\left(
-    \ln(m_{b l_i}) + \eta_{b i} * \Omega_{b}
+    \ln(m_{b l_i}) + \eta_{b i} * \omega_{b}
 \right)
 \end{aligned}
 \]</span></p>
@@ -655,7 +655,7 @@ class="math inline">\(l_i\)</span></li>
 <li><span class="math inline">\(\eta_{xi}\)</span> is a random effects
 offset on parameter <span class="math inline">\(x\)</span> for subject
 <span class="math inline">\(i\)</span></li>
-<li><span class="math inline">\(\Omega_{x}\)</span> is the variance for
+<li><span class="math inline">\(\omega_{x}\)</span> is the variance for
 the random effects on parameter <span
 class="math inline">\(x\)</span></li>
 </ul>
@@ -688,10 +688,10 @@ class="header-section-number">1.4</span> Priors</h2>
 \eta_{gi} &amp;\sim \mathcal{N}(0,5) \\
 \eta_{\phi i} &amp;\sim \mathcal{N}(0,5) \\
 \\
-\Omega_{b} &amp;\sim \text{Lognormal}(0,1);\\
-\Omega_{s} &amp;\sim \text{Lognormal}(0,1);\\
-\Omega_{g} &amp;\sim \text{Lognormal}(0,1);\\
-\Omega_{\phi} &amp;\sim \text{Lognormal}(0,1);\\
+\omega_{b} &amp;\sim \text{Lognormal}(0,1);\\
+\omega_{s} &amp;\sim \text{Lognormal}(0,1);\\
+\omega_{g} &amp;\sim \text{Lognormal}(0,1);\\
+\omega_{\phi} &amp;\sim \text{Lognormal}(0,1);\\
 \\
 \mu_{bi} &amp;\sim \text{Lognormal}(55,5); \\
 \\
@@ -699,9 +699,9 @@ class="header-section-number">1.4</span> Priors</h2>
 \mu_g &amp;\sim \text{Lognormal}(-0.36,1); \\
 \mu_{\phi} &amp;\sim Beta(5,5); \\
 \\
-\sigma_s &amp;\sim Lognormal(0,0.5); \\
-\sigma_g &amp;\sim Lognormal(0,0.5); \\
-\sigma_{\phi} &amp;\sim Lognormal(0,0.5);
+\sigma_s &amp;\sim \text{Lognormal}(0,0.5); \\
+\sigma_g &amp;\sim \text{Lognormal}(0,0.5); \\
+\sigma_{\phi} &amp;\sim \text{Lognormal}(0,0.5);
 \end{aligned}
 \]</span></p>
 <h1 data-number="2" id="os-model"><span
@@ -709,7 +709,7 @@ class="header-section-number">2</span> OS model</h1>
 <p><span class="math display">\[
 h_i(t) = h_0(t) *
 e^{\beta f_{i}(t)} *  
-e^{\gamma g_{i}}*
+e^{\gamma G_{i}}*
 e^{\beta_{c}X_i}
 \]</span></p>
 <p>Where:</p>
@@ -721,7 +721,7 @@ function</li>
 <li><span class="math inline">\(f_i(t)\)</span> is the derivative of the
 SLD trajectory for subject <span class="math inline">\(i\)</span> at
 time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(g_i\)</span> is the time to growth for
+<li><span class="math inline">\(G_i\)</span> is the time to growth for
 subject <span class="math inline">\(i\)</span></li>
 <li><span class="math inline">\(X_i\)</span> is the matrix of covariates
 at each visit for subject <span class="math inline">\(i\)</span></li>
@@ -747,9 +747,9 @@ f_i(t_{ij}) = b_i
 the SLD model at time <span class="math inline">\(t_{ij}\)</span></li>
 <li><span class="math inline">\(b_i\)</span> is the Baseline SLD
 measurement</li>
-<li><span class="math inline">\(s_i\)</span> is the kinetics shrinkage
-parameter</li>
-<li><span class="math inline">\(g_i\)</span> is the kinetics tumour
+<li><span class="math inline">\(s_i\)</span> is the SLD kinetics
+shrinkage parameter</li>
+<li><span class="math inline">\(g_i\)</span> is the SLD kinetics tumour
 growth parameter</li>
 <li><span class="math inline">\(\phi_i\)</span> is the proportion of
 cells affected by the treatment</li>
@@ -758,7 +758,7 @@ cells affected by the treatment</li>
 <h2 data-number="2.2" id="time-to-growth"><span
 class="header-section-number">2.2</span> Time to Growth</h2>
 <p><span class="math display">\[
-g_i = \frac{
+G_i = \frac{
     \text{logit}(\phi_i) + log(s_i g_i^{-1})
 }{
     s_i + g_i
@@ -766,7 +766,7 @@ g_i = \frac{
 \]</span></p>
 <p>Where:</p>
 <ul>
-<li><span class="math inline">\(g_i\)</span> is the time to growth for
+<li><span class="math inline">\(G_i\)</span> is the time to growth for
 subject <span class="math inline">\(i\)</span></li>
 <li><span class="math inline">\(b_i\)</span> is the Baseline SLD
 measurement</li>

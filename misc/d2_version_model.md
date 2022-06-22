@@ -45,19 +45,19 @@ Where:
 $$
 \begin{aligned}
 \phi_i &= \text{logit}^{-1}\left(
-    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \Omega_{\phi}
+    \text{logit}(m_{\phi l_i}) + \eta_{\phi i} * \omega_{\phi}
 \right) 
 \\
 s_i &= \exp\left(
-    \ln(m_{s l_i}) + \eta_{s i} * \Omega_{s}
+    \ln(m_{s l_i}) + \eta_{s i} * \omega_{s}
 \right) 
 \\
 g_i &= \exp\left(
-    \ln(m_{g l_i}) + \eta_{g i} * \Omega_{g}
+    \ln(m_{g l_i}) + \eta_{g i} * \omega_{g}
 \right) 
 \\
 b_i &= \exp\left(
-    \ln(m_{b l_i}) + \eta_{b i} * \Omega_{b}
+    \ln(m_{b l_i}) + \eta_{b i} * \omega_{b}
 \right)
 \end{aligned}
 $$
@@ -69,7 +69,7 @@ Where:
 * $l_i$ is the group/treatment index for subject $i$
 * $m_{xl_i}$ is the mean for parameter $x$ in group $l_i$
 * $\eta_{xi}$ is a random effects offset on parameter $x$ for subject $i$
-* $\Omega_{x}$ is the variance for the random effects on parameter $x$
+* $\omega_{x}$ is the variance for the random effects on parameter $x$
 
 
 ## Expected SLD Hyper-parameters
@@ -99,10 +99,10 @@ $$
 \eta_{gi} &\sim \mathcal{N}(0,5) \\
 \eta_{\phi i} &\sim \mathcal{N}(0,5) \\
 \\
-\Omega_{b} &\sim \text{Lognormal}(0,1);\\
-\Omega_{s} &\sim \text{Lognormal}(0,1);\\
-\Omega_{g} &\sim \text{Lognormal}(0,1);\\
-\Omega_{\phi} &\sim \text{Lognormal}(0,1);\\
+\omega_{b} &\sim \text{Lognormal}(0,1);\\
+\omega_{s} &\sim \text{Lognormal}(0,1);\\
+\omega_{g} &\sim \text{Lognormal}(0,1);\\
+\omega_{\phi} &\sim \text{Lognormal}(0,1);\\
 \\
 \mu_{bi} &\sim \text{Lognormal}(55,5); \\
 \\
@@ -110,9 +110,9 @@ $$
 \mu_g &\sim \text{Lognormal}(-0.36,1); \\ 
 \mu_{\phi} &\sim Beta(5,5); \\
 \\
-\sigma_s &\sim Lognormal(0,0.5); \\
-\sigma_g &\sim Lognormal(0,0.5); \\
-\sigma_{\phi} &\sim Lognormal(0,0.5);
+\sigma_s &\sim \text{Lognormal}(0,0.5); \\
+\sigma_g &\sim \text{Lognormal}(0,0.5); \\
+\sigma_{\phi} &\sim \text{Lognormal}(0,0.5);
 \end{aligned}
 $$
 
@@ -122,7 +122,7 @@ $$
 $$
 h_i(t) = h_0(t) * 
 e^{\beta f_{i}(t)} *  
-e^{\gamma g_{i}}* 
+e^{\gamma G_{i}}* 
 e^{\beta_{c}X_i}
 $$
 
@@ -131,7 +131,7 @@ Where:
 * $h_i(t)$ is the overall survival hazard function
 * $h_0(t)$ is the baseline hazard function
 * $f_i(t)$ is the derivative of the SLD trajectory for subject $i$ at time $t$
-* $g_i$ is the time to growth for subject $i$
+* $G_i$ is the time to growth for subject $i$
 * $X_i$ is the matrix of covariates at each visit for subject $i$
 * $\beta$, $\gamma$ & $\beta_{c}$ are the strength coefficients for the derivative of the SLD trajectory, the time to growth and the subjects covariates respectively 
 
@@ -152,8 +152,8 @@ Where:
 
 * $f_i(t_ij)$ is the derivative of the SLD model at time $t_{ij}$
 * $b_i$ is the Baseline SLD measurement
-* $s_i$ is the kinetics shrinkage parameter
-* $g_i$ is the kinetics tumour growth parameter
+* $s_i$ is the SLD kinetics shrinkage parameter
+* $g_i$ is the SLD kinetics tumour growth parameter
 * $\phi_i$ is the proportion of cells affected by the treatment
 
 (See the "SLD Model" section for full details)
@@ -163,7 +163,7 @@ Where:
 
 
 $$
-g_i = \frac{
+G_i = \frac{
     \text{logit}(\phi_i) + log(s_i g_i^{-1})
 }{
     s_i + g_i
@@ -172,7 +172,7 @@ $$
 
 Where:
 
-* $g_i$ is the time to growth for subject $i$
+* $G_i$ is the time to growth for subject $i$
 * $b_i$ is the Baseline SLD measurement
 * $s_i$ is the kinetics shrinkage parameter
 * $g_i$ is the kinetics tumour growth parameter
