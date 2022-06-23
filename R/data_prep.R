@@ -21,7 +21,7 @@ setMethod("data_prep",
            options,
            index_save_ind,
            predictions) {
-    cens_threshold <- 2.5
+    cens_threshold <- object@censoring_threshold
 
     # Derive sparse matrices.
     obs_y_dat <- object@data_sld[object@data_sld[, object@vars$longitudinal] >= cens_threshold, ]

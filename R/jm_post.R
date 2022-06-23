@@ -1,6 +1,19 @@
 #' @export
 #' @import cmdstanr
 
+cmdstan_fit <- R6::R6Class("CmdStanMCMC")
+setOldClass("CmdStanMCMC")
+
+
+jm_post_class <- setClass("JMpost",
+                          slots = c(cmdstan_fit = "CmdStanMCMC",
+                                    data = "JMdata",
+                                    formula = "formula",
+                                    options = "mcmc_options",
+                                    index_save_ind = "numeric",
+                                    predictions = "numeric")
+)
+
 setGeneric("jm_post",
            function(object, data, formula, options, index_save_ind, predictions) {
   standardGeneric("jm_post")
@@ -15,7 +28,7 @@ setMethod("jm_post",
   ),
   value = "JMpost",
   function(object, data, formula, options, index_save_ind,
-           predictions = seq(from = 0.001, to = 2, length = 100)) {
+           predictions) {
 
     inits <- replicate(1, object@inits, simplify = FALSE)
 
@@ -38,18 +51,11 @@ setMethod("jm_post",
             max_treedepth = options@max_treedepth,
             adapt_delta = options@adapt_delta
         ),
-        data_list = .data@data,
-        vars_map = data@vars,
-        cmdstan_mod = object@cmdstan_mod,
-        prior = object@prior,
-        model = object@model,
-        functions = object@functions,
-        data = object@data,
-        parameters = object@parameters,
-        transformed_parameters = object@transformed_parameters,
-        generated_quantities = object@generated_quantities,
-        includes = object@includes,
-        inits = object@inits
+        data = .data,
+        formula = formula,
+        options = options,
+        index_save_ind = index_save_ind,
+        predictions = predictions
     )
   }
 )

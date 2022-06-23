@@ -7,7 +7,8 @@ jm_data <- setClass(
         data_os = "data.frame",  # the overall survival data frame for the os model
         data = "list", # to be filled with the modified data list later
         vars = "list", # map of the variables
-        shared_treatement = "character" # which is the treatment group
+        shared_treatement = "character", # which is the treatment group
+        censoring_threshold = "numeric"
     )
 )
 

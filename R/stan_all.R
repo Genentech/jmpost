@@ -44,15 +44,6 @@ jm_model <- setClass("JMModel",
 )
 
 
-cmdstan_fit <- R6::R6Class("CmdStanMCMC")
-setOldClass("CmdStanMCMC")
-
-
-jm_post_class <- setClass("JMpost",
-                          slots = c(cmdstan_fit = "CmdStanMCMC", data_list = "list", vars_map = "list"),
-                          contains = "JMModel"
-)
-
 hazard_link <- setClass("HazardLink",
                         contains = "StanAll",
                         representation(

@@ -1,24 +1,28 @@
 #' @export
-#' @importFrom survival survfit
 
 
 
-setGeneric("KM", function(jmdata) {
+
+setGeneric("KM", function(object) {
   standardGeneric("KM")
 })
 
 
+#' @importFrom survival survfit
+#' @importFrom survival Surv
+
 setMethod("KM",
-  signature(jmdata = "JMdata"),
+  signature(object = "JMpost"),
   value = "numeric",
   function(object) {
     rel_vals <- c(rep(FALSE, 770), rep(TRUE,89))
 
     fit <- survfit(Surv(
-        jmdata@data_os[!rel_vals, jmdata@vars$AYR, drop = TRUE],
-        jmdata@data_os[!rel_vals, jmdata@vars$overall_survival_death, drop = TRUE]
+        object@data@data_os[!rel_vals, object@data@vars$AYR, drop = TRUE],
+        object@data@data_os[!rel_vals, object@data@vars$overall_survival_death, drop = TRUE]
     ) ~ 1)
 
-    summary(fit, times = seq(from = 0.001, to = 2, length = 100))$surv
+    summary(fit, times = object@predictions)$surv
   }
 )
+

@@ -1,3 +1,6 @@
+library(jmpost)
+
+
 my_long_mod <- exponential_long_model(functions = source_stan_part("exp_long_functions.stan"),
                                       data = source_stan_part("exp_long_data.stan"),
                                       parameters = source_stan_part("exp_long_parameters.stan"),
@@ -6,13 +9,13 @@ my_long_mod <- exponential_long_model(functions = source_stan_part("exp_long_fun
                                       generated_quantities = "",
                                       inits = long_inits)
 
-my_os_mod <- stan_os(functions = source_stan_part("os_functions.stan"),
-                     data = source_stan_part("os_data.stan"),
-                     parameters = source_stan_part("os_parameters.stan"),
-                     transformed_parameters = source_stan_part("os_transformed_parameters.stan"),
-                     prior = os_prior(),
-                     generated_quantities = source_stan_part("os_generated_quantities.stan"),
-                     inits = os_inits)
+my_os_mod <- temp_stan_os(functions = source_stan_part("os_functions.stan"),
+                          data = source_stan_part("os_data.stan"),
+                          parameters = source_stan_part("os_parameters.stan"),
+                          transformed_parameters = source_stan_part("os_transformed_parameters.stan"),
+                          prior = os_prior(),
+                          generated_quantities = source_stan_part("os_generated_quantities.stan"),
+                          inits = os_inits)
 
 library(stringr)
 my_link_ttg <- get_link_TTG(my_long_mod)
@@ -21,7 +24,7 @@ my_link_dt <- get_link_DT(my_long_mod)
 
 
 # merge two link arguments
-my_link <- merge_link(link1 = my_link_dt, link2 = my_link_ttg, additive = TRUE)
+my_link <- merge_link(link1 = my_link_dt, link2 = my_link_ttg)
 
 # Fill in the stanos with the link
 my_final_os <- parametrize(osmod = my_os_mod, link = my_link)
