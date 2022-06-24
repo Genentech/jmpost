@@ -1,7 +1,4 @@
 #' @export
-
-
-# StanAll: class containing all sections for a stan model
 stan_all <- setClass(
   "StanAll",
   representation(
@@ -17,17 +14,21 @@ stan_all <- setClass(
   )
 )
 
+
 # TemplatedStanOS: class specifically for premature overall survival models
+#' @export
 temp_stan_os <- setClass("TemplatedStanOS",
                          contains = "StanAll"
 )
 
 # StanOS: class specifically for overall survival models
+#' @export
 stan_os <- setClass("StanOS",
   contains = "StanAll"
 )
 
 # StanLong: class specifically for longitudinal models
+#' @export
 .stan_long <- setClass("StanLong",
   contains = "StanAll"
 )
@@ -37,13 +38,13 @@ stan_os <- setClass("StanOS",
 cmdstan_mod <- R6::R6Class("CmdStanModel")
 setOldClass("CmdStanModel")
 
-
+#' @export
 jm_model <- setClass("JMModel",
                      slots = c(cmdstan_mod = "CmdStanModel"),
                      contains = "StanAll"
 )
 
-
+#' @export
 hazard_link <- setClass("HazardLink",
                         contains = "StanAll",
                         representation(
@@ -54,7 +55,7 @@ hazard_link <- setClass("HazardLink",
                         )
 )
 
-
+#' @export
 .exponential_long_model <- setClass("ExponentialLongModel", contains = "StanLong")
 
 

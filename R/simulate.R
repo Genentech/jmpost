@@ -1,5 +1,3 @@
-
-
 as_vcov <- function(sd, cor) {
     x <- diag(rep(1, length(sd)))
     x[upper.tri(x)] <- cor
@@ -74,43 +72,43 @@ log_haz_loglogistic <- function(t, lambda, p) {
 #'
 #' @export
 simulate_os_sld <- function(
-    N = 200,
-    lambda_cen = 1 / 0.6,
-    lambda = 0.9,
-    p = 2,
-    beta = 0.0035,
-    gamma = -1.0,
-    psi_mu_placebo = c(
-        "b" = 58,
-        "s" = 3,
-        "g" = 0.5,
-        "phi" = 0.2
-    ),
-    psi_mu_trt = c(
-        "b" = 58,
-        "s" = 3,
-        "g" = 0.5,
-        "phi" = 0.2
-    ),
-    psi_omega = list(
-        "b" = 0.135,
-        "s" = 0.15,
-        "g" = 0.225,
-        "phi" = 0.7
-    ),
-    eta_mu = rep(0, 4),
-    eta_sigma = diag(rep(2, 4)),
-    beta_age = 0.1,
-    beta_sex = c("M" = 0, "F" = -0.3),
-    visits = c(1, 10, 20, 40, 50),
-    time_gap = 1 / 365,
-    time_max = 4
+        N = 200,
+        lambda_cen = 1 / 0.6,
+        lambda = 0.9,
+        p = 2,
+        beta = 0.0035,
+        gamma = -1.0,
+        psi_mu_placebo = c(
+            "b" = 58,
+            "s" = 3,
+            "g" = 0.5,
+            "phi" = 0.2
+        ),
+        psi_mu_trt = c(
+            "b" = 58,
+            "s" = 3,
+            "g" = 0.5,
+            "phi" = 0.2
+        ),
+        psi_omega = list(
+            "b" = 0.135,
+            "s" = 0.15,
+            "g" = 0.225,
+            "phi" = 0.7
+        ),
+        eta_mu = rep(0, 4),
+        eta_sigma = diag(rep(2, 4)),
+        beta_age = 0.1,
+        beta_sex = c("M" = 0, "F" = -0.3),
+        visits = c(1, 10, 20, 40, 50),
+        time_gap = 1 / 365,
+        time_max = 4
 ) {
     unique_pts <- paste0("pt_",
-        sprintf(
-            paste0("%0", ceiling(log(N, base = 10)) + 1, "i"),
-            seq_len(N)
-        )
+                         sprintf(
+                             paste0("%0", ceiling(log(N, base = 10)) + 1, "i"),
+                             seq_len(N)
+                         )
     )
 
 
@@ -171,7 +169,7 @@ simulate_os_sld <- function(
         mutate(eta = exp(log(mu) + eta * omega))
 
 
-    sld_pars <- bind_rows(sld_pars_nphi, sld_pars_phi) %>% 
+    sld_pars <- bind_rows(sld_pars_nphi, sld_pars_phi) %>%
         select(-mu, -omega) %>%
         spread(var, eta)
 

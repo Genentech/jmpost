@@ -65,13 +65,16 @@ setMethod("data_prep",
     arm_study_trt <- unique(object@data_os[, c(object@vars$os_arm, object@vars$os_study_id, object@vars$treatment)])
     arm_to_study_values <- as.integer(factor(arm_study_trt[, object@vars$os_study_id, drop = TRUE]))
 
-    sld_par_shared <- which(arm_study_trt[, object@vars$treatment] == object@shared_treatement)
-    sld_par_separate <- which(arm_study_trt[, object@vars$treatment] != object@shared_treatement)
+    sld_par_shared <- which(arm_study_trt[, object@vars$treatment] == object@shared_treatment)
+    sld_par_separate <- which(arm_study_trt[, object@vars$treatment] != object@shared_treatment)
+
+    ID_INDEX <- as.integer(factor(object@data_sld[ ,object@vars$long_user_id, drop = TRUE]))
 
 
     jm_data(
       data_sld = object@data_sld,
       data_os = object@data_os,
+      vars = object@vars,
       data = list(
         Nind = nrow(object@data_os),
         Nta_total = nrow(object@data_sld),
@@ -80,7 +83,7 @@ setMethod("data_prep",
         Nind_dead = sum(object@data_os[, object@vars$overall_survival_death] == 1),
 
         # Index vectors.
-        ind_index = object@data_sld[, object@vars$ID_INDEX, drop = TRUE],
+        ind_index = ID_INDEX,
         obs_y_index = which(object@data_sld[, object@vars$longitudinal] >= cens_threshold),
         cens_y_index = which(object@data_sld[, object@vars$longitudinal] < cens_threshold),
         dead_ind_index = which(object@data_os[, object@vars$overall_survival_death, drop = TRUE] == 1),
@@ -106,7 +109,7 @@ setMethod("data_prep",
 
         # Tumor assessment values and time points.
         Yobs = object@data_sld[, object@vars$longitudinal, drop = TRUE],
-        Tobs = object@data_sld[, object@vars$AYR, drop = TRUE],
+        Tobs = object@data_sld[, object@vars$time_survival, drop = TRUE],
         Ythreshold = cens_threshold,
 
         # Matrix of individuals x observed tumor assessments.
@@ -126,7 +129,7 @@ setMethod("data_prep",
         u_mat_inds_cens_y = sparse_mat_inds_cens_y$u,
 
         # Survival data.
-        Times = object@data_os[, object@vars$AYR, drop = TRUE],
+        Times = object@data_os[, object@vars$time_survival, drop = TRUE],
         Death = object@data_os[, object@vars$overall_survival_death, drop = TRUE],
         os_cov_design = os_cov_design,
         p_os_cov_design = ncol(os_cov_design),
