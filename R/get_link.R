@@ -21,6 +21,8 @@ setMethod(
 )
 
 
+#' @export
+#' @importFrom stringr str_detect
 
 setGeneric(name = "get_link_DT", def = function(long_model, beta_dt = "normal(0,5)", init = 0, ...) standardGeneric("get_link_DT"))
 
@@ -39,6 +41,9 @@ setMethod(
     )
   }
 )
+
+#' @export
+#' @importFrom stringr str_detect
 
 setGeneric(name = "get_link_Psi_Kg", def = function(long_model, beta_psi_kg = "normal(0,5)", init = 0, ...) standardGeneric("get_link_Psi_Kg"))
 

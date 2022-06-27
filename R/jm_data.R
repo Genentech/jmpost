@@ -5,9 +5,8 @@
 #' @param vars List with the names of columns important for the preparation of data for the stan object
 #' @param shared_treatment Character, Identifies the treatment group
 #' @param censoring_threshold Numeric, defines the threshold for the accuracy of the sld measurements
-#'
+#' @export jm_data
 
-#' @export
 
 jm_data <- setClass(
     "JMdata",
@@ -21,6 +20,16 @@ jm_data <- setClass(
     )
 )
 
+#' JMdata variable mapping
+#' @param longitudinal Longitudinal observations
+#' @param os_user_id Patients ID for overall survival data
+#' @param overall_survival_death Event indicator for survival data
+#' @param long_user_id Patients ID for longitudinal data
+#' @param time_survival Time of event for survival data
+#' @param os_study_id Study indicator
+#' @param os_arm Arm indicator
+#' @param treatment Treatment indicator
+#' @export
 vars <- function(longitudinal = "AVAL",
                  os_user_id = "USUBJID",
                  overall_survival_death = "DEATH",

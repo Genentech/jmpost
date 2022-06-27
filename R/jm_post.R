@@ -1,10 +1,10 @@
-#' @export
+
 #' @import cmdstanr
 
 cmdstan_fit <- R6::R6Class("CmdStanMCMC")
 setOldClass("CmdStanMCMC")
 
-
+#' @export
 jm_post_class <- setClass("JMpost",
                           slots = c(cmdstan_fit = "CmdStanMCMC",
                                     data = "JMdata",
@@ -20,7 +20,7 @@ setGeneric("jm_post",
 })
 
 
-
+#' @export
 setMethod("jm_post",
   signature(
     object = "JMModel",
