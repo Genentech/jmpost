@@ -233,29 +233,6 @@ long_tr_parameters <- "
 long_gen_quantities <- ""
 
 
-#### long_inits ####
-long_inits <- list(
-  mean_mu_ks = 60,
-  mean_mu_kg = 0.7,
-  mean_mu_phi = 0.1,
-  sd_mu_ks = 0.1,
-  sd_mu_kg = 0.1,
-  sd_mu_phi = 0.1,
-  mu_bsld = rep(60, 3), # dat$n_studies
-  mu_ks = rep(3, 6), # dat$n_arms
-  mu_kg = rep(0.7, 6), # dat$n_arms
-  mu_phi = rep(0.1, 6), # dat$n_arms
-  omega_bsld = 0.1,
-  omega_ks = 0.1,
-  omega_kg = 0.1,
-  omega_phi = 0.1,
-  sigma = 0.18,
-  eta_tilde_bsld = rep(0, 859), # dat$Nind
-  eta_tilde_ks = rep(0, 859), # dat$Nind
-  eta_tilde_kg = rep(0, 859), # dat$Nind
-  eta_tilde_phi = rep(0, 859) # dat$Nind
-)
-
 #### os_fun####
 # link arguments should always be after real p,
 os_fun <- "
@@ -480,9 +457,3 @@ os_gen_quantities <- "
 
 
 
-#### os_inits####
-os_inits <- list(
-  lambda = 2.8,
-  p = 1,
-  beta_os_cov = rep(0, 5) # ncol(os_cov_design)
-)
