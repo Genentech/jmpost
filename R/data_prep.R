@@ -78,9 +78,9 @@ setMethod("data_prep",
       data = list(
         Nind = nrow(object@data_os),
         Nta_total = nrow(object@data_sld),
-        Nta_obs_y = sum(object@data_sld[, object@vars$longitudinal] >= cens_threshold),
-        Nta_cens_y = sum(object@data_sld[, object@vars$longitudinal] < cens_threshold),
-        Nind_dead = sum(object@data_os[, object@vars$overall_survival_death] == 1),
+        Nta_obs_y = sum(object@data_sld[, object@vars$longitudinal] >= cens_threshold, na.rm = FALSE),
+        Nta_cens_y = sum(object@data_sld[, object@vars$longitudinal] < cens_threshold, na.rm = FALSE),
+        Nind_dead = sum(object@data_os[, object@vars$overall_survival_death] == 1, na.rm = FALSE),
 
         # Index vectors.
         ind_index = ID_INDEX,

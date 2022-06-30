@@ -22,18 +22,16 @@ my_long_mod <- exponential_long_model(functions = source_stan_part("exp_long_fun
                                       parameters = source_stan_part("exp_long_parameters.stan"),
                                       transformed_parameters = source_stan_part("exp_long_transformed_parametes.stan"),
                                       prior = long_prior(sigma = "lognormal(-1.7,0.8)"),
-                                      generated_quantities = "",
-                                      inits = long_inits)
+                                      generated_quantities = "")
 
-my_os_mod <- temp_stan_os(functions = source_stan_part("os_functions.stan"),
-                          data = source_stan_part("os_data.stan"),
-                          parameters = source_stan_part("os_parameters.stan"),
-                          transformed_parameters = source_stan_part("os_transformed_parameters.stan"),
-                          prior = os_prior(),
-                          generated_quantities = source_stan_part("os_generated_quantities.stan"),
-                          inits = os_inits)
+my_os_mod <- jmpost:::temp_stan_os(functions = source_stan_part("os_functions.stan"),
+                                   data = source_stan_part("os_data.stan"),
+                                   parameters = source_stan_part("os_parameters.stan"),
+                                   transformed_parameters = source_stan_part("os_transformed_parameters.stan"),
+                                   prior = os_prior(),
+                                   generated_quantities = source_stan_part("os_generated_quantities.stan"),
+                                   inits = jmpost:::os_inits)
 
-library(stringr)
 my_link_ttg <- get_link_TTG(my_long_mod)
 my_link_dt <- get_link_DT(my_long_mod)
 
@@ -47,15 +45,18 @@ my_final_os <- parametrize(osmod = my_os_mod, link = my_link)
 
 # name it jm_merge eg because it is special. All all stuff here and convert lists to character already
 my_jmpost <- jm_complete(my_long_mod, my_final_os)
-library(cmdstanr)
 model_v3 <- jm_compile(my_jmpost)
+
+my_vars <- jmpost::vars()
 pre_data <- jm_data(data_sld = sld,
                     data_os = osd_final,
-                    vars = jmpost::vars(),
-                    shared_treatement = "Atezo",
+                    vars = my_vars,
+                    shared_treatment = "Atezo",
                     censoring_threshold = 2.5)
+
+pre_data@data_sld$AYR[5] <- NA
 library(rstan)
-my_mcmc_options <- mcmc_options(chains = 1,
+my_mcmc_options <- jmpost:::mcmc_options(chains = 1,
                                 parallel_chains = 1,
                                 iter_warmup = 10,
                                 iter_sampling = 20,
@@ -64,7 +65,7 @@ my_mcmc_options <- mcmc_options(chains = 1,
                                 gauss_legendre = gauss_legendre())
 
 
-patients_ids <- c(771, 772, 773, 774, 775, 776, 777, 778, 779 )
+patients_ids <- c(1,840 )
 
 my_mjpost <- jm_post(object = model_v3,
                      data = pre_data,
@@ -73,12 +74,23 @@ my_mjpost <- jm_post(object = model_v3,
                      index_save_ind = patients_ids,
                      predictions  = seq(from = 0.001, to = 2, length = 100))
 
-library(survival)
 plot(KM(my_mjpost))
-# scaled_brier(my_mjpost, pre_data)
+my_post_check <- jm_post_check(my_mjpost)
 
-library(bayesplot)
-my_mjpost@cmdstan_fit$summary()
-mcmc_hist(my_mjpost@cmdstan_fit$draws("beta_ttg"))
-my_mjpost@cmdstan_fit$diagnostic_summary()
+res <- my_mjpost@cmdstan_fit$summary()
+
+
+
+draws_df <- my_mjpost@cmdstan_fit$draws(format = "df")
+
+
+all.equal(ttg(draws_df$`psi_ks[1]`,
+              draws_df$`psi_kg[1]`,
+              draws_df$`psi_phi[1]`),
+          as.numeric(my_mjpost@cmdstan_fit$draws("save_ind_ttg", format = "draws_matrix")[,1., drop = T]),
+          tolerance = .01)
+
+
+ind_uncond_surv <- my_mjpost@cmdstan_fit$draws("save_ind_unconditional_survival", format = "draws_matrix")
+str(ind_uncond_surv)
 

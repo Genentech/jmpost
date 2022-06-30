@@ -1,5 +1,11 @@
-#' @export
 
+#' Parametrize TemplatedStanOs object with the selected Hazardlink
+#' @param osmod TemplatedStanOs object
+#' @param link HazardLink object
+#' @importFrom stringr str_replace
+#' @importFrom stringr str_remove_all
+#' @importFrom stringr str_replace_all
+#' @export
 
 
 setGeneric("parametrize", function(osmod, link) {
