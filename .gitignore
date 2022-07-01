@@ -71,3 +71,6 @@ local/
 *.exe
 
 
+# Compiled stan model
+inst/stanmodels/stan_model
+
