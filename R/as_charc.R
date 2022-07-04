@@ -1,15 +1,21 @@
-#' @export
 
+#' @export
 # as_charc: Generic function for converting a stanAll object to a character vector
 setGeneric("as_charc", function(object) {
   standardGeneric("as_charc")
 })
 
+
+#' h_bracket
+#' @param x character
+#' @export
 # h_bracket: function for adding brackets at the sections of the stan model as character
 h_bracket <- function(x) {
   paste("{\n", x, "\n}\n\n", sep = "")
 }
 
+#' @param object A StanAll object
+#' @export
 
 setMethod("as_charc",
   signature(object = "StanAll"),

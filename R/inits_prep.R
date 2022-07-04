@@ -1,32 +1,31 @@
 
-
+#' Initial values preperation
+#' @param object
+#' @param data
+#' @export
 
 
 setGeneric("inits_prep", def = function(object, data) {
-    standardGeneric("inits_prep")
+  standardGeneric("inits_prep")
 })
 
-#' Initial values preperation
-#' @export
-#' @param object
-#' @param data
-
+# provide object@inits from the beginning.
 setMethod("inits_prep",
-          signature(
-              object = "JMModel",
-              data = "JMdata"),
-          value = "JMModel",
-          function(object, data){
-              object@inits$mu_bsld <- object@inits$mu_bsld(data)
-              object@inits$mu_ks <- object@inits$mu_ks(data)
-              object@inits$mu_kg <- object@inits$mu_kg(data)
-              object@inits$mu_phi <- object@inits$mu_phi(data)
+  signature(
+    object = "JMModel",
+    data = "JMdata"
+  ),
+  value = "JMModel",
+  function(object, data) {
+    for (i in 1:length(object@inits)) {
+      if (is.function(object@inits[[i]])) {
+          object@inits[[i]] <- do.call(
+              object@inits[[i]],
+          list(data)
+        )
+      }
+    }
 
-              object@inits$eta_tilde_bsld <- object@inits$eta_tilde_bsld(data)
-              object@inits$eta_tilde_ks <- object@inits$eta_tilde_ks(data)
-              object@inits$eta_tilde_kg <- object@inits$eta_tilde_kg(data)
-              object@inits$eta_tilde_phi <- object@inits$eta_tilde_phi(data)
-              object@inits$beta_os_cov <- object@inits$beta_os_cov(data)
-              object
-          }
+    object
+  }
 )

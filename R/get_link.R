@@ -1,8 +1,11 @@
-#' @export
-#' @importFrom stringr str_detect
+
 
 
 setGeneric(name = "get_link_TTG", def = function(long_model, beta_ttg = "normal(0,5)", init = 0, ...) standardGeneric("get_link_TTG"))
+
+#' @importFrom stringr str_detect
+#' @export
+
 
 setMethod(
   "get_link_TTG",
@@ -21,10 +24,13 @@ setMethod(
 )
 
 
-#' @export
-#' @importFrom stringr str_detect
+
 
 setGeneric(name = "get_link_DT", def = function(long_model, beta_dt = "normal(0,5)", init = 0, ...) standardGeneric("get_link_DT"))
+
+#' @importFrom stringr str_detect
+#' @export
+
 
 setMethod(
   "get_link_DT",
@@ -42,10 +48,11 @@ setMethod(
   }
 )
 
-#' @export
 #' @importFrom stringr str_detect
+#' @export
 
 setGeneric(name = "get_link_Psi_Kg", def = function(long_model, beta_psi_kg = "normal(0,5)", init = 0, ...) standardGeneric("get_link_Psi_Kg"))
+
 
 setMethod(
   "get_link_Psi_Kg",

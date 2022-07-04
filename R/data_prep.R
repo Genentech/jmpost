@@ -1,3 +1,5 @@
+
+#' @importFrom rstan extract_sparse_parts
 #' @export
 
 
@@ -22,6 +24,12 @@ setMethod("data_prep",
            index_save_ind,
            predictions) {
     cens_threshold <- object@censoring_threshold
+
+    if(class(object@data_sld[,object@vars$longitudinal]) != "factor") {
+        object@data_sld[,object@vars$longitudinal] <- factor(object@data_sld[,object@vars$longitudinal])}
+
+    if(class(object@data_os[,object@vars$treatment]) != "factor") {
+        object@data_os[,object@vars$treatment] <- factor(object@data_os[,object@vars$treatment])}
 
     # Derive sparse matrices.
     obs_y_dat <- object@data_sld[object@data_sld[, object@vars$longitudinal] >= cens_threshold, ]
@@ -71,7 +79,7 @@ setMethod("data_prep",
     ID_INDEX <- as.integer(factor(object@data_sld[ ,object@vars$long_user_id, drop = TRUE]))
 
 
-    jm_data(
+    .jm_data(
       data_sld = object@data_sld,
       data_os = object@data_os,
       vars = object@vars,

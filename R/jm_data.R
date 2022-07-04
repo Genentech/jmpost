@@ -1,3 +1,26 @@
+#' JMdata class helper function
+#' @param sld Longitudinal data
+#' @param os Overall survival data
+#' @param vars List with the names of columns important for the preparation of data for the stan object
+#' @param shared_treatment Character, Identifies the treatment group
+#' @param censoring_threshold Numeric, defines the threshold for the accuracy of the sld measurements
+#' @export
+
+jm_data <- function(sld, os, vars, shared_treatment, censoring_threshold){
+
+    sld <- sld[!is.na(sld[,vars$longitudinal]),]
+    os <- os[!is.na(os[,vars$time_survival]),]
+
+
+    .jm_data(data_sld = sld,
+             data_os = os,
+             vars = vars,
+             shared_treatment = shared_treatment,
+             censoring_threshold = censoring_threshold)
+}
+
+
+
 #' JMdata class
 #' @param data_sld Longitudinal data
 #' @param data_os Overall survival data
@@ -5,19 +28,26 @@
 #' @param vars List with the names of columns important for the preparation of data for the stan object
 #' @param shared_treatment Character, Identifies the treatment group
 #' @param censoring_threshold Numeric, defines the threshold for the accuracy of the sld measurements
-#' @export jm_data
+#' @exportClass
 
 
-jm_data <- setClass(
-    "JMdata",
-    representation(
-        data_sld = "data.frame", # the sld data frame for the longitudinal dat a
-        data_os = "data.frame",  # the overall survival data frame for the os model
-        data = "list", # to be filled with the modified data list later
-        vars = "list", # map of the variables
-        shared_treatment = "character", # which is the treatment group
-        censoring_threshold = "numeric"
-    )
+.jm_data <- setClass(
+  "JMdata",
+  representation(
+    data_sld = "data.frame", # the sld data frame for the longitudinal dat a
+    data_os = "data.frame", # the overall survival data frame for the os model
+    data = "list", # to be filled with the modified data list later
+    vars = "list", # map of the variables
+    shared_treatment = "character", # which is the treatment group
+    censoring_threshold = "numeric"
+  ),
+  validity = function(object) {
+    if(any(is.na(object@data_sld[, object@vars$longitudinal]))) {
+      "missing values in sld model"
+    } else {
+      TRUE
+    }
+  }
 )
 
 #' JMdata variable mapping
@@ -40,6 +70,3 @@ vars <- function(longitudinal = "AVAL",
                  treatment = "TRT01P") {
   as.list(environment())
 }
-
-
-

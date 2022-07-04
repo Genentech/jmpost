@@ -10,7 +10,7 @@
                                     gauss_legendre = "gauss_legendre"
                           ))
 
-
+#' @export
 mcmc_options <- function(chains = 1,
                          parallel_chains = 1,
                          iter_warmup = 200,
