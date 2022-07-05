@@ -58,7 +58,7 @@ log_haz_loglogistic <- function(t, lambda, p) {
 #' @param eta_sigma Covariance for the random effects of the SLD parameters
 #' @param beta_age Beta parameter for the age effect
 #' @param beta_sex Beta parameters for sex effect
-#' @param visits Visits in which SLD observations occoured at (visit 1 = Baseline)
+#' @param times Times in which SLD observations occoured at (time 0 = Baseline)
 #' @param time_max Maximum time to calculate hazard at. In years. will error if patient
 #' hasn't died before this time. Excessively large values will increase
 #' the functions run time without adding value
@@ -73,7 +73,7 @@ log_haz_loglogistic <- function(t, lambda, p) {
 #' @export
 simulate_os_sld <- function(
         N = 200,
-        lambda_cen = 1 / 90,
+        lambda_cen = 1 / 3,
         lambda = 0.9,
         p = 2.1,
         beta = 0.0035,
@@ -94,7 +94,7 @@ simulate_os_sld <- function(
         eta_sigma = diag(rep(2, 4)),
         beta_age = 0.2,
         beta_sex = c("M" = 0.1, "F" = -0.1),
-        visits = c(1, 10, 20, 40, 50),
+        times = c(0, 60, 120, 180, 300, 420, 660, 900),
         time_max = 6,
         pt_suffix = "suffix"
 ) {
@@ -214,14 +214,24 @@ simulate_os_sld <- function(
         mutate(time = 0)
 
 
+    assert_that(
+        nrow(sld_bl) == N,
+        msg = "not all patients have a baseline value..."
+    )
+
+
     sld_dat <- dat %>%
-        filter(time %in% (visits - 1)) %>%
+        filter(time %in% times) %>%
         bind_rows(sld_bl) %>%
         arrange(pt, time) %>%
         left_join(censoring, by = "pt") %>%
         filter(time <= time_cen) %>%
-        select(pt, time, SLD) %>%
-        mutate(time = time + 1)
+        select(pt, time, SLD)
+
+    assert_that(
+        nrow(sld_dat %>% filter(time == 0)) == N,
+        msg = "Some baseline values have been lost when adding onto main dataset"
+    )
 
     assert_that(
         nrow(os_dat) == N,
