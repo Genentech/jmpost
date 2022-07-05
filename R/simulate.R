@@ -231,5 +231,3 @@ simulate_os_sld <- function(
 
     return(list(os = os_dat, sld = sld_dat))
 }
-
-

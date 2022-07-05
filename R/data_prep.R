@@ -23,20 +23,18 @@ setMethod("data_prep",
            options,
            index_save_ind,
            predictions) {
-    cens_threshold <- object@censoring_threshold
+      cens_threshold <- object@censoring_threshold
 
-    if(class(object@data_sld[,object@vars$longitudinal]) != "factor") {
-        object@data_sld[,object@vars$longitudinal] <- factor(object@data_sld[,object@vars$longitudinal])}
+      object@data_sld[,object@vars$long_user_id] <- factor(object@data_sld[,object@vars$long_user_id, drop = TRUE])
 
-    if(class(object@data_os[,object@vars$treatment]) != "factor") {
-        object@data_os[,object@vars$treatment] <- factor(object@data_os[,object@vars$treatment])}
+      object@data_os[,object@vars$treatment] <- factor(object@data_os[,object@vars$treatment, drop = TRUE])
 
-    # Derive sparse matrices.
-    obs_y_dat <- object@data_sld[object@data_sld[, object@vars$longitudinal] >= cens_threshold, ]
-    mat_inds_obs_y <- t(model.matrix(as.formula(paste("~ -1 +", object@vars$long_user_id)),
-      data = obs_y_dat
-    ))
-    sparse_mat_inds_obs_y <- extract_sparse_parts(mat_inds_obs_y)
+      # Derive sparse matrices.
+      obs_y_dat <- object@data_sld[object@data_sld[, object@vars$longitudinal] >= cens_threshold, ]
+      mat_inds_obs_y <- t(model.matrix(as.formula(paste("~ -1 +", object@vars$long_user_id)),
+                                       data = obs_y_dat
+      ))
+      sparse_mat_inds_obs_y <- extract_sparse_parts(mat_inds_obs_y)
 
     cens_y_dat <- object@data_sld[object@data_sld[, object@vars$longitudinal] < cens_threshold, ]
     mat_inds_cens_y <- t(model.matrix(as.formula(paste("~ -1 +", object@vars$long_user_id)),
