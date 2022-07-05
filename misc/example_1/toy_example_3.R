@@ -32,7 +32,8 @@ my_os_mod@inits$p <- 2.1
 my_link_ttg <- get_link_TTG(my_long_mod)
 my_link_dt <- get_link_DT(my_long_mod)
 
-
+my_link_dt@inits$beta_dt <- 0.0035
+my_link_ttg@inits$beta_ttg <- -1
 
 # merge two link arguments
 my_link <- merge_link(link1 = my_link_dt, link2 = my_link_ttg)
@@ -47,7 +48,14 @@ library(cmdstanr)
 model_v3 <- jm_compile(my_jmpost)
 
 set.seed(1734)
-sim_data_1 <- simulate_os_sld(N = 50)
+sim_data_1 <- simulate_os_sld(N = 50,
+                              lambda = 0.9,
+                              p = 2.1,
+                              beta = 0.0035,
+                              gamma = 0,
+                              psi_mu = c(b = 10, s = 1.5, g = 0.5, phi = 0.3),
+                              psi_omega = c(b = 0.135, s = 0.15, g = 0.225, phi = 0.7),
+)
 sim_data_1$os$STUDYID <- factor(rep("study1", 50))
 sim_data_1$os$trt <- factor(rep("TRT", 50))
 sim_data_1$os$ARM <- sim_data_1$os$trt
@@ -93,3 +101,10 @@ my_mjpost <- jm_post(object = model_v3,
                      index_save_ind = patients_ids,
                      predictions  = seq(from = 0.001, to = 2, length = 100))
 
+
+library(survival)
+mod <- Surv(time = sim_data$os$time, event = sim_data$os$event)
+f1 <- survfit(mod ~ trt, data = sim_data$os)
+plot(f1,
+     xlab = "Days",
+     ylab = "Overall survival probability")

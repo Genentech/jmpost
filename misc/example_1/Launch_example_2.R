@@ -48,13 +48,12 @@ my_jmpost <- jm_complete(my_long_mod, my_final_os)
 model_v3 <- jm_compile(my_jmpost)
 
 my_vars <- jmpost::vars()
-pre_data <- jm_data(data_sld = sld,
-                    data_os = osd_final,
+pre_data <- jm_data(sld = sld,
+                    os = osd_final,
                     vars = my_vars,
                     shared_treatment = "Atezo",
-                    censoring_threshold = 2.5)
+                    censoring_threshold = .0005)
 
-pre_data@data_sld$AYR[5] <- NA
 library(rstan)
 my_mcmc_options <- jmpost:::mcmc_options(chains = 1,
                                 parallel_chains = 1,
@@ -72,7 +71,8 @@ my_mjpost <- jm_post(object = model_v3,
                      options = my_mcmc_options,
                      formula = ~ -1 + BECOG + CLOGNLR + CLOGCRP + CALBU + CLIVER,
                      index_save_ind = patients_ids,
-                     predictions  = seq(from = 0.001, to = 2, length = 100))
+                     predictions = seq(from = 0.001, to = 2, length = 100))
+
 
 plot(KM(my_mjpost))
 my_post_check <- jm_post_check(my_mjpost)
