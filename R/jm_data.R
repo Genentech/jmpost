@@ -7,11 +7,8 @@
 #' @export
 
 jm_data <- function(sld, os, vars, shared_treatment, censoring_threshold){
-
     sld <- sld[!is.na(sld[,vars$longitudinal]),]
     os <- os[!is.na(os[,vars$time_survival]),]
-
-
     .jm_data(data_sld = sld,
              data_os = os,
              vars = vars,
@@ -32,22 +29,22 @@ jm_data <- function(sld, os, vars, shared_treatment, censoring_threshold){
 
 
 .jm_data <- setClass(
-  "JMdata",
-  representation(
-    data_sld = "data.frame", # the sld data frame for the longitudinal dat a
-    data_os = "data.frame", # the overall survival data frame for the os model
-    data = "list", # to be filled with the modified data list later
-    vars = "list", # map of the variables
-    shared_treatment = "character", # which is the treatment group
-    censoring_threshold = "numeric"
-  ),
-  validity = function(object) {
-    if(any(is.na(object@data_sld[, object@vars$longitudinal]))) {
-      "missing values in sld model"
-    } else {
-      TRUE
+    "JMdata",
+    representation(
+        data_sld = "data.frame", # the sld data frame for the longitudinal dat a
+        data_os = "data.frame", # the overall survival data frame for the os model
+        data = "list", # to be filled with the modified data list later
+        vars = "list", # map of the variables
+        shared_treatment = "character", # which is the treatment group
+        censoring_threshold = "numeric"
+    ),
+    validity = function(object) {
+        if(any(is.na(object@data_sld[, object@vars$longitudinal]))) {
+            "missing values in sld model"
+        } else {
+        T   RUE
+        }
     }
-  }
 )
 
 #' JMdata variable mapping
@@ -68,5 +65,5 @@ vars <- function(longitudinal = "AVAL",
                  os_study_id = "STUDYID",
                  os_arm = "ARM",
                  treatment = "TRT01P") {
-  as.list(environment())
+    as.list(environment())
 }

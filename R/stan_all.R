@@ -11,18 +11,18 @@
 #' @exportClass StanAll
 
 stan_all <- setClass(
-  "StanAll",
-  representation(
-    functions = "character",
-    data = "character",
-    parameters = "character",
-    transformed_parameters = "character",
-    model = "character",
-    prior = "list",
-    generated_quantities = "character",
-    includes = "character",
-    inits = "list"
-  )
+    "StanAll",
+    representation(
+        functions = "character",
+        data = "character",
+        parameters = "character",
+        transformed_parameters = "character",
+        model = "character",
+        prior = "list",
+        generated_quantities = "character",
+        includes = "character",
+        inits = "list"
+    )
 )
 
 
@@ -39,7 +39,7 @@ temp_stan_os <- setClass("TemplatedStanOS",
 #' @export
 
 stan_os <- setClass("StanOS",
-  contains = "StanAll"
+    contains = "StanAll"
 )
 
 # StanLong: class specifically for longitudinal models
@@ -47,7 +47,7 @@ stan_os <- setClass("StanOS",
 #' @export
 
 .stan_long <- setClass("StanLong",
-  contains = "StanAll"
+    contains = "StanAll"
 )
 
 
