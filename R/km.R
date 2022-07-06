@@ -13,17 +13,17 @@ setGeneric("KM", function(object) {
 #' @importFrom survival Surv
 #' @export
 setMethod("KM",
-  signature(object = "JMpost"),
-  value = "numeric",
-  function(object) {
+    signature(object = "JMpost"),
+    value = "numeric",
+    function(object) {
 
 
-    fit <- survfit(Surv(
-        object@data@data_os[, object@data@vars$time_survival, drop = TRUE],
-        object@data@data_os[, object@data@vars$overall_survival_death, drop = TRUE]
-    ) ~ 1)
+        fit <- survfit(Surv(
+            object@data@data_os[, object@data@vars$time_survival, drop = TRUE],
+            object@data@data_os[, object@data@vars$overall_survival_death, drop = TRUE]
+        ) ~ 1)
 
-    summary(fit, times = object@predictions)$surv
-  }
+        summary(fit, times = object@predictions)$surv
+    }
 )
 

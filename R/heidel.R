@@ -1,3 +1,5 @@
+
+
 #' Heidelberger and Welch's convergence diagnostic
 #' @param object A JMpost object
 #' @importFrom coda heidel.diag
@@ -6,8 +8,6 @@
 #' @importFrom coda gelman.diag
 #' @importFrom cmdstanr as_mcmc.list
 #' @export
-
-
 jm_post_check <- function(object){
 
     mcmc_object <- as_mcmc.list(object@cmdstan_fit)
