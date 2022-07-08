@@ -54,6 +54,15 @@ pre_data <- jm_data(sld = sld,
                     shared_treatment = "Atezo",
                     censoring_threshold = .0005)
 
+library(survival)
+mod <- Surv(time = pre_data@data_os$AVAL, event = pre_data@data_os$DEATH)
+f1 <- survfit(mod ~ 1, data = pre_data@data_os)
+plot(f1,
+     main = "real data",
+     xlim = c(0,1000))
+
+
+
 library(rstan)
 my_mcmc_options <- jmpost:::mcmc_options(chains = 1,
                                 parallel_chains = 1,

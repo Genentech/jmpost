@@ -6,27 +6,26 @@
 \usage{
 simulate_os_sld(
   N = 200,
-  lambda_cen = 1/0.6,
+  lambda_cen = 1/3,
   lambda = 0.9,
-  p = 2,
+  p = 2.1,
   beta = 0.0035,
   gamma = -1,
-  psi_mu_placebo = c(b = 58, s = 3, g = 0.5, phi = 0.2),
-  psi_mu_trt = c(b = 58, s = 3, g = 0.5, phi = 0.2),
-  psi_omega = list(b = 0.135, s = 0.15, g = 0.225, phi = 0.7),
+  psi_mu = c(b = 58, s = 1.5, g = 0.5, phi = 0.3),
+  psi_omega = c(b = 0.135, s = 0.15, g = 0.225, phi = 0.7),
   eta_mu = rep(0, 4),
   eta_sigma = diag(rep(2, 4)),
-  beta_age = 0.1,
-  beta_sex = c(M = 0, F = -0.3),
-  visits = c(1, 10, 20, 40, 50),
-  time_gap = 1/365,
-  time_max = 4
+  beta_age = 0.2,
+  beta_sex = c(M = 0.1, F = -0.1),
+  times = c(0, 60, 120, 180, 300, 420, 660, 900),
+  time_max = 6,
+  pt_suffix = "suffix"
 )
 }
 \arguments{
 \item{N}{Number of patients to simulate}
 
-\item{lambda_cen}{Lambda for censoring distribution (1/mean)}
+\item{lambda_cen}{Lambda for censoring distribution (1/mean in years)}
 
 \item{lambda}{Lambda for log-logistic baseline OS distribution}
 
@@ -35,10 +34,6 @@ simulate_os_sld(
 \item{beta}{link parameter for derivative SLD model}
 
 \item{gamma}{link parameter for TTG}
-
-\item{psi_mu_placebo}{SLD Kinetics parameters for the placebo group}
-
-\item{psi_mu_trt}{SLD Kinetics parameters for the treatment group}
 
 \item{psi_omega}{Variance for the SLD kinetrics parameters}
 
@@ -50,14 +45,18 @@ simulate_os_sld(
 
 \item{beta_sex}{Beta parameters for sex effect}
 
-\item{visits}{Visits in which SLD observations occoured at}
+\item{times}{Times in which SLD observations occoured at (time 0 = Baseline)}
 
-\item{time_gap}{Interval gap to calculate hazard at (small numbers = more
-accurate distribution but longer run times to simulate data)}
-
-\item{time_max}{Maximum time to calculate hazard at, will error if patient
+\item{time_max}{Maximum time to calculate hazard at. In years. will error if patient
 hasn't died before this time. Excessively large values will increase
 the functions run time without adding value}
+
+\item{pt_suffix}{A string to attach to the end of the pt name in order to ensure its unique
+across multiple runs of the function (for different arms / studies)}
+
+\item{psi_mu_placebo}{SLD Kinetics parameters for the placebo group}
+
+\item{psi_mu_trt}{SLD Kinetics parameters for the treatment group}
 }
 \description{
 Simulate OS and SLD data
