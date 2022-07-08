@@ -42,7 +42,7 @@ jm_data <- function(sld, os, vars, shared_treatment, censoring_threshold){
         if(any(is.na(object@data_sld[, object@vars$longitudinal]))) {
             "missing values in sld model"
         } else {
-        T   RUE
+        TRUE
         }
     }
 )

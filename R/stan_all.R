@@ -8,43 +8,59 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @exportClass StanAll
+#' @exportClass StanModule
 
-stan_all <- setClass(
-    "StanAll",
+stan_module <- setClass(
+    "StanModule",
     representation(
         functions = "character",
         data = "character",
         parameters = "character",
         transformed_parameters = "character",
-        model = "character",
         prior = "list",
         generated_quantities = "character",
-        includes = "character",
         inits = "list"
     )
 )
 
 
-# TemplatedStanOS: class specifically for premature overall survival models
-#' @exportClass TemplatedStanOS
-#' @export
-
-temp_stan_os <- setClass("TemplatedStanOS",
-                         contains = "StanAll"
-)
-
 # StanOS: class specifically for overall survival models
 #' @exportClass StanOS
-#' @export
 
-stan_os <- setClass("StanOS",
-    contains = "StanAll"
+.stan_os <- setClass("StanOS",
+                     representation(module = "StanModule",
+                                    templated = "logical")
 )
+
+
+# StanOS: function for creation of StanOs object
+#' @export
+stan_os <- function(functions = "os_functions.stan",
+                    data = "os_data.stan",
+                    parameters = "os_parameters.stan",
+                    transformed_parameters = "os_transformed_parameters.stan",
+                    prior = os_prior(),
+                    generated_quantities = "os_generated_quantities.stan",
+                    inits = os_inits,
+                    templated = FALSE){
+
+
+    .stan_os(module = stan_module(functions = source_stan_part(functions),
+                                  data = source_stan_part(data),
+                                  parameters = source_stan_part(parameters),
+                                  transformed_parameters = source_stan_part(transformed_parameters),
+                                  prior = prior,
+                                  generated_quantities = source_stan_part(generated_quantities),
+                                  inits = inits),
+             templated = templated)
+}
+
+
+
+
 
 # StanLong: class specifically for longitudinal models
 #' @exportClass StanLong
-#' @export
 
 .stan_long <- setClass("StanLong",
     contains = "StanAll"
@@ -56,7 +72,6 @@ cmdstan_mod <- R6::R6Class("CmdStanModel")
 setOldClass("CmdStanModel")
 
 #' @exportClass JMModel
-#' @export
 
 jm_model <- setClass("JMModel",
                      slots = c(cmdstan_mod = "CmdStanModel"),
@@ -64,7 +79,6 @@ jm_model <- setClass("JMModel",
 )
 
 #' @exportClass HazardLink
-#' @export
 
 hazard_link <- setClass("HazardLink",
                         contains = "StanAll",
@@ -77,7 +91,6 @@ hazard_link <- setClass("HazardLink",
 )
 
 #' @exportClass ExponentialLongModel
-#' @export
 
 .exponential_long_model <- setClass("ExponentialLongModel", contains = "StanLong")
 

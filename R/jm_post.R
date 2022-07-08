@@ -34,7 +34,6 @@ setMethod("jm_post",
     value = "JMpost",
     function(object, data, formula, options, index_save_ind,
             predictions) {
-
         .data <- data_prep(object = data,
                             os_formula = formula,
                             options = options,
@@ -42,7 +41,7 @@ setMethod("jm_post",
                             predictions = predictions)
 
         object <- inits_prep(object = object, data = .data)
-        inits <- replicate(1, object@inits, simplify = FALSE)
+        inits <- replicate(options@chains, object@inits, simplify = FALSE)
 
         jm_post_class(
             cmdstan_fit = object@cmdstan_mod$sample(
