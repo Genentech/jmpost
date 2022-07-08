@@ -205,141 +205,235 @@ int<lower=1> Nind; // Number of individuals.
   int<lower=1> Nind_dead; // Number of dead individuals (observed survival time).
 
   int ind_index[Nta_total]; // Index of individuals for each tumor assessment.
-  int obs_y_index[Nta_obs_y]; // Index of observed tumor assessments (not censored).
-  int cens_y_index[Nta_cens_y]; // Index of censored tumor assessments.
-  int dead_ind_index[Nind_dead]; // Index of dead individuals (observed survival time).
-
-  int<lower=1> n_studies; // Number of studies.
-  int<lower=1,upper=n_studies> study_index[Nind]; // Index of study for all individuals.
-  int<lower=1> n_arms; // Number of treatment arms.
-  int<lower=1,upper=n_arms> arm_index[Nind]; // Index of treatment arm for all individuals.
-
-  int<lower=1,upper=Nind> n_save_individual;
-  int<lower=1,upper=Nind> index_save_individual[n_save_individual];
-
-  int<lower=1> n_sld_par_shared;
-  int<lower=1,upper=n_arms> sld_par_shared[n_sld_par_shared];
-  int<lower=1> n_sld_par_separate;
-  int<lower=1,upper=n_arms> sld_par_separate[n_sld_par_separate];
-
-  int<lower=1,upper=n_studies> arm_to_study_index[n_arms];
-
-  // Ragged index vector of individuals per treatment arm (see R code).
-  int<lower=1,upper=Nind> n_index_per_arm[n_arms];
-  int<lower=1,upper=Nind> index_per_arm[Nind];
-
-  row_vector[Nta_total] Yobs; // Array of individual responses.
-  row_vector[Nta_total] Tobs; // Individual timepoints.
-  real Ythreshold; // Censoring threshold.
-
-  // Matrix of individuals x observed tumor assessments (sparse matrix of 0s and 1s),
-  // so the dimension is Nind x Nta_obs_y.
-  int<lower=1> n_w_mat_inds_obs_y;
-  vector[n_w_mat_inds_obs_y] w_mat_inds_obs_y;
-  int<lower=1> n_v_mat_inds_obs_y;
-  int v_mat_inds_obs_y[n_v_mat_inds_obs_y];
-  int<lower=1> n_u_mat_inds_obs_y;
-  int u_mat_inds_obs_y[n_u_mat_inds_obs_y];
-
-  // Matrix of individuals x censored tumor assessments (sparse matrix of 0s and 1s).
-  // so the dimension is Nind x Nta_cens_y.
-  int<lower=1> n_w_mat_inds_cens_y;
-  vector[n_w_mat_inds_cens_y] w_mat_inds_cens_y;
-  int<lower=1> n_v_mat_inds_cens_y;
-  int v_mat_inds_cens_y[n_v_mat_inds_cens_y];
-  int<lower=1> n_u_mat_inds_cens_y;
-  int u_mat_inds_cens_y[n_u_mat_inds_cens_y];
-  row_vector[Nind] Times;
-  int Death[Nind];
-  int<lower=1> p_os_cov_design;
-  matrix[Nind, p_os_cov_design] os_cov_design;
-
-
-  int<lower=1> n_os_pred_times;
-  row_vector<lower=0>[n_os_pred_times] os_pred_times;
-
-  int<lower=1> n_nodes;
-  vector[n_nodes] nodes;
-  row_vector<lower=0, upper=1>[n_nodes] weights;
+    matrix[rows(time), cols(time)] result = log_num - log_denom;
+    return result;
+  }
 
+  matrix log_hazard(matrix time,
+  real lambda, real p,  real beta_dt, real beta_ttg,
+  row_vector psi_bsld, row_vector psi_ks, row_vector psi_kg, row_vector psi_phi,
+  vector beta_os_cov, data matrix os_cov_design) {
+    row_vector[rows(os_cov_design)] cov_contribution;
+    matrix[rows(time), cols(time)] log_baseline = log_h0(time, lambda, p);
+    if (rows(os_cov_design) > 1) {
+      cov_contribution = (os_cov_design * beta_os_cov)';
+    } else {
+      cov_contribution[1] = (os_cov_design * beta_os_cov)[1];
+    }
+    matrix[rows(time), cols(cov_contribution)] cov_contribution_matrix = rep_matrix(cov_contribution, rows(time));
+     matrix[rows(time), cols(time)] dt = dtsld(time, psi_bsld, psi_ks, psi_kg, psi_phi); row_vector[cols(time)] ttg_contribution = ttg(psi_ks, psi_kg, psi_phi);
+
+        matrix[rows(time), cols(time)] ttg_contribution_matrix = rep_matrix(ttg_contribution, rows(time));;
+    matrix[rows(time), cols(time)] result =   beta_dt * dt+ beta_ttg * ttg_contribution_matrix + log_baseline + cov_contribution_matrix;
+    return result;
+  }
+
+  row_vector log_survival(row_vector time, real lambda,
+  real p,  real beta_dt, real beta_ttg,
+  row_vector psi_bsld, row_vector psi_ks, row_vector psi_kg, row_vector psi_phi,
+  data vector nodes, data row_vector weights, vector beta_os_cov, data matrix os_cov_design) {
+    int time_positive[cols(time)] = is_positive(time);
+    int n_positive = sum(time_positive);
+    int time_positive_index[n_positive] = which(time_positive);
+    row_vector[cols(time)] result = rep_row_vector(0.0, cols(time));
+
+    matrix[rows(nodes), n_positive] nodes_time = (nodes + 1) * (time[time_positive_index] / 2);
+    matrix[rows(nodes), n_positive] nodes_time_hazard = fmin(8000.0, exp(log_hazard(nodes_time, lambda,
+    p,   beta_dt,  beta_ttg,
+    psi_bsld[time_positive_index],
+    psi_ks[time_positive_index],
+    psi_kg[time_positive_index],
+    psi_phi[time_positive_index], beta_os_cov, os_cov_design[time_positive_index])));
+    result[time_positive_index] = - (weights * nodes_time_hazard) .* time[time_positive_index] / 2;
+    return result;
+  }
+
+  real neg_log_sqrt_2_pi() {
+    return -0.9189385332046727;
+  }
+
+
+  row_vector vect_normal_log_dens(row_vector y, row_vector mu, row_vector sigma) {
+    row_vector[num_elements(y)] y_stand = (y - mu) ./ sigma;
+    row_vector[num_elements(y)] main_result = - (y_stand .* y_stand) / 2;
+    return main_result + neg_log_sqrt_2_pi() - log(sigma);
+  }
+
+  row_vector vect_normal_log_cum(real quantile, row_vector mu, row_vector sigma) {
+    row_vector[num_elements(mu)] quant_stand = (quantile - mu) ./ sigma;
+    row_vector[num_elements(mu)] cdf_vals = Phi(quant_stand);
+    return log(cdf_vals);
+  }
+
+  row_vector row_means(matrix x) {
+    row_vector[cols(x)] result = rep_row_vector(1.0 / rows(x), rows(x)) * x;
+    return result;
+  }
+
+
+
+  row_vector pop_log_hazard(row_vector time,
+   real beta_dt, real beta_ttg,
+  real mu_bsld, real mu_ks, real mu_kg, real mu_phi) {
+
+    row_vector[cols(time)] pop_dtsld = dtsld_for_hr(time, mu_bsld, mu_ks, mu_kg, mu_phi);
+    real pop_ttg = ttg_for_hr(mu_ks, mu_kg, mu_phi);
+    row_vector[cols(time)] result = 0  + beta_dt * pop_dtsld + beta_ttg * pop_ttg;
+    return result;
+  }
+
+  row_vector get_step_survival(real death_time, row_vector times) {
+    row_vector[cols(times)] result;
+    for (i in 1:cols(times)) {
+      result[i] = times[i] < death_time;
+    }
+    return result;
+  }
+
+
+  row_vector get_cond_survival(real cens_surv_prob, row_vector uncond_surv_probs) {
+    row_vector[cols(uncond_surv_probs)] result = fmin(1.0, uncond_surv_probs / cens_surv_prob);
+    return result;
+  }
+}
+
+data {
+int<lower=1> Nind; // Number of individuals.
+  int<lower=1> Nta_total; // Total number of tumor assessments.
+  int<lower=1> Nta_obs_y; // Number of observed tumor assessments (not censored).
+  int<lower=1> Nta_cens_y; // Number of censored tumor assessments (below threshold).
+  int<lower=1> Nind_dead; // Number of dead individuals (observed survival time).
+
+  int ind_index[Nta_total]; // Index of individuals for each tumor assessment.
+  int obs_y_index[Nta_obs_y]; // Index of observed tumor assessments (not censored).
+  int cens_y_index[Nta_cens_y]; // Index of censored tumor assessments.
+  int dead_ind_index[Nind_dead]; // Index of dead individuals (observed survival time).
+
+  int<lower=1> n_studies; // Number of studies.
+  int<lower=1,upper=n_studies> study_index[Nind]; // Index of study for all individuals.
+  int<lower=1> n_arms; // Number of treatment arms.
+  int<lower=1,upper=n_arms> arm_index[Nind]; // Index of treatment arm for all individuals.
+
+  int<lower=1,upper=Nind> n_save_individual;
+  int<lower=1,upper=Nind> index_save_individual[n_save_individual];
+
+  int<lower=1> n_sld_par_shared;
+  int<lower=1,upper=n_arms> sld_par_shared[n_sld_par_shared];
+  int<lower=1> n_sld_par_separate;
+  int<lower=1,upper=n_arms> sld_par_separate[n_sld_par_separate];
+
+  int<lower=1,upper=n_studies> arm_to_study_index[n_arms];
+
+  // Ragged index vector of individuals per treatment arm (see R code).
+  int<lower=1,upper=Nind> n_index_per_arm[n_arms];
+  int<lower=1,upper=Nind> index_per_arm[Nind];
+
+  row_vector[Nta_total] Yobs; // Array of individual responses.
+  row_vector[Nta_total] Tobs; // Individual timepoints.
+  real Ythreshold; // Censoring threshold.
+
+  // Matrix of individuals x observed tumor assessments (sparse matrix of 0s and 1s),
+  // so the dimension is Nind x Nta_obs_y.
+  int<lower=1> n_w_mat_inds_obs_y;
+  vector[n_w_mat_inds_obs_y] w_mat_inds_obs_y;
+  int<lower=1> n_v_mat_inds_obs_y;
+  int v_mat_inds_obs_y[n_v_mat_inds_obs_y];
+  int<lower=1> n_u_mat_inds_obs_y;
+  int u_mat_inds_obs_y[n_u_mat_inds_obs_y];
+
+  // Matrix of individuals x censored tumor assessments (sparse matrix of 0s and 1s).
+  // so the dimension is Nind x Nta_cens_y.
+  int<lower=1> n_w_mat_inds_cens_y;
+  vector[n_w_mat_inds_cens_y] w_mat_inds_cens_y;
+  int<lower=1> n_v_mat_inds_cens_y;
+  int v_mat_inds_cens_y[n_v_mat_inds_cens_y];
+  int<lower=1> n_u_mat_inds_cens_y;
+  int u_mat_inds_cens_y[n_u_mat_inds_cens_y];  row_vector[Nind] Times;
+  int Death[Nind];
+  int<lower=1> p_os_cov_design;
+  matrix[Nind, p_os_cov_design] os_cov_design;
+
+
+  int<lower=1> n_os_pred_times;
+  row_vector<lower=0>[n_os_pred_times] os_pred_times;
+
+  int<lower=1> n_nodes;
+  vector[n_nodes] nodes;
+  row_vector<lower=0, upper=1>[n_nodes] weights;
 }
 
 parameters{
-real<lower=0, upper=100> mean_mu_ks;
-  real<lower=0, upper=100> mean_mu_kg;
-  real<lower=0.001, upper=0.999> mean_mu_phi;
-  real<lower=0, upper=10> sd_mu_ks;
-  real<lower=0, upper=10> sd_mu_kg;
-  real<lower=0, upper=10> sd_mu_phi;
-
-  // Population parameters.
-  row_vector<lower=0>[n_studies] mu_bsld;
-  row_vector<lower=0>[n_arms] mu_ks;
-  row_vector<lower=0>[n_arms] mu_kg;
-  row_vector<lower=0, upper=1>[n_arms] mu_phi;
-
-  real<lower=0> omega_bsld;
-  real<lower=0> omega_ks;
-  real<lower=0> omega_kg;
-  real<lower=0> omega_phi;
-
-  // Standard deviation for RUV.
-  real<lower=0.00001, upper=100> sigma;
-
-  // Random effects.
-  row_vector[Nind] eta_tilde_bsld;
-  row_vector[Nind] eta_tilde_ks;
-  row_vector[Nind] eta_tilde_kg;
-  row_vector[Nind] eta_tilde_phi;
-  real<lower=0> p;
-  real<lower=0> lambda; // For the log-logistic baseline hazard.
+real<lower=0, upper=100> mean_mu_ks;
+  real<lower=0, upper=100> mean_mu_kg;
+  real<lower=0.001, upper=0.999> mean_mu_phi;
+  real<lower=0, upper=10> sd_mu_ks;
+  real<lower=0, upper=10> sd_mu_kg;
+  real<lower=0, upper=10> sd_mu_phi;
+
+  // Population parameters.
+  row_vector<lower=0>[n_studies] mu_bsld;
+  row_vector<lower=0>[n_arms] mu_ks;
+  row_vector<lower=0>[n_arms] mu_kg;
+  row_vector<lower=0, upper=1>[n_arms] mu_phi;
+
+  real<lower=0> omega_bsld;
+  real<lower=0> omega_ks;
+  real<lower=0> omega_kg;
+  real<lower=0> omega_phi;
+
+  // Standard deviation for RUV.
+  real<lower=0.00001, upper=100> sigma;
+
+  // Random effects.
+  row_vector[Nind] eta_tilde_bsld;
+  row_vector[Nind] eta_tilde_ks;
+  row_vector[Nind] eta_tilde_kg;
+  row_vector[Nind] eta_tilde_phi;  real<lower=0> p;
+  real<lower=0> lambda; // For the log-logistic baseline hazard.
   real beta_dt;
  real beta_ttg;
-
-  vector[p_os_cov_design] beta_os_cov; // Covariate coefficients.
 
+  vector[p_os_cov_design] beta_os_cov; // Covariate coefficients.
 }
 
 transformed parameters {
-row_vector[Nind] psi_bsld = exp(log(mu_bsld[study_index]) + eta_tilde_bsld * omega_bsld);
-  row_vector[Nind] psi_ks = exp(log(mu_ks[arm_index]) + eta_tilde_ks * omega_ks);
-  row_vector[Nind] psi_kg = exp(log(mu_kg[arm_index]) + eta_tilde_kg * omega_kg);
-  row_vector[Nind] psi_phi =  inv_logit(logit(mu_phi[arm_index]) + eta_tilde_phi * omega_phi);
-
-  // Log-likelihood values for using the loo package.
-  row_vector[Nind] log_lik;
-  row_vector[Nta_total] Ypred;
-
-  // Log-survival values as we need them for generated quantitities.
-  row_vector[Nind] log_surv_vals;
-
-  log_lik = rep_row_vector(0.0, Nind);
-
-  Ypred = sld(Tobs,
-  psi_bsld[ind_index], psi_ks[ind_index], psi_kg[ind_index], psi_phi[ind_index]);
-  log_lik += csr_matrix_times_vector(Nind, Nta_obs_y, w_mat_inds_obs_y, v_mat_inds_obs_y, u_mat_inds_obs_y,
-  vect_normal_log_dens(Yobs[obs_y_index], Ypred[obs_y_index], Ypred[obs_y_index] * sigma)')';
-  log_lik += csr_matrix_times_vector(Nind, Nta_cens_y, w_mat_inds_cens_y, v_mat_inds_cens_y, u_mat_inds_cens_y,
-  vect_normal_log_cum(Ythreshold, Ypred[cens_y_index], Ypred[cens_y_index] * sigma)')';
- log_surv_vals = log_survival(Times, lambda, p,   beta_dt,  beta_ttg,
-  psi_bsld, psi_ks, psi_kg, psi_phi,
-  nodes, weights, beta_os_cov, os_cov_design);
-  log_lik += log_surv_vals;
-
-  log_lik[dead_ind_index] += to_row_vector(log_hazard(to_matrix(Times[dead_ind_index]), lambda, p,   beta_dt,  beta_ttg,
-  psi_bsld[dead_ind_index], psi_ks[dead_ind_index], psi_kg[dead_ind_index], psi_phi[dead_ind_index],
-  beta_os_cov, os_cov_design[dead_ind_index]));
+row_vector[Nind] psi_bsld = exp(log(mu_bsld[study_index]) + eta_tilde_bsld * omega_bsld);
+  row_vector[Nind] psi_ks = exp(log(mu_ks[arm_index]) + eta_tilde_ks * omega_ks);
+  row_vector[Nind] psi_kg = exp(log(mu_kg[arm_index]) + eta_tilde_kg * omega_kg);
+  row_vector[Nind] psi_phi =  inv_logit(logit(mu_phi[arm_index]) + eta_tilde_phi * omega_phi);
 
+  // Log-likelihood values for using the loo package.
+  row_vector[Nind] log_lik;
+  row_vector[Nta_total] Ypred;
+
+  // Log-survival values as we need them for generated quantitities.
+  row_vector[Nind] log_surv_vals;
+
+  log_lik = rep_row_vector(0.0, Nind);
+
+  Ypred = sld(Tobs,
+  psi_bsld[ind_index], psi_ks[ind_index], psi_kg[ind_index], psi_phi[ind_index]);
+  log_lik += csr_matrix_times_vector(Nind, Nta_obs_y, w_mat_inds_obs_y, v_mat_inds_obs_y, u_mat_inds_obs_y,
+  vect_normal_log_dens(Yobs[obs_y_index], Ypred[obs_y_index], Ypred[obs_y_index] * sigma)')';
+  log_lik += csr_matrix_times_vector(Nind, Nta_cens_y, w_mat_inds_cens_y, v_mat_inds_cens_y, u_mat_inds_cens_y,
+  vect_normal_log_cum(Ythreshold, Ypred[cens_y_index], Ypred[cens_y_index] * sigma)')'; log_surv_vals = log_survival(Times, lambda, p,   beta_dt,  beta_ttg,
+  psi_bsld, psi_ks, psi_kg, psi_phi,
+  nodes, weights, beta_os_cov, os_cov_design);
+  log_lik += log_surv_vals;
+
+  log_lik[dead_ind_index] += to_row_vector(log_hazard(to_matrix(Times[dead_ind_index]), lambda, p,   beta_dt,  beta_ttg,
+  psi_bsld[dead_ind_index], psi_ks[dead_ind_index], psi_kg[dead_ind_index], psi_phi[dead_ind_index],
+  beta_os_cov, os_cov_design[dead_ind_index]));
 }
 
 model {
-mean_mu_ks~lognormal(1,0.5);
+mean_mu_ks~lognormal(3,0.5);
 mean_mu_kg~lognormal(-0.36,1);
 mean_mu_phi~beta(5,5);
 sd_mu_ks~lognormal(0,0.5);
 sd_mu_kg~lognormal(0,0.5);
 sd_mu_phi~lognormal(0,0.5);
-mu_bsld~lognormal(55,5);
+mu_bsld~lognormal( 8, 2);
 omega_bsld~lognormal(0,1);
 omega_ks~lognormal(0,1);
 omega_kg~lognormal(0,1);
@@ -442,7 +536,6 @@ generated quantities{
     psi_bsld[index_save_individual], psi_ks[index_save_individual], psi_kg[index_save_individual], psi_phi[index_save_individual]))';
 
   }
-
 }
 
 
