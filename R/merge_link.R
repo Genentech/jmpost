@@ -16,7 +16,8 @@ setMethod(
             module = stan_module(
                 functions = paste0(
                     paste0(link1@module@functions, collapse = "\n"),
-                    paste0(link2@module@functions, collapse = "\n")
+                    paste0(link2@module@functions, collapse = "\n"),
+                    collapse = "\n"
                 ),
                 prior = append(link1@module@prior, link2@module@prior),
                 inits = append(link1@module@inits, link2@module@inits)

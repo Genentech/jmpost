@@ -31,25 +31,39 @@ setMethod(
     function(LongMod, select) {
         link_out <- hazard_link()
 
-        for (i in 1:length(select)) {
-            temp <- stan_module(
-                functions = paste0(select[i], "_functions.stan"),
+
+        if (length(select) < 2) {
+            tmp_module <- stan_module(
+                functions = source_stan_part(paste0(select, "_functions.stan")),
                 prior = list("normal(0,5)"),
                 inits = list(0)
             )
-            names(temp@prior) <- select[i]
-            names(temp@inits) <- select[i]
 
-            link <- hazard_link(
-                module = temp,
-                par_name = select[i],
-                contributions = paste0(select[i], "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))")
+            hazard_link(
+                module = tmp_module,
+                par_name = select,
+                contributions = paste0(select, "*", select, link_contribution_prep(tmp_module))
             )
+        } else {
+            for (i in 1:length(select)) {
+                tmp_module <- stan_module(
+                    functions = source_stan_part(paste0(select[i], "_functions.stan")),
+                    prior = list("normal(0,5)"),
+                    inits = list(0)
+                )
+                names(tmp_module@prior) <- select[i]
+                names(tmp_module@inits) <- select[i]
 
-            link_out <- merge_link(link, link_out)
+                link <- hazard_link(
+                    module = tmp_module,
+                    par_name = select[i],
+                    contributions = paste0(select[i],  "*", select[i], link_contribution_prep(tmp_module))
+                )
+
+                link_out <- merge_link(link, link_out)
+            }
+            link_out
         }
 
-
-        link_out
     }
 )
