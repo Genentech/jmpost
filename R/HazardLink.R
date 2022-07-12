@@ -29,8 +29,14 @@ setMethod(
     "get_link",
     signature(LongMod = "StanLong"),
     function(LongMod, select) {
-        link_out <- hazard_link()
 
+
+        link_out <- hazard_link(module = stan_module(functions = "",
+                                                     prior = list(),
+                                                     inits = list()),
+                                par_name = NA_character_,
+                                contributions = ""
+        )
 
         if (length(select) < 2) {
             tmp_module <- stan_module(
