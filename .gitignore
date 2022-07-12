@@ -53,9 +53,6 @@ src/*
 
 nul
 
-# Include all gitkeep files
-!.gitkeep
-
 # Various 1 off folders created during CI/CD
 inst/doc
 docs
@@ -66,3 +63,14 @@ docs
 # Personal local folder for utility scripts not to be included
 local/
 
+
+# Compiled windows binary files
+*.exe
+
+
+# Compiled stan model
+inst/stanmodels/stan_model
+
+
+# Include all gitkeep files
+!.gitkeep
