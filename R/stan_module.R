@@ -9,7 +9,6 @@
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
 #' @exportClass StanModule
-
 stan_module <- setClass(
     "StanModule",
     representation(
