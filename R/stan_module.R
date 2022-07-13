@@ -28,11 +28,16 @@ StanModule <- setClass(
 #' @param filename The name of the .stan file in the directory of the package.
 #' @export
 source_stan_part <- function(filename) {
-    absolute_filename <- system.file(
-        "stanparts",
-        filename,
-        package = "jmpost"
-    )
+    if (file.exists(filename)) {
+        absolute_filename <- filename
+    } else {
+        absolute_filename <- system.file(
+            "stanparts",
+            filename,
+            package = "jmpost"
+        )
+    }
+
     readLines(absolute_filename)
 }
 
@@ -46,41 +51,43 @@ source_stan_part <- function(filename) {
 #' @param generated_quantities TODO
 #' @param inits TODO
 #' @export
-stan_module <- function(functions, data, parameters, transformed_parameters,
-                        prior, generated_quantities, inits ){
+setMethod(
+    f = "initialize",
+    signature = "StanModule",
+    definition = function(.Object, ..., functions, data,
+                          parameters, transformed_parameters,
+                          prior, generated_quantities, inits) {
+        assert_that(
+            is.character(functions),
+            length(functions) == 1,
+            is.character(data),
+            length(data) == 1,
+            is.character(parameters),
+            length(parameters) == 1,
+            is.character(transformed_parameters),
+            length(transformed_parameters) == 1,
+            is.character(gnenerated_quantities),
+            length(gnenerated_quantities) == 1,
+            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `gnenerated_quantities` must be length 1 character vectors"
+        )
 
-    assert_that(
-        is.character(functions),
-        length(functions) == 1,
-        is.character(data),
-        length(data) == 1,
-        is.character(parameters),
-        length(parameters) == 1,
-        is.character(transformed_parameters),
-        length(transformed_parameters) == 1,
-        is.character(gnenerated_quantities),
-        length(gnenerated_quantities) == 1,
-        msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `gnenerated_quantities` must be length 1 character vectors"
-    )
+        assert_that(
+            is.list(prior),
+            is.list(inits),
+            length(inits) == length(prior),
+            msg = "`Prior` and `inits` must be list of the same length"
+        )
 
-    assert_that(
-        is.list(prior),
-        is.list(inits),
-        length(inits) == length(prior),
-        msg = "`Prior` and `inits` must be list of the same length"
-    )
-
-    StanModule(functions = source_stan_part(functions),
-               data = source_stan_part(data),
-               parameters = source_stan_part(parameters),
-               transformed_parameters = source_stan_part(transformed_parameters),
-               prior = prior,
-               generated_quantities = source_stan_part(generated_quantities),
-               inits = inits)
-}
-
-
-
-
-
-
+        callNextMethod(
+            .Object,
+            ...,
+            functions = source_stan_part(functions),
+            data = source_stan_part(data),
+            parameters = source_stan_part(parameters),
+            transformed_parameters = source_stan_part(transformed_parameters),
+            prior = prior,
+            generated_quantities = source_stan_part(generated_quantities),
+            inits = inits
+        )
+    }
+)
