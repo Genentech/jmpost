@@ -31,22 +31,16 @@ read_stan_part <- function(file) {
     if (file.exists(file)) {
         absolute_filename <- file
         out <- readLines(absolute_filename)
+    } else if (file.exists(system.file("stanparts", file, package = "jmpost"))) {
+        absolute_filename <- system.file(
+            "stanparts",
+            file,
+            package = "jmpost"
+        )
 
+        out <- readLines(absolute_filename)
     } else {
-
-        if (file.exists(system.file("stanparts", file, package = "jmpost"))) {
-            absolute_filename <- system.file(
-                "stanparts",
-                file,
-                package = "jmpost"
-            )
-
-            out <- readLines(absolute_filename)
-
-        } else {
-
-            out <- filename
-        }
+        out <- file
     }
 
     return(out)
@@ -74,7 +68,7 @@ setMethod(
             is.character(parameters),
             is.character(transformed_parameters),
             is.character(generated_quantities),
-            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `gnenerated_quantities` must be character vectors"
+            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `generated_quantities` must be character vectors"
         )
 
         assert_that(
@@ -83,6 +77,23 @@ setMethod(
             length(inits) == length(priors),
             msg = "`Priors` and `inits` must be list of the same length"
         )
+
+        if (length(functions) > 1) {
+            functions <- paste_str(functions)
+        }
+        if (length(data) > 1) {
+            data <- paste_str(data)
+        }
+        if (length(parameters) > 1) {
+            parameters <- paste_str(parameters)
+        }
+        if (length(transformed_parameters) > 1) {
+            transformed_parameters <- paste_str(transformed_parameters)
+        }
+        if (length(generated_quantities) > 1) {
+            generated_quantities <- paste_str(generated_quantities)
+        }
+
 
         callNextMethod(
             .Object,
@@ -97,3 +108,19 @@ setMethod(
         )
     }
 )
+
+
+#' paste_vector Returns a single string from a vector of strings
+#' @param vec A vector of stings representing stan code.
+#' @export
+paste_str <- function(vec) {
+
+    # check if all elements of vector include ";"
+    if (all(grepl(";", vec, fixed = TRUE) == TRUE)) {
+        paste0(paste0(vec, collapse = "\\n "), "\\n")
+    } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
+        paste0(paste0(vec, collapse = ";\\n "), ";\\n")
+    } else {
+        stop("Remove all semicolons")
+    }
+}
