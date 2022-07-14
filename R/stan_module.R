@@ -59,9 +59,17 @@ read_stan_part <- function(file) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(.Object, ..., functions, data,
-                          parameters, transformed_parameters,
-                          priors, generated_quantities, inits) {
+    definition = function(
+        .Object,
+        ...,
+        functions = "",
+        data = "",
+        parameters = "",
+        transformed_parameters = "",
+        generated_quantities = "",
+        priors = list(),
+        inits = list()
+    ) {
         assert_that(
             is.character(functions),
             is.character(data),
@@ -124,3 +132,46 @@ paste_str <- function(vec) {
         stop("Remove all semicolons")
     }
 }
+
+
+
+#' Convert a StanModule object into stan code
+#'
+#' Collapses a StanModule object down into a single string inserting the required block fences
+#' i.e. `data { ... }`
+#' 
+#' @param x A `StanModule` object
+#' @export
+setMethod(
+    f = "as.character",
+    signature = "StanModule",
+    definition = function(x) {
+        
+        block_map <- list(
+            functions = "functions",
+            data = "data",
+            parameters = "parameters",
+            transformed_parameters = "transformed parameters",
+            priors = "model",
+            generated_quantities = "generated quantities"
+        )
+
+        block_strings <- lapply(
+            names(block_map),
+            function(id) {
+                char <- slot(x, id)
+                if (!is.character(char)) {
+                    char <- paste0(char, collapse = "\n")
+                }
+                if (nchar(char) >= 1) {
+                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                } else {
+                    return("")
+                }
+            }
+        )
+
+        return(paste0(block_strings, collapse = ""))
+    }
+)
+
