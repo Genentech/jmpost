@@ -170,7 +170,6 @@ setMethod(
                 }
             }
         )
-
         return(paste0(block_strings, collapse = ""))
     }
 )
