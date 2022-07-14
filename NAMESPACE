@@ -3,5 +3,6 @@
 export(paste_str)
 export(read_stan_part)
 exportClasses(StanModule)
+exportMethods(as.character)
 exportMethods(initialize)
 importFrom(assertthat,assert_that)
