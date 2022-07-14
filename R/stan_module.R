@@ -10,16 +10,16 @@
 #' @slot inits List with the initial values of the stan model.
 #' @exportClass StanModule
 StanModule <- setClass(
-  "StanModule",
-  representation(
-    functions = "character",
-    data = "character",
-    parameters = "character",
-    transformed_parameters = "character",
-    priors = "list",
-    generated_quantities = "character",
-    inits = "list"
-  )
+    "StanModule",
+    representation(
+        functions = "character",
+        data = "character",
+        parameters = "character",
+        transformed_parameters = "character",
+        priors = "list",
+        generated_quantities = "character",
+        inits = "list"
+    )
 )
 
 
@@ -63,37 +63,37 @@ read_stan_part <- function(file) {
 #' @param inits TODO
 #' @export
 setMethod(
-  f = "initialize",
-  signature = "StanModule",
-  definition = function(.Object, ..., functions, data,
-                        parameters, transformed_parameters,
-                        priors, generated_quantities, inits) {
-    assert_that(
-      is.character(functions),
-      is.character(data),
-      is.character(parameters),
-      is.character(transformed_parameters),
-      is.character(generated_quantities),
-      msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `gnenerated_quantities` must be character vectors"
-    )
+    f = "initialize",
+    signature = "StanModule",
+    definition = function(.Object, ..., functions, data,
+                          parameters, transformed_parameters,
+                          priors, generated_quantities, inits) {
+        assert_that(
+            is.character(functions),
+            is.character(data),
+            is.character(parameters),
+            is.character(transformed_parameters),
+            is.character(generated_quantities),
+            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `gnenerated_quantities` must be character vectors"
+        )
 
-    assert_that(
-      is.list(priors),
-      is.list(inits),
-      length(inits) == length(priors),
-      msg = "`Priors` and `inits` must be list of the same length"
-    )
+        assert_that(
+            is.list(priors),
+            is.list(inits),
+            length(inits) == length(priors),
+            msg = "`Priors` and `inits` must be list of the same length"
+        )
 
-    callNextMethod(
-      .Object,
-      ...,
-      functions = read_stan_part(functions),
-      data = read_stan_part(data),
-      parameters = read_stan_part(parameters),
-      transformed_parameters = read_stan_part(transformed_parameters),
-      priors = priors,
-      generated_quantities = read_stan_part(generated_quantities),
-      inits = inits
-    )
-  }
+        callNextMethod(
+            .Object,
+            ...,
+            functions = read_stan_part(functions),
+            data = read_stan_part(data),
+            parameters = read_stan_part(parameters),
+            transformed_parameters = read_stan_part(transformed_parameters),
+            priors = priors,
+            generated_quantities = read_stan_part(generated_quantities),
+            inits = inits
+        )
+    }
 )
