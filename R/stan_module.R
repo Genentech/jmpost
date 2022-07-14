@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @exportClass StanModule
+#' @export
 StanModule <- setClass(
     "StanModule",
     representation(
@@ -55,6 +55,7 @@ read_stan_part <- function(file) {
 #' @param priors TODO
 #' @param generated_quantities TODO
 #' @param inits TODO
+#' @rdname StanModule-class
 #' @export
 setMethod(
     f = "initialize",
