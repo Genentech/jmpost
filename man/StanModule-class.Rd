@@ -11,19 +11,19 @@ StanAll class object
 \section{Slots}{
 
 \describe{
-\item{\code{functions}}{Character, the functions part of a stan model}
+\item{\code{functions}}{Character, the functions part of a stan model.}
 
-\item{\code{data}}{Character, the data part of a stan model}
+\item{\code{data}}{Character, the data part of a stan model.}
 
-\item{\code{parameters}}{Character, the parameters part of a stan model}
+\item{\code{parameters}}{Character, the parameters part of a stan model.}
 
-\item{\code{transformed_parameters}}{Character, the transformed_parameters part of a stan model}
+\item{\code{transformed_parameters}}{Character, the transformed_parameters part of a stan model.}
 
-\item{\code{model}}{Character, the model part of a stan model}
+\item{\code{model}}{Character, the model part of a stan model.}
 
-\item{\code{prior}}{List, the priors part of a stan model}
+\item{\code{priors}}{List, the priors part of a stan model.}
 
-\item{\code{generated_quantities}}{Character, the generated_quantities part of a stan model}
+\item{\code{generated_quantities}}{Character, the generated_quantities part of a stan model.}
 
 \item{\code{includes}}{Character}
 
