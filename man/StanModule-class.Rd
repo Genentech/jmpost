@@ -4,7 +4,36 @@
 \name{StanModule-class}
 \alias{StanModule-class}
 \alias{StanModule}
+\alias{initialize,StanModule-method}
 \title{StanAll class object}
+\usage{
+\S4method{initialize}{StanModule}(
+  .Object,
+  ...,
+  functions,
+  data,
+  parameters,
+  transformed_parameters,
+  priors,
+  generated_quantities,
+  inits
+)
+}
+\arguments{
+\item{functions}{TODO}
+
+\item{data}{TODO}
+
+\item{parameters}{TODO}
+
+\item{transformed_parameters}{TODO}
+
+\item{priors}{TODO}
+
+\item{generated_quantities}{TODO}
+
+\item{inits}{TODO}
+}
 \description{
 StanAll class object
 }
