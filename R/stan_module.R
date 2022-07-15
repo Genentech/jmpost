@@ -124,7 +124,7 @@ setMethod(
 paste_str <- function(vec) {
 
     # check if all elements of vector include ";"
-    if (all(grepl(";", vec, fixed = TRUE) == TRUE)) {
+    if (all(grepl(";", vec, fixed = TRUE))) {
         paste0(paste0(vec, collapse = "\\n "), "\\n")
     } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
         paste0(paste0(vec, collapse = ";\\n "), ";\\n")
@@ -139,14 +139,14 @@ paste_str <- function(vec) {
 #'
 #' Collapses a StanModule object down into a single string inserting the required block fences
 #' i.e. `data { ... }`
-#' 
+#'
 #' @param x A `StanModule` object
 #' @export
 setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-        
+
         block_map <- list(
             functions = "functions",
             data = "data",
@@ -173,4 +173,6 @@ setMethod(
         return(paste0(block_strings, collapse = ""))
     }
 )
+
+
 
