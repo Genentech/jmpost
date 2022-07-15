@@ -49,17 +49,15 @@ read_stan_part <- function(file) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
         assert_that(
             is.character(functions),
             is.character(data),
@@ -76,21 +74,17 @@ setMethod(
             msg = "`Priors` and `inits` must be list of the same length"
         )
 
-        if (length(functions) > 1) {
-            functions <- paste_str(functions)
-        }
-        if (length(data) > 1) {
-            data <- paste_str(data)
-        }
-        if (length(parameters) > 1) {
-            parameters <- paste_str(parameters)
-        }
-        if (length(transformed_parameters) > 1) {
-            transformed_parameters <- paste_str(transformed_parameters)
-        }
-        if (length(generated_quantities) > 1) {
-            generated_quantities <- paste_str(generated_quantities)
-        }
+
+        functions <- paste_str(functions)
+
+        data <- paste_str(data)
+
+        parameters <- paste_str(parameters)
+
+        transformed_parameters <- paste_str(transformed_parameters)
+
+        generated_quantities <- paste_str(generated_quantities)
+
 
 
         callNextMethod(
@@ -107,19 +101,19 @@ setMethod(
     }
 )
 
-
 #' paste_vector Returns a single string from a vector of strings
 #' @param vec A vector of stings representing stan code.
 #' @export
 paste_str <- function(vec) {
-
-    # check if all elements of vector include ";"
-    if (all(grepl(";", vec, fixed = TRUE))) {
-        paste0(paste0(vec, collapse = "\\n "), "\\n")
-    } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
-        paste0(paste0(vec, collapse = ";\\n "), ";\\n")
-    } else {
-        stop("Remove all semicolons")
+    if (length(vec) > 1) {
+        # check if all elements of vector include ";"
+        if (all(grepl(";", vec, fixed = TRUE))) {
+            paste0(paste0(vec, collapse = "\\n "), "\\n")
+        } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
+            paste0(paste0(vec, collapse = ";\\n "), ";\\n")
+        } else {
+            stop("Remove all semicolons")
+        }
     }
 }
 
@@ -136,7 +130,6 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-
         block_map <- list(
             functions = "functions",
             data = "data",
@@ -163,6 +156,3 @@ setMethod(
         return(paste0(block_strings, collapse = ""))
     }
 )
-
-
-
