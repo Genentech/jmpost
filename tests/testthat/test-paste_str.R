@@ -1,22 +1,33 @@
-test_that("paste_str functionality", {
+test_that("Basic functionality paste_str works as expected", {
 
-    test1 <- paste_str(vec =  c("bla", "bla2"))
-    solution <- "bla;\\n bla2;\\n"
-    expect_equal(test1, solution)
+    actual <- paste_str(c("bla", "bla2"))
+    expected <- "bla;\\n bla2;\\n"
+    expect_equal(actual, expected)
 
+
+    actual <- paste_str(c("bla;", "bla2;"))
+    expected <- "bla;\\n bla2;\\n"
+    expect_equal(actual, expected)
+
+
+    actual <- paste_str(c("bla;", "bla2;", "gfdaf;"))
+    expect_equal(length(actual), 1)
+
+
+    string <- c(
+        "real beta;\\n real sigma",
+    )
+    actual <- paste_str(c("real beta;\\n real sigma"))
+    expected <- "real beta;\\n real sigma;\\n"
+    expect_equal(actual, expected)
+
+
+    string <- c(
+        "real beta;\\n real sigma",
+        "real gamma"
+    )
+    actual <- paste_str(string)
+    expected <- "real beta;\\n real sigma;\\n real gamma;\\n"
+    expect_equal(actual, expected)
 })
 
-test_that("paste_str functionality 2", {
-
-    test1 <- paste_str(vec =  c("bla;", "bla2;"))
-    solution <- "bla;\\n bla2;\\n"
-    expect_equal(test1, solution)
-
-})
-
-test_that("paste_str functionality 3", {
-
-    test1 <- paste_str(vec =  c("bla;", "bla2;", "gfdaf;"))
-    expect_equal(length(test1), 1)
-
-})
