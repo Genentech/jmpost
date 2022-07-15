@@ -3,8 +3,6 @@
 export(getLink)
 export(getLinkDSLD)
 export(getLinkTTG)
-export(long_prior)
-export(os_prior)
 export(paste_str)
 export(read_stan_part)
 exportClasses(LongModel)
