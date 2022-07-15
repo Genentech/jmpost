@@ -157,3 +157,29 @@ setMethod(
         return(paste0(block_strings, collapse = ""))
     }
 )
+
+#' merge
+#' @param x First StanModule
+#' @param y Second StanModule
+#' @export
+setGeneric(
+    "merge",
+    function(x, y) standardGeneric("merge")
+)
+
+
+setMethod(
+    f = "merge",
+    signature = "StanModule",
+    definition = function(x, y) {
+        StanModule(
+            functions = paste0(x@functions, "\\n ", y@functions, "\\n "),
+            data = paste0(x@data, "\\n ", y@data, "\\n "),
+            parameters = paste0(x@parameters, "\\n ", y@parameters, "\\n "),
+            transformed_parameters = paste0(x@transformed_parameters, "\\n ", y@transformed_parameters, "\\n "),
+            priors = append(x@priors, y@priors),
+            generated_quantities = paste0(x@generated_quantities, "\\n ", y@generated_quantities, "\\n "),
+            inits = append(x@inits, y@inits)
+        )
+    }
+)
