@@ -29,8 +29,7 @@ StanModule <- setClass(
 #' @export
 read_stan_part <- function(file) {
     if (file.exists(file)) {
-        absolute_filename <- file
-        out <- readLines(absolute_filename)
+        out <- readLines(file)
     } else if (file.exists(filpath <- system.file("stanparts", file, package = "jmpost"))) {
         absolute_filename <- filpath
 
