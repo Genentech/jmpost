@@ -10,6 +10,7 @@
 \item{x}{A \code{StanModule} object}
 }
 \description{
-Collapses a StanModule object down into a single string inserting the required block fences
+Collapses a StanModule object down into a single string inserting the required block
+fences
 i.e. \verb{data \{ ... \}}
 }

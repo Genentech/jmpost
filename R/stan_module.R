@@ -23,23 +23,20 @@ StanModule <- setClass(
 )
 
 
-
 #' read_stan_part returns stan code as a character.
-#' @param file Character, either the absolute path of a stan file, or the name of the stan file in the package directory or the stan code as a string.
+#' 
+#' @param file Character, either the absolute path of a stan file, or the name of the stan
+#' file in the package directory or the stan code as a string.
 #' @export
-read_stan_part <- function(file) {
-    filpath <- system.file("stanparts", file, package = "jmpost")
-
-    if (file.exists(file)) {
-        out <- readLines(file)
-    } else if (file.exists(filpath)) {
-        absolute_filename <- filpath
-
-        out <- readLines(absolute_filename)
+read_stan <- function(string) {
+    system_file <- system.file("stanparts", string, package = "jmpost")
+    if (file.exists(string)) {
+        out <- readLines(string)
+    } else if (file.exists(system_file)) {
+        out <- readLines(system_file)
     } else {
-        out <- file
+        out <- string
     }
-
     return(out)
 }
 
@@ -50,22 +47,27 @@ read_stan_part <- function(file) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(.Object,
-                          ...,
-                          functions = "",
-                          data = "",
-                          parameters = "",
-                          transformed_parameters = "",
-                          generated_quantities = "",
-                          priors = list(),
-                          inits = list()) {
+    definition = function(
+        .Object,
+        ...,
+        functions = "",
+        data = "",
+        parameters = "",
+        transformed_parameters = "",
+        generated_quantities = "",
+        priors = list(),
+        inits = list()
+    ) {
         assert_that(
             is.character(functions),
             is.character(data),
             is.character(parameters),
             is.character(transformed_parameters),
             is.character(generated_quantities),
-            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `generated_quantities` must be character vectors"
+            msg = paste(
+                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
+                "`generated_quantities` must be character vectors"
+            )
         )
 
         assert_that(
@@ -78,38 +80,47 @@ setMethod(
         callNextMethod(
             .Object,
             ...,
-            functions = read_stan_part(functions),
-            data = read_stan_part(data),
-            parameters = read_stan_part(parameters),
-            transformed_parameters = read_stan_part(transformed_parameters),
+            functions = vapply(
+                X = functions,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            data = vapply(
+                X = data,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            parameters = vapply(
+                X = parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            transformed_parameters = vapply(
+                X = transformed_parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            generated_quantities = vapply(
+                X = generated_quantities,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
             priors = priors,
-            generated_quantities = read_stan_part(generated_quantities),
             inits = inits
         )
     }
 )
 
-#' paste_vector Returns a single string from a vector of strings
-#' @param vec A vector of stings representing stan code.
-#' @export
-paste_str <- function(vec) {
-    if (length(vec) > 1) {
-        # check if all elements of vector include ";"
-        if (all(grepl(";", vec, fixed = TRUE))) {
-            paste0(paste0(vec, collapse = "\\n "), "\\n")
-        } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
-            paste0(paste0(vec, collapse = ";\\n "), ";\\n")
-        } else {
-            stop("Remove all semicolons")
-        }
-    }
-}
-
-
 
 #' Convert a StanModule object into stan code
 #'
-#' Collapses a StanModule object down into a single string inserting the required block fences
+#' Collapses a StanModule object down into a single string inserting the required block
+#' fences
 #' i.e. `data { ... }`
 #'
 #' @param x A `StanModule` object
@@ -131,7 +142,7 @@ setMethod(
             names(block_map),
             function(id) {
                 char <- slot(x, id)
-                if (!is.character(char)) {
+                if (!is.character(char) || length(char) > 1) {
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
@@ -145,9 +156,13 @@ setMethod(
     }
 )
 
-#' merge
-#' @param x First StanModule
-#' @param y Second StanModule
+
+#' Merge
+#' 
+#' Generic function to collapse two similar objects into a single combined object
+#' 
+#' @param x An Object
+#' @param y An Object with identical class to `x`
 #' @export
 setGeneric(
     "merge",
@@ -155,19 +170,44 @@ setGeneric(
 )
 
 
+
+#' @rdname merge
 #' @export
 setMethod(
     f = "merge",
-    signature = "StanModule",
+    signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
-        StanModule(
-            functions = c(x@functions, y@functions),
-            data = c(x@data, y@data),
-            parameters = c(x@parameters, y@parameters),
-            transformed_parameters = c(x@transformed_parameters, y@transformed_parameters),
-            priors = append(x@priors, y@priors),
-            generated_quantities = c(x@generated_quantities, y@generated_quantities),
-            inits = append(x@inits, y@inits)
+
+        pars <- c(
+            "functions", "data", "parameters",
+            "transformed_parameters", "generated_quantities"
         )
+
+        args <- lapply(
+            pars,
+            function(par) remove_blank_strings(c(slot(x, par), slot(y, par)))
+        )
+
+        names(args) <- pars
+
+        args$priors <- append(x@priors, y@priors)
+        args$inits <- append(x@inits, y@inits)
+
+        do.call(StanModule, args)
     }
 )
+
+
+#' Removes blank strings from a string vector
+#' 
+#' Function removes blank strings from a string vector
+#' If all strings are blank then it will just return a single blank
+#' 
+#' @param x a vector of string
+remove_blank_strings <- function(x) {
+    if (all(x == "")) {
+        return("")
+    }
+    return(x[!x == ""])
+}
+

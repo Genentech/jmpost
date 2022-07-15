@@ -2,15 +2,18 @@
 % Please edit documentation in R/stan_module.R
 \name{merge}
 \alias{merge}
-\title{merge}
+\alias{merge,StanModule,StanModule-method}
+\title{Merge}
 \usage{
 merge(x, y, ...)
+
+\S4method{merge}{StanModule,StanModule}(x, y)
 }
 \arguments{
-\item{x}{First StanModule}
+\item{x}{An Object}
 
-\item{y}{Second StanModule}
+\item{y}{An Object with identical class to \code{x}}
 }
 \description{
-merge
+Generic function to collapse two similar objects into a single combined object
 }
