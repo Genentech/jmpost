@@ -4,7 +4,21 @@
 \name{StanModule-class}
 \alias{StanModule-class}
 \alias{StanModule}
+\alias{initialize,StanModule-method}
 \title{StanAll class object}
+\usage{
+\S4method{initialize}{StanModule}(
+  .Object,
+  ...,
+  functions = "",
+  data = "",
+  parameters = "",
+  transformed_parameters = "",
+  generated_quantities = "",
+  priors = list(),
+  inits = list()
+)
+}
 \description{
 StanAll class object
 }

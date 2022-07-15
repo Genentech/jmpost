@@ -31,12 +31,8 @@ read_stan_part <- function(file) {
     if (file.exists(file)) {
         absolute_filename <- file
         out <- readLines(absolute_filename)
-    } else if (file.exists(system.file("stanparts", file, package = "jmpost"))) {
-        absolute_filename <- system.file(
-            "stanparts",
-            file,
-            package = "jmpost"
-        )
+    } else if (file.exists(filpath <- system.file("stanparts", file, package = "jmpost"))) {
+        absolute_filename <- filpath
 
         out <- readLines(absolute_filename)
     } else {
@@ -48,13 +44,7 @@ read_stan_part <- function(file) {
 
 
 #' @importFrom assertthat assert_that
-#' @param functions TODO
-#' @param data TODO
-#' @param parameters TODO
-#' @param transformed_parameters TODO
-#' @param priors TODO
-#' @param generated_quantities TODO
-#' @param inits TODO
+#' @rdname StanModule-class
 #' @export
 setMethod(
     f = "initialize",
