@@ -28,9 +28,11 @@ StanModule <- setClass(
 #' @param file Character, either the absolute path of a stan file, or the name of the stan file in the package directory or the stan code as a string.
 #' @export
 read_stan_part <- function(file) {
+    filpath <- system.file("stanparts", file, package = "jmpost")
+
     if (file.exists(file)) {
         out <- readLines(file)
-    } else if (file.exists(filpath <- system.file("stanparts", file, package = "jmpost"))) {
+    } else if (file.exists(filpath)) {
         absolute_filename <- filpath
 
         out <- readLines(absolute_filename)
