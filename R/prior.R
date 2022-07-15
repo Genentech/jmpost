@@ -1,4 +1,4 @@
-#### os_model####
+#' os_prior A list of prior densities for the overall survival model.
 #' @export
 os_prior <- function(p = "gamma(2, 0.5)",
                      `1/lambda` = "lognormal(0, 5)",
@@ -6,9 +6,7 @@ os_prior <- function(p = "gamma(2, 0.5)",
     as.list(environment())
 }
 
-
-
-#### long_model####
+#' long_prior A list of prior densities for the longitudinal model.
 #' @export
 long_prior <- function(mean_mu_ks = "lognormal(1,0.5)",
                        mean_mu_kg = "lognormal(-0.36,1)",
