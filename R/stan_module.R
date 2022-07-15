@@ -75,19 +75,6 @@ setMethod(
             msg = "`Priors` and `inits` must be list of the same length"
         )
 
-
-        functions <- paste_str(functions)
-
-        data <- paste_str(data)
-
-        parameters <- paste_str(parameters)
-
-        transformed_parameters <- paste_str(transformed_parameters)
-
-        generated_quantities <- paste_str(generated_quantities)
-
-
-
         callNextMethod(
             .Object,
             ...,
@@ -168,17 +155,18 @@ setGeneric(
 )
 
 
+#' @export
 setMethod(
     f = "merge",
     signature = "StanModule",
     definition = function(x, y) {
         StanModule(
-            functions = paste0(x@functions, "\\n ", y@functions, "\\n "),
-            data = paste0(x@data, "\\n ", y@data, "\\n "),
-            parameters = paste0(x@parameters, "\\n ", y@parameters, "\\n "),
-            transformed_parameters = paste0(x@transformed_parameters, "\\n ", y@transformed_parameters, "\\n "),
+            functions = c(x@functions, y@functions),
+            data = c(x@data, y@data),
+            parameters = c(x@parameters, y@parameters),
+            transformed_parameters = c(x@transformed_parameters, y@transformed_parameters),
             priors = append(x@priors, y@priors),
-            generated_quantities = paste0(x@generated_quantities, "\\n ", y@generated_quantities, "\\n "),
+            generated_quantities = c(x@generated_quantities, y@generated_quantities),
             inits = append(x@inits, y@inits)
         )
     }
