@@ -2,7 +2,7 @@
 % Please edit documentation in R/stan_module.R
 \name{read_stan}
 \alias{read_stan}
-\title{read_stan_part returns stan code as a character.}
+\title{read_stan returns stan code as a character.}
 \usage{
 read_stan(string)
 }
@@ -11,5 +11,5 @@ read_stan(string)
 file in the package directory or the stan code as a string.}
 }
 \description{
-read_stan_part returns stan code as a character.
+read_stan returns stan code as a character.
 }
