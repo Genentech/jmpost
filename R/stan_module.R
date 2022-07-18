@@ -23,8 +23,8 @@ StanModule <- setClass(
 )
 
 
-#' read_stan_part returns stan code as a character.
-#' 
+#' read_stan returns stan code as a character.
+#'
 #' @param file Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 #' @export
@@ -73,8 +73,7 @@ setMethod(
         assert_that(
             is.list(priors),
             is.list(inits),
-            length(inits) == length(priors),
-            msg = "`Priors` and `inits` must be list of the same length"
+            msg = "`Priors` and `inits` must be lists"
         )
 
         callNextMethod(
@@ -158,9 +157,9 @@ setMethod(
 
 
 #' Merge
-#' 
+#'
 #' Generic function to collapse two similar objects into a single combined object
-#' 
+#'
 #' @param x An Object
 #' @param y An Object with identical class to `x`
 #' @export
@@ -199,10 +198,10 @@ setMethod(
 
 
 #' Removes blank strings from a string vector
-#' 
+#'
 #' Function removes blank strings from a string vector
 #' If all strings are blank then it will just return a single blank
-#' 
+#'
 #' @param x a vector of string
 remove_blank_strings <- function(x) {
     if (all(x == "")) {
