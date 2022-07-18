@@ -90,6 +90,8 @@ sim_data_2$os$ARM <- sim_data_2$os$trt
 sim_data <- list( os = rbind(sim_data_1$os, sim_data_2$os),
                   sld = rbind(sim_data_1$sld, sim_data_2$sld))
 
+sim_data$os$time <- sim_data$os$time / 365
+sim_data$sld$time <- sim_data$sld$time / 365
 
 pre_data <- jm_data(sld = sim_data$sld,
                     os = sim_data$os,
@@ -114,6 +116,13 @@ my_mcmc_options <- jmpost:::mcmc_options(chains = 4,
                                          max_treedepth = 10,
                                          adapt_delta = .9,
                                          gauss_legendre = gauss_legendre())
+
+try_dat <- data_prep(object = pre_data,
+                     os_formula = ~ -1 + age + sex,
+                     options = my_mcmc_options,
+                     index_save_ind = patients_ids,
+                     predictions = seq(from = 0.001, to = 2, length = 100))
+try_dat@data
 
 
 my_mjpost <- jm_post(object = model_v3,
