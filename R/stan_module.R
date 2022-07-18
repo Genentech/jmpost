@@ -42,6 +42,7 @@ read_stan <- function(string) {
 
 
 #' @importFrom assertthat assert_that
+#' @importFrom assertthat validate_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -74,6 +75,11 @@ setMethod(
             is.list(priors),
             is.list(inits),
             msg = "`Priors` and `inits` must be lists"
+        )
+
+        validate_that(
+            length(inits) == length(priors),
+            msg = "Lengths of inits and priors differ"
         )
 
         callNextMethod(
