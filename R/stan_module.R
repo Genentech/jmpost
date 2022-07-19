@@ -77,10 +77,6 @@ setMethod(
             msg = "`Priors` and `inits` must be lists"
         )
 
-        validate_that(
-            length(inits) == length(priors),
-            msg = "Lengths of inits and priors differ"
-        )
 
         callNextMethod(
             .Object,
