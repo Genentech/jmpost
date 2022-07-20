@@ -66,7 +66,7 @@ setMethod(
         )
         newOS@stan@functions <- str_replace(
             pattern = "<Link_pop_log_haz>",
-            replacement = link@population_contributions
+            replacement = link@stan@generated_quantities
         )
 
         newOS@stan@prior <- append(osmod@stan@prior, link@stan@prior)
@@ -75,23 +75,23 @@ setMethod(
         newOS@stan@parameters <- str_replace(
             string = osmod@stan@parameters,
             pattern = "<link_parameters>",
-            replacement = link@stan@parameters
+            replacement = link@parameters
         )
 
         newOS@stan@transformed_parameters <- str_replace(
             string = osmod@stan@transformed_parameters,
             pattern = "<link_log_surv>",
-            replacement = str_remove_all(link@arguments, "real")
+            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
         )
         newOS@stan@transformed_parameters <- str_replace(
             pattern = "<link_log_lik>",
-            replacement = str_remove_all(link@arguments, "real")
+            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
         )
 
         newOS@stan@generated_quantities <- str_replace_all(
             string = osmod@stan@generated_quantities,
             pattern = "<link_arguments_as_par>",
-            replacement = str_remove_all(link@arguments, "real")
+            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
         )
 
 
