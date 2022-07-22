@@ -14,6 +14,61 @@ OsModel <- setClass(
 )
 
 
+#'  Log-logistic overall survival
+#'
+#' Description - Log-logistic overall survival model object creator
+#'
+#' @export
+LogLogisticOs <- setClass(
+    Class = "LogLogisticOs",
+    contains = "OsModel"
+)
+
+
+#' Title - TODO
+#'
+#' Description
+#'
+#' @importFrom assertthat assert_that
+#' @export
+setMethod(
+    f = "initialize",
+    signature = "LogLogisticOs",
+    definition = function(.Object,
+                          ...,
+                          functions = "os_functions.stan",
+                          data = "os_data.stan",
+                          parameters = "os_parameters.stan",
+                          transformed_parameters = "os_transformed_parameters.stan",
+                          generated_quantities = "os_generated_quantities.stan",
+                          priors = os_prior(),
+                          inits = list(),
+                          templated) {
+
+
+        callNextMethod(
+            .Object,
+            ...,
+            OsModel = OsModel(stan = StanModule(functions = functions,
+                                                data = data,
+                                                parameters = parameters,
+                                                transformed_parameters = transformed_parameters,
+                                                generated_quantities = generated_quantities,
+                                                priors = priors,
+                                                inits = inits),
+                              templated = templated)
+
+        )
+    }
+)
+
+
+
+
+
+
+
+
 #' Parametrize TemplatedStanOs object with the selected Hazardlink
 #' @param osmod TemplatedStanOs object
 #' @param link HazardLink object
