@@ -10,29 +10,14 @@
 \S4method{initialize}{StanModule}(
   .Object,
   ...,
-  functions,
-  data,
-  parameters,
-  transformed_parameters,
-  priors,
-  generated_quantities,
-  inits
+  functions = "",
+  data = "",
+  parameters = "",
+  transformed_parameters = "",
+  generated_quantities = "",
+  priors = list(),
+  inits = list()
 )
-}
-\arguments{
-\item{functions}{TODO}
-
-\item{data}{TODO}
-
-\item{parameters}{TODO}
-
-\item{transformed_parameters}{TODO}
-
-\item{priors}{TODO}
-
-\item{generated_quantities}{TODO}
-
-\item{inits}{TODO}
 }
 \description{
 StanAll class object
