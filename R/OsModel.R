@@ -25,6 +25,31 @@ LogLogisticOs <- setClass(
 )
 
 
+
+#' @export
+LogLogisticModule <- function(functions = "os_functions.stan",
+                              data = "os_data.stan",
+                              parameters = "os_parameters.stan",
+                              transformed_parameters = "os_transformed_parameters.stan",
+                              generated_quantities = "os_generated_quantities.stan",
+                              priors = os_prior(),
+                              inits = list()) {
+    StanModule(
+        functions = functions,
+        data = data,
+        parameters = parameters,
+        transformed_parameters = transformed_parameters,
+        generated_quantities = generated_quantities,
+        priors = priors,
+        inits = inits
+    )
+}
+
+
+
+
+
+
 #' Title - TODO
 #'
 #' Description
@@ -35,29 +60,15 @@ setMethod(
     f = "initialize",
     signature = "LogLogisticOs",
     definition = function(.Object,
-                          ...,
-                          functions = "os_functions.stan",
-                          data = "os_data.stan",
-                          parameters = "os_parameters.stan",
-                          transformed_parameters = "os_transformed_parameters.stan",
-                          generated_quantities = "os_generated_quantities.stan",
-                          priors = os_prior(),
-                          inits = list(),
-                          templated) {
-
-
+                          ..., stan = LogLogisticModule(), templated) {
+        os_mod <- OsModel(
+            stan = stan,
+            templated = templated
+        )
         callNextMethod(
             .Object,
             ...,
-            OsModel = OsModel(stan = StanModule(functions = functions,
-                                                data = data,
-                                                parameters = parameters,
-                                                transformed_parameters = transformed_parameters,
-                                                generated_quantities = generated_quantities,
-                                                priors = priors,
-                                                inits = inits),
-                              templated = templated)
-
+            OsModel = os_mod
         )
     }
 )
@@ -113,7 +124,7 @@ setMethod(
 
         newOS@stan@functions <- str_replace(
             pattern = "<link_log_hazard_contribution>",
-            replacement = paste0(link@parameter,  link@contribution)
+            replacement = paste0(link@parameter, link@contribution)
         )
         newOS@stan@functions <- str_replace(
             pattern = "<link_arguments_as_par>",
@@ -133,17 +144,17 @@ setMethod(
         newOS@stan@transformed_parameters <- str_replace(
             string = osmod@stan@transformed_parameters,
             pattern = "<link_log_surv>",
-            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
+            replacement = paste0(paste0(link@parameter, collapse = ","), ",")
         )
         newOS@stan@transformed_parameters <- str_replace(
             pattern = "<link_log_lik>",
-            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
+            replacement = paste0(paste0(link@parameter, collapse = ","), ",")
         )
 
         newOS@stan@generated_quantities <- str_replace_all(
             string = osmod@stan@generated_quantities,
             pattern = "<link_arguments_as_par>",
-            replacement = paste0(paste0(link@parameter,collapse = ","), ",")
+            replacement = paste0(paste0(link@parameter, collapse = ","), ",")
         )
 
 
