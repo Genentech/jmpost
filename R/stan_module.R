@@ -23,105 +23,191 @@ StanModule <- setClass(
 )
 
 
-
-#' read_stan_part returns stan code as a character.
-#' @param file Character, either the absolute path of a stan file, or the name of the stan file in the package directory or the stan code as a string.
+#' read_stan returns stan code as a character.
+#'
+#' @param file Character, either the absolute path of a stan file, or the name of the stan
+#' file in the package directory or the stan code as a string.
 #' @export
-read_stan_part <- function(file) {
-    if (file.exists(file)) {
-        absolute_filename <- file
-        out <- readLines(absolute_filename)
-    } else if (file.exists(system.file("stanparts", file, package = "jmpost"))) {
-        absolute_filename <- system.file(
-            "stanparts",
-            file,
-            package = "jmpost"
-        )
-
-        out <- readLines(absolute_filename)
+read_stan <- function(string) {
+    system_file <- system.file("stanparts", string, package = "jmpost")
+    if (file.exists(string)) {
+        out <- readLines(string)
+    } else if (file.exists(system_file)) {
+        out <- readLines(system_file)
     } else {
-        out <- file
+        out <- string
     }
-
     return(out)
 }
 
 
 #' @importFrom assertthat assert_that
-#' @param functions TODO
-#' @param data TODO
-#' @param parameters TODO
-#' @param transformed_parameters TODO
-#' @param priors TODO
-#' @param generated_quantities TODO
-#' @param inits TODO
 #' @rdname StanModule-class
 #' @export
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(.Object, ..., functions, data,
-                          parameters, transformed_parameters,
-                          priors, generated_quantities, inits) {
+    definition = function(
+        .Object,
+        ...,
+        functions = "",
+        data = "",
+        parameters = "",
+        transformed_parameters = "",
+        generated_quantities = "",
+        priors = list(),
+        inits = list()
+    ) {
         assert_that(
             is.character(functions),
             is.character(data),
             is.character(parameters),
             is.character(transformed_parameters),
             is.character(generated_quantities),
-            msg = "`Functions`, `data`, `parameters`, `transformed_parameters` and `generated_quantities` must be character vectors"
+            msg = paste(
+                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
+                "`generated_quantities` must be character vectors"
+            )
         )
 
         assert_that(
             is.list(priors),
             is.list(inits),
-            length(inits) == length(priors),
-            msg = "`Priors` and `inits` must be list of the same length"
+            msg = "`Priors` and `inits` must be lists"
         )
-
-        if (length(functions) > 1) {
-            functions <- paste_str(functions)
-        }
-        if (length(data) > 1) {
-            data <- paste_str(data)
-        }
-        if (length(parameters) > 1) {
-            parameters <- paste_str(parameters)
-        }
-        if (length(transformed_parameters) > 1) {
-            transformed_parameters <- paste_str(transformed_parameters)
-        }
-        if (length(generated_quantities) > 1) {
-            generated_quantities <- paste_str(generated_quantities)
-        }
 
 
         callNextMethod(
             .Object,
             ...,
-            functions = read_stan_part(functions),
-            data = read_stan_part(data),
-            parameters = read_stan_part(parameters),
-            transformed_parameters = read_stan_part(transformed_parameters),
+            functions = vapply(
+                X = functions,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            data = vapply(
+                X = data,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            parameters = vapply(
+                X = parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            transformed_parameters = vapply(
+                X = transformed_parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            generated_quantities = vapply(
+                X = generated_quantities,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
             priors = priors,
-            generated_quantities = read_stan_part(generated_quantities),
             inits = inits
         )
     }
 )
 
 
-#' paste_vector Returns a single string from a vector of strings
-#' @param vec A vector of stings representing stan code.
+#' Convert a StanModule object into stan code
+#'
+#' Collapses a StanModule object down into a single string inserting the required block
+#' fences
+#' i.e. `data { ... }`
+#'
+#' @param x A `StanModule` object
 #' @export
-paste_str <- function(vec) {
+setMethod(
+    f = "as.character",
+    signature = "StanModule",
+    definition = function(x) {
+        block_map <- list(
+            functions = "functions",
+            data = "data",
+            parameters = "parameters",
+            transformed_parameters = "transformed parameters",
+            priors = "model",
+            generated_quantities = "generated quantities"
+        )
 
-    # check if all elements of vector include ";"
-    if (all(grepl(";", vec, fixed = TRUE) == TRUE)) {
-        paste0(paste0(vec, collapse = "\\n "), "\\n")
-    } else if (all(grepl(";", vec, fixed = TRUE) == FALSE)) {
-        paste0(paste0(vec, collapse = ";\\n "), ";\\n")
-    } else {
-        stop("Remove all semicolons")
+        block_strings <- lapply(
+            names(block_map),
+            function(id) {
+                char <- slot(x, id)
+                if (!is.character(char) || length(char) > 1) {
+                    char <- paste0(char, collapse = "\n")
+                }
+                if (nchar(char) >= 1) {
+                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                } else {
+                    return("")
+                }
+            }
+        )
+        return(paste0(block_strings, collapse = ""))
     }
+)
+
+
+#' Merge
+#'
+#' Generic function to collapse two similar objects into a single combined object
+#'
+#' @param x An Object
+#' @param y An Object with identical class to `x`
+#' @export
+setGeneric(
+    "merge",
+    function(x, y) standardGeneric("merge")
+)
+
+
+
+#' @rdname merge
+#' @export
+setMethod(
+    f = "merge",
+    signature = c("StanModule", "StanModule"),
+    definition = function(x, y) {
+
+        pars <- c(
+            "functions", "data", "parameters",
+            "transformed_parameters", "generated_quantities"
+        )
+
+        args <- lapply(
+            pars,
+            function(par) remove_blank_strings(c(slot(x, par), slot(y, par)))
+        )
+
+        names(args) <- pars
+
+        args$priors <- append(x@priors, y@priors)
+        args$inits <- append(x@inits, y@inits)
+
+        do.call(StanModule, args)
+    }
+)
+
+
+#' Removes blank strings from a string vector
+#'
+#' Function removes blank strings from a string vector
+#' If all strings are blank then it will just return a single blank
+#'
+#' @param x a vector of string
+remove_blank_strings <- function(x) {
+    if (all(x == "")) {
+        return("")
+    }
+    return(x[!x == ""])
 }
+
