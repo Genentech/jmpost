@@ -2,7 +2,7 @@
   matrix[n_arms, n_os_pred_times] mean_conditional_survival;
   matrix[n_arms, n_os_pred_times] mean_hazard;
   matrix[n_arms, n_os_pred_times] mean_log_hazard;
-  matrix[n_arms, n_os_pred_times] adjusted_pop_log_hazard;
+
 
   matrix[n_save_individual, n_os_pred_times] save_ind_unconditional_survival;
   matrix[n_save_individual, n_os_pred_times] save_ind_conditional_survival;
@@ -59,10 +59,6 @@
 
       mean_hazard[j] =
       row_means(exp(ind_log_hazard[segment(index_per_arm, index_pos, n_index_per_arm[j])]));
-
-      adjusted_pop_log_hazard[j] = pop_log_hazard(os_pred_times,
-      <link_arguments_as_par>
-      mu_bsld[arm_to_study_index[j]], mu_ks[j], mu_kg[j], mu_phi[j]);
 
       index_pos = index_pos + n_index_per_arm[j];
     }

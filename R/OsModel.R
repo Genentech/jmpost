@@ -9,7 +9,7 @@ OsModel <- setClass(
     Class = "OsModel",
     representation = list(
         stan = "StanModule",
-        templated = TRUE
+        templated = "logical"
     )
 )
 
@@ -64,10 +64,7 @@ setMethod(
             pattern = "<link_arguments_as_par>",
             replacement = str_remove_all(link@arguments, "real")
         )
-        newOS@stan@functions <- str_replace(
-            pattern = "<Link_pop_log_haz>",
-            replacement = link@stan@generated_quantities
-        )
+
 
         newOS@stan@prior <- append(osmod@stan@prior, link@stan@prior)
         newOS@stan@inits <- append(osmod@stan@inits, link@stan@inits)

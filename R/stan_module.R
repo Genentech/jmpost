@@ -48,17 +48,15 @@ read_stan <- function(string) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
         assert_that(
             is.character(functions),
             is.character(data),
@@ -178,7 +176,6 @@ setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
-
         pars <- c(
             "functions", "data", "parameters",
             "transformed_parameters", "generated_quantities"
@@ -211,4 +208,3 @@ remove_blank_strings <- function(x) {
     }
     return(x[!x == ""])
 }
-

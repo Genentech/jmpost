@@ -64,18 +64,6 @@
     return result;
   }
 
-
-
-  row_vector pop_log_hazard(row_vector time,
-  <link_arguments>
-  real mu_bsld, real mu_ks, real mu_kg, real mu_phi) {
-
-    row_vector[cols(time)] pop_dtsld = dtsld_for_hr(time, mu_bsld, mu_ks, mu_kg, mu_phi);
-    real pop_ttg = ttg_for_hr(mu_ks, mu_kg, mu_phi);
-    row_vector[cols(time)] result = 0 <Link_pop_log_haz>;
-    return result;
-  }
-
   row_vector get_step_survival(real death_time, row_vector times) {
     row_vector[cols(times)] result;
     for (i in 1:cols(times)) {
