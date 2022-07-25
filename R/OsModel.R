@@ -33,15 +33,21 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               transformed_parameters = "os_transformed_parameters.stan",
                               generated_quantities = "os_generated_quantities.stan",
                               priors = os_prior(),
-                              inits = list()) {
-    StanModule(
-        functions = functions,
-        data = data,
-        parameters = parameters,
-        transformed_parameters = transformed_parameters,
-        generated_quantities = generated_quantities,
-        priors = priors,
-        inits = inits
+                              inits = list(),
+                              templated = TRUE) {
+    st_mod <- StanModule(
+            functions = functions,
+            data = data,
+            parameters = parameters,
+            transformed_parameters = transformed_parameters,
+            generated_quantities = generated_quantities,
+            priors = priors,
+            inits = inits
+        )
+
+    OsModel(
+        stan = st_mod,
+        templated = templated
     )
 }
 
@@ -61,14 +67,11 @@ setMethod(
     signature = "LogLogisticOs",
     definition = function(.Object,
                           ..., stan = LogLogisticModule(), templated) {
-        os_mod <- OsModel(
-            stan = stan,
-            templated = templated
-        )
         callNextMethod(
             .Object,
             ...,
-            OsModel = os_mod
+            stan = stan@stan,
+            templated = stan@templated
         )
     }
 )
