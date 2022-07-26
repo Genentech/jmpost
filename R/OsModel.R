@@ -118,7 +118,7 @@ setMethod(
         newOS@stan@functions <- str_replace_all(
             string = osmod@stan@functions,
             pattern = "<link_arguments>",
-            replacement = paste0("real ", link@parameter, ",")
+            replacement = paste0("real ", link@parameters, ",")
         )
 
         newOS@stan@functions <- paste0(
@@ -128,12 +128,12 @@ setMethod(
         newOS@stan@functions <- str_replace(
             string = osmod@stan@functions,
             pattern = "<link_log_hazard_contribution>",
-            replacement = paste0(link@parameter, link@contribution)
+            replacement = paste0(link@parameters, link@contribution)
         )
         newOS@stan@functions <- str_replace(
             string = osmod@stan@functions,
             pattern = "<link_arguments_as_par>",
-            replacement = paste0(link@parameter)
+            replacement = paste0(link@parameters)
         )
 
 
@@ -149,13 +149,13 @@ setMethod(
         newOS@stan@transformed_parameters <- str_replace(
             string = osmod@stan@transformed_parameters,
             pattern = "<link_log_surv>",
-            replacement = paste0(paste0(link@parameter, collapse = ","), ",")
+            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
         )
 
         newOS@stan@generated_quantities <- str_replace_all(
             string = osmod@stan@generated_quantities,
             pattern = "<link_arguments_as_par>",
-            replacement = paste0(paste0(link@parameter, collapse = ","), ",")
+            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
         )
 
 
