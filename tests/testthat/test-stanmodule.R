@@ -126,3 +126,44 @@ test_that("as.character works for the list objects", {
     expect_equal(actual, expected)
 
 })
+
+
+test_that("loading multiple lines from a file works as expected", {
+    temp_1 <- tempfile()
+    temp_2 <- tempfile()
+
+    sink(temp_1)
+    cat("mystring; mystring2\nmystring3;\nmystring4;\n")
+    sink()
+
+    sink(temp_2)
+    cat("more strings\n")
+    sink()
+
+    actual <- StanModule(
+        generated_quantities = c(temp_1, temp_2)
+    )
+
+    expect_equal(
+        actual@generated_quantities,
+        c("mystring; mystring2\nmystring3;\nmystring4;", "more strings")
+    )
+
+
+    actual_char <- as.character(actual)
+    expected <- paste0(
+        c(
+            "",
+            "generated quantities {",
+            "mystring; mystring2",
+            "mystring3;",
+            "mystring4;",
+            "more strings",
+            "}",
+            ""
+        ),
+        collapse = "\n"
+    )
+    expect_equal(actual_char, expected)
+
+})
