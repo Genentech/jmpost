@@ -31,9 +31,9 @@ StanModule <- setClass(
 #' @export
 read_stan <- function(string) {
     system_file <- system.file("stanparts", string, package = "jmpost")
-    if (file.exists(string)) {
+    if (is_file(string)) {
         out <- read_file(string)
-    } else if (file.exists(system_file)) {
+    } else if (is_file(system_file)) {
         out <- read_file(system_file)
     } else {
         out <- string
@@ -223,4 +223,27 @@ remove_blank_strings <- function(x) {
 #'
 read_file <- function(filename) {
     paste0(readLines(filename), collapse = "\n")
+}
+
+
+#' Is string a valid file
+#' 
+#' A utility function to check if a string is a valid file or not.
+#' Used to help address short comings of file.exists that will return TRUE
+#' for a directory as well as a file
+#' 
+#' @param filename A character string
+is_file <- function(filename = NULL) {
+    if (is.null(filename)) {
+        return(FALSE)
+    }
+    assert_that(
+        is.character(filename),
+        length(filename) == 1,
+        msg = "`filename` must be a length 1 character"
+    )
+    if (is.na(filename)) {
+        return(FALSE)
+    }
+    return(file.exists(filename) & !dir.exists(filename))
 }

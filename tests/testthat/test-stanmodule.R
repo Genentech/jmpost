@@ -167,3 +167,21 @@ test_that("loading multiple lines from a file works as expected", {
     expect_equal(actual_char, expected)
 
 })
+
+
+test_that("is_file can correctly detect files", {
+    dir1 <- tempfile()
+    file1 <- tempfile()
+
+    dir.create(dir1)
+    file.create(file1)
+
+    expect_error(is_file(NA), "`filename` must be")
+    expect_error(is_file(123), "`filename` must be")
+    expect_false(is_file(NA_character_))
+    expect_false(is_file(NULL))
+    expect_false(is_file(""))
+    expect_false(is_file("random string"))
+    expect_false(is_file(dir1))
+    expect_true(is_file(file1))
+})
