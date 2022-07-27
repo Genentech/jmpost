@@ -27,7 +27,6 @@ StanModule <- setClass(
 #'
 #' @param file Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
-#' @importFrom fs is_file
 #' @export
 read_stan <- function(string) {
     system_file <- system.file("stanparts", string, package = "jmpost")

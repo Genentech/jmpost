@@ -100,8 +100,6 @@ setMethod(
 #' @importFrom stringr str_remove_all
 #' @importFrom stringr str_replace_all
 #' @export
-
-
 setGeneric("parametrize", function(osmod, link) {
     standardGeneric("parametrize")
 })
@@ -129,22 +127,16 @@ setMethod(
             string = osmod@stan@functions,
             pattern = "<link_arguments>",
             replacement = paste0("real ", link@parameters, ",")
-        )
-
-        newOS@stan@functions <- paste0(
-            newOS@stan@functions, "\\n ", link@stan@functions
-        )
-
-        newOS@stan@functions <- str_replace(
-            string = newOS@stan@functions,
-            pattern = "<link_log_hazard_contribution>",
-            replacement = paste0(link@parameters, link@contribution)
-        )
-        newOS@stan@functions <- str_replace(
-            string = newOS@stan@functions,
-            pattern = "<link_arguments_as_par>",
-            replacement = paste0(link@parameters)
-        )
+        ) |>
+            paste0("\\n ", link@stan@functions) |>
+            str_replace(
+                pattern = "<link_log_hazard_contribution>",
+                replacement = paste0(link@parameters, link@contribution)
+            ) |>
+            str_replace(
+                pattern = "<link_arguments_as_par>",
+                replacement = paste0(link@parameters)
+            )
 
 
         newOS@stan@priors <- append(osmod@stan@priors, link@stan@priors)
@@ -160,13 +152,12 @@ setMethod(
             string = osmod@stan@transformed_parameters,
             pattern = "<link_log_surv>",
             replacement = paste0(paste0(link@parameters, collapse = ","), ",")
-        )
+        ) |>
+            str_replace(
 
-        newOS@stan@transformed_parameters <- str_replace(
-            string = newOS@stan@transformed_parameters,
-            pattern = "<link_log_lik>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
-        )
+                pattern = "<link_log_lik>",
+                replacement = paste0(paste0(link@parameters, collapse = ","), ",")
+            )
 
         newOS@stan@generated_quantities <- str_replace_all(
             string = osmod@stan@generated_quantities,
