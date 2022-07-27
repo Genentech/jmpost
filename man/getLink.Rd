@@ -6,7 +6,7 @@
 \alias{getLinkDSLD}
 \title{Access Hazard Link}
 \usage{
-getLink(object, selection)
+getLink(object, ...)
 
 getLinkTTG(object)
 
