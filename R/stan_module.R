@@ -33,7 +33,7 @@ read_stan <- function(string) {
     system_file <- system.file("stanparts", string, package = "jmpost")
     if (file.exists(string)) {
         out <- readLines(string)
-    } else if (is_file(system_file)) {
+    } else if (file.exists(system_file) & !dir.exists(system_file)) {
         out <- readLines(system_file)
     } else {
         out <- string
