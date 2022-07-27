@@ -25,7 +25,17 @@ LogLogisticOs <- setClass(
 )
 
 
-
+#' LogLogisticModule
+#'
+#' Log logistic module helper function.
+#' @param functions
+#' @param data
+#' @param parameters
+#' @param transformed_parameters
+#' @param generated_quantities
+#' @param priors
+#' @param inits
+#' @param templated
 #' @export
 LogLogisticModule <- function(functions = "os_functions.stan",
                               data = "os_data.stan",
@@ -56,10 +66,10 @@ LogLogisticModule <- function(functions = "os_functions.stan",
 
 
 
-#' Title - TODO
+#' LogLogisticOs object creator
 #'
-#' Description
-#'
+#' Creates a log-logistic overall survival templated object
+#' @rdname LogLogisticOs-class
 #' @importFrom assertthat assert_that
 #' @export
 setMethod(
@@ -122,16 +132,16 @@ setMethod(
         )
 
         newOS@stan@functions <- paste0(
-            newOS@stan@functions, "\\n", link@stan@functions
+            newOS@stan@functions, "\\n ", link@stan@functions
         )
 
         newOS@stan@functions <- str_replace(
-            string = osmod@stan@functions,
+            string = newOS@stan@functions,
             pattern = "<link_log_hazard_contribution>",
             replacement = paste0(link@parameters, link@contribution)
         )
         newOS@stan@functions <- str_replace(
-            string = osmod@stan@functions,
+            string = newOS@stan@functions,
             pattern = "<link_arguments_as_par>",
             replacement = paste0(link@parameters)
         )
@@ -149,6 +159,12 @@ setMethod(
         newOS@stan@transformed_parameters <- str_replace(
             string = osmod@stan@transformed_parameters,
             pattern = "<link_log_surv>",
+            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
+        )
+
+        newOS@stan@transformed_parameters <- str_replace(
+            string = newOS@stan@transformed_parameters,
+            pattern = "<link_log_lik>",
             replacement = paste0(paste0(link@parameters, collapse = ","), ",")
         )
 
