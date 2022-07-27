@@ -13,9 +13,7 @@ test_that("parametrize filled all the gaps", {
                          contribution = "bla")
     os_mod_f <- parametrize(os_mod, h_link)
 
-    all(sapply(c("<", ">"), grepl, os_mod_f@stan@functions))
-    all(sapply(c("<", ">"), grepl, os_mod_f@stan@data))
-    all(sapply(c("<", ">"), grepl, os_mod_f@stan@parameters))
-    all(sapply(c("<", ">"), grepl, os_mod_f@stan@transformed_parameters))
-    all(sapply(c("<", ">"), grepl, os_mod_f@stan@generated_quantities))
+    all(sapply(c("<", ">"), grepl, os_mod_f@stan@parameters)) != TRUE
+    all(sapply(c("<", ">"), grepl, os_mod_f@stan@transformed_parameters)) != TRUE
+    all(sapply(c("<", ">"), grepl, os_mod_f@stan@generated_quantities)) != TRUE
 })
