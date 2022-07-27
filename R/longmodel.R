@@ -5,11 +5,17 @@
 
 
 
-#' Title - TODO
+#' `LongModel`
 #'
-#' Description - TODO
+#' This represents an abstract class for longditudinal models.
+#' This class only exists for other concrete instatiations to inherit off of.
+#' 
+#' Provides default implementation of the [getLink()] method.
+#' Child classes should define for themselves [getLinkTTG()] and
+#' [getLinkDSLD()] or alternative provide their own implementations
+#' for [getLink()].
 #'
-#' @slot stan TODO
+#' @slot stan a `StanModule` object as created by [StanModule()]
 #' @export
 LongModel <- setClass(
     Class = "LongModel",
@@ -37,7 +43,7 @@ LongModel <- setClass(
 #' @export
 setGeneric(
     name = "getLink",
-    def = function(object, selection) standardGeneric("getLink")
+    def = function(object, ...) standardGeneric("getLink")
 )
 
 
@@ -57,8 +63,8 @@ setGeneric(
 )
 
 
-#' @rdname LongModel-class 
-#' @export 
+#' @rdname LongModel-class
+#' @export
 setMethod(
     f = "getLinkTTG",
     signature = "LongModel",
@@ -67,8 +73,8 @@ setMethod(
     }
 )
 
-#' @rdname LongModel-class 
-#' @export 
+#' @rdname LongModel-class
+#' @export
 setMethod(
     f = "getLinkDSLD",
     signature = "LongModel",
@@ -77,17 +83,17 @@ setMethod(
     }
 )
 
-#' @rdname LongModel-class 
-#' @export 
+#' @rdname LongModel-class
+#' @export
 setMethod(
     f = "getLink",
     signature = "LongModel",
     definition = function(object, selection = c("ttg", "dsld")) {
-        
+
         if (length(selection) == 0) {
             return(NULL)
         }
-        
+
         assert_that(
             is.character(selection),
             all(selection %in% c("ttg", "dsld")),
@@ -106,12 +112,16 @@ setMethod(
 
         functions_selected <- function_map[selection]
 
-        hazard_objects <- lapply(object, functions_selected)
+        hazard_objects <- lapply(
+            functions_selected,
+            \(fun) fun(object)
+        )
 
         hazard_link <- Reduce(
-            function(x, y) merge(x, y),
+            \(x, y) merge(x, y),
             hazard_objects
         )
+
         return(hazard_link)
     }
 )

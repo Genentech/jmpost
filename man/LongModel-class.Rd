@@ -7,7 +7,7 @@
 \alias{getLinkTTG,LongModel-method}
 \alias{getLinkDSLD,LongModel-method}
 \alias{getLink,LongModel-method}
-\title{Title - TODO}
+\title{\code{LongModel}}
 \usage{
 \S4method{getLinkTTG}{LongModel}(object)
 
@@ -16,11 +16,18 @@
 \S4method{getLink}{LongModel}(object, selection = c("ttg", "dsld"))
 }
 \description{
-Description - TODO
+This represents an abstract class for longditudinal models.
+This class only exists for other concrete instatiations to inherit off of.
+}
+\details{
+Provides default implementation of the \code{\link[=getLink]{getLink()}} method.
+Child classes should define for themselves \code{\link[=getLinkTTG]{getLinkTTG()}} and
+\code{\link[=getLinkDSLD]{getLinkDSLD()}} or alternative provide their own implementations
+for \code{\link[=getLink]{getLink()}}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{stan}}{TODO}
+\item{\code{stan}}{a \code{StanModule} object as created by \code{\link[=StanModule]{StanModule()}}}
 }}
 
