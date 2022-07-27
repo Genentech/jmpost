@@ -2,6 +2,7 @@
 
 export(merge)
 export(read_stan)
+exportClasses(HazardLink)
 exportClasses(StanModule)
 exportMethods(as.character)
 exportMethods(initialize)
