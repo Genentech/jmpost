@@ -23,6 +23,7 @@ StanModule <- setClass(
 )
 
 
+
 #' read_stan returns stan code as a character.
 #'
 #' @param file Character, either the absolute path of a stan file, or the name of the stan
@@ -31,9 +32,9 @@ StanModule <- setClass(
 read_stan <- function(string) {
     system_file <- system.file("stanparts", string, package = "jmpost")
     if (file.exists(string)) {
-        out <- readLines(string)
+        out <- read_file(string)
     } else if (file.exists(system_file)) {
-        out <- readLines(system_file)
+        out <- read_file(system_file)
     } else {
         out <- string
     }
@@ -212,3 +213,14 @@ remove_blank_strings <- function(x) {
     return(x[!x == ""])
 }
 
+
+#' Read entire file as a single string
+#'
+#' Simple utility function to read in a file as 1
+#' continous string
+#'
+#' @param filename Location of file to read in
+#'
+read_file <- function(filename) {
+    paste0(readLines(filename), collapse = "\n")
+}
