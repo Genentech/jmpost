@@ -15,14 +15,14 @@ an OS model
 \item{\code{stan}}{A \code{StanModule} object as created by \code{\link[=StanModule]{StanModule()}} that specifies any Stan code
 required for the link / contribution}
 
-\item{\code{contribution}}{Stan code for what this link contriutes to the log hazard in the OS model}
+\item{\code{contribution}}{Stan code for what this link contributes to the log hazard in the OS model}
 
 \item{\code{parameter}}{The name of link parameter}
 }}
 
 \examples{
 HazardLink(
-    parameter = "beta_ttg",
+    parameters = "beta_ttg",
     contribution = "beta_ttg * ttg(phi)",
     stan = StanModule(
         functions = "real ttg(real phi) {phi^2 };"
