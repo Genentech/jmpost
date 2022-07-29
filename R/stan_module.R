@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @export
+#' @exportClass StanModule
 StanModule <- setClass(
     "StanModule",
     representation(
@@ -43,20 +43,23 @@ read_stan <- function(string) {
 
 
 #' @importFrom assertthat assert_that
+#' @importFrom assertthat validate_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(.Object,
-                          ...,
-                          functions = "",
-                          data = "",
-                          parameters = "",
-                          transformed_parameters = "",
-                          generated_quantities = "",
-                          priors = list(),
-                          inits = list()) {
+    definition = function(
+        .Object,
+        ...,
+        functions = "",
+        data = "",
+        parameters = "",
+        transformed_parameters = "",
+        generated_quantities = "",
+        priors = list(),
+        inits = list()
+    ) {
         assert_that(
             is.character(functions),
             is.character(data),
@@ -164,6 +167,7 @@ setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
+
         pars <- c(
             "functions", "data", "parameters",
             "transformed_parameters", "generated_quantities"
