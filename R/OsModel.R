@@ -14,16 +14,6 @@ OsModel <- setClass(
 )
 
 
-#'  Log-logistic overall survival
-#'
-#' Description - Log-logistic overall survival model object creator
-#'
-#' @export
-LogLogisticOs <- setClass(
-    Class = "LogLogisticOs",
-    contains = "OsModel"
-)
-
 
 #' LogLogisticModule
 #'
@@ -66,32 +56,6 @@ LogLogisticModule <- function(functions = "os_functions.stan",
 
 
 
-#' LogLogisticOs object creator
-#'
-#' Creates a log-logistic overall survival templated object
-#' @rdname LogLogisticOs-class
-#' @importFrom assertthat assert_that
-#' @export
-setMethod(
-    f = "initialize",
-    signature = "LogLogisticOs",
-    definition = function(.Object,
-                          ..., stan = LogLogisticModule(), templated) {
-        callNextMethod(
-            .Object,
-            ...,
-            stan = stan@stan,
-            templated = stan@templated
-        )
-    }
-)
-
-
-
-
-
-
-
 
 #' Parametrize TemplatedStanOs object with the selected Hazardlink
 #' @param osmod TemplatedStanOs object
@@ -113,15 +77,7 @@ setMethod(
     "parametrize",
     signature(osmod = "OsModel", link = "HazardLink"),
     function(osmod, link) {
-        newOS <- OsModel(stan = StanModule(
-            functions = osmod@stan@functions,
-            data = osmod@stan@data,
-            parameters = osmod@stan@data,
-            transformed_parameters = osmod@stan@transformed_parameters,
-            priors = osmod@stan@priors,
-            generated_quantities = osmod@stan@generated_quantities,
-            inits = osmod@stan@inits
-        ))
+        newOS <- osmod@stan
 
         newOS@stan@functions <- str_replace_all(
             string = osmod@stan@functions,
@@ -139,8 +95,9 @@ setMethod(
             )
 
 
-        newOS@stan@priors <- append(osmod@stan@priors, link@stan@priors)
-        newOS@stan@inits <- append(osmod@stan@inits, link@stan@inits)
+        temp_obj <- merge(osmod@stan, link@stan)
+        newOS@stan@priors <- temp_obj@stan@priors
+        newOS@stan@inits <- temp_obj@stan@inits
 
         newOS@stan@parameters <- str_replace(
             string = osmod@stan@parameters,
