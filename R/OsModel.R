@@ -154,7 +154,6 @@ setMethod(
             replacement = paste0(paste0(link@parameters, collapse = ","), ",")
         ) |>
             str_replace(
-
                 pattern = "<link_log_lik>",
                 replacement = paste0(paste0(link@parameters, collapse = ","), ",")
             )
