@@ -139,6 +139,7 @@ setMethod(
             priors = "model",
             generated_quantities = "generated quantities"
         )
+        x@priors <- list(paste(paste(names(x@priors), "~", x@priors, collapse = "; \n "), ";"))
 
         block_strings <- lapply(
             names(block_map),
@@ -148,7 +149,7 @@ setMethod(
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                    return(sprintf("\n %s {\n %s \n}\n", block_map[[id]], char))
                 } else {
                     return("")
                 }
@@ -215,11 +216,11 @@ read_file <- function(filename) {
 
 
 #' Is string a valid file
-#' 
+#'
 #' A utility function to check if a string is a valid file or not.
 #' Used to help address short comings of file.exists that will return TRUE
 #' for a directory as well as a file
-#' 
+#'
 #' @param filename A character string
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
