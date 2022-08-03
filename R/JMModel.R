@@ -2,8 +2,8 @@ cmdstan_mod <- R6::R6Class("CmdStanModel")
 setOldClass("CmdStanModel")
 
 #' @exportClass jmModel
-jm_model <- setClass("jmModel",
-                     slots = c(cmdstan_mod = "CmdStanModel")
+jmModel <- setClass("jmModel",
+    slots = c(cmdstan_mod = "CmdStanModel")
 )
 
 
@@ -15,14 +15,16 @@ jm_model <- setClass("jmModel",
 setMethod(
     f = "initialize",
     signature = "jmModel",
-    definition = function(
-        .Object,
-        ...
-    ) {
+    definition = function(.Object,
+                          ...,
+                          Long,
+                          Os,
+                          name = "stan_model.stan") {
+        mod <- jm_complete(Long = Long, Os = Os)
 
         cmdstanr::write_stan_file(
-            as.character(object),
-            basename = "stan_model.stan",
+            as.character(mod),
+            basename = name,
             dir = paste0(system.file(package = "jmpost"), "/stanmodels")
         )
 
@@ -31,7 +33,7 @@ setMethod(
             ...,
             cmdstan_mod = cmdstan_model(
                 stan_file = system.file(
-                    "stanmodels/stan_model.stan",
+                    paste0("stanmodels/", name),
                     package = "jmpost"
                 )
             )

@@ -41,6 +41,7 @@ setMethod("jm_complete",
                 Os@stan@generated_quantities,
                 collapse = "\n"
             ),
+            inits = append(Long@stan@inits, Os@stan@inits)
         )
     }
 )
