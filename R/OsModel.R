@@ -128,10 +128,10 @@ setMethod(
             pattern = "<link_arguments>",
             replacement = paste0("real ", link@parameters, ",")
         ) |>
-            paste0("\\n ", link@stan@functions) |>
+            paste0("\n ", link@stan@functions) |>
             str_replace(
                 pattern = "<link_log_hazard_contribution>",
-                replacement = paste0(link@parameters, link@contribution)
+                replacement = paste0(link@parameters, "*", link@contribution)
             ) |>
             str_replace(
                 pattern = "<link_arguments_as_par>",
