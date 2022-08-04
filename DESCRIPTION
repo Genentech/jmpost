@@ -12,7 +12,7 @@ Description: TODO
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Imports:
     assertthat
 Suggests: 
@@ -22,4 +22,4 @@ Collate:
     'generics.R'
     'stan_module.R'
     'hazard_link.R'
-
+    'longmodel.R'

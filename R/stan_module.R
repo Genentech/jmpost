@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @exportClass StanModule
+#' @export
 StanModule <- setClass(
     "StanModule",
     representation(
@@ -26,7 +26,7 @@ StanModule <- setClass(
 
 #' read_stan returns stan code as a character.
 #'
-#' @param file Character, either the absolute path of a stan file, or the name of the stan
+#' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
@@ -43,7 +43,6 @@ read_stan <- function(string) {
 
 
 #' @importFrom assertthat assert_that
-#' @importFrom assertthat validate_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
