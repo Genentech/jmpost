@@ -135,7 +135,7 @@ setMethod(
             ) |>
             str_replace(
                 pattern = "<link_arguments_as_par>",
-                replacement = paste0(link@parameters)
+                replacement = paste0(link@parameters, ",")
             )
 
 
