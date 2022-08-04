@@ -139,7 +139,7 @@ setMethod(
             priors = "model",
             generated_quantities = "generated quantities"
         )
-        x@priors <- list(paste(paste(names(x@priors), "~", x@priors, collapse = "; \n "), ";"))
+        x@priors <- as.list(paste(names(x@priors), "~", x@priors))
 
         block_strings <- lapply(
             names(block_map),
