@@ -26,7 +26,7 @@ StanModule <- setClass(
 
 #' read_stan returns stan code as a character.
 #'
-#' @param file Character, either the absolute path of a stan file, or the name of the stan
+#' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
