@@ -49,17 +49,15 @@ read_stan <- function(string) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
         assert_that(
             is.character(functions),
             is.character(data),
@@ -139,6 +137,7 @@ setMethod(
             priors = "model",
             generated_quantities = "generated quantities"
         )
+        if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
 
         block_strings <- lapply(
             names(block_map),
@@ -167,7 +166,6 @@ setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
-
         pars <- c(
             "functions", "data", "parameters",
             "transformed_parameters", "generated_quantities"
@@ -215,11 +213,11 @@ read_file <- function(filename) {
 
 
 #' Is string a valid file
-#' 
+#'
 #' A utility function to check if a string is a valid file or not.
 #' Used to help address short comings of file.exists that will return TRUE
 #' for a directory as well as a file
-#' 
+#'
 #' @param filename A character string
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
