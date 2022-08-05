@@ -10,16 +10,13 @@
 #' @slot inits List with the initial values of the stan model.
 #' @export
 StanModule <- setClass(
-    "StanModule",
-    representation(
-        functions = "character",
-        data = "character",
-        parameters = "character",
-        transformed_parameters = "character",
-        priors = "list",
-        generated_quantities = "character",
-        inits = "list"
-    )
+  "StanModule",slots = list(functions = "character",
+                            data = "character",
+                            parameters = "character",
+                            transformed_parameters = "character",
+                            priors = "list",
+                            generated_quantities = "character",
+                            inits = "list")
 )
 
 
@@ -45,6 +42,22 @@ read_stan <- function(string) {
 #' @importFrom assertthat assert_that
 #' @rdname StanModule-class
 #' @export
+setValidity("StanModule",function(object){
+  if (!is.character(object@functions)
+      |!is.character(object@data)
+      |!is.character(object@parameters)
+      |!is.character(object@transformed_parameters)
+      |!is.character(object@generated_quantities))
+  stop("`Functions`, `data`, `parameters`, `transformed_parameters`
+       and `generated_quantities` must be character vectors")
+})
+
+setValidity("StanModule",function(object){
+  if (!is.list(object@priors)
+      |!is.list(object@inits))
+    stop("`Priors` and `inits` must be lists")
+})
+
 setMethod(
     f = "initialize",
     signature = "StanModule",
@@ -59,25 +72,6 @@ setMethod(
         priors = list(),
         inits = list()
     ) {
-        assert_that(
-            is.character(functions),
-            is.character(data),
-            is.character(parameters),
-            is.character(transformed_parameters),
-            is.character(generated_quantities),
-            msg = paste(
-                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
-                "`generated_quantities` must be character vectors"
-            )
-        )
-
-        assert_that(
-            is.list(priors),
-            is.list(inits),
-            msg = "`Priors` and `inits` must be lists"
-        )
-
-
         callNextMethod(
             .Object,
             ...,
