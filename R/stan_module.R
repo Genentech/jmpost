@@ -1,25 +1,28 @@
 #' StanAll class object
-#' @slot functions Character, the functions part of a stan model.
-#' @slot data Character, the data part of a stan model.
-#' @slot parameters Character, the parameters part of a stan model.
-#' @slot transformed_parameters Character, the transformed_parameters part of a stan model.
-#' @slot model Character, the model part of a stan model.
-#' @slot priors List, the priors part of a stan model.
-#' @slot generated_quantities Character, the generated_quantities part of a stan model.
-#' @slot includes Character
-#' @slot inits List with the initial values of the stan model.
+#'
+#' @slot functions character. 
+#' @slot data character. 
+#' @slot parameters character. 
+#' @slot transformed_parameters character. 
+#' @slot priors list. 
+#' @slot generated_quantities character. 
+#' @slot inits list. 
+#'
+#' @return
 #' @export
+#'
+#' @examples
 StanModule <- setClass(
-    "StanModule",
-    representation(
-        functions = "character",
-        data = "character",
-        parameters = "character",
-        transformed_parameters = "character",
-        priors = "list",
-        generated_quantities = "character",
-        inits = "list"
-    )
+  "StanModule",
+  representation(
+    functions = "character",
+    data = "character",
+    parameters = "character",
+    transformed_parameters = "character",
+    priors = "list",
+    generated_quantities = "character",
+    inits = "list"
+  )
 )
 
 
@@ -42,79 +45,97 @@ read_stan <- function(string) {
 }
 
 
-#' @importFrom assertthat assert_that
-#' @rdname StanModule-class
+#' Validate inputs
+#'
+#' @param object 
+#'
+#' @return
 #' @export
+#'
+#' @examples
+setValidity("StanModule",function(object){
+  if (!is.character(object@functions)
+      |!is.character(object@data)
+      |!is.character(object@parameters)
+      |!is.character(object@transformed_parameters)
+      |!is.character(object@generated_quantities))
+    stop("`Functions`, `data`, `parameters`, `transformed_parameters`
+       and `generated_quantities` must be character vectors")
+})
+
+#' Validate inputs
+#'
+#' @param object 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setValidity("StanModule",function(object){
+  if (!is.list(object@priors)
+      |!is.list(object@inits))
+    stop("`Priors` and `inits` must be lists")
+})
+
+#' Methods setting
+#'
+#' @param StanModule 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 setMethod(
-    f = "initialize",
-    signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
-        assert_that(
-            is.character(functions),
-            is.character(data),
-            is.character(parameters),
-            is.character(transformed_parameters),
-            is.character(generated_quantities),
-            msg = paste(
-                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
-                "`generated_quantities` must be character vectors"
-            )
-        )
-
-        assert_that(
-            is.list(priors),
-            is.list(inits),
-            msg = "`Priors` and `inits` must be lists"
-        )
-
-
-        callNextMethod(
-            .Object,
-            ...,
-            functions = vapply(
-                X = functions,
-                FUN = read_stan,
-                FUN.VALUE = character(1),
-                USE.NAMES = FALSE
-            ),
-            data = vapply(
-                X = data,
-                FUN = read_stan,
-                FUN.VALUE = character(1),
-                USE.NAMES = FALSE
-            ),
-            parameters = vapply(
-                X = parameters,
-                FUN = read_stan,
-                FUN.VALUE = character(1),
-                USE.NAMES = FALSE
-            ),
-            transformed_parameters = vapply(
-                X = transformed_parameters,
-                FUN = read_stan,
-                FUN.VALUE = character(1),
-                USE.NAMES = FALSE
-            ),
-            generated_quantities = vapply(
-                X = generated_quantities,
-                FUN = read_stan,
-                FUN.VALUE = character(1),
-                USE.NAMES = FALSE
-            ),
-            priors = priors,
-            inits = inits
-        )
-    }
+  f = "initialize",
+  signature = "StanModule",
+  definition = function(
+    .Object,
+    ...,
+    functions = "",
+    data = "",
+    parameters = "",
+    transformed_parameters = "",
+    generated_quantities = "",
+    priors = list(),
+    inits = list()
+  ) {
+    callNextMethod(
+      .Object,
+      ...,
+      functions = vapply(
+        X = functions,
+        FUN = read_stan,
+        FUN.VALUE = character(1),
+        USE.NAMES = FALSE
+      ),
+      data = vapply(
+        X = data,
+        FUN = read_stan,
+        FUN.VALUE = character(1),
+        USE.NAMES = FALSE
+      ),
+      parameters = vapply(
+        X = parameters,
+        FUN = read_stan,
+        FUN.VALUE = character(1),
+        USE.NAMES = FALSE
+      ),
+      transformed_parameters = vapply(
+        X = transformed_parameters,
+        FUN = read_stan,
+        FUN.VALUE = character(1),
+        USE.NAMES = FALSE
+      ),
+      generated_quantities = vapply(
+        X = generated_quantities,
+        FUN = read_stan,
+        FUN.VALUE = character(1),
+        USE.NAMES = FALSE
+      ),
+      priors = priors,
+      inits = inits
+    )
+  }
 )
 
 
