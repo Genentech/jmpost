@@ -144,7 +144,8 @@ setMethod(
             function(id) {
                 char <- slot(x, id)
                 if (!is.character(char) || length(char) > 1) {
-                    char <- paste0(char, collapse = "\n")
+                    char <- paste0(paste0(char, collapse = "\n"), "\n")
+                    char <- paste0(char, "target+=sum(log_lik);\n")
                 }
                 if (nchar(char) >= 1) {
                     return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
