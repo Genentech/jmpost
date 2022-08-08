@@ -20,33 +20,32 @@
 #' @export
 HazardLink <- setClass(
     "HazardLink",
-    representation = list(
+    slots = list(
         "stan" = "StanModule",
         "contribution" = "character",
         "parameters" = "character"
     )
 )
 
+setValidity("StanModule",function(object){
+    if (!is.character(object@parameters)
+        |!length(object@parameters) >= 1)
+        stop("`parameter` must be a character vector")
+})
 
-#' @importFrom assertthat assert_that
+setValidity("StanModule",function(object){
+    if (!is.character(object@contribution)
+        |!length(object@contribution) == 1)
+        stop("`contribution` must be length 1 character vectors")
+})
+
+#' @importFrom setValidity setValidity
 #' @rdname StanModule-class
 #' @export
 setMethod(
     f = "initialize",
     signature = "HazardLink",
     definition = function(.Object, ..., stan = StanModule(), contribution, parameters) {
-
-        assert_that(
-            is.character(parameters),
-            length(parameters) >= 1,
-            msg = "`parameter` must be a character vector"
-        )
-        
-        assert_that(
-            is.character(contribution),
-            length(contribution) == 1,
-            msg = "`contribution` must be length 1 character vectors"
-        )
 
         if (length(stan@parameters) == 0 || all(stan@parameters == "")) {
             stan@parameters <- sprintf("real %s;", parameters)
