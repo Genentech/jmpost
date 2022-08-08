@@ -1,15 +1,10 @@
 #' @export
-
+#' @param Long A longitudinal object of type LongMod
+#' @param Os An overall survival object of type OsMod
 setGeneric("jm_complete", def = function(Long, Os) {
     standardGeneric("jm_complete")
 })
 
-
-# prior_char: function for converting a list with the priors to a character vector
-convert_to_model <- function(x) {
-    prior <- paste(paste(paste0(names(x), "~", unlist(x)), collapse = ";\n"), ";")
-    paste(prior, "target+=sum(log_lik);\n")
-}
 
 
 setMethod("jm_complete",

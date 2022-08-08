@@ -3,7 +3,7 @@ my_long_mod <- LongModel(stan = StanModule(functions = "exp_long_functions.stan"
                                            priors = long_prior(),
                                            inits = list(),
                                            parameters = "exp_long_parameters.stan",
-                                           transformed_parameters = "exp_long_transformed_parameters.stan"))
+                                           transformed_parameters = "exp_long_transformed_parametes.stan"))
 
 my_temp_os <- LogLogisticModule()
 
