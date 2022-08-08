@@ -10,8 +10,7 @@
 #' @slot inits List with the initial values of the stan model.
 #' @export
 StanModule <- setClass(
-    "StanModule",
-    slots = list(functions = "character",
+    "StanModule",slots = list(functions = "character",
                               data = "character",
                               parameters = "character",
                               transformed_parameters = "character",
@@ -72,6 +71,7 @@ setValidity("StanModule",function(object){
         |!is.list(object@inits))
         stop("`Priors` and `inits` must be lists")
 })
+
 
 #' @importFrom setValidity setValidity2
 #' @rdname StanModule-class
@@ -226,11 +226,11 @@ read_file <- function(filename) {
 
 
 #' Is string a valid file
-#' 
+#'
 #' A utility function to check if a string is a valid file or not.
 #' Used to help address short comings of file.exists that will return TRUE
 #' for a directory as well as a file
-#' 
+#'
 #' @param filename A character string
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
