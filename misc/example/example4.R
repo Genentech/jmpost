@@ -1,4 +1,9 @@
-my_long_mod <- LongModel()
+my_long_mod <- LongModel(stan = StanModule(functions = "exp_long_functions.stan",
+                                           data = "exp_long_data.stan",
+                                           priors = long_prior(),
+                                           inits = list(),
+                                           parameters = "exp_long_parameters.stan",
+                                           transformed_parameters = "exp_long_transformed_parameters.stan"))
 
 my_temp_os <- LogLogisticModule()
 
@@ -11,7 +16,7 @@ my_link <- HazardLink(
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
 
 
-jm_complete(Long = my_long_mod, Os = my_os)
+jm_complete(Long = my_long_mod, Os = my_os)@priors
 
 
 cmdstanr::write_stan_file(
