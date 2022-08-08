@@ -13,16 +13,13 @@
 #'
 #' @examples
 StanModule <- setClass(
-  "StanModule",
-  representation(
-    functions = "character",
-    data = "character",
-    parameters = "character",
-    transformed_parameters = "character",
-    priors = "list",
-    generated_quantities = "character",
-    inits = "list"
-  )
+  "StanModule",slots = list(functions = "character",
+                            data = "character",
+                            parameters = "character",
+                            transformed_parameters = "character",
+                            priors = "list",
+                            generated_quantities = "character",
+                            inits = "list")
 )
 
 
