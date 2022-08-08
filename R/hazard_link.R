@@ -5,7 +5,7 @@
 #' Creates a Hazard Link object which combines a longditudinal model to
 #' an OS model
 #'
-#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code 
+#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code
 #' required for the link / contribution
 #' @slot contribution Stan code for what this link contriutes to the log hazard in the OS model
 #' @slot parameter The name of link parameter
@@ -39,7 +39,7 @@ setValidity("StanModule",function(object){
         stop("`contribution` must be length 1 character vectors")
 })
 
-#' @importFrom setValidity setValidity
+#' @importFrom assertthat assert_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -75,4 +75,3 @@ setMethod(
         )
     }
 )
-
