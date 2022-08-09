@@ -128,7 +128,7 @@ setMethod(
 #' @param x A StanModule object
 #' @export
 model_prep <- function(x) {
-    if (any(is.na(x@model), x@model == "")) {
+    if (any(is.na(x@model), nchar(x@model) < 2)) {
         if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
         x@model <- h_bracket(x@priors)
     }
