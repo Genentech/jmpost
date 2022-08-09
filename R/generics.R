@@ -12,3 +12,17 @@ setGeneric(
     function(x, y) standardGeneric("merge")
 )
 
+
+
+
+#' h_bracket
+#'
+#' Generic function that creates a character string oriented by curly brackets
+#'
+#' @param x An Object
+#' @export
+setGeneric(
+    "h_bracket",
+    function(x) standardGeneric("h_bracket")
+)
+
