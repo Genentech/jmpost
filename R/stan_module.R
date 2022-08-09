@@ -143,7 +143,7 @@ setMethod(
     signature = "list",
     definition = function(x) {
         model_text <- paste0(x, collapse = "\n")
-        model_text <- paste0("\n", model_text, "target+=sum(log_lik);\n")
+        model_text <- paste0( model_text, "\n", "target+=sum(log_lik);\n")
 
 
         paste0("{\n", model_text, "\n}\n")
