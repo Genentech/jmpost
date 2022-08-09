@@ -124,31 +124,16 @@ setMethod(
     }
 )
 
-
-
-#' @rdname h_bracket
+#' model_prep. Populates the model section of a StanModule
+#' @param x A StanModule object
 #' @export
-setMethod(
-    f = "h_bracket",
-    signature = "character",
-    definition = function(x) {
-        paste0("{\n", x, "\n}\n")
+model_prep <- function(x) {
+    if (any(is.na(x@model), x@model == "")) {
+        if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
+        x@model <- h_bracket(x@priors)
     }
-)
-
-#' @rdname h_bracket
-#' @export
-setMethod(
-    f = "h_bracket",
-    signature = "list",
-    definition = function(x) {
-        model_text <- paste0(x, collapse = "\n")
-        model_text <- paste0( model_text, "\n", "target+=sum(log_lik);\n")
-
-
-        paste0("{\n", model_text, "\n}\n")
-    }
-)
+    x
+}
 
 
 
@@ -164,37 +149,33 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-        functions_txt <- paste(
-            "functions",
-            h_bracket(x@functions)
-        )
-        data_txt <- paste(
-            "data",
-            h_bracket(x@data)
-        )
-        parameters_txt <- paste(
-            "parameters",
-            h_bracket(x@parameters)
-        )
-        transformed_parameters_txt <- paste(
-            "transformed parameters",
-            h_bracket(x@transformed_parameters)
-        )
-        model_txt <- paste(
-            "model",
-            h_bracket(x@priors)
-        )
-        generated_quantities_txt <- paste(
-            "generated quantities",
-            h_bracket(x@generated_quantities)
+
+        x <- model_prep(x)
+
+        block_map <- list(
+            functions = "functions",
+            data = "data",
+            parameters = "parameters",
+            transformed_parameters = "transformed parameters",
+            model = "model",
+            generated_quantities = "generated quantities"
         )
 
-        block_strings <- list(
-            functions_txt, data_txt, parameters_txt,
-            transformed_parameters_txt, model_txt, generated_quantities_txt
+
+        block_strings <- lapply(
+            names(block_map),
+            function(id) {
+                char <- slot(x, id)
+                if (nchar(char) >= 1) {
+                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                } else {
+                    return("")
+                }
+            }
         )
 
         return(paste0(block_strings, collapse = ""))
+
     }
 )
 
