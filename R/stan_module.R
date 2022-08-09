@@ -167,7 +167,7 @@ setMethod(
             function(id) {
                 char <- slot(x, id)
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                    return(paste( block_map[[id]], h_bracket(char)))
                 } else {
                     return("")
                 }

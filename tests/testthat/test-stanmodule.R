@@ -47,16 +47,20 @@ test_that("StanModules can be rendered as a string", {
 
     expected <- paste0(
         c(
-            "",
             "functions {",
             "some code",
             "some more code",
             "}",
-            "",
             "data {",
             "some data",
             "}",
+            "model {",
+            "",
+            "target+=sum(log_lik);",
+            "",
+            "}",
             ""
+
         ),
         collapse = "\n"
     )
@@ -122,7 +126,7 @@ test_that("as.character works for the list objects", {
     obj <- StanModule(priors = list("prior1" = "def1;",
                                     "prior2" = "def2;"))
     actual <- as.character(obj)
-    expected <- "\nmodel {\n{\nprior1 ~ def1;\nprior2 ~ def2;\ntarget+=sum(log_lik);\n\n}\n\n}\n"
+    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\ntarget+=sum(log_lik);\n\n}\n"
     expect_equal(actual, expected)
 
 })
@@ -150,21 +154,7 @@ test_that("loading multiple lines from a file works as expected", {
     )
 
 
-    actual_char <- as.character(actual)
-    expected <- paste0(
-        c(
-            "",
-            "generated quantities {",
-            "mystring; mystring2",
-            "mystring3;",
-            "mystring4;",
-            "more strings",
-            "}",
-            ""
-        ),
-        collapse = "\n"
-    )
-    expect_equal(actual_char, expected)
+
 
 })
 
