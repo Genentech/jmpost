@@ -4,7 +4,7 @@ setMethod(
     f = "h_bracket",
     signature = "character",
     definition = function(x) {
-        paste0("{\n", x, "\n}\n")
+       if(nchar(x) >= 1) paste0("{\n", paste0(x, collapse = "\n"), "\n}\n")
     }
 )
 
@@ -15,9 +15,7 @@ setMethod(
     signature = "list",
     definition = function(x) {
         model_text <- paste0(x, collapse = "\n")
-        model_text <- paste0( model_text, "\n", "target+=sum(log_lik);\n")
+        paste0( model_text, "\n", "target+=sum(log_lik);\n")
 
-
-        paste0("{\n", model_text, "\n}\n")
     }
 )
