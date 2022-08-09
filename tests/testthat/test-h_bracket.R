@@ -16,5 +16,5 @@ test_that("h_bracket works as expected", {
     expect_equal(h_bracket(st_mod@parameters), "{\nstring\n}\n")
     expect_equal(h_bracket(st_mod@transformed_parameters), "{\nstring\n}\n")
     expect_equal(h_bracket(st_mod@generated_quantities), "{\nstring\n}\n")
-    expect_equal(h_bracket(st_mod@data), "{\nitem1;\nitem2;\ntarget+=sum(log_lik);\n\n}\n")
+    expect_equal(h_bracket(st_mod@priors), "{\nitem1;\nitem2;\ntarget+=sum(log_lik);\n\n}\n")
 })
