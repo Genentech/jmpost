@@ -16,6 +16,7 @@ StanModule <- setClass(
         data = "character",
         parameters = "character",
         transformed_parameters = "character",
+        model = "character",
         priors = "list",
         generated_quantities = "character",
         inits = "list"
@@ -48,25 +49,25 @@ read_stan <- function(string) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          model = NA_character_,
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
         assert_that(
             is.character(functions),
             is.character(data),
             is.character(parameters),
             is.character(transformed_parameters),
             is.character(generated_quantities),
+            is.character(model),
             msg = paste(
-                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
+                "`Functions`, `data`, `parameters`, `transformed_parameters`, `model` and",
                 "`generated_quantities` must be character vectors"
             )
         )
@@ -105,6 +106,12 @@ setMethod(
                 FUN.VALUE = character(1),
                 USE.NAMES = FALSE
             ),
+            model = vapply(
+                X = model,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
             generated_quantities = vapply(
                 X = generated_quantities,
                 FUN = read_stan,
@@ -116,6 +123,33 @@ setMethod(
         )
     }
 )
+
+
+
+#' @rdname h_bracket
+#' @export
+setMethod(
+    f = "h_bracket",
+    signature = "character",
+    definition = function(x) {
+        paste0("{\n", x, "\n}\n")
+    }
+)
+
+#' @rdname h_bracket
+#' @export
+setMethod(
+    f = "h_bracket",
+    signature = "list",
+    definition = function(x) {
+        model_text <- paste0(x, collapse = "\n")
+        model_text <- paste0("\n", model_text, "target+=sum(log_lik);\n")
+
+
+        paste0("{\n", model_text, "\n}\n")
+    }
+)
+
 
 
 #' Convert a StanModule object into stan code
@@ -130,29 +164,36 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-        block_map <- list(
-            functions = "functions",
-            data = "data",
-            parameters = "parameters",
-            transformed_parameters = "transformed parameters",
-            priors = "model",
-            generated_quantities = "generated quantities"
+        functions_txt <- paste(
+            "functions",
+            h_bracket(x@functions)
+        )
+        data_txt <- paste(
+            "data",
+            h_bracket(x@data)
+        )
+        parameters_txt <- paste(
+            "parameters",
+            h_bracket(x@parameters)
+        )
+        transformed_parameters_txt <- paste(
+            "transformed parameters",
+            h_bracket(x@transformed_parameters)
+        )
+        model_txt <- paste(
+            "model",
+            h_bracket(x@priors)
+        )
+        generated_quantities_txt <- paste(
+            "generated quantities",
+            h_bracket(x@generated_quantities)
         )
 
-        block_strings <- lapply(
-            names(block_map),
-            function(id) {
-                char <- slot(x, id)
-                if (!is.character(char) || length(char) > 1) {
-                    char <- paste0(char, collapse = "\n")
-                }
-                if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
-                } else {
-                    return("")
-                }
-            }
+        block_strings <- list(
+            functions_txt, data_txt, parameters_txt,
+            transformed_parameters_txt, model_txt, generated_quantities_txt
         )
+
         return(paste0(block_strings, collapse = ""))
     }
 )
@@ -166,7 +207,6 @@ setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
-
         pars <- c(
             "functions", "data", "parameters",
             "transformed_parameters", "generated_quantities"
@@ -214,11 +254,11 @@ read_file <- function(filename) {
 
 
 #' Is string a valid file
-#' 
+#'
 #' A utility function to check if a string is a valid file or not.
 #' Used to help address short comings of file.exists that will return TRUE
 #' for a directory as well as a file
-#' 
+#'
 #' @param filename A character string
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
