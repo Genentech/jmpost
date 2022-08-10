@@ -4,22 +4,9 @@
 \name{StanModule-class}
 \alias{StanModule-class}
 \alias{StanModule}
-\alias{initialize,StanModule-method}
 \alias{initialize,HazardLink-method}
 \title{StanAll class object}
 \usage{
-\S4method{initialize}{StanModule}(
-  .Object,
-  ...,
-  functions = "",
-  data = "",
-  parameters = "",
-  transformed_parameters = "",
-  generated_quantities = "",
-  priors = list(),
-  inits = list()
-)
-
 \S4method{initialize}{HazardLink}(.Object, ..., stan = StanModule(), contribution, parameters)
 }
 \description{
