@@ -79,47 +79,40 @@ setMethod(
     function(osmod, link) {
         newOS <- osmod@stan
 
-        newOS@stan@functions <- str_replace_all(
-            string = osmod@stan@functions,
-            pattern = "<link_arguments>",
-            replacement = paste0("real ", link@parameters, ",")
-        ) |>
+        newOS@stan@functions <- gsub("<link_arguments>",
+                                     paste0("real ", link@parameters, ","),
+                                     osmod@stan@functions ) |>
             paste0("\\n ", link@stan@functions) |>
-            str_replace(
-                pattern = "<link_log_hazard_contribution>",
-                replacement = paste0(link@parameters, link@contribution)
-            ) |>
-            str_replace(
-                pattern = "<link_arguments_as_par>",
-                replacement = paste0(link@parameters)
-            )
+            gsub("<link_log_hazard_contribution>",
+                 paste0(link@parameters, link@contribution),
+                 .) |>
+            gsub("<link_arguments_as_par>",
+                 paste0(link@parameters),
+                 .)
+
 
 
         temp_obj <- merge(osmod@stan, link@stan)
         newOS@stan@priors <- temp_obj@stan@priors
         newOS@stan@inits <- temp_obj@stan@inits
 
-        newOS@stan@parameters <- str_replace(
-            string = osmod@stan@parameters,
-            pattern = "<link_parameters>",
-            replacement = link@stan@parameters
-        )
+        newOS@stan@parameters <- gsub(pattern = "<link_parameters>",
+                                      replacement = link@stan@parameters,
+                                      osmod@stan@parameters)
 
-        newOS@stan@transformed_parameters <- str_replace(
-            string = osmod@stan@transformed_parameters,
-            pattern = "<link_log_surv>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
-        ) |>
-            str_replace(
-                pattern = "<link_log_lik>",
-                replacement = paste0(paste0(link@parameters, collapse = ","), ",")
-            )
 
-        newOS@stan@generated_quantities <- str_replace_all(
-            string = osmod@stan@generated_quantities,
-            pattern = "<link_arguments_as_par>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ",")
-        )
+        newOS@stan@transformed_parameters <- gsub(pattern = "<link_log_surv>",
+                                                  replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+                                                  osmod@stan@transformed_parameters) |>
+            gsub( pattern = "<link_log_lik>",
+                  replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+                  .)
+
+
+        newOS@stan@generated_quantities <- gsub(pattern = "<link_arguments_as_par>",
+                                                replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+                                                osmod@stan@generated_quantities)
+
 
 
         newOS
