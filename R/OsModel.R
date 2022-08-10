@@ -36,14 +36,14 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               inits = list(),
                               templated = TRUE) {
     st_mod <- StanModule(
-            functions = functions,
-            data = data,
-            parameters = parameters,
-            transformed_parameters = transformed_parameters,
-            generated_quantities = generated_quantities,
-            priors = priors,
-            inits = inits
-        )
+        functions = functions,
+        data = data,
+        parameters = parameters,
+        transformed_parameters = transformed_parameters,
+        generated_quantities = generated_quantities,
+        priors = priors,
+        inits = inits
+    )
 
     OsModel(
         stan = st_mod,
@@ -79,16 +79,23 @@ setMethod(
     function(osmod, link) {
         newOS <- osmod@stan
 
-        newOS@stan@functions <- gsub("<link_arguments>",
-                                     paste0("real ", link@parameters, ","),
-                                     osmod@stan@functions ) |>
-            paste0("\\n ", link@stan@functions) |>
-            gsub("<link_log_hazard_contribution>",
-                 paste0(link@parameters, link@contribution),
-                 .) |>
-            gsub("<link_arguments_as_par>",
-                 paste0(link@parameters),
-                 .)
+        newOS@stan@functions <- gsub(
+            "<link_arguments>",
+            paste0("real ", link@parameters, ","),
+            osmod@stan@functions
+        ) |>
+            paste0("\\n ", link@stan@functions)
+
+        newOS@stan@functions <- gsub(
+            "<link_log_hazard_contribution>",
+            paste0(link@parameters, link@contribution),
+            newOS@stan@functions
+        )
+        newOS@stan@functions <- gsub(
+            "<link_arguments_as_par>",
+            paste0(link@parameters),
+            newOS@stan@functions
+        )
 
 
 
@@ -96,22 +103,30 @@ setMethod(
         newOS@stan@priors <- temp_obj@stan@priors
         newOS@stan@inits <- temp_obj@stan@inits
 
-        newOS@stan@parameters <- gsub(pattern = "<link_parameters>",
-                                      replacement = link@stan@parameters,
-                                      osmod@stan@parameters)
+        newOS@stan@parameters <- gsub(
+            pattern = "<link_parameters>",
+            replacement = link@stan@parameters,
+            osmod@stan@parameters
+        )
 
 
-        newOS@stan@transformed_parameters <- gsub(pattern = "<link_log_surv>",
-                                                  replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-                                                  osmod@stan@transformed_parameters) |>
-            gsub( pattern = "<link_log_lik>",
-                  replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-                  .)
+        newOS@stan@transformed_parameters <- gsub(
+            pattern = "<link_log_surv>",
+            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+            osmod@stan@transformed_parameters
+        )
+        newOS@stan@transformed_parameters <- gsub(
+            pattern = "<link_log_lik>",
+            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+            newOS@stan@transformed_parameters
+        )
 
 
-        newOS@stan@generated_quantities <- gsub(pattern = "<link_arguments_as_par>",
-                                                replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-                                                osmod@stan@generated_quantities)
+        newOS@stan@generated_quantities <- gsub(
+            pattern = "<link_arguments_as_par>",
+            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
+            osmod@stan@generated_quantities
+        )
 
 
 
