@@ -5,7 +5,7 @@
 #' Creates a Hazard Link object which combines a longditudinal model to
 #' an OS model
 #'
-#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code 
+#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code
 #' required for the link / contribution
 #' @slot contribution Stan code for what this link contriutes to the log hazard in the OS model
 #' @slot parameter The name of link parameter
@@ -20,13 +20,24 @@
 #' @export
 HazardLink <- setClass(
     "HazardLink",
-    representation = list(
+    slots = list(
         "stan" = "StanModule",
         "contribution" = "character",
         "parameters" = "character"
     )
 )
 
+setValidity("StanModule",function(object){
+    if (!is.character(object@parameters)
+        |!length(object@parameters) >= 1)
+        stop("`parameter` must be a character vector")
+})
+
+setValidity("StanModule",function(object){
+    if (!is.character(object@contribution)
+        |!length(object@contribution) == 1)
+        stop("`contribution` must be length 1 character vectors")
+})
 
 #' @importFrom assertthat assert_that
 #' @rdname StanModule-class
@@ -35,18 +46,6 @@ setMethod(
     f = "initialize",
     signature = "HazardLink",
     definition = function(.Object, ..., stan = StanModule(), contribution, parameters) {
-
-        assert_that(
-            is.character(parameters),
-            length(parameters) >= 1,
-            msg = "`parameter` must be a character vector"
-        )
-        
-        assert_that(
-            is.character(contribution),
-            length(contribution) == 1,
-            msg = "`contribution` must be length 1 character vectors"
-        )
 
         if (length(stan@parameters) == 0 || all(stan@parameters == "")) {
             stan@parameters <- sprintf("real %s;", parameters)
@@ -76,4 +75,3 @@ setMethod(
         )
     }
 )
-
