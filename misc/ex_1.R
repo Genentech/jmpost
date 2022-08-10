@@ -3,7 +3,7 @@ my_long_mod <- LongModel(stan = StanModule(functions = "exp_long_functions.stan"
                                            transformed_parameters = "exp_long_transformed_parametes.stan",
                                            generated_quantities = "",
                                            data = "exp_long_data.stan",
-                                           priors = long_prior(),
+                                           priors = list(),
                                            inits = list()))
 my_os_mod <- LogLogisticModule()
 
@@ -16,4 +16,3 @@ my_link <- HazardLink(
 )
 
 temp_os <- parametrize(osmod = my_os_mod, link = my_link)
-jm_complete(Long = my_long_mod, Os = temp_os)

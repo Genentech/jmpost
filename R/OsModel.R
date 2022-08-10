@@ -77,7 +77,7 @@ setMethod(
     "parametrize",
     signature(osmod = "OsModel", link = "HazardLink"),
     function(osmod, link) {
-        newOS <- osmod@stan
+        newOS <- osmod
 
         newOS@stan@functions <- gsub(
             "<link_arguments>",
@@ -100,8 +100,8 @@ setMethod(
 
 
         temp_obj <- merge(osmod@stan, link@stan)
-        newOS@stan@priors <- temp_obj@stan@priors
-        newOS@stan@inits <- temp_obj@stan@inits
+        newOS@stan@priors <- temp_obj@priors
+        newOS@stan@inits <- temp_obj@inits
 
         newOS@stan@parameters <- gsub(
             pattern = "<link_parameters>",
