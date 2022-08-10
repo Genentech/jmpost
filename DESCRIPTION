@@ -22,6 +22,7 @@ Collate:
     'generics.R'
     'stan_module.R'
     'hazard_link.R'
+    'longmodel.R'
     'os_prior.R'
     'OsModel.R'
     'LogLogisticOs.R'
