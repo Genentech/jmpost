@@ -7,7 +7,7 @@
 read_stan(string)
 }
 \arguments{
-\item{file}{Character, either the absolute path of a stan file, or the name of the stan
+\item{string}{Character, either the absolute path of a stan file, or the name of the stan
 file in the package directory or the stan code as a string.}
 }
 \description{
