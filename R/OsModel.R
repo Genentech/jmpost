@@ -8,8 +8,7 @@
 OsModel <- setClass(
     Class = "OsModel",
     representation = list(
-        stan = "StanModule",
-        templated = "logical"
+        stan = "StanModule"
     )
 )
 
@@ -18,14 +17,13 @@ OsModel <- setClass(
 #' LogLogisticModule
 #'
 #' Log logistic module helper function.
-#' @param functions
-#' @param data
-#' @param parameters
-#' @param transformed_parameters
-#' @param generated_quantities
-#' @param priors
-#' @param inits
-#' @param templated
+#' @param functions A stan code including the functions section of the model.
+#' @param data  A stan code including the data section of the model.
+#' @param parameters  A stan code including the parameters section of the model.
+#' @param transformed_parameters  A stan code including the transformed parameters section of the model.
+#' @param generated_quantities  A stan code including the generated quantities section of the model.
+#' @param priors  A prior list with the priors of the model.
+#' @param inits  A list with the initial values.
 #' @export
 LogLogisticModule <- function(functions = "os_functions.stan",
                               data = "os_data.stan",
@@ -33,9 +31,8 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               transformed_parameters = "os_transformed_parameters.stan",
                               generated_quantities = "os_generated_quantities.stan",
                               priors = os_prior(),
-                              inits = list(),
-                              templated = TRUE) {
-    st_mod <- StanModule(
+                              inits = list()) {
+    StanModule(
         functions = functions,
         data = data,
         parameters = parameters,
@@ -43,11 +40,6 @@ LogLogisticModule <- function(functions = "os_functions.stan",
         generated_quantities = generated_quantities,
         priors = priors,
         inits = inits
-    )
-
-    OsModel(
-        stan = st_mod,
-        templated = templated
     )
 }
 
@@ -69,10 +61,6 @@ setGeneric("parametrize", function(osmod, link) {
 })
 
 
-
-
-
-# To be updated
 setMethod(
     "parametrize",
     signature(osmod = "OsModel", link = "HazardLink"),

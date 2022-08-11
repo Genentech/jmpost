@@ -7,7 +7,7 @@
 \alias{initialize,LogLogisticOs-method}
 \title{Log-logistic overall survival}
 \usage{
-\S4method{initialize}{LogLogisticOs}(.Object, ..., stan = LogLogisticModule(), templated)
+\S4method{initialize}{LogLogisticOs}(.Object, ..., stan = LogLogisticModule())
 }
 \description{
 Description - Log-logistic overall survival model object creator

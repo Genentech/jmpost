@@ -20,12 +20,11 @@ setMethod(
     f = "initialize",
     signature = "LogLogisticOs",
     definition = function(.Object,
-                          ..., stan = LogLogisticModule(), templated) {
+                          ..., stan = LogLogisticModule()) {
         callNextMethod(
             .Object,
             ...,
-            stan = stan@stan,
-            templated = stan@templated
+            stan = stan
         )
     }
 )
