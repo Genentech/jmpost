@@ -147,7 +147,7 @@ setMethod(
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]], str_map(char)))
                 } else {
                     return("")
                 }
@@ -212,3 +212,8 @@ remove_blank_strings <- function(x) {
     return(x[!x == ""])
 }
 
+#' Function removes spaces and add 4 spaces after change lines
+str_map<-function(i){
+  i<-gsub(" ","",i)
+  i<-gsub(";\n",";\n    ",i)
+  print(i)}
