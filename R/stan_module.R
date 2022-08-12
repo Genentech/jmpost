@@ -39,7 +39,6 @@ read_stan <- function(string) {
 }
 
 
-#' @importFrom setValidity setValidity2
 #' @rdname StanModule-class
 #' @export
 setMethod(
