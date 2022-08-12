@@ -56,8 +56,7 @@ test_that("StanModules can be rendered as a string", {
             "}",
             "model {",
             "",
-            "target+=sum(log_lik);",
-            "",
+            " ",
             "}",
             ""
 
@@ -126,7 +125,7 @@ test_that("as.character works for the list objects", {
     obj <- StanModule(priors = list("prior1" = "def1;",
                                     "prior2" = "def2;"))
     actual <- as.character(obj)
-    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\ntarget+=sum(log_lik);\n\n}\n"
+    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\n \n}\n"
     expect_equal(actual, expected)
 
 })
