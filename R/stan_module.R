@@ -163,7 +163,7 @@ setMethod(
             names(block_map),
             function(id) {
                 char <- slot(x, id)
-                if (nchar(char) >= 1) {
+                if ((any(nchar(char) >= 1, length(char) > 1))) {
                     return(paste(block_map[[id]], h_bracket(char)))
                 } else {
                     return("")
