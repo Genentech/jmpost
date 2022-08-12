@@ -15,7 +15,7 @@
   data = "",
   parameters = "",
   transformed_parameters = "",
-  model = NA_character_,
+  model = "",
   generated_quantities = "",
   priors = list(),
   inits = list()

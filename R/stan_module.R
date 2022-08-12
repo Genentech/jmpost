@@ -55,7 +55,7 @@ setMethod(
                           data = "",
                           parameters = "",
                           transformed_parameters = "",
-                          model = NA_character_,
+                          model = "",
                           generated_quantities = "",
                           priors = list(),
                           inits = list()) {
@@ -128,10 +128,8 @@ setMethod(
 #' @param x A StanModule object
 #' @export
 model_prep <- function(x) {
-    if (any(is.na(x@model), nchar(x@model) < 2)) {
-        if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
-        x@model <- h_bracket(x@priors)
-    }
+    if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
+    x@model <- paste(h_bracket(x@priors), x@model)
     x
 }
 
@@ -149,7 +147,6 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-
         x <- model_prep(x)
 
         block_map <- list(
@@ -167,7 +164,7 @@ setMethod(
             function(id) {
                 char <- slot(x, id)
                 if (nchar(char) >= 1) {
-                    return(paste( block_map[[id]], h_bracket(char)))
+                    return(paste(block_map[[id]], h_bracket(char)))
                 } else {
                     return("")
                 }
@@ -175,7 +172,6 @@ setMethod(
         )
 
         return(paste0(block_strings, collapse = ""))
-
     }
 )
 
