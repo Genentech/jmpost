@@ -4,7 +4,7 @@ setMethod(
     f = "h_bracket",
     signature = "character",
     definition = function(x) {
-        if (nchar(x) >= 1) paste0("{\n", paste0(x, collapse = "\n"), "\n}\n")
+        if (any(nchar(x) >= 1, length(x) > 1)) paste0("{\n", paste0(x, collapse = "\n"), "\n}\n")
     }
 )
 
