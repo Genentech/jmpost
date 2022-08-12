@@ -147,7 +147,7 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
-        x <- model_prep(x)
+        y <- model_prep(x)
 
         block_map <- list(
             functions = "functions",
@@ -162,7 +162,7 @@ setMethod(
         block_strings <- lapply(
             names(block_map),
             function(id) {
-                char <- slot(x, id)
+                char <- slot(y, id)
                 if ((any(nchar(char) >= 1, length(char) > 1))) {
                     return(paste(block_map[[id]], h_bracket(char)))
                 } else {
