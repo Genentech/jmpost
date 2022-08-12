@@ -38,40 +38,6 @@ read_stan <- function(string) {
     return(out)
 }
 
-#' Validate Inputs
-#'
-#' @param object
-#'
-#' @return StanModule
-#' @export StanModule
-#'
-#' @examples StanModule
-#' @name setValidity
-setValidity("StanModule",function(object){
-    if (!is.character(object@functions)
-        |!is.character(object@data)
-        |!is.character(object@parameters)
-        |!is.character(object@transformed_parameters)
-        |!is.character(object@generated_quantities))
-        stop("`Functions`, `data`, `parameters`, `transformed_parameters`
-       and `generated_quantities` must be character vectors")
-})
-
-#' Validate Inputs
-#'
-#' @param object
-#'
-#' @return StanModule
-#' @export StanModule
-#'
-#' @examples StanModule
-#' @name setValidity2
-setValidity("StanModule",function(object){
-    if (!is.list(object@priors)
-        |!is.list(object@inits))
-        stop("`Priors` and `inits` must be lists")
-})
-
 
 #' @importFrom setValidity setValidity2
 #' @rdname StanModule-class

@@ -21,23 +21,35 @@
 HazardLink <- setClass(
     "HazardLink",
     slots = list(
-        "stan" = "StanModule",
-        "contribution" = "character",
-        "parameters" = "character"
+        stan = "StanModule",
+        contribution = "character",
+        parameters = "character"
     )
 )
 
-setValidity("StanModule",function(object){
-    if (!is.character(object@parameters)
-        |!length(object@parameters) >= 1)
-        stop("`parameter` must be a character vector")
+setValidity("HazardLink",function(object){
+    if (!length(object@parameters) >= 1)
+        stop("`parameter` must be a vector")
 })
 
-setValidity("StanModule",function(object){
-    if (!is.character(object@contribution)
-        |!length(object@contribution) == 1)
+setValidity("HazardLink",function(object){
+    if (!length(object@contribution) == 1)
         stop("`contribution` must be length 1 character vectors")
 })
+
+setValidity("HazardLink",function(object){
+    if (!length(object@contribution) == 1)
+        stop("`contribution` must be length 1 character vectors")
+})
+
+setValidity("HazardLink", function(object) {
+    if (!length(object@contribution) == 1) {
+        "`contribution` must be length 1 character vectors"
+    } else {
+        TRUE
+    }
+})
+
 
 #' @importFrom assertthat assert_that
 #' @rdname StanModule-class
