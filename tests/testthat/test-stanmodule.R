@@ -174,3 +174,5 @@ test_that("is_file can correctly detect files", {
     expect_false(is_file(dir1))
     expect_true(is_file(file1))
 })
+
+
