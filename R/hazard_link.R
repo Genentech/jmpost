@@ -44,7 +44,6 @@ setValidity("HazardLink", function(object) {
 })
 
 
-#' @importFrom assertthat assert_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
