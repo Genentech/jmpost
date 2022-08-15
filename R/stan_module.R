@@ -202,10 +202,12 @@ remove_blank_strings <- function(x) {
 
 
 #' Function removes spaces and add 4 spaces after change lines
+
 str_map<-function(i){
   i<-gsub("\\s","",i)
-  i<-gsub(";\n",";\n    ",i)
+  i<-gsub(";",";\n    ",i)
   print(i)}
+
 
 #' Read entire file as a single string
 #'
