@@ -130,12 +130,25 @@ setMethod(
     }
 )
 
-#' model_prep. Populates the model section of a StanModule
+#' model_prep
+#' 
+#' Populates the model section of a StanModule
+#' 
 #' @param x A StanModule object
 #' @export
 model_prep <- function(x) {
-    if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
-    x@model <- paste(paste0(paste0(x@priors, collapse = "\n"), "\n"), x@model)
+    if (length(x@priors) > 0) {
+        x@priors <- as.list(
+            paste(names(x@priors), "~", x@priors)
+        )
+    }
+    x@model <- paste(
+        paste0(
+            paste0(x@priors, collapse = "\n"),
+            "\n"
+        ),
+        x@model
+    )
     x
 }
 
