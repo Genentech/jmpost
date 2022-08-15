@@ -20,7 +20,6 @@ StanModule <- setClass(
 )
 
 
-
 #' read_stan returns stan code as a character.
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
@@ -135,8 +134,6 @@ setMethod(
 )
 
 
-
-
 #' @rdname merge
 #' @export
 setMethod(
@@ -190,6 +187,7 @@ read_file <- function(filename) {
 }
 
 
+#' @importFrom assertthat assert_that
 #' Is string a valid file
 #'
 #' A utility function to check if a string is a valid file or not.
