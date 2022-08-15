@@ -78,6 +78,12 @@ setMethod(
             msg = "`Priors` and `inits` must be lists"
         )
 
+        if (length(priors) > 0) {
+            assert_that(
+                is.null(names(priors)) == FALSE,
+                msg = "`Priors` must have names"
+            )
+        }
 
         callNextMethod(
             .Object,
@@ -129,7 +135,7 @@ setMethod(
 #' @export
 model_prep <- function(x) {
     if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
-    x@model <- paste(h_bracket(x@priors), x@model)
+    x@model <- paste(paste0(paste0(x@priors, collapse = "\n"), "\n"), x@model)
     x
 }
 

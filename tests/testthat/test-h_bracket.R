@@ -8,7 +8,7 @@ test_that("h_bracket works as expected", {
         parameters = "string",
         transformed_parameters = "string",
         generated_quantities = "string",
-        priors = list("item1;", "item2;")
+        priors = list("prior1" = "item1;","prior2" = "item2;")
     )
 
     expect_equal(h_bracket(st_mod@functions), "{\nstring\n}\n")
@@ -16,5 +16,4 @@ test_that("h_bracket works as expected", {
     expect_equal(h_bracket(st_mod@parameters), "{\nstring\n}\n")
     expect_equal(h_bracket(st_mod@transformed_parameters), "{\nstring\n}\n")
     expect_equal(h_bracket(st_mod@generated_quantities), "{\nstring\n}\n")
-    expect_equal(h_bracket(st_mod@priors), "item1;\nitem2;\n")
 })
