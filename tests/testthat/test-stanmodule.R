@@ -199,3 +199,45 @@ test_that("StanModule errors if priors aren't named", {
     
 })
 
+
+test_that("StanModule as.character works well with model and prior being specified", {
+
+    actual <- as.character(StanModule(model = "b"))
+    expected <- paste0(
+        c(
+            "model {",
+            "b",
+            "}",
+            ""
+        ),
+        collapse = "\n"
+    )
+    expect_equal(actual, expected)
+
+
+    actual <- as.character(StanModule(priors = list("b" = "z")))
+    expected <- paste0(
+        c(
+            "model {",
+            "b ~ z",
+            "}",
+            ""
+        ),
+        collapse = "\n"
+    )
+    expect_equal(actual, expected)
+
+
+    actual <- as.character(StanModule(priors = list("b" = "z"), model = "mod"))
+    expected <- paste0(
+        c(
+            "model {",
+            "b ~ z",
+            "mod"
+            "}",
+            ""
+        ),
+        collapse = "\n"
+    )
+    expect_equal(actual, expected)
+})
