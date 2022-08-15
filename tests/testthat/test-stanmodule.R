@@ -182,7 +182,7 @@ test_that("StanModule errors if priors aren't named", {
     
     # Basic case when everything is specified correctly
     sm <- StanModule(priors = list("a" = "x", "b" = "y"))
-    expect_equal(as.character(m), "model {\na ~ x\nb ~ y\n \n}\n")
+    expect_equal(as.character(sm), "model {\na ~ x\nb ~ y\n \n}\n")
     
     
     # Case when no priors have names
