@@ -87,3 +87,20 @@ test_that("LogLogisticModule is working as expected", {
 
     expect_equal(actual, expected)
 })
+
+
+
+test_that("parametrize combines functions as expected", {
+    os_mod <- OsModel(stan = StanModule(functions = "Os Functions"))
+    h_link <- HazardLink(
+        stan = StanModule(
+            functions = "functions"),
+        parameters = "bla",
+        contribution = "bla"
+    )
+    actual <- parametrize(os_mod, h_link)
+    expected <- OsModel(stan = StanModule(functions = "Os Functions\\n functions"))
+
+    expect_equal(actual, expected)
+
+})
