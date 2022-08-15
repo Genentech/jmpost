@@ -120,6 +120,7 @@ test_that("remove_blank_string works as expected", {
 
 
 
+
 test_that("as.character works for the list objects", {
 
     obj <- StanModule(priors = list("prior1" = "def1;",
@@ -129,6 +130,8 @@ test_that("as.character works for the list objects", {
     expect_equal(actual, expected)
 
 })
+
+
 
 
 test_that("loading multiple lines from a file works as expected", {
@@ -151,11 +154,9 @@ test_that("loading multiple lines from a file works as expected", {
         actual@generated_quantities,
         c("mystring; mystring2\nmystring3;\nmystring4;", "more strings")
     )
-
-
-
-
 })
+
+
 
 
 test_that("is_file can correctly detect files", {
@@ -175,4 +176,26 @@ test_that("is_file can correctly detect files", {
     expect_true(is_file(file1))
 })
 
+
+
+test_that("StanModule errors if priors aren't named", {
+    
+    # Basic case when everything is specified correctly
+    sm <- StanModule(priors = list("a" = "x", "b" = "y"))
+    expect_equal(as.character(m), "model {\na ~ x\nb ~ y\n \n}\n")
+    
+    
+    # Case when no priors have names
+    expect_error(
+        StanModule(priors = list("x", "y")),
+        regexp = "`Priors` must have names"
+    )
+    
+    # Case when no only some have names
+    expect_error(
+        StanModule(priors = list("a" = "x", "y")),
+        regexp = "`Priors` must have names"
+    )
+    
+})
 
