@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @exportClass StanModule
+#' @export
 StanModule <- setClass(
     "StanModule",
     representation(
@@ -23,17 +23,18 @@ StanModule <- setClass(
 )
 
 
+
 #' read_stan returns stan code as a character.
 #'
-#' @param file Character, either the absolute path of a stan file, or the name of the stan
+#' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
     system_file <- system.file("stanparts", string, package = "jmpost")
-    if (file.exists(string)) {
-        out <- readLines(string)
-    } else if (file.exists(system_file)) {
-        out <- readLines(system_file)
+    if (is_file(string)) {
+        out <- read_file(string)
+    } else if (is_file(system_file)) {
+        out <- read_file(system_file)
     } else {
         out <- string
     }
@@ -42,7 +43,6 @@ read_stan <- function(string) {
 
 
 #' @importFrom assertthat assert_that
-#' @importFrom assertthat validate_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -147,7 +147,7 @@ setMethod(
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]], str_map(char)))
+                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]],"", str_map(char)))
                 } else {
                     return("")
                 }
@@ -157,18 +157,6 @@ setMethod(
     }
 )
 
-
-#' Merge
-#'
-#' Generic function to collapse two similar objects into a single combined object
-#'
-#' @param x An Object
-#' @param y An Object with identical class to `x`
-#' @export
-setGeneric(
-    "merge",
-    function(x, y) standardGeneric("merge")
-)
 
 
 
@@ -212,8 +200,45 @@ remove_blank_strings <- function(x) {
     return(x[!x == ""])
 }
 
+<<<<<<< HEAD
 #' Function removes spaces and add 4 spaces after change lines
 str_map<-function(i){
   i<-gsub(" ","",i)
   i<-gsub(";\n",";\n    ",i)
   print(i)}
+=======
+
+#' Read entire file as a single string
+#'
+#' Simple utility function to read in a file as 1
+#' continous string
+#'
+#' @param filename Location of file to read in
+#'
+read_file <- function(filename) {
+    paste0(readLines(filename), collapse = "\n")
+}
+
+
+#' Is string a valid file
+#' 
+#' A utility function to check if a string is a valid file or not.
+#' Used to help address short comings of file.exists that will return TRUE
+#' for a directory as well as a file
+#' 
+#' @param filename A character string
+is_file <- function(filename = NULL) {
+    if (is.null(filename)) {
+        return(FALSE)
+    }
+    assert_that(
+        is.character(filename),
+        length(filename) == 1,
+        msg = "`filename` must be a length 1 character"
+    )
+    if (is.na(filename)) {
+        return(FALSE)
+    }
+    return(file.exists(filename) & !dir.exists(filename))
+}
+>>>>>>> 0305e5995d865578086c3686e489b42af8c7e8ca
