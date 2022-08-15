@@ -147,7 +147,7 @@ setMethod(
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]], str_map(char)))
+                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]],"",str_map(char)))
                 } else {
                     return("")
                 }
