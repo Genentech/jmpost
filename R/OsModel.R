@@ -6,10 +6,10 @@
 #' @slot templated Logical. Defines whether the OsModel object needs to be completed
 #' @export
 OsModel <- setClass(
-    Class = "OsModel",
-    representation = list(
-        stan = "StanModule"
-    )
+  Class = "OsModel",
+  representation = list(
+    stan = "StanModule"
+  )
 )
 
 
@@ -32,15 +32,15 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               generated_quantities = "os_generated_quantities.stan",
                               priors = os_prior(),
                               inits = list()) {
-    StanModule(
-        functions = functions,
-        data = data,
-        parameters = parameters,
-        transformed_parameters = transformed_parameters,
-        generated_quantities = generated_quantities,
-        priors = priors,
-        inits = inits
-    )
+  StanModule(
+    functions = functions,
+    data = data,
+    parameters = parameters,
+    transformed_parameters = transformed_parameters,
+    generated_quantities = generated_quantities,
+    priors = priors,
+    inits = inits
+  )
 }
 
 
@@ -57,67 +57,63 @@ LogLogisticModule <- function(functions = "os_functions.stan",
 #' @importFrom stringr str_replace_all
 #' @export
 setGeneric("parametrize", function(osmod, link) {
-    standardGeneric("parametrize")
+  standardGeneric("parametrize")
 })
 
 
+
 setMethod(
-    "parametrize",
-    signature(osmod = "OsModel", link = "HazardLink"),
-    function(osmod, link) {
-        newOS <- osmod
-
-        newOS@stan@functions <- gsub(
-            "<link_arguments>",
-            paste0("real ", link@parameters, ","),
-            osmod@stan@functions
-        ) |>
-            paste0("\\n ", link@stan@functions)
-
-        newOS@stan@functions <- gsub(
-            "<link_log_hazard_contribution>",
-            paste0(link@parameters, link@contribution),
-            newOS@stan@functions
-        )
-        newOS@stan@functions <- gsub(
-            "<link_arguments_as_par>",
-            paste0(link@parameters),
-            newOS@stan@functions
-        )
+  "parametrize",
+  signature(osmod = "OsModel", link = "HazardLink"),
+  function(osmod, link) {
+    newOS <- osmod
 
 
+    gap_map <- list(
+      "<link_arguments>" = paste0("real ", link@parameters, ","),
+      "<link_log_hazard_contribution>" = paste0(link@parameters, link@contribution),
+      "<link_arguments_as_par>" =  paste0(link@parameters, collapse = ","),
+      "<link_parameters>" = link@stan@parameters,
+      "<link_log_surv>" = paste0(paste0(link@parameters, collapse = ","), ","),
+      "<link_log_lik>" = paste0(paste0(link@parameters, collapse = ","), ",")
+    )
 
-        temp_obj <- merge(osmod@stan, link@stan)
-        newOS@stan@priors <- temp_obj@priors
-        newOS@stan@inits <- temp_obj@inits
+    slot_map <- c(
+      "functions",
+      "parameters",
+      "transformed_parameters",
+      "generated_quantities"
+    )
 
-        newOS@stan@parameters <- gsub(
-            pattern = "<link_parameters>",
-            replacement = link@stan@parameters,
-            osmod@stan@parameters
-        )
+    for (i in slot_map) {
+      for (k in c(1:length(gap_map))) {
 
+          if(is.na(slot(newOS@stan, i))) next
 
-        newOS@stan@transformed_parameters <- gsub(
-            pattern = "<link_log_surv>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-            osmod@stan@transformed_parameters
-        )
-        newOS@stan@transformed_parameters <- gsub(
-            pattern = "<link_log_lik>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-            newOS@stan@transformed_parameters
+        char <- slot(newOS@stan, i)
+
+        tmp_char <- gsub(
+          pattern = names(gap_map)[k],
+          replacement = gap_map[k],
+          x = char
         )
 
+        if(i == "functions" & names(gap_map)[k] == "<link_arguments>") {
+            tmp_char <- paste0(tmp_char, "\\n ", link@stan@functions)
+        }
 
-        newOS@stan@generated_quantities <- gsub(
-            pattern = "<link_arguments_as_par>",
-            replacement = paste0(paste0(link@parameters, collapse = ","), ","),
-            osmod@stan@generated_quantities
-        )
-
-
-
-        newOS
+        slot(newOS@stan, i) <- tmp_char
+      }
     }
+
+
+
+    temp_obj <- merge(osmod@stan, link@stan)
+    newOS@stan@priors <- temp_obj@priors
+    newOS@stan@inits <- temp_obj@inits
+
+
+
+    newOS
+  }
 )

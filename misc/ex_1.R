@@ -5,7 +5,7 @@ my_long_mod <- LongModel(stan = StanModule(functions = "exp_long_functions.stan"
                                            data = "exp_long_data.stan",
                                            priors = list(),
                                            inits = list()))
-my_os_mod <- LogLogisticModule()
+my_os_mod <- LogLogisticOs()
 
 my_link <- HazardLink(
     parameters = "beta_ttg",
