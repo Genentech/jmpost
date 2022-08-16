@@ -147,7 +147,7 @@ setMethod(
                     char <- paste0(char, collapse = "\n")
                 }
                 if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]],"", str_map(char)))
+                    return(sprintf("\n%s {\n%4s%s\n}\n", block_map[[id]],"",str_map(char)))
                 } else {
                     return("")
                 }
@@ -200,13 +200,13 @@ remove_blank_strings <- function(x) {
     return(x[!x == ""])
 }
 
-<<<<<<< HEAD
+
 #' Function removes spaces and add 4 spaces after change lines
+
 str_map<-function(i){
-  i<-gsub(" ","",i)
-  i<-gsub(";\n",";\n    ",i)
+  i<-gsub("^\\s*","",i)
+  i<-gsub("\n\\s*","\n    ",i)
   print(i)}
-=======
 
 #' Read entire file as a single string
 #'
@@ -241,4 +241,4 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
->>>>>>> 0305e5995d865578086c3686e489b42af8c7e8ca
+
