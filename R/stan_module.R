@@ -139,12 +139,12 @@ setMethod(
 #' @export
 model_prep <- function(x) {
     if (length(x@priors) > 0) {
-        x@priors <- as.list(
+        tmp_priors <- as.list(
             paste(names(x@priors), "~", x@priors)
         )
 
         x@model <- paste0(
-            paste0(x@priors, collapse = "\n"),
+            paste0(tmp_priors, collapse = "\n"),
             "\n",
             x@model
         )
