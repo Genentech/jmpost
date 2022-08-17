@@ -15,6 +15,7 @@
   data = "",
   parameters = "",
   transformed_parameters = "",
+  model = "",
   generated_quantities = "",
   priors = list(),
   inits = list()
