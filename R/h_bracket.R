@@ -7,10 +7,17 @@
 #' @export
 h_bracket <- function(x) {
     if (any(nchar(x) >= 1, length(x) > 1)) {
-        paste0(
+
+        str <- paste0(
             "{\n",
             paste0(x, collapse = "\n"),
             "\n}\n"
         )
+
+    } else {
+
+        str <- NULL
+
     }
+    return(str)
 }

@@ -17,3 +17,11 @@ test_that("h_bracket works as expected", {
     expect_equal(h_bracket(st_mod@transformed_parameters), "{\nstring\n}\n")
     expect_equal(h_bracket(st_mod@generated_quantities), "{\nstring\n}\n")
 })
+
+
+test_that("Empty strings work fine", {
+    str <- ""
+    actual <- h_bracket(str)
+    expected <- NULL
+    expect_equal(actual, expected)
+})
