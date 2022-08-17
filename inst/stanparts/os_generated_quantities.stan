@@ -25,7 +25,7 @@
 
       // Unconditional survival.
       ind_unconditional_survival[i] = exp(log_survival(os_pred_times,
-      lambda, p, <link_arguments_as_par>
+      lambda, p, <link_arguments_as_par>,
       psi_bsld[i_rep], psi_ks[i_rep], psi_kg[i_rep], psi_phi[i_rep],
       nodes, weights, beta_os_cov, os_cov_design[i_rep]));
 
@@ -40,7 +40,7 @@
 
       // Log hazard.
       ind_log_hazard[i] = to_row_vector(log_hazard(to_matrix(os_pred_times),
-      lambda, p,  <link_arguments_as_par>
+      lambda, p,  <link_arguments_as_par>,
       psi_bsld[i_rep], psi_ks[i_rep], psi_kg[i_rep], psi_phi[i_rep],
       beta_os_cov, os_cov_design[i_rep]));
     }

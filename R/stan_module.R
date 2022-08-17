@@ -16,6 +16,7 @@ StanModule <- setClass(
         data = "character",
         parameters = "character",
         transformed_parameters = "character",
+        model = "character",
         priors = "list",
         generated_quantities = "character",
         inits = "list"
@@ -55,6 +56,7 @@ setMethod(
                           data = "",
                           parameters = "",
                           transformed_parameters = "",
+                          model = "",
                           generated_quantities = "",
                           priors = list(),
                           inits = list()) {
@@ -64,8 +66,9 @@ setMethod(
             is.character(parameters),
             is.character(transformed_parameters),
             is.character(generated_quantities),
+            is.character(model),
             msg = paste(
-                "`Functions`, `data`, `parameters`, `transformed_parameters` and",
+                "`Functions`, `data`, `parameters`, `transformed_parameters`, `model` and",
                 "`generated_quantities` must be character vectors"
             )
         )
@@ -76,6 +79,13 @@ setMethod(
             msg = "`Priors` and `inits` must be lists"
         )
 
+        if (length(priors) > 0) {
+            assert_that(
+                is.null(names(priors)) == FALSE,
+                all(names(priors) != ""),
+                msg = "`Priors` must have names"
+            )
+        }
 
         callNextMethod(
             .Object,
@@ -104,6 +114,12 @@ setMethod(
                 FUN.VALUE = character(1),
                 USE.NAMES = FALSE
             ),
+            model = vapply(
+                X = model,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
             generated_quantities = vapply(
                 X = generated_quantities,
                 FUN = read_stan,
@@ -115,6 +131,29 @@ setMethod(
         )
     }
 )
+
+#' model_prep
+#'
+#' Populates the model section of a StanModule
+#'
+#' @param x A StanModule object
+#' @export
+model_prep <- function(x) {
+    if (length(x@priors) > 0) {
+        tmp_priors <- as.list(
+            paste(names(x@priors), "~", x@priors)
+        )
+
+        x@model <- paste0(
+            paste0(tmp_priors, collapse = "\n"),
+            "\n",
+            x@model
+        )
+    }
+
+    x
+}
+
 
 
 #' Convert a StanModule object into stan code
@@ -129,31 +168,31 @@ setMethod(
     f = "as.character",
     signature = "StanModule",
     definition = function(x) {
+        y <- model_prep(x)
+
         block_map <- list(
             functions = "functions",
             data = "data",
             parameters = "parameters",
             transformed_parameters = "transformed parameters",
-            priors = "model",
+            model = "model",
             generated_quantities = "generated quantities"
         )
         if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
 
+
         block_strings <- lapply(
             names(block_map),
             function(id) {
-                char <- slot(x, id)
-                if (!is.character(char) || length(char) > 1) {
-                    char <- paste0(paste0(char, collapse = "\n"), "\n")
-                    char <- paste0(char, "target+=sum(log_lik);\n")
-                }
-                if (nchar(char) >= 1) {
-                    return(sprintf("\n%s {\n%s\n}\n", block_map[[id]], char))
+                char <- slot(y, id)
+                if (any(nchar(char) >= 1, length(char) > 1)) {
+                    return(paste(block_map[[id]], h_bracket(char)))
                 } else {
                     return("")
                 }
             }
         )
+
         return(paste0(block_strings, collapse = ""))
     }
 )

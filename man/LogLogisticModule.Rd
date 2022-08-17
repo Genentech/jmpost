@@ -11,9 +11,23 @@ LogLogisticModule(
   transformed_parameters = "os_transformed_parameters.stan",
   generated_quantities = "os_generated_quantities.stan",
   priors = os_prior(),
-  inits = list(),
-  templated = TRUE
+  inits = list()
 )
+}
+\arguments{
+\item{functions}{A stan code including the functions section of the model.}
+
+\item{data}{A stan code including the data section of the model.}
+
+\item{parameters}{A stan code including the parameters section of the model.}
+
+\item{transformed_parameters}{A stan code including the transformed parameters section of the model.}
+
+\item{generated_quantities}{A stan code including the generated quantities section of the model.}
+
+\item{priors}{A prior list with the priors of the model.}
+
+\item{inits}{A list with the initial values.}
 }
 \description{
 Log logistic module helper function.
