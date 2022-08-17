@@ -2,7 +2,7 @@
 % Please edit documentation in R/stan_module.R
 \name{model_prep}
 \alias{model_prep}
-\title{model_prep. Populates the model section of a StanModule}
+\title{model_prep}
 \usage{
 model_prep(x)
 }
@@ -10,5 +10,5 @@ model_prep(x)
 \item{x}{A StanModule object}
 }
 \description{
-model_prep. Populates the model section of a StanModule
+Populates the model section of a StanModule
 }

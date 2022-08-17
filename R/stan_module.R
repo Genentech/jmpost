@@ -81,6 +81,7 @@ setMethod(
         if (length(priors) > 0) {
             assert_that(
                 is.null(names(priors)) == FALSE,
+                all(names(priors) != ""),
                 msg = "`Priors` must have names"
             )
         }
@@ -131,9 +132,9 @@ setMethod(
 )
 
 #' model_prep
-#' 
+#'
 #' Populates the model section of a StanModule
-#' 
+#'
 #' @param x A StanModule object
 #' @export
 model_prep <- function(x) {
@@ -141,14 +142,14 @@ model_prep <- function(x) {
         x@priors <- as.list(
             paste(names(x@priors), "~", x@priors)
         )
-    }
-    x@model <- paste(
-        paste0(
+
+        x@model <- paste0(
             paste0(x@priors, collapse = "\n"),
-            "\n"
-        ),
-        x@model
-    )
+            "\n",
+            x@model
+        )
+    }
+
     x
 }
 
@@ -182,7 +183,7 @@ setMethod(
             names(block_map),
             function(id) {
                 char <- slot(y, id)
-                if ((any(nchar(char) >= 1, length(char) > 1))) {
+                if (any(nchar(char) >= 1, length(char) > 1)) {
                     return(paste(block_map[[id]], h_bracket(char)))
                 } else {
                     return("")
