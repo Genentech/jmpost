@@ -187,7 +187,6 @@ read_file <- function(filename) {
 }
 
 
-#' @importFrom assertthat assert_that
 #' Is string a valid file
 #'
 #' A utility function to check if a string is a valid file or not.
@@ -195,6 +194,7 @@ read_file <- function(filename) {
 #' for a directory as well as a file
 #'
 #' @param filename A character string
+#' @importFrom assertthat assert_that
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
         return(FALSE)
