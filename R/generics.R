@@ -11,4 +11,3 @@ setGeneric(
     "merge",
     function(x, y) standardGeneric("merge")
 )
-
