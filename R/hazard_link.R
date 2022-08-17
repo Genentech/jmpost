@@ -44,26 +44,6 @@ setValidity("HazardLink", function(object) {
 })
 
 
-<<<<<<< Updated upstream
-=======
-setValidity("HazardLink", function(object) {
-    if (!length(object@parameters) >= 1) {
-        "`parameter` must be a vector"
-    } else {
-        TRUE
-    }
-})
-
-setValidity("HazardLink", function(object) {
-    if (!length(object@contribution) == 1) {
-        "`contribution` must be length 1 character vectors"
-    } else {
-        TRUE
-    }
-})
-
-
->>>>>>> Stashed changes
 #' @rdname StanModule-class
 #' @export
 setMethod(
