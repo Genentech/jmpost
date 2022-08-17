@@ -3,7 +3,6 @@
 
 
 test_that("Simple construction works as expected", {
-
     actual <- StanModule(
         functions = "string",
         data = c("string1", "string2")
@@ -39,7 +38,6 @@ test_that("Loading from file works as expected", {
 
 
 test_that("StanModules can be rendered as a string", {
-
     x <- StanModule(
         data = c("some data"),
         functions = c("some code", "some more code")
@@ -54,12 +52,7 @@ test_that("StanModules can be rendered as a string", {
             "data {",
             "some data",
             "}",
-            "model {",
-            "",
-            " ",
-            "}",
             ""
-
         ),
         collapse = "\n"
     )
@@ -72,7 +65,6 @@ test_that("StanModules can be rendered as a string", {
 
 
 test_that("We are able to merge 2 StanModule objects together", {
-
     x <- StanModule(
         functions = c("abc", "def"),
         data = c("xyz")
@@ -96,7 +88,6 @@ test_that("We are able to merge 2 StanModule objects together", {
 
 
 test_that("remove_blank_string works as expected", {
-
     actual <- remove_blank_strings(c(""))
     expected <- ""
     expect_equal(actual, expected)
@@ -115,20 +106,19 @@ test_that("remove_blank_string works as expected", {
     actual <- remove_blank_strings(c("string", "", "", "st"))
     expected <- c("string", "st")
     expect_equal(actual, expected)
-
 })
 
 
 
 
 test_that("as.character works for the list objects", {
-
-    obj <- StanModule(priors = list("prior1" = "def1;",
-                                    "prior2" = "def2;"))
+    obj <- StanModule(priors = list(
+        "prior1" = "def1;",
+        "prior2" = "def2;"
+    ))
     actual <- as.character(obj)
-    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\n \n}\n"
+    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\n\n}\n"
     expect_equal(actual, expected)
-
 })
 
 
@@ -154,6 +144,21 @@ test_that("loading multiple lines from a file works as expected", {
         actual@generated_quantities,
         c("mystring; mystring2\nmystring3;\nmystring4;", "more strings")
     )
+
+    actual_char <- as.character(actual)
+    expected <- paste0(
+        c(
+            "generated quantities {",
+            "mystring; mystring2",
+            "mystring3;",
+            "mystring4;",
+            "more strings",
+            "}",
+            ""
+        ),
+        collapse = "\n"
+    )
+    expect_equal(actual_char, expected)
 })
 
 
@@ -179,29 +184,27 @@ test_that("is_file can correctly detect files", {
 
 
 test_that("StanModule errors if priors aren't named", {
-    
+
     # Basic case when everything is specified correctly
     sm <- StanModule(priors = list("a" = "x", "b" = "y"))
-    expect_equal(as.character(sm), "model {\na ~ x\nb ~ y\n \n}\n")
-    
-    
+    expect_equal(as.character(sm), "model {\na ~ x\nb ~ y\n\n}\n")
+
+
     # Case when no priors have names
     expect_error(
         StanModule(priors = list("x", "y")),
         regexp = "`Priors` must have names"
     )
-    
+
     # Case when no only some have names
     expect_error(
         StanModule(priors = list("a" = "x", "y")),
         regexp = "`Priors` must have names"
     )
-    
 })
 
 
 test_that("StanModule as.character works well with model and prior being specified", {
-
     actual <- as.character(StanModule(model = "b"))
     expected <- paste0(
         c(
@@ -220,6 +223,7 @@ test_that("StanModule as.character works well with model and prior being specifi
         c(
             "model {",
             "b ~ z",
+            "",
             "}",
             ""
         ),
@@ -233,7 +237,7 @@ test_that("StanModule as.character works well with model and prior being specifi
         c(
             "model {",
             "b ~ z",
-            "mod"
+            "mod",
             "}",
             ""
         ),
