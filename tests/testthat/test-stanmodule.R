@@ -122,7 +122,7 @@ test_that("as.character works for the list objects", {
     obj <- StanModule(priors = list("prior1" = "def1;",
                                     "prior2" = "def2;"))
     actual <- as.character(obj)
-    expected <- "\nmodel {\n    def1;\n    def2;\n}\n"
+    expected <- "\nmodel {\n    prior1 ~ def1;\n    prior2 ~ def2;\n\n}\n"
     expect_equal(actual, expected)
 
 })
