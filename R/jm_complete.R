@@ -24,6 +24,10 @@ setMethod("jm_complete",
                 collapse = "\n"
             ),
             priors = priors,
+            model = paste0(Long@stan@model,
+                           Os@stan@model,
+                           collapse = "\n"
+            ),
             parameters = paste0(Long@stan@parameters,
                 Os@stan@parameters,
                 collapse = "\n"

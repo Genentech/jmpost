@@ -5,11 +5,11 @@ my_long_mod <- LongModel(stan = StanModule(functions = "exp_long_functions.stan"
                                            parameters = "exp_long_parameters.stan",
                                            transformed_parameters = "exp_long_transformed_parametes.stan"))
 
-my_temp_os <- LogLogisticModule()
+my_temp_os <- LogLogisticOs()
 
 my_link <- HazardLink(
     parameters = "beta_ttg",
-    contribution = " rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
+    contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
     stan = StanModule( )
 )
 
