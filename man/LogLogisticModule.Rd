@@ -11,6 +11,7 @@ LogLogisticModule(
   transformed_parameters = "os_transformed_parameters.stan",
   generated_quantities = "os_generated_quantities.stan",
   priors = os_prior(),
+  model = "target += sum(log_lik);",
   inits = list()
 )
 }
