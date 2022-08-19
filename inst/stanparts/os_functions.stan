@@ -33,7 +33,7 @@
 
     matrix[rows(nodes), n_positive] nodes_time = (nodes + 1) * (time[time_positive_index] / 2);
     matrix[rows(nodes), n_positive] nodes_time_hazard = fmin(8000.0, exp(log_hazard(nodes_time, lambda,
-    p, <link_arguments_as_par>
+    p, <link_arguments_as_par>,
     psi_bsld[time_positive_index],
     psi_ks[time_positive_index],
     psi_kg[time_positive_index],
