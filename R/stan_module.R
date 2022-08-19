@@ -205,7 +205,7 @@ setMethod(
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
         pars <- c(
-            "functions", "data", "parameters",
+            "functions", "data", "parameters", "model",
             "transformed_parameters", "generated_quantities"
         )
 
