@@ -23,6 +23,7 @@ OsModel <- setClass(
 #' @param transformed_parameters  A stan code including the transformed parameters section of the model.
 #' @param generated_quantities  A stan code including the generated quantities section of the model.
 #' @param priors  A prior list with the priors of the model.
+#' @param model  A prior list with the priors of the model.
 #' @param inits  A list with the initial values.
 #' @export
 LogLogisticModule <- function(functions = "os_functions.stan",
@@ -54,9 +55,6 @@ LogLogisticModule <- function(functions = "os_functions.stan",
 #' Parametrize TemplatedStanOs object with the selected Hazardlink
 #' @param osmod TemplatedStanOs object
 #' @param link HazardLink object
-#' @importFrom stringr str_replace
-#' @importFrom stringr str_remove_all
-#' @importFrom stringr str_replace_all
 #' @export
 setGeneric("parametrize", function(osmod, link) {
     standardGeneric("parametrize")

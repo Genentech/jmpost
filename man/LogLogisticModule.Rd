@@ -28,6 +28,8 @@ LogLogisticModule(
 
 \item{priors}{A prior list with the priors of the model.}
 
+\item{model}{A prior list with the priors of the model.}
+
 \item{inits}{A list with the initial values.}
 }
 \description{
