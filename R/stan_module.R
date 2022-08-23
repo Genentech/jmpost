@@ -182,11 +182,12 @@ setMethod(
         block_strings <- lapply(
             names(block_map),
             function(id) {
-
-                char <- slot(y, id)
-                if (any(nchar(char) >= 1, length(char) > 1)) {
-                    return(paste(block_map[[id]], h_bracket(char)))
-
+                char <- slot(x, id)
+                if (!is.character(char) || length(char) > 1) {
+                    char <- paste0(char, collapse = "\n")
+                }
+                if (nchar(char) >= 1) {
+                    return((paste(block_map[[id]], h_bracket(char))))
                 } else {
                     return("")
                 }

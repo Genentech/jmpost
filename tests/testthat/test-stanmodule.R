@@ -49,6 +49,7 @@ test_that("StanModules can be rendered as a string", {
             "    some code",
             "    some more code",
             "}",
+            ,
             "data {",
             "    some data",
             "}",
@@ -150,7 +151,7 @@ test_that("loading multiple lines from a file works as expected", {
     actual_char <- as.character(actual)
     expected <- paste0(
         c(
-            "generated quantities {",
+           "generated quantities {",
             "    mystring; mystring2",
             "    mystring3;",
             "    mystring4;",
