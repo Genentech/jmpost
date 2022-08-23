@@ -10,7 +10,9 @@ h_bracket <- function(x) {
 
         str <- paste0(
             "{\n",
+
               paste0("    ",str_map(x), collapse = "\n"),
+
             "\n}\n"
         )
 
@@ -21,6 +23,7 @@ h_bracket <- function(x) {
     }
     return(str)
 }
+
 
 #' Function removes spaces and add 4 spaces after change lines
 
