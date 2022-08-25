@@ -10,17 +10,17 @@
 #' @slot inits List with the initial values of the stan model.
 #' @export
 StanModule <- setClass(
-  "StanModule",
-  representation(
-    functions = "character",
-    data = "character",
-    parameters = "character",
-    transformed_parameters = "character",
-    model = "character",
-    priors = "list",
-    generated_quantities = "character",
-    inits = "list"
-  )
+    "StanModule",
+    representation(
+        functions = "character",
+        data = "character",
+        parameters = "character",
+        transformed_parameters = "character",
+        model = "character",
+        priors = "list",
+        generated_quantities = "character",
+        inits = "list"
+    )
 )
 
 
@@ -31,15 +31,15 @@ StanModule <- setClass(
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
-  system_file <- system.file("stanparts", string, package = "jmpost")
-  if (is_file(string)) {
-    out <- read_file(string)
-  } else if (is_file(system_file)) {
-    out <- read_file(system_file)
-  } else {
-    out <- string
-  }
-  return(out)
+    system_file <- system.file("stanparts", string, package = "jmpost")
+    if (is_file(string)) {
+        out <- read_file(string)
+    } else if (is_file(system_file)) {
+        out <- read_file(system_file)
+    } else {
+        out <- string
+    }
+    return(out)
 }
 
 
@@ -47,88 +47,88 @@ read_stan <- function(string) {
 #' @rdname StanModule-class
 #' @export
 setMethod(
-  f = "initialize",
-  signature = "StanModule",
-  definition = function(.Object,
-                        ...,
-                        functions = "",
-                        data = "",
-                        parameters = "",
-                        transformed_parameters = "",
-                        model = "",
-                        generated_quantities = "",
-                        priors = list(),
-                        inits = list()) {
-    assert_that(
-      is.character(functions),
-      is.character(data),
-      is.character(parameters),
-      is.character(transformed_parameters),
-      is.character(generated_quantities),
-      is.character(model),
-      msg = paste(
-        "`Functions`, `data`, `parameters`, `transformed_parameters`, `model` and",
-        "`generated_quantities` must be character vectors"
-      )
-    )
+    f = "initialize",
+    signature = "StanModule",
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          model = "",
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
+        assert_that(
+            is.character(functions),
+            is.character(data),
+            is.character(parameters),
+            is.character(transformed_parameters),
+            is.character(generated_quantities),
+            is.character(model),
+            msg = paste(
+                "`Functions`, `data`, `parameters`, `transformed_parameters`, `model` and",
+                "`generated_quantities` must be character vectors"
+            )
+        )
 
-    assert_that(
-      is.list(priors),
-      is.list(inits),
-      msg = "`Priors` and `inits` must be lists"
-    )
+        assert_that(
+            is.list(priors),
+            is.list(inits),
+            msg = "`Priors` and `inits` must be lists"
+        )
 
-    if (length(priors) > 0) {
-      assert_that(
-        is.null(names(priors)) == FALSE,
-        all(names(priors) != ""),
-        msg = "`Priors` must have names"
-      )
+        if (length(priors) > 0) {
+            assert_that(
+                is.null(names(priors)) == FALSE,
+                all(names(priors) != ""),
+                msg = "`Priors` must have names"
+            )
+        }
+
+        callNextMethod(
+            .Object,
+            ...,
+            functions = vapply(
+                X = functions,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            data = vapply(
+                X = data,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            parameters = vapply(
+                X = parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            transformed_parameters = vapply(
+                X = transformed_parameters,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            model = vapply(
+                X = model,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            generated_quantities = vapply(
+                X = generated_quantities,
+                FUN = read_stan,
+                FUN.VALUE = character(1),
+                USE.NAMES = FALSE
+            ),
+            priors = priors,
+            inits = inits
+        )
     }
-
-    callNextMethod(
-      .Object,
-      ...,
-      functions = vapply(
-        X = functions,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      data = vapply(
-        X = data,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      parameters = vapply(
-        X = parameters,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      transformed_parameters = vapply(
-        X = transformed_parameters,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      model = vapply(
-        X = model,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      generated_quantities = vapply(
-        X = generated_quantities,
-        FUN = read_stan,
-        FUN.VALUE = character(1),
-        USE.NAMES = FALSE
-      ),
-      priors = priors,
-      inits = inits
-    )
-  }
 )
 
 #' model_prep
@@ -138,19 +138,19 @@ setMethod(
 #' @param x A StanModule object
 #' @export
 model_prep <- function(x) {
-  if (length(x@priors) > 0) {
-    tmp_priors <- as.list(
-      paste(names(x@priors), "~", x@priors)
-    )
+    if (length(x@priors) > 0) {
+        tmp_priors <- as.list(
+            paste(names(x@priors), "~", x@priors)
+        )
 
-    x@model <- paste0(
-      paste0(tmp_priors, collapse = "\n"),
-      "\n",
-      x@model
-    )
-  }
+        x@model <- paste0(
+            paste0(tmp_priors, collapse = "\n"),
+            "\n",
+            x@model
+        )
+    }
 
-  x
+    x
 }
 
 
@@ -164,35 +164,35 @@ model_prep <- function(x) {
 #' @param x A `StanModule` object
 #' @export
 setMethod(
-  f = "as.character",
-  signature = "StanModule",
-  definition = function(x) {
-    y <- model_prep(x)
+    f = "as.character",
+    signature = "StanModule",
+    definition = function(x) {
+        y <- model_prep(x)
 
-    block_map <- list(
-      functions = "functions",
-      data = "data",
-      parameters = "parameters",
-      transformed_parameters = "transformed parameters",
-      model = "model",
-      generated_quantities = "generated quantities"
-    )
+        block_map <- list(
+            functions = "functions",
+            data = "data",
+            parameters = "parameters",
+            transformed_parameters = "transformed parameters",
+            model = "model",
+            generated_quantities = "generated quantities"
+        )
 
 
-    block_strings <- lapply(
-      names(block_map),
-      function(id) {
-        char <- slot(y, id)
-        if (any(nchar(char) >= 1, length(char) > 1)) {
-          return(paste(block_map[[id]], h_bracket(char)))
-        } else {
-          return("")
-        }
-      }
-    )
+        block_strings <- lapply(
+            names(block_map),
+            function(id) {
+                char <- slot(y, id)
+                if (any(nchar(char) >= 1, length(char) > 1)) {
+                    return(paste(block_map[[id]], h_bracket(char)))
+                } else {
+                    return("")
+                }
+            }
+        )
 
-    return(paste0(block_strings, collapse = ""))
-  }
+        return(paste0(block_strings, collapse = ""))
+    }
 )
 
 
@@ -201,26 +201,26 @@ setMethod(
 #' @rdname merge
 #' @export
 setMethod(
-  f = "merge",
-  signature = c("StanModule", "StanModule"),
-  definition = function(x, y) {
-    pars <- c(
-      "functions", "data", "parameters",
-      "transformed_parameters", "generated_quantities"
-    )
+    f = "merge",
+    signature = c("StanModule", "StanModule"),
+    definition = function(x, y) {
+        pars <- c(
+            "functions", "data", "parameters",
+            "transformed_parameters", "generated_quantities"
+        )
 
-    args <- lapply(
-      pars,
-      function(par) remove_blank_strings(c(slot(x, par), slot(y, par)))
-    )
+        args <- lapply(
+            pars,
+            function(par) remove_blank_strings(c(slot(x, par), slot(y, par)))
+        )
 
-    names(args) <- pars
+        names(args) <- pars
 
-    args$priors <- append(x@priors, y@priors)
-    args$inits <- append(x@inits, y@inits)
+        args$priors <- append(x@priors, y@priors)
+        args$inits <- append(x@inits, y@inits)
 
-    do.call(StanModule, args)
-  }
+        do.call(StanModule, args)
+    }
 )
 
 
@@ -231,10 +231,10 @@ setMethod(
 #'
 #' @param x a vector of string
 remove_blank_strings <- function(x) {
-  if (all(x == "")) {
-    return("")
-  }
-  return(x[!x == ""])
+    if (all(x == "")) {
+        return("")
+    }
+    return(x[!x == ""])
 }
 
 
@@ -246,7 +246,7 @@ remove_blank_strings <- function(x) {
 #' @param filename Location of file to read in
 #'
 read_file <- function(filename) {
-  paste0(readLines(filename), collapse = "\n")
+    paste0(readLines(filename), collapse = "\n")
 }
 
 
@@ -258,16 +258,17 @@ read_file <- function(filename) {
 #'
 #' @param filename A character string
 is_file <- function(filename = NULL) {
-  if (is.null(filename)) {
-    return(FALSE)
-  }
-  assert_that(
-    is.character(filename),
-    length(filename) == 1,
-    msg = "`filename` must be a length 1 character"
-  )
-  if (is.na(filename)) {
-    return(FALSE)
-  }
-  return(file.exists(filename) & !dir.exists(filename))
+    if (is.null(filename)) {
+        return(FALSE)
+    }
+    assert_that(
+        is.character(filename),
+        length(filename) == 1,
+        msg = "`filename` must be a length 1 character"
+    )
+    if (is.na(filename)) {
+        return(FALSE)
+    }
+    return(file.exists(filename) & !dir.exists(filename))
 }
+
