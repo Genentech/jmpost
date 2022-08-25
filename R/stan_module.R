@@ -44,17 +44,16 @@ read_stan <- function(string) {
 setMethod(
     f = "initialize",
     signature = "StanModule",
-    definition = function(
-        .Object,
-        ...,
-        functions = "",
-        data = "",
-        parameters = "",
-        transformed_parameters = "",
-        generated_quantities = "",
-        priors = list(),
-        inits = list()
-    ) {
+    definition = function(.Object,
+                          ...,
+                          functions = "",
+                          data = "",
+                          parameters = "",
+                          transformed_parameters = "",
+                          model = "",
+                          generated_quantities = "",
+                          priors = list(),
+                          inits = list()) {
 
         if (length(priors) > 0) {
             assert_that(
