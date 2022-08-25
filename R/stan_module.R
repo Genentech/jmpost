@@ -39,6 +39,18 @@ read_stan <- function(string) {
 }
 
 
+setValidity("StanModule", function(object) {
+    if (length(object@priors) > 0) {
+        if (is.null(names(object@priors)) == FALSE | all(names(object@priors) != "")
+            ){
+            "`Priors` must have names"
+            } else {TRUE}
+} else{
+        TRUE
+      }
+})
+
+
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -54,15 +66,6 @@ setMethod(
                           generated_quantities = "",
                           priors = list(),
                           inits = list()) {
-
-        if (length(priors) > 0) {
-            assert_that(
-                is.null(names(priors)) == FALSE,
-                all(names(priors) != ""),
-                msg = "`Priors` must have names"
-            )
-        }
-
 
         callNextMethod(
             .Object,
