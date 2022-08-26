@@ -271,3 +271,4 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
+
