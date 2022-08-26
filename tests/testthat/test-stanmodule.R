@@ -46,11 +46,11 @@ test_that("StanModules can be rendered as a string", {
     expected <- paste0(
         c(
             "functions {",
-            "some code",
-            "some more code",
+            "    some code",
+            "    some more code",
             "}",
             "data {",
-            "some data",
+            "    some data",
             "}",
             ""
         ),
@@ -117,7 +117,9 @@ test_that("as.character works for the list objects", {
         "prior2" = "def2;"
     ))
     actual <- as.character(obj)
-    expected <- "model {\nprior1 ~ def1;\nprior2 ~ def2;\n\n}\n"
+
+    expected <- "model {\n    prior1 ~ def1;\n    prior2 ~ def2;\n    \n}\n"
+
     expect_equal(actual, expected)
 })
 
@@ -148,11 +150,11 @@ test_that("loading multiple lines from a file works as expected", {
     actual_char <- as.character(actual)
     expected <- paste0(
         c(
-            "generated quantities {",
-            "mystring; mystring2",
-            "mystring3;",
-            "mystring4;",
-            "more strings",
+           "generated quantities {",
+            "    mystring; mystring2",
+            "    mystring3;",
+            "    mystring4;",
+            "    more strings",
             "}",
             ""
         ),
@@ -187,7 +189,7 @@ test_that("StanModule errors if priors aren't named", {
 
     # Basic case when everything is specified correctly
     sm <- StanModule(priors = list("a" = "x", "b" = "y"))
-    expect_equal(as.character(sm), "model {\na ~ x\nb ~ y\n\n}\n")
+    expect_equal(as.character(sm), "model {\n    a ~ x\n    b ~ y\n    \n}\n")
 
 
     # Case when no priors have names
@@ -209,7 +211,7 @@ test_that("StanModule as.character works well with model and prior being specifi
     expected <- paste0(
         c(
             "model {",
-            "b",
+            "    b",
             "}",
             ""
         ),
@@ -222,8 +224,8 @@ test_that("StanModule as.character works well with model and prior being specifi
     expected <- paste0(
         c(
             "model {",
-            "b ~ z",
-            "",
+            "    b ~ z",
+            "    ",
             "}",
             ""
         ),
@@ -236,8 +238,8 @@ test_that("StanModule as.character works well with model and prior being specifi
     expected <- paste0(
         c(
             "model {",
-            "b ~ z",
-            "mod",
+            "    b ~ z",
+            "    mod",
             "}",
             ""
         ),
