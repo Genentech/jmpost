@@ -42,7 +42,7 @@ read_stan <- function(string) {
 
 setValidity("StanModule", function(object) {
     if (length(object@priors) > 0) {
-        if (is.null(names(object@priors)) == FALSE | all(names(object@priors) != "")
+        if (is.null(names(object@priors)) == FALSE || all(names(object@priors) != "")
             ){
             "`Priors` must have names"
             } else {TRUE}
