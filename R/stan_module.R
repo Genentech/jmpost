@@ -14,6 +14,7 @@ StanModule <- setClass(
                               data = "character",
                               parameters = "character",
                               transformed_parameters = "character",
+                              model = "character",
                               priors = "list",
                               generated_quantities = "character",
                               inits = "list")
