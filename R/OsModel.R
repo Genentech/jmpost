@@ -3,7 +3,6 @@
 #' Description - TODO
 #'
 #' @slot stan TODO
-#' @slot templated Logical. Defines whether the OsModel object needs to be completed
 #' @export
 OsModel <- setClass(
     Class = "OsModel",
