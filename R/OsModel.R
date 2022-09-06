@@ -2,7 +2,7 @@
 #'
 #' Creates an object containing all the stan code relevant to the overall survival part of a joint model.
 #'
-#' @slot stan TODO
+#' @slot stan StanModule. Object containing all the nessesary stan parts.
 #' @export
 OsModel <- setClass(
     Class = "OsModel",

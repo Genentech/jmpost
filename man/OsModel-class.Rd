@@ -11,6 +11,6 @@ Creates an object containing all the stan code relevant to the overall survival 
 \section{Slots}{
 
 \describe{
-\item{\code{stan}}{TODO}
+\item{\code{stan}}{StanModule. Object containing all the nessesary stan parts.}
 }}
 
