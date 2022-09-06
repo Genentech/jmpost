@@ -1,21 +1,22 @@
-#' Title - TODO
+#' Overall survival generic object for jmpost package.
 #'
-#' Description - TODO
+#' Creates an object containing all the stan code relevant to the overall survival part of a joint model.
 #'
 #' @slot stan TODO
 #' @export
 OsModel <- setClass(
     Class = "OsModel",
-    representation = list(
+    slots = list(
         stan = "StanModule"
     )
 )
 
 
 
-#' LogLogisticModule
-#'
 #' Log logistic module helper function.
+#'
+#' Creates a StanModule object containing the stan code relevant for the LogLogistic overall survival mdoel.
+#'
 #' @param functions A stan code including the functions section of the model.
 #' @param data  A stan code including the data section of the model.
 #' @param parameters  A stan code including the parameters section of the model.
@@ -48,19 +49,7 @@ LogLogisticModule <- function(functions = "os_functions.stan",
 
 
 
-
-
-
-#' Parametrize TemplatedStanOs object with the selected Hazardlink
-#' @param osmod TemplatedStanOs object
-#' @param link HazardLink object
-#' @export
-setGeneric("parametrize", function(osmod, link) {
-    standardGeneric("parametrize")
-})
-
-
-
+#' @rdname parametrize
 setMethod(
     "parametrize",
     signature(osmod = "OsModel", link = "HazardLink"),

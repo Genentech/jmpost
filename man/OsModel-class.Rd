@@ -4,15 +4,13 @@
 \name{OsModel-class}
 \alias{OsModel-class}
 \alias{OsModel}
-\title{Title - TODO}
+\title{Overall survival generic object for jmpost package.}
 \description{
-Description - TODO
+Creates an object containing all the stan code relevant to the overall survival part of a joint model.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{stan}}{TODO}
-
-\item{\code{templated}}{Logical. Defines whether the OsModel object needs to be completed}
 }}
 
