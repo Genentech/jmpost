@@ -11,7 +11,7 @@ LogLogisticModule(
   transformed_parameters = "os_transformed_parameters.stan",
   generated_quantities = "os_generated_quantities.stan",
   priors = os_prior(),
-  model = "target += sum(log_lik);",
+  model = "target+=sum(log_lik);\\n",
   inits = list()
 )
 }
@@ -28,7 +28,7 @@ LogLogisticModule(
 
 \item{priors}{A prior list with the priors of the model.}
 
-\item{model}{A prior list with the priors of the model.}
+\item{model}{String required in the model section.}
 
 \item{inits}{A list with the initial values.}
 }

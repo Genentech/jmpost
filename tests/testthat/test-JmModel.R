@@ -2,11 +2,11 @@ test_that("Miss-specified stan code. Check the names of the stan files.", {
 
     my_long_mod <- LongModel(stan = StanModule(functions = "bla"))
 
-    my_temp_os <- LogLogisticModule()
+    my_temp_os <- LogLogisticOs()
 
     my_link <- HazardLink(
         parameters = "beta_ttg",
-        contribution = " rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
+        contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
         stan = StanModule( )
     )
 
