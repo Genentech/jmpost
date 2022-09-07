@@ -31,7 +31,7 @@ StanModule <- setClass(
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
-    system_file <- system.file("stanparts", string, package = "jmpost")
+    system_file <- system.file("LogLogistic", string, package = "jmpost")
     if (is_file(string)) {
         out <- read_file(string)
     } else if (is_file(system_file)) {
@@ -207,7 +207,7 @@ setMethod(
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
         pars <- c(
-            "functions", "data", "parameters",
+            "functions", "data", "parameters", "model",
             "transformed_parameters", "generated_quantities"
         )
 
@@ -273,3 +273,4 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
+
