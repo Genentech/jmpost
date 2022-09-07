@@ -2,7 +2,7 @@
 % Please edit documentation in R/OsModel.R
 \name{LogLogisticModule}
 \alias{LogLogisticModule}
-\title{LogLogisticModule}
+\title{Log logistic module helper function.}
 \usage{
 LogLogisticModule(
   functions = "os_functions.stan",
@@ -11,6 +11,7 @@ LogLogisticModule(
   transformed_parameters = "os_transformed_parameters.stan",
   generated_quantities = "os_generated_quantities.stan",
   priors = os_prior(),
+  model = "target += sum(log_lik);",
   inits = list()
 )
 }
@@ -27,8 +28,10 @@ LogLogisticModule(
 
 \item{priors}{A prior list with the priors of the model.}
 
+\item{model}{A prior list with the priors of the model.}
+
 \item{inits}{A list with the initial values.}
 }
 \description{
-Log logistic module helper function.
+Creates a StanModule object containing the stan code relevant for the LogLogistic overall survival mdoel.
 }

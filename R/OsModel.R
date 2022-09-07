@@ -1,22 +1,22 @@
-#' Title - TODO
+#' Overall survival generic object for jmpost package.
 #'
-#' Description - TODO
+#' Creates an object containing all the stan code relevant to the overall survival part of a joint model.
 #'
-#' @slot stan TODO
-#' @slot templated Logical. Defines whether the OsModel object needs to be completed
+#' @slot stan StanModule. Object containing all the nessesary stan parts.
 #' @export
 OsModel <- setClass(
-  Class = "OsModel",
-  representation = list(
-    stan = "StanModule"
-  )
+    Class = "OsModel",
+    slots = list(
+        stan = "StanModule"
+    )
 )
 
 
 
-#' LogLogisticModule
-#'
 #' Log logistic module helper function.
+#'
+#' Creates a StanModule object containing the stan code relevant for the LogLogistic overall survival mdoel.
+#'
 #' @param functions A stan code including the functions section of the model.
 #' @param data  A stan code including the data section of the model.
 #' @param parameters  A stan code including the parameters section of the model.
@@ -34,89 +34,75 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               priors = os_prior(),
                               model =  "target+=sum(log_lik);\n",
                               inits = list()) {
-  StanModule(
-    functions = functions,
-    data = data,
-    parameters = parameters,
-    transformed_parameters = transformed_parameters,
-    generated_quantities = generated_quantities,
-    priors = priors,
-    model =  "target+=sum(log_lik);\n",
-    inits = inits
-  )
+    StanModule(
+        functions = functions,
+        data = data,
+        parameters = parameters,
+        transformed_parameters = transformed_parameters,
+        generated_quantities = generated_quantities,
+        priors = priors,
+        model = model,
+        inits = inits
+    )
 }
 
 
 
 
-
-
-
-#' Parametrize TemplatedStanOs object with the selected Hazardlink
-#' @param osmod TemplatedStanOs object
-#' @param link HazardLink object
-#' @importFrom stringr str_replace
-#' @importFrom stringr str_remove_all
-#' @importFrom stringr str_replace_all
-#' @export
-setGeneric("parametrize", function(osmod, link) {
-  standardGeneric("parametrize")
-})
-
-
-
+#' @rdname parametrize
 setMethod(
-  "parametrize",
-  signature(osmod = "OsModel", link = "HazardLink"),
-  function(osmod, link) {
-    newOS <- osmod
+    "parametrize",
+    signature(osmod = "OsModel", link = "HazardLink"),
+    function(osmod, link) {
+        newOS <- osmod
 
 
-    gap_map <- list(
-      "<link_arguments>" = paste0("real ", link@parameters, ","),
-      "<link_log_hazard_contribution>" = paste0(link@parameters, link@contribution),
-      "<link_arguments_as_par>" =  paste0(link@parameters, collapse = ","),
-      "<link_parameters>" = link@stan@parameters,
-      "<link_log_surv>" = paste0(paste0(link@parameters, collapse = ","), ","),
-      "<link_log_lik>" = paste0(paste0(link@parameters, collapse = ","), ",")
-    )
-
-    slot_map <- c(
-      "functions",
-      "parameters",
-      "transformed_parameters",
-      "generated_quantities"
-    )
-
-    for (i in slot_map) {
-      for (k in c(1:length(gap_map))) {
-
-          if(is.na(slot(newOS@stan, i))) next
-
-        char <- slot(newOS@stan, i)
-
-        tmp_char <- gsub(
-          pattern = names(gap_map)[k],
-          replacement = gap_map[k],
-          x = char
+        gap_map <- list(
+            "<link_arguments>" = paste0("real ", link@parameters, ","),
+            "<link_log_hazard_contribution>" = paste0(link@parameters, link@contribution),
+            "<link_arguments_as_par>" = paste0(link@parameters, collapse = ","),
+            "<link_parameters>" = link@stan@parameters,
+            "<link_log_surv>" = paste0(paste0(link@parameters, collapse = ","), ","),
+            "<link_log_lik>" = paste0(paste0(link@parameters, collapse = ","), ",")
         )
+
+        slot_map <- c(
+            "functions",
+            "parameters",
+            "transformed_parameters",
+            "generated_quantities"
+        )
+
+        for (i in slot_map) {
+            if (is.na(slot(newOS@stan, i))) next
+
+            for (k in seq_along(gap_map)) {
+                char <- slot(newOS@stan, i)
+
+                tmp_char <- gsub(
+                    pattern = names(gap_map)[k],
+                    replacement = gap_map[k],
+                    x = char
+                )
+
+                if (i == "functions" & names(gap_map)[k] == "<link_arguments>") {
+                    tmp_char <- paste0(tmp_char, "\n ", link@stan@functions)
+                }
 
         if(i == "functions" & names(gap_map)[k] == "<link_arguments>") {
             tmp_char <- paste0(tmp_char, "\n ", link@stan@functions)
+                slot(newOS@stan, i) <- tmp_char
+            }
         }
 
-        slot(newOS@stan, i) <- tmp_char
-      }
+
+
+        temp_obj <- merge(osmod@stan, link@stan)
+        newOS@stan@priors <- temp_obj@priors
+        newOS@stan@inits <- temp_obj@inits
+
+
+
+        newOS
     }
-
-
-
-    temp_obj <- merge(osmod@stan, link@stan)
-    newOS@stan@priors <- temp_obj@priors
-    newOS@stan@inits <- temp_obj@inits
-
-
-
-    newOS
-  }
 )
