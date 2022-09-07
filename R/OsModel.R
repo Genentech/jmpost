@@ -89,8 +89,6 @@ setMethod(
                     tmp_char <- paste0(tmp_char, "\n ", link@stan@functions)
                 }
 
-        if(i == "functions" & names(gap_map)[k] == "<link_arguments>") {
-            tmp_char <- paste0(tmp_char, "\n ", link@stan@functions)
                 slot(newOS@stan, i) <- tmp_char
             }
         }

@@ -20,3 +20,11 @@ setGeneric(
 setGeneric("parametrize", function(osmod, link) {
     standardGeneric("parametrize")
 })
+
+
+#' @export
+#' @param Long A longitudinal object of type LongMod
+#' @param Os An overall survival object of type OsMod
+setGeneric("jm_complete", def = function(Long, Os) {
+    standardGeneric("jm_complete")
+})

@@ -1,12 +1,5 @@
-#' @export
-#' @param Long A longitudinal object of type LongMod
-#' @param Os An overall survival object of type OsMod
-setGeneric("jm_complete", def = function(Long, Os) {
-    standardGeneric("jm_complete")
-})
 
-
-
+#' @rdname jm_complete
 setMethod("jm_complete",
     signature(Long = "LongModel", Os = "OsModel"),
     value = "StanModule",
