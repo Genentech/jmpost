@@ -11,3 +11,12 @@ setGeneric(
     "merge",
     function(x, y) standardGeneric("merge")
 )
+
+
+#' Parametrize TemplatedStanOs object with the selected Hazardlink
+#' @param osmod TemplatedStanOs object
+#' @param link HazardLink object
+#' @export
+setGeneric("parametrize", function(osmod, link) {
+    standardGeneric("parametrize")
+})

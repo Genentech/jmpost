@@ -5,13 +5,13 @@
 #' Creates a Hazard Link object which combines a longditudinal model to
 #' an OS model
 #'
-#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code 
+#' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code
 #' required for the link / contribution
-#' @slot contribution Stan code for what this link contriutes to the log hazard in the OS model
+#' @slot contribution Stan code for what this link contributes to the log hazard in the OS model
 #' @slot parameter The name of link parameter
 #' @examples
 #' HazardLink(
-#'     parameter = "beta_ttg",
+#'     parameters = "beta_ttg",
 #'     contribution = "beta_ttg * ttg(phi)",
 #'     stan = StanModule(
 #'         functions = "real ttg(real phi) {phi^2 };"
@@ -41,7 +41,7 @@ setMethod(
             length(parameters) >= 1,
             msg = "`parameter` must be a character vector"
         )
-        
+
         assert_that(
             is.character(contribution),
             length(contribution) == 1,
