@@ -23,7 +23,7 @@ OsModel <- setClass(
 #' @param transformed_parameters  A stan code including the transformed parameters section of the model.
 #' @param generated_quantities  A stan code including the generated quantities section of the model.
 #' @param priors  A prior list with the priors of the model.
-#' @param model String required in the model section.
+#' @param model  A prior list with the priors of the model.
 #' @param inits  A list with the initial values.
 #' @export
 LogLogisticModule <- function(functions = "os_functions.stan",
@@ -32,7 +32,7 @@ LogLogisticModule <- function(functions = "os_functions.stan",
                               transformed_parameters = "os_transformed_parameters.stan",
                               generated_quantities = "os_generated_quantities.stan",
                               priors = os_prior(),
-                              model =  "target+=sum(log_lik);\n",
+                              model = "target += sum(log_lik);",
                               inits = list()) {
     StanModule(
         functions = functions,
