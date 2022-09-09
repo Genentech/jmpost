@@ -20,10 +20,10 @@ jm_complete(Long = my_long_mod, Os = my_os)@priors
 
 
 cmdstanr::write_stan_file(
-    as.character(jm_complete(Long = my_long_mod, Os = my_os)),
+    as.character(joint(Long = my_long_mod, Os = my_os)),
     basename = "stan_model.stan",
     dir = paste0(system.file(package = "jmpost"), "/stanmodels")
 )
 
 
-jmModel(Long = my_long_mod, Os = my_os)
+JointModel(Long = my_long_mod, Os = my_os)

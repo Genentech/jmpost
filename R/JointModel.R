@@ -1,8 +1,8 @@
 cmdstan_mod <- R6::R6Class("CmdStanModel")
 setOldClass("CmdStanModel")
 
-#' @exportClass jmModel
-jmModel <- setClass("jmModel",
+#' @exportClass JointModel
+JointModel <- setClass("JointModel",
     slots = c(cmdstan_mod = "CmdStanModel")
 )
 
@@ -14,13 +14,13 @@ jmModel <- setClass("jmModel",
 #' @export
 setMethod(
     f = "initialize",
-    signature = "jmModel",
+    signature = "JointModel",
     definition = function(.Object,
                           ...,
-                          Long,
-                          Os,
+                          long,
+                          os,
                           name = "stan_model.stan") {
-        mod <- jm_complete(Long = Long, Os = Os)
+        mod <- joint(long = long, os = os)
 
         cmdstanr::write_stan_file(
             as.character(mod),
