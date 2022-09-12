@@ -11,6 +11,7 @@ JointModel <- setClass("JointModel",
 #' @importFrom cmdstanr write_stan_file
 #' @importFrom cmdstanr cmdstan_model
 #' @rdname StanModule-class
+#' @param util Logical. Populates the .stan file with general functions.
 #' @export
 setMethod(
     f = "initialize",
