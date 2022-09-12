@@ -16,14 +16,14 @@ my_link <- HazardLink(
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
 
 
-jm_complete(Long = my_long_mod, Os = my_os)@priors
+merge(x = my_long_mod, y = my_os)@priors
 
 
 cmdstanr::write_stan_file(
-    as.character(joint(Long = my_long_mod, Os = my_os)),
+    as.character(merge(x = my_long_mod, y = my_os)),
     basename = "stan_model.stan",
     dir = paste0(system.file(package = "jmpost"), "/stanmodels")
 )
 
 
-JointModel(Long = my_long_mod, Os = my_os)
+JointModel(long = my_long_mod, os = my_os)
