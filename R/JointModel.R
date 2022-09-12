@@ -20,7 +20,7 @@ setMethod(
                           long,
                           os,
                           name = "stan_model.stan") {
-        mod <- joint(long = long, os = os)
+        mod <- merge(x = long, y = os)
 
         cmdstanr::write_stan_file(
             as.character(mod),

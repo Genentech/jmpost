@@ -1,39 +1,39 @@
 
-#' @rdname joint
-setMethod("joint",
-    signature(long = "LongModel", os = "OsModel"),
+#' @rdname merge
+setMethod("merge",
+    signature(x = "LongModel", y = "OsModel"),
     value = "StanModule",
-    def = function(long, os) {
-        priors <- append(long@stan@priors, os@stan@priors)
+    def = function(x, y) {
+        priors <- append(x@stan@priors, y@stan@priors)
         priors <- priors[!duplicated(names(priors))]
 
         StanModule(
-            functions = paste0(long@stan@functions,
-                os@stan@functions,
+            functions = paste0(x@stan@functions,
+                y@stan@functions,
                 collapse = "\n"
             ),
-            data = paste0(long@stan@data,
-                os@stan@data,
+            data = paste0(x@stan@data,
+                y@stan@data,
                 collapse = "\n"
             ),
             priors = priors,
-            model = paste0(long@stan@model,
-                           os@stan@model,
+            model = paste0(x@stan@model,
+                           y@stan@model,
                            collapse = "\n"
             ),
-            parameters = paste0(long@stan@parameters,
-                os@stan@parameters,
+            parameters = paste0(x@stan@parameters,
+                y@stan@parameters,
                 collapse = "\n"
             ),
-            transformed_parameters = paste0(long@stan@transformed_parameters,
-                os@stan@transformed_parameters,
+            transformed_parameters = paste0(x@stan@transformed_parameters,
+                y@stan@transformed_parameters,
                 collapse = "\n"
             ),
-            generated_quantities = paste0(long@stan@generated_quantities,
-                os@stan@generated_quantities,
+            generated_quantities = paste0(x@stan@generated_quantities,
+                y@stan@generated_quantities,
                 collapse = "\n"
             ),
-            inits = append(long@stan@inits, os@stan@inits)
+            inits = append(x@stan@inits, y@stan@inits)
         )
     }
 )

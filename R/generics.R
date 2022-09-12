@@ -5,7 +5,7 @@
 #' Generic function to collapse two similar objects into a single combined object
 #'
 #' @param x An Object
-#' @param y An Object with identical class to `x`
+#' @param y An Object to be merged with `x`
 #' @export
 setGeneric(
     "merge",
@@ -19,12 +19,4 @@ setGeneric(
 #' @export
 setGeneric("parametrize", function(osmod, link) {
     standardGeneric("parametrize")
-})
-
-
-#' @export
-#' @param long A longitudinal object of type LongMod
-#' @param os An overall survival object of type OsMod
-setGeneric("joint", def = function(long, os) {
-    standardGeneric("joint")
 })
