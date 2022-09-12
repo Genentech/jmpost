@@ -42,11 +42,6 @@
     return result;
   }
 
-  real neg_log_sqrt_2_pi() {
-    return -0.9189385332046727;
-  }
-
-
   row_vector vect_normal_log_dens(row_vector y, row_vector mu, row_vector sigma) {
     row_vector[num_elements(y)] y_stand = (y - mu) ./ sigma;
     row_vector[num_elements(y)] main_result = - (y_stand .* y_stand) / 2;
@@ -59,10 +54,6 @@
     return log(cdf_vals);
   }
 
-  row_vector row_means(matrix x) {
-    row_vector[cols(x)] result = rep_row_vector(1.0 / rows(x), rows(x)) * x;
-    return result;
-  }
 
   row_vector get_step_survival(real death_time, row_vector times) {
     row_vector[cols(times)] result;

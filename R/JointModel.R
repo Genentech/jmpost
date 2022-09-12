@@ -19,8 +19,13 @@ setMethod(
                           ...,
                           long,
                           os,
+                          util = TRUE,
                           name = "stan_model.stan") {
         mod <- merge(x = long, y = os)
+
+        utils <- StanModule(functions = read_file(system.file("Utils", "utils.stan", package = "jmpost")))
+
+        if(util == TRUE) mod <- merge(x = mod, y = utils)
 
         cmdstanr::write_stan_file(
             as.character(mod),

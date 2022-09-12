@@ -24,7 +24,7 @@
 
 \S4method{initialize}{HazardLink}(.Object, ..., stan = StanModule(), contribution, parameters)
 
-\S4method{initialize}{JointModel}(.Object, ..., long, os, name = "stan_model.stan")
+\S4method{initialize}{JointModel}(.Object, ..., long, os, util = TRUE, name = "stan_model.stan")
 }
 \description{
 StanAll class object
