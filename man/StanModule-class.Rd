@@ -26,6 +26,9 @@
 
 \S4method{initialize}{JointModel}(.Object, ..., long, os, util = TRUE, name = "stan_model.stan")
 }
+\arguments{
+\item{util}{Logical. Populates the .stan file with general functions.}
+}
 \description{
 StanAll class object
 }
