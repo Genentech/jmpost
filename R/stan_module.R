@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @export
+#' @exportClass StanModule
 StanModule <- setClass(
     "StanModule",
     representation(
@@ -44,6 +44,7 @@ read_stan <- function(string) {
 
 
 #' @importFrom assertthat assert_that
+#' @importFrom assertthat validate_that
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -177,6 +178,7 @@ setMethod(
             model = "model",
             generated_quantities = "generated quantities"
         )
+        if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
 
 
         block_strings <- lapply(

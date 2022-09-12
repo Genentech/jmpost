@@ -5,7 +5,7 @@
 #' Generic function to collapse two similar objects into a single combined object
 #'
 #' @param x An Object
-#' @param y An Object with identical class to `x`
+#' @param y An Object to be merged with `x`
 #' @export
 setGeneric(
     "merge",
