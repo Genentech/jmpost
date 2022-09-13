@@ -26,7 +26,7 @@ setMethod(
 
         utils <- StanModule(functions = "utils.stan")
 
-        if(util == TRUE) mod <- merge(x = utils, y = mod)
+        if(util) mod <- merge(x = utils, y = mod)
 
         cmdstanr::write_stan_file(
             as.character(mod),
