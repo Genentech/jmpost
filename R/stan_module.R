@@ -31,7 +31,18 @@ StanModule <- setClass(
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
-    system_file <- system.file("LogLogistic", string, package = "jmpost")
+    file_map <- list.files("inst/")
+    system_file <- apply(as.matrix(file_map),
+        1,
+        FUN = system.file,
+        package = "jmpost",
+        string = string
+    )
+    system_file <- system_file[which(nchar(system_file) != 0)]
+    if (length(system_file) == 0 || length(system_file) > 1 ) system_file <- ""
+
+
+
     if (is_file(string)) {
         out <- read_file(string)
     } else if (is_file(system_file)) {
@@ -273,4 +284,3 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
-
