@@ -39,15 +39,15 @@ read_stan <- function(string) {
         string = string
     )
 
-    # Find the non-empty file paths
+    # Find the non-empty file paths.
     true_file <- which(nchar(system_file)!= 0)
 
-    # keep only the existing file paths
+    # Keep only the existing file paths.
     system_file <- system_file[true_file]
 
     # If there are no existing file paths (used provided stan code text) or
     # if there are more than one existing paths (user provided empty character "")
-    # make the system file an empty character
+    # make the system file an empty character.
     if (length(system_file) == 0 || length(system_file) > 1 ) system_file <- ""
 
 
