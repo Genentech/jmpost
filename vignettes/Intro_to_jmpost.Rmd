@@ -1,0 +1,195 @@
+---
+title: "Introduction to `jmpost`"
+package: jmpost
+author:
+  - Georgios Kazantzidis
+  - Daniel Sabanés Bové
+header-includes: 
+  - \usepackage{tikz}
+  - \usepackage{pgfplots}
+  - \usetikzlibrary{mindmap}
+  - \usetikzlibrary{positioning}  
+  - \usetikzlibrary{shapes.geometric, arrows}   
+output:
+  pdf_document: default
+vignette: |
+  %\VignetteIndexEntry{Introduction to `jmpost`}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+ 
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = F
+)
+library(jmpost)
+```
+
+# Common usage
+
+`jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. Minimal use of the package provides complete examples of joint modeling code. Here an example of the package workflow is illustrated using `stan` libraries available with `jmpost`.
+
+\begin{figure}[!]
+\tikzstyle{Long} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30 ]
+
+\tikzstyle{Os} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30 ]
+
+\tikzstyle{Link} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30 ]
+
+\tikzstyle{jmpost} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black ]
+
+\tikzstyle{arrow} = [thick,->,>=stealth ]
+
+
+\begin{tikzpicture}[node distance=2cm ]
+\node (long) [Long ] {Longitudinal};
+\node (os_temp) [Os, right of = long, xshift = 4cm ] {Overall survival (templated)};
+\node (link) [Link, below right = 0.5cm and 0.5cm of long] {Association factor};
+\node (os) [Os, below = 2cm of os_temp] {Overall survival};
+\node (model) [jmpost, below left = 2cm and 0.5cm of os] {Full joint model};
+
+
+\draw [arrow] (long) -- (link);
+\draw [arrow] (os_temp) -- (os);
+\draw [arrow] (link) -- (os);
+\draw [arrow] (os) -- (model);
+\draw [arrow] (long) -- (model);
+
+\end{tikzpicture}
+\label{fig1::flow}
+\caption{Package workflow. Different colours signify objects of different classes. Arrow indicate the relationships between the objects.}
+\end{figure}
+
+
+Figure~\ref{fig1::flow} illustrates the main workflow of the `jmpost` package.
+Three objects need to be combined for the construction of the full Bayesian joint model.
+The longitudinal sub-model includes all the required information for the modeling of the longitudinal measurements. 
+
+
+```{r Longitudinal model}
+Long_mod <- LongModel(
+    stan = StanModule(
+        functions = "exp_long_functions.stan",
+        data = "exp_long_data.stan",
+        priors = long_prior(),
+        model = "",
+        inits = list(),
+        parameters = "exp_long_parameters.stan",
+        transformed_parameters = "exp_long_transformed_parametes.stan",
+        generated_quantities = ""
+    )
+)
+
+```
+
+For the construction of the different parts of the model is flexible.
+Here, we create the longitudinal part by calling the `LongModel` constructor. 
+The created object contains six compartments containing different parts of the stan code (functions, data, priors, model, parameters, transformed parameters and generated quantities) while also `inits` which contains the initial values for the Markov Chain Monte Carlo run.
+
+\begin{figure}
+
+\tikzstyle{Char} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=gray!30 ]
+
+\tikzstyle{list} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30 ]
+
+\tikzstyle{StanMod} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+
+\tikzstyle{arrow} = [thick,->,>=stealth ]
+
+\begin{tikzpicture}
+\node (Object) [StanMod ] {Longitudinal};
+\node (priors) [list, right = 1cm of Object ] {priors};
+\node (inits) [list, below = 0.5 cm of priors ] {initial values};
+\node (mod) [Char, left = 1cm of Object ] {model};
+\node (tr_pars) [Char, below = 0.5cm of mod ] {transformed parameters};
+\node (gen_q) [Char, below = 0.8cm of Object ] {generated quantities};
+\node (pars) [Char, above = 0.5cm of mod ] {parameters};
+\node (fun) [Char, above = 0.8cm of Object ] {functions};
+
+
+\draw [arrow] (fun) -- (Object);
+\draw [arrow] (pars) -- (Object);
+\draw [arrow] (priors) -- (Object);
+\draw [arrow] (inits) -- (Object);
+\draw [arrow] (mod) -- (Object);
+\draw [arrow] (tr_pars) -- (Object);
+\draw [arrow] (gen_q) -- (Object);
+
+\end{tikzpicture}
+\label{fig2::longMod}
+\caption{Structure of `StanModule` object.}
+\end{figure}
+
+Figure~\ref{fig2::longMod} depicts the structure of a `StanModule` object. 
+Gray coloured cells indicate character strings containing stan code whereas yellow coloured cells mark list objects. 
+
+The `jmpost` repository contains stan code for the creation of a specific stan model. 
+The user is able to populate the longitudinal object `Long_mod` either by specifying the stan files containing the relevant code of the section or by directly typing the stan code into R. 
+We split the model section of the stan file into two parts, the `priors` and the `model`. 
+`Priors` contain a list with the names of the parameters and their prior distribution definitions while `model` is a character that contains model relevant information such us the definition of the likelihood. 
+Call of the object prints the different sections.
+
+```{r Long_model print}
+Long_mod
+```
+
+The overall survival object contails all ther information for the paramtetrisation of the second sub-model of the joint model. 
+The overall survival object has identical structure as the Longitudinal object (Figure~\ref{fig2::longMod}).
+The slots `functions`, `parameters`, `model`, `transformed parameters` and `generated quantities` should be provided with stan code whereas `priors` and `initial values` should be filled with lists. 
+An example with Log-logistic parametrisation of the overall survival sub-modlel object is provided in `LogLogisticOS()`. 
+
+
+
+```{r}
+temp_os <- LogLogisticOs()
+```
+
+Although the Longitudinal and the Survival object identical structures, the contained stan code has some fundamental differences. 
+The functions contained in the overall survival object depend on the parametrisation of the longitudinal part.
+Thus, in order to complete the stan code of the former object, additional information is required. 
+The required details are provided to the overall survival object through the link object. 
+The link is an object containing the parametrisation of the longitudinal sub-model, that will be used as part of the overall survival object. 
+
+
+```{r}
+link <- HazardLink(
+    parameters = "beta_ttg",
+    contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
+    stan = StanModule( )
+)
+```
+
+Link objects or association factor, contain the slots of `parameters`, `contribution` and `stan`. 
+Here, the slot `parameters` is the name of the linking parameter of the two sub-models. 
+`Contribution` contains the stan code relevant to the linking parameter. 
+`Parameters` and `contribution` contain all the information required for the completion of the overall survival model. 
+
+The merge of the `Longitudinal`, `Overall survival` and `link` object takes place in two parts. 
+First, the parameterisation of the overall survival sub-model needs to be completed using the information from the link object. 
+
+```{r}
+os <- parametrize(osmod = temp_os, link = link)
+```
+
+Secondly, the `Longitudinal` and `Survival` sub-models need to be combined. 
+Function `JointModel` merges the two sub-models, creates a character containing the full stan model, creates a stan file with the produced model and checks the functionality of the produced file. 
+Mistakes in the stan file will be reported from the `JointModel` call.
+
+```{r}
+jm <- JointModel(long = Long_mod, os = os)
+```
+
+`jm` object contains all the complete stan code for the joint model. 
+`jmpost` uses the package `cmdstanr` for the compilation of the stan model.
+For the run of the model, additional information such as the number of iterations are required. 
+
+
+
+
+
+
+
+
