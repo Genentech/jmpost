@@ -38,7 +38,16 @@ read_stan <- function(string) {
         package = "jmpost",
         string = string
     )
-    system_file <- system_file[which(nchar(system_file) != 0)]
+
+    # Find the non-empty file paths
+    true_file <- which(nchar(system_file)!= 0)
+
+    # keep only the existing file paths
+    system_file <- system_file[true_file]
+
+    # If there are no existing file paths (used provided stan code text) or
+    # if there are more than one existing paths (user provided empty character "")
+    # make the system file an empty character
     if (length(system_file) == 0 || length(system_file) > 1 ) system_file <- ""
 
 
