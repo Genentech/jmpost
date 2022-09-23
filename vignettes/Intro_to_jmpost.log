@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  21 SEP 2022 10:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  23 SEP 2022 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/kazantg1/AppData/Local/Temp/RtmpQbgyps/preview-457022257261.dir/Intr
-o_to_jmpost.tex
-
-(C:/Users/kazantg1/AppData/Local/Temp/RtmpQbgyps/preview-457022257261.dir/Intro
+**C:/Users/kazantg1/AppData/Local/Temp/RtmpiCKb6b/preview-8586a667186.dir/Intro
 _to_jmpost.tex
+
+(C:/Users/kazantg1/AppData/Local/Temp/RtmpiCKb6b/preview-8586a667186.dir/Intro_
+to_jmpost.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (C:\Users\kazantg1\AppData\Local\Programs\MiK
 TeX\tex/latex/base\article.cls
@@ -1060,33 +1060,38 @@ LaTeX Warning: No positions in optional float specifier.
 
 Package hyperref Warning: Suppressing empty link on input line 158.
 
+
+Overfull \vbox (0.36406pt too high) detected at line 181
+ []
+
 [1
 
 {C:/Users/kazantg1/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 
-Package hyperref Warning: Suppressing empty link on input line 223.
+Package hyperref Warning: Suppressing empty link on input line 242.
 
+[2]
 
-Package hyperref Warning: Suppressing empty link on input line 248.
+Package hyperref Warning: Suppressing empty link on input line 298.
 
-[2] [3] (Intro_to_jmpost.aux) ) 
+[3] (Intro_to_jmpost.aux) ) 
 Here is how much of TeX's memory you used:
- 34907 strings out of 478582
- 816477 string characters out of 2842928
- 1205253 words of memory out of 3000000
+ 34913 strings out of 478582
+ 816535 string characters out of 2842928
+ 1205343 words of memory out of 3000000
  52463 multiletter control sequences out of 15000+600000
- 499403 words of font info for 77 fonts, out of 8000000 for 9000
+ 499652 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,8n,80p,1085b,874s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{C:/Users/kazantg1/AppData/Local/Programs/MiKTeX
-/fonts/enc/dvips/lm/lm-ec.enc}<C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppData/Local/Programs/Mi
-KTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/AppData/Local/Program
-s/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/kazantg1/AppData/Local/Prog
-rams/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Intro_to_jmpost.pdf (3 pages, 165690 bytes).
+ 84i,8n,80p,1084b,874s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/fon
+ts/enc/dvips/lm/lm-ec.enc}<C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/font
+s/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/f
+onts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/kazantg1/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
+Output written on Intro_to_jmpost.pdf (3 pages, 168796 bytes).
 PDF statistics:
  63 PDF objects out of 1000 (max. 8388607)
  8 named destinations out of 1000 (max. 500000)
