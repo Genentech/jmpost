@@ -4,6 +4,7 @@ package: jmpost
 author:
   - Georgios Kazantzidis
   - Daniel Sabanés Bové
+  - Xiaoyan Fang
 header-includes: 
   - \usepackage{tikz}
   - \usepackage{pgfplots}
@@ -30,7 +31,9 @@ library(jmpost)
 
 # Common usage
 
-`jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. Minimal use of the package provides complete examples of joint modeling code. Here an example of the package workflow is illustrated using `stan` libraries available with `jmpost`.
+`jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. 
+Minimal use of the package provides complete examples of joint modeling code. 
+Here we explain the workflow of the package `jmpost` using `stan` libraries as an example.  
 
 \begin{figure}[!]
 \tikzstyle{Long} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30 ]
@@ -60,14 +63,13 @@ library(jmpost)
 
 \end{tikzpicture}
 \label{fig1::flow}
-\caption{Package workflow. Different colours signify objects of different classes. Arrow indicate the relationships between the objects.}
+\caption{Package workflow. Different colours signify objects of different classes. Arrows indicate the relationships between the objects.}
 \end{figure}
 
 
 Figure~\ref{fig1::flow} illustrates the main workflow of the `jmpost` package.
 Three objects need to be combined for the construction of the full Bayesian joint model.
-The longitudinal sub-model includes all the required information for the modeling of the longitudinal measurements. 
-
+The longitudinal sub-model, including all the required information for the modeling of the longitudinal measurements, the survival sub-model, including information of for the time to event data and the link or association factor, containing information for the conection of the two sub-models.
 
 ```{r Longitudinal model}
 Long_mod <- LongModel(
@@ -85,9 +87,22 @@ Long_mod <- LongModel(
 
 ```
 
-For the construction of the different parts of the model is flexible.
+The construction of the different parts of the model is flexible.
 Here, we create the longitudinal part by calling the `LongModel` constructor. 
+`LongModel` identifies the type of the sub-model whereas the helper constructor `StanModule` is responsible for the actual stan code. 
 The created object contains six compartments containing different parts of the stan code (functions, data, priors, model, parameters, transformed parameters and generated quantities) while also `inits` which contains the initial values for the Markov Chain Monte Carlo run.
+The user is able to populate the different parts of the object with stan code either by providing the names of the stan files contained in the `jmpost` directory, the full paths of stan files outside the `jmpost` direcotry or by providing stan code in text form (code chunk below). 
+
+```{r Longitudinal model2 }
+example_stan <- LongModel(
+    stan = StanModule(
+        functions = "type stan code here;",
+        data = "type stan code here;"
+    )
+)
+
+```
+
 
 \begin{figure}
 
@@ -126,10 +141,36 @@ The created object contains six compartments containing different parts of the s
 Figure~\ref{fig2::longMod} depicts the structure of a `StanModule` object. 
 Gray coloured cells indicate character strings containing stan code whereas yellow coloured cells mark list objects. 
 
+```{r}
+StanModule(functions = "",
+           data = "",
+           model = "",
+           parameters = "",
+           transformed_parameters = "",
+           generated_quantities = "",
+           priors = list(),
+           inits = list()
+)
+```
+
+
 The `jmpost` repository contains stan code for the creation of a specific stan model. 
 The user is able to populate the longitudinal object `Long_mod` either by specifying the stan files containing the relevant code of the section or by directly typing the stan code into R. 
 We split the model section of the stan file into two parts, the `priors` and the `model`. 
-`Priors` contain a list with the names of the parameters and their prior distribution definitions while `model` is a character that contains model relevant information such us the definition of the likelihood. 
+`Priors` contain a list with the names of the parameters and their prior distribution definitions while `model` is a character that contains model relevant information such us the definition of the likelihood.
+The list of priors should be a named list of strings where each element represents the stan code for the definition of the desired density. 
+
+```{r}
+prior_set <- StanModule(priors = list("param_A" = "normal(0,1);"))
+```
+
+The user can modify the prior list at any point during the workflow. 
+
+```{r}
+prior_set@priors$param_A <- "normal(1,1);"
+```
+
+
 Call of the object prints the different sections.
 
 ```{r Long_model print}
