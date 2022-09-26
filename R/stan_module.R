@@ -293,3 +293,29 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
+
+
+
+#' getter method for StanModule:
+
+setMethod(
+    f = "priors",
+    signature = list(object = "StanModule"),
+    definition = function(object) {
+        object@priors
+    }
+)
+
+
+#' setter method for StanModule:
+
+setReplaceMethod(
+    f = "priors",
+    signature = "StanModule",
+    definition = function(object,value) {
+        object@priors<- value
+        object
+    }
+)
+
+

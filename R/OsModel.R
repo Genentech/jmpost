@@ -104,3 +104,27 @@ setMethod(
         newOS
     }
 )
+
+
+#' getter method for OsModel
+
+setMethod(
+    f = "priors",
+    signature = list(object = "OsModel"),
+    definition = function(object) {
+        object@stan@priors
+    }
+)
+
+#' setter method for Osmodel:
+
+setReplaceMethod(
+    f = "priors",
+    signature = "OsModel",
+    definition = function(object,value) {
+        priors(object@stan)<- value
+        object
+    }
+)
+
+

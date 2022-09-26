@@ -20,3 +20,13 @@ setGeneric(
 setGeneric("parametrize", function(osmod, link) {
     standardGeneric("parametrize")
 })
+
+
+#‘ priors() method for stanmodule, hazardlink , longmodel and osmodel
+
+setGeneric(name = "priors", def = function(object) standardGeneric("priors"))
+
+#‘ priors() replacement method for
+setGeneric(name = "priors<-", def = function(object, value) standardGeneric("priors<-"))
+
+

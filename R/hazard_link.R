@@ -77,3 +77,28 @@ setMethod(
     }
 )
 
+
+
+
+#' get method for Hazard link
+
+setMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object) {
+        object@stan@priors
+    }
+)
+
+
+#' setter method for Hazardlink:
+
+setReplaceMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object,value) {
+        priors(object@stan)<- value
+        object
+    }
+)
+
