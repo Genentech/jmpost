@@ -133,7 +133,7 @@ setMethod(
     f = "priors",
     signature = list(object = "LongModel"),
     definition = function(object) {
-        object@stan@priors
+        priors(object@stan)
     }
 )
 #' set method for longmodel

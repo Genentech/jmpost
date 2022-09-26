@@ -86,7 +86,7 @@ setMethod(
     f = "priors",
     signature = "HazardLink",
     definition = function(object) {
-        object@stan@priors
+        priors(object@stan)
     }
 )
 
