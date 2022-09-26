@@ -112,7 +112,7 @@ setMethod(
     f = "priors",
     signature = list(object = "OsModel"),
     definition = function(object) {
-        object@stan@priors
+        priors(object@stan)
     }
 )
 
