@@ -43,15 +43,15 @@ test_that("Can define our own Link methods and getLink works as expected", {
         }
     )
     tlm <- TestLongModel(stan = stanobj)
-    
+
     hazlink <- getLink(tlm)
     expect_equal(hazlink@parameters, c("beta_ttg", "beta_dlsd"))
     expect_equal(hazlink@stan@functions, c("fun(x) 1", "fun(y) 1"))
-    
+
     hazlink2 <- getLink(tlm, selection = "dsld")
     expect_equal(hazlink2@parameters, c("beta_dlsd"))
     expect_equal(hazlink2@stan@functions, c("fun(y) 1"))
-    
+
     setMethod(
         f = "getLink",
         signature = "TestLongModel",
@@ -67,4 +67,27 @@ test_that("Can define our own Link methods and getLink works as expected", {
     expect_equal(hazlink3@parameters, c("beta"))
     expect_equal(hazlink3@stan@functions, c("fun(z) 1"))
 })
+
+
+
+test_that("Priors of the Long model is replaced ", {
+    stanobj <- StanModule(functions = "abcdef",priors=long_prior())
+    longmod <- LongModel(stan = stanobj)
+    actual_get<- priors(longmod)
+    expected_get<-long_prior()
+
+    expect_equal(actual_get, expected_get)
+
+
+    priors(longmod)["eta_tilde_ks"]<-"normal(0,6)"
+
+    actual_replaced<- priors(longmod)["eta_tilde_ks"]
+    expected_replaced<-list(eta_tilde_ks="normal(0,6)")
+    expect_equal(actual_replaced, expected_replaced)
+
+})
+
+
+
+
 

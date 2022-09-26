@@ -9,7 +9,7 @@
 #'
 #' This represents an abstract class for longditudinal models.
 #' This class only exists for other concrete instatiations to inherit off of.
-#' 
+#'
 #' Provides default implementation of the [getLink()] method.
 #' Child classes should define for themselves [getLinkTTG()] and
 #' [getLinkDSLD()] or alternative provide their own implementations
@@ -33,7 +33,7 @@ LongModel <- setClass(
 #'
 #' * [getLinkTTG()] returns the TTG hazard link
 #' * [getLinkDSLD()] returns the dSLD hazard link
-#' * [getLink()] is a convience function to return a hazard link created by merging 
+#' * [getLink()] is a convience function to return a hazard link created by merging
 #' other hazard link functions together
 #'
 #' @param object A `LongModel` object.
@@ -125,3 +125,26 @@ setMethod(
         return(hazard_link)
     }
 )
+
+
+
+#' get method for longmodel
+setMethod(
+    f = "priors",
+    signature = list(object = "LongModel"),
+    definition = function(object) {
+        object@stan@priors
+    }
+)
+#' set method for longmodel
+
+setReplaceMethod(
+    f = "priors",
+    signature = "LongModel",
+    definition = function(object,value) {
+        priors(object@stan)<- value
+        object
+    }
+)
+
+
