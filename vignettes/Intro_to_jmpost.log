@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  23 SEP 2022 16:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  26 SEP 2022 15:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/kazantg1/AppData/Local/Temp/RtmpiCKb6b/preview-8586a667186.dir/Intro
+**C:/Users/kazantg1/AppData/Local/Temp/Rtmpisbhkv/preview-35305272370.dir/Intro
 _to_jmpost.tex
 
-(C:/Users/kazantg1/AppData/Local/Temp/RtmpiCKb6b/preview-8586a667186.dir/Intro_
+(C:/Users/kazantg1/AppData/Local/Temp/Rtmpisbhkv/preview-35305272370.dir/Intro_
 to_jmpost.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (C:\Users\kazantg1\AppData\Local\Programs\MiK
@@ -1074,28 +1074,50 @@ Package hyperref Warning: Suppressing empty link on input line 242.
 
 Package hyperref Warning: Suppressing empty link on input line 298.
 
-[3] (Intro_to_jmpost.aux) ) 
+[3]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 394.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 394.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 394.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
+99.
+(C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [4] [5] (Intro_to_jmpost.aux) ) 
 Here is how much of TeX's memory you used:
- 34913 strings out of 478582
- 816535 string characters out of 2842928
- 1205343 words of memory out of 3000000
- 52463 multiletter control sequences out of 15000+600000
- 499652 words of font info for 80 fonts, out of 8000000 for 9000
+ 35045 strings out of 478582
+ 818733 string characters out of 2842928
+ 1205490 words of memory out of 3000000
+ 52541 multiletter control sequences out of 15000+600000
+ 519169 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,8n,80p,1084b,874s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/fon
-ts/enc/dvips/lm/lm-ec.enc}<C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/font
-s/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKTeX/f
-onts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/AppData/Local/Programs/Mi
-KTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/kazantg1/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Intro_to_jmpost.pdf (3 pages, 168796 bytes).
+ 84i,9n,80p,1084b,874s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/kazantg1/AppData/Local/Programs/MiKT
+eX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/kazantg1/AppData/Local/Programs/MiKTe
+X/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Users/kazantg1/AppData/Local/Programs/MiKTe
+X/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/kazantg1/AppData/Local/Programs/Mi
+KTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/kazantg1/AppData/Local/Programs
+/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}<C:/Users/kazantg1/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/kazantg1/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/kazantg1/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/kazantg1/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/kazantg1/AppData/Lo
+cal/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/kazantg1/App
+Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/kazantg1/
+AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/kazantg
+1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/kaza
+ntg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
+Output written on Intro_to_jmpost.pdf (5 pages, 261154 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 8 named destinations out of 1000 (max. 500000)
- 16405 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 139 PDF objects out of 1000 (max. 8388607)
+ 19 named destinations out of 1000 (max. 500000)
+ 28725 words of extra memory for PDF output out of 29859 (max. 10000000)
 
 
 ! pdflatex: major issue: So far, you have not checked for MiKTeX updates.

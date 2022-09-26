@@ -84,7 +84,6 @@ Long_mod <- LongModel(
         generated_quantities = ""
     )
 )
-
 ```
 
 The construction of the different parts of the model is flexible.
@@ -100,7 +99,6 @@ example_stan <- LongModel(
         data = "type stan code here;"
     )
 )
-
 ```
 
 
@@ -225,12 +223,118 @@ jm <- JointModel(long = Long_mod, os = os)
 
 `jm` object contains all the complete stan code for the joint model. 
 `jmpost` uses the package `cmdstanr` for the compilation of the stan model.
-For the run of the model, additional information such as the number of iterations are required. 
+Although the stan code of the model is obtained in `jm`, additional information for the model run should be provided. 
+
+```{r}
+jm_options <- mcmc_options(chains = 1,
+                           parallel_chains = 1,
+                           iter_warmup = 200,
+                           iter_sampling = 500,
+                           max_treedepth = 12,
+                           adapt_delta = .9,
+                           gauss_legendre = gauss_legendre()
+)
+```
+
+`mcmc_options` object contains technical information relevant to the model run. 
+Most of the options are borrowed from the package `cmdstanr` except from the `gauss_legendre` that defines the integration parameters.   
+
+## Example 
+### longitudinal model 
+
+\begin{align}
+SLD_{ij} = b_i[\phi_ie^{-s_it_{ij}}+(1-\phi_i)e^{g_it_{ij}}]
+\end{align}
+where:
+\begin{itemize}
+\item $i$ is the subject index 
+\item $j$ is the visit index 
+\item $t_{ij}$ the time since first treatment for subject $i$ at visit $j$ 
+\item $SLD_{ij}$ is the observed SLD measurement for subject $i$ at visit $j$
+\item $b_i$ is the Baseline sld measurement
+\item $s_i$ is the kinetics shrinkage parameter 
+\item $g_i$ is the kinetics tumor growth parameter 
+\item $\phi_i$ is the proportion of cells affected by the treatment 
+\end{itemize}
+
+The SLD parameters
+
+\begin{align*}
+\phi_i = logit^{-1}(logit(m_{\phi l_i}) + \eta_{\phi i}*\omega_{\phi}) \\
+s_i = exp(ln(m_{sl_i})+\eta_{si}*\omega_s) \\
+g_i = exp(lm(m_{gl_i}) +\eta_{gi}*\omega_g) \\
+b_i = exp(ln(m_{bl_i}) + \eta_{bi}*\omega_b)
+\end{align*}
+
+where:
+\begin{itemize}
+\item $i$ is the subject index 
+\item $l_i$ is the group/treatment index for subject $i$
+\item $m_{xl_i}$ is the mean for parameter $x$ in group $l_i$
+\item $\eta_{xi}$ is a random effects offset on parameter $x$ for subject $i$
+\item $\omega_x$ is the variance for the random effects on parameter $x$ 
+\end{itemize}
+
+The SLD hyper parameters: 
+\begin{align*}
+m_{sl_i} \sim Lognormal(\mu_s,\sigma_s) \\
+m_{gl_i} \sim Lognormal(\mu_g,\sigma_g) \\
+logit(m_{\phi} l_i) \sim N(logit(\mu_{\phi}), \sigma_{\phi})
+\end{align*}
+
+where:
+\begin{itemize}
+\item $l_i$ is the group/treatment index of subject $i$
+\item $\mu_x$ is the mean of the parameter distribution 
+\item $\sigma_x$ is the variance of the parameter distribution
+\end{itemize}
+
+### survival model 
+
+\begin{align*}
+h_i(t) = h_0(t)e^{\beta f_i(t)}e^{\gamma G_i} e^{\beta_cX_i}
+\end{align*}
 
 
+where:
+\begin{itemize}
+\item $h_i(t)$ is the overall survival hazard function
+\item $h_0(t)$ is the baseline hazard function
+\item $f_i(t)$ is the derivative of the SLD trajectory for subject $i$ at time $t$
+\item $G_i$ is the time to growth for subject $i$
+\item $X_i$ is the matrix of cavariates at each visit for subject $i$ 
+\item $\beta, \gamma \& \beta_c$ are the strength coefficients for the derivative of the SLD trajectory, the time to growth and the subjects covariates respectively
+\end{itemize}
 
+Baseline hazard
 
+\begin{align*}
+t \sim LogLogistic(\lambda,p) \\
+f_0(t) = \frac{\lambda p (\lambda t)^{p-1}}{(1+(\lambda t)^p)^2} \\
+h_0(t) = \frac{\lambda p (\lambda t)^{p-1}}{1+(\lambda t)^p} \\
+S_0(t) = \frac{1}{1+(\lambda t)^p}
+\end{align*}
 
+where:
+\begin{itemize}
+\item $f(t)$ is the probability density function 
+\item $h_0(t)$ is the hazard distribution function 
+\item $S_0(t)$ is the survival distribution function
+\end{itemize}
 
+### Link association 
 
+Time to growth 
 
+\begin{align*}
+G_i = \frac{logit(\phi_i)+log(s_ig_i^{-1})}{s_i+g_i}
+\end{align*}
+
+where:
+\begin{itemize}
+\item $G_i$ is the time to growth for subject $i$
+\item $b_i$ is the baseline SLD measurement 
+\item $s_i$ is the kinetics shrinkage parameter 
+\item $g_i$ is is the kinetics tumor growth parameter
+\item $\phi_i$ is the proportion of cells affected by the treatment
+\end{itemize}
