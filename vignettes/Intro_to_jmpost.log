@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  26 SEP 2022 15:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  27 SEP 2022 14:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/kazantg1/AppData/Local/Temp/Rtmpisbhkv/preview-35305272370.dir/Intro
+**C:/Users/kazantg1/AppData/Local/Temp/RtmpKmhFdo/preview-2c209835ca6.dir/Intro
 _to_jmpost.tex
 
-(C:/Users/kazantg1/AppData/Local/Temp/Rtmpisbhkv/preview-35305272370.dir/Intro_
+(C:/Users/kazantg1/AppData/Local/Temp/RtmpKmhFdo/preview-2c209835ca6.dir/Intro_
 to_jmpost.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (C:\Users\kazantg1\AppData\Local\Programs\MiK
@@ -277,6 +277,22 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 \Gin@req@height=\dimen161
 \Gin@req@width=\dimen162
 )
+\cslhangindent=\skip54
+\csllabelwidth=\skip55
+\cslentryspacingunit=\skip56
+(C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count280
+\calc@Bcount=\count281
+\calc@Adimen=\dimen163
+\calc@Bdimen=\dimen164
+\calc@Askip=\skip57
+\calc@Bskip=\skip58
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count282
+\calc@Cskip=\skip59
+)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\ti
 kz.sty
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.s
@@ -286,8 +302,8 @@ ty
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfu
 til-common.tex
 \pgfutil@everybye=\toks26
-\pgfutil@tempdima=\dimen163
-\pgfutil@tempdimb=\dimen164
+\pgfutil@tempdima=\dimen165
+\pgfutil@tempdimb=\dimen166
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfu
 til-common-lists.tex))
@@ -320,26 +336,26 @@ eys.code.tex
 eysfiltered.code.tex
 \pgfkeys@tmptoks=\toks29
 ))
-\pgf@x=\dimen165
-\pgf@y=\dimen166
-\pgf@xa=\dimen167
-\pgf@ya=\dimen168
-\pgf@xb=\dimen169
-\pgf@yb=\dimen170
-\pgf@xc=\dimen171
-\pgf@yc=\dimen172
-\pgf@xd=\dimen173
-\pgf@yd=\dimen174
+\pgf@x=\dimen167
+\pgf@y=\dimen168
+\pgf@xa=\dimen169
+\pgf@ya=\dimen170
+\pgf@xb=\dimen171
+\pgf@yb=\dimen172
+\pgf@xc=\dimen173
+\pgf@yc=\dimen174
+\pgf@xd=\dimen175
+\pgf@yd=\dimen176
 \w@pgf@writea=\write4
 \r@pgf@reada=\read3
-\c@pgf@counta=\count280
-\c@pgf@countb=\count281
-\c@pgf@countc=\count282
-\c@pgf@countd=\count283
+\c@pgf@counta=\count283
+\c@pgf@countb=\count284
+\c@pgf@countc=\count285
+\c@pgf@countd=\count286
 \t@pgf@toka=\toks30
 \t@pgf@tokb=\toks31
 \t@pgf@tokc=\toks32
-\pgf@sys@id@count=\count284
+\pgf@sys@id@count=\count287
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pg
 f.cfg
@@ -358,8 +374,8 @@ File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pg
 fsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgfsyssoftpath@smallbuffer@items=\count285
-\pgfsyssoftpath@bigbuffer@items=\count286
+\pgfsyssoftpath@smallbuffer@items=\count288
+\pgfsyssoftpath@bigbuffer@items=\count289
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pg
 fsysprotocol.code.tex
@@ -377,8 +393,8 @@ lc.code.tex
 il.code.tex)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathpa
 rser.code.tex
-\pgfmath@dimen=\dimen175
-\pgfmath@count=\count287
+\pgfmath@dimen=\dimen177
+\pgfmath@count=\count290
 \pgfmath@box=\box55
 \pgfmath@toks=\toks33
 \pgfmath@stack@operand=\toks34
@@ -404,39 +420,39 @@ nctions.misc.code.tex)
 nctions.integerarithmetics.code.tex)))
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfl
 oat.code.tex
-\c@pgfmathroundto@lastzeros=\count288
+\c@pgfmathroundto@lastzeros=\count291
 ))
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.co
 de.tex)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corepoints.code.tex
 File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@picminx=\dimen176
-\pgf@picmaxx=\dimen177
-\pgf@picminy=\dimen178
-\pgf@picmaxy=\dimen179
-\pgf@pathminx=\dimen180
-\pgf@pathmaxx=\dimen181
-\pgf@pathminy=\dimen182
-\pgf@pathmaxy=\dimen183
-\pgf@xx=\dimen184
-\pgf@xy=\dimen185
-\pgf@yx=\dimen186
-\pgf@yy=\dimen187
-\pgf@zx=\dimen188
-\pgf@zy=\dimen189
+\pgf@picminx=\dimen178
+\pgf@picmaxx=\dimen179
+\pgf@picminy=\dimen180
+\pgf@picmaxy=\dimen181
+\pgf@pathminx=\dimen182
+\pgf@pathmaxx=\dimen183
+\pgf@pathminy=\dimen184
+\pgf@pathmaxy=\dimen185
+\pgf@xx=\dimen186
+\pgf@xy=\dimen187
+\pgf@yx=\dimen188
+\pgf@yy=\dimen189
+\pgf@zx=\dimen190
+\pgf@zy=\dimen191
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corepathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@path@lastx=\dimen190
-\pgf@path@lasty=\dimen191
+\pgf@path@lastx=\dimen192
+\pgf@path@lasty=\dimen193
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corepathusage.code.tex
 File: pgfcorepathusage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@shorten@end@additional=\dimen192
-\pgf@shorten@start@additional=\dimen193
+\pgf@shorten@end@additional=\dimen194
+\pgf@shorten@start@additional=\dimen195
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corescopes.code.tex
@@ -444,19 +460,19 @@ File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfpic=\box56
 \pgf@hbox=\box57
 \pgf@layerbox@main=\box58
-\pgf@picture@serial@count=\count289
+\pgf@picture@serial@count=\count292
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 coregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgflinewidth=\dimen194
+\pgflinewidth=\dimen196
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 coretransformations.code.tex
 File: pgfcoretransformations.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@pt@x=\dimen195
-\pgf@pt@y=\dimen196
-\pgf@pt@temp=\dimen197
+\pgf@pt@x=\dimen197
+\pgf@pt@y=\dimen198
+\pgf@pt@temp=\dimen199
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corequick.code.tex
@@ -473,14 +489,14 @@ File: pgfcorepathprocessing.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 corearrows.code.tex
 File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgfarrowsep=\dimen198
+\pgfarrowsep=\dimen256
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 coreshade.code.tex
 File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@max=\dimen199
-\pgf@sys@shading@range@num=\count290
-\pgf@shadingcount=\count291
+\pgf@max=\dimen257
+\pgf@sys@shading@range@num=\count293
+\pgf@shadingcount=\count294
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgf
 coreimage.code.tex
@@ -519,8 +535,8 @@ File: pgfmoduleplot.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pg
 fcomp-version-0-65.sty
 Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@nodesepstart=\dimen256
-\pgf@nodesepend=\dimen257
+\pgf@nodesepstart=\dimen258
+\pgf@nodesepend=\dimen259
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pg
 fcomp-version-1-18.sty
@@ -542,8 +558,8 @@ Package: pgffor 2021/05/15 v3.1.9a (3.1.9a)
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.c
 ode.tex)
-\pgffor@iter=\dimen258
-\pgffor@skip=\dimen259
+\pgffor@iter=\dimen260
+\pgffor@skip=\dimen261
 \pgffor@stack=\toks36
 \pgffor@toks=\toks37
 ))
@@ -554,34 +570,34 @@ Package: tikz 2021/05/15 v3.1.9a (3.1.9a)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgfl
 ibraryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@plot@mark@count=\count292
-\pgfplotmarksize=\dimen260
+\pgf@plot@mark@count=\count295
+\pgfplotmarksize=\dimen262
 )
-\tikz@lastx=\dimen261
-\tikz@lasty=\dimen262
-\tikz@lastxsaved=\dimen263
-\tikz@lastysaved=\dimen264
-\tikz@lastmovetox=\dimen265
-\tikz@lastmovetoy=\dimen266
-\tikzleveldistance=\dimen267
-\tikzsiblingdistance=\dimen268
+\tikz@lastx=\dimen263
+\tikz@lasty=\dimen264
+\tikz@lastxsaved=\dimen265
+\tikz@lastysaved=\dimen266
+\tikz@lastmovetox=\dimen267
+\tikz@lastmovetoy=\dimen268
+\tikzleveldistance=\dimen269
+\tikzsiblingdistance=\dimen270
 \tikz@figbox=\box61
 \tikz@figbox@bg=\box62
 \tikz@tempbox=\box63
 \tikz@tempbox@bg=\box64
-\tikztreelevel=\count293
-\tikznumberofchildren=\count294
-\tikznumberofcurrentchild=\count295
-\tikz@fig@count=\count296
+\tikztreelevel=\count296
+\tikznumberofchildren=\count297
+\tikznumberofcurrentchild=\count298
+\tikz@fig@count=\count299
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmod
 ulematrix.code.tex
 File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgfmatrixcurrentrow=\count297
-\pgfmatrixcurrentcolumn=\count298
-\pgf@matrix@numberofcolumns=\count299
+\pgfmatrixcurrentrow=\count300
+\pgfmatrixcurrentcolumn=\count301
+\pgf@matrix@numberofcolumns=\count302
 )
-\tikz@expandcount=\count300
+\tikz@expandcount=\count303
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/
 tikz/libraries\tikzlibrarytopaths.code.tex
@@ -600,9 +616,9 @@ ore.code.tex
 \t@pgfplots@toka=\toks38
 \t@pgfplots@tokb=\toks39
 \t@pgfplots@tokc=\toks40
-\pgfplots@tmpa=\dimen269
-\c@pgfplots@coordindex=\count301
-\c@pgfplots@scanlineindex=\count302
+\pgfplots@tmpa=\dimen271
+\c@pgfplots@coordindex=\count304
+\c@pgfplots@scanlineindex=\count305
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/sys\pgfpl
 otssysgeneric.code.tex))
@@ -620,13 +636,13 @@ ture\pgfplotsliststructure.code.tex)
 ture\pgfplotsliststructureext.code.tex)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststruc
 ture\pgfplotsarray.code.tex
-\c@pgfplotsarray@tmp=\count303
+\c@pgfplotsarray@tmp=\count306
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststruc
 ture\pgfplotsmatrix.code.tex)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/numtable\
 pgfplotstableshared.code.tex
-\c@pgfplotstable@counta=\count304
+\c@pgfplotstable@counta=\count307
 \t@pgfplotstable@a=\toks41
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststruc
@@ -639,7 +655,7 @@ lotsbinary.data.code.tex))
 lotsutil.verb.code.tex)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/libs\pgfl
 ibrarypgfplots.surfshading.code.tex
-\c@pgfplotslibrarysurf@no=\count305
+\c@pgfplotslibrarysurf@no=\count308
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/sys\pgfli
 brarypgfplots.surfshading.pgfsys-pdftex.def)))
@@ -671,14 +687,14 @@ paths.code.tex)
 tikz/libraries\tikzlibrarydecorations.code.tex
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmod
 uledecorations.code.tex
-\pgfdecoratedcompleteddistance=\dimen270
-\pgfdecoratedremainingdistance=\dimen271
-\pgfdecoratedinputsegmentcompleteddistance=\dimen272
-\pgfdecoratedinputsegmentremainingdistance=\dimen273
-\pgf@decorate@distancetomove=\dimen274
-\pgf@decorate@repeatstate=\count306
-\pgfdecorationsegmentamplitude=\dimen275
-\pgfdecorationsegmentlength=\dimen276
+\pgfdecoratedcompleteddistance=\dimen272
+\pgfdecoratedremainingdistance=\dimen273
+\pgfdecoratedinputsegmentcompleteddistance=\dimen274
+\pgfdecoratedinputsegmentremainingdistance=\dimen275
+\pgf@decorate@distancetomove=\dimen276
+\pgf@decorate@repeatstate=\count309
+\pgfdecorationsegmentamplitude=\dimen277
+\pgfdecorationsegmentlength=\dimen278
 )
 \tikz@lib@dec@box=\box65
 )
@@ -692,13 +708,13 @@ tikz/libraries\tikzlibrarydecorations.pathreplacing.code.tex
 rations\pgflibrarydecorations.pathreplacing.code.tex))
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/libs\tikz
 librarypgfplots.contourlua.code.tex)
-\pgfplots@numplots=\count307
-\pgfplots@xmin@reg=\dimen277
-\pgfplots@xmax@reg=\dimen278
-\pgfplots@ymin@reg=\dimen279
-\pgfplots@ymax@reg=\dimen280
-\pgfplots@zmin@reg=\dimen281
-\pgfplots@zmax@reg=\dimen282
+\pgfplots@numplots=\count310
+\pgfplots@xmin@reg=\dimen279
+\pgfplots@xmax@reg=\dimen280
+\pgfplots@ymin@reg=\dimen281
+\pgfplots@ymax@reg=\dimen282
+\pgfplots@zmin@reg=\dimen283
+\pgfplots@zmax@reg=\dimen284
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/
 tikz/libraries\tikzlibraryplotmarks.code.tex
@@ -735,7 +751,7 @@ File: tikzlibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgfl
 ibraryarrows.code.tex
 File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\arrowsize=\dimen283
+\arrowsize=\dimen285
 ))
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bookmark.st
 y
@@ -776,9 +792,9 @@ Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 y
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 )
-\@linkdim=\dimen284
-\Hy@linkcounter=\count308
-\Hy@pagecounter=\count309
+\@linkdim=\dimen286
+\Hy@linkcounter=\count311
+\Hy@pagecounter=\count312
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2022-02-21 v7.00n Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -792,7 +808,7 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-\Hy@SavedSpaceFactor=\count310
+\Hy@SavedSpaceFactor=\count313
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2022-02-21 v7.00n Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -806,13 +822,13 @@ Package hyperref Info: Plain pages OFF on input line 4152.
 Package hyperref Info: Backreferencing OFF on input line 4157.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4390.
-\c@Hy@tempcnt=\count311
+\c@Hy@tempcnt=\count314
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4749.
-\XeTeXLinkMargin=\dimen285
+\XeTeXLinkMargin=\dimen287
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 
@@ -821,9 +837,9 @@ alc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count312
-\Field@Width=\dimen286
-\Fld@charsize=\dimen287
+\Fld@menulength=\count315
+\Field@Width=\dimen288
+\Fld@charsize=\dimen289
 Package hyperref Info: Hyper figures OFF on input line 6027.
 Package hyperref Info: Link nesting OFF on input line 6032.
 Package hyperref Info: Hyper index ON on input line 6035.
@@ -839,9 +855,9 @@ y
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count313
-\c@Item=\count314
-\c@Hfootnote=\count315
+\Hy@abspage=\count316
+\c@Item=\count317
+\c@Hfootnote=\count318
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
@@ -854,8 +870,8 @@ Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
 kage
 with kernel methods
 )
-\Fld@listcount=\count316
-\c@bookmark@seq@number=\count317
+\Fld@listcount=\count319
+\c@bookmark@seq@number=\count320
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerun
 filecheck.sty
@@ -868,53 +884,53 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 85.
 )
-\Hy@SectionHShift=\skip54
+\Hy@SectionHShift=\skip60
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bkm-pdftex.
 def
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
-\BKM@id=\count318
+\BKM@id=\count321
 )) (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/xurl\xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-
 pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count319
+\l__color_backend_stack_int=\count322
 \l__pdf_internal_box=\box66
 ) (Intro_to_jmpost.aux)
 \openout1 = `Intro_to_jmpost.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Info: Redefining \microtypecontext on input line 115.
-Package microtype Info: Applying patch `item' on input line 115.
-Package microtype Info: Applying patch `toc' on input line 115.
-Package microtype Info: Applying patch `eqnum' on input line 115.
-Package microtype Info: Applying patch `footnote' on input line 115.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 138.
+LaTeX Font Info:    ... okay on input line 138.
+LaTeX Info: Redefining \microtypecontext on input line 138.
+Package microtype Info: Applying patch `item' on input line 138.
+Package microtype Info: Applying patch `toc' on input line 138.
+Package microtype Info: Applying patch `eqnum' on input line 138.
+Package microtype Info: Applying patch `footnote' on input line 138.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 115.
+LaTeX Info: Redefining \showhyphens on input line 138.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -926,16 +942,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf
 .mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count320
-\scratchdimen=\dimen288
+\scratchcounter=\count323
+\scratchdimen=\dimen290
 \scratchbox=\box67
-\nofMPsegments=\count321
-\nofMParguments=\count322
+\nofMPsegments=\count324
+\nofMParguments=\count325
 \everyMPshowfont=\toks42
-\MPscratchCnt=\count323
-\MPscratchDim=\dimen289
-\MPnumerator=\count324
-\makeMPintoPDFobject=\count325
+\MPscratchCnt=\count326
+\MPscratchDim=\dimen291
+\MPnumerator=\count327
+\makeMPintoPDFobject=\count328
 \everyMPtoPDFconversion=\toks43
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopd
@@ -986,9 +1002,9 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 115.
+ on input line 138.
 
-Package hyperref Info: Link coloring OFF on input line 115.
+Package hyperref Info: Link coloring OFF on input line 138.
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1001,43 +1017,43 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 titlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count326
+\c@section@level=\count329
 )
-LaTeX Info: Redefining \ref on input line 115.
-LaTeX Info: Redefining \pageref on input line 115.
-LaTeX Info: Redefining \nameref on input line 115.
+LaTeX Info: Redefining \ref on input line 138.
+LaTeX Info: Redefining \pageref on input line 138.
+LaTeX Info: Redefining \nameref on input line 138.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-17.
+40.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-17.
+40.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-17.
+40.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-117.
+140.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-117.
+140.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 117.
+(Font)              <12> on input line 140.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 117.
+(Font)              <8> on input line 140.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 117.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 117
+(Font)              <6> on input line 140.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 140
 .
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1045,79 +1061,76 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 117
+LaTeX Font Info:    Trying to load font information for U+msb on input line 140
 .
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!htbp') on input line 127.
-
-
-Package hyperref Warning: Suppressing empty link on input line 158.
-
-
-Overfull \vbox (0.36406pt too high) detected at line 181
- []
-
-[1
+) [1
 
 {C:/Users/kazantg1/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 
-Package hyperref Warning: Suppressing empty link on input line 242.
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `!htbp') on input line 232.
+
+
+Package hyperref Warning: Suppressing empty link on input line 263.
 
 [2]
 
-Package hyperref Warning: Suppressing empty link on input line 298.
+Package hyperref Warning: Suppressing empty link on input line 347.
 
 [3]
+
+Package hyperref Warning: Suppressing empty link on input line 403.
+
+[4]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 394.
+(Font)              <10> on input line 499.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 394.
+(Font)              <7> on input line 499.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 394.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
-99.
+(Font)              <5> on input line 499.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5
+06.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [4] [5] (Intro_to_jmpost.aux) ) 
+) [5] [6] [7] (Intro_to_jmpost.aux) ) 
 Here is how much of TeX's memory you used:
- 35045 strings out of 478582
- 818733 string characters out of 2842928
- 1205490 words of memory out of 3000000
- 52541 multiletter control sequences out of 15000+600000
- 519169 words of font info for 112 fonts, out of 8000000 for 9000
+ 35199 strings out of 478582
+ 821053 string characters out of 2842928
+ 1208710 words of memory out of 3000000
+ 52650 multiletter control sequences out of 15000+600000
+ 524273 words of font info for 122 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,9n,80p,1084b,874s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{C:/Users/kazantg1/AppData/Local/Programs/MiKT
-eX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/kazantg1/AppData/Local/Programs/MiKTe
-X/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Users/kazantg1/AppData/Local/Programs/MiKTe
-X/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/kazantg1/AppData/Local/Programs/Mi
-KTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/kazantg1/AppData/Local/Programs
-/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}<C:/Users/kazantg1/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/kazantg1/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/kazantg1/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/kazantg1/AppData/Loca
-l/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/kazantg1/AppData/Lo
-cal/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppData/
-Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/AppDat
-a/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/kazantg1/App
-Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/kazantg1/
-AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/kazantg
-1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/kaza
-ntg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Intro_to_jmpost.pdf (5 pages, 261154 bytes).
+ 84i,9n,80p,1084b,881s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/kazantg1/AppData/Local/Programs/
+MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/Users/kazantg1/AppData/Local/Programs/M
+iKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/kazantg1/AppData/Local/Program
+s/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/kazantg1/AppData/Local/Prog
+rams/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Users/kazantg1/AppData/Local/Prog
+rams/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}<C:/Users/kazantg1/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/kazantg1/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/kazantg1/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/kazantg1/AppData/Lo
+cal/Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/kazantg1/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/kazantg1/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/kazantg1/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/kazantg1/Ap
+pData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/kazantg1/
+AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/kazantg1
+/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/kazan
+tg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/ka
+zantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/
+kazantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Use
+rs/kazantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
+Output written on Intro_to_jmpost.pdf (7 pages, 296877 bytes).
 PDF statistics:
- 139 PDF objects out of 1000 (max. 8388607)
- 19 named destinations out of 1000 (max. 500000)
- 28725 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 41 named destinations out of 1000 (max. 500000)
+ 30837 words of extra memory for PDF output out of 35830 (max. 10000000)
 
 
 ! pdflatex: major issue: So far, you have not checked for MiKTeX updates.
