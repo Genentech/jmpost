@@ -13,6 +13,7 @@ header-includes:
   - \usetikzlibrary{shapes.geometric, arrows}   
 output:
   pdf_document: default
+bibliography: bibliography.bib
 vignette: |
   %\VignetteIndexEntry{Introduction to `jmpost`}
   %\VignetteEncoding{UTF-8}
@@ -28,6 +29,61 @@ knitr::opts_chunk$set(
 )
 library(jmpost)
 ```
+# Introduction
+
+In clinical development of new cancer medicines a key challenge is to decide on the next steps after having collected the initial data in Phase 1 studies. 
+Is the clinical benefit for the patients good enough to warrant a large Phase 2 or Phase 3 study?
+Or should we rather combine this drug with another drug to achieve better clinical benefit? 
+The challenge is that in Phase 1 studies we don’t follow the patients until death but only until the cancer is growing again (progression event). 
+Therefore we don’t have reliable overall survival data. 
+However, we can use additional information from previous clinical trials or real-world data to understand the time between progression and death.
+Specifically, we can correlate the tumor response data (i.e. the shrinkage and growth of tumor lesions over time) with the overall survival of the patients @beyer2020multistate. 
+Thereby we can predict the overall survival in our Phase 1 studies and therefore make better decisions @kerioui2020bayesian.
+
+In late drug development for cancer, one of the most frequently used measurement types is time to death or overall survival. 
+It has been suggested that overall survival can be correlated with longitudinal measurements of different types according to the type of cancer.
+In such cases, longitudinal measurements can be used for the prediction of the overall survival probability or hazard ratios over time.
+Time projectories of survival probabilities are particularly important for decision making during the drug development process.
+
+The sum of the length diameter of the cancer (SLD) provides an effective and representative biomarker for longitudinal measurements in solid cancer. 
+The SLD is relatively easy to measure with great accuracy while also being a good representative of the development of cancer. 
+
+The association between the longitudinal data and the overall survival can be achieved in different ways.
+The predicted SLD value or its first derivative over time can be directly treated as the linking factor.
+Other factors such as the time to growth, the tumor shrinkage rate or the tumor growth rate can also be used to associate longitudinal outcomes with overall survival.
+
+Bayesian methodology provides an important tool for the analysis of similar data.
+Firstly, the use of historical data from previous trials is improving the performance of the models.
+Secondly, prior definition allows the adjustment of the models according to the specific factors of each analysis.
+
+Although these statistical methods provide significant advantages in decision making processes in cancer drug development, their implementation is relatively intricate and time consuming.
+Compared to other R-packages, `jmpost` provides the flexibility of non-linear modeling for the longitudinal part of the joint model. 
+Non-linear parametrization respects the biological implications of clinical trials in oncology where the observed tumor response usually follows non-linear patterns.
+
+# Minimal usage 
+
+```{r}
+my_long_mod <- LongModel(stan = StanModule(
+    functions = "exp_long_functions.stan",
+    data = "exp_long_data.stan",
+    priors = long_prior(),
+    inits = list(),
+    parameters = "exp_long_parameters.stan",
+    transformed_parameters = "exp_long_transformed_parametes.stan"
+))
+
+my_temp_os <- LogLogisticOs()
+
+my_link <- HazardLink(
+    parameters = "beta_ttg",
+    contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
+    stan = StanModule()
+)
+
+my_os <- parametrize(osmod = my_temp_os, link = my_link)
+JointModel(long = my_long_mod, os = my_os)
+```
+
 
 # Common usage
 
@@ -361,3 +417,9 @@ Where:
 \item $g_i$ is is the kinetics tumor growth parameter
 \item $\phi_i$ is the proportion of cells affected by the treatment
 \end{itemize}
+
+# References
+
+<div id="refs"></div>
+
+# Appendix
