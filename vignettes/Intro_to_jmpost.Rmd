@@ -207,13 +207,13 @@ Here, the slot `parameters` is the name of the linking parameter of the two sub-
 `Parameters` and `contribution` contain all the information required for the completion of the overall survival model. 
 
 The merge of the `Longitudinal`, `Overall survival` and `link` object takes place in two parts. 
-First, the parameterisation of the overall survival sub-model needs to be completed using the information from the link object. 
+First, the parameterisation of the overall survival sub-model needs to be completed using the information from the link object (part 1). 
 
 ```{r}
 os <- parametrize(osmod = temp_os, link = link)
 ```
 
-Secondly, the `Longitudinal` and `Survival` sub-models need to be combined. 
+Secondly, the `Longitudinal` and `Survival` sub-models need to be combined (part 2). 
 Function `JointModel` merges the two sub-models, creates a character containing the full stan model, creates a stan file with the produced model and checks the functionality of the produced file. 
 Mistakes in the stan file will be reported from the `JointModel` call.
 
@@ -240,12 +240,26 @@ jm_options <- mcmc_options(chains = 1,
 Most of the options are borrowed from the package `cmdstanr` except from the `gauss_legendre` that defines the integration parameters.   
 
 ## Example 
-### longitudinal model 
+
+### SLD model 
+
+\begin{align}
+y_{ij} \sim N(SLD_{ij}, SLD^2_{ij}\sigma^2)
+\end{align}
+
+Where: 
+\begin{itemize}
+\item $y_{ij}$ is the observed tumor mesasurements
+\item $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+\end{itemize}
+### Expected SLD 
+
+---
 
 \begin{align}
 SLD_{ij} = b_i[\phi_ie^{-s_it_{ij}}+(1-\phi_i)e^{g_it_{ij}}]
 \end{align}
-where:
+Where:
 \begin{itemize}
 \item $i$ is the subject index 
 \item $j$ is the visit index 
@@ -257,7 +271,9 @@ where:
 \item $\phi_i$ is the proportion of cells affected by the treatment 
 \end{itemize}
 
-The SLD parameters
+### The SLD parameters
+
+---
 
 \begin{align*}
 \phi_i = logit^{-1}(logit(m_{\phi l_i}) + \eta_{\phi i}*\omega_{\phi}) \\
@@ -266,7 +282,7 @@ g_i = exp(lm(m_{gl_i}) +\eta_{gi}*\omega_g) \\
 b_i = exp(ln(m_{bl_i}) + \eta_{bi}*\omega_b)
 \end{align*}
 
-where:
+Where:
 \begin{itemize}
 \item $i$ is the subject index 
 \item $l_i$ is the group/treatment index for subject $i$
@@ -275,38 +291,45 @@ where:
 \item $\omega_x$ is the variance for the random effects on parameter $x$ 
 \end{itemize}
 
-The SLD hyper parameters: 
+### The SLD Hyper-parameters
+
+---
+
 \begin{align*}
 m_{sl_i} \sim Lognormal(\mu_s,\sigma_s) \\
 m_{gl_i} \sim Lognormal(\mu_g,\sigma_g) \\
 logit(m_{\phi} l_i) \sim N(logit(\mu_{\phi}), \sigma_{\phi})
 \end{align*}
 
-where:
+Where:
 \begin{itemize}
 \item $l_i$ is the group/treatment index of subject $i$
 \item $\mu_x$ is the mean of the parameter distribution 
 \item $\sigma_x$ is the variance of the parameter distribution
 \end{itemize}
 
-### survival model 
+### Survival model 
+
+---
 
 \begin{align*}
 h_i(t) = h_0(t)e^{\beta f_i(t)}e^{\gamma G_i} e^{\beta_cX_i}
 \end{align*}
 
 
-where:
+Where:
 \begin{itemize}
 \item $h_i(t)$ is the overall survival hazard function
 \item $h_0(t)$ is the baseline hazard function
 \item $f_i(t)$ is the derivative of the SLD trajectory for subject $i$ at time $t$
 \item $G_i$ is the time to growth for subject $i$
-\item $X_i$ is the matrix of cavariates at each visit for subject $i$ 
+\item $X_i$ is the matrix of covariates at each visit for subject $i$ 
 \item $\beta, \gamma \& \beta_c$ are the strength coefficients for the derivative of the SLD trajectory, the time to growth and the subjects covariates respectively
 \end{itemize}
 
-Baseline hazard
+### Baseline hazard
+
+---
 
 \begin{align*}
 t \sim LogLogistic(\lambda,p) \\
@@ -315,22 +338,22 @@ h_0(t) = \frac{\lambda p (\lambda t)^{p-1}}{1+(\lambda t)^p} \\
 S_0(t) = \frac{1}{1+(\lambda t)^p}
 \end{align*}
 
-where:
+Where:
 \begin{itemize}
 \item $f(t)$ is the probability density function 
 \item $h_0(t)$ is the hazard distribution function 
 \item $S_0(t)$ is the survival distribution function
 \end{itemize}
 
-### Link association 
+### Time to growth 
 
-Time to growth 
+---
 
 \begin{align*}
 G_i = \frac{logit(\phi_i)+log(s_ig_i^{-1})}{s_i+g_i}
 \end{align*}
 
-where:
+Where:
 \begin{itemize}
 \item $G_i$ is the time to growth for subject $i$
 \item $b_i$ is the baseline SLD measurement 
