@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  27 SEP 2022 14:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.9.15)  28 SEP 2022 15:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/kazantg1/AppData/Local/Temp/RtmpKmhFdo/preview-2c209835ca6.dir/Intro
-_to_jmpost.tex
+**C:/Users/kazantg1/AppData/Local/Temp/Rtmp2flA3k/preview-11b87edb34db.dir/Intr
+o_to_jmpost.tex
 
-(C:/Users/kazantg1/AppData/Local/Temp/RtmpKmhFdo/preview-2c209835ca6.dir/Intro_
-to_jmpost.tex
+(C:/Users/kazantg1/AppData/Local/Temp/Rtmp2flA3k/preview-11b87edb34db.dir/Intro
+_to_jmpost.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (C:\Users\kazantg1\AppData\Local\Programs\MiK
 TeX\tex/latex/base\article.cls
@@ -901,36 +901,36 @@ File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 ) (Intro_to_jmpost.aux)
 \openout1 = `Intro_to_jmpost.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 138.
-LaTeX Font Info:    ... okay on input line 138.
-LaTeX Info: Redefining \microtypecontext on input line 138.
-Package microtype Info: Applying patch `item' on input line 138.
-Package microtype Info: Applying patch `toc' on input line 138.
-Package microtype Info: Applying patch `eqnum' on input line 138.
-Package microtype Info: Applying patch `footnote' on input line 138.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 146.
+LaTeX Font Info:    ... okay on input line 146.
+LaTeX Info: Redefining \microtypecontext on input line 146.
+Package microtype Info: Applying patch `item' on input line 146.
+Package microtype Info: Applying patch `toc' on input line 146.
+Package microtype Info: Applying patch `eqnum' on input line 146.
+Package microtype Info: Applying patch `footnote' on input line 146.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 138.
+LaTeX Info: Redefining \showhyphens on input line 146.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1002,9 +1002,9 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 138.
+ on input line 146.
 
-Package hyperref Info: Link coloring OFF on input line 138.
+Package hyperref Info: Link coloring OFF on input line 146.
 
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1019,41 +1019,41 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count329
 )
-LaTeX Info: Redefining \ref on input line 138.
-LaTeX Info: Redefining \pageref on input line 138.
-LaTeX Info: Redefining \nameref on input line 138.
+LaTeX Info: Redefining \ref on input line 146.
+LaTeX Info: Redefining \pageref on input line 146.
+LaTeX Info: Redefining \nameref on input line 146.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-40.
+48.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-40.
+48.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-40.
+48.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-140.
+148.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-140.
+148.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 140.
+(Font)              <12> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 140.
+(Font)              <8> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 140.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 140
+(Font)              <6> on input line 148.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 148
 .
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1061,7 +1061,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 140
+LaTeX Font Info:    Trying to load font information for U+msb on input line 148
 .
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1073,39 +1073,39 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 {C:/Users/kazantg1/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!htbp') on input line 232.
+               Default added (so using `!htbp') on input line 228.
 
 
-Package hyperref Warning: Suppressing empty link on input line 263.
+Package hyperref Warning: Suppressing empty link on input line 259.
 
 [2]
 
-Package hyperref Warning: Suppressing empty link on input line 347.
+Package hyperref Warning: Suppressing empty link on input line 343.
 
 [3]
 
-Package hyperref Warning: Suppressing empty link on input line 403.
+Package hyperref Warning: Suppressing empty link on input line 399.
 
 [4]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 499.
+(Font)              <10> on input line 495.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 499.
+(Font)              <7> on input line 495.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 499.
+(Font)              <5> on input line 495.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5
-06.
+02.
 (C:\Users\kazantg1\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [5] [6] [7] (Intro_to_jmpost.aux) ) 
 Here is how much of TeX's memory you used:
- 35199 strings out of 478582
- 821053 string characters out of 2842928
- 1208710 words of memory out of 3000000
- 52650 multiletter control sequences out of 15000+600000
- 524273 words of font info for 122 fonts, out of 8000000 for 9000
+ 35200 strings out of 478582
+ 821076 string characters out of 2842928
+ 1206811 words of memory out of 3000000
+ 52653 multiletter control sequences out of 15000+600000
+ 524508 words of font info for 122 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,9n,80p,1084b,881s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 84i,9n,80p,1085b,881s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/kazantg1/AppData/Local/Programs/
 MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/Users/kazantg1/AppData/Local/Programs/M
 iKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/kazantg1/AppData/Local/Program
@@ -1126,7 +1126,7 @@ tg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/ka
 zantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/
 kazantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Use
 rs/kazantg1/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Intro_to_jmpost.pdf (7 pages, 296877 bytes).
+Output written on Intro_to_jmpost.pdf (7 pages, 297567 bytes).
 PDF statistics:
  203 PDF objects out of 1000 (max. 8388607)
  41 named destinations out of 1000 (max. 500000)
