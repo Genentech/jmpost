@@ -79,7 +79,7 @@ JointModel(long = my_long_mod, os = my_os)
 ```
 
 
-# Common usage
+# Customizing the analysis
 
 `jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. 
 Minimal use of the package provides complete examples of joint modeling code. 
