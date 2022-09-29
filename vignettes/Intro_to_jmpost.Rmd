@@ -225,7 +225,7 @@ Call of the object prints the different sections.
 Long_mod
 ```
 
-The overall survival object contails all ther information for the paramtetrisation of the second sub-model of the joint model. 
+The overall survival object contails all ther information for the parametrisation of the second sub-model of the joint model. 
 The overall survival object has identical structure as the Longitudinal object (Figure~\ref{fig2::longMod}).
 The slots `functions`, `parameters`, `model`, `transformed parameters` and `generated quantities` should be provided with stan code whereas `priors` and `initial values` should be filled with lists. 
 An example with Log-logistic parametrisation of the overall survival sub-modlel object is provided in `LogLogisticOS()`. 
