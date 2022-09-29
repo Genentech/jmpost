@@ -50,10 +50,13 @@ Firstly, the use of historical data from previous trials is improving the perfor
 Secondly, prior definition allows the adjustment of the models according to the specific factors of each analysis.
 
 Although these statistical methods provide significant advantages in decision making processes in cancer drug development, their implementation is relatively intricate and time consuming.
-Compared to other R-packages, `jmpost` provides the flexibility of non-linear mixed effects modeling for the longitudinal part of the joint model. 
+Compared to other R-packages such as `joineR` and `jmbayes`, `jmpost` provides the flexibility of non-linear mixed effects modeling for the longitudinal part of the joint model. 
 Non-linear parametrization respects the biological implications of clinical trials in oncology where the observed tumor response usually follows non-linear patterns.
 
 # Minimal usage 
+
+The minimal usage of the `jmpost` package calls example stan code already provided in the repository of the package. 
+The following chank illustrates the absolute minimal usage of the package.
 
 ```{r, eval=FALSE}
 my_long_mod <- LongMod()
