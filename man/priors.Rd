@@ -31,8 +31,9 @@ getter method for StanModule:
 
 get method for Hazard link
 
-setter method for LongModel:
+get method for LongModel:
 
+getter method for OsModel
 getter method for OsModel:
 }
 \examples{
