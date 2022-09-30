@@ -56,7 +56,7 @@ Non-linear parametrization respects the biological implications of clinical tria
 # Minimal usage 
 
 The minimal usage of the `jmpost` package calls example stan code already provided in the repository of the package. 
-The following chank illustrates the absolute minimal usage of the package.
+The following chunk illustrates the absolute minimal usage of the package.
 
 ```{r, eval=FALSE}
 my_long_mod <- LongMod()
