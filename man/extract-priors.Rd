@@ -20,20 +20,12 @@ priors(object) <- value
 \S4method{priors}{OsModel}(object) <- value
 }
 \arguments{
-\item{object}{A \code{Osmodel} object generated from function \code{\link[=OsModel]{OsModel()}}}
+\item{object}{A \code{LongModel}, \code{HazardLink} , \code{StanModule} and \code{OsModel} object}
 
-\item{value}{the replacement value for the prior of the os model}
+\item{value}{the character strings of the prior information for replacement}
 }
 \description{
 priors() replacement method for \code{LongModel}, \code{HazardLink} , \code{StanModule} or \code{OsModel} object
-
-setter method for StanModule:
-
-set method for Hazardlink:
-
-setter method for LongModel:
-
-setter method for Osmodel:
 }
 \examples{
 priors(object)<-"lognormal(0,1);"

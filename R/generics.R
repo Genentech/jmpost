@@ -44,7 +44,6 @@ setGeneric(
 #' @examples
 #' priors(object)<-"lognormal(0,1);"
 #' @export
-
 setGeneric(
     name = "priors<-",
     def = function(object, value)
