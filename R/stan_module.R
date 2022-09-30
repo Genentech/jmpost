@@ -8,7 +8,7 @@
 #' @slot generated_quantities Character, the generated_quantities part of a stan model.
 #' @slot includes Character
 #' @slot inits List with the initial values of the stan model.
-#' @export
+#' @exportClass StanModule
 StanModule <- setClass(
     "StanModule",slots = list(functions = "character",
                               data = "character",
@@ -28,7 +28,27 @@ StanModule <- setClass(
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
-    system_file <- system.file("stanparts", string, package = "jmpost")
+    file_map <- list.files("inst/")
+    system_file <- apply(as.matrix(file_map),
+        1,
+        FUN = system.file,
+        package = "jmpost",
+        string = string
+    )
+
+    # Find the non-empty file paths.
+    true_file <- which(nchar(system_file)!= 0)
+
+    # Keep only the existing file paths.
+    system_file <- system_file[true_file]
+
+    # If there are no existing file paths (used provided stan code text) or
+    # if there are more than one existing paths (user provided empty character "")
+    # make the system file an empty character.
+    if (length(system_file) == 0 || length(system_file) > 1 ) system_file <- ""
+
+
+
     if (is_file(string)) {
         out <- read_file(string)
     } else if (is_file(system_file)) {
@@ -38,6 +58,7 @@ read_stan <- function(string) {
     }
     return(out)
 }
+
 
 
 #' @rdname StanModule-class
@@ -153,6 +174,7 @@ setMethod(
             model = "model",
             generated_quantities = "generated quantities"
         )
+        if (length(x@priors) > 0) x@priors <- as.list(paste(names(x@priors), "~", x@priors))
 
 
         block_strings <- lapply(
@@ -179,7 +201,7 @@ setMethod(
     signature = c("StanModule", "StanModule"),
     definition = function(x, y) {
         pars <- c(
-            "functions", "data", "parameters",
+            "functions", "data", "parameters", "model",
             "transformed_parameters", "generated_quantities"
         )
 
