@@ -296,7 +296,13 @@ is_file <- function(filename = NULL) {
 
 
 
+
+
+
 #' getter method for StanModule:
+#' @rdname priors
+#' @param object A `StanModule` object
+#' @export
 
 setMethod(
     f = "priors",
@@ -308,14 +314,17 @@ setMethod(
 
 
 #' setter method for StanModule:
+#' @rdname extract-priors
+#' @param object A `StanModule` object
+#' @param value the character strings of the prior information for replacement
+#' @export
 
 setReplaceMethod(
     f = "priors",
     signature = "StanModule",
-    definition = function(object,value) {
-        object@priors<- value
+    definition = function(object, value) {
+        object@priors <- value
         object
     }
 )
-
 

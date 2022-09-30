@@ -128,7 +128,12 @@ setMethod(
 
 
 
-#' get method for longmodel
+
+#' get method for LongModel:
+#' @rdname priors
+#' @param object A `LongModel` object
+#' @export
+
 setMethod(
     f = "priors",
     signature = list(object = "LongModel"),
@@ -136,15 +141,21 @@ setMethod(
         priors(object@stan)
     }
 )
-#' set method for longmodel
+
+
+
+
+#' setter method for LongModel:
+#' @rdname extract-priors
+#' @param object A `LongModel` object
+#' @param value  the replacement value for the prior of the LongModel
+#' @export
 
 setReplaceMethod(
     f = "priors",
     signature = "LongModel",
-    definition = function(object,value) {
-        priors(object@stan)<- value
+    definition = function(object, value) {
+        priors(object@stan) <- value
         object
     }
 )
-
-

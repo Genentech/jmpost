@@ -81,6 +81,11 @@ setMethod(
 
 
 #' get method for Hazard link
+#' @rdname priors
+#' @param object A `Hazardlink` object
+#' @param value the character strings of the prior information for replacement
+#' @export
+
 
 setMethod(
     f = "priors",
@@ -91,13 +96,17 @@ setMethod(
 )
 
 
-#' setter method for Hazardlink:
-
+#' set method for Hazardlink:
+#' @rdname extract-priors
+#' @param object A `Hazardlink` object
+#' @param value the character strings of the prior information for replacement
+#' @export
+#'
 setReplaceMethod(
     f = "priors",
     signature = "HazardLink",
-    definition = function(object,value) {
-        priors(object@stan)<- value
+    definition = function(object, value) {
+        priors(object@stan) <- value
         object
     }
 )

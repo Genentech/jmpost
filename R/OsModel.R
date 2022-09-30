@@ -108,6 +108,12 @@ setMethod(
 
 #' getter method for OsModel
 
+#' getter method for OsModel:
+#' @rdname priors
+#' @param object A `OsModel` object generated from function [OsModel()]
+#' @export
+
+
 setMethod(
     f = "priors",
     signature = list(object = "OsModel"),
@@ -117,14 +123,16 @@ setMethod(
 )
 
 #' setter method for Osmodel:
+#' @rdname extract-priors
+#' @param object A `Osmodel` object generated from function [OsModel()]
+#' @param value  the replacement value for the prior of the os model
+#' @export
 
 setReplaceMethod(
     f = "priors",
     signature = "OsModel",
-    definition = function(object,value) {
-        priors(object@stan)<- value
+    definition = function(object, value) {
+        priors(object@stan) <- value
         object
     }
 )
-
-

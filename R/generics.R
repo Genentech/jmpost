@@ -22,11 +22,31 @@ setGeneric("parametrize", function(osmod, link) {
 })
 
 
-#‘ priors() method for stanmodule, hazardlink , longmodel and osmodel
-
-setGeneric(name = "priors", def = function(object) standardGeneric("priors"))
-
-#‘ priors() replacement method for
-setGeneric(name = "priors<-", def = function(object, value) standardGeneric("priors<-"))
 
 
+
+#' priors() get method for `LongModel`, `HazardLink` , `StanModule` or `OsModel`
+#' @rdname priors
+#' @param object A `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
+#' @examples
+#' priors(object)
+#' @export
+setGeneric(
+    name = "priors",
+    def = function(object)
+        standardGeneric("priors")
+)
+
+#' priors() replacement method for `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
+#' @rdname extract-priors
+#' @param object A `LongModel`, `HazardLink` , `StanModule` and `OsModel` object
+#' @param value the character strings of the prior information for replacement
+#' @examples
+#' priors(object)<-"lognormal(0,1);"
+#' @export
+
+setGeneric(
+    name = "priors<-",
+    def = function(object, value)
+        standardGeneric("priors<-")
+)
