@@ -80,13 +80,9 @@ setMethod(
 
 
 
-#' get method for Hazard link
+
 #' @rdname priors
-#' @param object A `Hazardlink` object
-#' @param value the character strings of the prior information for replacement
 #' @export
-
-
 setMethod(
     f = "priors",
     signature = "HazardLink",
@@ -96,12 +92,8 @@ setMethod(
 )
 
 
-#' set method for Hazardlink:
 #' @rdname extract-priors
-#' @param object A `Hazardlink` object
-#' @param value the character strings of the prior information for replacement
 #' @export
-#'
 setReplaceMethod(
     f = "priors",
     signature = "HazardLink",

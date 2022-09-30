@@ -20,21 +20,10 @@ priors(object)
 \S4method{priors}{OsModel}(object)
 }
 \arguments{
-\item{object}{A \code{OsModel} object generated from function \code{\link[=OsModel]{OsModel()}}}
-
-\item{value}{the character strings of the prior information for replacement}
+\item{object}{A \code{LongModel}, \code{HazardLink} , \code{StanModule} or \code{OsModel} object}
 }
 \description{
 priors() get method for \code{LongModel}, \code{HazardLink} , \code{StanModule} or \code{OsModel}
-
-getter method for StanModule:
-
-get method for Hazard link
-
-get method for LongModel:
-
-getter method for OsModel
-getter method for OsModel:
 }
 \examples{
 priors(object)
