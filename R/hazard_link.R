@@ -30,10 +30,10 @@ HazardLink <- setClass(
 setValidity("HazardLink", function(object){
     msg <- NULL
 
-    if(!is.vector(object@parameters) || !is.character(object@parameters)){
+    if(!is.vector(object@parameters)){
         msg <- c(msg, "`parameter` must be a character vector")
     }
-    if(!is.vector(object@contribution) || !is.character(object@contribution) || !length(object@contribution) == 1){
+    if(!is.vector(object@contribution) || !length(object@contribution) == 1){
         msg <- c(msg, "`contribution` must be length 1 character vectors")
     }
 
