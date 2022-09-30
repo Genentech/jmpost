@@ -49,9 +49,3 @@ test_that("HazardLinks can merge together", {
     expect_equal(actual@stan@parameters, c("real beta_dsld;", "real beta_ttg;"))
 
 })
-
-
-
-
-
-

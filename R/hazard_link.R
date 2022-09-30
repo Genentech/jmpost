@@ -7,11 +7,11 @@
 #'
 #' @slot stan A `StanModule` object as created by [StanModule()] that specifies any Stan code
 #' required for the link / contribution
-#' @slot contribution Stan code for what this link contriutes to the log hazard in the OS model
+#' @slot contribution Stan code for what this link contributes to the log hazard in the OS model
 #' @slot parameter The name of link parameter
 #' @examples
 #' HazardLink(
-#'     parameter = "beta_ttg",
+#'     parameters = "beta_ttg",
 #'     contribution = "beta_ttg * ttg(phi)",
 #'     stan = StanModule(
 #'         functions = "real ttg(real phi) {phi^2 };"
@@ -45,6 +45,7 @@ setMethod(
     f = "initialize",
     signature = "HazardLink",
     definition = function(.Object, ..., stan = StanModule(), contribution, parameters) {
+
 
         if (length(stan@parameters) == 0 || all(stan@parameters == "")) {
             stan@parameters <- sprintf("real %s;", parameters)
