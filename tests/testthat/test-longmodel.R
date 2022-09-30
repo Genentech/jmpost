@@ -14,7 +14,7 @@ test_that("Long model is created as expected", {
 
 
 test_that("Can define our own Link methods and getLink works as expected", {
-    stanobj <- StanModule( functions = "abcdef")
+    stanobj <- StanModule(functions = "abcdef")
 
     TestLongModel <- setClass(
         Class = "TestLongModel",
@@ -71,23 +71,17 @@ test_that("Can define our own Link methods and getLink works as expected", {
 
 
 test_that("Priors of the Long model is replaced ", {
-    stanobj <- StanModule(functions = "abcdef",priors=long_prior())
+    stanobj <- StanModule(functions = "abcdef", priors = long_prior())
     longmod <- LongModel(stan = stanobj)
-    actual_get<- priors(longmod)
-    expected_get<-long_prior()
+    actual_get <- priors(longmod)
+    expected_get <- long_prior()
 
     expect_equal(actual_get, expected_get)
 
 
-    priors(longmod)["eta_tilde_ks"]<-"normal(0,6)"
+    priors(longmod)["eta_tilde_ks"] <- "normal(0,6)"
 
-    actual_replaced<- priors(longmod)["eta_tilde_ks"]
-    expected_replaced<-list(eta_tilde_ks="normal(0,6)")
+    actual_replaced <- priors(longmod)["eta_tilde_ks"]
+    expected_replaced <- list(eta_tilde_ks = "normal(0,6)")
     expect_equal(actual_replaced, expected_replaced)
-
 })
-
-
-
-
-
