@@ -10,19 +10,16 @@
 #' @slot inits List with the initial values of the stan model.
 #' @exportClass StanModule
 StanModule <- setClass(
-    "StanModule",
-    representation(
-        functions = "character",
-        data = "character",
-        parameters = "character",
-        transformed_parameters = "character",
-        model = "character",
-        priors = "list",
-        generated_quantities = "character",
-        inits = "list"
-    )
-)
+    "StanModule",slots = list(functions = "character",
+                              data = "character",
+                              parameters = "character",
+                              transformed_parameters = "character",
+                              model = "character",
+                              priors = "list",
+                              generated_quantities = "character",
+                              inits = "list")
 
+)
 
 
 #' read_stan returns stan code as a character.
@@ -63,8 +60,17 @@ read_stan <- function(string) {
 }
 
 
-#' @importFrom assertthat assert_that
-#' @importFrom assertthat validate_that
+setValidity("StanModule", function(object){
+    msg <- NULL
+
+    if(!is.na(object@priors) && (is.null(names(object@priors)) || is.na(names(object@priors)))){
+        msg <- c(msg, "`Priors` must have names")
+    }
+
+    msg
+})
+
+
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -80,32 +86,6 @@ setMethod(
                           generated_quantities = "",
                           priors = list(),
                           inits = list()) {
-        assert_that(
-            is.character(functions),
-            is.character(data),
-            is.character(parameters),
-            is.character(transformed_parameters),
-            is.character(generated_quantities),
-            is.character(model),
-            msg = paste(
-                "`Functions`, `data`, `parameters`, `transformed_parameters`, `model` and",
-                "`generated_quantities` must be character vectors"
-            )
-        )
-
-        assert_that(
-            is.list(priors),
-            is.list(inits),
-            msg = "`Priors` and `inits` must be lists"
-        )
-
-        if (length(priors) > 0) {
-            assert_that(
-                is.null(names(priors)) == FALSE,
-                all(names(priors) != ""),
-                msg = "`Priors` must have names"
-            )
-        }
 
         callNextMethod(
             .Object,
@@ -218,8 +198,6 @@ setMethod(
 )
 
 
-
-
 #' @rdname merge
 #' @export
 setMethod(
@@ -279,6 +257,7 @@ read_file <- function(filename) {
 #' for a directory as well as a file
 #'
 #' @param filename A character string
+#' @importFrom assertthat assert_that
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
         return(FALSE)
