@@ -69,7 +69,7 @@ my_os <- parametrize(osmod = my_temp_os, link = my_link)
 JointModel(long = my_long_mod, os = my_os)
 ```
 
-The final two steps of the package workflow are not available yet.
+The final two steps of the package workflow are not available yet:
 First, the running step of the model, where the user calls the defined model along with the data and the preferred options. 
 Secondly, the summary report of the model run.
 
