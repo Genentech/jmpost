@@ -1,6 +1,6 @@
 ---
 title: "Introduction to `jmpost`"
-subtitle: "`J`oint `M`odel for `P`osterior `O`verall `S`urvival `T`ranjectories"
+subtitle: "`J`oint `M`odels for `P`redicting `O`verall `S`urvival `T`rajectories"
 package: jmpost
 author:
   - Georgios Kazantzidis
