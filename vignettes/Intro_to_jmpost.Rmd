@@ -42,7 +42,7 @@ The sum of the longest diameters (SLD) of the cancer lesions provides an effecti
 SLD is relatively easy to measure with reasonable accuracy while also being a good representative of the development of cancer. 
 
 The association between the longitudinal data and the overall survival can be achieved in different ways.
-The predicted SLD value or its first derivative over time can be directly treated as the linking factor.
+The predicted SLD value or its first derivative over time can be directly treated as the linking factor in the hazard model for survival.
 Other factors such as the time to growth, the tumor shrinkage rate or the tumor growth rate can also be used to associate longitudinal outcomes with overall survival.
 
 Bayesian methodology provides an important tool for the analysis of similar data.
