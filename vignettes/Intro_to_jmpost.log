@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.29)  30 SEP 2022 13:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.29)  3 OCT 2022 10:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/Georg/AppData/Local/Temp/RtmpSSddHf/preview-36382c537753.dir/Intro_to_jmpost.tex
-(c:/Users/Georg/AppData/Local/Temp/RtmpSSddHf/preview-36382c537753.dir/Intro_to_jmpost.tex
+**C:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e703ba0507b.dir/Intro_to_jmpost.tex
+(c:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e703ba0507b.dir/Intro_to_jmpost.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-30> (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -724,27 +724,27 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 {c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!htbp') on input line 227.
+               Default added (so using `!htbp') on input line 228.
 
 
-Package hyperref Warning: Suppressing empty link on input line 258.
+Package hyperref Warning: Suppressing empty link on input line 259.
 
 [2]
 
-Package hyperref Warning: Suppressing empty link on input line 342.
+Package hyperref Warning: Suppressing empty link on input line 343.
 
 [3]
 
-Package hyperref Warning: Suppressing empty link on input line 398.
+Package hyperref Warning: Suppressing empty link on input line 400.
 
 [4]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 494.
+(Font)              <10> on input line 496.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 494.
+(Font)              <7> on input line 496.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 494.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 501.
+(Font)              <5> on input line 496.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 503.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [5] [6] [7] [8] (./Intro_to_jmpost.aux)
@@ -752,18 +752,18 @@ Package rerunfilecheck Info: File `Intro_to_jmpost.out' has not changed.
 (rerunfilecheck)             Checksum: DDD8405A791F1ACC9BCFA27411C088E5;1599.
  ) 
 Here is how much of TeX's memory you used:
- 34672 strings out of 477035
- 813961 string characters out of 5826726
- 1245875 words of memory out of 5000000
- 55090 multiletter control sequences out of 15000+600000
- 524591 words of font info for 123 fonts, out of 8000000 for 9000
+ 34671 strings out of 477035
+ 813970 string characters out of 5826726
+ 1246876 words of memory out of 5000000
+ 55092 multiletter control sequences out of 15000+600000
+ 524744 words of font info for 122 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,9n,80p,1082b,879s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}<c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Intro_to_jmpost.pdf (8 pages, 277689 bytes).
+{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}<c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on Intro_to_jmpost.pdf (8 pages, 293919 bytes).
 PDF statistics:
- 210 PDF objects out of 1000 (max. 8388607)
- 168 compressed objects within 2 object streams
+ 215 PDF objects out of 1000 (max. 8388607)
+ 171 compressed objects within 2 object streams
  42 named destinations out of 1000 (max. 500000)
  30837 words of extra memory for PDF output out of 35830 (max. 10000000)
 

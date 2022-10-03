@@ -59,13 +59,15 @@ The minimal usage of the `jmpost` package calls example stan code already provid
 The following chunk illustrates the absolute minimal usage of the package.
 
 ```{r, eval=FALSE}
+# The longitudinal submodel
 my_long_mod <- LongMod()
-
+# The templated survival submodel
 my_temp_os <- LogLogisticOs()
-
+# The link factor
 my_link <- ttgLink()
-
+# The complete survival submodel 
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
+# The full model
 JointModel(long = my_long_mod, os = my_os)
 ```
 
@@ -76,7 +78,7 @@ Secondly, the summary report of the model run.
 # Customizing the analysis
 
 `jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. 
-Minimal use of the package provides complete examples of joint modeling code. 
+The package provides complete examples of joint modeling code. 
 Here we explain the workflow of the package `jmpost` using `stan` libraries as an example.  
 
 \begin{figure}[!]
@@ -213,7 +215,7 @@ prior_set@priors$param_A <- "normal(1,1);"
 ```
 
 
-Call of the object prints the different sections.
+Call of the object prints the stan code of all the sections of the object.
 
 ```{r Long_model print}
 Long_mod
