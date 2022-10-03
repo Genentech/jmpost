@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.29)  3 OCT 2022 10:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.29)  3 OCT 2022 11:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e703ba0507b.dir/Intro_to_jmpost.tex
-(c:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e703ba0507b.dir/Intro_to_jmpost.tex
+**C:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e70372824e2.dir/Intro_to_jmpost.tex
+(c:/Users/Georg/AppData/Local/Temp/RtmpI9wmZf/preview-3e70372824e2.dir/Intro_to_jmpost.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-30> (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -598,36 +598,36 @@ File: l3backend-pdftex.def 2022-08-30 L3 backend support: PDF output (pdfTeX)
 ) (./Intro_to_jmpost.aux)
 \openout1 = `Intro_to_jmpost.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 146.
-LaTeX Font Info:    ... okay on input line 146.
-LaTeX Info: Redefining \microtypecontext on input line 146.
-Package microtype Info: Applying patch `item' on input line 146.
-Package microtype Info: Applying patch `toc' on input line 146.
-Package microtype Info: Applying patch `eqnum' on input line 146.
-Package microtype Info: Applying patch `footnote' on input line 146.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Info: Redefining \microtypecontext on input line 147.
+Package microtype Info: Applying patch `item' on input line 147.
+Package microtype Info: Applying patch `toc' on input line 147.
+Package microtype Info: Applying patch `eqnum' on input line 147.
+Package microtype Info: Applying patch `footnote' on input line 147.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 146.
+LaTeX Info: Redefining \showhyphens on input line 147.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -675,46 +675,46 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 
 
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable tick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into your preamble.
- on input line 146.
+ on input line 147.
 
-Package hyperref Info: Link coloring OFF on input line 146.
+Package hyperref Info: Link coloring OFF on input line 147.
 (./Intro_to_jmpost.out) (./Intro_to_jmpost.out)
 \@outlinefile=\write5
 \openout5 = `Intro_to_jmpost.out'.
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 148.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 148.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 148.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 148.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 148.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 148.
+(Font)              <12> on input line 149.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 148.
+(Font)              <8> on input line 149.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 148.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 148.
+(Font)              <6> on input line 149.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 148.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 149.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -724,27 +724,16 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 {c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!htbp') on input line 228.
+               Default added (so using `!htbp') on input line 229.
 
-
-Package hyperref Warning: Suppressing empty link on input line 259.
-
-[2]
-
-Package hyperref Warning: Suppressing empty link on input line 343.
-
-[3]
-
-Package hyperref Warning: Suppressing empty link on input line 400.
-
-[4]
+[2] [3] [4]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 496.
+(Font)              <10> on input line 495.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 496.
+(Font)              <7> on input line 495.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 496.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 503.
+(Font)              <5> on input line 495.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 502.
 (c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [5] [6] [7] [8] (./Intro_to_jmpost.aux)
@@ -760,7 +749,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  84i,9n,80p,1082b,879s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}<c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb><c:/Users/Georg/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Intro_to_jmpost.pdf (8 pages, 293919 bytes).
+Output written on Intro_to_jmpost.pdf (8 pages, 293917 bytes).
 PDF statistics:
  215 PDF objects out of 1000 (max. 8388607)
  171 compressed objects within 2 object streams

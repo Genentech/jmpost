@@ -9,6 +9,7 @@ author:
 header-includes: 
   - \usepackage{tikz}
   - \usepackage{pgfplots}
+  - \usepackage{graphicx}
   - \usetikzlibrary{mindmap}
   - \usetikzlibrary{positioning}  
   - \usetikzlibrary{shapes.geometric, arrows}   
@@ -113,7 +114,7 @@ Here we explain the workflow of the package `jmpost` using `stan` libraries as a
 \end{figure}
 
 
-Figure~\ref{fig1::flow} illustrates the main workflow of the `jmpost` package.
+Figure~1 illustrates the main workflow of the `jmpost` package.
 Three objects need to be combined for the construction of the full Bayesian joint model.
 The longitudinal sub-model, including all the required information for the modeling of the longitudinal measurements, the survival sub-model, including information of for the time to event data and the link or association factor, containing information for the conection of the two sub-models.
 
@@ -182,7 +183,7 @@ example_stan <- LongModel(
 \caption{Structure of `StanModule` object.}
 \end{figure}
 
-Figure~\ref{fig2::longMod} depicts the structure of a `StanModule` object. 
+Figure~2 depicts the structure of a `StanModule` object. 
 Gray coloured cells indicate character strings containing stan code whereas yellow coloured cells mark list objects. 
 
 ```{r}
@@ -222,7 +223,7 @@ Long_mod
 ```
 
 The overall survival object contails all ther information for the parametrisation of the second sub-model of the joint model. 
-The overall survival object has identical structure as the Longitudinal object (Figure~\ref{fig2::longMod}).
+The overall survival object has identical structure as the Longitudinal object (Figure~2).
 The slots `functions`, `parameters`, `model`, `transformed parameters` and `generated quantities` should be provided with stan code whereas `priors` and `initial values` should be filled with lists. 
 An example with Log-logistic parametrisation of the overall survival sub-modlel object is provided in `LogLogisticOS()`. 
 
