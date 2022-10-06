@@ -27,6 +27,8 @@ HazardLink <- setClass(
     )
 )
 
+
+#' @importFrom assertthat is.scalar
 setValidity("HazardLink", function(object){
     msg <- NULL
 

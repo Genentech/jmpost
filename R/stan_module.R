@@ -21,6 +21,7 @@ StanModule <- setClass(
 
 )
 
+#' @importFrom assertthat is.scalar
 setValidity("StanModule", function(object) {
     msg <- NULL
 
