@@ -21,6 +21,16 @@ StanModule <- setClass(
 
 )
 
+setValidity("StanModule", function(object) {
+    msg <- NULL
+
+    if (!is.scalar(object@priors) && is.null(names(object@priors))) {
+        msg <- c(msg, "`Priors` must have names")
+    }
+
+    msg
+})
+
 
 #' read_stan returns stan code as a character.
 #'
@@ -76,13 +86,6 @@ setMethod(
                           priors = list(),
                           inits = list()) {
 
-        if (length(priors) > 0) {
-            assert_that(
-                is.null(names(priors)) == FALSE,
-                all(names(priors) != ""),
-                msg = "`Priors` must have names"
-            )
-        }
 
         callNextMethod(
             .Object,
