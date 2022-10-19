@@ -10,7 +10,7 @@ jobs:
   testthat:
     runs-on: ubuntu-latest
 
-    name: ubuntu-latest-rcmd-check
+    name: jmpost-latest-testthat
     
     container:
       image: ghcr.io/genentech/jmpost:latest
