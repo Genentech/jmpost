@@ -24,5 +24,5 @@ h_bracket <- function(x) {
 str_map <- function(i) {
     i <- gsub("^\\s*", "", i)
     i <- gsub("\n\\s*", "\n    ", i)
-    print(i)
+    return(i)
 }
