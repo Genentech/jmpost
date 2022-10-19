@@ -24,12 +24,11 @@ StanModule <- setClass(
 #' @importFrom assertthat is.scalar
 setValidity("StanModule", function(object) {
     msg <- NULL
-
-    if (!is.scalar(object@priors) && is.null(names(object@priors))) {
+    priors <- object@priors
+    if (length(priors) != length(names(priors))){
         msg <- c(msg, "`Priors` must have names")
     }
-
-    msg
+    return(msg)
 })
 
 
