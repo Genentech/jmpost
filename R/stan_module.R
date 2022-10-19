@@ -25,7 +25,9 @@ StanModule <- setClass(
 setValidity("StanModule", function(object) {
     msg <- NULL
     priors <- object@priors
-    if (length(priors) != length(names(priors))){
+    priors_names <- names(object@priors)
+    priors_names <- priors_names[priors_names != "" & !is.na(priors_names)]
+    if (length(priors) != length(priors_names)) {
         msg <- c(msg, "`Priors` must have names")
     }
     return(msg)
