@@ -20,15 +20,28 @@
 #' @export
 HazardLink <- setClass(
     "HazardLink",
-    representation = list(
-        "stan" = "StanModule",
-        "contribution" = "character",
-        "parameters" = "character"
+    slots = list(
+        stan = "StanModule",
+        contribution = "character",
+        parameters = "character"
     )
 )
 
+setValidity("HazardLink", function(object) {
+    msg <- NULL
+    if (length(object@parameters) == 0) {
+        msg <- c(msg, "`parameters` must be specified")
+    }
+    if (any(object@parameters == "")) {
+        msg <- c(msg, "`parameters` must not be blank")
+    }
+    if (!length(object@contribution) == 1) {
+        msg <- c(msg, "`contribution` must be length 1 character vector")
+    }
+    return(msg)
+})
 
-#' @importFrom assertthat assert_that
+
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -36,17 +49,6 @@ setMethod(
     signature = "HazardLink",
     definition = function(.Object, ..., stan = StanModule(), contribution, parameters) {
 
-        assert_that(
-            is.character(parameters),
-            length(parameters) >= 1,
-            msg = "`parameter` must be a character vector"
-        )
-
-        assert_that(
-            is.character(contribution),
-            length(contribution) == 1,
-            msg = "`contribution` must be length 1 character vectors"
-        )
 
         if (length(stan@parameters) == 0 || all(stan@parameters == "")) {
             stan@parameters <- sprintf("real %s;", parameters)
@@ -74,6 +76,32 @@ setMethod(
             contribution = paste0(x@contribution, " + ", y@contribution),
             parameters = c(x@parameters, y@parameters)
         )
+    }
+)
+
+
+
+
+
+#' @rdname priors
+#' @export
+setMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object) {
+        priors(object@stan)
+    }
+)
+
+
+#' @rdname extract-priors
+#' @export
+setReplaceMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object, value) {
+        priors(object@stan) <- value
+        object
     }
 )
 

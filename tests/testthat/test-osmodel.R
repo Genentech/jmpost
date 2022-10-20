@@ -79,7 +79,8 @@ test_that("parametrize combines functions as expected", {
     os_mod <- OsModel(stan = StanModule(functions = "Os Functions"))
     h_link <- HazardLink(
         stan = StanModule(
-            functions = "functions"),
+            functions = "functions"
+        ),
         parameters = "bla",
         contribution = "bla"
     )
@@ -87,5 +88,21 @@ test_that("parametrize combines functions as expected", {
     expected <- OsModel(stan = StanModule(functions = "Os Functions\n functions"))
 
     expect_equal(actual, expected)
+})
 
+
+test_that("Priors of the OS model is replaced ", {
+    osmod <- OsModel(stan = StanModule(functions = "Os Functions", priors = os_prior()))
+
+    actual_get <- priors(osmod)
+    expected_get <- os_prior()
+
+    expect_equal(actual_get, expected_get)
+
+
+    priors(osmod)["p"] <- "gamma(2, 1);"
+
+    actual_replaced <- priors(osmod)["p"]
+    expected_replaced <- list(p = "gamma(2, 1);")
+    expect_equal(actual_replaced, expected_replaced)
 })
