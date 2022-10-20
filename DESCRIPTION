@@ -26,3 +26,7 @@ Collate:
     'os_prior.R'
     'OsModel.R'
     'LogLogisticOs.R'
+    'JointModel.R'
+    'h_bracket.R'
+    'joint.R'
+    'long_prior.R'

@@ -104,3 +104,27 @@ setMethod(
         newOS
     }
 )
+
+
+
+#' @rdname priors
+#' @export
+setMethod(
+    f = "priors",
+    signature = list(object = "OsModel"),
+    definition = function(object) {
+        priors(object@stan)
+    }
+)
+
+
+#' @rdname extract-priors
+#' @export
+setReplaceMethod(
+    f = "priors",
+    signature = "OsModel",
+    definition = function(object, value) {
+        priors(object@stan) <- value
+        object
+    }
+)
