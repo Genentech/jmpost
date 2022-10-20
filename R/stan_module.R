@@ -22,6 +22,18 @@ StanModule <- setClass(
 )
 
 
+setValidity("StanModule", function(object) {
+    msg <- NULL
+    priors <- object@priors
+    priors_names <- names(object@priors)
+    priors_names <- priors_names[priors_names != "" & !is.na(priors_names)]
+    if (length(priors) != length(priors_names)) {
+        msg <- c(msg, "`Priors` must have names")
+    }
+    return(msg)
+})
+
+
 #' read_stan returns stan code as a character.
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
@@ -60,17 +72,6 @@ read_stan <- function(string) {
 }
 
 
-setValidity("StanModule", function(object){
-    msg <- NULL
-
-    if(!is.na(object@priors) && (is.null(names(object@priors)) || is.na(names(object@priors)))){
-        msg <- c(msg, "`Priors` must have names")
-    }
-
-    msg
-})
-
-
 #' @rdname StanModule-class
 #' @export
 setMethod(
@@ -86,6 +87,7 @@ setMethod(
                           generated_quantities = "",
                           priors = list(),
                           inits = list()) {
+
 
         callNextMethod(
             .Object,
