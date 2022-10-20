@@ -274,3 +274,30 @@ is_file <- function(filename = NULL) {
     }
     return(file.exists(filename) & !dir.exists(filename))
 }
+
+
+
+
+
+#' @rdname priors
+#' @export
+setMethod(
+    f = "priors",
+    signature = list(object = "StanModule"),
+    definition = function(object) {
+        object@priors
+    }
+)
+
+
+#' @rdname extract-priors
+#' @export
+setReplaceMethod(
+    f = "priors",
+    signature = "StanModule",
+    definition = function(object, value) {
+        object@priors <- value
+        object
+    }
+)
+

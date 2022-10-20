@@ -247,3 +247,23 @@ test_that("StanModule as.character works well with model and prior being specifi
     )
     expect_equal(actual, expected)
 })
+
+
+test_that("Priors of the stanmodule is replaced ", {
+    stan = StanModule(
+        functions = "abcdef",
+        priors=list(mu_kg= "lognormal(-0.36,1);")
+    )
+
+    actual_get<- priors(stan)
+    expected_get<-list(mu_kg= "lognormal(-0.36,1);")
+
+    expect_equal(actual_get, expected_get)
+
+    priors(stan)["mu_kg"]<-"lognormal(-0.24,1);"
+    actual_replaced<- priors(stan)["mu_kg"]
+    expected_replaced<-list(mu_kg="lognormal(-0.24,1);")
+    expect_equal(actual_replaced, expected_replaced)
+
+})
+
