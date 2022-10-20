@@ -64,7 +64,7 @@ The following chunk illustrates the absolute minimal usage of the package.
 my_long_mod <- LongMod()
 # The templated survival submodel
 my_temp_os <- LogLogisticOs()
-# The link factor
+# The link between longitudinal and OS models
 my_link <- ttgLink()
 # The complete survival submodel 
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
