@@ -49,3 +49,30 @@ test_that("HazardLinks can merge together", {
     expect_equal(actual@stan@parameters, c("real beta_dsld;", "real beta_ttg;"))
 
 })
+
+
+
+test_that("Priors of the Hazardlink is replaced ", {
+    hazlink<-HazardLink(
+        parameters = "beta_ttg",
+        contribution = "beta_ttg * ttg(phi)",
+        stan = StanModule(
+            functions = "real ttg( real phi) { phi^2 };",
+            priors=list(phi= "lognormal(0,0.5)")
+        )
+    )
+
+    actual_get<- priors(hazlink)
+    expected_get<-list(phi= "lognormal(0,0.5)")
+
+    expect_equal(actual_get, expected_get)
+
+
+    priors(hazlink)["phi"]<-"lognormal(0,1);"
+    actual_replaced<- priors(hazlink)["phi"]
+    expected_replaced<-list(phi="lognormal(0,1);")
+    expect_equal(actual_replaced, expected_replaced)
+
+})
+
+

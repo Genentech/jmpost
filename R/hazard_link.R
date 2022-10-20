@@ -78,3 +78,30 @@ setMethod(
         )
     }
 )
+
+
+
+
+
+#' @rdname priors
+#' @export
+setMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object) {
+        priors(object@stan)
+    }
+)
+
+
+#' @rdname extract-priors
+#' @export
+setReplaceMethod(
+    f = "priors",
+    signature = "HazardLink",
+    definition = function(object, value) {
+        priors(object@stan) <- value
+        object
+    }
+)
+
