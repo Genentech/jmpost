@@ -126,26 +126,14 @@ setMethod(
     }
 )
 
-### a function to check if a list is included in a predefined
-is.contained=function(vec1,vec2){
-    x=vector(length = length(vec1))
-    for (i in 1:length(vec1)) {
-        x[i] = vec1[i] %in% vec2
-        if(length(which(vec1[i] %in% vec2)) == 0) vec2 else
-            vec2=vec2[-match(vec1[i], vec2)]
-    }
-    y=all(x==T)
-    return(y)
-}
-
 
 #' @rdname priors
 #' @export
 setValidity("LongModel", function(object) {
-    if (is.contained(priors(object@stan),as.list(names(long_prior())))|is.null(priors(object@stan)))
+    if (is.contained(list(names(priors(object))),list(names(long_prior()))))
         TRUE
     else
-        "priors of the HarzardLink should contain : mean_mu_ks ,mean_mu_kg,
+        "priors of the LongModel should contain : mean_mu_ks ,mean_mu_kg,
          mean_mu_phi,sd_mu_ks,sd_mu_kg,sd_mu_phi,mu_bsld, omega_bsld,
          omega_ks, omega_kg, omega_phi, sigma, eta_tilde_bsld,eta_tilde_ks, eta_tilde_kg, eta_tilde_phi,
          mu_ks[sld_par_shared],mu_kg[sld_par_shared], logit(mu_phi[sld_par_shared]) ,mu_ks[sld_par_separate],
@@ -176,5 +164,6 @@ setReplaceMethod(
     definition = function(object, value) {
         priors(object@stan) <- value
         validObject(object)
+        object
     }
 )

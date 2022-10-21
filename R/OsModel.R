@@ -109,6 +109,17 @@ setMethod(
 
 #' @rdname priors
 #' @export
+setValidity("OsModel", function(object) {
+    if (is.contained(list(names(priors(object))),list(names(os_prior()))))
+        TRUE
+    else
+        "priors of the OsModel should contain : p ,1/lambda, beta_os_cov"
+})
+
+
+
+#' @rdname priors
+#' @export
 setMethod(
     f = "priors",
     signature = list(object = "OsModel"),
@@ -125,6 +136,7 @@ setReplaceMethod(
     signature = "OsModel",
     definition = function(object, value) {
         priors(object@stan) <- value
+        validObject(object)
         object
     }
 )

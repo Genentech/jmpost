@@ -58,19 +58,20 @@ test_that("Priors of the Hazardlink is replaced ", {
         contribution = "beta_ttg * ttg(phi)",
         stan = StanModule(
             functions = "real ttg( real phi) { phi^2 };",
-            priors=list(phi= "lognormal(0,0.5)")
+            priors=list(beta_ttg= "lognormal(0,0.5)")
         )
     )
 
     actual_get<- priors(hazlink)
-    expected_get<-list(phi= "lognormal(0,0.5)")
+    expected_get<-list(beta_ttg= "lognormal(0,0.5)")
 
     expect_equal(actual_get, expected_get)
 
 
-    priors(hazlink)["phi"]<-"lognormal(0,1);"
-    actual_replaced<- priors(hazlink)["phi"]
-    expected_replaced<-list(phi="lognormal(0,1);")
+    priors(hazlink)["beta_ttg"]<-"lognormal(0,1);"
+    actual_replaced<- priors(hazlink)["beta_ttg"]
+    expected_replaced<-list(beta_ttg="lognormal(0,1);")
+
     expect_equal(actual_replaced, expected_replaced)
 
 })
