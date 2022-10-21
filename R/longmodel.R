@@ -127,10 +127,11 @@ setMethod(
 )
 
 
+
 #' @rdname priors
 #' @export
 setValidity("LongModel", function(object) {
-    if (is.contained(list(names(priors(object))),list(names(long_prior()))))
+    if (is.contained(list(names(priors(object))), list(names(long_prior()))))
         TRUE
     else
         "priors of the LongModel should contain : mean_mu_ks ,mean_mu_kg,
@@ -140,7 +141,6 @@ setValidity("LongModel", function(object) {
          mu_kg[sld_par_separate],mu_phi[sld_par_separate]"
 })
 
-# else "the priors inputted is not a predefined long_prior" ??
 
 
 

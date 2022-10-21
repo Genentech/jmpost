@@ -70,6 +70,7 @@ test_that("Can define our own Link methods and getLink works as expected", {
 
 
 
+
 test_that("Priors of the Long model is replaced ", {
     stanobj <- StanModule(functions = "abcdef", priors = long_prior())
     longmod <- LongModel(stan = stanobj)

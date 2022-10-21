@@ -107,10 +107,11 @@ setMethod(
 
 
 
+
 #' @rdname priors
 #' @export
 setValidity("OsModel", function(object) {
-    if (is.contained(list(names(priors(object))),list(names(os_prior()))))
+    if (is.contained(list(names(priors(object))), list(names(os_prior()))))
         TRUE
     else
         "priors of the OsModel should contain : p ,1/lambda, beta_os_cov"
