@@ -106,3 +106,26 @@ test_that("Priors of the OS model is replaced ", {
     expected_replaced <- list(p = "gamma(2, 1);")
     expect_equal(actual_replaced, expected_replaced)
 })
+
+
+
+test_that("initial value of the OS model is replaced ", {
+    osmod <-
+        OsModel(stan = StanModule(
+            functions = "Os Functions",
+            inits = list(p = 2),
+            priors = os_prior()
+        ))
+
+    actual_get <- inits(osmod)
+    expected_get <- list(p = 2)
+
+    expect_equal(actual_get, expected_get)
+
+
+    inits(osmod)["p"] <- 3
+
+    actual_replaced <- inits(osmod)["p"]
+    expected_replaced <- list(p = 3)
+    expect_equal(actual_replaced, expected_replaced)
+})

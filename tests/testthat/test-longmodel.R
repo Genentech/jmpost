@@ -86,3 +86,35 @@ test_that("Priors of the Long model is replaced ", {
     expected_replaced <- list(eta_tilde_ks = "normal(0,6)")
     expect_equal(actual_replaced, expected_replaced)
 })
+
+
+
+test_that("Initial value of the Long model is replaced ", {
+    stanobj <-
+        StanModule(
+            functions = "abcdef",
+            priors = long_prior(),
+            inits =  list(
+                mean_mu_ks = 60,
+                mean_mu_kg = 0.7,
+                mean_mu_phi = 0.1
+            )
+        )
+    longmod <- LongModel(stan = stanobj)
+    actual_get <- inits(longmod)
+    expected_get <- list(
+        mean_mu_ks = 60,
+        mean_mu_kg = 0.7,
+        mean_mu_phi = 0.1
+    )
+
+    expect_equal(actual_get, expected_get)
+
+
+    inits(longmod)["mean_mu_ks"] <- 50
+
+    actual_replaced <- inits(longmod)["mean_mu_ks"]
+    expected_replaced <- list(mean_mu_ks = 50)
+    expect_equal(actual_replaced, expected_replaced)
+})
+

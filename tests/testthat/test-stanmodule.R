@@ -267,3 +267,22 @@ test_that("Priors of the stanmodule is replaced ", {
 
 })
 
+test_that("Initial value of the stanmodule is replaced ", {
+    stan = StanModule(
+        functions = "abcdef",
+        priors = list(mu_kg = "lognormal(-0.36,1);"),
+        inits = list(mu_kg = 0.8)
+    )
+
+    actual_get <- inits(stan)
+    expected_get <- list(mu_kg = 0.8)
+
+    expect_equal(actual_get, expected_get)
+
+    inits(stan)["mu_kg"] <- 0.8
+    actual_replaced <- inits(stan)["mu_kg"]
+    expected_replaced <- list(mu_kg = 0.8)
+    expect_equal(actual_replaced, expected_replaced)
+
+})
+

@@ -77,3 +77,31 @@ test_that("Priors of the Hazardlink is replaced ", {
 })
 
 
+
+
+test_that("initial value of the Hazardlink is replaced ", {
+    hazlink <- HazardLink(
+        parameters = "beta_ttg",
+        contribution = "beta_ttg * ttg(phi)",
+        stan = StanModule(
+            functions = "real ttg( real phi) { phi^2 };",
+            inits = list(beta_ttg = 0.01),
+            priors = list(beta_ttg = "lognormal(0,0.5)")
+
+        )
+    )
+
+    actual_get <- inits(hazlink)
+    expected_get <- list(beta_ttg = 0.01)
+
+    expect_equal(actual_get, expected_get)
+
+
+    inits(hazlink)["beta_ttg"] <- 0.06
+    actual_replaced <- inits(hazlink)["beta_ttg"]
+    expected_replaced <- list(beta_ttg = 0.06)
+
+    expect_equal(actual_replaced, expected_replaced)
+
+})
+
