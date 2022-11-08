@@ -93,13 +93,12 @@ setMethod(
 )
 
 
-#' @rdname priors
-#' @export
+
 setValidity("HazardLink", function(object) {
     if (is.contained(list(names(priors(object))), list("beta_dt", "beta_ttg")))
         TRUE
     else
-        "priors of the OsModel should contain : beta_dt, beta_ttg"
+        "priors of the HazardLink should contain : beta_dt, beta_ttg"
 })
 
 
@@ -112,6 +111,30 @@ setReplaceMethod(
     definition = function(object, value) {
         priors(object@stan) <- value
         validObject(object)
+        object
+    }
+)
+
+#' @rdname inits
+#' @export
+setMethod(
+    f = "inits",
+    signature = list(object = "HazardLink"),
+    definition = function(object) {
+        inits(object@stan)
+    }
+)
+
+
+
+#' @rdname extract-inits
+#' @export
+setReplaceMethod(
+    f = "inits",
+    signature = "HazardLink",
+    definition = function(object, value) {
+        inits(object@stan) <- value
+        #validObject(object)
         object
     }
 )

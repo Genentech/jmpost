@@ -108,8 +108,7 @@ setMethod(
 
 
 
-#' @rdname priors
-#' @export
+
 setValidity("OsModel", function(object) {
     if (is.contained(list(names(priors(object))), list(names(os_prior()))))
         TRUE
@@ -141,3 +140,28 @@ setReplaceMethod(
         object
     }
 )
+
+#' @rdname inits
+#' @export
+setMethod(
+    f = "inits",
+    signature = list(object = "OsModel"),
+    definition = function(object) {
+        inits(object@stan)
+    }
+)
+
+
+
+#' @rdname extract-inits
+#' @export
+setReplaceMethod(
+    f = "inits",
+    signature = "OsModel",
+    definition = function(object, value) {
+        inits(object@stan) <- value
+        #validObject(object)
+        object
+    }
+)
+

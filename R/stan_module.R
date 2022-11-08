@@ -301,3 +301,26 @@ setReplaceMethod(
     }
 )
 
+#' @rdname inits
+#' @export
+setMethod(
+    f = "inits",
+    signature = list(object = "StanModule"),
+    definition = function(object) {
+        object@inits
+    }
+)
+
+
+#' @rdname extract-inits
+#' @export
+setReplaceMethod(
+    f = "inits",
+    signature = "StanModule",
+    definition = function(object, value) {
+        object@inits <- value
+        object
+    }
+)
+
+

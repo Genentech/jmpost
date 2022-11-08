@@ -49,3 +49,29 @@ setGeneric(
     def = function(object, value)
         standardGeneric("priors<-")
 )
+
+
+#' inits() get method for `LongModel`, `HazardLink` , `StanModule` or `OsModel`
+#' @rdname inits
+#' @param object A `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
+#' @examples
+#' inits(object)
+#' @export
+setGeneric(
+    name = "inits",
+    def = function(object)
+        standardGeneric("inits")
+)
+
+#' inits() replacement method for `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
+#' @rdname extract-inits
+#' @param object A `LongModel`, `HazardLink` , `StanModule` and `OsModel` object
+#' @param value the character strings of the inits information for replacement
+#' @examples
+#' inits(object)<-"mean_mu_ks = 60"
+#' @export
+setGeneric(
+    name = "inits<-",
+    def = function(object, value)
+        standardGeneric("inits<-")
+)

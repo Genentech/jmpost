@@ -128,8 +128,7 @@ setMethod(
 
 
 
-#' @rdname priors
-#' @export
+
 setValidity("LongModel", function(object) {
     if (is.contained(list(names(priors(object))), list(names(long_prior()))))
         TRUE
@@ -140,6 +139,8 @@ setValidity("LongModel", function(object) {
          mu_ks[sld_par_shared],mu_kg[sld_par_shared], logit(mu_phi[sld_par_shared]) ,mu_ks[sld_par_separate],
          mu_kg[sld_par_separate],mu_phi[sld_par_separate]"
 })
+
+
 
 
 
@@ -164,6 +165,32 @@ setReplaceMethod(
     definition = function(object, value) {
         priors(object@stan) <- value
         validObject(object)
+        object
+    }
+)
+
+
+
+#' @rdname inits
+#' @export
+setMethod(
+    f = "inits",
+    signature = list(object = "LongModel"),
+    definition = function(object) {
+        inits(object@stan)
+    }
+)
+
+
+
+#' @rdname extract-inits
+#' @export
+setReplaceMethod(
+    f = "inits",
+    signature = "LongModel",
+    definition = function(object, value) {
+        inits(object@stan) <- value
+        #validObject(object)
         object
     }
 )
