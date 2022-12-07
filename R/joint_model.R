@@ -62,6 +62,36 @@ setMethod(
 )
 
 
+#' @export
+setMethod(
+    f = "compileStanModel",
+    signature = "JointModel",
+    definition = function(object, exe_file = NULL) {
+        if (is.null(exe_file)) {
+            exe_file = file.path(tempdir(), "model")
+        }
+        x <- cmdstanr::cmdstan_model(
+            stan_file = cmdstanr::write_stan_file(as.character(object)),
+            exe_file = exe_file
+        )
+        invisible(x)
+    }
+)
+
+
+#' @export
+setMethod(
+    f = "sampleStanModel",
+    signature = "JointModel",
+    definition = function(object, ..., exe_file = NULL) {
+        model <- compileStanModel(object, exe_file)
+        model$sample(
+            ...
+        )
+    }
+)
+
+
 add_missing_stan_blocks <- function(x) {
     # STAN_BLOCKS is defined as a global variable in stan_module.R
     for (block in names(STAN_BLOCKS)) {
