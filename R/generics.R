@@ -1,51 +1,17 @@
 
 
-#' Merge
-#'
-#' Generic function to collapse two similar objects into a single combined object
-#'
-#' @param x An Object
-#' @param y An Object to be merged with `x`
-#' @export
+
 setGeneric(
-    "merge",
-    function(x, y) standardGeneric("merge")
+    name = "merge",
+    def = function(x, y, ...) standardGeneric("merge")
 )
 
-
-#' Parametrize TemplatedStanOs object with the selected Hazardlink
-#' @param osmod TemplatedStanOs object
-#' @param link HazardLink object
-#' @export
-setGeneric("parametrize", function(osmod, link) {
-    standardGeneric("parametrize")
-})
-
-
-
-
-
-#' priors() get method for `LongModel`, `HazardLink` , `StanModule` or `OsModel`
-#' @rdname priors
-#' @param object A `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
-#' @examples
-#' priors(object)
-#' @export
 setGeneric(
-    name = "priors",
-    def = function(object)
-        standardGeneric("priors")
+    name = "addLink",
+    def = function(x, y, ...) standardGeneric("addLink")
 )
 
-#' priors() replacement method for `LongModel`, `HazardLink` , `StanModule` or `OsModel` object
-#' @rdname extract-priors
-#' @param object A `LongModel`, `HazardLink` , `StanModule` and `OsModel` object
-#' @param value the character strings of the prior information for replacement
-#' @examples
-#' priors(object)<-"lognormal(0,1);"
-#' @export
 setGeneric(
-    name = "priors<-",
-    def = function(object, value)
-        standardGeneric("priors<-")
+    name = "write_stan",
+    def = function(x, file_path) standardGeneric("write_stan")
 )
