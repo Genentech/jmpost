@@ -6,6 +6,7 @@
 )
 
 
+#' @export
 SurvivalWeibullPH <- function() {
     stan <- StanModule(
         x = "sm-weibull-ph/model.stan"

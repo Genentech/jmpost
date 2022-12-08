@@ -1,5 +1,5 @@
 
-
+#' @export
 as_vcov <- function(sd, cor) {
     x <- diag(rep(1, length(sd)))
     x[upper.tri(x)] <- cor
@@ -13,34 +13,38 @@ as_vcov <- function(sd, cor) {
 }
 
 
-
+#' @export
 sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi) {
     function(u_pts, max_time) {
         n <- length(u_pts)
 
         rs_baseline <- dplyr::tibble(
             pt = u_pts,
-            rslope = rnorm(n, 0, sd = z_sigma)
+            slope_ind = rnorm(n, slope, sd = z_sigma)
         )
 
         lm_dat <- expand.grid(time = 1:max_time, pt = u_pts, stringsAsFactors = FALSE) |>
             dplyr::as_tibble() |>
             dplyr::mutate(val = rnorm(n * max_time, 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
-            dplyr::mutate(outcome = intercept + val + (rslope * time) + (slope * time)) |>
-            dplyr::mutate(log_haz_link = rslope * phi) |>
-            dplyr::select(pt, time, outcome, log_haz_link, rslope)
-        
+            dplyr::mutate(outcome = intercept + val + slope_ind * time) |>
+            dplyr::mutate(log_haz_link = slope_ind * phi) |>
+            dplyr::select(pt, time, outcome, log_haz_link, slope_ind)
+
         return(lm_dat)
     }
 }
 
+
+#' @export
 sim_os_weibull <- function(lambda, gamma) {
     function(time) {
         log(lambda) + log(gamma) + (gamma - 1) * log(time)
     }
 }
 
+
+#' @export
 sim_os_loglogistic <- function(lambda, p){
     function(time) {
         c1 <- lambda * p * (lambda * time)^(p - 1)
@@ -49,7 +53,7 @@ sim_os_loglogistic <- function(lambda, p){
     }
 }
 
-
+#' @export
 simulate_joint_data <- function(
     n = 200,
     max_time = 2000,
@@ -95,26 +99,19 @@ simulate_joint_data <- function(
         dplyr::select(pt, time, cov_cont, cov_cat, event)
 
     missing_pts <- setdiff(u_pts, unique(os_dat$pt))
+    message(sprintf("%d people died before day 1", length(missing_pts)))
     
-    died_day_1 <- dplyr::tibble(
-        pt = missing_pts,
-        time = 1,
-        event = 1
-    ) |>
-        dplyr::left_join(dplyr::select(os_baseline, pt, cov_cont, cov_cat), by = "pt")
-    
-    os_dat2 <- os_dat |>
-        dplyr::bind_rows(died_day_1)
 
     lm_dat2 <- lm_dat |>
-        dplyr::left_join(dplyr::select(os_dat2, pt, os_time = time), by = "pt") |>
+        dplyr::inner_join(dplyr::select(os_dat, pt, os_time = time), by = "pt") |>
         dplyr::mutate(observed = (time <= os_time)) |>
+        dplyr::mutate(observed = if_else(is.na(observed), FALSE, observed)) |>
         dplyr::select(-os_time, -log_haz_link)
 
-    assertthat::assert_that(nrow(os_dat2) == n)
+    assertthat::assert_that(nrow(os_dat) == (n - length(missing_pts)))
     assertthat::assert_that(nrow(lm_dat) == n * max_time)
 
-    return(list(os = os_dat2, lm = lm_dat2))
+    return(list(os = os_dat, lm = lm_dat2))
 }
 
 

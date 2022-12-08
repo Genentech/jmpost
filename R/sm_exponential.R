@@ -5,7 +5,7 @@
     contains = "SurvivalModel"
 )
 
-
+#' @export
 SurvivalExponential <- function() {
     stan <- StanModule(
         x = "sm-exponential/model.stan"

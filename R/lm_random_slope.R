@@ -7,7 +7,7 @@
     contains = "LongitudinalModel"
 )
 
-
+#' @export
 LongitudinalRandomSlope <- function() {
     stan <- StanModule(
         x = "lm-random-slope/model.stan"

@@ -2,8 +2,8 @@
 
 # TODO - Remap required variables as string / object
 # time, event
+#' @export
 as_stan_data <- function(os, lm, frm) {
-    
     design_mat <- stats::model.matrix(frm, data = os)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
     design_mat <- design_mat[,-remove_index, drop = FALSE]
@@ -11,7 +11,10 @@ as_stan_data <- function(os, lm, frm) {
     gh_parameters <- statmod::gauss.quad(n = 15, kind = "legendre")
 
     model_data <- list(
+        
         Nind = nrow(os),
+        
+        # OS data
         Nind_dead = sum(os$event),
         dead_ind_index = which(os$event == 1),
         Times = os$time,
@@ -21,7 +24,7 @@ as_stan_data <- function(os, lm, frm) {
         nodes = gh_parameters$nodes,
         weights = gh_parameters$weights,
         
-        
+        # Longmodel specific data
         Nta_total = nrow(lm),
         Yobs = lm$outcome,
         Tobs = lm$time,

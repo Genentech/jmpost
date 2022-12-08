@@ -1,18 +1,6 @@
 
 
 
-
-
-
-setMethod(
-    "merge",
-    signature = c("LongitudinalModel", "SurvivalModel"),
-    definition = function(x, y, ...) {
-        merge(x@stan, y@stan)
-    }
-)
-
-
 setMethod(
     "merge",
     signature = c("LongitudinalModel", "NULL"),

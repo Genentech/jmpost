@@ -21,6 +21,7 @@ setGeneric(
     def = function(object, exe_file) standardGeneric("compileStanModel")
 )
 
+#' @export
 setGeneric(
     name = "sampleStanModel",
     def = function(object, ..., exe_file) standardGeneric("sampleStanModel")

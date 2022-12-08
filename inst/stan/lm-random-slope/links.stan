@@ -3,19 +3,13 @@
 functions {
     // LinkRandomSlope
     matrix link_contribution(matrix time, matrix pars_lm) {
-        vector[rows(pars_lm)] contrib = col(pars_lm, 1) .* col(pars_lm, 2);
-        return  rep_matrix(contrib, cols(time));
+        return  rep_matrix(to_vector(pars_lm), cols(time));
     }
 }
 
-
-
 transformed parameters {
     // LinkRandomSlope
-    matrix[Nind, 2] pars_lm = append_col(
-        rep_matrix(link_lm_phi, Nind, 1),
-        lm_rs_rslope
-    );
+    matrix[Nind, 1] pars_lm = to_matrix(lm_rs_rslope .* link_lm_phi);
 }
 
 parameters {
@@ -23,7 +17,9 @@ parameters {
     real link_lm_phi;
 }
 
-
+model {
+    link_lm_phi ~ normal(0.2, 0.5);
+}
 
 
 

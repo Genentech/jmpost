@@ -6,7 +6,7 @@
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
-        stan = "character"
+        stan = "StanModule"
     )
 )
 
@@ -32,9 +32,7 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
         survival = add_missing_stan_blocks(as.list(survival_model)),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
-    .JointModel(
-        stan = stan_full
-    )
+    .JointModel(stan = StanModule(stan_full))
 }
 
 
@@ -45,7 +43,7 @@ setMethod(
     f = "as.character",
     signature = "JointModel",
     definition = function(x) {
-        x@stan
+        as.character(x@stan)
     }
 )
 
@@ -56,13 +54,12 @@ setMethod(
     signature = "JointModel",
     definition = function(x, file_path) {
         fi <- file(file_path, open = "w")
-        writeLines(x@stan, fi)
+        writeLines(as.character(x), fi)
         close(fi)
     }
 )
 
 
-#' @export
 setMethod(
     f = "compileStanModel",
     signature = "JointModel",
@@ -79,7 +76,6 @@ setMethod(
 )
 
 
-#' @export
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
