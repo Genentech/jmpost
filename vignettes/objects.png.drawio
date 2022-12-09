@@ -5,95 +5,95 @@
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="4" value="SurvivalModel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="130" y="90" width="140" height="52" as="geometry">
+                    <mxGeometry x="149" y="20" width="140" height="80" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="5" value="Item 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="4">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
+                <mxCell id="5" value="stan: StanModule&#10;&#10;initialise(StanModule)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="4">
+                    <mxGeometry y="26" width="140" height="54" as="geometry"/>
                 </mxCell>
                 <mxCell id="16" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="8" target="4">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="230" y="247" as="targetPoint"/>
+                        <mxPoint x="299" y="247" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="8" value="SurvivalWeibullPH" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="70" y="270" width="140" height="52" as="geometry">
+                    <mxGeometry x="59" y="138" width="140" height="52" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="9" value="Item 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="8">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="17" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="12" target="4">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="290" y="240" as="targetPoint"/>
+                        <mxPoint x="359" y="240" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="12" value="SurvivalExponential" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="230" y="270" width="140" height="52" as="geometry">
+                    <mxGeometry x="239" y="138" width="140" height="52" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="13" value="Item 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="12">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
-                </mxCell>
                 <mxCell id="19" value="LongitudinalModel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="530" y="60" width="210" height="78" as="geometry">
+                    <mxGeometry x="529" y="28" width="250" height="110" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="20" value="stan: StanModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="19">
-                    <mxGeometry y="26" width="210" height="26" as="geometry"/>
+                    <mxGeometry y="26" width="250" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="addLink(Link): LongitudinalModel " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="19">
-                    <mxGeometry y="52" width="210" height="26" as="geometry"/>
+                <mxCell id="21" value="initialise(StanModule)&#10;addLink(LinkNone): LongitudinalModel&#10;as.list(): List " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="19">
+                    <mxGeometry y="52" width="250" height="58" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="23" target="19">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="580" y="237" as="targetPoint"/>
+                        <mxPoint x="569" y="158" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="23" value="LongitudinalRandomSlope" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="420" y="260" width="150" height="52" as="geometry">
+                    <mxGeometry x="400" y="208" width="270" height="84" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="57" value="addLink(LinkRandomSlope): LongitudinalModel&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="23">
+                    <mxGeometry y="26" width="270" height="58" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="28" target="19">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="640" y="230" as="targetPoint"/>
+                        <mxPoint x="654" y="180" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="28" value="LongitudinalGSF" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="640" y="260" width="140" height="52" as="geometry">
+                    <mxGeometry x="679" y="208" width="220" height="84" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="58" value="addLink(LinkGSF): LongitudinalModel&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="28">
+                    <mxGeometry y="26" width="220" height="58" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="Link" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="280" y="414" width="140" height="52" as="geometry">
+                    <mxGeometry x="219" y="250" width="140" height="80" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="33" value="stan: StanModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="32">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
+                <mxCell id="33" value="stan: StanModule&#10;&#10;initialise(StanModule)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="32">
+                    <mxGeometry y="26" width="140" height="54" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="36" target="32">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="220" y="551" as="targetPoint"/>
+                        <mxPoint x="209" y="387" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="36" value="LinkNone" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="60" y="574" width="150" height="52" as="geometry">
-                        <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
+                    <mxGeometry x="19" y="378" width="150" height="52" as="geometry">
+                        <mxRectangle x="19" y="378" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="40" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="41" target="32">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="280" y="544" as="targetPoint"/>
+                        <mxPoint x="269" y="380" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="41" value="LinkRandomSlope" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="280" y="574" width="140" height="52" as="geometry">
+                    <mxGeometry x="219" y="378" width="140" height="56" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -101,27 +101,27 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="45" value="LinkGSF" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="470" y="574" width="140" height="52" as="geometry">
+                    <mxGeometry x="379" y="378" width="280" height="70" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="46" value="Item 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="45">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
+                <mxCell id="46" value="addContribution(LinkGSFComponent): LinkGSF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="45">
+                    <mxGeometry y="26" width="280" height="44" as="geometry"/>
                 </mxCell>
                 <mxCell id="50" value="StanModule" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="660" y="424" width="270" height="170" as="geometry">
+                    <mxGeometry x="439" y="540" width="270" height="170" as="geometry">
                         <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="51" value="data: char&#10;model: char&#10;parameters: char&#10;&#10;as.character(): char&#10;merge(StanModule): StanModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="50">
+                <mxCell id="51" value="data: char&#10;model: char&#10;parameters: char&#10;...&#10;&#10;initialise(data, model, parameters, ...)&#10;as.character(): char&#10;merge(StanModule): StanModule&#10;as.list(): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="50">
                     <mxGeometry y="26" width="270" height="144" as="geometry"/>
                 </mxCell>
                 <mxCell id="52" value="JointModel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
-                    <mxGeometry x="660" y="626" width="270" height="170" as="geometry">
-                        <mxRectangle x="70" y="390" width="50" height="26" as="alternateBounds"/>
+                    <mxGeometry x="89" y="540" width="270" height="170" as="geometry">
+                        <mxRectangle x="89" y="540" width="50" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="53" value="stan: StanModule&#10;&#10;as.character(): char&#10;sampleStanModel()&#10;compileStanModel()&#10;write_stan()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="52">
+                <mxCell id="53" value="stan: StanModule&#10;&#10;initialise(LongitudinalModel, SurvivalModel, Link)&#10;as.character(): char&#10;sampleStanModel(..., exe_file):  &lt;stan obj&gt;&#10;compileStanModel(exe_file): char&#10;write_stan(): JointModel" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=#FFFFFF;" vertex="1" parent="52">
                     <mxGeometry y="26" width="270" height="144" as="geometry"/>
                 </mxCell>
             </root>
