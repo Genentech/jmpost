@@ -12,21 +12,30 @@ Description: TODO
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Imports:
-    assertthat
+    assertthat,
+    dplyr,
+    stringr,
+    cmdstanr,
+    statmod,
+    Matrix,
+    jinjar
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate:
     'generics.R'
     'stan_module.R'
-    'hazard_link.R'
-    'longmodel.R'
-    'os_prior.R'
-    'OsModel.R'
-    'LogLogisticOs.R'
-    'JointModel.R'
-    'h_bracket.R'
-    'joint.R'
-    'long_prior.R'
+    'link_abstract.R'
+    'link_none.R'
+    'lm_abstract.R'
+    'lm_random_slope.R'
+    'sm_abstract.R'
+    'sm_exponential.R'
+    'sm_weibull.R'
+    'joint_model.R'
+    'simulations.R'
+    'process_data.R'
+    'defaults_addLink.R'
+    'defaults_merge.R'
