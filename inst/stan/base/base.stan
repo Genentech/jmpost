@@ -141,6 +141,7 @@ transformed parameters{
 model{
 {{ longditudinal.model }}
 {{ survival.model }}
+{{ priors.model }}
     target += sum(log_lik);
 }
 

@@ -26,6 +26,8 @@ Suggests:
 Config/testthat/edition: 3
 Collate:
     'generics.R'
+    'priors.R'
+    'parameters.R'
     'stan_module.R'
     'link_abstract.R'
     'link_none.R'

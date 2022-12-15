@@ -7,6 +7,7 @@ library(tidyr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
+
 # Fully specified model
 jm <- JointModel(
     longitudinal_model = LongitudinalRandomSlope(),
@@ -14,22 +15,29 @@ jm <- JointModel(
     survival_model = SurvivalWeibullPH()
 )
 
+
 # Fit both models but with no link
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope(),
+    longitudinal_model = LongitudinalRandomSlope(
+        lm_rs_intercept = normal_prior(40, 5),
+        lm_rs_slope = Parameter(normal_prior(10, 2), init = 30)
+    ),
     link = LinkNone(),
     survival_model = SurvivalWeibullPH()
 )
+
 
 # Fit survival model only
 jm <- JointModel(
     survival_model = SurvivalWeibullPH()
 )
 
+
 # Fit longitudinal model only
 jm <- JointModel(
     longitudinal_model = LongitudinalRandomSlope()
 )
+
 
 # Create local file with stan code for debugging purposes ONLY
 write_stan(jm, "local/debug.stan")
@@ -185,3 +193,13 @@ c(
     "gamma" = 1/mod$scale,
     -coef(mod)[-1]/mod$scale
 )
+
+
+
+
+
+
+
+
+
+

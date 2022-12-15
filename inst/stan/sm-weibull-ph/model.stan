@@ -27,6 +27,6 @@ transformed parameters {
 // TODO - Remove and make user inputs
 model {
     // SurvivalWeibullPH
-    sm_weibull_ph_lambda ~ gamma(2, 0.5);
-    sm_weibull_ph_gamma ~ gamma(2, 0.5);
+    // sm_weibull_ph_lambda ~ gamma(2, 0.5);
+    // sm_weibull_ph_gamma ~ gamma(2, 0.5);
 }
