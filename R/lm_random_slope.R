@@ -10,9 +10,9 @@
 # TODO - Allow input to be with Prior or Parameter
 #' @export
 LongitudinalRandomSlope <- function(
-    lm_rs_intercept = Parameter(normal_prior(30, 4), init = 30),
-    lm_rs_slope = Parameter(normal_prior(0, 10), init = 0.001),
-    lm_rs_sigma = Parameter(cauchy_prior(0, 2.5), init = 0.001)
+    lm_rs_intercept = Parameter(prior_normal(30, 4), init = 30),
+    lm_rs_slope = Parameter(prior_normal(0, 10), init = 0.001),
+    lm_rs_sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001)
 ) {
 
     stan <- StanModule(
@@ -40,7 +40,7 @@ LongitudinalRandomSlope <- function(
 
 #' @export
 LinkRandomSlope <- function(
-    link_lm_phi = Parameter(normal_prior(0.2, 0.5), init = 0.02)
+    link_lm_phi = Parameter(prior_normal(0.2, 0.5), init = 0.02)
 ) {
     .LinkRandomSlope(
         Link(

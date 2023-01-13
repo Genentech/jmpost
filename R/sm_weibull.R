@@ -8,8 +8,8 @@
 
 #' @export
 SurvivalWeibullPH <- function(
-    sm_weibull_ph_lambda = Parameter(gamma_prior(2, 0.5), 1/200),
-    sm_weibull_ph_gamma = Parameter(gamma_prior(2, 0.5), 1)
+    sm_weibull_ph_lambda = Parameter(prior_gamma(2, 0.5), 1/200),
+    sm_weibull_ph_gamma = Parameter(prior_gamma(2, 0.5), 1)
 ) {
     .SurvivalWeibullPH(
         SurvivalModel(

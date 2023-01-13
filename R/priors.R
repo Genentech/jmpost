@@ -17,26 +17,31 @@ setMethod(
     }
 )
 
+
 #' @export
-normal_prior <- function(mu, sigma) {
+prior_normal <- function(mu, sigma) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "normal({mu}, {sigma});"
     )
 }
 
+
 #' @export
-cauchy_prior <- function(mu, sigma) {
+prior_cauchy <- function(mu, sigma) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "cauchy({mu}, {sigma});"
     )
 }
 
+
 #' @export
-gamma_prior <- function(alpha, beta) {
+prior_gamma <- function(alpha, beta) {
     .Prior(
         parameters = list(alpha = alpha, beta = beta),
         repr = "gamma({alpha}, {beta});"
     )
 }
+
+
