@@ -15,15 +15,21 @@ jm <- JointModel(
     survival_model = SurvivalWeibullPH()
 )
 
+# Idea to explore - Model based prefix
+lm <- LongitudinalRandomSlope(
+    lm_rs_intercept = normal_prior(40, 5),
+    lm_rs_slope = Parameter(normal_prior(10, 2), init = 30)
+)
+
+sm <- SurvivalWeibullPH(
+    sm_weibull_ph_lambda = gamma_prior(0.2, 0.5)
+)
 
 # Fit both models but with no link
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope(
-        lm_rs_intercept = normal_prior(40, 5),
-        lm_rs_slope = Parameter(normal_prior(10, 2), init = 30)
-    ),
     link = LinkNone(),
-    survival_model = SurvivalWeibullPH()
+    longitudinal_model = lm,
+    survival_model = sm
 )
 
 

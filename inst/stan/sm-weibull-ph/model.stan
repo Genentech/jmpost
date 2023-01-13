@@ -24,9 +24,3 @@ transformed parameters {
     row_vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma];
 }
 
-// TODO - Remove and make user inputs
-model {
-    // SurvivalWeibullPH
-    // sm_weibull_ph_lambda ~ gamma(2, 0.5);
-    // sm_weibull_ph_gamma ~ gamma(2, 0.5);
-}
