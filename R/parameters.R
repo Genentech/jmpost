@@ -41,7 +41,7 @@ setMethod(
 .ParameterList <- setClass(
     Class = "ParameterList",
     slots = c(
-        pars = "list"
+        parameters = "list"
     )
 )
 
@@ -54,7 +54,7 @@ ParameterList <- function(...) {
         all(vapply(pars_named, function(x) is(x, "Parameter"), logical(1))),
         msg = "all elements must be of class 'Parameter'"
     )
-    .ParameterList(pars = pars_named)
+    .ParameterList(parameters = pars_named)
 }
 
 
@@ -64,7 +64,7 @@ setMethod(
     signature = "ParameterList",
     definition = function(x, indent = 4) {
         strings <- vapply(
-            x@pars,
+            x@parameters,
             as.character,
             character(1)
         )
@@ -91,25 +91,38 @@ setMethod(
 )
 
 
-#' @export 
+#' @export
 setMethod(
     f = "merge",
     signature = c(x = "ParameterList", y = "ParameterList"),
     definition = function(x, y) {
-        pars <- append(x@pars, y@pars)
-        do.call(ParameterList, pars)
+        parameters <- append(x@parameters, y@parameters)
+        do.call(ParameterList, parameters)
     }
 )
 
 
 
-# TODO - fix case of no names
+#' @export
+setMethod(
+    f = "as.list",
+    signature = "ParameterList",
+    definition = function(x) {
+        as.list(as.StanModule(x))
+    }
+)
+
+
 fix_parameter_names <- function(x) {
+    x_names <- names(x)
+    if (is.null(x_names)) {
+        x_names <- rep("", length(x))
+    }
     for (idx in seq_along(x)) {
         item <- x[[idx]]
-        nam <- names(x)[[idx]]
-        if (nam != "") {
-            item@name <- nam
+        idx_name <- x_names[[idx]]
+        if (idx_name != "") {
+            item@name <- idx_name
         }
         x[[idx]] <- item
     }

@@ -5,12 +5,12 @@
     Class = "Link",
     slots = list(
         "stan" = "StanModule",
-        "pars" = "ParameterList"
+        "parameters" = "ParameterList"
     )
 )
 
 
 #' @export
-Link <- function(stan = StanModule(), pars = ParameterList(), ...) {
-    .Link(stan = stan, pars = pars, ...)
+Link <- function(stan = StanModule(), parameters = ParameterList(), ...) {
+    .Link(stan = stan, parameters = parameters, ...)
 }

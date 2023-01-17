@@ -14,7 +14,7 @@ SurvivalWeibullPH <- function(
     .SurvivalWeibullPH(
         SurvivalModel(
             stan = StanModule(x = "sm-weibull-ph/model.stan"),
-            pars = ParameterList(
+            parameters = ParameterList(
                 sm_weibull_ph_lambda = sm_weibull_ph_lambda,
                 sm_weibull_ph_gamma = sm_weibull_ph_gamma
             )

@@ -18,6 +18,7 @@ setMethod(
 )
 
 
+
 #' @export
 prior_normal <- function(mu, sigma) {
     .Prior(

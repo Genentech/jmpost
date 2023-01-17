@@ -32,3 +32,12 @@ setGeneric(
     def = function(object, ...) standardGeneric("as.StanModule")
 )
 
+
+setGeneric(
+    name = "getParameters",
+    def = function(object, ...) standardGeneric("getParameters")
+)
+
+
+
+

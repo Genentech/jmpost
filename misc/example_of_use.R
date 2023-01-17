@@ -8,24 +8,30 @@ devtools::document()
 devtools::load_all(export_all = FALSE)
 
 
-# Fully specified model
+
+
+#### Example 1 - Fully specified model - using the defaults for everything
+
 jm <- JointModel(
     longitudinal_model = LongitudinalRandomSlope(),
     link = LinkRandomSlope(),
     survival_model = SurvivalWeibullPH()
 )
 
-# Idea to explore - Model based prefix
+
+
+### Example 2 - Manually specify priors - Fit models independently (no link)
+
 lm <- LongitudinalRandomSlope(
-    lm_rs_intercept = normal_prior(40, 5),
-    lm_rs_slope = Parameter(normal_prior(10, 2), init = 30)
+    lm_rs_intercept = prior_normal(40, 5),                  # Just prior
+    lm_rs_slope = Parameter(prior_normal(10, 2), init = 30) # Prior and init
 )
+
 
 sm <- SurvivalWeibullPH(
-    sm_weibull_ph_lambda = gamma_prior(0.2, 0.5)
+    sm_weibull_ph_lambda = prior_gamma(0.2, 0.5)
 )
 
-# Fit both models but with no link
 jm <- JointModel(
     link = LinkNone(),
     longitudinal_model = lm,
@@ -33,16 +39,22 @@ jm <- JointModel(
 )
 
 
-# Fit survival model only
+### Example 3 - Specify survival model only
+
 jm <- JointModel(
     survival_model = SurvivalWeibullPH()
 )
 
 
-# Fit longitudinal model only
+### Example 4 - Specify longitudinal model only
+
 jm <- JointModel(
     longitudinal_model = LongitudinalRandomSlope()
 )
+
+
+
+
 
 
 # Create local file with stan code for debugging purposes ONLY
@@ -68,7 +80,7 @@ jlist <- simulate_joint_data(
         phi = 0
     ),
     os_fun = sim_os_weibull(
-        lambda = 1 / 300,
+        lambda = 0.00333,  # 1/300
         gamma = 0.97
     )
 )
@@ -115,7 +127,7 @@ draws_means <- mp$draws(format = "df") |>
         sd = sd(value),
         lci = mean - 1.96 * sd,
         uci = mean + 1.96 * sd
-    )
+     )
 
 #### Get a list of all named parameters
 # names(draws_means) |> str_replace("\\[.*\\]", "[]") |> unique()

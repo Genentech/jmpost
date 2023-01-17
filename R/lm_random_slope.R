@@ -22,7 +22,7 @@ LongitudinalRandomSlope <- function(
     .LongitudinalRandomSlope(
         LongitudinalModel(
             stan = stan,
-            pars = ParameterList(
+            parameters = ParameterList(
                 lm_rs_intercept = lm_rs_intercept,
                 lm_rs_slope = lm_rs_slope,
                 lm_rs_sigma = lm_rs_sigma
@@ -47,7 +47,7 @@ LinkRandomSlope <- function(
             stan = StanModule(
                 x = "lm-random-slope/links.stan"
             ),
-            pars = ParameterList(
+            parameters = ParameterList(
                 link_lm_phi = link_lm_phi
             )
         )
