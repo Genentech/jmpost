@@ -7,12 +7,18 @@
 
 
 #' @export
-SurvivalWeibullPH <- function() {
-    stan <- StanModule(
-        x = "sm-weibull-ph/model.stan"
-    )
+SurvivalWeibullPH <- function(
+    sm_weibull_ph_lambda = Parameter(prior_gamma(2, 0.5), 1/200),
+    sm_weibull_ph_gamma = Parameter(prior_gamma(2, 0.5), 1)
+) {
     .SurvivalWeibullPH(
-        SurvivalModel(stan = stan)
+        SurvivalModel(
+            stan = StanModule(x = "sm-weibull-ph/model.stan"),
+            parameters = ParameterList(
+                sm_weibull_ph_lambda = sm_weibull_ph_lambda,
+                sm_weibull_ph_gamma = sm_weibull_ph_gamma
+            )
+        )
     )
 }
 

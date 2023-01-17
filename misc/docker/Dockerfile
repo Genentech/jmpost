@@ -81,6 +81,7 @@ RUN Rscript -e 'options(warn=2); install.packages(c(\
     "pracma",\
     "bfp",\
     "fields",\
+    "jinjar",\
     "psfmi"\
     ))'
 

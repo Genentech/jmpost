@@ -26,3 +26,18 @@ setGeneric(
     name = "sampleStanModel",
     def = function(object, ..., exe_file) standardGeneric("sampleStanModel")
 )
+
+setGeneric(
+    name = "as.StanModule",
+    def = function(object, ...) standardGeneric("as.StanModule")
+)
+
+
+setGeneric(
+    name = "getParameters",
+    def = function(object, ...) standardGeneric("getParameters")
+)
+
+
+
+

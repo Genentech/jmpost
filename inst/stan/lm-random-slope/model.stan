@@ -21,8 +21,8 @@ model {
     vector[Nta_total] lm_rs_mu = lm_rs_intercept + lm_rs_rslope_ind .* Tobs;
     target += normal_lpdf(Yobs | lm_rs_mu, lm_rs_sigma);
     // Priors - TODO - Make user defined priors
-    lm_rs_intercept ~ normal(30, 30);
-    lm_rs_slope ~ normal(0, 10);
-    lm_rs_sigma ~ cauchy(0, 2.5);
+    // lm_rs_intercept ~ normal(30, 30);
+    // lm_rs_slope ~ normal(0, 10);
+    // lm_rs_sigma ~ cauchy(0, 2.5);
 }
 

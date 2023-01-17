@@ -300,16 +300,3 @@ as_stan_fragments <- function(x) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-

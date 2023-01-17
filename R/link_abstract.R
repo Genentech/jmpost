@@ -4,12 +4,13 @@
 .Link <- setClass(
     Class = "Link",
     slots = list(
-        "stan" = "StanModule"
+        "stan" = "StanModule",
+        "parameters" = "ParameterList"
     )
 )
 
 
 #' @export
-Link <- function(stan = StanModule(), ...) {
-    .Link(stan = stan, ...)
+Link <- function(stan = StanModule(), parameters = ParameterList(), ...) {
+    .Link(stan = stan, parameters = parameters, ...)
 }

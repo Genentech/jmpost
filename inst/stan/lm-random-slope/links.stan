@@ -18,7 +18,7 @@ parameters {
 }
 
 model {
-    link_lm_phi ~ normal(0.2, 0.5);
+    //link_lm_phi ~ normal(0.2, 0.5);
 }
 
 

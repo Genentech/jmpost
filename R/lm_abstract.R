@@ -1,22 +1,24 @@
 
 
-
 .LongitudinalModel <- setClass(
     Class = "LongitudinalModel",
-    slots = list(
-        "stan" = "StanModule"
-    )
+    contains = "StanModel"
 )
 
 
 #' @export
-LongitudinalModel <- function(stan = StanModule(), ...) {
+LongitudinalModel <- function(stan = StanModule(), parameters = ParameterList(), ...) {
+        
     base_long <- StanModule(
         x = "base/longitudinal.stan"
     )
+    
     .LongitudinalModel(
-        stan = merge(base_long, stan),
-        ...
+        StanModel(
+            stan = merge(base_long, stan),
+            parameters = parameters,
+            ...
+        )
     )
 }
 
@@ -31,11 +33,3 @@ setMethod(
 )
 
 
-#' @export
-setMethod(
-    f = "as.list",
-    signature = c("LongitudinalModel"),
-    definition = function(x) {
-        as.list(x@stan)
-    }
-)
