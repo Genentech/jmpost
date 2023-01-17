@@ -3,19 +3,20 @@
 
 setMethod(
     "merge",
-    signature = c("LongitudinalModel", "NULL"),
+    signature = c("StanModel", "NULL"),
     definition = function(x, y, ...) {
         x@stan
     }
 )
-
 setMethod(
     "merge",
-    signature = c("NULL", "SurvivalModel"),
+    signature = c("NULL", "StanModel"),
     definition = function(x, y, ...) {
         y@stan
     }
 )
+
+
 
 
 setMethod(
@@ -25,7 +26,6 @@ setMethod(
         x
     }
 )
-
 setMethod(
     "merge",
     signature = c("NULL", "StanModule"),
@@ -34,6 +34,27 @@ setMethod(
     }
 )
 
+
+
+
+setMethod(
+    "merge",
+    signature = c("ParameterList", "NULL"),
+    definition = function(x, y, ...) {
+        x
+    }
+)
+setMethod(
+    "merge",
+    signature = c("NULL", "ParameterList"),
+    definition = function(x, y, ...) {
+        y
+    }
+)
+
+
+
+
 setMethod(
     "merge",
     signature = c("NULL", "NULL"),
@@ -41,3 +62,7 @@ setMethod(
         NULL
     }
 )
+
+
+
+

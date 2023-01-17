@@ -26,7 +26,10 @@ Suggests:
 Config/testthat/edition: 3
 Collate:
     'generics.R'
+    'priors.R'
+    'parameters.R'
     'stan_module.R'
+    'stan_model.R'
     'link_abstract.R'
     'link_none.R'
     'lm_abstract.R'
@@ -39,3 +42,4 @@ Collate:
     'process_data.R'
     'defaults_addLink.R'
     'defaults_merge.R'
+    'defaults_getParameters.R'

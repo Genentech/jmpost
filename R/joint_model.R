@@ -24,12 +24,18 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
 
     longitudinal_model_linked <- addLink(longitudinal_model, link)
 
+    parameters <- merge(
+        getParameters(longitudinal_model_linked),
+        getParameters(survival_model)
+    )
+
     base_model <- paste0(read_stan("base/base.stan"), collapse = "\n")
 
     stan_full <- jinjar::render(
         .x = base_model,
         longditudinal = add_missing_stan_blocks(as.list(longitudinal_model_linked)),
         survival = add_missing_stan_blocks(as.list(survival_model)),
+        priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
     .JointModel(stan = StanModule(stan_full))
