@@ -3,18 +3,41 @@
 # TODO - Remap required variables as string / object
 # time, event
 #' @export
-as_stan_data <- function(os, lm, frm) {
+as_stan_data <- function(os, lm, frm, cens_threshold = 5) {
     design_mat <- stats::model.matrix(frm, data = os)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
     design_mat <- design_mat[,-remove_index, drop = FALSE]
     
     gh_parameters <- statmod::gauss.quad(n = 15, kind = "legendre")
+    
+    # Derive sparse matrices.
+    mat_inds_obs_y <- t(
+        model.matrix(
+            ~ -1 + pt,
+            data = lm |>filter(sld >= cens_threshold)
+        )
+    )
+    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_inds_obs_y)
+
+
+    mat_inds_cens_y <- t(
+        model.matrix(
+            ~ -1 + pt,
+            data = lm |>filter(sld <= cens_threshold)
+        )
+    )
+    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_inds_cens_y)
 
     model_data <- list(
         
         Nind = nrow(os),
         
+        ##########################
+        #
         # OS data
+        #
+        #
+        
         Nind_dead = sum(os$event),
         dead_ind_index = which(os$event == 1),
         Times = os$time,
@@ -24,17 +47,88 @@ as_stan_data <- function(os, lm, frm) {
         nodes = gh_parameters$nodes,
         weights = gh_parameters$weights,
         
+        #########################
+        #
         # Longmodel specific data
+        #
+        #
+        
         Nta_total = nrow(lm),
-        Yobs = lm$outcome,
+        Yobs = lm$sld,
         Tobs = lm$time,
-        ind_index = as.numeric(factor(lm$pt))
+        ind_index = as.numeric(factor(lm$pt)),
+        Ythreshold = cens_threshold,
+        
+        # Number of individuals and tumor assessments.
+        Nta_obs_y = sum(lm$sld >= cens_threshold),
+        Nta_cens_y = sum(lm$sld < cens_threshold),
+        
+        # Index vectors
+        ind_index = as.numeric(factor(as.character(lm$pt))),
+        obs_y_index = which(lm$sld >= cens_threshold),
+        cens_y_index = which(lm$sld < cens_threshold),
+        
+        n_studies = length(unique(lm$study)),
+        n_arms = length(unique(lm$arm)),
+        study_index = as.numeric(factor(as.character(lm$study))),
+        arm_index = as.numeric(factor(as.character(lm$arm))),
+        
+        
+        # Sparse matrix parameters
+        # Matrix of individuals x observed tumor assessments.
+        n_w_mat_inds_obs_y = length(sparse_mat_inds_obs_y$w),
+        w_mat_inds_obs_y = sparse_mat_inds_obs_y$w,
+        n_v_mat_inds_obs_y = length(sparse_mat_inds_obs_y$v),
+        v_mat_inds_obs_y = sparse_mat_inds_obs_y$v,
+        n_u_mat_inds_obs_y = length(sparse_mat_inds_obs_y$u),
+        u_mat_inds_obs_y = sparse_mat_inds_obs_y$u,
+
+        # Matrix of individuals x censored tumor assessments.
+        n_w_mat_inds_cens_y = length(sparse_mat_inds_cens_y$w),
+        w_mat_inds_cens_y = sparse_mat_inds_cens_y$w,
+        n_v_mat_inds_cens_y = length(sparse_mat_inds_cens_y$v),
+        v_mat_inds_cens_y = sparse_mat_inds_cens_y$v,
+        n_u_mat_inds_cens_y = length(sparse_mat_inds_cens_y$u),
+        u_mat_inds_cens_y = sparse_mat_inds_cens_y$u
     )
     return(model_data)
 }
 
 
 
+### TODO - Left over parameter in daniels data object that we've not included... ?
+# # Survival data.
+# Death = osd_final$DEATH,
+
+# dat <- list(
+
+
+#     arm_to_study_index = c(1L, 2L, 3L, 3L, 3L, 3L),
+
+#     # The patients in each of the four different treatment arms.
+#     n_index_per_arm = c(
+#         sum(osd_final$ARM == "IMV210_A"),
+#         sum(osd_final$ARM == "IMV211_A"),
+#         sum(osd_final$ARM == "MOR_A"),
+#         sum(osd_final$ARM == "MOR_AT"),
+#         sum(osd_final$ARM == "MOR_ASG"),
+#         sum(osd_final$ARM == "MOR_AEV")
+#     ),
+#     index_per_arm = c(
+#         which(osd_final$ARM == "IMV210_A"),
+#         which(osd_final$ARM == "IMV211_A"),
+#         which(osd_final$ARM == "MOR_A"),
+#         which(osd_final$ARM == "MOR_AT"),
+#         which(osd_final$ARM == "MOR_ASG"),
+#         which(osd_final$ARM == "MOR_AEV")
+#     ),
+
+# )
+
+
+
+
+# lm <- dat_lm 
 
 
 
@@ -42,21 +136,6 @@ as_stan_data <- function(os, lm, frm) {
 
 
 
-
-
-
-# # Derive sparse matrices.
-# obs_y_dat <- subset(sld, AVAL >= cens_threshold)
-# mat_inds_obs_y <- t(model.matrix(~ -1 + USUBJID, data = obs_y_dat))
-# dim(mat_inds_obs_y)
-# mat_inds_obs_y[1:6, 1:6]
-# sparse_mat_inds_obs_y <- extract_sparse_parts(mat_inds_obs_y)
-
-
-# cens_y_dat <- subset(sld, AVAL < cens_threshold)
-# mat_inds_cens_y <- t(model.matrix(~ -1 + USUBJID, data = cens_y_dat))
-# dim(mat_inds_cens_y)
-# sparse_mat_inds_cens_y <- extract_sparse_parts(mat_inds_cens_y)
 
 
 

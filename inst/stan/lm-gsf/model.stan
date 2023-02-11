@@ -4,10 +4,12 @@
 
 functions {
 
-
-    //- sld ----
-    // SLD model (GSF)
-    // @class LM - GSF
+    ////////////////
+    //
+    // GSF - lm-gsf/model.stan
+    //
+    //
+    
     row_vector sld(
         row_vector time,
         row_vector psi_bsld,
@@ -27,10 +29,6 @@ functions {
         return result;
     }
 
-
-    //- ttg ----
-    // Time-to-growth (TTG)
-    // @class LM - GSF
     matrix ttg(
         matrix time,
         row_vector psi_bsld,
@@ -45,10 +43,7 @@ functions {
         return ttg_contribution_matrix;
     }
 
-
-    //- dtsld ----
     // Derivative of SLD
-    // @class LM - GSF
     matrix dtsld(
         matrix time,
         row_vector psi_bsld,
@@ -75,9 +70,13 @@ functions {
 }
 
 
-
-
 parameters{
+    
+    ////////////////
+    //
+    // GSF - lm-gsf/model.stan
+    //
+    //
     
     // Hyper parameters
     real<lower=0, upper=100> mean_mu_ks;
@@ -113,6 +112,13 @@ parameters{
 
 
 transformed parameters{
+    
+    ////////////////
+    //
+    // GSF - lm-gsf/model.stan
+    //
+    //
+    
     // Non-centered reparametrization for hierarchical models.
     row_vector[Nind] psi_bsld = exp(log(mu_bsld[study_index]) + eta_tilde_bsld * omega_bsld);
     row_vector[Nind] psi_ks = exp(log(mu_ks[arm_index]) + eta_tilde_ks * omega_ks);
@@ -152,6 +158,13 @@ transformed parameters{
 
 
 model{
+    
+    ////////////////
+    //
+    // GSF - lm-gsf/model.stan
+    //
+    //
+    
     real ypred_ij;
     real yobs_ij;
     
