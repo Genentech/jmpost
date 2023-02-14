@@ -21,6 +21,7 @@ sld <- function(time, b, s, g, phi) {
 }
 
 
+
 # TODO - Need to enable code for link functions (currently implement as no-link)
 #' @export
 sim_lm_gsf <- function(
@@ -40,9 +41,10 @@ sim_lm_gsf <- function(
     .debug = FALSE
 ) {
     function(lm_base) {
+        
         assertthat::assert_that(
             length(unique(lm_base$study)) == 1,
-            length(mu_s) == length(unique(lm_base$arm)), 
+            length(mu_s) == length(unique(lm_base$arm)),
             length(mu_s) == length(mu_g),
             length(mu_s) == length(mu_phi),
             length(mu_s) == length(mu_b),
@@ -68,6 +70,7 @@ sim_lm_gsf <- function(
         #        original code which was also on the year scale
         #        would be good to convert them to be on the day-scale
         lm_dat <- lm_base |>
+            dplyr::select(-study, -arm) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
             dplyr::mutate(mu_sld = sld(time / 365, psi_b, psi_s, psi_g, psi_phi)) |>
             dplyr::mutate(sld = rnorm(n(), mu_sld, mu_sld * sigma)) |>
@@ -82,7 +85,6 @@ sim_lm_gsf <- function(
 
 
 # TODO - Need to be able to provide 1 slope per arm to enable a "treatment effect"
-
 #' @export
 sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi, .debug = FALSE) {
     function(lm_base) {
@@ -121,9 +123,10 @@ sim_os_loglogistic <- function(lambda, p){
     }
 }
 
+# TODO - Update to enable multiple studys ? 
 #' @export
 simulate_joint_data <- function(
-    n_arm = c(50, 80),
+    n_arm = c(50, 80),   # Number of arms and number of subjects per arm
     max_time = 2000,
     lambda_cen = 1 / 3,
     beta_cont = 0.2,
@@ -132,7 +135,6 @@ simulate_joint_data <- function(
     os_fun
 ) {
 
-    n_arm <- c(20, 30)
     n <- sum(n_arm)
     u_pts <- sprintf("pt_%05i", seq_len(n))
 
@@ -147,7 +149,7 @@ simulate_joint_data <- function(
         dplyr::mutate(chazard_limit = -log(survival)) %>%
         dplyr::mutate(time_cen = rexp(n, lambda_cen)) |>
         dplyr::mutate(study = "Study-1") |>
-        dplyr::mutate(arm = rep(paste0("Group-", 1:length(n)), times = n))
+        dplyr::mutate(arm = rep(paste0("Group-", seq_along(n_arm)), times = n_arm))
     
     lm_base <- expand.grid(time = 1:max_time, pt = u_pts, stringsAsFactors = FALSE) |>
         dplyr::as_tibble() |>
@@ -165,14 +167,14 @@ simulate_joint_data <- function(
         dplyr::group_by(pt) %>%
         dplyr::mutate(chazard = cumsum(hazard_per_interval)) %>%
         dplyr::filter(chazard <= chazard_limit) |>
-        dplyr::select(pt, time, cov_cont, cov_cat, time_cen) |>
+    dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
         dplyr::arrange(pt, desc(time)) |>
         dplyr::group_by(pt) %>%
         dplyr::slice(1) |>
         dplyr::ungroup() |>
         dplyr::mutate(event = dplyr::if_else(time <= time_cen, 1, 0)) %>%
         dplyr::mutate(time = dplyr::if_else(event == 1, time, time_cen)) %>%
-        dplyr::select(pt, time, cov_cont, cov_cat, event)
+        dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm)
 
     missing_pts <- setdiff(u_pts, unique(os_dat$pt))
     message(sprintf("%d people died before day 1", length(missing_pts)))

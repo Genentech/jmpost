@@ -17,13 +17,6 @@ data{
     array[Nind] int<lower=1,upper=n_arms> arm_index;       // Index of treatment arm for all individuals.
 
 
-    // TODO - Need to get a better understanding of this shared
-    int<lower=1> n_sld_par_shared;
-    array[n_sld_par_shared] int<lower=1,upper=n_arms> sld_par_shared;
-    int<lower=1> n_sld_par_separate;
-    array[n_sld_par_separate] int<lower=1,upper=n_arms> sld_par_separate;
-
-
     array[n_arms] int<lower=1,upper=n_studies> arm_to_study_index;
 
 
