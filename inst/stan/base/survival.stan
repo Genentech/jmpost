@@ -2,7 +2,10 @@ functions {
 
 {{ stan.functions }}
 
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+
     // Log Hazard function
     matrix log_hazard(
         matrix time,
@@ -28,7 +31,6 @@ functions {
     }
 
 
-    // SurvivalModel
     // Survival function
     // now we take care of time = 0 values - for these we just directly know that the result is 0.
     row_vector log_survival(
@@ -61,14 +63,16 @@ functions {
 
 
 data{
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+
     int<lower=1> Nind_dead;            // Number of dead individuals (observed survival time).
     array[Nind_dead] int dead_ind_index;     // Index of dead individuals (observed survival time).
     row_vector[Nind] Times;
     int<lower=1> p_os_cov_design;
     matrix[Nind, p_os_cov_design] os_cov_design;
 
-    // SurvivalModel
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
     // between 0 and 1
@@ -79,7 +83,6 @@ data{
 
 
 transformed data {
-    // SurvivalModel
     array[cols(Times)] int time_positive = is_positive(Times);
     int n_positive = sum(time_positive);
     array[n_positive] int time_positive_index = which(time_positive);
@@ -90,7 +93,10 @@ transformed data {
 
 
 parameters {
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+    
     // Covariate coefficients.
     vector[p_os_cov_design] beta_os_cov;
 {{ stan.parameters }}
@@ -100,7 +106,10 @@ parameters {
 
 transformed parameters {
 
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+    
     // Calculate coveriate contributions to log hazard function
     vector[rows(os_cov_design)] os_cov_contribution;
     if (rows(os_cov_design) > 1) {
@@ -111,7 +120,10 @@ transformed parameters {
 
 {{ stan.transformed_parameters }}
 
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+
     // Log-survival values as we need them for generated quantitities.
     // We always add the log-survival to the log-likelihood.
     log_lik[time_positive_index] += log_survival(
@@ -123,7 +135,6 @@ transformed parameters {
         os_cov_contribution[time_positive_index]
     );
 
-    // SurvivalModel
     // In case of death we add the log-hazard on top.
     log_lik[dead_ind_index] += to_row_vector(
         log_hazard(
@@ -137,7 +148,10 @@ transformed parameters {
 
 
 model{
-    // SurvivalModel
+    //
+    // Source - base/survival.stan
+    //
+    
     beta_os_cov ~ normal(0, 5); // TODO - Move to r code?
 
     {{ stan.model }}

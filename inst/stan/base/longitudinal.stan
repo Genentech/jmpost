@@ -1,11 +1,14 @@
 
 
 data{
+    //
+    // Source - base/longitudinal.stan
+    //
 
     // Longditudinal data
     int<lower=1> Nta_total;            // Total number of tumor assessments.
     int<lower=1> Nta_obs_y;            // Number of observed tumor assessments (not censored).
-    int<lower=1> Nta_cens_y;           // Number of censored tumor assessments (below threshold).
+    int<lower=0> Nta_cens_y;           // Number of censored tumor assessments (below threshold).
 
     array[Nta_total] int ind_index;          // Index of individuals for each tumor assessment.
     array[Nta_obs_y] int obs_y_index;        // Index of observed tumor assessments (not censored).
@@ -42,11 +45,11 @@ data{
 
     // Matrix of individuals x censored tumor assessments (sparse matrix of 0s and 1s).
     // so the dimension is Nind x Nta_cens_y.
-    int<lower=1> n_w_mat_inds_cens_y;
+    int<lower=0> n_w_mat_inds_cens_y;
     vector[n_w_mat_inds_cens_y] w_mat_inds_cens_y;
-    int<lower=1> n_v_mat_inds_cens_y;
+    int<lower=0> n_v_mat_inds_cens_y;
     array[n_v_mat_inds_cens_y] int v_mat_inds_cens_y;
-    int<lower=1> n_u_mat_inds_cens_y;
+    int<lower=0> n_u_mat_inds_cens_y;
     array[n_u_mat_inds_cens_y] int u_mat_inds_cens_y;
 
 }

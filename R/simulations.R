@@ -56,10 +56,10 @@ sim_lm_gsf <- function(
         baseline_covs <- lm_base |>
             dplyr::distinct(pt, arm, study) |>
             dplyr::mutate(arm_n = as.numeric(factor(as.character(arm)))) |>
-            dplyr::mutate(eta_b = rnorm(n(), 0, eta_b_sigma)) |>
-            dplyr::mutate(eta_s = rnorm(n(), 0, eta_s_sigma)) |>
-            dplyr::mutate(eta_g = rnorm(n(), 0, eta_g_sigma)) |>
-            dplyr::mutate(eta_phi = rnorm(n(), 0, eta_phi_sigma)) |>
+            dplyr::mutate(eta_b = rnorm(dplyr::n(), 0, eta_b_sigma)) |>
+            dplyr::mutate(eta_s = rnorm(dplyr::n(), 0, eta_s_sigma)) |>
+            dplyr::mutate(eta_g = rnorm(dplyr::n(), 0, eta_g_sigma)) |>
+            dplyr::mutate(eta_phi = rnorm(dplyr::n(), 0, eta_phi_sigma)) |>
             dplyr::mutate(psi_b = exp(log(mu_b[arm_n]) + eta_b * omega_b)) |>
             dplyr::mutate(psi_s = exp(log(mu_s[arm_n]) + eta_s * omega_s)) |>
             dplyr::mutate(psi_g = exp(log(mu_g[arm_n]) + eta_g * omega_g)) |>
@@ -73,7 +73,7 @@ sim_lm_gsf <- function(
             dplyr::select(-study, -arm) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
             dplyr::mutate(mu_sld = sld(time / 365, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(sld = rnorm(n(), mu_sld, mu_sld * sigma)) |>
+            dplyr::mutate(sld = rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
             dplyr::mutate(log_haz_link = 0)
 
         if (!.debug) {
@@ -90,10 +90,10 @@ sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi, .debug = 
     function(lm_base) {
         rs_baseline <- lm_base |>
             dplyr::distinct(pt) |>
-            dplyr::mutate(slope_ind = rnorm(n(), slope, sd = z_sigma))
+            dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope, sd = z_sigma))
 
         lm_dat <- lm_base |>
-            dplyr::mutate(err = rnorm(n(), 0, sigma)) |>
+            dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
             dplyr::mutate(sld = intercept + slope_ind * time + err) |>
             dplyr::mutate(log_haz_link = slope_ind * phi)
@@ -182,7 +182,7 @@ simulate_joint_data <- function(
     lm_dat2 <- lm_dat |>
         dplyr::inner_join(dplyr::select(os_dat, pt, os_time = time), by = "pt") |>
         dplyr::mutate(observed = (time <= os_time)) |>
-        dplyr::mutate(observed = if_else(is.na(observed), FALSE, observed)) |>
+        dplyr::mutate(observed = dplyr::if_else(is.na(observed), FALSE, observed)) |>
         dplyr::select(-os_time, -log_haz_link)
 
     assertthat::assert_that(nrow(os_dat) == (n - length(missing_pts)))

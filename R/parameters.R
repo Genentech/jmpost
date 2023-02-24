@@ -48,6 +48,9 @@ setMethod(
 #' @export
 ParameterList <- function(...) {
     pars <- list(...)
+    if (length(pars) == 0) {
+        return(.ParameterList())
+    }
     pars_coerced <- priors2parameters(pars)
     pars_named <- fix_parameter_names(pars_coerced)
     assertthat::assert_that(
@@ -109,6 +112,19 @@ setMethod(
     signature = "ParameterList",
     definition = function(x) {
         as.list(as.StanModule(x))
+    }
+)
+
+
+#' @export
+setMethod(
+    f = "getInits",
+    signature = "ParameterList",
+    definition = function(object) {
+        vals <- vapply(object@parameters, function(x) x@init, numeric(1))
+        name <- vapply(object@parameters, function(x) x@name, character(1))
+        names(vals) <- name
+        return(vals)
     }
 )
 

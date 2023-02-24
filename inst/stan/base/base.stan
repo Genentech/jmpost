@@ -1,4 +1,7 @@
 functions {
+    //
+    // Source - base/base.stan
+    //
 
     // Constant used in below.
     real neg_log_sqrt_2_pi() {
@@ -86,8 +89,6 @@ functions {
         return ret;
     }
 
-
-
 {% if link_none %}
     // If user has requested link_none then provide a dummy link_contribution function
     // that does nothing    
@@ -104,6 +105,9 @@ functions {
 
 
 data{
+    //
+    // Source - base/base.stan
+    //
     int<lower=1> Nind;                 // Number of individuals.
     
 {{ survival.data }}
@@ -119,6 +123,10 @@ transformed data {
 
 
 {% if link_none %}
+    //
+    // Source - base/base.stan
+    //
+
     // If user has requested link_none then provide a dummy pars_lm object
     // that contains nothing
     matrix[Nind, 0] pars_lm = rep_matrix(0, Nind, 0);
@@ -136,6 +144,9 @@ parameters{
 
 
 transformed parameters{
+    //
+    // Source - base/base.stan
+    //
 
     // Log-likelihood values for using the loo package.
     vector[Nind] log_lik = rep_vector(0.0, Nind);
@@ -150,6 +161,10 @@ model{
 {{ longditudinal.model }}
 {{ survival.model }}
 {{ priors.model }}
+
+    //
+    // Source - base/base.stan
+    //
     target += sum(log_lik);
 }
 

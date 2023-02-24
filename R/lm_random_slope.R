@@ -55,13 +55,6 @@ LinkRandomSlope <- function(
 }
 
 
-setMethod(
-    f = "addLink",
-    signature = c("LongitudinalRandomSlope", "LinkRandomSlope"),
-    definition = function(x, y, ...) {
-        x@stan <- merge(x@stan, y@stan)
-        x
-    }
-)
+
 
 

@@ -6,7 +6,8 @@
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
-        stan = "StanModule"
+        stan = "StanModule",
+        inits = "numeric"
     )
 )
 
@@ -38,7 +39,10 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
-    .JointModel(stan = StanModule(stan_full))
+    .JointModel(
+        stan = StanModule(stan_full),
+        inits = getInits(parameters)
+    )
 }
 
 
@@ -86,9 +90,21 @@ setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
     definition = function(object, ..., exe_file = NULL) {
+        
+        args <- list(...)
+        
+        if ("chains" %in% names(args)) {
+            nchains <- args[["chains"]] 
+        } else {
+            nchains <- 1
+        }
+        
+        inits <- replicate(nchains, as.list(object@inits), simplify = FALSE)
+        
         model <- compileStanModel(object, exe_file)
         model$sample(
-            ...
+            ...,
+            init = inits
         )
     }
 )
