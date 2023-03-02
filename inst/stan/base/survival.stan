@@ -9,7 +9,7 @@ functions {
     // Log Hazard function
     matrix log_hazard(
         matrix time,
-        row_vector pars_os,
+        vector pars_os,
         matrix pars_lm,
         vector cov_contribution
     ) {
@@ -33,17 +33,17 @@ functions {
 
     // Survival function
     // now we take care of time = 0 values - for these we just directly know that the result is 0.
-    row_vector log_survival(
-        row_vector time,
-        row_vector pars_os,
+    vector log_survival(
+        vector time,
+        vector pars_os,
         matrix pars_lm,
         data vector nodes,
-        data row_vector weights,
+        data vector weights,
         vector cov_contribution
     ) {
         // Caps the log hazard at 10000
-        matrix[cols(time), rows(nodes)] node_times = ((nodes + 1) * (time / 2))';
-        matrix[rows(nodes), cols(time)] nodes_time_hazard = fmin(
+        matrix[rows(time), rows(nodes)] node_times =  (time / 2) * ((nodes + 1)') ;
+        matrix[rows(time), rows(nodes)] nodes_time_hazard = fmin(
             10000,
             exp(
                 log_hazard(
@@ -53,8 +53,8 @@ functions {
                     cov_contribution
                 )
             )
-        )';
-        row_vector[cols(time)] result = - (weights * nodes_time_hazard) .* time / 2;
+        );
+        vector[rows(time)] result = - (time / 2) .* (nodes_time_hazard * weights);
         return result;
     }
 
@@ -69,7 +69,7 @@ data{
 
     int<lower=1> Nind_dead;            // Number of dead individuals (observed survival time).
     array[Nind_dead] int dead_ind_index;     // Index of dead individuals (observed survival time).
-    row_vector[Nind] Times;
+    vector[Nind] Times;
     int<lower=1> p_os_cov_design;
     matrix[Nind, p_os_cov_design] os_cov_design;
 
@@ -78,12 +78,12 @@ data{
     // between 0 and 1
     int<lower=1> n_nodes;
     vector[n_nodes] nodes;
-    row_vector<lower=0, upper=1>[n_nodes] weights;
+    vector<lower=0, upper=1>[n_nodes] weights;
 }
 
 
 transformed data {
-    array[cols(Times)] int time_positive = is_positive(Times);
+    array[rows(Times)] int time_positive = is_positive(Times);
     int n_positive = sum(time_positive);
     array[n_positive] int time_positive_index = which(time_positive);
     
@@ -136,9 +136,9 @@ transformed parameters {
     );
 
     // In case of death we add the log-hazard on top.
-    log_lik[dead_ind_index] += to_row_vector(
+    log_lik[dead_ind_index] += to_vector(
         log_hazard(
-            to_matrix(Times[dead_ind_index])',
+            to_matrix(Times[dead_ind_index]),
             pars_os,
             pars_lm[dead_ind_index],
             os_cov_contribution[dead_ind_index]

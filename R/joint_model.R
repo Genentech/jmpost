@@ -39,8 +39,14 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
+    
+    full_plus_funs <- merge(
+        StanModule("base/functions.stan"),
+        StanModule(stan_full)
+    )
+    
     .JointModel(
-        stan = StanModule(stan_full),
+        stan = full_plus_funs,
         inits = getInits(parameters)
     )
 }

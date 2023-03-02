@@ -23,7 +23,10 @@ LongitudinalGSF <- function (
     tilde_phi = Parameter(prior_normal(0, 5), init = 0)
 ) {
     x <- LongitudinalModel(
-        stan = StanModule( x = "lm-gsf/model.stan"),
+        stan = merge(
+            StanModule("lm-gsf/model.stan"),
+            StanModule("lm-gsf/functions.stan")
+        ),
         parameters = ParameterList(
             lm_gsf_mu_bsld = mu_bsld,
             lm_gsf_mu_ks = mu_ks,
@@ -88,9 +91,14 @@ LinkGSF <- function(
         StanModule(rendered_link),
         stan_components
     )
+    
+    full_plus_functions <- merge(
+        StanModule("lm-gsf/functions.stan"),
+        stan_full
+    )
 
     x <- Link(
-        stan = stan_full,
+        stan = full_plus_functions,
         parameters = parameters
     )
 

@@ -44,11 +44,11 @@ sim_lm_gsf <- function(
         
         assertthat::assert_that(
             length(unique(lm_base$study)) == 1,
+            length(mu_b) == 1,
+            length(sigma) == 1,
             length(mu_s) == length(unique(lm_base$arm)),
             length(mu_s) == length(mu_g),
             length(mu_s) == length(mu_phi),
-            length(mu_s) == length(mu_b),
-            length(sigma) == 1,
             length(c(eta_b_sigma, eta_g_sigma, eta_phi_sigma, eta_s_sigma)) == 4,
             length(c(omega_b, omega_s, omega_g, omega_phi)) == 4
         )
@@ -60,7 +60,7 @@ sim_lm_gsf <- function(
             dplyr::mutate(eta_s = rnorm(dplyr::n(), 0, eta_s_sigma)) |>
             dplyr::mutate(eta_g = rnorm(dplyr::n(), 0, eta_g_sigma)) |>
             dplyr::mutate(eta_phi = rnorm(dplyr::n(), 0, eta_phi_sigma)) |>
-            dplyr::mutate(psi_b = exp(log(mu_b[arm_n]) + eta_b * omega_b)) |>
+            dplyr::mutate(psi_b = exp(log(mu_b) + eta_b * omega_b)) |>
             dplyr::mutate(psi_s = exp(log(mu_s[arm_n]) + eta_s * omega_s)) |>
             dplyr::mutate(psi_g = exp(log(mu_g[arm_n]) + eta_g * omega_g)) |>
             dplyr::mutate(psi_phi = plogis(qlogis(mu_phi[arm_n]) + eta_phi * omega_phi))
@@ -86,11 +86,18 @@ sim_lm_gsf <- function(
 
 # TODO - Need to be able to provide 1 slope per arm to enable a "treatment effect"
 #' @export
-sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi, .debug = FALSE) {
+sim_lm_random_slope <- function(
+    z_sigma = 0.5,
+    intercept = 50,
+    mu_slope = 0.01,
+    sigma = 2,
+    phi = 0.1,
+    .debug = FALSE
+) {
     function(lm_base) {
         rs_baseline <- lm_base |>
             dplyr::distinct(pt) |>
-            dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope, sd = z_sigma))
+            dplyr::mutate(slope_ind = rnorm(dplyr::n(), mu_slope, sd = z_sigma))
 
         lm_dat <- lm_base |>
             dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>
@@ -99,7 +106,7 @@ sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi, .debug = 
             dplyr::mutate(log_haz_link = slope_ind * phi)
         
         if ( ! .debug) {
-            lm_dat <- lm_dat |> select(pt, time, sld, log_haz_link, study, arm)
+            lm_dat <- lm_dat |> dplyr::select(pt, time, sld, log_haz_link, study, arm)
         }
         return(lm_dat)
     }
@@ -110,6 +117,13 @@ sim_lm_random_slope <- function(z_sigma, intercept, slope, sigma, phi, .debug = 
 sim_os_weibull <- function(lambda, gamma) {
     function(time) {
         log(lambda) + log(gamma) + (gamma - 1) * log(time)
+    }
+}
+
+#' @export
+sim_os_exponential <- function(lambda) {
+    function(time) {
+        lambda
     }
 }
 
@@ -191,25 +205,4 @@ simulate_joint_data <- function(
     return(list(os = os_dat, lm = lm_dat2))
 }
 
-
-
-# dat <- simulate_os_lm(
-#     n = 500,
-#     max_time = 2000,
-#     lambda_cen = 1/9000,
-#     beta_cont = 0.2,
-#     beta_cat = c(
-#         "A" = 0,
-#         "B" = -0.3,
-#         "C" = 0.4
-#     ),
-#     lm_fun = lm_random_slope(
-#         intercept = 30,
-#         sigma = 3,
-#         slope = 0.3,
-#         z_sigma = 0.02,
-#         phi = 0.1
-#     ),
-#     os_fun = os_haz_weibull(lambda = 1/250, gamma=1)
-# )
 

@@ -15,12 +15,12 @@ as_stan_data <- function(os, lm, frm, cens_threshold = 5) {
     )
 
     os <- os |>
-        mutate(study = factor(study)) |>
-        mutate(arm = factor(arm)) |>
-        mutate(pt_f = factor(pt))
+        dplyr::mutate(study = factor(study)) |>
+        dplyr::mutate(arm = factor(arm)) |>
+        dplyr::mutate(pt_f = factor(pt))
 
     lm <- lm |>
-        left_join(select(os, pt, pt_f), by = "pt")
+        dplyr::left_join(dplyr::select(os, pt, pt_f), by = "pt")
         
     
     design_mat <- stats::model.matrix(frm, data = os)
@@ -99,13 +99,13 @@ as_stan_data <- function(os, lm, frm, cens_threshold = 5) {
     model_data <- append(model_data_lm, model_data_os)
     
     u_arm_study <- os |>
-        distinct(study, arm) |>
-        arrange(arm, study)
+        dplyr::distinct(study, arm) |>
+        dplyr::arrange(arm, study)
 
     n_per_arm <- os |>
-        group_by(arm) |>
-        tally() |>
-        arrange(arm)
+        dplyr::group_by(arm) |>
+        dplyr::tally() |>
+        dplyr::arrange(arm)
 
 
     # TODO - Assumption that arms are unique to studies
