@@ -7,7 +7,7 @@ library(cmdstanr)
 
 # devtools::install_git("https://github.com/stan-dev/cmdstanr")
 
-devtools::docment()
+devtools::document()
 devtools::load_all(export_all = FALSE)
 
 
@@ -19,7 +19,7 @@ devtools::load_all(export_all = FALSE)
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
     n_arm = c(60, 60),
-    max_time = 2000,
+    max_time = seq(1, 3, by = 1/365),
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -143,7 +143,7 @@ draws_means <- mp$draws(format = "df") |>
 draws_means |> filter(key == "log_lik[42]")
 
 vars <- c(
-    "lm_gsf_mu_bsld[1]", "lm_gsf_mu_bsld[2]",
+    "lm_gsf_mu_bsld[1]",
     "lm_gsf_mu_phi[1]", "lm_gsf_mu_phi[2]",
     "lm_gsf_mu_kg[1]", "lm_gsf_mu_kg[2]",
     "lm_gsf_mu_ks[1]", "lm_gsf_mu_ks[2]",
@@ -151,6 +151,10 @@ vars <- c(
     "lm_gsf_omega_bsld", "lm_gsf_omega_kg",
     "lm_gsf_omega_phi", "lm_gsf_omega_ks"
 )
+
+
+
+mp$summary(vars)
 
 draws_means |>
     filter(key %in% vars) |>

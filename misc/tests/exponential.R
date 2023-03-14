@@ -5,17 +5,17 @@ devtools::load_all()
 library(bayesplot)
 
 jlist <- simulate_joint_data(
-    n_arm = c(100, 100),
-    max_time = 2000,
+    n_arm = c(1000, 1000),
+    times = seq(1, 1000, by = 0.5),
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
-        "B" = -0.1,
+        "B" = -0.3,
         "C" = 0.5
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_random_slope(phi = 0),
-    os_fun = sim_os_exponential(lambda = 0.005)
+    os_fun = sim_os_exponential(lambda = log(1/100))
 )
 
 dat_os <- jlist$os
@@ -63,11 +63,6 @@ coxph(
     Surv(time, event) ~ cov_cat + cov_cont,
     data = dat_os
 )
-
-
-
-
-
 
 
 

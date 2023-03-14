@@ -137,11 +137,30 @@ sim_os_loglogistic <- function(lambda, p){
     }
 }
 
+get_timepoints <- function(x) {
+    assertthat::assert_that(length(x) == length(unique(x)))
+    x_ord <- x[order(x)]
+    x_no_neg <- x_ord[x_ord > 0]
+
+    bound_lower <- c(0, x_no_neg[-length(x_no_neg)])
+    bound_upper <- x_no_neg
+    bound_width <- bound_upper - bound_lower
+    eval_points <- bound_upper
+    tibble::tibble(
+        lower = bound_lower,
+        upper = bound_upper,
+        time = eval_points, 
+        width = bound_width
+    )
+}
+
+
+
 # TODO - Update to enable multiple studys ? 
 #' @export
 simulate_joint_data <- function(
     n_arm = c(50, 80),   # Number of arms and number of subjects per arm
-    max_time = 2000,
+    times = 1:2000,
     lambda_cen = 1 / 3,
     beta_cont = 0.2,
     beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2),
@@ -151,47 +170,50 @@ simulate_joint_data <- function(
 
     n <- sum(n_arm)
     u_pts <- sprintf("pt_%05i", seq_len(n))
+    bounds <- get_timepoints(times)
 
-    os_baseline <- dplyr::tibble(pt = u_pts) %>%
-        dplyr::mutate(cov_cont = rnorm(n)) %>%
+    os_baseline <- dplyr::tibble(pt = u_pts) |> 
+        dplyr::mutate(cov_cont = rnorm(n)) |> 
         dplyr::mutate(cov_cat = factor(
             sample(c("A", "B", "C"), replace = TRUE, size = n),
             levels = c("A", "B", "C")
-        )) %>%
-        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) %>%
-        dplyr::mutate(survival = runif(n)) %>%
-        dplyr::mutate(chazard_limit = -log(survival)) %>%
+        )) |> 
+        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |> 
+        dplyr::mutate(survival = runif(n)) |> 
+        dplyr::mutate(chazard_limit = -log(survival)) |> 
         dplyr::mutate(time_cen = rexp(n, lambda_cen)) |>
         dplyr::mutate(study = "Study-1") |>
         dplyr::mutate(arm = rep(paste0("Group-", seq_along(n_arm)), times = n_arm))
-    
-    lm_base <- expand.grid(time = 1:max_time, pt = u_pts, stringsAsFactors = FALSE) |>
-        dplyr::as_tibble() |>
-        dplyr::left_join(dplyr::select(os_baseline, pt, arm, study), by = "pt")
-    
-    lm_dat <- lm_fun(lm_base)
 
-    os_dat <- expand.grid(time = as.double(1:max_time), pt = u_pts, stringsAsFactors = FALSE) %>%
-        dplyr::as_tibble() %>%
-        dplyr::mutate(time_offset = time - 0.5) %>%
-        dplyr::left_join(os_baseline, by = "pt") %>%
-        dplyr::left_join(dplyr::select(lm_dat, pt, time, log_haz_link), by = c("pt", "time")) %>%
-        dplyr::mutate(log_bl_haz = os_fun(time_offset)) %>%
-        dplyr::mutate(hazard_per_interval = exp(log_bl_haz + log_haz_cov + log_haz_link)) %>%
-        dplyr::group_by(pt) %>%
-        dplyr::mutate(chazard = cumsum(hazard_per_interval)) %>%
-        dplyr::filter(chazard <= chazard_limit) |>
-    dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
-        dplyr::arrange(pt, desc(time)) |>
-        dplyr::group_by(pt) %>%
+    time_dat <- expand.grid(
+        time = as.double(bounds$time),
+        pt = u_pts,
+        stringsAsFactors = FALSE
+    ) |>
+        tibble::as_tibble()
+
+    lm_dat <- time_dat |>
+        dplyr::left_join(dplyr::select(os_baseline, pt, arm, study), by = "pt") |>
+        lm_fun()
+
+    os_dat <- time_dat |>
+        dplyr::left_join(dplyr::select(bounds, time, width), by = "time") |>
+        dplyr::left_join(os_baseline, by = "pt") |>
+        dplyr::left_join(dplyr::select(lm_dat, pt, time, log_haz_link), by = c("pt", "time")) |>
+        dplyr::mutate(log_bl_haz = os_fun(time)) |>
+        dplyr::mutate(hazard_instant = exp(log_bl_haz + log_haz_cov + log_haz_link)) |>
+        dplyr::mutate(hazard_interval = hazard_instant * width) |>
+        dplyr::group_by(pt) |>
+        dplyr::mutate(chazard = cumsum(hazard_interval)) |>
+        dplyr::filter(chazard_limit <= chazard) |>
+        dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
+        dplyr::arrange(pt, time) |>
+        dplyr::group_by(pt) |>
         dplyr::slice(1) |>
         dplyr::ungroup() |>
-        dplyr::mutate(event = dplyr::if_else(time <= time_cen, 1, 0)) %>%
-        dplyr::mutate(time = dplyr::if_else(event == 1, time, time_cen)) %>%
+        dplyr::mutate(event = dplyr::if_else(time <= time_cen, 1, 0)) |>
+        dplyr::mutate(time = dplyr::if_else(event == 1, time, time_cen)) |>
         dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm)
-
-    missing_pts <- setdiff(u_pts, unique(os_dat$pt))
-    message(sprintf("%d people died before day 1", length(missing_pts)))
 
     lm_dat2 <- lm_dat |>
         dplyr::inner_join(dplyr::select(os_dat, pt, os_time = time), by = "pt") |>
@@ -199,8 +221,8 @@ simulate_joint_data <- function(
         dplyr::mutate(observed = dplyr::if_else(is.na(observed), FALSE, observed)) |>
         dplyr::select(-os_time, -log_haz_link)
 
-    assertthat::assert_that(nrow(os_dat) == (n - length(missing_pts)))
-    assertthat::assert_that(nrow(lm_dat) == n * max_time)
+    assertthat::assert_that(nrow(lm_dat) == n * length(times))
+    assertthat::assert_that(n == nrow(os_dat))
 
     return(list(os = os_dat, lm = lm_dat2))
 }
