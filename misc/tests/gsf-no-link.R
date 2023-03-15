@@ -18,8 +18,8 @@ devtools::load_all(export_all = FALSE)
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n_arm = c(60, 60),
-    max_time = seq(1, 3, by = 1/365),
+    n_arm = c(80, 80),
+    times = seq(0, 4, by = (1/365)/2),
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -28,35 +28,37 @@ jlist <- simulate_joint_data(
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_gsf(
-        sigma = 0.01,
-        mu_s = c(0.15, 0.4),
-        mu_g = c(0.15, 0.3),
-        mu_phi = c(0.3, 0.6),
-        mu_b = 70,
-        eta_b_sigma = 5,
-        eta_s_sigma = 2,
-        eta_g_sigma = 1,
-        eta_phi_sigma = 5,
-        omega_b = 0.135,
-        omega_s = 0.15,
-        omega_g = 0.225,
-        omega_phi = 0.75,
+        sigma = 0.003,
+        mu_s = c(0.2, 0.25),
+        mu_g = c(0.15, 0.2),
+        mu_phi = c(0.4, 0.6),
+        mu_b = 60,
+        eta_b_sigma = 0.5,
+        eta_s_sigma = 0.5,
+        eta_g_sigma = 0.5,
+        eta_phi_sigma = 0.5,
+        omega_b = 0.1,
+        omega_s = 0.1,
+        omega_g = 0.1,
+        omega_phi = 0.2
     ),
     os_fun = sim_os_weibull(
-        lambda = 0.00333,
-        gamma = 0.97
+        lambda = 365 * (1/400),
+        gamma = 1
     )
 )
 
 
 ## Extract data to individual datasets
-dat_os <- jlist$os |>
-    mutate(time = time / 365)
+dat_os <- jlist$os
+
+select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900) * (1 / 365)
+
 dat_lm <- jlist$lm |>
     # dplyr::filter(time %in% c(seq(1, 2000, by = 30))) |>
-    dplyr::filter(time %in% c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900)) |>
+    dplyr::filter(time %in% select_times) |>
     dplyr::arrange(time, pt) |>
-    dplyr::mutate(time = time / 365)
+    dplyr::mutate(time = time)
 
 # mean(dat_os$time)
 # mean(dat_os$event)
@@ -70,13 +72,12 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
     theme_bw()
 
 
-devtools::document()
-devtools::load_all()
+
 jm <- JointModel(
     longitudinal_model = LongitudinalGSF(
         
         mu_bsld = Parameter(prior_lognormal(log(70), 5), init = 70),
-        mu_ks = Parameter(prior_lognormal(log(0.2), 0.5), init = 0.3),
+        mu_ks = Parameter(prior_lognormal(log(0.2), 1), init = 0.3),
         mu_kg = Parameter(prior_lognormal( log(0.2), 1), init = 0.2),
         mu_phi = Parameter(prior_beta(2, 2), init = 0.2),
         
@@ -87,12 +88,24 @@ jm <- JointModel(
         
         sigma = Parameter(prior_lognormal(log(0.01), 1), init = 0.01),
         
-        tilde_bsld = Parameter(prior_normal(0, 5), init = 0.01),
-        tilde_ks = Parameter(prior_normal(0, 2), init = 0.01),
-        tilde_kg = Parameter(prior_normal(0, 1), init = 0.01),
-        tilde_phi = Parameter(prior_normal(0, 5), init = 0.01)
+        tilde_bsld = Parameter(prior_normal(0, 5), init = 0.1),
+        tilde_ks = Parameter(prior_normal(0, 2), init = 0.1),
+        tilde_kg = Parameter(prior_normal(0, 1), init = 0.1),
+        tilde_phi = Parameter(prior_normal(0, 5), init = 0.1)
     )
 )
+
+# TODO - Looks like initial values need to be rep'd for vectors i.e. if 2 arms
+#        then rep initial value twice
+x <- as.list(jm@inits)
+x$lm_gsf_mu_bsld <- c(70)
+x$lm_gsf_mu_kg <- c(0.3, 0.3)
+x$lm_gsf_mu_phi <- c(0.3, 0.3)
+x$lm_gsf_mu_ks <- c(0.3, 0.3)
+
+initial_values <- function() {
+    x
+}
 
 # jm <- JointModel(
 #     longitudinal_model = LongitudinalGSF(),
@@ -119,11 +132,32 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
+    init = initial_values,
     parallel_chains = 1,
     exe_file = file.path("local", "full")
 )
 
 
+
+
+
+vars <- c(
+    "lm_gsf_mu_bsld[1]",
+    "lm_gsf_mu_phi[1]", "lm_gsf_mu_phi[2]",
+    "lm_gsf_mu_kg[1]", "lm_gsf_mu_kg[2]",
+    "lm_gsf_mu_ks[1]", "lm_gsf_mu_ks[2]",
+    "lm_gsf_sigma",
+    "lm_gsf_omega_bsld", "lm_gsf_omega_kg",
+    "lm_gsf_omega_phi", "lm_gsf_omega_ks"
+)
+
+mp$summary(vars)
+library(bayesplot)
+mcmc_trace(mp$draws("lm_gsf_mu_phi[1]"))
+mcmc_trace(mp$draws("lm_gsf_mu_bsld[1]"))
+mcmc_hist(mp$draws("lm_gsf_mu_phi[1]"))
+
+mcmc_pairs(mp$draws(), vars)
 
 ### Extract parameters and calculate confidence intervals
 draws_means <- mp$draws(format = "df") |>
@@ -142,19 +176,6 @@ draws_means <- mp$draws(format = "df") |>
 
 draws_means |> filter(key == "log_lik[42]")
 
-vars <- c(
-    "lm_gsf_mu_bsld[1]",
-    "lm_gsf_mu_phi[1]", "lm_gsf_mu_phi[2]",
-    "lm_gsf_mu_kg[1]", "lm_gsf_mu_kg[2]",
-    "lm_gsf_mu_ks[1]", "lm_gsf_mu_ks[2]",
-    "lm_gsf_sigma",
-    "lm_gsf_omega_bsld", "lm_gsf_omega_kg",
-    "lm_gsf_omega_phi", "lm_gsf_omega_ks"
-)
-
-
-
-mp$summary(vars)
 
 draws_means |>
     filter(key %in% vars) |>
@@ -162,9 +183,7 @@ draws_means |>
     arrange(key)
 
 
-library(bayesplot)
-mcmc_trace(mp$draws("lm_gsf_mu_phi[1]"))
-mcmc_hist(mp$draws("lm_gsf_mu_phi[1]"))
+
 
 
 

@@ -8,10 +8,10 @@ parameters{
     //
     
     // Population parameters.
-    vector<lower=0>[n_studies] lm_gsf_mu_bsld;
-    vector<lower=0>[n_arms] lm_gsf_mu_ks;
-    vector<lower=0>[n_arms] lm_gsf_mu_kg;
-    vector<lower=0, upper=1>[n_arms] lm_gsf_mu_phi;
+    vector<lower=0.0000001>[n_studies] lm_gsf_mu_bsld;
+    vector<lower=0.0000001>[n_arms] lm_gsf_mu_ks;
+    vector<lower=0.0000001>[n_arms] lm_gsf_mu_kg;
+    vector<lower=0.0000001, upper=0.9999999>[n_arms] lm_gsf_mu_phi;
 
     real<lower=0> lm_gsf_omega_bsld;
     real<lower=0> lm_gsf_omega_ks;
@@ -28,6 +28,7 @@ parameters{
     vector[Nind] lm_gsf_eta_tilde_phi;
 
 }
+
 
 
 

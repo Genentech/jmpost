@@ -88,17 +88,12 @@ LinkGSF <- function(
     }
 
     stan_full <- merge(
-        StanModule(rendered_link),
-        stan_components
-    )
-    
-    full_plus_functions <- merge(
-        StanModule("lm-gsf/functions.stan"),
-        stan_full
+        stan_components,
+        StanModule(rendered_link)
     )
 
     x <- Link(
-        stan = full_plus_functions,
+        stan = stan_full,
         parameters = parameters
     )
 
@@ -165,7 +160,5 @@ link_gsf_dsld <- function(
         contribution_fname = "link_dsld_contribution"
     )
 }
-
-
 
 

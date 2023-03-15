@@ -4,17 +4,19 @@ functions {
     //
     // Source - lm-gsf/link_ttg.stan
     //
-    matrix ttg(
+    matrix link_ttg_contribution(
         matrix time,
-        row_vector psi_bsld,
-        row_vector psi_ks,
-        row_vector psi_kg,
-        row_vector psi_phi
+        vector psi_bsld,
+        vector psi_ks,
+        vector psi_kg,
+        vector psi_phi
     ) {
-        row_vector[num_elements(psi_ks)] num = logit(psi_phi) + log(psi_ks ./ psi_kg);
-        row_vector[num_elements(psi_ks)] denom = psi_ks + psi_kg;
-        row_vector[num_elements(psi_ks)] ttg_contribution = num ./ denom;
-        matrix[rows(time), cols(time)] ttg_contribution_matrix = rep_matrix(ttg_contribution, rows(time));
+        int nrows = rows(psi_bsld);
+        int ncols = cols(time);
+        vector[nrows] num = logit(psi_phi) + log(psi_ks ./ psi_kg);
+        vector[nrows] denom = psi_ks + psi_kg;
+        vector[nrows] ttg_contribution = num ./ denom;
+        matrix[nrows, ncols] ttg_contribution_matrix = rep_matrix(ttg_contribution, ncols);
         return ttg_contribution_matrix;
     }
 }

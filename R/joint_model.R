@@ -11,14 +11,6 @@
     )
 )
 
-# functions = paste0(stan_joint@functions, collapse = "\n"),
-# data = paste0(stan_joint@data, collapse = "\n"),
-# transformed_data = paste0(stan_joint@transformed_data, collapse = "\n"),
-# parameters = paste0(stan_joint@parameters, collapse = "\n"),
-# transformed_parameters = paste0(stan_joint@transformed_parameters, collapse = "\n"),
-# model = paste0(stan_joint@model, collapse = "\n"),
-
-
 
 #' @export
 JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = NULL) {
@@ -96,28 +88,19 @@ setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
     definition = function(object, ..., exe_file = NULL) {
-        
         args <- list(...)
-        
-        if ("chains" %in% names(args)) {
-            nchains <- args[["chains"]] 
-        } else {
-            nchains <- 1
+        if (!"init" %in% names(args)) {
+            args[["init"]] <- function() as.list(object@inits)
         }
-        
-        inits <- replicate(nchains, as.list(object@inits), simplify = FALSE)
-        
         model <- compileStanModel(object, exe_file)
-        model$sample(
-            ...,
-            init = inits
-        )
+        do.call(model$sample, args)
     }
 )
 
 
 add_missing_stan_blocks <- function(x) {
     # STAN_BLOCKS is defined as a global variable in stan_module.R
+    # TODO - Make it an argument to the function
     for (block in names(STAN_BLOCKS)) {
         if (is.null(x[[block]])) {
             x[[block]] <- ""

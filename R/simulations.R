@@ -21,6 +21,20 @@ sld <- function(time, b, s, g, phi) {
 }
 
 
+ttg <- function(time, b, s, g, phi) {
+    t1 <- (log(s * phi / (g * (1 - phi))) / (g + s))
+    t1[t1 <= 0] <- 0
+    return(t1)
+}
+
+
+dsld <- function(time, b , s, g, phi) {
+    t1 <- (1 - phi) * g * exp(g * time)
+    t2 <- phi * s * exp(-s * time)
+    return(b * (t1 - t2))
+}
+
+
 
 # TODO - Need to enable code for link functions (currently implement as no-link)
 #' @export
@@ -38,6 +52,8 @@ sim_lm_gsf <- function(
     omega_s = 0.15,
     omega_g = 0.225,
     omega_phi = 0.75,
+    link_dsld = 0,
+    link_ttg = 0,
     .debug = FALSE
 ) {
     function(lm_base) {
@@ -65,16 +81,14 @@ sim_lm_gsf <- function(
             dplyr::mutate(psi_g = exp(log(mu_g[arm_n]) + eta_g * omega_g)) |>
             dplyr::mutate(psi_phi = plogis(qlogis(mu_phi[arm_n]) + eta_phi * omega_phi))
 
-        # TODO - time is currently converted to year scale for sld calculation
-        #        as the psi default values are based on those provided by Daniels
-        #        original code which was also on the year scale
-        #        would be good to convert them to be on the day-scale
         lm_dat <- lm_base |>
             dplyr::select(-study, -arm) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
-            dplyr::mutate(mu_sld = sld(time / 365, psi_b, psi_s, psi_g, psi_phi)) |>
+            dplyr::mutate(mu_sld = sld(time, psi_b, psi_s, psi_g, psi_phi)) |>
+            dplyr::mutate(dsld = dsld(time, psi_b, psi_s, psi_g, psi_phi)) |>
+            dplyr::mutate(ttg = ttg(time, psi_b, psi_s, psi_g, psi_phi)) |>
             dplyr::mutate(sld = rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
-            dplyr::mutate(log_haz_link = 0)
+            dplyr::mutate(log_haz_link = link_dsld * dsld + link_ttg * ttg)
 
         if (!.debug) {
             lm_dat <- lm_dat |> dplyr::select(pt, time, sld, log_haz_link, study, arm)
@@ -123,7 +137,7 @@ sim_os_weibull <- function(lambda, gamma) {
 #' @export
 sim_os_exponential <- function(lambda) {
     function(time) {
-        lambda
+        log(lambda)
     }
 }
 
@@ -156,7 +170,7 @@ get_timepoints <- function(x) {
 
 
 
-# TODO - Update to enable multiple studys ? 
+# TODO - Update to enable multiple studys ?
 #' @export
 simulate_joint_data <- function(
     n_arm = c(50, 80),   # Number of arms and number of subjects per arm
@@ -190,24 +204,34 @@ simulate_joint_data <- function(
         pt = u_pts,
         stringsAsFactors = FALSE
     ) |>
-        tibble::as_tibble()
+        tibble::as_tibble() |>
+        dplyr::mutate(width = rep(bounds$width, times = n))
 
-    lm_dat <- time_dat |>
-        dplyr::left_join(dplyr::select(os_baseline, pt, arm, study), by = "pt") |>
+    time_dat_baseline <- time_dat |>
+        dplyr::left_join(os_baseline, by = "pt")
+
+    lm_dat <- time_dat_baseline |>
+        dplyr::select(pt, time, arm, study) |>
         lm_fun()
+    
+    assert_that(
+        all(lm_dat$pt == time_dat_baseline$pt),
+        all(lm_dat$time == time_dat_baseline$time),
+        msg = "The longitudinal dataset must be sorted by pt, time"
+    )
 
-    os_dat <- time_dat |>
-        dplyr::left_join(dplyr::select(bounds, time, width), by = "time") |>
-        dplyr::left_join(os_baseline, by = "pt") |>
-        dplyr::left_join(dplyr::select(lm_dat, pt, time, log_haz_link), by = c("pt", "time")) |>
+    os_dat_chaz <- time_dat_baseline |>
+        dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
         dplyr::mutate(log_bl_haz = os_fun(time)) |>
         dplyr::mutate(hazard_instant = exp(log_bl_haz + log_haz_cov + log_haz_link)) |>
         dplyr::mutate(hazard_interval = hazard_instant * width) |>
         dplyr::group_by(pt) |>
         dplyr::mutate(chazard = cumsum(hazard_interval)) |>
+        dplyr::ungroup()
+    
+    os_dat <- os_dat_chaz|>
         dplyr::filter(chazard_limit <= chazard) |>
         dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
-        dplyr::arrange(pt, time) |>
         dplyr::group_by(pt) |>
         dplyr::slice(1) |>
         dplyr::ungroup() |>
@@ -215,16 +239,41 @@ simulate_joint_data <- function(
         dplyr::mutate(time = dplyr::if_else(event == 1, time, time_cen)) |>
         dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm)
 
+    os_dat_censor <- os_dat_chaz |>
+        dplyr::group_by(pt) |>
+        dplyr::slice(1) |>
+        dplyr::mutate(time = max(times)) |>
+        dplyr::mutate(event = 0) |>
+        dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm) |>
+        dplyr::filter(!pt %in% os_dat$pt)
+    
+    if (!nrow(os_dat_censor)== 0 ) {
+        message(sprintf("%i patients did not die before max(times)", nrow(os_dat_censor)))
+    }
+
+    os_dat_complete <- os_dat |>
+        dplyr::bind_rows(os_dat_censor) |>
+        dplyr::arrange(pt)
+
+    os_time <- rep(os_dat_complete$time, each = length(bounds$time))
+    
+    assert_that(
+        length(os_time) == nrow(lm_dat),
+        all(lm_dat$pt == rep(os_dat_complete$pt, each = length(bounds$time)))
+    )
+
     lm_dat2 <- lm_dat |>
-        dplyr::inner_join(dplyr::select(os_dat, pt, os_time = time), by = "pt") |>
+        dplyr::mutate(os_time = os_time) |>
         dplyr::mutate(observed = (time <= os_time)) |>
-        dplyr::mutate(observed = dplyr::if_else(is.na(observed), FALSE, observed)) |>
         dplyr::select(-os_time, -log_haz_link)
 
-    assertthat::assert_that(nrow(lm_dat) == n * length(times))
-    assertthat::assert_that(n == nrow(os_dat))
-
-    return(list(os = os_dat, lm = lm_dat2))
+    assertthat::assert_that(
+        length(unique(os_dat_complete$pt)) == n,
+        n == nrow(os_dat_complete),
+        all(os_dat_complete$time >= 0),
+        all(os_dat_complete$event %in% c(0, 1)),
+        nrow(lm_dat2) == n * length(bounds$time),
+        all(!is.na(lm_dat2$observed))
+    )
+    return(list(os = os_dat_complete, lm = lm_dat2))
 }
-
-

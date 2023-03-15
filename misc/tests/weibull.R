@@ -4,8 +4,8 @@ devtools::load_all()
 library(bayesplot)
 
 jlist <- simulate_joint_data(
-    n_arm = c(100, 100),
-    max_time = 2000,
+    n_arm = c(1000, 1000),
+    times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -16,7 +16,7 @@ jlist <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(
         z_sigma = 0.3,
         intercept = 30,
-        slope = 0.2,
+        mu_slope = 0.2,
         sigma = 3, 
         phi = 0
     ),
@@ -46,9 +46,7 @@ mp <- sampleStanModel(
     data = stan_data,
     iter_sampling = 1500,
     iter_warmup = 1000,
-    chains = 4,
-    parallel_chains = 4,
-    thin = 2,
+    chains = 1,
     exe_file = file.path("local", "full")
 )
 

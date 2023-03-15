@@ -1,5 +1,4 @@
 
-
 devtools::document()
 devtools::load_all()
 library(bayesplot)
@@ -15,7 +14,7 @@ jlist <- simulate_joint_data(
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_random_slope(phi = 0),
-    os_fun = sim_os_exponential(lambda = log(1/100))
+    os_fun = sim_os_exponential(lambda = 1/100)
 )
 
 dat_os <- jlist$os
@@ -54,16 +53,7 @@ mp$summary(vars)
 
 
 
-mcmc_trace(mp$draws("sm_weibull_ph_lambda"))
-mcmc_trace(mp$draws("sm_weibull_ph_gamma"))
-
-
-library(survival)
-coxph(
-    Surv(time, event) ~ cov_cat + cov_cont,
-    data = dat_os
-)
-
+mcmc_trace(mp$draws("sm_exp_lambda"))
 
 
 
