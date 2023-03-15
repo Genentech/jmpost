@@ -7,12 +7,14 @@
     contains = "LongitudinalModel"
 )
 
+
 # TODO - Allow input to be with Prior or Parameter
 #' @export
 LongitudinalRandomSlope <- function(
-    lm_rs_intercept = Parameter(prior_normal(30, 4), init = 30),
-    lm_rs_slope = Parameter(prior_normal(0, 10), init = 0.001),
-    lm_rs_sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001)
+    intercept = Parameter(prior_normal(30, 4), init = 30),
+    slope_mu = Parameter(prior_normal(0, 10), init = 0.001),
+    slope_sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001),
+    sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001)
 ) {
 
     stan <- StanModule(
@@ -23,9 +25,10 @@ LongitudinalRandomSlope <- function(
         LongitudinalModel(
             stan = stan,
             parameters = ParameterList(
-                lm_rs_intercept = lm_rs_intercept,
-                lm_rs_slope = lm_rs_slope,
-                lm_rs_sigma = lm_rs_sigma
+                lm_rs_intercept = intercept,
+                lm_rs_slope_mu = slope_mu,
+                lm_rs_slope_sigma = slope_sigma,
+                lm_rs_sigma = sigma
             )
         )
     )

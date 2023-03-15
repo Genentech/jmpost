@@ -23,13 +23,13 @@ jm <- JointModel(
 ### Example 2 - Manually specify priors - Fit models independently (no link)
 
 lm <- LongitudinalRandomSlope(
-    lm_rs_intercept = prior_normal(40, 5),                  # Just prior
-    lm_rs_slope = Parameter(prior_normal(10, 2), init = 30) # Prior and init
+    intercept = prior_normal(40, 5),                     # Just prior
+    slope_mu = Parameter(prior_normal(10, 2), init = 30) # Prior and init
 )
 
 
 sm <- SurvivalWeibullPH(
-    sm_weibull_ph_lambda = prior_gamma(0.2, 0.5)
+    lambda = prior_gamma(0.2, 0.5)
 )
 
 jm <- JointModel(
@@ -64,7 +64,7 @@ write_stan(jm, "local/debug.stan")
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
     n = 1000,
-    max_time = 2000,
+    times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -75,7 +75,7 @@ jlist <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(
         intercept = 30,
         sigma = 3,
-        slope = 2,
+        mu_slope = 2,
         z_sigma = 0.2,
         phi = 0
     ),
@@ -140,81 +140,6 @@ vars <- c(
     "lm_rs_intercept", "lm_rs_slope", "lm_rs_sigma", "link_lm_phi"
 )
 draws_means |> filter(key %in% vars)
-
-
-
-
-
-###################### Debug Section - Please Ignore
-
-
-##############################
-#
-#  Check bayesian models rs parameters are correct
-#
-
-slopes <- tibble(
-    est = draws_means[grep("lm_rs_rslope", names(draws_means), value = TRUE)],
-    actual = dat_lm |> group_by(pt) |> slice(1) |> pull(slope_ind)
-)
-
-mean(slopes$actual - slopes$est)
-sd(slopes$actual - slopes$est)
-
-ggplot(slopes, aes(x = est, y = actual)) +
-    geom_point() +
-    geom_abline()
-
-
-
-
-
-
-
-
-##############################
-#
-#  Test random effects using MLE approach
-#
-
-library(lme4)
-
-mod <- lmer(outcome ~ time + (time -1 | pt), data = dat_lm, REML = F)
-
-fixef(mod)
-
-slopes <- tibble(
-    est = ranef(mod)$pt$time + fixef(mod)[["time"]],
-    actual = dat_lm |>
-        group_by(pt) |>
-        slice(1) |> pull(slope_ind)
-)
-
-ggplot(slopes, aes(x = est, y = actual )) +
-    geom_point() +
-    geom_abline()
-
-
-
-
-##############################
-#
-# Test MLE OS parameters are correct from simulation
-#
-
-coxph(data = dat_os, Surv(time, event) ~ cov_cat + cov_cont)
-
-mod <- survreg(Surv(time, event) ~ cov_cat + cov_cont, data = dat_os, dist = "weibull")
-
-c(
-    "lambda" = exp(-coef(mod)[["(Intercept)"]]/mod$scale),
-    "gamma" = 1/mod$scale,
-    -coef(mod)[-1]/mod$scale
-)
-
-
-
-
 
 
 
