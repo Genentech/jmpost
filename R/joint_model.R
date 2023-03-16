@@ -6,17 +6,10 @@
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
-        stan = "StanModule"
+        stan = "StanModule",
+        inits = "numeric"
     )
 )
-
-# functions = paste0(stan_joint@functions, collapse = "\n"),
-# data = paste0(stan_joint@data, collapse = "\n"),
-# transformed_data = paste0(stan_joint@transformed_data, collapse = "\n"),
-# parameters = paste0(stan_joint@parameters, collapse = "\n"),
-# transformed_parameters = paste0(stan_joint@transformed_parameters, collapse = "\n"),
-# model = paste0(stan_joint@model, collapse = "\n"),
-
 
 
 #' @export
@@ -38,7 +31,16 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
-    .JointModel(stan = StanModule(stan_full))
+    
+    full_plus_funs <- merge(
+        StanModule("base/functions.stan"),
+        StanModule(stan_full)
+    )
+    
+    .JointModel(
+        stan = full_plus_funs,
+        inits = getInits(parameters)
+    )
 }
 
 
@@ -86,16 +88,19 @@ setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
     definition = function(object, ..., exe_file = NULL) {
+        args <- list(...)
+        if (!"init" %in% names(args)) {
+            args[["init"]] <- function() as.list(object@inits)
+        }
         model <- compileStanModel(object, exe_file)
-        model$sample(
-            ...
-        )
+        do.call(model$sample, args)
     }
 )
 
 
 add_missing_stan_blocks <- function(x) {
     # STAN_BLOCKS is defined as a global variable in stan_module.R
+    # TODO - Make it an argument to the function
     for (block in names(STAN_BLOCKS)) {
         if (is.null(x[[block]])) {
             x[[block]] <- ""

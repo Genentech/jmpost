@@ -12,7 +12,7 @@ Description: TODO
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Imports:
     assertthat,
     dplyr,
@@ -30,10 +30,11 @@ Collate:
     'parameters.R'
     'stan_module.R'
     'stan_model.R'
+    'lm_abstract.R'
     'link_abstract.R'
     'link_none.R'
-    'lm_abstract.R'
     'lm_random_slope.R'
+    'lm_gsf.R'
     'sm_abstract.R'
     'sm_exponential.R'
     'sm_weibull.R'
