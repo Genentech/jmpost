@@ -8,7 +8,6 @@
 )
 
 
-# TODO - Allow input to be with Prior or Parameter
 #' @export
 LongitudinalRandomSlope <- function(
     intercept = Parameter(prior_normal(30, 4), init = 30),

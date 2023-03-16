@@ -61,10 +61,6 @@ LinkGSF <- function(
     )
 ) {
 
-    # TODO - Allow for single LinkAbstract (right now it must be a list
-    #        of LinkAbstracts, even if just 1)
-    # TODO - Check all elements of a list input are LinkAbstract
-
     items <- lapply(
         components,
         function(x) {
@@ -101,7 +97,6 @@ LinkGSF <- function(
 }
 
 
-# TODO - Priors
 .link_gsf_abstract <- setClass(
     Class = "link_gsf_abstract",
     slots = list(

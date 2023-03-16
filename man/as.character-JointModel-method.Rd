@@ -2,7 +2,7 @@
 % Please edit documentation in R/joint_model.R
 \name{as.character,JointModel-method}
 \alias{as.character,JointModel-method}
-\title{as character joint model TODO}
+\title{As character}
 \usage{
 \S4method{as.character}{JointModel}(x)
 }
@@ -10,5 +10,5 @@
 \item{x}{A \code{JointModel} object}
 }
 \description{
-as character joint model TODO
+As character
 }

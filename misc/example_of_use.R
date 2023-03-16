@@ -57,13 +57,20 @@ jm <- JointModel(
 
 
 
+### Example of actually running the model
+
+jm <- JointModel(
+    longitudinal_model = LongitudinalRandomSlope()
+)
+
+
 # Create local file with stan code for debugging purposes ONLY
 write_stan(jm, "local/debug.stan")
 
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n = 1000,
+    n_arm = c(400, 400),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -74,9 +81,9 @@ jlist <- simulate_joint_data(
     beta_cont = 0.3,
     lm_fun = sim_lm_random_slope(
         intercept = 30,
+        slope_mu = c(1, 2),
+        slope_sigma = 0.2,
         sigma = 3,
-        mu_slope = 2,
-        z_sigma = 0.2,
         phi = 0
     ),
     os_fun = sim_os_weibull(
@@ -117,32 +124,12 @@ mp <- sampleStanModel(
 ### Example of how to compile model without running it
 # model <- compileStanModel(jm, file.path("local", "full_stan"))
 
-
-### Extract parameters and calculate confidence intervals
-draws_means <- mp$draws(format = "df") |>
-    gather() |>
-    group_by(key) |>
-    summarise(
-        mean = mean(value),
-        sd = sd(value),
-        lci = mean - 1.96 * sd,
-        uci = mean + 1.96 * sd
-     )
-
-#### Get a list of all named parameters
-# names(draws_means) |> str_replace("\\[.*\\]", "[]") |> unique()
-
-### Select which parameters we actually care about
-### Not all will exist depending on which model was run
 vars <- c(
-    "sm_weibull_ph_lambda", "sm_weibull_ph_gamma",
-    "beta_os_cov[1]", "beta_os_cov[2]", "beta_os_cov[3]",
-    "lm_rs_intercept", "lm_rs_slope", "lm_rs_sigma", "link_lm_phi"
+    "lm_rs_intercept",
+    "lm_rs_slope_mu",
+    "lm_rs_slope_sigma",
+    "lm_rs_sigma"
 )
-draws_means |> filter(key %in% vars)
 
 
-
-
-
-
+mp$summary(vars)

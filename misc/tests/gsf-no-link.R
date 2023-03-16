@@ -95,8 +95,6 @@ jm <- JointModel(
     )
 )
 
-# TODO - Looks like initial values need to be rep'd for vectors i.e. if 2 arms
-#        then rep initial value twice
 x <- as.list(jm@inits)
 x$lm_gsf_mu_bsld <- c(70)
 x$lm_gsf_mu_kg <- c(0.3, 0.3)

@@ -15,7 +15,8 @@ Link <- function(stan = StanModule(), parameters = ParameterList(), ...) {
     .Link(stan = stan, parameters = parameters, ...)
 }
 
-# TODO - Merge parameters
+
+
 setMethod(
     f = "addLink",
     signature = c("LongitudinalModel", "Link"),

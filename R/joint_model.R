@@ -2,7 +2,6 @@
 
 
 
-# TODO - Documentation
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
@@ -43,8 +42,7 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
     )
 }
 
-
-#' as character joint model TODO
+#' As character
 #' @param x A `JointModel` object
 #' @export
 setMethod(
