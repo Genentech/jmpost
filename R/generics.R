@@ -39,5 +39,9 @@ setGeneric(
 )
 
 
+setGeneric(
+    name = "getInits",
+    def = function(object, ...) standardGeneric("getInits")
+)
 
 
