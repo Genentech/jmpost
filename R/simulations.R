@@ -36,7 +36,6 @@ dsld <- function(time, b , s, g, phi) {
 
 
 
-# TODO - Need to enable code for link functions (currently implement as no-link)
 #' @export
 sim_lm_gsf <- function(
     sigma = 0.01,
@@ -98,20 +97,29 @@ sim_lm_gsf <- function(
 }
 
 
-# TODO - Need to be able to provide 1 slope per arm to enable a "treatment effect"
 #' @export
 sim_lm_random_slope <- function(
-    z_sigma = 0.5,
     intercept = 50,
-    mu_slope = 0.01,
+    slope_mu = c(0.01, 0.03),
+    slope_sigma = 0.5,
     sigma = 2,
     phi = 0.1,
     .debug = FALSE
 ) {
     function(lm_base) {
+        
+        assertthat::assert_that(
+            length(slope_mu) == 1 | length(slope_mu) == length(unique(lm_base$arm)),
+            msg = "slope_mu should either be length 1 or equal to the length of n_arm"
+        )
+        
+        if (length(slope_mu) == 1) {
+            slope_mu <- rep(slope_mu, length(unique(lb_base$arm)))
+        }
+        
         rs_baseline <- lm_base |>
-            dplyr::distinct(pt) |>
-            dplyr::mutate(slope_ind = rnorm(dplyr::n(), mu_slope, sd = z_sigma))
+            dplyr::distinct(pt, arm) |>
+            dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma))
 
         lm_dat <- lm_base |>
             dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>
@@ -170,7 +178,6 @@ get_timepoints <- function(x) {
 
 
 
-# TODO - Update to enable multiple studys ?
 #' @export
 simulate_joint_data <- function(
     n_arm = c(50, 80),   # Number of arms and number of subjects per arm
@@ -186,18 +193,20 @@ simulate_joint_data <- function(
     u_pts <- sprintf("pt_%05i", seq_len(n))
     bounds <- get_timepoints(times)
 
+    ARMS <- paste0("Group-", seq_along(n_arm))
+
     os_baseline <- dplyr::tibble(pt = u_pts) |> 
         dplyr::mutate(cov_cont = rnorm(n)) |> 
         dplyr::mutate(cov_cat = factor(
             sample(c("A", "B", "C"), replace = TRUE, size = n),
             levels = c("A", "B", "C")
         )) |> 
-        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |> 
-        dplyr::mutate(survival = runif(n)) |> 
-        dplyr::mutate(chazard_limit = -log(survival)) |> 
+        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |>
+        dplyr::mutate(survival = runif(n)) |>
+        dplyr::mutate(chazard_limit = -log(survival)) |>
         dplyr::mutate(time_cen = rexp(n, lambda_cen)) |>
-        dplyr::mutate(study = "Study-1") |>
-        dplyr::mutate(arm = rep(paste0("Group-", seq_along(n_arm)), times = n_arm))
+        dplyr::mutate(study = factor("Study-1")) |>
+        dplyr::mutate(arm = factor(rep(ARMS, times = n_arm), levels = ARMS))
 
     time_dat <- expand.grid(
         time = as.double(bounds$time),

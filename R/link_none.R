@@ -13,7 +13,6 @@ LinkNone <- function() {
     .LinkNone(Link(stan = stan))
 }
 
-# TODO - Document that you can override this if adding a no-link is not simple
 setMethod(
     f = "addLink",
     signature = c("LongitudinalModel", "LinkNone"),

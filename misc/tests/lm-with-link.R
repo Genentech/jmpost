@@ -24,7 +24,7 @@ write_stan(jm, "local/debug.stan")
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n = c(800, 800),
+    n = c(400, 400),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -36,8 +36,8 @@ jlist <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(
         intercept = 30,
         sigma = 3,
-        mu_slope = 2,
-        z_sigma = 0.2,
+        slope_mu = c(1,3),
+        slope_sigma = 0.2,
         phi = 0.1, 
         .debug = TRUE
     ),
@@ -81,7 +81,8 @@ vars <- c(
     "beta_os_cov[2]",
     "beta_os_cov[3]",
     "lm_rs_intercept",
-    "lm_rs_slope_mu",
+    "lm_rs_slope_mu[1]",
+    "lm_rs_slope_mu[2]",
     "lm_rs_slope_sigma",
     "lm_rs_sigma",
     "link_lm_phi"

@@ -11,10 +11,8 @@ STAN_BLOCKS <- list(
 
 
 
-# TODO - print method for stanmodule
 
 
-# TODO - Documentation
 #' StanAll class object
 .StanModule <- setClass(
     Class = "StanModule",
@@ -193,13 +191,11 @@ is_file <- function(filename = NULL) {
 
 
 #' read_stan returns stan code as a character.
-#' TODO - Rework this, users shouldn't need to know about our inst-file structures
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 #' @export
 read_stan <- function(string) {
-    # TODO - Make this only apply if in development environment
     local_inst_file <- file.path("inst", "stan", string)
     system_file <- system.file(file.path("stan", string), package = "jmpost")
     local_file <- string
@@ -214,7 +210,6 @@ read_stan <- function(string) {
 
 
 
-# TODO - Documentation
 as_stan_file <- function(
     functions = "",
     data = "",
@@ -241,8 +236,6 @@ as_stan_file <- function(
 
 
 
-# TODO - Documentation
-# TODO - Check if R stan provides any parsers
 # Function only works if code is in format 
 # ```
 # data {
