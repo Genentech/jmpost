@@ -74,3 +74,6 @@ inst/stanmodels/stan_model
 
 # Include all gitkeep files
 !.gitkeep
+
+# Log files
+*.log
