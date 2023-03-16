@@ -6,12 +6,16 @@
 )
 
 #' @export
-SurvivalExponential <- function() {
-    stan <- StanModule(
-        x = "sm-exponential/model.stan"
-    )
+SurvivalExponential <- function(
+    lambda = Parameter(prior_gamma(2, 5), init = 1 / 200)
+) {
     .SurvivalExponential(
-        SurvivalModel(stan = stan)
+        SurvivalModel(
+            stan = StanModule("sm-exponential/model.stan"),
+            parameters = ParameterList(
+                sm_exp_lambda = lambda
+            )
+        )
     )
 }
 

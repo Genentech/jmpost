@@ -45,4 +45,20 @@ prior_gamma <- function(alpha, beta) {
     )
 }
 
+#' @export
+prior_lognormal <- function(mu, sigma) {
+    .Prior(
+        parameters = list(mu = mu, sigma = sigma),
+        repr = "lognormal({mu}, {sigma});"
+    )
+}
+
+
+#' @export
+prior_beta <- function(a, b) {
+    .Prior(
+        parameters = list(a = a, b = b),
+        repr = "beta({a}, {b});"
+    )
+}
 
