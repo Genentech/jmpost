@@ -99,19 +99,43 @@ dat_lm <- jlist$lm |>
     dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
     dplyr::arrange(time, pt)
 
-# mean(dat_os$time)
-# mean(dat_os$event)
+
+## TODO - Monday Morning
+# Chain 1 Exception: model_f47cc6b7b892b3e25fd58fdef6b25e91_model_namespace::model_f47cc6b7b892b3e25fd58fdef6b25e91_model: Nta_obs_y is 0, but must be greater than or equal to 1.000000 (in '/var/folders/hs/gyg0q5g94pz917klnkg7tnt80000gq/T/RtmpL44bGW/model-182f02133462b.stan', line 115, column 4 to column 27)
+# Warning: Chain 1 finished unexpectedly!
+
+# Warning message:
+# No chains finished successfully. Unable to retrieve the fit.
 
 
-## Prepare data for sampling
-stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
+## TODO - Double check implementation of how we pass the Data object to the model function
+##        as that was very rushed
 
+## TODO - Add load of data assertions in data handlers
+
+## TODO - Add unit tests for data handlers
+
+jdat <- DataJoint(
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
 
 ## Sample from JointModel
 
 mp <- sampleStanModel(
     jm,
-    data = stan_data,
+    data = jdat,
     iter_sampling = 1000,
     iter_warmup = 1000,
     chains = 1,

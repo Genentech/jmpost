@@ -80,11 +80,12 @@ setMethod(
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
-    definition = function(object, ..., exe_file = NULL) {
+    definition = function(object, data, ..., exe_file = NULL) {
         args <- list(...)
         if (!"init" %in% names(args)) {
             args[["init"]] <- function() as.list(object@inits)
         }
+        args[["data"]] <- as.StanData(data)
         model <- compileStanModel(object, exe_file)
         do.call(model$sample, args)
     }
