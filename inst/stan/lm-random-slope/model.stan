@@ -14,16 +14,29 @@ parameters {
 }
 
 
-model {
+transformed parameters {
     //
     // LongitudinalRandomSlope
     //
-    vector[Nta_total] lm_rs_rslope_ind;
-    for (i in 1:Nta_total) {
-        lm_rs_rslope_ind[i] = lm_rs_rslope[ind_index[i]];
-    }
-    target += normal_lpdf(lm_rs_rslope | lm_rs_slope_mu[arm_index], lm_rs_slope_sigma);
-    vector[Nta_total] lm_rs_mu = lm_rs_intercept + lm_rs_rslope_ind .* Tobs;
-    target += normal_lpdf(Yobs | lm_rs_mu, lm_rs_sigma);
+    
+    log_lik += vect_normal_log_dens(
+        lm_rs_rslope,
+        to_vector(lm_rs_slope_mu[arm_index]),
+        rep_vector(lm_rs_slope_sigma, Nind)
+    );
+    
+    vector[Nta_total] lm_rs_rslope_ind  = lm_rs_rslope[ind_index[1:Nta_total]];
+    
+    log_lik += csr_matrix_times_vector(
+        Nind,
+        Nta_total,
+        w_mat_inds_all_y,
+        v_mat_inds_all_y,
+        u_mat_inds_all_y,
+        vect_normal_log_dens(
+            Yobs,
+            lm_rs_intercept + lm_rs_rslope_ind .* Tobs,
+            rep_vector(lm_rs_sigma, Nta_total)
+        )
+    );
 }
-

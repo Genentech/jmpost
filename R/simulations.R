@@ -120,7 +120,7 @@ sim_lm_random_slope <- function(
         rs_baseline <- lm_base |>
             dplyr::distinct(pt, arm) |>
             dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma)) |>
-            select(-arm)
+            dplyr::select(-arm)
 
         lm_dat <- lm_base |>
             dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>

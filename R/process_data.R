@@ -38,6 +38,7 @@ as_stan_data <- function(os, lm, frm, cens_threshold = 5) {
     index_obs <- which(lm$sld >= cens_threshold)
     index_cen <- which(lm$sld < cens_threshold)
     
+    sparse_mat_inds_all_y <- rstan::extract_sparse_parts(mat_sld_index)
     sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[,index_obs])
     sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[,index_cen])
 
@@ -80,20 +81,34 @@ as_stan_data <- function(os, lm, frm, cens_threshold = 5) {
 
         # Sparse matrix parameters
         # Matrix of individuals x observed tumor assessments.
-        n_w_mat_inds_obs_y = length(sparse_mat_inds_obs_y$w),
+        n_mat_inds_obs_y = c(
+            length(sparse_mat_inds_obs_y$w),
+            length(sparse_mat_inds_obs_y$v),
+            length(sparse_mat_inds_obs_y$u)
+        ),
         w_mat_inds_obs_y = sparse_mat_inds_obs_y$w,
-        n_v_mat_inds_obs_y = length(sparse_mat_inds_obs_y$v),
         v_mat_inds_obs_y = sparse_mat_inds_obs_y$v,
-        n_u_mat_inds_obs_y = length(sparse_mat_inds_obs_y$u),
         u_mat_inds_obs_y = sparse_mat_inds_obs_y$u,
 
         # Matrix of individuals x censored tumor assessments.
-        n_w_mat_inds_cens_y = length(sparse_mat_inds_cens_y$w),
+        n_mat_inds_cens_y = c(
+            length(sparse_mat_inds_cens_y$w),
+            length(sparse_mat_inds_cens_y$v),
+            length(sparse_mat_inds_cens_y$u)
+        ),
         w_mat_inds_cens_y = sparse_mat_inds_cens_y$w,
-        n_v_mat_inds_cens_y = length(sparse_mat_inds_cens_y$v),
         v_mat_inds_cens_y = sparse_mat_inds_cens_y$v,
-        n_u_mat_inds_cens_y = length(sparse_mat_inds_cens_y$u),
-        u_mat_inds_cens_y = sparse_mat_inds_cens_y$u
+        u_mat_inds_cens_y = sparse_mat_inds_cens_y$u,
+        
+        # Matrix of all individuals tumour assessments
+        n_mat_inds_all_y = c(
+            length(sparse_mat_inds_all_y$w),
+            length(sparse_mat_inds_all_y$v),
+            length(sparse_mat_inds_all_y$u)
+        ),
+        w_mat_inds_all_y = sparse_mat_inds_all_y$w,
+        v_mat_inds_all_y = sparse_mat_inds_all_y$v,
+        u_mat_inds_all_y = sparse_mat_inds_all_y$u
     )
     
     model_data <- append(model_data_lm, model_data_os)
