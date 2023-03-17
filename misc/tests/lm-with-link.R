@@ -41,9 +41,8 @@ jlist <- simulate_joint_data(
         phi = 0.1, 
         .debug = TRUE
     ),
-    os_fun = sim_os_weibull(
+    os_fun = sim_os_exponential(
         lambda = 0.00333,  # 1/300
-        gamma = 0.97
     )
 )
 
@@ -61,7 +60,6 @@ stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
 
 
 ## Sample from JointModel
-dir.create(path = file.path("local"), showWarnings = FALSE)
 mp <- sampleStanModel(
     jm,
     data = stan_data,
