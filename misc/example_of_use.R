@@ -109,7 +109,6 @@ stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
 
 ## Sample from JointModel
 
-dir.create(path = file.path("local"), showWarnings = FALSE)
 mp <- sampleStanModel(
     jm,
     data = stan_data,

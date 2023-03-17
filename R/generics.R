@@ -1,5 +1,7 @@
 
-
+# "missing" = no argument provided
+# "NULL" = explicit NULL
+setClassUnion("empty", c("missing", "NULL"))
 
 setGeneric(
     name = "merge",
@@ -16,6 +18,7 @@ setGeneric(
     def = function(x, file_path) standardGeneric("write_stan")
 )
 
+#' @export
 setGeneric(
     name = "compileStanModel",
     def = function(object, exe_file) standardGeneric("compileStanModel")
