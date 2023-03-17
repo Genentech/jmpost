@@ -131,6 +131,34 @@ setMethod(
 )
 
 
+#' @export
+setMethod(
+    f = "compileStanModel",
+    signature = signature(object = "StanModule", exe_file = "character"),
+    definition = function(object, exe_file) {
+        if (!dir.exists(dirname(exe_file))) {
+            dir.create(dirname(exe_file), recursive = TRUE)
+        }
+        x <- cmdstanr::cmdstan_model(
+            stan_file = cmdstanr::write_stan_file(as.character(object)),
+            exe_file = exe_file
+        )
+        invisible(x)
+    }
+)
+
+
+#' @export
+setMethod(
+    f = "compileStanModel",
+    signature = signature(object = "StanModule", exe_file = "empty"),
+    definition = function(object, exe_file) {
+        exe_file <- file.path(tempdir(), "model")
+        invisible(compileStanModel(object, exe_file))
+    }
+)
+
+
 
 
 

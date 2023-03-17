@@ -69,17 +69,12 @@ setMethod(
 setMethod(
     f = "compileStanModel",
     signature = "JointModel",
-    definition = function(object, exe_file = NULL) {
-        if (is.null(exe_file)) {
-            exe_file = file.path(tempdir(), "model")
-        }
-        x <- cmdstanr::cmdstan_model(
-            stan_file = cmdstanr::write_stan_file(as.character(object)),
-            exe_file = exe_file
-        )
+    definition = function(object, exe_file) {
+        x <- compileStanModel(object@stan, exe_file)
         invisible(x)
     }
 )
+
 
 
 setMethod(

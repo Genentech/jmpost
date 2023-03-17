@@ -118,7 +118,6 @@ stan_data$Times
 
 ## Sample from JointModel
 
-dir.create(path = file.path("local"), showWarnings = FALSE)
 mp <- sampleStanModel(
     jm,
     data = stan_data,
