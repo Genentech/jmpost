@@ -35,22 +35,25 @@ data{
 
     // Matrix of individuals x observed tumor assessments (sparse matrix of 0s and 1s),
     // so the dimension is Nind x Nta_obs_y.
-    int<lower=1> n_w_mat_inds_obs_y;
-    vector[n_w_mat_inds_obs_y] w_mat_inds_obs_y;
-    int<lower=1> n_v_mat_inds_obs_y;
-    array[n_v_mat_inds_obs_y] int v_mat_inds_obs_y;
-    int<lower=1> n_u_mat_inds_obs_y;
-    array[n_u_mat_inds_obs_y] int u_mat_inds_obs_y;
+    array [3] int<lower=1> n_mat_inds_obs_y;
+    vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
+    array[n_mat_inds_obs_y[2]] int v_mat_inds_obs_y;
+    array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
 
 
     // Matrix of individuals x censored tumor assessments (sparse matrix of 0s and 1s).
     // so the dimension is Nind x Nta_cens_y.
-    int<lower=0> n_w_mat_inds_cens_y;
-    vector[n_w_mat_inds_cens_y] w_mat_inds_cens_y;
-    int<lower=0> n_v_mat_inds_cens_y;
-    array[n_v_mat_inds_cens_y] int v_mat_inds_cens_y;
-    int<lower=0> n_u_mat_inds_cens_y;
-    array[n_u_mat_inds_cens_y] int u_mat_inds_cens_y;
+    array [3] int<lower=0> n_mat_inds_cens_y;
+    vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
+    array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
+    array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
 
+
+    // Matrix of all individuals x tumor assessments (sparse matrix of 0s and 1s).
+    // so the dimension is Nind x Nta_total.
+    array [3] int<lower=0> n_mat_inds_all_y;
+    vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
+    array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
+    array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
 }
 
