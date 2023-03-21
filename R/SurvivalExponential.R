@@ -1,5 +1,8 @@
 
 
+#' @include SurvivalModel.R
+NULL
+
 .SurvivalExponential <- setClass(
     Class = "SurvivalExponential",
     contains = "SurvivalModel"

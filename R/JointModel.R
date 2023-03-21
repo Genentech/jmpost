@@ -1,5 +1,7 @@
 
-
+#' @include StanModule.R
+#' @include generics.R
+NULL
 
 
 .JointModel <- setClass(
@@ -30,12 +32,12 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
-    
+
     full_plus_funs <- merge(
         StanModule("base/functions.stan"),
         StanModule(stan_full)
     )
-    
+
     .JointModel(
         stan = full_plus_funs,
         inits = getInits(parameters)
@@ -85,7 +87,13 @@ setMethod(
         if (!"init" %in% names(args)) {
             args[["init"]] <- function() as.list(object@inits)
         }
-        args[["data"]] <- as.StanData(data)
+        if (is(data, "DataJoint")) {
+            args[["data"]] <- as.list(data)
+        } else if ( is(data, "list")) {
+            args[["data"]] <- data
+        } else {
+            stop("`data` must either be a list or a DataJoint object")
+        }
         model <- compileStanModel(object, exe_file)
         do.call(model$sample, args)
     }

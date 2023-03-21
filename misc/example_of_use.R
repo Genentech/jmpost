@@ -100,13 +100,6 @@ dat_lm <- jlist$lm |>
     dplyr::arrange(time, pt)
 
 
-## TODO - Monday Morning
-# Chain 1 Exception: model_f47cc6b7b892b3e25fd58fdef6b25e91_model_namespace::model_f47cc6b7b892b3e25fd58fdef6b25e91_model: Nta_obs_y is 0, but must be greater than or equal to 1.000000 (in '/var/folders/hs/gyg0q5g94pz917klnkg7tnt80000gq/T/RtmpL44bGW/model-182f02133462b.stan', line 115, column 4 to column 27)
-# Warning: Chain 1 finished unexpectedly!
-
-# Warning message:
-# No chains finished successfully. Unable to retrieve the fit.
-
 
 ## TODO - Double check implementation of how we pass the Data object to the model function
 ##        as that was very rushed
@@ -130,6 +123,9 @@ jdat <- DataJoint(
         threshold = 5
     )
 )
+
+x <- as.list(jdat)
+
 
 ## Sample from JointModel
 

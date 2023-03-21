@@ -42,7 +42,7 @@ jlist <- simulate_joint_data(
         .debug = TRUE
     ),
     os_fun = sim_os_exponential(
-        lambda = 0.00333,  # 1/300
+        lambda = 0.00333  # 1/300
     )
 )
 
@@ -56,13 +56,26 @@ dat_lm <- jlist$lm |>
 
 
 ## Prepare data for sampling
-stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
-
+jdat <- DataJoint(
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
 
 ## Sample from JointModel
 mp <- sampleStanModel(
     jm,
-    data = stan_data,
+    data = jdat,
     iter_sampling = 1000,
     iter_warmup = 1000,
     chains = 1,

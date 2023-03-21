@@ -40,10 +40,25 @@ jm <- JointModel(
 
 write_stan(jm, "local/debug.stan")
 
-stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
+jdat <- DataJoint(
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+
 mp <- sampleStanModel(
     jm,
-    data = stan_data,
+    data = jdat,
     iter_sampling = 1500,
     iter_warmup = 1000,
     chains = 1,
