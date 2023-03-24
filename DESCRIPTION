@@ -44,3 +44,4 @@ Collate:
     'SurvivalWeibullPH.R'
     'defaults.R'
     'simulations.R'
+    'utilities.R'

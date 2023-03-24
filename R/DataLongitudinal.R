@@ -2,6 +2,9 @@
 #' @include generics.R
 NULL
 
+
+setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
+
 #' @rdname DataLongitudinal
 .DataLongitudinal <- setClass(
     Class = "DataLongitudinal",
@@ -9,7 +12,7 @@ NULL
         data = "data.frame",
         formula = "formula",
         subject = "character",
-        threshold = "numeric"
+        threshold = "numeric_or_NULL"
     )
 )
 
@@ -35,7 +38,7 @@ NULL
 #' @export
 DataLongitudinal <- function(data, formula, subject, threshold = NULL) {
     .DataLongitudinal(
-        data = data,
+        data = remove_missing_rows(data, formula, c(subject)),
         formula = formula,
         subject = subject,
         threshold = threshold

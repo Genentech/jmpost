@@ -37,13 +37,16 @@ NULL
 #' @export
 DataSurvival <- function(data, formula, subject, arm , study) {
     .DataSurvival(
-        data = data,
+        data = remove_missing_rows(data, formula, c(subject, arm, study)),
         formula = formula,
         subject = subject,
         arm = arm,
         study = study
     )
 }
+
+
+
 
 
 setValidity(
@@ -134,7 +137,7 @@ setMethod(
 
         df <- as(x, "data.frame")
         vars <- extractVariableNames(x)
-
+        
         design_mat <- stats::model.matrix(vars$frm, data = df)
         remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
         design_mat <- design_mat[, -remove_index, drop = FALSE]
