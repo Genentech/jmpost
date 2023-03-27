@@ -8,6 +8,12 @@ devtools::document()
 devtools::load_all(export_all = FALSE)
 
 
+#######################
+#
+#  Part 1 - Examples of specifying different models (not executed)
+#
+#
+
 
 
 #### Example 1 - Fully specified model - using the defaults for everything
@@ -20,22 +26,18 @@ jm <- JointModel(
 
 
 
+
 ### Example 2 - Manually specify priors - Fit models independently (no link)
-
-lm <- LongitudinalRandomSlope(
-    intercept = prior_normal(40, 5),                     # Just prior
-    slope_mu = Parameter(prior_normal(10, 2), init = 30) # Prior and init
-)
-
-
-sm <- SurvivalWeibullPH(
-    lambda = prior_gamma(0.2, 0.5)
-)
 
 jm <- JointModel(
     link = LinkNone(),
-    longitudinal_model = lm,
-    survival_model = sm
+    longitudinal_model = LongitudinalRandomSlope(
+        intercept = prior_normal(40, 5),                     # Just prior
+        slope_mu = Parameter(prior_normal(10, 2), init = 30) # Prior and init
+    ),
+    survival_model = SurvivalWeibullPH(
+        lambda = prior_gamma(0.2, 0.5)
+    )
 )
 
 
@@ -44,6 +46,7 @@ jm <- JointModel(
 jm <- JointModel(
     survival_model = SurvivalWeibullPH()
 )
+
 
 
 ### Example 4 - Specify longitudinal model only
@@ -55,12 +58,18 @@ jm <- JointModel(
 
 
 
+#######################
+#
+#
+#  Part 2 - Example of fitting a model to data
+#
+#
 
-
-### Example of actually running the model
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope()
+    longitudinal_model = LongitudinalRandomSlope(),
+    link = LinkRandomSlope(),
+    survival_model = SurvivalWeibullPH()
 )
 
 
@@ -70,7 +79,7 @@ write_stan(jm, "local/debug.stan")
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n_arm = c(400, 400),
+    n_arm = c(500, 500),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -84,7 +93,7 @@ jlist <- simulate_joint_data(
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
         sigma = 3,
-        phi = 0
+        phi = 0.1
     ),
     os_fun = sim_os_weibull(
         lambda = 0.00333,  # 1/300
@@ -93,25 +102,37 @@ jlist <- simulate_joint_data(
 )
 
 
-## Extract data to individual datasets
+## Extract data to individual datasets, reduce longitudinal data to specific time points
 dat_os <- jlist$os
 dat_lm <- jlist$lm |>
     dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
     dplyr::arrange(time, pt)
 
-# mean(dat_os$time)
-# mean(dat_os$event)
 
 
-## Prepare data for sampling
-stan_data <- as_stan_data(dat_os, dat_lm, ~ cov_cat + cov_cont)
+## Specify required variables to fit the model to within our dataset
+jdat <- DataJoint(
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+
 
 
 ## Sample from JointModel
-
 mp <- sampleStanModel(
     jm,
-    data = stan_data,
+    data = jdat,
     iter_sampling = 1000,
     iter_warmup = 1000,
     chains = 1,
@@ -119,16 +140,21 @@ mp <- sampleStanModel(
     exe_file = file.path("local", "full")
 )
 
-
-### Example of how to compile model without running it
-# model <- compileStanModel(jm, file.path("local", "full_stan"))
-
+## Inspect parameters from the model
 vars <- c(
     "lm_rs_intercept",
     "lm_rs_slope_mu",
     "lm_rs_slope_sigma",
-    "lm_rs_sigma"
+    "lm_rs_sigma",
+    "link_lm_phi",
+    "sm_weibull_ph_lambda",
+    "sm_weibull_ph_gamma",
+    "beta_os_cov"
 )
 
 
 mp$summary(vars)
+
+
+str(mp)
+mp$metadata()

@@ -1,4 +1,10 @@
 
+#' @include LongitudinalModel.R
+#' @include StanModule.R
+#' @include generics.R
+#' @include Parameters.R
+#' @include Link.R
+NULL
 
 .LongitudinalGSF <- setClass(
     Class = "LongitudinalGSF",

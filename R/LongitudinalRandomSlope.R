@@ -1,5 +1,7 @@
 
-
+#' @include LongitudinalModel.R
+#' @include Link.R
+NULL
 
 
 .LongitudinalRandomSlope <- setClass(
@@ -19,7 +21,7 @@ LongitudinalRandomSlope <- function(
     stan <- StanModule(
         x = "lm-random-slope/model.stan"
     )
-    
+
     .LongitudinalRandomSlope(
         LongitudinalModel(
             stan = stan,

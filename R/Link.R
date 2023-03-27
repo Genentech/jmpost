@@ -1,5 +1,7 @@
-
-
+#' @include StanModule.R
+#' @include LongitudinalModel.R
+#' @include Parameters.R
+NULL
 
 .Link <- setClass(
     Class = "Link",

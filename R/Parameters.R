@@ -1,4 +1,7 @@
 
+#' @include generics.R
+#' @include Priors.R
+NULL
 
 
 .Parameter <- setClass(
