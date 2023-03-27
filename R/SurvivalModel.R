@@ -1,4 +1,7 @@
 
+#' @include StanModel.R
+NULL
+
 
 .SurvivalModel <- setClass(
     Class = "SurvivalModel",

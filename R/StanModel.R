@@ -1,4 +1,7 @@
 
+#' @include StanModule.R
+#' @include Parameters.R
+NULL
 
 
 .StanModel <- setClass(

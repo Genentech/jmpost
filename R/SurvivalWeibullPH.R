@@ -1,4 +1,6 @@
 
+#' @include SurvivalModel.R
+NULL
 
 .SurvivalWeibullPH <- setClass(
     Class = "SurvivalWeibullPH",

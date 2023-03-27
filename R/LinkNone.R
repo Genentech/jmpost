@@ -1,4 +1,8 @@
 
+#' @include generics.R
+#' @include Link.R
+#' @include LongitudinalModel.R
+NULL
 
 
 .LinkNone <- setClass(
@@ -7,7 +11,7 @@
 )
 
 
-#' @export 
+#' @export
 LinkNone <- function() {
     stan = StanModule()
     .LinkNone(Link(stan = stan))

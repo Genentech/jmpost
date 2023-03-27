@@ -1,4 +1,7 @@
 
+#' @include generics.R
+NULL
+
 STAN_BLOCKS <- list(
     functions = "functions",
     data = "data",
@@ -264,7 +267,7 @@ as_stan_file <- function(
 
 
 
-# Function only works if code is in format 
+# Function only works if code is in format
 # ```
 # data {
 #     <code>
@@ -296,7 +299,7 @@ as_stan_fragments <- function(x) {
             results[[target]] <- c(results[[target]], line)
         }
     }
-    
+
     # Remove trailing "}"
     for (block in names(results)) {
         block_length <- length(results[[block]])
@@ -310,7 +313,7 @@ as_stan_fragments <- function(x) {
         }
         results[[block]] <- results[[block]][-seq(entry, block_length)]
     }
-    
+
     # Add missings
     for (block in names(STAN_BLOCKS)) {
         if(is.null(results[[block]])) {
@@ -319,5 +322,4 @@ as_stan_fragments <- function(x) {
     }
     return(results)
 }
-
 
