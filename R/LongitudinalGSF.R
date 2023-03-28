@@ -2,7 +2,8 @@
 #' @include LongitudinalModel.R
 #' @include StanModule.R
 #' @include generics.R
-#' @include Parameters.R
+#' @include ParameterList.R
+#' @include Parameter.R
 #' @include Link.R
 NULL
 
@@ -14,19 +15,19 @@ NULL
 
 #' @export
 LongitudinalGSF <- function (
-    mu_bsld = Parameter(prior_lognormal(log(55), 5), init = log(55)),
-    mu_ks = Parameter(prior_lognormal(0, 0.5), init = 0),
-    mu_kg = Parameter(prior_lognormal(-0.36, 1), init = -0.36),
-    mu_phi = Parameter(prior_beta(2, 8), init = 0.2),
-    omega_bsld = Parameter(prior_lognormal(0, 1), init = 0),
-    omega_ks = Parameter(prior_lognormal(0, 1), init = 0),
-    omega_kg = Parameter(prior_lognormal(0, 1), init = 0),
-    omega_phi = Parameter(prior_lognormal(0, 1), init = 0),
-    sigma = Parameter(prior_lognormal(-1.6, 0.8), init = -1.6),
-    tilde_bsld = Parameter(prior_normal(0, 5), init = 0),
-    tilde_ks = Parameter(prior_normal(0, 5), init = 0),
-    tilde_kg = Parameter(prior_normal(0, 5), init = 0),
-    tilde_phi = Parameter(prior_normal(0, 5), init = 0)
+    mu_bsld = prior_lognormal(log(55), 5, init = 55),
+    mu_ks = prior_lognormal(0, 0.5, init = 0),
+    mu_kg = prior_lognormal(-0.36, 1, init = -0.36),
+    mu_phi = prior_beta(2, 8, init = 0.2),
+    omega_bsld = prior_lognormal(0, 1, init = 0),
+    omega_ks = prior_lognormal(0, 1, init = 0),
+    omega_kg = prior_lognormal(0, 1, init = 0),
+    omega_phi = prior_lognormal(0, 1, init = 0),
+    sigma = prior_lognormal(-1.6, 0.8, init = -1.6),
+    tilde_bsld = prior_normal(0, 5, init = 0),
+    tilde_ks = prior_normal(0, 5, init = 0),
+    tilde_kg = prior_normal(0, 5, init = 0),
+    tilde_phi = prior_normal(0, 5, init = 0)
 ) {
     x <- LongitudinalModel(
         stan = merge(
@@ -34,19 +35,19 @@ LongitudinalGSF <- function (
             StanModule("lm-gsf/functions.stan")
         ),
         parameters = ParameterList(
-            lm_gsf_mu_bsld = mu_bsld,
-            lm_gsf_mu_ks = mu_ks,
-            lm_gsf_mu_kg = mu_kg,
-            lm_gsf_mu_phi = mu_phi,
-            lm_gsf_omega_bsld = omega_bsld,
-            lm_gsf_omega_ks = omega_ks,
-            lm_gsf_omega_kg = omega_kg,
-            lm_gsf_omega_phi = omega_phi,
-            lm_gsf_sigma = sigma,
-            lm_gsf_eta_tilde_bsld = tilde_bsld,
-            lm_gsf_eta_tilde_ks = tilde_ks,
-            lm_gsf_eta_tilde_kg = tilde_kg,
-            lm_gsf_eta_tilde_phi = tilde_phi
+            Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld),
+            Parameter(name = "lm_gsf_mu_ks", prior = mu_ks),
+            Parameter(name = "lm_gsf_mu_kg", prior = mu_kg),
+            Parameter(name = "lm_gsf_mu_phi", prior = mu_phi),
+            Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld),
+            Parameter(name = "lm_gsf_omega_ks", prior = omega_ks),
+            Parameter(name = "lm_gsf_omega_kg", prior = omega_kg),
+            Parameter(name = "lm_gsf_omega_phi", prior = omega_phi),
+            Parameter(name = "lm_gsf_sigma", prior = sigma),
+            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = tilde_bsld),
+            Parameter(name = "lm_gsf_eta_tilde_ks", prior = tilde_ks),
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = tilde_kg),
+            Parameter(name = "lm_gsf_eta_tilde_phi", prior = tilde_phi)
         )
     )
     .LongitudinalGSF(x)
@@ -135,11 +136,11 @@ link_gsf_abstract <- function(stan, parameter, parameter_name, contribution_fnam
 )
 #' @export
 link_gsf_ttg <- function(
-    gamma = Parameter(prior_normal(0, 5), init = 0)
+    gamma = prior_normal(0, 5, init = 0)
 ) {
     link_gsf_abstract(
         stan = StanModule("lm-gsf/link_ttg.stan"),
-        parameter = ParameterList(lm_gsf_gamma = gamma),
+        parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma)),
         parameter_name = "lm_gsf_gamma",
         contribution_fname = "link_ttg_contribution"
     )
@@ -156,7 +157,7 @@ link_gsf_dsld <- function(
 ) {
     link_gsf_abstract(
         stan = StanModule("lm-gsf/link_dsld.stan"),
-        parameter = ParameterList(lm_gsf_beta = beta),
+        parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta)),
         parameter_name = "lm_gsf_beta",
         contribution_fname = "link_dsld_contribution"
     )

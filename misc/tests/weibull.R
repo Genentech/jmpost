@@ -2,6 +2,7 @@
 devtools::document()
 devtools::load_all()
 library(bayesplot)
+library(survival)
 
 jlist <- simulate_joint_data(
     n_arm = c(1000, 1000),
@@ -13,13 +14,7 @@ jlist <- simulate_joint_data(
         "C" = 0.5
     ),
     beta_cont = 0.3,
-    lm_fun = sim_lm_random_slope(
-        z_sigma = 0.3,
-        intercept = 30,
-        mu_slope = 0.2,
-        sigma = 3, 
-        phi = 0
-    ),
+    lm_fun = sim_lm_random_slope(phi = 0),
     os_fun = sim_os_weibull(
         lambda = 0.00333,
         gamma = 0.97
@@ -35,7 +30,7 @@ dat_lm <- jlist$lm |>
 
 
 jm <- JointModel(
-    survival_model = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH()
 )
 
 write_stan(jm, "local/debug.stan")
@@ -66,11 +61,9 @@ mp <- sampleStanModel(
 )
 
 vars <- c(
-    "sm_weibull_ph_lambda",
-    "sm_weibull_ph_gamma",
-    "beta_os_cov[1]",
-    "beta_os_cov[2]",
-    "beta_os_cov[3]"
+    "sm_weibull_ph_lambda",   # 0.00333
+    "sm_weibull_ph_gamma",    # 0.97
+    "beta_os_cov"             # -0.1,  0.5,  0.3
 )
 
 mp$summary(vars)

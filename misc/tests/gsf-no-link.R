@@ -53,9 +53,9 @@ jlist <- simulate_joint_data(
 dat_os <- jlist$os
 
 select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900) * (1 / 365)
+# select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
-    # dplyr::filter(time %in% c(seq(1, 2000, by = 30))) |>
     dplyr::filter(time %in% select_times) |>
     dplyr::arrange(time, pt) |>
     dplyr::mutate(time = time)
@@ -74,36 +74,35 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalGSF(
+    longitudinal = LongitudinalGSF(
         
-        mu_bsld = Parameter(prior_lognormal(log(70), 5), init = 70),
-        mu_ks = Parameter(prior_lognormal(log(0.2), 1), init = 0.3),
-        mu_kg = Parameter(prior_lognormal( log(0.2), 1), init = 0.2),
-        mu_phi = Parameter(prior_beta(2, 2), init = 0.2),
+        mu_bsld = prior_lognormal(log(60), 2, init = 60),
+        mu_ks = prior_lognormal(log(0.2), 0.1, init = 0.2),
+        mu_kg = prior_lognormal(log(0.2), 0.1, init = 0.2),
+        mu_phi = prior_beta(7, 10, init = 0.4),
         
-        omega_bsld = Parameter(prior_lognormal(log(0.135), 1), init = 0.01),
-        omega_ks = Parameter(prior_lognormal(log(0.15), 1), init = 0.01),
-        omega_kg = Parameter(prior_lognormal(log(0.225), 1), init = 0.01),
-        omega_phi = Parameter(prior_lognormal(log(0.75), 1), init = 0.01),
+        omega_bsld = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_kg = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_phi = prior_lognormal(log(0.1), 0.5, init = 0.1),
         
-        sigma = Parameter(prior_lognormal(log(0.01), 1), init = 0.01),
+        sigma = prior_lognormal(log(0.03), 0.1, init = 0.03),
         
-        tilde_bsld = Parameter(prior_normal(0, 5), init = 0.1),
-        tilde_ks = Parameter(prior_normal(0, 2), init = 0.1),
-        tilde_kg = Parameter(prior_normal(0, 1), init = 0.1),
-        tilde_phi = Parameter(prior_normal(0, 5), init = 0.1)
+        tilde_bsld = prior_normal(0, 1, init = 0.1),
+        tilde_ks = prior_normal(0, 1, init = 0.1),
+        tilde_kg = prior_normal(0, 1, init = 0.1),
+        tilde_phi = prior_normal(0, 1, init = 0.1)
     )
 )
 
-x <- as.list(jm@inits)
-x$lm_gsf_mu_bsld <- c(70)
-x$lm_gsf_mu_kg <- c(0.3, 0.3)
-x$lm_gsf_mu_phi <- c(0.3, 0.3)
-x$lm_gsf_mu_ks <- c(0.3, 0.3)
+x <- initialValues(jm)
+x$lm_gsf_mu_bsld <- c(60)
+x$lm_gsf_mu_kg <- c(0.2, 0.2)
+x$lm_gsf_mu_phi <- c(0.4, 0.4)
+x$lm_gsf_mu_ks <- c(0.2, 0.2)
 
-initial_values <- function() {
-    x
-}
+initial_values <- function() x
+
 
 # jm <- JointModel(
 #     longitudinal_model = LongitudinalGSF(),
@@ -149,17 +148,18 @@ mp <- sampleStanModel(
 
 
 
-
-
 vars <- c(
-    "lm_gsf_mu_bsld[1]",
-    "lm_gsf_mu_phi[1]", "lm_gsf_mu_phi[2]",
-    "lm_gsf_mu_kg[1]", "lm_gsf_mu_kg[2]",
-    "lm_gsf_mu_ks[1]", "lm_gsf_mu_ks[2]",
-    "lm_gsf_sigma",
-    "lm_gsf_omega_bsld", "lm_gsf_omega_kg",
-    "lm_gsf_omega_phi", "lm_gsf_omega_ks"
+    "lm_gsf_mu_bsld",     # 60
+    "lm_gsf_mu_phi",      # 0.4    0.6
+    "lm_gsf_mu_kg",       # 0.15   0.2
+    "lm_gsf_mu_ks",       # 0.2    0.25
+    "lm_gsf_sigma",       # 0.003
+    "lm_gsf_omega_bsld",  # 0.1
+    "lm_gsf_omega_kg",    # 0.1
+    "lm_gsf_omega_phi",   # 0.1
+    "lm_gsf_omega_ks"     # 0.1
 )
+
 
 mp$summary(vars)
 library(bayesplot)

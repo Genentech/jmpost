@@ -1,6 +1,7 @@
 
 #' @include StanModule.R
 #' @include generics.R
+#' @include ParameterList.R
 NULL
 
 
@@ -8,27 +9,27 @@ NULL
     Class = "JointModel",
     slots = list(
         stan = "StanModule",
-        inits = "numeric"
+        parameters = "ParameterList"
     )
 )
 
 
 #' @export
-JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = NULL) {
+JointModel <- function(longitudinal = NULL, survival = NULL, link = NULL) {
 
-    longitudinal_model_linked <- addLink(longitudinal_model, link)
+    longitudinal_linked <- addLink(longitudinal, link)
 
     parameters <- merge(
-        getParameters(longitudinal_model_linked),
-        getParameters(survival_model)
+        getParameters(longitudinal_linked),
+        getParameters(survival)
     )
 
     base_model <- paste0(read_stan("base/base.stan"), collapse = "\n")
 
     stan_full <- jinjar::render(
         .x = base_model,
-        longditudinal = add_missing_stan_blocks(as.list(longitudinal_model_linked)),
-        survival = add_missing_stan_blocks(as.list(survival_model)),
+        longditudinal = add_missing_stan_blocks(as.list(longitudinal_linked)),
+        survival = add_missing_stan_blocks(as.list(survival)),
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
@@ -40,9 +41,11 @@ JointModel <- function(longitudinal_model = NULL, survival_model = NULL, link = 
 
     .JointModel(
         stan = full_plus_funs,
-        inits = getInits(parameters)
+        parameters = parameters
     )
 }
+
+
 
 #' As character
 #' @param x A `JointModel` object
@@ -85,7 +88,7 @@ setMethod(
     definition = function(object, data, ..., exe_file = NULL) {
         args <- list(...)
         if (!"init" %in% names(args)) {
-            args[["init"]] <- function() as.list(object@inits)
+            args[["init"]] <- function() initialValues(object)
         }
         if (is(data, "DataJoint")) {
             args[["data"]] <- as.list(data)
@@ -96,6 +99,16 @@ setMethod(
         }
         model <- compileStanModel(object, exe_file)
         do.call(model$sample, args)
+    }
+)
+
+
+#' @export
+setMethod(
+    f = "initialValues",
+    signature = "JointModel",
+    definition = function(object) {
+        initialValues(object@parameters)
     }
 )
 

@@ -12,10 +12,10 @@ NULL
 
 #' @export
 LongitudinalRandomSlope <- function(
-    intercept = Parameter(prior_normal(30, 4), init = 30),
-    slope_mu = Parameter(prior_normal(0, 10), init = 0.001),
-    slope_sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001),
-    sigma = Parameter(prior_cauchy(0, 2.5), init = 0.001)
+    intercept = prior_normal(30, 4, init = 30),
+    slope_mu = prior_normal(0, 10, init = 0.001),
+    slope_sigma = prior_cauchy(0, 2.5, init = 0.001),
+    sigma = prior_cauchy(0, 2.5, init = 0.001)
 ) {
 
     stan <- StanModule(
@@ -26,10 +26,10 @@ LongitudinalRandomSlope <- function(
         LongitudinalModel(
             stan = stan,
             parameters = ParameterList(
-                lm_rs_intercept = intercept,
-                lm_rs_slope_mu = slope_mu,
-                lm_rs_slope_sigma = slope_sigma,
-                lm_rs_sigma = sigma
+                Parameter(name = "lm_rs_intercept", prior = intercept),
+                Parameter(name = "lm_rs_slope_mu", prior = slope_mu),
+                Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma),
+                Parameter(name = "lm_rs_sigma", prior = sigma)
             )
         )
     )
@@ -44,7 +44,7 @@ LongitudinalRandomSlope <- function(
 
 #' @export
 LinkRandomSlope <- function(
-    link_lm_phi = Parameter(prior_normal(0.2, 0.5), init = 0.02)
+    link_lm_phi = prior_normal(0.2, 0.5, init = 0.02)
 ) {
     .LinkRandomSlope(
         Link(
@@ -52,7 +52,7 @@ LinkRandomSlope <- function(
                 x = "lm-random-slope/links.stan"
             ),
             parameters = ParameterList(
-                link_lm_phi = link_lm_phi
+                Parameter(name = "link_lm_phi", prior = link_lm_phi)
             )
         )
     )

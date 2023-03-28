@@ -72,7 +72,7 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalGSF(
+    longitudinal = LongitudinalGSF(
         
         mu_bsld = Parameter(prior_lognormal(log(70), 5), init = 70),
         mu_ks = Parameter(prior_lognormal(log(0.2), 1), init = 0.3),
@@ -91,7 +91,7 @@ jm <- JointModel(
         tilde_kg = Parameter(prior_normal(0, 1), init = 0.1),
         tilde_phi = Parameter(prior_normal(0, 5), init = 0.1)
     ),
-    survival_model = SurvivalExponential(),
+    survival = SurvivalExponential(),
     link = LinkGSF()
 )
 

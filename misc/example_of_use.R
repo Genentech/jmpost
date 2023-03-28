@@ -158,3 +158,18 @@ mp$summary(vars)
 
 str(mp)
 mp$metadata()
+
+
+
+
+
+
+
+
+
+
+prior_normal(0, 10, init = mu)
+Parameter(name = "intercept", prior = prior, length = "Nind")
+
+
+

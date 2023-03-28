@@ -11,8 +11,8 @@ devtools::load_all(export_all = FALSE)
 
 #### Example 1 - Fully specified model - using the defaults for everything
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope(),
-    survival_model = SurvivalExponential(),
+    longitudinal = LongitudinalRandomSlope(),
+    survival = SurvivalExponential(),
     link = LinkRandomSlope()
 )
 
@@ -87,16 +87,13 @@ mp <- sampleStanModel(
 ### Select which parameters we actually care about
 ### Not all will exist depending on which model was run
 vars <- c(
-    "sm_exp_lambda",
-    "beta_os_cov[1]",
-    "beta_os_cov[2]",
-    "beta_os_cov[3]",
-    "lm_rs_intercept",
-    "lm_rs_slope_mu[1]",
-    "lm_rs_slope_mu[2]",
-    "lm_rs_slope_sigma",
-    "lm_rs_sigma",
-    "link_lm_phi"
+    "sm_exp_lambda",       # 0.00333
+    "beta_os_cov",         # -0.1, 0.5, 0.3
+    "lm_rs_intercept",     # 30
+    "lm_rs_slope_mu",      # 1 , 3
+    "lm_rs_slope_sigma",   # 0.2
+    "lm_rs_sigma",         # 3
+    "link_lm_phi"          # 0.1
 )
 
 mp$summary(vars)

@@ -5,7 +5,7 @@
 #' @include SurvivalModel.R
 #' @include StanModule.R
 #' @include StanModel.R
-#' @include Parameters.R
+#' @include Parameter.R
 NULL
 
 
