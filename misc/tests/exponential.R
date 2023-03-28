@@ -50,11 +50,10 @@ jdat <- DataJoint(
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 1500,
-    iter_warmup = 1000,
+    iter_sampling = 0,
+    iter_warmup = 2,
     chains = 1,
     parallel_chains = 1,
-    thin = 1,
     exe_file = file.path("local", "full")
 )
 
