@@ -124,3 +124,15 @@ setMethod(
 )
 
 
+
+#' @export
+setMethod(
+    f = "size",
+    signature = "ParameterList",
+    definition = function(object) {
+        x <- lapply(object@parameters, size)
+        names(x) <- names(object)
+        return(x)
+    }
+)
+

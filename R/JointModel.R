@@ -86,17 +86,25 @@ setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
     definition = function(object, data, ..., exe_file = NULL) {
+        
         args <- list(...)
-        if (!"init" %in% names(args)) {
-            args[["init"]] <- function() initialValues(object)
-        }
+        
         if (is(data, "DataJoint")) {
             args[["data"]] <- as.list(data)
-        } else if ( is(data, "list")) {
+        } else if (is(data, "list")) {
             args[["data"]] <- data
         } else {
             stop("`data` must either be a list or a DataJoint object")
         }
+        
+        if (!"init" %in% names(args)) {
+            values_initial <- initialValues(object)
+            values_sizes <- size(object@parameters)
+            values_sizes_complete <- replace_with_lookup(values_sizes, args[["data"]])
+            values_initial_expanded <- expand_initial_values(values_initial, values_sizes_complete)
+            args[["init"]] <- function() values_initial_expanded
+        }
+        
         model <- compileStanModel(object, exe_file)
         do.call(model$sample, args)
     }
@@ -123,4 +131,17 @@ add_missing_stan_blocks <- function(x) {
     }
     return(x)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

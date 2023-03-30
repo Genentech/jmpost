@@ -35,19 +35,19 @@ LongitudinalGSF <- function (
             StanModule("lm-gsf/functions.stan")
         ),
         parameters = ParameterList(
-            Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld),
-            Parameter(name = "lm_gsf_mu_ks", prior = mu_ks),
-            Parameter(name = "lm_gsf_mu_kg", prior = mu_kg),
-            Parameter(name = "lm_gsf_mu_phi", prior = mu_phi),
-            Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld),
-            Parameter(name = "lm_gsf_omega_ks", prior = omega_ks),
-            Parameter(name = "lm_gsf_omega_kg", prior = omega_kg),
-            Parameter(name = "lm_gsf_omega_phi", prior = omega_phi),
-            Parameter(name = "lm_gsf_sigma", prior = sigma),
-            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = tilde_bsld),
-            Parameter(name = "lm_gsf_eta_tilde_ks", prior = tilde_ks),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = tilde_kg),
-            Parameter(name = "lm_gsf_eta_tilde_phi", prior = tilde_phi)
+            Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
+            Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
+            Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
+            Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
+            Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
+            Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
+            Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
+            Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
+            Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1),
+            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = tilde_bsld, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_ks", prior = tilde_ks, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = tilde_kg, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_phi", prior = tilde_phi, size = "Nind")
         )
     )
     .LongitudinalGSF(x)
@@ -140,7 +140,7 @@ link_gsf_ttg <- function(
 ) {
     link_gsf_abstract(
         stan = StanModule("lm-gsf/link_ttg.stan"),
-        parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma)),
+        parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma, size = 1)),
         parameter_name = "lm_gsf_gamma",
         contribution_fname = "link_ttg_contribution"
     )
@@ -157,7 +157,7 @@ link_gsf_dsld <- function(
 ) {
     link_gsf_abstract(
         stan = StanModule("lm-gsf/link_dsld.stan"),
-        parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta)),
+        parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta, size = 1)),
         parameter_name = "lm_gsf_beta",
         contribution_fname = "link_dsld_contribution"
     )

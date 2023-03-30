@@ -19,9 +19,9 @@ devtools::load_all(export_all = FALSE)
 #### Example 1 - Fully specified model - using the defaults for everything
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope(),
+    longitudinal = LongitudinalRandomSlope(),
     link = LinkRandomSlope(),
-    survival_model = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH()
 )
 
 
@@ -31,11 +31,11 @@ jm <- JointModel(
 
 jm <- JointModel(
     link = LinkNone(),
-    longitudinal_model = LongitudinalRandomSlope(
-        intercept = prior_normal(40, 5),                     # Just prior
-        slope_mu = Parameter(prior_normal(10, 2), init = 30) # Prior and init
+    longitudinal = LongitudinalRandomSlope(
+        intercept = prior_normal(40, 5),          # Just prior
+        slope_mu = prior_normal(10, 2, init = 30) # Prior and init
     ),
-    survival_model = SurvivalWeibullPH(
+    survival = SurvivalWeibullPH(
         lambda = prior_gamma(0.2, 0.5)
     )
 )
@@ -44,7 +44,7 @@ jm <- JointModel(
 ### Example 3 - Specify survival model only
 
 jm <- JointModel(
-    survival_model = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH()
 )
 
 
@@ -52,7 +52,7 @@ jm <- JointModel(
 ### Example 4 - Specify longitudinal model only
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope()
+    longitudinal = LongitudinalRandomSlope()
 )
 
 
@@ -67,9 +67,9 @@ jm <- JointModel(
 
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalRandomSlope(),
+    longitudinal = LongitudinalRandomSlope(),
     link = LinkRandomSlope(),
-    survival_model = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH()
 )
 
 
@@ -133,8 +133,8 @@ jdat <- DataJoint(
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 1000,
-    iter_warmup = 1000,
+    iter_sampling = 0,
+    iter_warmup = 1,
     chains = 1,
     parallel_chains = 1,
     exe_file = file.path("local", "full")
@@ -158,18 +158,3 @@ mp$summary(vars)
 
 str(mp)
 mp$metadata()
-
-
-
-
-
-
-
-
-
-
-prior_normal(0, 10, init = mu)
-Parameter(name = "intercept", prior = prior, length = "Nind")
-
-
-

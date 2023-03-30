@@ -4,23 +4,43 @@
 NULL
 
 
+setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
+
 .Parameter <- setClass(
     Class = "Parameter",
     slots = list(
         "name" = "character",
-        "prior" = "Prior"
+        "prior" = "Prior",
+        "size" = "numeric_OR_character"
     )
 )
 
 
 
 #' @export
-Parameter <- function(prior, name) {
+Parameter <- function(prior, name, size = 1) {
     .Parameter(
         prior = prior,
-        name = name
+        name = name,
+        size = size
     )
 }
+
+
+setValidity(
+    Class = "Parameter",
+    method = function(object) {
+        if (!length(object@name) == 1) {
+            return("Name must be a length 1 character vector")
+        }
+        if (is.character(object@size)) {
+            if (!length(object@size) == 1) {
+                return("Size must be a numeric vector or length 1 character vector")
+            }
+        }
+        return(TRUE)
+    }
+)
 
 
 
@@ -61,4 +81,10 @@ setMethod(
 )
 
 
+#' @export
+setMethod(
+    f = "size",
+    signature = "Parameter",
+    definition = function(object) object@size
+)
 

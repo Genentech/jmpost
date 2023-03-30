@@ -123,3 +123,15 @@ setGeneric(
 )
 
 
+
+
+#' `size`
+#' 
+#' @param object TODO
+#' @param ... TODO
+#' @return a `list` of parameter sizes
+#' @keywords internal
+setGeneric(
+    name = "size",
+    def = function(object, ...) standardGeneric("size")
+)

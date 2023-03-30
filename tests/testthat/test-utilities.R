@@ -48,3 +48,35 @@ test_that("remove_missing_rows works as expected", {
     
 })
 
+
+
+test_that("expand_initial_values smoke tests", {
+    vals <- list("a" = 1, "b" = 2, "c" = c(1, 2))
+    siz <- list("a" = 5, "b" = 1, "c" = 2)
+    actual <- expand_initial_values(vals, siz)
+    expected <- list("a" = c(1, 1, 1, 1, 1), "b" = 2, "c" = c(1, 2))
+    expect_equal(actual, expected)
+})
+
+
+test_that("replace_with_lookup smoke tests", {
+    
+    vals <- list(1, "b", "a", 4, 5)
+    lku <- list("a" = 3, "b" = 2, "c" = 4)
+    actual <- replace_with_lookup(vals, lku)
+    expected <- list(1, 2, 3, 4, 5)
+    expect_equal(actual, expected)
+    
+    
+    vals <- list(1, "b", "a", 4, c(5, 6))
+    lku <- list("a" = 3, "b" = 2, "c" = 4)
+    expect_error(
+        replace_with_lookup(vals, lku),
+        regexp = "`sizes` must be length 1 numerics"
+    )
+    
+})
+
+
+
+

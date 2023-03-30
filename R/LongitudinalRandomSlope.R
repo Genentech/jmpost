@@ -26,10 +26,9 @@ LongitudinalRandomSlope <- function(
         LongitudinalModel(
             stan = stan,
             parameters = ParameterList(
-                Parameter(name = "lm_rs_intercept", prior = intercept),
-                Parameter(name = "lm_rs_slope_mu", prior = slope_mu),
-                Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma),
-                Parameter(name = "lm_rs_sigma", prior = sigma)
+                Parameter(name = "lm_rs_intercept", prior = intercept, size = 1),
+                Parameter(name = "lm_rs_slope", prior = slope_mu, size = "Nind"),
+                Parameter(name = "lm_rs_sigma", prior = sigma, size = 1)
             )
         )
     )
@@ -52,7 +51,7 @@ LinkRandomSlope <- function(
                 x = "lm-random-slope/links.stan"
             ),
             parameters = ParameterList(
-                Parameter(name = "link_lm_phi", prior = link_lm_phi)
+                Parameter(name = "link_lm_phi", prior = link_lm_phi, size = 1)
             )
         )
     )
