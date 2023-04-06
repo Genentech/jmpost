@@ -12,10 +12,10 @@ NULL
 
 #' @export
 LongitudinalRandomSlope <- function(
-    intercept = prior_normal(30, 4, init = 30),
-    slope_mu = prior_normal(0, 10, init = 0.001),
-    slope_sigma = prior_cauchy(0, 2.5, init = 0.001),
-    sigma = prior_cauchy(0, 2.5, init = 0.001),
+    intercept = prior_normal(30, 10, init = 30),
+    slope_mu = prior_normal(0, 15, init = 0.001),
+    slope_sigma = prior_cauchy(0, 4, init = 0.001),
+    sigma = prior_cauchy(0, 4, init = 0.001),
     random_slope = prior_none(init = 0)
 ) {
 
