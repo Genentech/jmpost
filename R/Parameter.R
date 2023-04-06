@@ -58,6 +58,9 @@ setAs(
     from = "Parameter",
     to = "character",
     def = function(from) {
+        if (as.character(from@prior) =="") {
+             return("")
+        }
         glue::glue("{name} ~ {dist}", name = from@name, dist = as(from@prior, "character"))
     }
 )

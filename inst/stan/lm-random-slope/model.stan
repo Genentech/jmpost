@@ -10,7 +10,7 @@ parameters {
     array [n_arms] real lm_rs_slope_mu;
     real<lower=0.000000001> lm_rs_slope_sigma;
     real<lower=0.000000001> lm_rs_sigma;
-    vector[Nind] lm_rs_rslope;
+    vector[Nind] lm_rs_ind_rnd_slope;
 }
 
 
@@ -20,12 +20,12 @@ transformed parameters {
     //
     
     log_lik += vect_normal_log_dens(
-        lm_rs_rslope,
+        lm_rs_ind_rnd_slope,
         to_vector(lm_rs_slope_mu[arm_index]),
         rep_vector(lm_rs_slope_sigma, Nind)
     );
     
-    vector[Nta_total] lm_rs_rslope_ind  = lm_rs_rslope[ind_index[1:Nta_total]];
+    vector[Nta_total] lm_rs_rslope_ind  = lm_rs_ind_rnd_slope[ind_index[1:Nta_total]];
     
     log_lik += csr_matrix_times_vector(
         Nind,

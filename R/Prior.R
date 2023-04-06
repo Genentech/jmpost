@@ -80,6 +80,16 @@ prior_beta <- function(a, b, init = a/(a+b)) {
 }
 
 
+#' @export
+prior_none <- function(init = 0.00001) {
+    .Prior(
+        parameters = list(),
+        repr = "",
+        init = init
+    )
+}
+
+
 #' @export 
 setMethod(
     f = "initialValues",
