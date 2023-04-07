@@ -6,7 +6,7 @@ functions {
         real lambda = pars_os[1];
         real p = pars_os[2];
         matrix[rows(time), cols(time)] result;
-        result =log(lambda)+log(p)+(p-1)*(log(lambda)+log(time))-log1p(lambda*time^.p) ;
+        result =log(lambda)+log(p)+(p-1)*(log(lambda)+log(time))-log1p(lambda .* time .^p) ;
         return result;
     }
 }
