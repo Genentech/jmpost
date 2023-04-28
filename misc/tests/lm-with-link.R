@@ -38,7 +38,7 @@ jlist <- simulate_joint_data(
         sigma = 3,
         slope_mu = c(1,3),
         slope_sigma = 0.2,
-        phi = 0.1, 
+        phi = 0.1,
         .debug = TRUE
     ),
     os_fun = sim_os_exponential(

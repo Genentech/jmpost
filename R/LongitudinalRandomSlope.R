@@ -14,8 +14,8 @@ NULL
 LongitudinalRandomSlope <- function(
     intercept = prior_normal(30, 10, init = 30),
     slope_mu = prior_normal(0, 15, init = 0.001),
-    slope_sigma = prior_cauchy(0, 4, init = 0.001),
-    sigma = prior_cauchy(0, 4, init = 0.001),
+    slope_sigma = prior_cauchy(0, 4, init = 0.4),
+    sigma = prior_cauchy(0, 4, init = 0.4),
     random_slope = prior_none(init = 0)
 ) {
 

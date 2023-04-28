@@ -95,15 +95,6 @@ jm <- JointModel(
     link = LinkGSF()
 )
 
-x <- as.list(jm@inits)
-x$lm_gsf_mu_bsld <- c(70)
-x$lm_gsf_mu_kg <- c(0.3, 0.3)
-x$lm_gsf_mu_phi <- c(0.3, 0.3)
-x$lm_gsf_mu_ks <- c(0.3, 0.3)
-
-initial_values <- function() {
-    x
-}
 
 
 
@@ -137,7 +128,6 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
-    init = initial_values,
     parallel_chains = 1,
     exe_file = file.path("local", "full")
 )
@@ -156,6 +146,16 @@ vars <- c(
     "lm_gsf_omega_phi", "lm_gsf_omega_ks",
     "sm_exp_lambda", "lm_gsf_beta", "lm_gsf_gamma"
 )
+
+
+
+################################
+#
+# General Diagnostic stuff
+#
+#
+
+
 
 mp$summary(vars)
 library(bayesplot)

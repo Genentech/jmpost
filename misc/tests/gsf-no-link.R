@@ -95,20 +95,8 @@ jm <- JointModel(
     )
 )
 
-x <- initialValues(jm)
-x$lm_gsf_mu_bsld <- c(60)
-x$lm_gsf_mu_kg <- c(0.2, 0.2)
-x$lm_gsf_mu_phi <- c(0.4, 0.4)
-x$lm_gsf_mu_ks <- c(0.2, 0.2)
-
-initial_values <- function() x
 
 
-# jm <- JointModel(
-#     longitudinal_model = LongitudinalGSF(),
-#     link = LinkGSF()
-# )
-# link_gsf_dsld()
 
 
 # Create local file with stan code for debugging purposes ONLY
@@ -141,7 +129,6 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
-    init = initial_values,
     parallel_chains = 1,
     exe_file = file.path("local", "full")
 )
@@ -161,7 +148,19 @@ vars <- c(
 )
 
 
+
 mp$summary(vars)
+
+
+
+################################
+#
+# General Diagnostic stuff
+#
+#
+
+
+
 library(bayesplot)
 mcmc_trace(mp$draws("lm_gsf_mu_phi[1]"))
 mcmc_trace(mp$draws("lm_gsf_mu_bsld[1]"))
