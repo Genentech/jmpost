@@ -72,7 +72,7 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 
 
 jm <- JointModel(
-    longitudinal_model = LongitudinalGSF(
+    longitudinal = LongitudinalGSF(
         
         mu_bsld = Parameter(prior_lognormal(log(70), 5), init = 70),
         mu_ks = Parameter(prior_lognormal(log(0.2), 1), init = 0.3),
@@ -91,19 +91,10 @@ jm <- JointModel(
         tilde_kg = Parameter(prior_normal(0, 1), init = 0.1),
         tilde_phi = Parameter(prior_normal(0, 5), init = 0.1)
     ),
-    survival_model = SurvivalExponential(),
+    survival = SurvivalExponential(),
     link = LinkGSF()
 )
 
-x <- as.list(jm@inits)
-x$lm_gsf_mu_bsld <- c(70)
-x$lm_gsf_mu_kg <- c(0.3, 0.3)
-x$lm_gsf_mu_phi <- c(0.3, 0.3)
-x$lm_gsf_mu_ks <- c(0.3, 0.3)
-
-initial_values <- function() {
-    x
-}
 
 
 
@@ -137,7 +128,6 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
-    init = initial_values,
     parallel_chains = 1,
     exe_file = file.path("local", "full")
 )
@@ -156,6 +146,16 @@ vars <- c(
     "lm_gsf_omega_phi", "lm_gsf_omega_ks",
     "sm_exp_lambda", "lm_gsf_beta", "lm_gsf_gamma"
 )
+
+
+
+################################
+#
+# General Diagnostic stuff
+#
+#
+
+
 
 mp$summary(vars)
 library(bayesplot)

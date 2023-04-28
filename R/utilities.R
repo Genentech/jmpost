@@ -51,3 +51,118 @@ remove_missing_rows <- function(data, formula, extra_vars) {
     return(data[-missing_rows, ])
 }
 
+
+
+
+
+#' Replicate single values in a list based on specified sizes
+#'
+#' This function takes a list of initial values and a corresponding list of sizes
+#' and replicates any single values in the initial values list according to the
+#' corresponding values in the sizes list. The resulting list has the same names
+#' as the original lists.
+#'
+#' @param initial_values A named list of initial values.
+#' @param sizes A named list of sizes, where each size corresponds to an element in initial_values.
+#'
+#' @return A named list of values, with any single values in the initial_values list
+#' replicated according to the corresponding values in the sizes list.
+#'
+#' @examples
+#' my_values <- list(a = 1, b = c(2, 3), c = 4)
+#' my_sizes <- list(a = 3, b = 2, c = 1)
+#' expand_initial_values(initial_values = my_values, sizes = my_sizes)
+#'
+#' @importFrom assertthat assert_that
+#' @keywords internal
+expand_initial_values <- function(initial_values, sizes){
+    assert_that(
+        is.list(initial_values), 
+        msg = "`initial_values` must be a list"
+    )
+    assert_that(
+        is.list(sizes), 
+        msg = "`sizes` must be a list"
+    )
+    assert_that(
+        all(names(sizes) %in% names(initial_values)),
+        all(names(initial_values) %in% names(sizes)),
+        msg = "`initial_values` and `sizes` must have identical names"
+    )
+    
+    # Check for single values in initial_values and replicate them according to sizes
+    for (name in names(initial_values)) {
+        if (length(initial_values[[name]]) == 1) {
+            initial_values[[name]] <- rep(initial_values[[name]], sizes[[name]])
+        }
+    }
+    
+    # Check that each element of initial_values has the same length as specified in sizes
+    for (name in names(initial_values)) {
+        assert_that(
+            length(initial_values[[name]]) == sizes[[name]],
+            msg = "length of element in `initial_values` does not match specified size"
+        )
+    }
+    
+    return(initial_values)
+}
+
+
+
+#' replace_with_lookup
+#'
+#' This function takes a list of sizes and a list of data and returns a modified list
+#' of sizes where each character element is replaced by the corresponding numeric value
+#' from the data list. Each element of size must be a length one numeric after the lookup
+#'
+#' @param sizes A list of sizes, which may include character elements that correspond to
+#' names in the data list.
+#' @param data A list of data containing numeric values.
+#'
+#' @return A list of sizes with character elements replaced by their corresponding
+#' numeric values.
+#'
+#' @examples
+#' sizes <- list(1, "b", 3)
+#' data <- list(a = 1, b = 2, c = 3)
+#' replace_with_lookup(sizes, data)
+#'
+#' @importFrom assertthat assert_that
+#'
+#' @keywords internal
+replace_with_lookup <- function(sizes, data) {
+    
+    assert_that( is.list(sizes), msg = "`sizes` must be a list")
+    assert_that( is.list(data), msg = "`data` must be a list")
+    
+    for ( idx in seq_along(sizes)) {
+        val <- sizes[[idx]]
+        if (is.character(val)) {
+            assert_that(
+                length(val) == 1,
+                msg = "character elements of `sizes` must be length 1"
+            )
+            assert_that(
+                val %in% names(data),
+                msg = sprintf("`%s` is not available in `data`")
+            )
+            new_val <- data[[val]]
+            assert_that(
+                length(new_val) == 1,
+                is.numeric(new_val),
+                msg = "Selected values from data must be length 1 numerics"
+            )
+            sizes[[idx]] <- new_val
+        }
+
+        assert_that(
+            is.numeric(sizes[[idx]]),
+            length(sizes[[idx]]) == 1,
+            msg = "All elements of `sizes` must be length 1 numerics after lookup"
+        )
+    }
+    return(sizes)
+}
+
+

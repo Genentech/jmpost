@@ -105,7 +105,6 @@ parameters {
 
 
 transformed parameters {
-
     //
     // Source - base/survival.stan
     //

@@ -1,6 +1,6 @@
 
 #' @include StanModule.R
-#' @include Parameters.R
+#' @include ParameterList.R
 NULL
 
 

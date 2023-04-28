@@ -9,7 +9,7 @@ functions {
 
 transformed parameters {
     // LinkRandomSlope
-    matrix[Nind, 1] pars_lm = to_matrix(lm_rs_rslope .* link_lm_phi);
+    matrix[Nind, 1] pars_lm = to_matrix(lm_rs_ind_rnd_slope .* link_lm_phi);
 }
 
 parameters {
