@@ -1,4 +1,4 @@
-
+library(survival)
 
 
 test_that("DataJoint errors if subjects don't allign after", {

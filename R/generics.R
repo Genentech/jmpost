@@ -94,16 +94,6 @@ setGeneric(
 )
 
 
-#' `getInits`
-#'
-#' Description - TODO
-#'
-#' @param object TODO
-#' @param ... TODO
-setGeneric(
-    name = "getInits",
-    def = function(object, ...) standardGeneric("getInits")
-)
 
 
 
@@ -118,3 +108,30 @@ setGeneric(
     def = function(object, ...) standardGeneric("extractVariableNames")
 )
 
+
+
+#' `initialValues`
+#' 
+#' @param object TODO
+#' @param ... TODO
+#' @return a `list` of initial values to be passed to the stan sampler
+#' 
+#' @keywords internal
+setGeneric(
+    name = "initialValues",
+    def = function(object, ...) standardGeneric("initialValues")
+)
+
+
+
+
+#' `size`
+#' 
+#' @param object TODO
+#' @param ... TODO
+#' @return a `list` of parameter sizes
+#' @keywords internal
+setGeneric(
+    name = "size",
+    def = function(object, ...) standardGeneric("size")
+)

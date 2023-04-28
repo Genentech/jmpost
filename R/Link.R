@@ -1,6 +1,6 @@
 #' @include StanModule.R
 #' @include LongitudinalModel.R
-#' @include Parameters.R
+#' @include ParameterList.R
 NULL
 
 .Link <- setClass(
@@ -28,4 +28,28 @@ setMethod(
         x
     }
 )
+
+
+
+#' @export
+setMethod(
+    f = "initialValues",
+    signature = "Link",
+    definition = function(object) {
+        initialValues(object@parameters)
+    }
+)
+
+
+#' @export 
+setMethod(
+    f = "as.StanModule",
+    signature = "Link",
+    definition = function(object) {
+        object@stan
+    }
+)
+
+
+
 

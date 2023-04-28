@@ -8,9 +8,9 @@ parameters {
     //
     real lm_rs_intercept;
     array [n_arms] real lm_rs_slope_mu;
-    real<lower=0.000000001> lm_rs_slope_sigma;
-    real<lower=0.000000001> lm_rs_sigma;
-    vector[Nind] lm_rs_rslope;
+    real<lower=0> lm_rs_slope_sigma;
+    real<lower=0> lm_rs_sigma;
+    vector[Nind] lm_rs_ind_rnd_slope;
 }
 
 
@@ -19,14 +19,22 @@ transformed parameters {
     // LongitudinalRandomSlope
     //
     
-    log_lik += vect_normal_log_dens(
-        lm_rs_rslope,
-        to_vector(lm_rs_slope_mu[arm_index]),
-        rep_vector(lm_rs_slope_sigma, Nind)
-    );
+    for (i in 1:Nind) {
+        log_lik[i] = normal_lpdf(
+            lm_rs_ind_rnd_slope[i] |
+            lm_rs_slope_mu[arm_index[i]],
+            lm_rs_slope_sigma
+        );
+    }
     
-    vector[Nta_total] lm_rs_rslope_ind  = lm_rs_rslope[ind_index[1:Nta_total]];
+    // log_lik += vect_normal_log_dens(
+    //     lm_rs_ind_rnd_slope,
+    //     to_vector(lm_rs_slope_mu[arm_index]),
+    //     rep_vector(lm_rs_slope_sigma, Nind)
+    // );
     
+    vector[Nta_total] lm_rs_rslope_ind = to_vector(lm_rs_ind_rnd_slope[ind_index]);
+
     log_lik += csr_matrix_times_vector(
         Nind,
         Nta_total,
@@ -40,3 +48,4 @@ transformed parameters {
         )
     );
 }
+

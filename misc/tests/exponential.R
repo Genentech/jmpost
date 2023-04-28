@@ -2,6 +2,7 @@
 devtools::document()
 devtools::load_all()
 library(bayesplot)
+library(survival)
 
 jlist <- simulate_joint_data(
     n_arm = c(1000, 1000),
@@ -12,7 +13,7 @@ jlist <- simulate_joint_data(
         "B" = -0.3,
         "C" = 0.5
     ),
-    beta_cont = 0.3,
+    beta_cont = 0.2,
     lm_fun = sim_lm_random_slope(phi = 0),
     os_fun = sim_os_exponential(lambda = 1/100)
 )
@@ -25,7 +26,7 @@ dat_lm <- jlist$lm |>
 
 
 jm <- JointModel(
-    survival_model = SurvivalExponential()
+    survival = SurvivalExponential()
 )
 
 write_stan(jm, "local/debug.stan")
@@ -49,19 +50,18 @@ jdat <- DataJoint(
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 1500,
-    iter_warmup = 1000,
+    iter_sampling = 500,
+    iter_warmup = 500,
     chains = 1,
     parallel_chains = 1,
-    thin = 1,
     exe_file = file.path("local", "full")
 )
 
 vars <- c(
-    "sm_exp_lambda",
-    "beta_os_cov[1]",
-    "beta_os_cov[2]",
-    "beta_os_cov[3]"
+    "sm_exp_lambda",    #  0.01
+    "beta_os_cov[1]",   # -0.3
+    "beta_os_cov[2]",   #  0.5
+    "beta_os_cov[3]"    #  0.2
 )
 
 mp$summary(vars)
@@ -69,8 +69,6 @@ mp$summary(vars)
 
 
 mcmc_trace(mp$draws("sm_exp_lambda"))
-
-
 
 
 

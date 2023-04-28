@@ -9,11 +9,13 @@ devtools::load_all(export_all = FALSE)
 
 
 
-#### Example 1 - Fully specified model - using the defaults for everything
+#### Example 1 - Fully specified model
 jm <- JointModel(
-    longitudinal = LongitudinalRandomSlope(),
-    survival = SurvivalExponential(),
-    link = LinkRandomSlope()
+    longitudinal = LongitudinalRandomSlope(
+        intercept = prior_normal(30, 2),
+        slope_sigma = prior_lognormal(0.2, sigma = 3),
+        sigma = prior_normal(3, sigma = 0.5)
+    )
 )
 
 
@@ -38,7 +40,7 @@ jlist <- simulate_joint_data(
         sigma = 3,
         slope_mu = c(1,3),
         slope_sigma = 0.2,
-        phi = 0.1,
+        phi = 0, 
         .debug = TRUE
     ),
     os_fun = sim_os_exponential(
@@ -87,13 +89,10 @@ mp <- sampleStanModel(
 ### Select which parameters we actually care about
 ### Not all will exist depending on which model was run
 vars <- c(
-    "sm_exp_lambda",       # 0.00333
-    "beta_os_cov",         # -0.1, 0.5, 0.3
-    "lm_rs_intercept",     # 30
-    "lm_rs_slope_mu",      # 1 , 3
-    "lm_rs_slope_sigma",   # 0.2
-    "lm_rs_sigma",         # 3
-    "link_lm_phi"          # 0.1
+    "lm_rs_intercept",       # 30
+    "lm_rs_slope_mu",        # 1 , 3
+    "lm_rs_slope_sigma",     # 0.2
+    "lm_rs_sigma"            # 3
 )
 
 mp$summary(vars)
