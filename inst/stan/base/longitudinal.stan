@@ -14,18 +14,6 @@ data{
     array[Nta_obs_y] int obs_y_index;        // Index of observed tumor assessments (not censored).
     array[Nta_cens_y] int cens_y_index;      // Index of censored tumor assessments.
 
-    int<lower=1> n_studies;                                // Number of studies.
-    array[Nind] int<lower=1,upper=n_studies> study_index;  // Index of study for all individuals.
-    int<lower=1> n_arms;                                   // Number of treatment arms.
-    array[Nind] int<lower=1,upper=n_arms> arm_index;       // Index of treatment arm for all individuals.
-
-
-    array[n_arms] int<lower=1,upper=n_studies> arm_to_study_index;
-
-
-    // Ragged index vector of individuals per treatment arm (see R code).
-    array[n_arms] int<lower=1,upper=Nind> n_index_per_arm;
-    array[Nind] int<lower=1,upper=Nind> index_per_arm;
 
 
     vector[Nta_total] Yobs;   // Array of individual responses.

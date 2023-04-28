@@ -1,5 +1,6 @@
 
 
+
 functions {
     // SurvivalExponential
     matrix log_h0(matrix time, vector pars_os) {
@@ -12,6 +13,7 @@ functions {
         return result;
     }
 }
+
 
 parameters {
     // SurvivalExponential
