@@ -4,22 +4,24 @@
 #' @include SurvivalModel.R
 NULL
 
-.Survivalloglogistic <- setClass(
-    Class = "Survivalloglogistic",
+.SurvivalLogLogistic <- setClass(
+    Class = "SurvivalLogLogistic",
     contains = "SurvivalModel"
 )
 
 #' @export
-Survivalloglogistic <- function(
-         lambda = Parameter(prior_lognormal(0,5), init = 1 / 200), ## lognormal distributed prior
-         p = Parameter(prior_gamma(2, 5), init = 0.5)
+SurvivalLogLogistic <- function(
+         lambda = prior_lognormal(0, 5, init = 1 / 200),
+         p = prior_gamma(2, 5, init = 0.5),
+         beta = prior_normal(0, 5)
 ) {
-    .Survivalloglogistic(
+    .SurvivalLogLogistic(
         SurvivalModel(
             stan = StanModule("sm-loglogistic/model.stan"),
             parameters = ParameterList(
-                sm_loglogistic_ph_lambda = lambda,
-                sm_loglogistic_ph_p =p
+                Parameter(name = "sm_logl_lambda", prior = lambda, size = 1),
+                Parameter(name = "sm_logl_p", prior = p, size = 1),
+                Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
             )
         )
     )
