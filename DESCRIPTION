@@ -42,6 +42,7 @@ Collate:
     'LongitudinalRandomSlope.R'
     'SurvivalModel.R'
     'SurvivalExponential.R'
+    'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
     'defaults.R'
     'simulations.R'

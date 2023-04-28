@@ -175,11 +175,14 @@ sim_os_exponential <- function(lambda) {
 #' @export
 sim_os_loglogistic <- function(lambda, p){
     function(time) {
-        c1 <- lambda * p * (lambda * time)^(p - 1)
-        c2 <- 1 + (lambda * time)^p
-        log(c1 / c2)
+        c1 <- log(lambda) + log(p) + (p - 1) * (log(lambda) + log(time))
+        c2 <- log(1 + (lambda * time)^p)
+        return(c1 - c2)
     }
 }
+
+
+
 
 get_timepoints <- function(x) {
     assertthat::assert_that(length(x) == length(unique(x)))
