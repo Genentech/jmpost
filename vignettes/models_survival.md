@@ -18,11 +18,9 @@ where:
 
 ## Weibull Distribution
 
-
 $$
 h_{0}(t \mid \lambda, \gamma) =  \lambda \gamma t^{(\gamma - 1)}
 $$
-
 
 ## Log-Logistic Distribution
 
