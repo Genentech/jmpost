@@ -66,7 +66,7 @@ my_long_mod <- LongMod()
 my_temp_os <- LogLogisticOs()
 # The link between longitudinal and OS models
 my_link <- ttgLink()
-# The complete survival submodel 
+# The complete survival submodel
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
 # The full model
 JointModel(long = my_long_mod, os = my_os)
@@ -120,16 +120,16 @@ The longitudinal sub-model, including all the required information for the model
 
 ```{r Longitudinal model}
 Long_mod <- LongModel(
-    stan = StanModule(
-        functions = "exp_long_functions.stan",
-        data = "exp_long_data.stan",
-        priors = long_prior(),
-        model = "",
-        inits = list(),
-        parameters = "exp_long_parameters.stan",
-        transformed_parameters = "exp_long_transformed_parametes.stan",
-        generated_quantities = ""
-    )
+  stan = StanModule(
+    functions = "exp_long_functions.stan",
+    data = "exp_long_data.stan",
+    priors = long_prior(),
+    model = "",
+    inits = list(),
+    parameters = "exp_long_parameters.stan",
+    transformed_parameters = "exp_long_transformed_parametes.stan",
+    generated_quantities = ""
+  )
 )
 ```
 
@@ -141,10 +141,10 @@ The user is able to populate the different parts of the object with stan code ei
 
 ```{r Longitudinal model2 }
 example_stan <- LongModel(
-    stan = StanModule(
-        functions = "type stan code here;",
-        data = "type stan code here;"
-    )
+  stan = StanModule(
+    functions = "type stan code here;",
+    data = "type stan code here;"
+  )
 )
 ```
 
@@ -187,14 +187,15 @@ Figure~2 depicts the structure of a `StanModule` object.
 Gray coloured cells indicate character strings containing stan code whereas yellow coloured cells mark list objects. 
 
 ```{r}
-StanModule(functions = "",
-           data = "",
-           model = "",
-           parameters = "",
-           transformed_parameters = "",
-           generated_quantities = "",
-           priors = list(),
-           inits = list()
+StanModule(
+  functions = "",
+  data = "",
+  model = "",
+  parameters = "",
+  transformed_parameters = "",
+  generated_quantities = "",
+  priors = list(),
+  inits = list()
 )
 ```
 
@@ -242,9 +243,9 @@ The link is an object containing the parametrisation of the longitudinal sub-mod
 
 ```{r}
 link <- HazardLink(
-    parameters = "beta_ttg",
-    contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
-    stan = StanModule( )
+  parameters = "beta_ttg",
+  contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
+  stan = StanModule()
 )
 ```
 
@@ -273,13 +274,14 @@ jm <- JointModel(long = Long_mod, os = os)
 Although the stan code of the model is obtained in `jm`, additional information for the model run should be provided. 
 
 ```{r}
-jm_options <- mcmc_options(chains = 1,
-                           parallel_chains = 1,
-                           iter_warmup = 200,
-                           iter_sampling = 500,
-                           max_treedepth = 12,
-                           adapt_delta = .9,
-                           gauss_legendre = gauss_legendre()
+jm_options <- mcmc_options(
+  chains = 1,
+  parallel_chains = 1,
+  iter_warmup = 200,
+  iter_sampling = 500,
+  max_treedepth = 12,
+  adapt_delta = .9,
+  gauss_legendre = gauss_legendre()
 )
 ```
 
