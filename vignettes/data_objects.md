@@ -1,7 +1,4 @@
-
-
-## Global Data Objects
-
+# Global Data Objects
 
 ```R
 int<lower=1> Nind        #  Number of individuals
@@ -24,10 +21,7 @@ array[n_arms] int<lower=1,upper=Nind> n_index_per_arm
 array[Nind] int<lower=1,upper=Nind> index_per_arm
 ```
 
-
-
 ## Survival Data Objects
-
 
 ```R
 int<lower=1> Nind_dead                 # Number of patients who died
@@ -42,9 +36,7 @@ vector[n_nodes] nodes
 vector<lower=0, upper=1>[n_nodes] weights
 ```
 
-
 ## Longitudinal Data Objects
-
 
 ```R
 int<lower=1> Nta_total   #  Number of tumour observations
@@ -53,14 +45,14 @@ int<lower=0> Nta_cens_y  #  Number of censored tumour values
 # Nta_total = Nta_obs_y + Nta_cens_y
 
 
-#  Patient index numbers for ownership of tumour observations 
+#  Patient index numbers for ownership of tumour observations
 array[Nta_total] int ind_index
 
 #  Tumour Index numbers for observed tumour values
 array[Nta_obs_y] int obs_y_index
 
 #  Tumour Index numbers for censored tumour values
-array[Nta_cens_y] int cens_y_index   
+array[Nta_cens_y] int cens_y_index
 
 
 vector[Nta_total] Yobs   #  Tumour size observations
@@ -86,10 +78,4 @@ array [3] int<lower=0> n_mat_inds_cens_y;
 vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
 array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
 array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
-
-
-
 ```
-
-
-
