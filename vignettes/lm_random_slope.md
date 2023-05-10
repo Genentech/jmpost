@@ -1,8 +1,6 @@
 
 # Longitudinal Model Specifications
 
-
-
 ## Random Slope Model
 
 $$
@@ -31,4 +29,3 @@ Where:
 - $\phi$ is a global scaling coeficient
 
 That is to say a subjects hazard is constant where that constant is a multiple of their random slope
-
