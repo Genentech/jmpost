@@ -4,11 +4,11 @@ NULL
 
 #' @rdname DataJoint
 .DataJoint <- setClass(
-    Class = "DataJoint",
-    representation = list(
-        survival = "DataSurvival",
-        longitudinal = "DataLongitudinal"
-    )
+  Class = "DataJoint",
+  representation = list(
+    survival = "DataSurvival",
+    longitudinal = "DataLongitudinal"
+  )
 )
 
 
@@ -31,48 +31,48 @@ NULL
 #' @export
 #' @aliases as.list,DataJoint-method
 DataJoint <- function(survival, longitudinal) {
-    .DataJoint(
-        survival = survival,
-        longitudinal = longitudinal
-    )
+  .DataJoint(
+    survival = survival,
+    longitudinal = longitudinal
+  )
 }
 
 
 setValidity(
-    Class = "DataJoint",
-    method = function(object) {
-        lm <- as.data.frame(object@longitudinal)
-        lvars <- extractVariableNames(object@longitudinal)
-        os <- as.data.frame(object@survival)
-        ovars <- extractVariableNames(object@survival)
+  Class = "DataJoint",
+  method = function(object) {
+    lm <- as.data.frame(object@longitudinal)
+    lvars <- extractVariableNames(object@longitudinal)
+    os <- as.data.frame(object@survival)
+    ovars <- extractVariableNames(object@survival)
 
-        if (!all(as.character(lm[[lvars$pt]]) %in% as.character(os[[ovars$pt]]))) {
-            return("There are subjects in the longitudinal data that do not exist in the survival data")
-        }
-        if (!all(as.character(os[[ovars$pt]]) %in% as.character(lm[[lvars$pt]]))) {
-            return("There are subjects in the survival data that do not exist in the longitudinal data")
-        }
+    if (!all(as.character(lm[[lvars$pt]]) %in% as.character(os[[ovars$pt]]))) {
+      return("There are subjects in the longitudinal data that do not exist in the survival data")
     }
+    if (!all(as.character(os[[ovars$pt]]) %in% as.character(lm[[lvars$pt]]))) {
+      return("There are subjects in the survival data that do not exist in the longitudinal data")
+    }
+  }
 )
 
 #' @export
 setMethod(
-    "as.list",
-    signature = "DataJoint",
-    definition = function(x) {
-        append(
-            as.list(x@survival),
-            as.list(x@longitudinal)
-        )
-    }
+  "as.list",
+  signature = "DataJoint",
+  definition = function(x) {
+    append(
+      as.list(x@survival),
+      as.list(x@longitudinal)
+    )
+  }
 )
 
 
 #' @export
 setAs(
-    from = "DataJoint",
-    to = "list",
-    def = function(from) as.list(from)
+  from = "DataJoint",
+  to = "list",
+  def = function(from) as.list(from)
 )
 
 
@@ -99,4 +99,3 @@ setAs(
 #         which(osd_final$ARM == "MOR_ASG"),
 #         which(osd_final$ARM == "MOR_AEV")
 #     ),
-
