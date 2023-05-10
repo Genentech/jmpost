@@ -9,6 +9,7 @@ Authors@R: c(
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
     )
 Description: TODO
+Language: en-US
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -21,7 +22,7 @@ Imports:
     statmod,
     Matrix,
     jinjar
-Suggests: 
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate:
