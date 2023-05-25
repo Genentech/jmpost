@@ -4,13 +4,13 @@ package: jmpost
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Model Fitting}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -20,4 +20,259 @@ library(jmpost)
 
 Here we describe the basic steps of joint model fitting with `{jmpost}`.
 
+# Model Specification
 
+Each `JointModel` needs to be specified with three parts:
+1. `longitudinal`: The model for the longitudinal outcomes.
+2. `survival`: The model for the survival outcomes.
+3. `link`: The link that specifies how the `longitudinal` model parameters enter the
+  `survival` model.
+
+## Default Options
+
+Let's first specify a very simple joint model with:
+1. A random slope model for the longitudinal outcome.
+2. A Weibull proportional hazards model for the survival outcome.
+3. The link between the two models is that the random slope from the longitudinal model
+   enters as a product with a link coefficient into the linear predictor of the 
+   survival model.
+   
+```{r simple_model}
+simple_model <- JointModel(
+    longitudinal = LongitudinalRandomSlope(),
+    link = LinkRandomSlope(),
+    survival = SurvivalWeibullPH()
+)
+```
+
+Note that here we use all the default options for the two models and the link,
+in particular the prior distributions and the initial values in the MCMC chain
+for the parameters are automatically chosen. Currently we can see this only
+from the arguments of the constructors:
+
+```{r constructor_args}
+args(LongitudinalRandomSlope)
+```
+
+So here we see that there are 4 model parameters with a proper prior and an 
+additional `random_slope` one where just the initial value can be specified.
+
+## Specifying Prior and Initial Values
+
+We can alternatively also specify the prior distributions and the initial values
+for the parameters manually. This is important in practice to obtain a meaningful
+model specification and hence converging MCMC chains that allow to estimate the 
+posterior distributions.
+
+For the random slope model for the longitudinal outcome, we can e.g. say:
+
+```{r random_slope_prior_inits}
+random_slope_model <- LongitudinalRandomSlope(
+    intercept = prior_normal(40, 5),
+    slope_mu = prior_normal(10, 2, init = 30)
+)
+```
+
+This sets the prior for the `intercept`, without stating an explicit initial value.
+In this case the `init` value is just set to the mean of the normal distribution,
+so 40. This also sets the prior and a different than the mean initial value for the
+`slope_mu` parameter. The other paramaters are left with their default priors
+and initial values.
+
+## Separate Models
+
+It is also possible to not link the longitudinal and the survival models, by using
+the special `LinkNone` link specification. For example, 
+
+```{r simple_model_no_link}
+simple_model_no_link <- JointModel(
+    longitudinal = LongitudinalRandomSlope(),
+    link = LinkNone(),
+    survival = SurvivalWeibullPH()
+)
+```
+
+would allow to fit the two models separately, but in the same MCMC chain.
+
+## Single Models
+
+It is also possible to specify only the longitudinal or the survival model.
+Then these can be estimated on their own with separate MCMC chains.
+
+```{r single_models}
+single_longitudinal <- JointModel(
+    longitudinal = LongitudinalRandomSlope()
+)
+single_survival <- JointModel(
+    survival = SurvivalWeibullPH()
+)
+```
+
+# Data Preparation
+
+Before we can fit the models, we need to prepare the data in the right format.
+
+## Simulating Data
+
+Here we start from a simulated data set. 
+
+- We assign 500 patients each to the two treatment arms.
+- We use a time grid from 1 to 2000, e.g. specifying the days after randomization.
+- We use an exponentially distributed censoring time with mean of 9000 days.
+- We use a categorical covariate with three levels A, B and C in the overall survival model, drawn uniformly from the three levels. (Note that this is hardcoded at the moment, so the levels need to be A, B, C.)
+- We use another continuous covariate in the overall survival model generated from a standard normal distribution, with coefficient 0.3.
+- For the longitudinal outcome, we draw the values from a random slope model with the given parameters.
+- For the survival outcome, we draw the true value from a Weibull model. Note that it is fairly easy to put here another choice, you just need to specify a function of `time` returning the log baseline hazard under the given survival model.
+
+So let's run the code for that:
+
+```{r simulate_data}
+set.seed(129)
+sim_data <- simulate_joint_data(
+    n_arm = c(500, 500),
+    times = 1:2000,
+    lambda_cen = 1 / 9000,
+    beta_cat = c(
+        "A" = 0,
+        "B" = -0.1,
+        "C" = 0.5
+    ),
+    beta_cont = 0.3,
+    lm_fun = sim_lm_random_slope(
+        intercept = 30,
+        slope_mu = c(1, 2),
+        slope_sigma = 0.2,
+        sigma = 3,
+        phi = 0.1
+    ),
+    os_fun = sim_os_weibull(
+        lambda = 1 / 300,
+        gamma = 0.97
+    )
+)
+```
+
+We get a message here that a few patients did not die before the day 2000, but 
+this is not of concern. Basically it just gives us a feeling of how many survival
+events are included in the data set.
+
+## Formatting Data
+
+Next we bring the data into the right format.
+
+We start with extracting data into individual data sets, and then reducing the
+longitudinal data to specific time points.
+
+```{r individual_data}
+os_data <- sim_data$os
+long_data <- sim_data$lm |>
+    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+    dplyr::arrange(time, pt)
+```
+
+Let's have a quick look at the format:
+
+The survival data has:
+- patient ID
+- time point
+- continuous covariate value
+- categorical covariate level
+- event indicator (1 for observed, 0 for censored)
+- study ID
+- treatment arm
+
+```{r os_data_structure}
+head(os_data)
+```
+
+The longitudinal data has:
+- patient ID
+- time point
+- sum of longest diameters (SLD)
+- study ID
+- treatment arm
+- observation flag
+
+```{r lm_data_structure}
+head(long_data)
+```
+
+Finally, we wrap these in the data formatting functions. Here the mapping of the
+column names to the required variables happens. Note that we need to load the
+`survival` package because we use `Surv()` in the overall survival model for the 
+covariate variables specification.
+
+```{r data_joint}
+library(survival)
+joint_data <- DataJoint(
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = long_data,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+```
+
+# Model Fitting
+
+Now let's have a look how we can fit the (joint) models.
+
+## Debugging Stan Code
+
+It is always possible to read out the Stan code that is contained in the
+`JointModel` object, using `write_stan()`:
+
+```{r debug_stan}
+tmp <- tempfile()
+write_stan(simple_model, file_path = tmp)
+first_part <- head(readLines(tmp), 10)
+cat(paste(first_part, collapse = "\n"))
+```
+
+## Sampling Parameters
+
+Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
+the backend.
+
+```{r sampling}
+mcmc_results <- sampleStanModel(
+    simple_model,
+    data = joint_data,
+    iter_sampling = 500,
+    iter_warmup = 500,
+    chains = 1,
+    parallel_chains = 1,
+    exe_file = file.path("local", "full")
+)
+```
+
+Note that `exe_file` is used to specify the location of the compiled Stan file,
+e.g. relative to the current working directory. 
+
+We can see that there were a couple of red warnings in the beginning of the 
+sampling. However, that is not of a concern because they did not persist.
+After the sampling finishes, we can inspect the parameter distributions.
+This is using the `cmdstanr` functions, because the result object is of class
+`CmdStanMCMC`.
+
+```{r inspect_distributions}
+vars <- c(
+    "lm_rs_intercept",
+    "lm_rs_slope_mu",
+    "lm_rs_slope_sigma",
+    "lm_rs_sigma",
+    "link_lm_phi",
+    "sm_weibull_ph_lambda",
+    "sm_weibull_ph_gamma",
+    "beta_os_cov"
+)
+mcmc_results$summary(vars)
+```
