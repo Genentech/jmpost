@@ -1,0 +1,23 @@
+---
+title: "Model Fitting"
+package: jmpost
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Fitting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(jmpost)
+```
+
+Here we describe the basic steps of joint model fitting with `{jmpost}`.
+
+

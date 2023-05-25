@@ -22,6 +22,8 @@ Imports:
     Matrix,
     jinjar
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate:
@@ -47,3 +49,4 @@ Collate:
     'defaults.R'
     'simulations.R'
     'utilities.R'
+VignetteBuilder: knitr
