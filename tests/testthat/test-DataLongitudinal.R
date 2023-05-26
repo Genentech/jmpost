@@ -27,5 +27,7 @@ test_that("DataLongitudinal being rendered to list is as expected for simple inp
     expect_equal(li$Nta_obs_y, 3)
     expect_equal(li$Nta_total, 6)
     expect_equal(li$Tobs, x$vtime)
+    expect_identical(li$n_lm_time_grid, 201L)
+    expect_length(li$lm_time_grid, 201L)
 })
 

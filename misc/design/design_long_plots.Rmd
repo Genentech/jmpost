@@ -96,6 +96,7 @@ Note that currently the modeled mean structure just occurs in the line
 
 Input to Stan (data):
 - Time point grid (e.g. `lm_time_grid`)
+- Length of the time point grid (e.g. `n_lm_time_grid`)
 
 Output from Stan:
 - Samples at observed time points (e.g. `Ypred`), this is a vector in parallel to
@@ -108,6 +109,24 @@ Output from Stan:
   and then calling the same function with the same code in generated quantities
   but that does not seem to save much, and we would need to figure out how to
   press all longitudinal parameters into the function signature which seems painful.)
+
+We are doing this here on this branch to see how easy it is:
+- We need to modify the `model.stan` file in the corresponding sub-folder for the random slope model,
+- as well as `longitudinal.stan` in the base folder to arrange for the new inputs.
+- In `DataLongitudinal.R` we need to add a `time_grid` slot, and importantly the
+  `as.list()` method needs to return the required data points.
+- We also need to adapt `base.stan` so that it will actually fetch the generated quantities
+  code from the longitudinal model.
+
+Finally we can get the samples:
+
+```{r}
+mcmc_results$summary("Ypred[1]")
+mcmc_results$summary("y_fit_at_time_grid[1,1]")
+```
+
+We definitely notice that the sampling speed is lower now with the additional
+generated quantities generation.
 
 ### Option 2: Do it in R
 
