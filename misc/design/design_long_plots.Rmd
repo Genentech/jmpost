@@ -254,6 +254,128 @@ p
 
 ## User interface
 
-Now let's work on how the user interface looks like.
+Now let's work on how the user interface looks like. 
+We could think of the following workflow:
 
+First the user can extract the longitudinal model samples with the new 
+generic `longitudinal` from the `JointModelSamples` object. Here they can
+choose whether to get the samples of all patients or only for a specific subset.
+
+```{r, eval = FALSE}
+long_fit_selected <- longitudinal(mcmc_results, pt = c("pt_00011", "pt_00023")) 
+long_fit_all <- longitudinal(mcmc_results)
+```
+
+We can also define a subset method (`[`) for this `LongitudinalSamples` object 
+such that the user can later further subset to specific patients.
+
+Second, for this `LongitudinalSamples` object we define an `autoplot` method,
+so the user can obtain for all the patients in this object the table of plots.
+
+### `longitudinal` method
+
+Here is the prototype.
+
+```{r}
+setGeneric(
+    name = "longitudinal", 
+    def = function(object, ...) standardGeneric("longitudinal")
+)
+
+.LongitudinalSamples <- setClass(
+    "LongitudinalSamples",
+    contains = "list"
+)
+
+setMethod(
+    f = "longitudinal",
+    signature = c(object = "JointModelSamples"),
+    definition = function(object, pt = NULL) {
+        all_pts <- names(object@data$pt_to_ind)
+        if (is.null(pt)) {
+            pt <- all_pts
+        } else {
+            assert_that(all(pt %in% all_pts), !any(duplicated(pt)))
+        }
+        time_grid <- object@data$lm_time_grid
+        time_grid_index <- seq_along(time_grid)
+        y_fit_samples <- object@results$draws("y_fit_at_time_grid")
+        results <- list()
+        for (this_pt in pt) {
+            this_result <- list()
+            # Samples.
+            patient_ind <- object@data$pt_to_ind[this_pt]
+            this_y_fit_names <- paste0("y_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
+            this_result$samples <- y_fit_samples[, 1L, this_y_fit_names, drop = TRUE]
+            # Summary.
+            y_fit <- process_samples(this_result$samples)
+            this_result$summary <- cbind(time = time_grid, y_fit)
+            # Observations.
+            for_this_pt <- which(object@data$ind_index == patient_ind)
+            this_t <- object@data$Tobs[for_this_pt]
+            this_y <- object@data$Yobs[for_this_pt]
+            this_result$observed <- data.frame(t = this_t, y = this_y)
+            # Save all.
+            results[[this_pt]] <- this_result
+        }
+        .LongitudinalSamples(results)
+    }
+)
+
+setMethod(
+    f = "[",
+    signature = c(x = "LongitudinalSamples", i = "ANY", j = "missing"),
+    definition = function(x, i, j, ..., drop = FALSE) {
+        res <- callNextMethod()
+        .LongitudinalSamples(res)
+    }
+)
+```
+
+Let's try it out:
+
+```{r}
+long_fit_selected <- longitudinal(mcmc_results, pt = c("pt_00011", "pt_00023")) 
+long_fit_all <- longitudinal(mcmc_results)
+# long_fit_subset <- long_fit_selected["pt_00011"]
+```
+
+This works quite ok, only the subsetting does not work yet but we can for
+now ignore that.
+
+### `autoplot` method
+
+Now let's define the plot method prototype on top of `LongitudinalSamples`.
+The first part here is to stack together the `data.frame` parts in a long format
+such that we can use `ggplot2` faceting.
+
+```{r}
+setMethod(
+    f = "autoplot",
+    signature = c(object = "LongitudinalSamples"),
+    function(object, ...) {
+        all_fit_dfs <- lapply(object, "[[", i = "summary")
+        all_fit_dfs_with_pt_id <- Map(cbind, all_fit_dfs, pt_id = names(object))
+        all_fit_df <- do.call(rbind, all_fit_dfs_with_pt_id)
+        
+        obs_dfs <- lapply(object, "[[", i = "observed")
+        obs_dfs_with_pt_id <- Map(cbind, obs_dfs, pt_id = names(object))
+        all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
+        
+        ggplot() +
+            geom_line(aes(x = time, y = median), data = all_fit_df) +
+            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
+            geom_point(aes(x = t, y = y), data = all_obs_df) +
+            xlab(expression(t)) +
+            ylab(expression(y)) +
+            facet_grid(~ pt_id)
+    }
+)
+```
+
+Let's try it out:
+
+```{r}
+autoplot(long_fit_selected)
+```
 
