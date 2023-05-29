@@ -157,6 +157,7 @@ setMethod(
 
             # Index vectors
             ind_index = as.numeric(df[[vars$pt]]),
+            pt_to_ind = stats::setNames(seq_len(nlevels(df[[vars$pt]])), levels(df[[vars$pt]])),
             obs_y_index = index_obs,
             cens_y_index = index_cen,
 

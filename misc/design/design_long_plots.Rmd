@@ -121,8 +121,8 @@ We are doing this here on this branch to see how easy it is:
 Finally we can get the samples:
 
 ```{r}
-mcmc_results$summary("Ypred[1]")
-mcmc_results$summary("y_fit_at_time_grid[1,1]")
+mcmc_results@results$summary("Ypred[1]")
+mcmc_results@results$summary("y_fit_at_time_grid[1,1]")
 ```
 
 We definitely notice that the sampling speed is lower now with the additional
@@ -136,14 +136,124 @@ This would mean though that we need to separately code
 the mean structure in R, and we then have to continue to maintain the consistency
 of the Stan and the R code for these mean structures.
 
-We could e.g. define a method `longitudinal_samples()` for the class 
+We could e.g. define a method `means()` for the class 
 `LongitudinalRandomSlope` that takes the longitudinal model (just for dispatch)
 as well as the resulting `mcmc_results` and then grabs the right parameters from it
-and produces from that the longitudinal fit samples.
+and produces from that the longitudinal mean fit samples.
 
 Currently this would mean that the user has to save the model object and plug in here.
 Better would be if we pull through this model object into the MCMC results object
 and the user just operates on that. So `JointModel` needs to store it already,
 and then `sampleStanModel` e.g. also returns the original `JointModel` in a slot.
+
+Since this requires more changes to the class structure we don't take this path 
+at the moment.
+
+## Plot for one patient
+
+Now let's create the plot first for a single patient. The plan is:
+
+1. Get the `y_fit_at_time_grid` samples for this specific patient
+1. Process the samples to get the median and credible intervals (CIs)
+1. Make a median (line) plus CIs (ribbon) plot
+1. Add the observations for this patient as points
+1. Add the patient ID as title
+
+So let's go through this step by step now.
+
+### Get the fit samples
+
+Because each row is an individual, we want to only get the patient's row as 
+draws. 
+
+Now here we see that it is better that we save the input data list
+as additional element in the MCMC results object, such that we can query the
+time grid here. Therefore we introduced the S4 class `JointModelSamples` 
+in `JointModel.R`.
+
+We also need to find the patient ID. Therefore we add `pt_to_ind` in the `list`
+conversion of `DataLongitudinal`.
+
+Since here we just have one chain we just drop the 3rd dimension of the array and
+end up with a matrix with the samples in the rows and the time points in the columns.
+
+```{r}
+time_grid <- mcmc_results@data$lm_time_grid
+patient_id <- "pt_00011"
+patient_ind <- mcmc_results@data$pt_to_ind[patient_id]
+y_fit_names <- paste0("y_fit_at_time_grid[", patient_ind, ",", seq_along(time_grid), "]")
+y_fit_samples <- mcmc_results@results$draws(variables = y_fit_names)[, 1L, , drop = TRUE]
+```
+
+### Process the samples
+
+We need a little helper for obtaining credible intervals.
+
+```{r}
+process_samples <- function(samples) {
+  samples_median <- apply(samples, MARGIN = 2L, FUN = median)
+  samples_hpd <- bfp::scrHpd(samples)
+  df <- as.data.frame(cbind(
+      median = samples_median, 
+      t(samples_hpd)
+  ))
+  rownames(df) <- NULL
+  df
+}
+```
+
+Then we can use this on our samples.
+
+```{r}
+y_fit <- process_samples(y_fit_samples)
+```
+
+### Median and CIs plot
+
+Now we can plot this.
+
+```{r}
+y_fit_df <- cbind(time = time_grid, y_fit)
+library(ggplot2)
+p <- ggplot() +
+    geom_line(aes(x = time, y = median), data = y_fit_df) +
+    geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = y_fit_df, alpha = 0.3)
+```
+
+### Add the observations
+
+We first get the observations and then plot them.
+
+```{r}
+for_this_pt <- which(mcmc_results@data$ind_index == patient_ind)
+this_t <- mcmc_results@data$Tobs[for_this_pt]
+this_y <- mcmc_results@data$Yobs[for_this_pt]
+df_this_pt <- data.frame(t = this_t, y = this_y)
+p <- p +
+    geom_point(aes(x = t, y = y), data = df_this_pt) +
+    coord_cartesian(ylim = range(c(y_fit_df$lower, y_fit_df$upper, df_this_pt$y)))
+```
+
+### Add title etc.
+
+Finally let's make it a bit more pretty.
+
+```{r}
+p <- p +
+    xlab(expression(t)) +
+    ylab(expression(y)) +
+    ggtitle(patient_id) +
+    theme(plot.title = element_text(size = 10))
+```
+
+Voila.
+
+```{r}
+p
+```
+
+## User interface
+
+Now let's work on how the user interface looks like.
 
 

@@ -80,6 +80,15 @@ setMethod(
     }
 )
 
+.JointModelSamples <- setClass(
+    "JointModelSamples",
+    slots = c(
+        model = "JointModel",
+        data = "list",
+        init = "list",
+        results = "ANY"
+    )
+)
 
 
 setMethod(
@@ -106,7 +115,14 @@ setMethod(
         }
 
         model <- compileStanModel(object, exe_file)
-        do.call(model$sample, args)
+        results <- do.call(model$sample, args)
+
+        .JointModelSamples(
+            model = object,
+            data = args$data,
+            init = values_initial_expanded,
+            results = results
+        )
     }
 )
 
