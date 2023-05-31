@@ -28,7 +28,7 @@ JointModel <- function(longitudinal = NULL, survival = NULL, link = NULL) {
 
     stan_full <- jinjar::render(
         .x = base_model,
-        longditudinal = add_missing_stan_blocks(as.list(longitudinal_linked)),
+        longitudinal = add_missing_stan_blocks(as.list(longitudinal_linked)),
         survival = add_missing_stan_blocks(as.list(survival)),
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
@@ -80,15 +80,24 @@ setMethod(
     }
 )
 
+.JointModelSamples <- setClass(
+    "JointModelSamples",
+    slots = c(
+        model = "JointModel",
+        data = "list",
+        init = "list",
+        results = "ANY"
+    )
+)
 
 
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
     definition = function(object, data, ..., exe_file = NULL) {
-        
+
         args <- list(...)
-        
+
         if (is(data, "DataJoint")) {
             args[["data"]] <- as.list(data)
         } else if (is(data, "list")) {
@@ -96,7 +105,7 @@ setMethod(
         } else {
             stop("`data` must either be a list or a DataJoint object")
         }
-        
+
         if (!"init" %in% names(args)) {
             values_initial <- initialValues(object)
             values_sizes <- size(object@parameters)
@@ -104,9 +113,16 @@ setMethod(
             values_initial_expanded <- expand_initial_values(values_initial, values_sizes_complete)
             args[["init"]] <- function() values_initial_expanded
         }
-        
+
         model <- compileStanModel(object, exe_file)
-        do.call(model$sample, args)
+        results <- do.call(model$sample, args)
+
+        .JointModelSamples(
+            model = object,
+            data = args$data,
+            init = values_initial_expanded,
+            results = results
+        )
     }
 )
 

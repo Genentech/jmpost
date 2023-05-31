@@ -1,0 +1,381 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Design for the longitudinal fit plots
+
+Now let's try to wrap our head around how we can produce nice longitudinal
+fit plots from our joint or single longitudinal model fit.
+
+## Example
+
+Let's start with a simple example - the simplest is when we just have the
+longitudinal model:
+
+```{r}
+single_longitudinal <- JointModel(
+    longitudinal = LongitudinalRandomSlope()
+)
+set.seed(321)
+sim_data <- simulate_joint_data(
+    lm_fun = sim_lm_random_slope(),
+    os_fun = sim_os_exponential(1 / 300)
+)
+os_data <- sim_data$os
+long_data <- sim_data$lm |>
+    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+    dplyr::arrange(time, pt)
+library(survival)
+joint_data <- DataJoint(
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = long_data,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+mcmc_results <- sampleStanModel(
+    single_longitudinal,
+    data = joint_data,
+    iter_sampling = 500,
+    iter_warmup = 500,
+    chains = 1,
+    parallel_chains = 1,
+    exe_file = file.path("local", "single_longitudinal")
+)
+mcmc_results
+```
+
+It can be instructive to look at the Stan code:
+
+```{r, eval = FALSE}
+tmp <- tempfile()
+write_stan(single_longitudinal, file_path = tmp)
+file.edit(tmp)
+```
+
+## Obtaining longitudinal fit samples
+
+So how do we now obtain patient specific samples of the fitted longitudinal model?
+
+The challenge is that we cannot just take the sampled parameter samples and then 
+plug them into the model and get the fit samples. The reason is that we don't have
+the information contained in the `mcmc_results` about what the longitudinal model 
+actually is. Even the longitudinal model itself:
+
+```{r}
+long_model <- LongitudinalRandomSlope()
+str(long_model@stan)
+```
+
+does not have the model as an R function e.g. but only in Stan code form. We can
+find it in the transformed parameters block:
+
+```{r}
+long_model@stan@transformed_parameters
+```
+
+### Option 1: Do it in Stan
+
+We could generate the samples in Stan already as part of the generated quantities
+block. Note that it is not sufficient to just have them at the observed time points,
+because then we cannot plot nice functional fits afterwards. So we need this at a 
+certain grid of time points.
+
+Note that currently the modeled mean structure just occurs in the line 
+`lm_rs_intercept + lm_rs_rslope_ind .* Tobs`.
+
+Input to Stan (data):
+- Time point grid (e.g. `lm_time_grid`)
+- Length of the time point grid (e.g. `n_lm_time_grid`)
+
+Output from Stan:
+- Samples at observed time points (e.g. `Ypred`), this is a vector in parallel to
+  the existing `Yobs`. This can be in transformed parameters.
+- Samples at time point grid (e.g. `y_fit_at_time_grid`), this can be a matrix with
+  `Nind` rows and `n_lm_time_grid` columns. This should happen in generated quantities
+  because it is not needed for the log likelihood calculations and would slow
+  us down otherwise unnecessarily. For now we would need to put that separately
+  into each longitudinal model's Stan code. (We could think of a function convention
+  and then calling the same function with the same code in generated quantities
+  but that does not seem to save much, and we would need to figure out how to
+  press all longitudinal parameters into the function signature which seems painful.)
+
+We are doing this here on this branch to see how easy it is:
+- We need to modify the `model.stan` file in the corresponding sub-folder for the random slope model,
+- as well as `longitudinal.stan` in the base folder to arrange for the new inputs.
+- In `DataLongitudinal.R` we need to add a `time_grid` slot, and importantly the
+  `as.list()` method needs to return the required data points.
+- We also need to adapt `base.stan` so that it will actually fetch the generated quantities
+  code from the longitudinal model.
+
+Finally we can get the samples:
+
+```{r}
+mcmc_results@results$summary("Ypred[1]")
+mcmc_results@results$summary("y_fit_at_time_grid[1,1]")
+```
+
+We definitely notice that the sampling speed is lower now with the additional
+generated quantities generation.
+
+### Option 2: Do it in R
+
+We could do it from R too. 
+
+This would mean though that we need to separately code
+the mean structure in R, and we then have to continue to maintain the consistency
+of the Stan and the R code for these mean structures.
+
+We could e.g. define a method `means()` for the class 
+`LongitudinalRandomSlope` that takes the longitudinal model (just for dispatch)
+as well as the resulting `mcmc_results` and then grabs the right parameters from it
+and produces from that the longitudinal mean fit samples.
+
+Currently this would mean that the user has to save the model object and plug in here.
+Better would be if we pull through this model object into the MCMC results object
+and the user just operates on that. So `JointModel` needs to store it already,
+and then `sampleStanModel` e.g. also returns the original `JointModel` in a slot.
+
+Since this requires more changes to the class structure we don't take this path 
+at the moment.
+
+## Plot for one patient
+
+Now let's create the plot first for a single patient. The plan is:
+
+1. Get the `y_fit_at_time_grid` samples for this specific patient
+1. Process the samples to get the median and credible intervals (CIs)
+1. Make a median (line) plus CIs (ribbon) plot
+1. Add the observations for this patient as points
+1. Add the patient ID as title
+
+So let's go through this step by step now.
+
+### Get the fit samples
+
+Because each row is an individual, we want to only get the patient's row as 
+draws. 
+
+Now here we see that it is better that we save the input data list
+as additional element in the MCMC results object, such that we can query the
+time grid here. Therefore we introduced the S4 class `JointModelSamples` 
+in `JointModel.R`.
+
+We also need to find the patient ID. Therefore we add `pt_to_ind` in the `list`
+conversion of `DataLongitudinal`.
+
+Since here we just have one chain we just drop the 3rd dimension of the array and
+end up with a matrix with the samples in the rows and the time points in the columns.
+
+```{r}
+time_grid <- mcmc_results@data$lm_time_grid
+patient_id <- "pt_00011"
+patient_ind <- mcmc_results@data$pt_to_ind[patient_id]
+y_fit_names <- paste0("y_fit_at_time_grid[", patient_ind, ",", seq_along(time_grid), "]")
+y_fit_samples <- mcmc_results@results$draws(variables = y_fit_names)[, 1L, , drop = TRUE]
+```
+
+### Process the samples
+
+We need a little helper for obtaining credible intervals.
+
+```{r}
+process_samples <- function(samples) {
+  samples_median <- apply(samples, MARGIN = 2L, FUN = median)
+  samples_hpd <- bfp::scrHpd(samples)
+  df <- as.data.frame(cbind(
+      median = samples_median, 
+      t(samples_hpd)
+  ))
+  rownames(df) <- NULL
+  df
+}
+```
+
+Then we can use this on our samples.
+
+```{r}
+y_fit <- process_samples(y_fit_samples)
+```
+
+### Median and CIs plot
+
+Now we can plot this.
+
+```{r}
+y_fit_df <- cbind(time = time_grid, y_fit)
+library(ggplot2)
+p <- ggplot() +
+    geom_line(aes(x = time, y = median), data = y_fit_df) +
+    geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = y_fit_df, alpha = 0.3)
+```
+
+### Add the observations
+
+We first get the observations and then plot them.
+
+```{r}
+for_this_pt <- which(mcmc_results@data$ind_index == patient_ind)
+this_t <- mcmc_results@data$Tobs[for_this_pt]
+this_y <- mcmc_results@data$Yobs[for_this_pt]
+df_this_pt <- data.frame(t = this_t, y = this_y)
+p <- p +
+    geom_point(aes(x = t, y = y), data = df_this_pt) +
+    coord_cartesian(ylim = range(c(y_fit_df$lower, y_fit_df$upper, df_this_pt$y)))
+```
+
+### Add title etc.
+
+Finally let's make it a bit more pretty.
+
+```{r}
+p <- p +
+    xlab(expression(t)) +
+    ylab(expression(y)) +
+    ggtitle(patient_id) +
+    theme(plot.title = element_text(size = 10))
+```
+
+Voila.
+
+```{r}
+p
+```
+
+## User interface
+
+Now let's work on how the user interface looks like. 
+We could think of the following workflow:
+
+First the user can extract the longitudinal model samples with the new 
+generic `longitudinal` from the `JointModelSamples` object. Here they can
+choose whether to get the samples of all patients or only for a specific subset.
+
+```{r, eval = FALSE}
+long_fit_selected <- longitudinal(mcmc_results, pt = c("pt_00011", "pt_00023")) 
+long_fit_all <- longitudinal(mcmc_results)
+```
+
+We can also define a subset method (`[`) for this `LongitudinalSamples` object 
+such that the user can later further subset to specific patients.
+
+Second, for this `LongitudinalSamples` object we define an `autoplot` method,
+so the user can obtain for all the patients in this object the table of plots.
+
+### `longitudinal` method
+
+Here is the prototype.
+
+```{r}
+setGeneric(
+    name = "longitudinal", 
+    def = function(object, ...) standardGeneric("longitudinal")
+)
+
+.LongitudinalSamples <- setClass(
+    "LongitudinalSamples",
+    contains = "list"
+)
+
+setMethod(
+    f = "longitudinal",
+    signature = c(object = "JointModelSamples"),
+    definition = function(object, pt = NULL) {
+        all_pts <- names(object@data$pt_to_ind)
+        if (is.null(pt)) {
+            pt <- all_pts
+        } else {
+            assert_that(all(pt %in% all_pts), !any(duplicated(pt)))
+        }
+        time_grid <- object@data$lm_time_grid
+        time_grid_index <- seq_along(time_grid)
+        y_fit_samples <- object@results$draws("y_fit_at_time_grid")
+        results <- list()
+        for (this_pt in pt) {
+            this_result <- list()
+            # Samples.
+            patient_ind <- object@data$pt_to_ind[this_pt]
+            this_y_fit_names <- paste0("y_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
+            this_result$samples <- y_fit_samples[, 1L, this_y_fit_names, drop = TRUE]
+            # Summary.
+            y_fit <- process_samples(this_result$samples)
+            this_result$summary <- cbind(time = time_grid, y_fit)
+            # Observations.
+            for_this_pt <- which(object@data$ind_index == patient_ind)
+            this_t <- object@data$Tobs[for_this_pt]
+            this_y <- object@data$Yobs[for_this_pt]
+            this_result$observed <- data.frame(t = this_t, y = this_y)
+            # Save all.
+            results[[this_pt]] <- this_result
+        }
+        .LongitudinalSamples(results)
+    }
+)
+
+setMethod(
+    f = "[",
+    signature = c(x = "LongitudinalSamples", i = "ANY", j = "missing"),
+    definition = function(x, i, j, ..., drop = FALSE) {
+        res <- callNextMethod()
+        .LongitudinalSamples(res)
+    }
+)
+```
+
+Let's try it out:
+
+```{r}
+long_fit_selected <- longitudinal(mcmc_results, pt = c("pt_00011", "pt_00023")) 
+long_fit_all <- longitudinal(mcmc_results)
+# long_fit_subset <- long_fit_selected["pt_00011"]
+```
+
+This works quite ok, only the subsetting does not work yet but we can for
+now ignore that.
+
+### `autoplot` method
+
+Now let's define the plot method prototype on top of `LongitudinalSamples`.
+The first part here is to stack together the `data.frame` parts in a long format
+such that we can use `ggplot2` faceting.
+
+```{r}
+setMethod(
+    f = "autoplot",
+    signature = c(object = "LongitudinalSamples"),
+    function(object, ...) {
+        all_fit_dfs <- lapply(object, "[[", i = "summary")
+        all_fit_dfs_with_pt_id <- Map(cbind, all_fit_dfs, pt_id = names(object))
+        all_fit_df <- do.call(rbind, all_fit_dfs_with_pt_id)
+        
+        obs_dfs <- lapply(object, "[[", i = "observed")
+        obs_dfs_with_pt_id <- Map(cbind, obs_dfs, pt_id = names(object))
+        all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
+        
+        ggplot() +
+            geom_line(aes(x = time, y = median), data = all_fit_df) +
+            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
+            geom_point(aes(x = t, y = y), data = all_obs_df) +
+            xlab(expression(t)) +
+            ylab(expression(y)) +
+            facet_grid(~ pt_id)
+    }
+)
+```
+
+Let's try it out:
+
+```{r}
+autoplot(long_fit_selected)
+```
+
