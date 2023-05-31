@@ -18,6 +18,7 @@ Imports:
     dplyr,
     stringr,
     cmdstanr,
+    ggplot2,
     statmod,
     Matrix,
     jinjar

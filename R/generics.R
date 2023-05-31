@@ -148,3 +148,16 @@ setGeneric(
     name = "longitudinal",
     def = function(object, ...) standardGeneric("longitudinal")
 )
+
+#' Plotting Methods for Different Classes
+#'
+#' These plot methods visualize various objects.
+#'
+#' @name autoplot
+#' @aliases autoplot
+#'
+#' @param object (`LongitudinalSamples`)\cr what to plot.
+#' @param ... Other arguments passed to plotting methods.
+#'
+#' @export
+NULL
