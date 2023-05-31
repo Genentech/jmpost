@@ -31,7 +31,6 @@ setMethod(
 
 #' @rdname autoplot
 #' @export
-#' @importFrom ggplot2 autoplot
 setMethod(
     f = "autoplot",
     signature = c(object = "LongitudinalSamples"),
