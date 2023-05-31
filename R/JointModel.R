@@ -80,17 +80,6 @@ setMethod(
     }
 )
 
-.JointModelSamples <- setClass(
-    "JointModelSamples",
-    slots = c(
-        model = "JointModel",
-        data = "list",
-        init = "list",
-        results = "ANY"
-    )
-)
-
-
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
