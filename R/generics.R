@@ -139,7 +139,7 @@ setGeneric(
 
 #' `longitudinal`
 #'
-#' @param object samples to extract the longitudinal fits from.
+#' @param object (`JointModelSamples`)\cr samples to extract the longitudinal fits from.
 #' @param ... not used.
 #'
 #' @return The longitudinal fit samples.
