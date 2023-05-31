@@ -4,14 +4,14 @@
 #'
 #' This function creates a variance-covariance matrix based on the input standard deviations
 #' and correlations. Note that the values may be altered using [Matrix::nearPD()]
-#' in order to ensure that it is a valid positive semi-definite matrix. 
+#' in order to ensure that it is a valid positive semi-definite matrix.
 #'
 #' @param sd A numeric vector containing the standard deviations of the variables.
 #' @param cor A numeric vector containing the pairwise correlations between the variables.
 #' The vector should be in the order of the upper triangular part of the matrix, excluding
 #' the diagonal elements. e.g. for a 3x3 matrix c(0.2, 0.3, 0.4) would be the values for
 #' x_12, x_13 and x_23 of the correlation matrix respectively
-#' 
+#'
 #'
 #' @return A symmetric matrix representing the variance-covariance matrix calculated from
 #' the input standard deviations and correlations. The matrix is guaranteed to be positive
@@ -30,7 +30,7 @@ as_vcov <- function(sd, cor) {
     x[upper.tri(x)] <- cor
     res <- diag(sd) %*% x %*% diag(sd)
     res <- as.matrix(Matrix::nearPD(res)$mat)
-    assertthat::assert_that(isSymmetric(res))
+    assert_that(isSymmetric(res))
     dimnames(res) <- NULL
     return(res)
 }
@@ -77,8 +77,8 @@ sim_lm_gsf <- function(
     .debug = FALSE
 ) {
     function(lm_base) {
-        
-        assertthat::assert_that(
+
+        assert_that(
             length(unique(lm_base$study)) == 1,
             length(mu_b) == 1,
             length(sigma) == 1,
@@ -128,16 +128,16 @@ sim_lm_random_slope <- function(
     .debug = FALSE
 ) {
     function(lm_base) {
-        
-        assertthat::assert_that(
+
+        assert_that(
             length(slope_mu) == 1 | length(slope_mu) == length(unique(lm_base$arm)),
             msg = "slope_mu should either be length 1 or equal to the length of n_arm"
         )
-        
+
         if (length(slope_mu) == 1) {
             slope_mu <- rep(slope_mu, length(unique(lb_base$arm)))
         }
-        
+
         rs_baseline <- lm_base |>
             dplyr::distinct(pt, arm) |>
             dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma)) |>
@@ -148,7 +148,7 @@ sim_lm_random_slope <- function(
             dplyr::left_join(rs_baseline, by = "pt") |>
             dplyr::mutate(sld = intercept + slope_ind * time + err) |>
             dplyr::mutate(log_haz_link = slope_ind * phi)
-        
+
         if ( ! .debug) {
             lm_dat <- lm_dat |> dplyr::select(pt, time, sld, log_haz_link, study, arm)
         }
@@ -185,7 +185,7 @@ sim_os_loglogistic <- function(lambda, p){
 
 
 get_timepoints <- function(x) {
-    assertthat::assert_that(length(x) == length(unique(x)))
+    assert_that(length(x) == length(unique(x)))
     x_ord <- x[order(x)]
     x_no_neg <- x_ord[x_ord > 0]
 
@@ -196,7 +196,7 @@ get_timepoints <- function(x) {
     tibble::tibble(
         lower = bound_lower,
         upper = bound_upper,
-        time = eval_points, 
+        time = eval_points,
         width = bound_width
     )
 }
@@ -220,12 +220,12 @@ simulate_joint_data <- function(
 
     ARMS <- paste0("Group-", seq_along(n_arm))
 
-    os_baseline <- dplyr::tibble(pt = u_pts) |> 
-        dplyr::mutate(cov_cont = rnorm(n)) |> 
+    os_baseline <- dplyr::tibble(pt = u_pts) |>
+        dplyr::mutate(cov_cont = rnorm(n)) |>
         dplyr::mutate(cov_cat = factor(
             sample(c("A", "B", "C"), replace = TRUE, size = n),
             levels = c("A", "B", "C")
-        )) |> 
+        )) |>
         dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |>
         dplyr::mutate(survival = runif(n)) |>
         dplyr::mutate(chazard_limit = -log(survival)) |>
@@ -247,7 +247,7 @@ simulate_joint_data <- function(
     lm_dat <- time_dat_baseline |>
         dplyr::select(pt, time, arm, study) |>
         lm_fun()
-    
+
     assert_that(
         all(lm_dat$pt == time_dat_baseline$pt),
         all(lm_dat$time == time_dat_baseline$time),
@@ -262,7 +262,7 @@ simulate_joint_data <- function(
         dplyr::group_by(pt) |>
         dplyr::mutate(chazard = cumsum(hazard_interval)) |>
         dplyr::ungroup()
-    
+
     os_dat <- os_dat_chaz|>
         dplyr::filter(chazard_limit <= chazard) |>
         dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
@@ -280,7 +280,7 @@ simulate_joint_data <- function(
         dplyr::mutate(event = 0) |>
         dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm) |>
         dplyr::filter(!pt %in% os_dat$pt)
-    
+
     if (!nrow(os_dat_censor)== 0 ) {
         message(sprintf("%i patients did not die before max(times)", nrow(os_dat_censor)))
     }
@@ -290,7 +290,7 @@ simulate_joint_data <- function(
         dplyr::arrange(pt)
 
     os_time <- rep(os_dat_complete$time, each = length(bounds$time))
-    
+
     assert_that(
         length(os_time) == nrow(lm_dat),
         all(lm_dat$pt == rep(os_dat_complete$pt, each = length(bounds$time)))
@@ -301,7 +301,7 @@ simulate_joint_data <- function(
         dplyr::mutate(observed = (time <= os_time)) |>
         dplyr::select(-os_time, -log_haz_link)
 
-    assertthat::assert_that(
+    assert_that(
         length(unique(os_dat_complete$pt)) == n,
         n == nrow(os_dat_complete),
         all(os_dat_complete$time >= 0),

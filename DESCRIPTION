@@ -47,6 +47,7 @@ Collate:
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
     'defaults.R'
+    'jmpost-package.R'
     'simulations.R'
     'utilities.R'
 VignetteBuilder: knitr
