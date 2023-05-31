@@ -260,7 +260,7 @@ e.g. relative to the current working directory.
 We can see that there were a couple of red warnings in the beginning of the 
 sampling. However, that is not of a concern because they did not persist.
 After the sampling finishes, we can inspect the parameter distributions.
-This is using the `cmdstanr` functions, because the result object is of class
+This is using the `cmdstanr` functions, because the `results` element is of class
 `CmdStanMCMC`.
 
 ```{r inspect_distributions}
@@ -274,5 +274,5 @@ vars <- c(
     "sm_weibull_ph_gamma",
     "beta_os_cov"
 )
-mcmc_results$summary(vars)
+mcmc_results@results$summary(vars)
 ```
