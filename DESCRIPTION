@@ -42,6 +42,7 @@ Collate:
     'LinkNone.R'
     'LongitudinalGSF.R'
     'LongitudinalRandomSlope.R'
+    'LongitudinalSamples.R'
     'SurvivalModel.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
