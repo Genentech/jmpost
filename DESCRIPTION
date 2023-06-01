@@ -18,6 +18,7 @@ Imports:
     dplyr,
     stringr,
     cmdstanr,
+    ggplot2,
     statmod,
     Matrix,
     jinjar
@@ -36,17 +37,20 @@ Collate:
     'ParameterList.R'
     'StanModule.R'
     'JointModel.R'
+    'JointModelSamples.R'
     'StanModel.R'
     'LongitudinalModel.R'
     'Link.R'
     'LinkNone.R'
     'LongitudinalGSF.R'
     'LongitudinalRandomSlope.R'
+    'LongitudinalSamples.R'
     'SurvivalModel.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
     'defaults.R'
+    'jmpost-package.R'
     'simulations.R'
     'utilities.R'
 VignetteBuilder: knitr
