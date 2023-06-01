@@ -21,10 +21,4 @@ and replicates any single values in the initial values list according to the
 corresponding values in the sizes list. The resulting list has the same names
 as the original lists.
 }
-\examples{
-my_values <- list(a = 1, b = c(2, 3), c = 4)
-my_sizes <- list(a = 3, b = 2, c = 1)
-expand_initial_values(initial_values = my_values, sizes = my_sizes)
-
-}
 \keyword{internal}

@@ -10,7 +10,7 @@ os_data <- sim_data$os
 long_data <- sim_data$lm |>
     dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
     dplyr::arrange(time, pt)
-library(survival)
+
 joint_data <- DataJoint(
     survival = DataSurvival(
         data = os_data,

@@ -1,7 +1,6 @@
 library(dplyr)
 library(ggplot2)
 library(stringr)
-library(survival)
 library(tidyr)
 library(cmdstanr)
 
@@ -75,19 +74,19 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
-        
+
         mu_bsld = prior_lognormal(log(60), 2, init = 60),
         mu_ks = prior_lognormal(log(0.2), 0.1, init = 0.2),
         mu_kg = prior_lognormal(log(0.2), 0.1, init = 0.2),
         mu_phi = prior_beta(7, 10, init = 0.4),
-        
+
         omega_bsld = prior_lognormal(log(0.1), 0.5, init = 0.1),
         omega_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
         omega_kg = prior_lognormal(log(0.1), 0.5, init = 0.1),
         omega_phi = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        
+
         sigma = prior_lognormal(log(0.03), 0.1, init = 0.03),
-        
+
         tilde_bsld = prior_normal(0, 1, init = 0.1),
         tilde_ks = prior_normal(0, 1, init = 0.1),
         tilde_kg = prior_normal(0, 1, init = 0.1),

@@ -1,6 +1,3 @@
-
-
-
 #' `get_missing_rownumbers`
 #'
 #' Returns which row numbers contain at least 1 missing observation any variables
@@ -68,11 +65,6 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 #' @return A named list of values, with any single values in the initial_values list
 #' replicated according to the corresponding values in the sizes list.
 #'
-#' @examples
-#' my_values <- list(a = 1, b = c(2, 3), c = 4)
-#' my_sizes <- list(a = 3, b = 2, c = 1)
-#' expand_initial_values(initial_values = my_values, sizes = my_sizes)
-#'
 #' @keywords internal
 expand_initial_values <- function(initial_values, sizes){
     assert_that(
@@ -121,11 +113,6 @@ expand_initial_values <- function(initial_values, sizes){
 #'
 #' @return A list of sizes with character elements replaced by their corresponding
 #' numeric values.
-#'
-#' @examples
-#' sizes <- list(1, "b", 3)
-#' data <- list(a = 1, b = 2, c = 3)
-#' replace_with_lookup(sizes, data)
 #'
 #' @keywords internal
 replace_with_lookup <- function(sizes, data) {

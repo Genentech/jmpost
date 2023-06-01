@@ -1,7 +1,3 @@
-
-library(survival)
-
-
 x <- data.frame(
     vpt = c("b" , "a", "c"),
     varm = c("a", "a", "a"),

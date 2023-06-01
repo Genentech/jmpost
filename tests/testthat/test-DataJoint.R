@@ -1,6 +1,3 @@
-library(survival)
-
-
 test_that("DataJoint errors if subjects don't allign after", {
     df_surv <- data.frame(
         vpt = c("A", "B", "C"),
@@ -16,7 +13,6 @@ test_that("DataJoint errors if subjects don't allign after", {
         vtime = c(10, 10, 20, 30, 40, 50),
         vout = c(1,2,3,4,5, 6)
     )
-
 
     do_surv <- DataSurvival(
         data = df_surv,
@@ -37,11 +33,8 @@ test_that("DataJoint errors if subjects don't allign after", {
         longitudinal = do_long
     )
 
-    ## Smoke tests
     expect_equal(as.list(d_joint)$Nind, 3)
     expect_equal(as.list(d_joint)$Nta_total, 6)
-
-
 
     df_long2 <- df_long
     df_long2$vpt[df_long2$vpt == "C"] <- NA_character_

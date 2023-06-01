@@ -21,7 +21,8 @@ Imports:
     ggplot2,
     statmod,
     Matrix,
-    jinjar
+    jinjar,
+    survival
 Suggests: 
     knitr,
     rmarkdown,

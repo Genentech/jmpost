@@ -2,7 +2,6 @@
 devtools::document()
 devtools::load_all()
 library(bayesplot)
-library(survival)
 
 jlist <- simulate_joint_data(
     n_arm = c(1000, 1000),

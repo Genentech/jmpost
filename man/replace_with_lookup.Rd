@@ -21,10 +21,4 @@ This function takes a list of sizes and a list of data and returns a modified li
 of sizes where each character element is replaced by the corresponding numeric value
 from the data list. Each element of size must be a length one numeric after the lookup
 }
-\examples{
-sizes <- list(1, "b", 3)
-data <- list(a = 1, b = 2, c = 3)
-replace_with_lookup(sizes, data)
-
-}
 \keyword{internal}

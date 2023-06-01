@@ -1,7 +1,6 @@
 library(dplyr)
 library(ggplot2)
 library(stringr)
-library(survival)
 library(tidyr)
 
 devtools::document()
@@ -125,7 +124,7 @@ ggplot(slopes, aes(x = est, y = actual)) +
 #
 # Test MLE OS parameters are correct from simulation
 #
-
+library(survival)
 coxph(data = dat_os, Surv(time, event) ~ cov_cat + cov_cont)
 
 mod <- survreg(Surv(time, event) ~ cov_cat + cov_cont, data = dat_os, dist = "weibull")

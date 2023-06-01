@@ -1,4 +1,4 @@
-library(survival)
+# get_missing_rownumbers ----
 
 test_that("get_missing_rownumbers works as expected", {
     df <- data.frame(
@@ -14,7 +14,7 @@ test_that("get_missing_rownumbers works as expected", {
     expect_equal(actual, expected)
 })
 
-
+# remove_missing_rows ----
 
 test_that("remove_missing_rows works as expected", {
 
@@ -47,6 +47,7 @@ test_that("remove_missing_rows works as expected", {
 })
 
 
+# expand_initial_values ----
 
 test_that("expand_initial_values smoke tests", {
     vals <- list("a" = 1, "b" = 2, "c" = c(1, 2))
@@ -56,6 +57,7 @@ test_that("expand_initial_values smoke tests", {
     expect_equal(actual, expected)
 })
 
+# replace_with_lookup ----
 
 test_that("replace_with_lookup smoke tests", {
 
