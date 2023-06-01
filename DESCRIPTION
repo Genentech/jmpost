@@ -34,7 +34,11 @@ Imports:
     statmod,
     Matrix,
     jinjar,
-    survival
+    survival,
+    glue,
+    tibble,
+    methods,
+    stats
 Suggests: 
     knitr,
     rmarkdown,

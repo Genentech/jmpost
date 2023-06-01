@@ -4,7 +4,14 @@
 #' @include ParameterList.R
 NULL
 
+# JointModel-class ----
 
+#' `JointModel`
+#'
+#' @slot stan (`StanModule`)\cr code containing the joint model specification.
+#' @slot parameters (`ParameterList`)\cr the parameter specification.
+#'
+#' @exportClass JointModel
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
@@ -13,9 +20,18 @@ NULL
     )
 )
 
+# JointModel-constructors ----
 
+#' @rdname JointModel-class
+#'
+#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
+#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param link (`Link`)\cr the link.
+#'
 #' @export
-JointModel <- function(longitudinal = NULL, survival = NULL, link = NULL) {
+JointModel <- function(longitudinal = NULL,
+                       survival = NULL,
+                       link = NULL) {
 
     longitudinal_linked <- addLink(longitudinal, link)
 

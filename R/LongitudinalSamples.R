@@ -44,9 +44,9 @@ setMethod(
         all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
 
         ggplot() +
-            geom_line(aes(x = time, y = median), data = all_fit_df) +
-            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
-            geom_point(aes(x = t, y = y), data = all_obs_df) +
+            geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df) +
+            geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
+            geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df) +
             xlab(expression(t)) +
             ylab(expression(y)) +
             facet_grid(~ pt_id)

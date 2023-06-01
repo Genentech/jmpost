@@ -92,14 +92,14 @@ sim_lm_gsf <- function(
         baseline_covs <- lm_base |>
             dplyr::distinct(pt, arm, study) |>
             dplyr::mutate(arm_n = as.numeric(factor(as.character(arm)))) |>
-            dplyr::mutate(eta_b = rnorm(dplyr::n(), 0, eta_b_sigma)) |>
-            dplyr::mutate(eta_s = rnorm(dplyr::n(), 0, eta_s_sigma)) |>
-            dplyr::mutate(eta_g = rnorm(dplyr::n(), 0, eta_g_sigma)) |>
-            dplyr::mutate(eta_phi = rnorm(dplyr::n(), 0, eta_phi_sigma)) |>
+            dplyr::mutate(eta_b = stats::rnorm(dplyr::n(), 0, eta_b_sigma)) |>
+            dplyr::mutate(eta_s = stats::rnorm(dplyr::n(), 0, eta_s_sigma)) |>
+            dplyr::mutate(eta_g = stats::rnorm(dplyr::n(), 0, eta_g_sigma)) |>
+            dplyr::mutate(eta_phi = stats::rnorm(dplyr::n(), 0, eta_phi_sigma)) |>
             dplyr::mutate(psi_b = exp(log(mu_b) + eta_b * omega_b)) |>
             dplyr::mutate(psi_s = exp(log(mu_s[arm_n]) + eta_s * omega_s)) |>
             dplyr::mutate(psi_g = exp(log(mu_g[arm_n]) + eta_g * omega_g)) |>
-            dplyr::mutate(psi_phi = plogis(qlogis(mu_phi[arm_n]) + eta_phi * omega_phi))
+            dplyr::mutate(psi_phi = stats::plogis(stats::qlogis(mu_phi[arm_n]) + eta_phi * omega_phi))
 
         lm_dat <- lm_base |>
             dplyr::select(-study, -arm) |>
@@ -107,7 +107,7 @@ sim_lm_gsf <- function(
             dplyr::mutate(mu_sld = sld(time, psi_b, psi_s, psi_g, psi_phi)) |>
             dplyr::mutate(dsld = dsld(time, psi_b, psi_s, psi_g, psi_phi)) |>
             dplyr::mutate(ttg = ttg(time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(sld = rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
+            dplyr::mutate(sld = stats::rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
             dplyr::mutate(log_haz_link = link_dsld * dsld + link_ttg * ttg)
 
         if (!.debug) {
@@ -140,11 +140,11 @@ sim_lm_random_slope <- function(
 
         rs_baseline <- lm_base |>
             dplyr::distinct(pt, arm) |>
-            dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma)) |>
+            dplyr::mutate(slope_ind = stats::rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma)) |>
             dplyr::select(-arm)
 
         lm_dat <- lm_base |>
-            dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>
+            dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
             dplyr::mutate(sld = intercept + slope_ind * time + err) |>
             dplyr::mutate(log_haz_link = slope_ind * phi)

@@ -120,8 +120,8 @@ setMethod(
         df <- as.data.frame(x)
         vars <- extractVariableNames(x)
 
-        mat_sld_index <- model.matrix(
-            as.formula(paste("~", vars$pt)),
+        mat_sld_index <- stats::model.matrix(
+            stats::as.formula(paste("~", vars$pt)),
             data = df
         ) |>
             t()

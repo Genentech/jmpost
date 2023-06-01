@@ -11,8 +11,8 @@ get_missing_rownumbers <- function(df, formula = NULL) {
     if (is.null(formula)) {
         formula <- ~ .
     }
-    mdf <- model.frame(formula, data = df, na.action = na.pass)
-    missing_rows <- which(!complete.cases(mdf))
+    mdf <- stats::model.frame(formula, data = df, na.action = stats::na.pass)
+    missing_rows <- which(!stats::complete.cases(mdf))
     return(missing_rows)
 }
 
@@ -34,7 +34,7 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 remove_missing_rows <- function(data, formula, extra_vars) {
     extra_vars <- paste(extra_vars, collapse = " + ")
     formula_update_string <- paste0(". ~ . + ", extra_vars)
-    formula_update <- update(formula, formula_update_string)
+    formula_update <- stats::update(formula, formula_update_string)
 
     missing_rows <- get_missing_rownumbers(data, formula_update)
 
@@ -165,9 +165,9 @@ samples_median_ci <- function(samples, level = 0.95) {
     assert_that(is.matrix(samples))
     assert_that(is.number(level), level < 1, level > 0)
 
-    samples_median <- apply(samples, MARGIN = 2L, FUN = median)
+    samples_median <- apply(samples, MARGIN = 2L, FUN = stats::median)
     probs <- c((1 - level) / 2, (1 + level) / 2)
-    samples_ci <- t(apply(samples, MARGIN = 2L, FUN = quantile, probs = probs))
+    samples_ci <- t(apply(samples, MARGIN = 2L, FUN = stats::quantile, probs = probs))
     colnames(samples_ci) <- c("lower", "upper")
     as.data.frame(cbind(
         median = samples_median,

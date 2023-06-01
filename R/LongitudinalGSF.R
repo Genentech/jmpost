@@ -153,7 +153,7 @@ link_gsf_ttg <- function(
 )
 #' @export
 link_gsf_dsld <- function(
-    beta = Parameter(prior_normal(0, 5), init = 0)
+    beta = Parameter(prior_normal(0, 5, init = 0))
 ) {
     link_gsf_abstract(
         stan = StanModule("lm-gsf/link_dsld.stan"),
