@@ -199,7 +199,6 @@ setMethod(
 #' for a directory as well as a file
 #'
 #' @param filename A character string
-#' @importFrom assertthat assert_that
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
         return(FALSE)

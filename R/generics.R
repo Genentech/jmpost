@@ -111,11 +111,11 @@ setGeneric(
 
 
 #' `initialValues`
-#' 
+#'
 #' @param object TODO
 #' @param ... TODO
 #' @return a `list` of initial values to be passed to the stan sampler
-#' 
+#'
 #' @keywords internal
 setGeneric(
     name = "initialValues",
@@ -126,7 +126,7 @@ setGeneric(
 
 
 #' `size`
-#' 
+#'
 #' @param object TODO
 #' @param ... TODO
 #' @return a `list` of parameter sizes
@@ -135,3 +135,29 @@ setGeneric(
     name = "size",
     def = function(object, ...) standardGeneric("size")
 )
+
+
+#' `longitudinal`
+#'
+#' @param object (`JointModelSamples`)\cr samples to extract the longitudinal fits from.
+#' @param ... not used.
+#'
+#' @return The longitudinal fit samples.
+#' @export
+setGeneric(
+    name = "longitudinal",
+    def = function(object, ...) standardGeneric("longitudinal")
+)
+
+#' Plotting Methods for Different Classes
+#'
+#' These plot methods visualize various objects.
+#'
+#' @name autoplot
+#' @aliases autoplot
+#'
+#' @param object (`LongitudinalSamples`)\cr what to plot.
+#' @param ... Other arguments passed to plotting methods.
+#'
+#' @export
+NULL
