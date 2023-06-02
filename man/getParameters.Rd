@@ -14,3 +14,4 @@ getParameters(object, ...)
 \description{
 Description - TODO
 }
+\keyword{internal}

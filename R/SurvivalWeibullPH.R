@@ -1,13 +1,27 @@
-
 #' @include SurvivalModel.R
 NULL
 
+# SurvivalWeibullPH-class ----
+
+#' `SurvivalWeibullPH`
+#'
+#' This class extends the general [`SurvivalModel`] class for using the
+#' Weibull proportional hazards survival model.
+#'
+#' @exportClass SurvivalWeibullPH
 .SurvivalWeibullPH <- setClass(
     Class = "SurvivalWeibullPH",
     contains = "SurvivalModel"
 )
 
+# SurvivalWeibullPH-constructors ----
 
+#' @rdname SurvivalWeibullPH-class
+#'
+#' @param lambda (`Prior`)\cr for the scale `lambda`.
+#' @param gamma (`Prior`)\cr for the shape `gamma`.
+#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#'
 #' @export
 SurvivalWeibullPH <- function(
     lambda = prior_gamma(2, 0.5),

@@ -1,11 +1,18 @@
-
 #' @include generics.R
 #' @include Prior.R
 NULL
 
-
 setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 
+# Parameter-class ----
+
+#' `Parameter`
+#'
+#' @slot name (`string`)\cr of the parameter.
+#' @slot prior (`Prior`)\cr for the parameter.
+#' @slot size (`numeric` or `string`)\cr dimension of the parameter.
+#'
+#' @exportClass Parameter
 .Parameter <- setClass(
     Class = "Parameter",
     slots = list(
@@ -15,8 +22,14 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
     )
 )
 
+# Parameter-constructors ----
 
-
+#' @rdname Parameter-class
+#'
+#' @param prior (`Prior`)\cr for the parameter.
+#' @param name (`string`)\cr of the parameter.
+#' @param size (`numeric` or `string`)\cr dimension of the parameter.
+#'
 #' @export
 Parameter <- function(prior, name, size = 1) {
     .Parameter(
@@ -26,6 +39,7 @@ Parameter <- function(prior, name, size = 1) {
     )
 }
 
+# Parameter-validity ----
 
 setValidity(
     Class = "Parameter",
@@ -67,7 +81,7 @@ setAs(
 
 
 
-#' @export 
+#' @export
 setMethod(
     f = "names",
     signature = "Parameter",
@@ -76,7 +90,7 @@ setMethod(
 
 
 
-#' @export 
+#' @export
 setMethod(
     f = "initialValues",
     signature = "Parameter",

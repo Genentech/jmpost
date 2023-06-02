@@ -1,4 +1,3 @@
-
 #' @include LongitudinalModel.R
 #' @include StanModule.R
 #' @include generics.R
@@ -7,12 +6,33 @@
 #' @include Link.R
 NULL
 
+# LongitudinalGSF-class ----
+
+#' `LongitudinalGSF`
+#'
+#' This class extends the general [`LongitudinalModel`] class for using the
+#' Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
+#'
+#' @exportClass LongitudinalGSF
 .LongitudinalGSF <- setClass(
     Class = "LongitudinalGSF",
     contains = "LongitudinalModel"
 )
 
+# LongitudinalGSF-constructors ----
 
+#' @rdname LongitudinalGSF-class
+#'
+#' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
+#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
+#' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
+#' @param mu_phi (`Prior`)\cr for the mean shrinkage proportion `mu_phi`.
+#' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
+#' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
+#' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
+#' @param omega_phi (`Prior`)\cr for the shrinkage proportion standard deviation `omega_phi`.
+#' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
+#'
 #' @export
 LongitudinalGSF <- function (
     mu_bsld = prior_lognormal(log(55), 5, init = 55),
@@ -23,12 +43,9 @@ LongitudinalGSF <- function (
     omega_ks = prior_lognormal(0, 1, init = 0),
     omega_kg = prior_lognormal(0, 1, init = 0),
     omega_phi = prior_lognormal(0, 1, init = 0),
-    sigma = prior_lognormal(-1.6, 0.8, init = -1.6),
-    tilde_bsld = prior_normal(0, 5, init = 0),
-    tilde_ks = prior_normal(0, 5, init = 0),
-    tilde_kg = prior_normal(0, 5, init = 0),
-    tilde_phi = prior_normal(0, 5, init = 0)
+    sigma = prior_lognormal(-1.6, 0.8, init = -1.6)
 ) {
+    eta_prior <- prior_normal(0, 1)
     x <- LongitudinalModel(
         stan = merge(
             StanModule("lm-gsf/model.stan"),
@@ -44,123 +61,11 @@ LongitudinalGSF <- function (
             Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
             Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
             Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1),
-            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = tilde_bsld, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_ks", prior = tilde_ks, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = tilde_kg, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_phi", prior = tilde_phi, size = "Nind")
+            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = eta_prior, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_ks", prior = eta_prior, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = eta_prior, size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_phi", prior = eta_prior, size = "Nind")
         )
     )
     .LongitudinalGSF(x)
 }
-
-
-.LinkGSF <- setClass(
-    Class = "LinkGSF",
-    contains = "Link"
-)
-
-
-#' @export
-LinkGSF <- function(
-    components = list(
-        link_gsf_dsld(),
-        link_gsf_ttg()
-    )
-) {
-
-    items <- lapply(
-        components,
-        function(x) {
-            list(
-                parameter = x@parameter_name,
-                contribution_function = x@contribution_fname
-            )
-        }
-    )
-
-    rendered_link <- jinjar::render(
-        .x = paste0(read_stan("lm-gsf/link.stan"), collapse = "\n"),
-        items = items
-    )
-
-    parameters <- ParameterList()
-    stan_components <- StanModule()
-    for (item in components) {
-        parameters <- merge(parameters, item@parameter)
-        stan_components <- merge(stan_components, item@stan)
-    }
-
-    stan_full <- merge(
-        stan_components,
-        StanModule(rendered_link)
-    )
-
-    x <- Link(
-        stan = stan_full,
-        parameters = parameters
-    )
-
-    .LinkGSF(x)
-}
-
-
-.link_gsf_abstract <- setClass(
-    Class = "link_gsf_abstract",
-    slots = list(
-        "stan" = "StanModule",
-        "parameter" = "ParameterList",
-        "parameter_name" = "character",
-        "contribution_fname" = "character"
-    )
-)
-#' @export
-link_gsf_abstract <- function(stan, parameter, parameter_name, contribution_fname) {
-    .link_gsf_abstract(
-        parameter = parameter,
-        parameter_name = parameter_name,
-        contribution_fname = contribution_fname,
-        stan = StanModule(
-            paste0(
-                "functions {\n",
-                as.list(stan)[["functions"]],
-                "\n}"
-            )
-        )
-    )
-}
-
-
-.link_gsf_ttg <- setClass(
-    Class = "link_gsf_ttg",
-    contains = "link_gsf_abstract"
-)
-#' @export
-link_gsf_ttg <- function(
-    gamma = prior_normal(0, 5, init = 0)
-) {
-    link_gsf_abstract(
-        stan = StanModule("lm-gsf/link_ttg.stan"),
-        parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma, size = 1)),
-        parameter_name = "lm_gsf_gamma",
-        contribution_fname = "link_ttg_contribution"
-    )
-}
-
-
-.link_gsf_dsld <- setClass(
-    Class = "link_gsf_dsld",
-    contains = "link_gsf_abstract"
-)
-#' @export
-link_gsf_dsld <- function(
-    beta = Parameter(prior_normal(0, 5, init = 0))
-) {
-    link_gsf_abstract(
-        stan = StanModule("lm-gsf/link_dsld.stan"),
-        parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta, size = 1)),
-        parameter_name = "lm_gsf_beta",
-        contribution_fname = "link_dsld_contribution"
-    )
-}
-
-

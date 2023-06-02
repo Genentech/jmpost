@@ -12,7 +12,7 @@ initialValues(object, ...)
 \item{...}{TODO}
 }
 \value{
-a \code{list} of initial values to be passed to the stan sampler
+A \code{list} of initial values to be passed to the Stan sampler.
 }
 \description{
 \code{initialValues}

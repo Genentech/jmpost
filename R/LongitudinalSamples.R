@@ -15,7 +15,7 @@
 #' @param x (`LongitudinalSamples`)\cr the samples object to subset.
 #' @param i (`vector`)\cr the index vector.
 #'
-#' @return The subsetted `LongitudinalSamples` object.
+#' @returns The subsetted `LongitudinalSamples` object.
 #' @export
 setMethod(
     f = "[",

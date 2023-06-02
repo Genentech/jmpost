@@ -45,8 +45,18 @@ DataSurvival <- function(data, formula, subject, arm , study) {
     )
 }
 
-
-
+#' Survival Formula Specification
+#'
+#' See [survival::Surv()] for details.
+#'
+#' @returns An object of class `Surv`.
+#'
+#' @name Surv
+#' @rdname Surv
+#'
+#' @importFrom survival Surv
+#' @export Surv
+NULL
 
 
 setValidity(
@@ -137,7 +147,7 @@ setMethod(
 
         df <- as(x, "data.frame")
         vars <- extractVariableNames(x)
-        
+
         design_mat <- stats::model.matrix(vars$frm, data = df)
         remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
         design_mat <- design_mat[, -remove_index, drop = FALSE]

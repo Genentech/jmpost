@@ -14,3 +14,4 @@ as.StanModule(object, ...)
 \description{
 Description - TODO
 }
+\keyword{internal}

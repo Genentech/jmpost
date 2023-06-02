@@ -7,10 +7,12 @@
 merge(x, y, ...)
 }
 \arguments{
-\item{...}{TODO}
+\item{x}{first module.}
 
-\item{object}{TODO}
+\item{y}{second module.}
+
+\item{...}{additional arguments.}
 }
 \description{
-Description - TODO
+Merge two Stan modules.
 }

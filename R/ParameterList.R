@@ -3,9 +3,14 @@
 #' @include Prior.R
 NULL
 
+# ParameterList-class ----
 
-
-
+#' `ParameterList`
+#'
+#' This class extends the general [`list`] type for containing [`Parameter`]
+#' specifications.
+#'
+#' @exportClass LinkGSF
 .ParameterList <- setClass(
     Class = "ParameterList",
     slots = c(
@@ -13,13 +18,19 @@ NULL
     )
 )
 
+# ParameterList-constructors ----
 
+#' @rdname ParameterList-class
+#'
+#' @param ... (`Parameter`)\cr which parameter specifications to include.
+#'
 #' @export
 ParameterList <- function(...) {
     .ParameterList(parameters = list(...))
 }
 
 
+# ParameterList-validity ----
 
 #' @export
 setValidity(
@@ -114,7 +125,7 @@ setMethod(
 )
 
 
-#' @export 
+#' @export
 setMethod(
     f = "names",
     signature = "ParameterList",

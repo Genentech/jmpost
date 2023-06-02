@@ -13,8 +13,11 @@ extractVariableNames(object, ...)
 
 \S4method{extractVariableNames}{DataSurvival}(object, ...)
 }
+\arguments{
+\item{object}{the module.}
+}
 \value{
-a \code{list} of variable names mapping to key variables with the
+A \code{list} of variable names mapping to key variables with the
 source-data stored inside the data class.
 }
 \description{

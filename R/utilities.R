@@ -62,7 +62,7 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 #' @param initial_values A named list of initial values.
 #' @param sizes A named list of sizes, where each size corresponds to an element in initial_values.
 #'
-#' @return A named list of values, with any single values in the initial_values list
+#' @returns A named list of values, with any single values in the initial_values list
 #' replicated according to the corresponding values in the sizes list.
 #'
 #' @keywords internal
@@ -111,7 +111,7 @@ expand_initial_values <- function(initial_values, sizes){
 #' names in the data list.
 #' @param data A list of data containing numeric values.
 #'
-#' @return A list of sizes with character elements replaced by their corresponding
+#' @returns A list of sizes with character elements replaced by their corresponding
 #' numeric values.
 #'
 #' @keywords internal
@@ -154,7 +154,7 @@ replace_with_lookup <- function(sizes, data) {
 #' @param samples (`matrix`)\cr with samples in rows and parameters in columns.
 #' @param level (`number`)\cr credibility level to use for the credible intervals.
 #'
-#' @return A `data.frame` with columns `median`, `lower` and `upper`.
+#' @returns A `data.frame` with columns `median`, `lower` and `upper`.
 #' @export
 #'
 #' @examples

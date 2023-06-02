@@ -7,10 +7,12 @@
 addLink(x, y, ...)
 }
 \arguments{
-\item{...}{TODO}
+\item{x}{the longitudinal model.}
 
-\item{object}{TODO}
+\item{y}{the link to be added.}
+
+\item{...}{additional arguments.}
 }
 \description{
-Description - TODO
+Add a link to a longitudinal model.
 }

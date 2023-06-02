@@ -1,14 +1,27 @@
-
-
-
 #' @include SurvivalModel.R
 NULL
 
+# SurvivalLogLogistic-class ----
+
+#' `SurvivalLogLogistic`
+#'
+#' This class extends the general [`SurvivalModel`] class for using the
+#' log-logistic survival model.
+#'
+#' @exportClass SurvivalLogLogistic
 .SurvivalLogLogistic <- setClass(
     Class = "SurvivalLogLogistic",
     contains = "SurvivalModel"
 )
 
+# SurvivalLogLogistic-constructors ----
+
+#' @rdname SurvivalLogLogistic-class
+#'
+#' @param lambda (`Prior`)\cr for the inverse median `lambda`.
+#' @param p (`Prior`)\cr for the shape parameter `p`.
+#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#'
 #' @export
 SurvivalLogLogistic <- function(
          lambda = prior_lognormal(0, 5, init = 1 / 200),
@@ -26,7 +39,3 @@ SurvivalLogLogistic <- function(
         )
     )
 }
-
-
-
-

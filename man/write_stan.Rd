@@ -4,13 +4,13 @@
 \alias{write_stan}
 \title{\code{write_stan}}
 \usage{
-write_stan(x, file_path)
+write_stan(object, file_path)
 }
 \arguments{
-\item{file_path}{TODO}
+\item{object}{the module.}
 
-\item{object}{TODO}
+\item{file_path}{(\code{string})\cr output file.}
 }
 \description{
-Description - TODO
+Write the Stan code for a Stan module.
 }

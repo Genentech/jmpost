@@ -1,4 +1,3 @@
-
 #' @include generics.R
 NULL
 
@@ -12,11 +11,21 @@ STAN_BLOCKS <- list(
     generated_quantities = "generated quantities"
 )
 
+# StanModule-class ----
 
-
-
-
-#' StanAll class object
+#' `StanModule`
+#'
+#' @slot functions (`character`)\cr the `functions` block.
+#' @slot data (`character`)\cr the `data` block.
+#' @slot transformed_data (`character`)\cr the `transformed_data` block.
+#' @slot parameters (`character`)\cr the `parameters` block.
+#' @slot transformed_parameters (`character`)\cr the `transformed_parameters` block.
+#' @slot model (`character`)\cr the `model` block.
+#' @slot generated_quantities (`character`)\cr the `generated_quantities` block.
+#' @slot priors (`list`)\cr the prior specifications.
+#' @slot inits (`list`)\cr the initial values.
+#'
+#' @exportClass StanModule
 .StanModule <- setClass(
     Class = "StanModule",
     slots = list(
@@ -32,7 +41,15 @@ STAN_BLOCKS <- list(
     )
 )
 
+# StanModule-constructors ----
 
+#' @rdname StanModule-class
+#'
+#' @param x (`string`)\cr file name of the Stan code which should be parsed.
+#' @param priors (`list`)\cr the prior specifications.
+#' @param inits (`list`)\cr the initial values.
+#' @param ... additional arguments passed to the constructor.
+#'
 #' @export
 StanModule <- function(
     x = "",
@@ -43,7 +60,7 @@ StanModule <- function(
     assert_that(
         is.character(x),
         length(x) == 1,
-        msg = "`x` must be either a length 1 character vector"
+        msg = "`x` must be a length 1 character vector"
     )
     code <- read_stan(x)
     code_fragments <- as_stan_fragments(code)
@@ -60,28 +77,6 @@ StanModule <- function(
         ...
     )
 }
-
-
-
-# TODO - Update validity
-# setValidity(
-#     Class = "StanModule",
-#     function(object) {
-#         msg <- NULL
-#         priors <- object@priors
-#         priors_names <- names(object@priors)
-#         priors_names <- priors_names[priors_names != "" & !is.na(priors_names)]
-#         if (length(priors) != length(priors_names)) {
-#             msg <- c(msg, "`Priors` must have names")
-#         }
-#         return(msg)
-#     }
-# )
-
-
-
-
-
 
 #' Convert a StanModule object into stan code
 #'

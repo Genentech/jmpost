@@ -7,10 +7,10 @@
 compileStanModel(object, exe_file)
 }
 \arguments{
-\item{object}{TODO}
+\item{object}{the module.}
 
-\item{exe_file}{TODO}
+\item{exe_file}{(\code{string})\cr output file.}
 }
 \description{
-Description - TODO
+Compile the Stan module.
 }

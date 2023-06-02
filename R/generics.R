@@ -6,10 +6,13 @@ setClassUnion("empty", c("missing", "NULL"))
 
 #' `merge`
 #'
-#' Description - TODO
+#' Merge two Stan modules.
 #'
-#' @param object TODO
-#' @param ... TODO
+#' @param x first module.
+#' @param y second module.
+#' @param ... additional arguments.
+#'
+#' @export
 setGeneric(
     name = "merge",
     def = function(x, y, ...) standardGeneric("merge")
@@ -19,10 +22,13 @@ setGeneric(
 
 #' `addLink`
 #'
-#' Description - TODO
+#' Add a link to a longitudinal model.
 #'
-#' @param object TODO
-#' @param ... TODO
+#' @param x the longitudinal model.
+#' @param y the link to be added.
+#' @param ... additional arguments.
+#'
+#' @export
 setGeneric(
     name = "addLink",
     def = function(x, y, ...) standardGeneric("addLink")
@@ -31,22 +37,25 @@ setGeneric(
 
 #' `write_stan`
 #'
-#' Description - TODO
+#' Write the Stan code for a Stan module.
 #'
-#' @param object TODO
-#' @param file_path TODO
+#' @param object the module.
+#' @param file_path (`string`)\cr output file.
+#'
+#' @export
 setGeneric(
     name = "write_stan",
-    def = function(x, file_path) standardGeneric("write_stan")
+    def = function(object, file_path) standardGeneric("write_stan")
 )
 
 
 #' `compileStanModel`
 #'
-#' Description - TODO
+#' Compile the Stan module.
 #'
-#' @param object TODO
-#' @param exe_file TODO
+#' @param object the module.
+#' @param exe_file (`string`)\cr output file.
+#'
 #' @export
 setGeneric(
     name = "compileStanModel",
@@ -56,11 +65,12 @@ setGeneric(
 
 #' `sampleStanModel`
 #'
-#' Description - TODO
+#' Sample from a Stan Module.
 #'
-#' @param object TODO
-#' @param ... TODO
-#' @param exe_file TODO
+#' @param object the module.
+#' @param ... additional arguments.
+#' @param exe_file (`string`)\cr output file.
+#'
 #' @export
 setGeneric(
     name = "sampleStanModel",
@@ -68,14 +78,14 @@ setGeneric(
 )
 
 
-# TODO - Convert this to a "as" function
-
 #' `as.StanModule`
 #'
 #' Description - TODO
 #'
 #' @param object TODO
 #' @param ... TODO
+#'
+#' @keywords internal
 setGeneric(
     name = "as.StanModule",
     def = function(object, ...) standardGeneric("as.StanModule")
@@ -88,6 +98,8 @@ setGeneric(
 #'
 #' @param object TODO
 #' @param ... TODO
+#'
+#' @keywords internal
 setGeneric(
     name = "getParameters",
     def = function(object, ...) standardGeneric("getParameters")
@@ -95,11 +107,11 @@ setGeneric(
 
 
 
-
-
 #' `extractVariableNames`
 #'
-#' @returns a `list` of variable names mapping to key variables with the
+#' @param object the module.
+#'
+#' @returns A `list` of variable names mapping to key variables with the
 #' source-data stored inside the data class.
 #'
 #' @keywords internal
@@ -114,7 +126,7 @@ setGeneric(
 #'
 #' @param object TODO
 #' @param ... TODO
-#' @return a `list` of initial values to be passed to the stan sampler
+#' @returns A `list` of initial values to be passed to the Stan sampler.
 #'
 #' @keywords internal
 setGeneric(
@@ -129,7 +141,8 @@ setGeneric(
 #'
 #' @param object TODO
 #' @param ... TODO
-#' @return a `list` of parameter sizes
+#'
+#' @returns A `list` of parameter sizes.
 #' @keywords internal
 setGeneric(
     name = "size",
@@ -142,7 +155,7 @@ setGeneric(
 #' @param object (`JointModelSamples`)\cr samples to extract the longitudinal fits from.
 #' @param ... not used.
 #'
-#' @return The longitudinal fit samples.
+#' @returns The longitudinal fit samples.
 #' @export
 setGeneric(
     name = "longitudinal",

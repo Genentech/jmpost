@@ -7,12 +7,12 @@
 sampleStanModel(object, ..., exe_file)
 }
 \arguments{
-\item{object}{TODO}
+\item{object}{the module.}
 
-\item{...}{TODO}
+\item{...}{additional arguments.}
 
-\item{exe_file}{TODO}
+\item{exe_file}{(\code{string})\cr output file.}
 }
 \description{
-Description - TODO
+Sample from a Stan Module.
 }

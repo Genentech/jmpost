@@ -79,9 +79,9 @@ setMethod(
 setMethod(
     f = "write_stan",
     signature = "JointModel",
-    definition = function(x, file_path) {
+    definition = function(object, file_path) {
         fi <- file(file_path, open = "w")
-        writeLines(as.character(x), fi)
+        writeLines(as.character(object), fi)
         close(fi)
     }
 )

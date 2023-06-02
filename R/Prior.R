@@ -1,7 +1,15 @@
-
 #' @include generics.R
-NULL 
+NULL
 
+# Prior-class ----
+
+#' `Prior`
+#'
+#' @slot parameters (`list`)\cr the prior distribution parameters.
+#' @slot repr (`string`)\cr the Stan code regular expression encoding the distribution.
+#' @slot init (`numeric`)\cr the initial value.
+#'
+#' @exportClass Prior
 .Prior <- setClass(
     Class = "Prior",
     slots = c(
@@ -31,6 +39,14 @@ setAs(
 )
 
 
+# Prior-constructors ----
+
+#' Normal Prior Distribution
+#'
+#' @param mu (`number`)\cr mean.
+#' @param sigma (`number`)\cr standard deviation.
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_normal <- function(mu, sigma, init = mu) {
     .Prior(
@@ -40,7 +56,12 @@ prior_normal <- function(mu, sigma, init = mu) {
     )
 }
 
-
+#' Cauchy Prior Distribution
+#'
+#' @param mu (`number`)\cr mean.
+#' @param sigma (`number`)\cr scale.
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_cauchy <- function(mu, sigma, init = mu) {
     .Prior(
@@ -50,7 +71,12 @@ prior_cauchy <- function(mu, sigma, init = mu) {
     )
 }
 
-
+#' Gamma Prior Distribution
+#'
+#' @param alpha (`number`)\cr shape.
+#' @param beta (`number`)\cr inverse scale.
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_gamma <- function(alpha, beta, init = alpha/beta) {
     .Prior(
@@ -60,6 +86,12 @@ prior_gamma <- function(alpha, beta, init = alpha/beta) {
     )
 }
 
+#' Log-Normal Prior Distribution
+#'
+#' @param mu (`number`)\cr mean of the logarithm.
+#' @param beta (`number`)\cr standard deviation of the logarithm.
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2)/2)) {
     .Prior(
@@ -69,7 +101,12 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2)/2)) {
     )
 }
 
-
+#' Beta Prior Distribution
+#'
+#' @param a (`number`)\cr first parameter.
+#' @param b (`number`)\cr second parameter
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_beta <- function(a, b, init = a/(a+b)) {
     .Prior(
@@ -80,6 +117,10 @@ prior_beta <- function(a, b, init = a/(a+b)) {
 }
 
 
+#' Only Initial Values Specification
+#'
+#' @inheritParams prior_arguments
+#'
 #' @export
 prior_none <- function(init = 0.00001) {
     .Prior(
@@ -90,7 +131,7 @@ prior_none <- function(init = 0.00001) {
 }
 
 
-#' @export 
+#' @export
 setMethod(
     f = "initialValues",
     signature = "Prior",

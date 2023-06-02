@@ -12,7 +12,7 @@ size(object, ...)
 \item{...}{TODO}
 }
 \value{
-a \code{list} of parameter sizes
+A \code{list} of parameter sizes.
 }
 \description{
 \code{size}

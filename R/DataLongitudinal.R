@@ -1,11 +1,26 @@
-
 #' @include generics.R
 NULL
 
-
 setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 
-#' @rdname DataLongitudinal
+# DataLongitudinal-class ----
+
+#' `DataLongitudinal`
+#'
+#' The [`DataLongitudinal`] class handles the processing of the longitudinal data for fitting a Joint Model.
+#'
+#' @slot data (`data.frame`)\cr containing the observed longitudinal data. Note that
+#'   observations that contain missing values in the required variables are removed
+#'   in the slot.
+#' @slot formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
+#' @slot subject (`string`)\cr the name of the subject identifier variable.
+#' @slot threshold (`number`)\cr cut-off value to be used to declare an observation as censored
+#'   (below detection limit).
+#' @slot time_grid (`numeric`)\cr grid of time points to use for providing samples
+#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
+#'   201 values from the minimum to the maximum observed times.
+#'
+#' @exportClass DataLongitudinal
 .DataLongitudinal <- setClass(
     Class = "DataLongitudinal",
     representation = list(
@@ -17,27 +32,27 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
     )
 )
 
-#' `DataLongitudinal`
+# DataLongitudinal-constructors ----
+
+#' @rdname DataLongitudinal-class
 #'
-#' The [`DataLongitudinal`] class handles the processing of the longitudinal data for fitting a Joint Model.
-#'
-#' @param data A `data.frame` object containing the observed longitudinal data
-#' @param formula A two sided `formula` of the form `outcome ~ time`. Cannot contain any additional covariates
-#' @param subject A length 1 `character` vector specifying the name of the subject identifier variable
-#' @param threshold A length 1 `numeric` that specifies what cut-off value should be used to declare
-#' an observation as censored / below detection limit
-#' @param time_grid A numeric vector specifying the grid of time points to use for providing samples
-#' of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of 201 values from
-#' the minimum to the maximum observed times.
+#' @param data (`data.frame`)\cr containing the observed longitudinal data.
+#' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
+#' @param subject (`string`)\cr the name of the subject identifier variable.
+#' @param threshold (`number`)\cr cut-off value to be used to declare an observation as censored
+#'   (below detection limit).
+#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
+#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
+#'   201 values from the minimum to the maximum observed times.
 #'
 #' @details
 #'
-#' ## Coercion
 #' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
 #' for fitting a [`JointModel`].
 #' See the vignette (TODO) for more details
+#' - `as.data.frame(x)`
 #'
-#' @seealso [`DataJoint`], [`DataSurvival`]
+#' @seealso [`DataJoint`], [`DataSurvival`].
 #'
 #' @export
 DataLongitudinal <- function(data, formula, subject, threshold = NULL, time_grid = NULL) {
@@ -50,6 +65,7 @@ DataLongitudinal <- function(data, formula, subject, threshold = NULL, time_grid
     )
 }
 
+# DataLongitudinal-validity ----
 
 setValidity(
     "DataLongitudinal",
@@ -81,7 +97,15 @@ setValidity(
     }
 )
 
+# DataLongitudinal-as.data.frame ----
 
+#' @rdname DataLongitudinal-class
+#'
+#' @param x (`DataLongitudinal`)\cr to be coerced.
+#' @param row.names not used.
+#' @param optional not used.
+#'
+#' @export
 setMethod(
     "as.data.frame",
     signature = "DataLongitudinal",
@@ -93,6 +117,7 @@ setMethod(
     }
 )
 
+# DataLongitudinal-extractVariableNames ----
 
 #' @rdname extractVariableNames
 setMethod(
@@ -109,8 +134,10 @@ setMethod(
     }
 )
 
+# DataLongitudinal-as.list ----
 
-
+#' @rdname DataLongitudinal-class
+#'
 #' @export
 setMethod(
     f = "as.list",
@@ -200,5 +227,3 @@ setMethod(
         return(model_data)
     }
 )
-
-
