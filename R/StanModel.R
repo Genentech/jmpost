@@ -9,7 +9,7 @@ NULL
 #' @slot stan (`StanModule`)\cr code containing the Stan code specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
-#' @exportClass
+#' @exportClass StanModel
 .StanModel <- setClass(
     Class = "StanModel",
     slots = list(

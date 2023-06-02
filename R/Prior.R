@@ -9,6 +9,7 @@ NULL
 #' @slot repr (`string`)\cr the Stan code regular expression encoding the distribution.
 #' @slot init (`numeric`)\cr the initial value.
 #'
+#' @aliases Prior
 #' @exportClass Prior
 .Prior <- setClass(
     Class = "Prior",

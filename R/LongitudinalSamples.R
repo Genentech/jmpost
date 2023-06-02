@@ -1,16 +1,20 @@
-#' Longitudinal Samples Storage
+# LongitudinalSamples-class ----
+
+#' `LongitudinalSamples`
 #'
 #' This class is an extension of a standard `list` so that we
 #' can define custom methods for it.
 #'
-#' @name LongitudinalSamples
-#' @export
+#' @aliases LongitudinalSamples
+#' @exportClass LongitudinalSamples
 .LongitudinalSamples <- setClass(
     "LongitudinalSamples",
     contains = "list"
 )
 
-#' @rdname LongitudinalSamples
+# LongitudinalSamples-[ ----
+
+#' @rdname LongitudinalSamples-class
 #'
 #' @param x (`LongitudinalSamples`)\cr the samples object to subset.
 #' @param i (`vector`)\cr the index vector.
@@ -27,7 +31,7 @@ setMethod(
     }
 )
 
-# autoplot ----
+# LongitudinalSamples-autoplot ----
 
 #' @rdname autoplot
 #' @export

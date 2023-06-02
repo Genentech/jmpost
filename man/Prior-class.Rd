@@ -4,6 +4,7 @@
 \name{Prior-class}
 \alias{Prior-class}
 \alias{.Prior}
+\alias{Prior}
 \title{\code{Prior}}
 \description{
 \code{Prior}
