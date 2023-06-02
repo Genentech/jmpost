@@ -18,7 +18,7 @@ NULL
 
 #' @rdname SurvivalModel-class
 #'
-#' @inheritParams stanmodule_arguments
+#' @inheritParams stanmodel_arguments
 #'
 #' @export
 SurvivalModel <- function(stan = StanModule(),

@@ -14,7 +14,7 @@ LongitudinalModel(stan = StanModule(), parameters = ParameterList(), ...)
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
 
-\item{...}{additional arguments for \code{\link[=StanModule]{StanModule()}}.}
+\item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
 \description{
 This class extends the general \code{\link{StanModel}} class to comprise the longitudinal

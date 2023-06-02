@@ -19,7 +19,7 @@ NULL
 
 #' @rdname LongitudinalModel-class
 #'
-#' @inheritParams stanmodule_arguments
+#' @inheritParams stanmodel_arguments
 #'
 #' @export
 LongitudinalModel <- function(stan = StanModule(),

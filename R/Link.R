@@ -24,7 +24,7 @@ NULL
 
 #' @rdname Link-class
 #'
-#' @inheritParams stanmodule_arguments
+#' @inheritParams stanmodel_arguments
 #' @param ... additional arguments passed to the constructor.
 #'
 #' @export

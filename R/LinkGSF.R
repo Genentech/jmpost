@@ -89,7 +89,7 @@ LinkGSF <- function(
 
 #' @rdname link_gsf_abstract-class
 #'
-#' @inheritParams stanmodule_arguments
+#' @inheritParams stanmodel_arguments
 #' @param parameter_name (`character`)\cr the name of the parameter.
 #' @param contribution_fname (`character`)\cr the function name of the contribution.
 #'

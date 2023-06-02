@@ -1,15 +1,15 @@
-# stanmodule_arguments ----
+# stanmodel_arguments ----
 
-#' `StanModule` Function Arguments
+#' `StanModel` Function Arguments
 #'
 #' The documentation lists all the conventional arguments for wrappers around
-#' [StanModule()].
+#' [StanModel()].
 #'
 #' @param stan (`StanModule`)\cr code containing the Stan code specification.
 #' @param parameters (`ParameterList`)\cr the parameter specification.
-#' @param ... additional arguments for [StanModule()].
+#' @param ... additional arguments for [StanModel()].
 #'
-#' @name stanmodule_arguments
+#' @name stanmodel_arguments
 NULL
 
 # prior_arguments ----
