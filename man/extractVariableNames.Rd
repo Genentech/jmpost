@@ -7,17 +7,17 @@
 \alias{extractVariableNames,DataSurvival-method}
 \title{\code{extractVariableNames}}
 \usage{
-extractVariableNames(object, ...)
+extractVariableNames(object)
 
 \S4method{extractVariableNames}{DataLongitudinal}(object)
 
-\S4method{extractVariableNames}{DataSurvival}(object, ...)
+\S4method{extractVariableNames}{DataSurvival}(object)
 }
-\value{
-a \code{list} of variable names mapping to key variables with the
-source-data stored inside the data class.
+\arguments{
+\item{object}{the data object.}
 }
 \description{
-\code{extractVariableNames}
+Extract the \code{list} of variable names mapping to key variables
+from a \code{\link{DataLongitudinal}} or \code{\link{DataSurvival}} object.
 }
 \keyword{internal}

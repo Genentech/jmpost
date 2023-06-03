@@ -15,7 +15,6 @@ model {
 }
 "
 
-
 test_that("compileStanModel doesn't error if the directory doesn't exist", {
 
 
@@ -26,7 +25,3 @@ test_that("compileStanModel doesn't error if the directory doesn't exist", {
 
     expect_true(file.exists(fpath))
 })
-
-
-
-

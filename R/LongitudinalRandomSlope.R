@@ -1,15 +1,31 @@
-
 #' @include LongitudinalModel.R
 #' @include Link.R
 NULL
 
+# LongitudinalRandomSlope-class ----
 
+#' `LongitudinalRandomSlope`
+#'
+#' This class extends the general [`LongitudinalModel`] class for using the
+#' random slope linear model for the longitudinal outcome.
+#'
+#' @exportClass LongitudinalRandomSlope
 .LongitudinalRandomSlope <- setClass(
     Class = "LongitudinalRandomSlope",
     contains = "LongitudinalModel"
 )
 
 
+# LongitudinalRandomSlope-constructors ----
+
+#' @rdname LongitudinalRandomSlope-class
+#'
+#' @param intercept (`Prior`)\cr for the `intercept`.
+#' @param slope_mu (`Prior`)\cr for the population slope `slope_mu`.
+#' @param slope_sigma (`Prior`)\cr for the random slope standard deviation `slope_sigma`.
+#' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
+#' @param random_slope (`Prior`)\cr must be `prior_none()`, just used to specify initial values.
+#'
 #' @export
 LongitudinalRandomSlope <- function(
     intercept = prior_normal(30, 10, init = 30),
@@ -40,31 +56,3 @@ LongitudinalRandomSlope <- function(
         )
     )
 }
-
-
-.LinkRandomSlope <- setClass(
-    Class = "LinkRandomSlope",
-    contains = "Link"
-)
-
-
-#' @export
-LinkRandomSlope <- function(
-    link_lm_phi = prior_normal(0.2, 0.5, init = 0.02)
-) {
-    .LinkRandomSlope(
-        Link(
-            stan = StanModule(
-                x = "lm-random-slope/links.stan"
-            ),
-            parameters = ParameterList(
-                Parameter(name = "link_lm_phi", prior = link_lm_phi, size = 1)
-            )
-        )
-    )
-}
-
-
-
-
-

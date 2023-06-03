@@ -1,13 +1,26 @@
-
-
 #' @include SurvivalModel.R
 NULL
 
+# SurvivalExponential-class ----
+
+#' `SurvivalExponential`
+#'
+#' This class extends the general [`SurvivalModel`] class for using the
+#' exponential survival model.
+#'
+#' @exportClass SurvivalExponential
 .SurvivalExponential <- setClass(
     Class = "SurvivalExponential",
     contains = "SurvivalModel"
 )
 
+# SurvivalExponential-constructors ----
+
+#' @rdname SurvivalExponential-class
+#'
+#' @param lambda (`Prior`)\cr for the exponential rate `lambda`.
+#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#'
 #' @export
 SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
@@ -23,4 +36,3 @@ SurvivalExponential <- function(
         )
     )
 }
-

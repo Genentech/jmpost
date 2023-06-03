@@ -4,9 +4,10 @@
 \name{JointModelSamples-class}
 \alias{JointModelSamples-class}
 \alias{.JointModelSamples}
-\title{Samples from a \code{JointModel}}
+\alias{JointModelSamples}
+\title{\code{JointModelSamples}}
 \description{
-Samples from a \code{JointModel}
+Contains samples from a \code{\link{JointModel}}.
 }
 \section{Slots}{
 

@@ -2,29 +2,24 @@
 % Please edit documentation in R/utilities.R
 \name{replace_with_lookup}
 \alias{replace_with_lookup}
-\title{replace_with_lookup}
+\title{Replace Character Size by Looked Up Numbers}
 \usage{
 replace_with_lookup(sizes, data)
 }
 \arguments{
-\item{sizes}{A list of sizes, which may include character elements that correspond to
+\item{sizes}{(\code{list})\cr may include character elements that correspond to
 names in the data list.}
 
-\item{data}{A list of data containing numeric values.}
+\item{data}{(\code{list})\cr data containing numeric values.}
 }
 \value{
-A list of sizes with character elements replaced by their corresponding
-numeric values.
+A list of sizes with character elements in \code{sizes}
+replaced by their corresponding numeric values in \code{data}.
 }
 \description{
-This function takes a list of sizes and a list of data and returns a modified list
-of sizes where each character element is replaced by the corresponding numeric value
-from the data list. Each element of size must be a length one numeric after the lookup
+Replace Character Size by Looked Up Numbers
 }
-\examples{
-sizes <- list(1, "b", 3)
-data <- list(a = 1, b = 2, c = 3)
-replace_with_lookup(sizes, data)
-
+\note{
+Each element in the final list of sizes must be a single number.
 }
 \keyword{internal}

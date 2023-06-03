@@ -2,15 +2,16 @@
 % Please edit documentation in R/StanModule.R
 \name{is_file}
 \alias{is_file}
-\title{Is string a valid file}
+\title{Is String a Valid File?}
 \usage{
 is_file(filename = NULL)
 }
 \arguments{
-\item{filename}{A character string}
+\item{filename}{(\code{string})\cr file name.}
 }
 \description{
 A utility function to check if a string is a valid file or not.
-Used to help address short comings of file.exists that will return TRUE
-for a directory as well as a file
+Used to help address short comings of \code{\link[=file.exists]{file.exists()}} that will return \code{TRUE}
+for a directory as well as a file.
 }
+\keyword{internal}

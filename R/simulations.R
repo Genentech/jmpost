@@ -1,4 +1,4 @@
-
+# as_vcov ----
 
 #' Construct a Variance-Covariance Matrix from Standard Deviations and Correlations
 #'
@@ -13,7 +13,7 @@
 #' x_12, x_13 and x_23 of the correlation matrix respectively
 #'
 #'
-#' @return A symmetric matrix representing the variance-covariance matrix calculated from
+#' @returns A symmetric matrix representing the variance-covariance matrix calculated from
 #' the input standard deviations and correlations. The matrix is guaranteed to be positive
 #' semi-definite.
 #'
@@ -35,28 +35,66 @@ as_vcov <- function(sd, cor) {
     return(res)
 }
 
+# sim_lm_* ----
 
+## sim_lm_gsf ----
+
+#' Generalized Stein-Fojo Functionals
+#'
+#' @param time (`numeric`)\cr time grid.
+#' @param b (`number`)\cr baseline.
+#' @param s (`number`)\cr shrinkage.
+#' @param g (`number`)\cr growth.
+#' @param phi (`number`)\cr shrinkage proportion.
+#'
+#' @returns The function results.
 #' @export
-sld <- function(time, b, s, g, phi) {
+#'
+#' @examples
+#' gsf_sld(1:10, 20, 0.3, 0.6, 0.2)
+gsf_sld <- function(time, b, s, g, phi) {
     b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
 }
 
-
-ttg <- function(time, b, s, g, phi) {
+#' @rdname gsf_sld
+#' @export
+#' @examples
+#' gsf_ttg(1:10, 20, 0.3, 0.6, 0.2)
+gsf_ttg <- function(time, b, s, g, phi) {
     t1 <- (log(s * phi / (g * (1 - phi))) / (g + s))
     t1[t1 <= 0] <- 0
     return(t1)
 }
 
-
-dsld <- function(time, b , s, g, phi) {
+#' @rdname gsf_sld
+#' @export
+#' @examples
+#' gsf_dsld(1:10, 20, 0.3, 0.6, 0.2)
+gsf_dsld <- function(time, b, s, g, phi) {
     t1 <- (1 - phi) * g * exp(g * time)
     t2 <- phi * s * exp(-s * time)
     return(b * (t1 - t2))
 }
 
-
-
+#' Construct a Simulation Function for Longitudinal Data from GSF Model
+#'
+#' @param sigma (`number`)\cr the variance of the longitudinal values.
+#' @param mu_s (`numeric`)\cr the mean shrinkage rates for the two treatment arms.
+#' @param mu_g (`numeric`)\cr the mean growth rates for the two treatment arms.
+#' @param mu_phi (`numeric`)\cr the mean shrinkage proportions for the two treatment arms.
+#' @param mu_b (`numeric`)\cr the mean baseline values for the two treatment arms.
+#' @param omega_b (`number`)\cr the baseline value standard deviation.
+#' @param omega_s (`number`)\cr the shrinkage rate standard deviation.
+#' @param omega_g (`number`)\cr the growth rate standard deviation.
+#' @param omega_phi (`number`)\cr the shrinkage proportion standard deviation.
+#' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
+#' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
+#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
+#'   would only return a subset of columns.
+#'
+#' @returns A function with argument `lm_base` that can be used to simulate
+#'   longitudinal data from the corresponding GSF model.
+#'
 #' @export
 sim_lm_gsf <- function(
     sigma = 0.01,
@@ -64,10 +102,6 @@ sim_lm_gsf <- function(
     mu_g = c(0.2, 0.3),
     mu_phi = c(0.1, 0.2),
     mu_b = c(50, 60),
-    eta_b_sigma = 5,
-    eta_s_sigma = 2,
-    eta_g_sigma = 1,
-    eta_phi_sigma = 5,
     omega_b = 0.135,
     omega_s = 0.15,
     omega_g = 0.225,
@@ -85,39 +119,52 @@ sim_lm_gsf <- function(
             length(mu_s) == length(unique(lm_base$arm)),
             length(mu_s) == length(mu_g),
             length(mu_s) == length(mu_phi),
-            length(c(eta_b_sigma, eta_g_sigma, eta_phi_sigma, eta_s_sigma)) == 4,
             length(c(omega_b, omega_s, omega_g, omega_phi)) == 4
         )
 
         baseline_covs <- lm_base |>
-            dplyr::distinct(pt, arm, study) |>
-            dplyr::mutate(arm_n = as.numeric(factor(as.character(arm)))) |>
-            dplyr::mutate(eta_b = rnorm(dplyr::n(), 0, eta_b_sigma)) |>
-            dplyr::mutate(eta_s = rnorm(dplyr::n(), 0, eta_s_sigma)) |>
-            dplyr::mutate(eta_g = rnorm(dplyr::n(), 0, eta_g_sigma)) |>
-            dplyr::mutate(eta_phi = rnorm(dplyr::n(), 0, eta_phi_sigma)) |>
-            dplyr::mutate(psi_b = exp(log(mu_b) + eta_b * omega_b)) |>
-            dplyr::mutate(psi_s = exp(log(mu_s[arm_n]) + eta_s * omega_s)) |>
-            dplyr::mutate(psi_g = exp(log(mu_g[arm_n]) + eta_g * omega_g)) |>
-            dplyr::mutate(psi_phi = plogis(qlogis(mu_phi[arm_n]) + eta_phi * omega_phi))
+            dplyr::distinct(.data$pt, .data$arm, .data$study) |>
+            dplyr::mutate(arm_n = as.numeric(factor(as.character(.data$arm)))) |>
+            dplyr::mutate(eta_b = stats::rnorm(dplyr::n(), 0, 1)) |>
+            dplyr::mutate(eta_s = stats::rnorm(dplyr::n(), 0, 1)) |>
+            dplyr::mutate(eta_g = stats::rnorm(dplyr::n(), 0, 1)) |>
+            dplyr::mutate(eta_phi = stats::rnorm(dplyr::n(), 0, 1)) |>
+            dplyr::mutate(psi_b = exp(log(mu_b) + .data$eta_b * omega_b)) |>
+            dplyr::mutate(psi_s = exp(log(mu_s[.data$arm_n]) + .data$eta_s * omega_s)) |>
+            dplyr::mutate(psi_g = exp(log(mu_g[.data$arm_n]) + .data$eta_g * omega_g)) |>
+            dplyr::mutate(psi_phi = stats::plogis(stats::qlogis(mu_phi[.data$arm_n]) + .data$eta_phi * omega_phi))
 
         lm_dat <- lm_base |>
-            dplyr::select(-study, -arm) |>
+            dplyr::select(!dplyr::all_of(c("study", "arm"))) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
-            dplyr::mutate(mu_sld = sld(time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(dsld = dsld(time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(ttg = ttg(time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(sld = rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
-            dplyr::mutate(log_haz_link = link_dsld * dsld + link_ttg * ttg)
+            dplyr::mutate(mu_sld = gsf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * sigma)) |>
+            dplyr::mutate(log_haz_link = link_dsld * .data$dsld + link_ttg * .data$ttg)
 
         if (!.debug) {
-            lm_dat <- lm_dat |> dplyr::select(pt, time, sld, log_haz_link, study, arm)
+            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
         }
         return(lm_dat)
     }
 }
 
+## sim_lm_random_slope ----
 
+#' Construct a Simulation Function for Longitudinal Data from Random Slope Model
+#'
+#' @param intercept (`number`)\cr the mean baseline value.
+#' @param slope_mu (`numeric`)\cr the population slope for the two treatment arms.
+#' @param slope_sigma (`number`)\cr the random slope standard deviation.
+#' @param sigma (`number`)\cr the variance of the longitudinal values.
+#' @param phi (`number`)\cr the link coefficient for the random slope contribution.
+#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
+#'   would only return a subset of columns.
+#'
+#' @returns A function with argument `lm_base` that can be used to simulate
+#'   longitudinal data from the corresponding random slope model.
+#'
 #' @export
 sim_lm_random_slope <- function(
     intercept = 50,
@@ -135,28 +182,37 @@ sim_lm_random_slope <- function(
         )
 
         if (length(slope_mu) == 1) {
-            slope_mu <- rep(slope_mu, length(unique(lb_base$arm)))
+            slope_mu <- rep(slope_mu, length(unique(lm_base$arm)))
         }
 
         rs_baseline <- lm_base |>
-            dplyr::distinct(pt, arm) |>
-            dplyr::mutate(slope_ind = rnorm(dplyr::n(), slope_mu[as.numeric(arm)], sd = slope_sigma)) |>
-            dplyr::select(-arm)
+            dplyr::distinct(.data$pt, .data$arm) |>
+            dplyr::mutate(slope_ind = stats::rnorm(
+                dplyr::n(), slope_mu[as.numeric(factor(as.character(.data$arm)))], sd = slope_sigma
+            )) |>
+            dplyr::select(!dplyr::any_of("arm"))
 
         lm_dat <- lm_base |>
-            dplyr::mutate(err = rnorm(dplyr::n(), 0, sigma)) |>
+            dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
-            dplyr::mutate(sld = intercept + slope_ind * time + err) |>
-            dplyr::mutate(log_haz_link = slope_ind * phi)
+            dplyr::mutate(sld = intercept + .data$slope_ind * .data$time + .data$err) |>
+            dplyr::mutate(log_haz_link = .data$slope_ind * phi)
 
-        if ( ! .debug) {
-            lm_dat <- lm_dat |> dplyr::select(pt, time, sld, log_haz_link, study, arm)
+        if (!.debug) {
+            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
         }
         return(lm_dat)
     }
 }
 
+# sim_os_* ----
 
+#' Construct a Log Hazard Function for the Weibull Model
+#'
+#' @param lambda (`number`)\cr the scale parameter.
+#' @param gamma (`number`)\cr the shape parameter.
+#'
+#' @returns A function of `time` returning the log hazard.
 #' @export
 sim_os_weibull <- function(lambda, gamma) {
     function(time) {
@@ -164,6 +220,11 @@ sim_os_weibull <- function(lambda, gamma) {
     }
 }
 
+#' Construct a Log Hazard Function for the Exponential Model
+#'
+#' @param lambda (`number`)\cr the rate parameter.
+#'
+#' @returns A function of `time` returning the log hazard.
 #' @export
 sim_os_exponential <- function(lambda) {
     function(time) {
@@ -171,9 +232,14 @@ sim_os_exponential <- function(lambda) {
     }
 }
 
-
+#' Construct a Log Hazard Function for the Log-Logistic Model
+#'
+#' @param lambda (`number`)\cr the inverse median parameter.
+#' @param p (`number`)\cr the shape parameter.
+#'
+#' @returns A function of `time` returning the log hazard.
 #' @export
-sim_os_loglogistic <- function(lambda, p){
+sim_os_loglogistic <- function(lambda, p) {
     function(time) {
         c1 <- log(lambda) + log(p) + (p - 1) * (log(lambda) + log(time))
         c2 <- log(1 + (lambda * time)^p)
@@ -181,9 +247,14 @@ sim_os_loglogistic <- function(lambda, p){
     }
 }
 
+# simulate_joint_data ----
 
-
-
+#' Construct Time Intervals
+#'
+#' @param x (`numeric`)\cr grid of time points.
+#'
+#' @return A `tibble` with `lower`, `upper`, `time` and `width`.
+#' @keywords internal
 get_timepoints <- function(x) {
     assert_that(length(x) == length(unique(x)))
     x_ord <- x[order(x)]
@@ -202,7 +273,17 @@ get_timepoints <- function(x) {
 }
 
 
-
+#' Simulating Joint Longitudinal and Time-to-Event Data
+#'
+#' @param n_arm (`numeric`)\cr numbers of patients per treatment arm.
+#' @param times (`numeric`)\cr time grid, e.g. specifying the days after randomization.
+#' @param lambda_cen (`number`)\cr rate of the exponential censoring distribution.
+#' @param beta_cont (`number`)\cr coefficient for the continuous covariate.
+#' @param beta_cat (`numeric`)\cr coefficients for the categorical covariate levels.
+#' @param lm_fun (`function`)\cr function of `lm_base` generating the longitudinal model outcomes.
+#' @param os_fun (`function`)\cr function of `lm_base` generating the survival model outcomes.
+#'
+#' @returns List with simulated `lm` (longitudinal) and `os` (survival) data sets.
 #' @export
 simulate_joint_data <- function(
     n_arm = c(50, 80),   # Number of arms and number of subjects per arm
@@ -213,7 +294,6 @@ simulate_joint_data <- function(
     lm_fun,
     os_fun
 ) {
-
     n <- sum(n_arm)
     u_pts <- sprintf("pt_%05i", seq_len(n))
     bounds <- get_timepoints(times)
@@ -221,15 +301,15 @@ simulate_joint_data <- function(
     ARMS <- paste0("Group-", seq_along(n_arm))
 
     os_baseline <- dplyr::tibble(pt = u_pts) |>
-        dplyr::mutate(cov_cont = rnorm(n)) |>
+        dplyr::mutate(cov_cont = stats::rnorm(n)) |>
         dplyr::mutate(cov_cat = factor(
             sample(c("A", "B", "C"), replace = TRUE, size = n),
             levels = c("A", "B", "C")
         )) |>
-        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |>
-        dplyr::mutate(survival = runif(n)) |>
-        dplyr::mutate(chazard_limit = -log(survival)) |>
-        dplyr::mutate(time_cen = rexp(n, lambda_cen)) |>
+        dplyr::mutate(log_haz_cov = .data$cov_cont * beta_cont + beta_cat[.data$cov_cat]) |>
+        dplyr::mutate(survival = stats::runif(n)) |>
+        dplyr::mutate(chazard_limit = -log(.data$survival)) |>
+        dplyr::mutate(time_cen = stats::rexp(n, lambda_cen)) |>
         dplyr::mutate(study = factor("Study-1")) |>
         dplyr::mutate(arm = factor(rep(ARMS, times = n_arm), levels = ARMS))
 
@@ -245,7 +325,7 @@ simulate_joint_data <- function(
         dplyr::left_join(os_baseline, by = "pt")
 
     lm_dat <- time_dat_baseline |>
-        dplyr::select(pt, time, arm, study) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "arm", "study"))) |>
         lm_fun()
 
     assert_that(
@@ -256,38 +336,38 @@ simulate_joint_data <- function(
 
     os_dat_chaz <- time_dat_baseline |>
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
-        dplyr::mutate(log_bl_haz = os_fun(time)) |>
-        dplyr::mutate(hazard_instant = exp(log_bl_haz + log_haz_cov + log_haz_link)) |>
-        dplyr::mutate(hazard_interval = hazard_instant * width) |>
-        dplyr::group_by(pt) |>
-        dplyr::mutate(chazard = cumsum(hazard_interval)) |>
+        dplyr::mutate(log_bl_haz = os_fun(.data$time)) |>
+        dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
+        dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
+        dplyr::group_by(.data$pt) |>
+        dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>
         dplyr::ungroup()
 
     os_dat <- os_dat_chaz|>
-        dplyr::filter(chazard_limit <= chazard) |>
-        dplyr::select(pt, time, cov_cont, cov_cat, time_cen, study, arm) |>
-        dplyr::group_by(pt) |>
+        dplyr::filter(.data$chazard_limit <= .data$chazard) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "time_cen", "study", "arm"))) |>
+        dplyr::group_by(.data$pt) |>
         dplyr::slice(1) |>
         dplyr::ungroup() |>
-        dplyr::mutate(event = dplyr::if_else(time <= time_cen, 1, 0)) |>
-        dplyr::mutate(time = dplyr::if_else(event == 1, time, time_cen)) |>
-        dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm)
+        dplyr::mutate(event = dplyr::if_else(.data$time <= .data$time_cen, 1, 0)) |>
+        dplyr::mutate(time = dplyr::if_else(.data$event == 1, .data$time, .data$time_cen)) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm")))
 
     os_dat_censor <- os_dat_chaz |>
-        dplyr::group_by(pt) |>
+        dplyr::group_by(.data$pt) |>
         dplyr::slice(1) |>
         dplyr::mutate(time = max(times)) |>
         dplyr::mutate(event = 0) |>
-        dplyr::select(pt, time, cov_cont, cov_cat, event, study, arm) |>
-        dplyr::filter(!pt %in% os_dat$pt)
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm"))) |>
+        dplyr::filter(!.data$pt %in% os_dat$pt)
 
-    if (!nrow(os_dat_censor)== 0 ) {
+    if (!(nrow(os_dat_censor) == 0)) {
         message(sprintf("%i patients did not die before max(times)", nrow(os_dat_censor)))
     }
 
     os_dat_complete <- os_dat |>
         dplyr::bind_rows(os_dat_censor) |>
-        dplyr::arrange(pt)
+        dplyr::arrange(.data$pt)
 
     os_time <- rep(os_dat_complete$time, each = length(bounds$time))
 
@@ -298,8 +378,8 @@ simulate_joint_data <- function(
 
     lm_dat2 <- lm_dat |>
         dplyr::mutate(os_time = os_time) |>
-        dplyr::mutate(observed = (time <= os_time)) |>
-        dplyr::select(-os_time, -log_haz_link)
+        dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
+        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link")))
 
     assert_that(
         length(unique(os_dat_complete$pt)) == n,

@@ -2,24 +2,25 @@
 % Please edit documentation in R/utilities.R
 \name{remove_missing_rows}
 \alias{remove_missing_rows}
-\title{\code{remove_missing_rows}}
+\title{Remove Rows with Missing Variables}
 \usage{
 remove_missing_rows(data, formula, extra_vars)
 }
 \arguments{
-\item{data}{A data.frame}
+\item{data}{(\code{data.frame})\cr input data.}
 
-\item{formula}{A formula specifying which variables to inspect for missingness}
+\item{formula}{(\code{formula} or \code{NULL})\cr which variables to inspect for missingness.}
 
-\item{extra_vars}{A character vector specifying which variables to inspect for missingness}
+\item{extra_vars}{(\code{character})\cr additional variables to inspect for missingness.}
 }
 \value{
-\code{data} after removing observations that contain missing values in the required variables
+The \code{data} after removing observations that contain missing values in the required variables.
 Note that additional variables not listed in \code{formula} or \code{extra_vars} are not dropped and may
-still contain missing values
+still contain missing values.
 }
 \description{
-Removes any rows from a dataset that contain missing values. Allows users to specify which variables
-to inspect for missing values based on either a formula or a character vector of variable names.
+Removes any rows from a data set that contain missing values in the inspected
+variables. Allows users to specify which variables to inspect for missing values
+based on either a formula or a character vector of variable names.
 }
 \keyword{internal}

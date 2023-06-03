@@ -30,4 +30,3 @@ test_that("DataLongitudinal being rendered to list is as expected for simple inp
     expect_identical(li$n_lm_time_grid, 201L)
     expect_length(li$lm_time_grid, 201L)
 })
-

@@ -2,29 +2,22 @@
 % Please edit documentation in R/utilities.R
 \name{expand_initial_values}
 \alias{expand_initial_values}
-\title{Replicate single values in a list based on specified sizes}
+\title{Replicate Single Values in a List}
 \usage{
 expand_initial_values(initial_values, sizes)
 }
 \arguments{
-\item{initial_values}{A named list of initial values.}
+\item{initial_values}{(\code{list})\cr initial values with names.}
 
-\item{sizes}{A named list of sizes, where each size corresponds to an element in initial_values.}
+\item{sizes}{(\code{list})\cr each size corresponds to an element in \code{initial_values},
+matched by the names.}
 }
 \value{
-A named list of values, with any single values in the initial_values list
-replicated according to the corresponding values in the sizes list.
+A named list of values, with any single values in the \code{initial_values} list
+replicated according to the corresponding values in the \code{sizes} list.
+The resulting list has the same names as the original lists.
 }
 \description{
-This function takes a list of initial values and a corresponding list of sizes
-and replicates any single values in the initial values list according to the
-corresponding values in the sizes list. The resulting list has the same names
-as the original lists.
-}
-\examples{
-my_values <- list(a = 1, b = c(2, 3), c = 4)
-my_sizes <- list(a = 3, b = 2, c = 1)
-expand_initial_values(initial_values = my_values, sizes = my_sizes)
-
+Replicate Single Values in a List
 }
 \keyword{internal}

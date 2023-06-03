@@ -198,12 +198,9 @@ head(long_data)
 ```
 
 Finally, we wrap these in the data formatting functions. Here the mapping of the
-column names to the required variables happens. Note that we need to load the
-`survival` package because we use `Surv()` in the overall survival model for the 
-covariate variables specification.
+column names to the required variables happens. 
 
 ```{r data_joint}
-library(survival)
 joint_data <- DataJoint(
     survival = DataSurvival(
         data = os_data,

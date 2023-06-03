@@ -4,7 +4,42 @@
 \name{StanModule-class}
 \alias{StanModule-class}
 \alias{.StanModule}
-\title{StanAll class object}
-\description{
-StanAll class object
+\alias{StanModule}
+\title{\code{StanModule}}
+\usage{
+StanModule(x = "", priors = list(), inits = list(), ...)
 }
+\arguments{
+\item{x}{(\code{string})\cr file name of the Stan code which should be parsed.}
+
+\item{priors}{(\code{list})\cr the prior specifications.}
+
+\item{inits}{(\code{list})\cr the initial values.}
+
+\item{...}{additional arguments passed to the constructor.}
+}
+\description{
+\code{StanModule}
+}
+\section{Slots}{
+
+\describe{
+\item{\code{functions}}{(\code{character})\cr the \code{functions} block.}
+
+\item{\code{data}}{(\code{character})\cr the \code{data} block.}
+
+\item{\code{transformed_data}}{(\code{character})\cr the \code{transformed_data} block.}
+
+\item{\code{parameters}}{(\code{character})\cr the \code{parameters} block.}
+
+\item{\code{transformed_parameters}}{(\code{character})\cr the \code{transformed_parameters} block.}
+
+\item{\code{model}}{(\code{character})\cr the \code{model} block.}
+
+\item{\code{generated_quantities}}{(\code{character})\cr the \code{generated_quantities} block.}
+
+\item{\code{priors}}{(\code{list})\cr the prior specifications.}
+
+\item{\code{inits}}{(\code{list})\cr the initial values.}
+}}
+

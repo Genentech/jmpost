@@ -1,4 +1,4 @@
-library(survival)
+# get_missing_rownumbers ----
 
 test_that("get_missing_rownumbers works as expected", {
     df <- data.frame(
@@ -14,24 +14,24 @@ test_that("get_missing_rownumbers works as expected", {
     expect_equal(actual, expected)
 })
 
-
+# remove_missing_rows ----
 
 test_that("remove_missing_rows works as expected", {
 
     df <- data.frame(
-        time =  c(1 ,   NA,   3,   5,   5,   4,   5,   5),
-        event = c(0 ,    0,  NA,   1,   0,   1,   1,   0),
-        y =     c(NA,    5,   3,  NA,   3,   4,   3,   3),
-        z =     c(NA,    4,   3,   2,  NA,   2,   4,   3),
-        x =     c(NA,   NA,  NA,  NA,  NA,  NA,  NA,  NA),
-        w =     c("a", "b", "c", "d", "f", "h", "i",  NA_character_)
+        time = c(1, NA, 3, 5, 5, 4, 5, 5),
+        event = c(0, 0, NA, 1, 0, 1, 1, 0),
+        y = c(NA, 5, 3, NA, 3, 4, 3, 3),
+        z = c(NA, 4, 3, 2, NA, 2, 4, 3),
+        x = c(NA, NA, NA, NA, NA, NA, NA, NA),
+        w = c("a", "b", "c", "d", "f", "h", "i", NA_character_)
     )
 
     expected <- data.frame(
-        time =  c( 4, 5),
-        event = c( 1, 1),
-        y = c( 4, 3),
-        z = c( 2, 4),
+        time =  c(4, 5),
+        event = c(1, 1),
+        y = c(4, 3),
+        z = c(2, 4),
         x = c(NA, NA),
         w = c("h", "i")
     )
@@ -43,10 +43,9 @@ test_that("remove_missing_rows works as expected", {
     rownames(actual) <- NULL
 
     expect_equal(expected, actual)
-
 })
 
-
+# expand_initial_values ----
 
 test_that("expand_initial_values smoke tests", {
     vals <- list("a" = 1, "b" = 2, "c" = c(1, 2))
@@ -56,6 +55,7 @@ test_that("expand_initial_values smoke tests", {
     expect_equal(actual, expected)
 })
 
+# replace_with_lookup ----
 
 test_that("replace_with_lookup smoke tests", {
 
@@ -70,11 +70,9 @@ test_that("replace_with_lookup smoke tests", {
     lku <- list("a" = 3, "b" = 2, "c" = 4)
     expect_error(
         replace_with_lookup(vals, lku),
-        regexp = "`sizes` must be length 1 numerics"
+        regexp = "`sizes` must be a single number"
     )
-
 })
-
 
 # samples_median_ci ----
 
@@ -119,4 +117,3 @@ test_that("samples_median_ci works with a custom credibility level", {
     )
     expect_equal(result, expected)
 })
-

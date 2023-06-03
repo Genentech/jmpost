@@ -3,9 +3,14 @@
 #' @include Prior.R
 NULL
 
+# ParameterList-class ----
 
-
-
+#' `ParameterList`
+#'
+#' This class extends the general [`list`] type for containing [`Parameter`]
+#' specifications.
+#'
+#' @exportClass LinkGSF
 .ParameterList <- setClass(
     Class = "ParameterList",
     slots = c(
@@ -13,15 +18,19 @@ NULL
     )
 )
 
+# ParameterList-constructors ----
 
+#' @rdname ParameterList-class
+#'
+#' @param ... (`Parameter`)\cr which parameter specifications to include.
+#'
 #' @export
 ParameterList <- function(...) {
     .ParameterList(parameters = list(...))
 }
 
+# ParameterList-validity ----
 
-
-#' @export
 setValidity(
     Class = "ParameterList",
     method = function(object) {
@@ -33,9 +42,12 @@ setValidity(
     }
 )
 
+# coerce-ParameterList,character ----
 
-
-#' @export
+#' @rdname as.character
+#'
+#' @name coerce-ParameterList-character-method
+#' @aliases coerce,ParameterList,character-method
 setAs(
     from = "ParameterList",
     to = "character",
@@ -51,9 +63,9 @@ setAs(
     }
 )
 
+# as.character-ParameterList ----
 
-
-#' @export
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "ParameterList",
@@ -62,8 +74,9 @@ setMethod(
     }
 )
 
+# as.StanModule-ParameterList ----
 
-#' @export
+#' @rdname as.StanModule
 setMethod(
     f = "as.StanModule",
     signature = "ParameterList",
@@ -78,8 +91,9 @@ setMethod(
     }
 )
 
+# merge-ParameterList,ParameterList ----
 
-#' @export
+#' @rdname merge
 setMethod(
     f = "merge",
     signature = c(x = "ParameterList", y = "ParameterList"),
@@ -89,9 +103,9 @@ setMethod(
     }
 )
 
+# as.list-ParameterList ----
 
-
-#' @export
+#' @rdname as.list
 setMethod(
     f = "as.list",
     signature = "ParameterList",
@@ -100,8 +114,9 @@ setMethod(
     }
 )
 
+# initialValues-ParameterList ----
 
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "ParameterList",
@@ -113,8 +128,9 @@ setMethod(
     }
 )
 
+# names-ParameterList ----
 
-#' @export 
+#' @rdname names
 setMethod(
     f = "names",
     signature = "ParameterList",
@@ -123,9 +139,9 @@ setMethod(
     }
 )
 
+# size-ParameterList ----
 
-
-#' @export
+#' @rdname size
 setMethod(
     f = "size",
     signature = "ParameterList",
@@ -135,4 +151,3 @@ setMethod(
         return(x)
     }
 )
-

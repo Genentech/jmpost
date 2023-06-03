@@ -2,17 +2,21 @@
 % Please edit documentation in R/utilities.R
 \name{get_missing_rownumbers}
 \alias{get_missing_rownumbers}
-\title{\code{get_missing_rownumbers}}
+\title{Row Numbers of Data with Missing Variables}
 \usage{
 get_missing_rownumbers(df, formula = NULL)
 }
 \arguments{
-\item{df}{A data.frame}
+\item{df}{(\code{data.frame})\cr input data.}
 
-\item{formula}{A formula specifying which variables to inspect for missingness, if null
-all variables are considered}
+\item{formula}{(\code{formula} or \code{NULL})\cr which variables to inspect for missingness, if \code{NULL}
+all variables are considered.}
+}
+\value{
+Numeric vector specifying which rows contain at least 1 missing observation
+in any of the inspected variables.
 }
 \description{
-Returns which row numbers contain at least 1 missing observation any variables
+Row Numbers of Data with Missing Variables
 }
 \keyword{internal}

@@ -1,5 +1,5 @@
 Package: jmpost
-Title: TODO
+Title: Joint Models for Predicting Overall Survival Trajectories
 Version: 0.0.0.9000
 Authors@R: c(
     person("Craig", "Gower-Page", email = "craig.gower-page@roche.com", role = c("aut", "cre")),
@@ -8,11 +8,23 @@ Authors@R: c(
     person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
     )
-Description: TODO
+Description: Implements joint models combining a non-linear mixed effects model for
+    longitudinal measurements with a time-to-event model for the survival 
+    outcome. The acronym 'jmpost' stands for Joint Models for Predicting 
+    Overall Survival Trajectories, which refers to the application.
+    In phase 1 studies patients are followed until progression only. 
+    Thus, reliable overall survival data and hence estimates are not available. 
+    However, we can use additional information from previous clinical trials 
+    or real-world data - we can correlate the tumor response data, that are 
+    longitudinal measurements, with the overall survival of the patients or their 
+    hazard ratios. Thereby we can predict the overall survival from our phase 1 study
+    data and therefore make better decisions.
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Depends:
+    R (>= 3.5.0)
 Imports:
     assertthat,
     dplyr,
@@ -21,13 +33,20 @@ Imports:
     ggplot2,
     statmod,
     Matrix,
-    jinjar
+    jinjar,
+    survival,
+    glue,
+    tibble,
+    methods,
+    stats
 Suggests: 
     knitr,
     rmarkdown,
+    rstan,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate:
+    'utilities.R'
     'generics.R'
     'DataLongitudinal.R'
     'DataSurvival.R'
@@ -41,7 +60,9 @@ Collate:
     'StanModel.R'
     'LongitudinalModel.R'
     'Link.R'
+    'LinkGSF.R'
     'LinkNone.R'
+    'LinkRandomSlope.R'
     'LongitudinalGSF.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSamples.R'
@@ -49,8 +70,8 @@ Collate:
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
+    'argument_convention.R'
     'defaults.R'
     'jmpost-package.R'
     'simulations.R'
-    'utilities.R'
 VignetteBuilder: knitr
