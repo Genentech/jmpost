@@ -123,22 +123,22 @@ sim_lm_gsf <- function(
             dplyr::mutate(eta_s = stats::rnorm(dplyr::n(), 0, 1)) |>
             dplyr::mutate(eta_g = stats::rnorm(dplyr::n(), 0, 1)) |>
             dplyr::mutate(eta_phi = stats::rnorm(dplyr::n(), 0, 1)) |>
-            dplyr::mutate(psi_b = exp(log(mu_b) + eta_b * omega_b)) |>
-            dplyr::mutate(psi_s = exp(log(mu_s[.data$arm_n]) + eta_s * omega_s)) |>
-            dplyr::mutate(psi_g = exp(log(mu_g[.data$arm_n]) + eta_g * omega_g)) |>
-            dplyr::mutate(psi_phi = stats::plogis(stats::qlogis(mu_phi[.data$arm_n]) + eta_phi * omega_phi))
+            dplyr::mutate(psi_b = exp(log(mu_b) + .data$eta_b * omega_b)) |>
+            dplyr::mutate(psi_s = exp(log(mu_s[.data$arm_n]) + .data$eta_s * omega_s)) |>
+            dplyr::mutate(psi_g = exp(log(mu_g[.data$arm_n]) + .data$eta_g * omega_g)) |>
+            dplyr::mutate(psi_phi = stats::plogis(stats::qlogis(mu_phi[.data$arm_n]) + .data$eta_phi * omega_phi))
 
         lm_dat <- lm_base |>
-            dplyr::select(!all_of(c("study", "arm"))) |>
+            dplyr::select(!dplyr::all_of(c("study", "arm"))) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
-            dplyr::mutate(mu_sld = gsf_sld(.data$time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(dsld = gsf_dsld(.data$time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(ttg = gsf_ttg(.data$time, psi_b, psi_s, psi_g, psi_phi)) |>
-            dplyr::mutate(sld = stats::rnorm(dplyr::n(), mu_sld, mu_sld * sigma)) |>
+            dplyr::mutate(mu_sld = gsf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * sigma)) |>
             dplyr::mutate(log_haz_link = link_dsld * .data$dsld + link_ttg * .data$ttg)
 
         if (!.debug) {
-            lm_dat <- lm_dat |> dplyr::select(all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
+            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
         }
         return(lm_dat)
     }
@@ -175,7 +175,7 @@ sim_lm_random_slope <- function(
         )
 
         if (length(slope_mu) == 1) {
-            slope_mu <- rep(slope_mu, length(unique(lb_base$arm)))
+            slope_mu <- rep(slope_mu, length(unique(lm_base$arm)))
         }
 
         rs_baseline <- lm_base |>
@@ -183,16 +183,16 @@ sim_lm_random_slope <- function(
             dplyr::mutate(slope_ind = stats::rnorm(
                 dplyr::n(), slope_mu[as.numeric(factor(as.character(.data$arm)))], sd = slope_sigma
             )) |>
-            dplyr::select(!any_of("arm"))
+            dplyr::select(!dplyr::any_of("arm"))
 
         lm_dat <- lm_base |>
             dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
-            dplyr::mutate(sld = intercept + slope_ind * .data$time + .data$err) |>
+            dplyr::mutate(sld = intercept + .data$slope_ind * .data$time + .data$err) |>
             dplyr::mutate(log_haz_link = .data$slope_ind * phi)
 
         if ( ! .debug) {
-            lm_dat <- lm_dat |> dplyr::select(all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
+            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
         }
         return(lm_dat)
     }
@@ -296,7 +296,7 @@ simulate_joint_data <- function(
             sample(c("A", "B", "C"), replace = TRUE, size = n),
             levels = c("A", "B", "C")
         )) |>
-        dplyr::mutate(log_haz_cov = cov_cont * beta_cont + beta_cat[cov_cat]) |>
+        dplyr::mutate(log_haz_cov = .data$cov_cont * beta_cont + beta_cat[.data$cov_cat]) |>
         dplyr::mutate(survival = stats::runif(n)) |>
         dplyr::mutate(chazard_limit = -log(.data$survival)) |>
         dplyr::mutate(time_cen = stats::rexp(n, lambda_cen)) |>
@@ -315,7 +315,7 @@ simulate_joint_data <- function(
         dplyr::left_join(os_baseline, by = "pt")
 
     lm_dat <- time_dat_baseline |>
-        dplyr::select(all_of(c("pt", "time", "arm", "study"))) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "arm", "study"))) |>
         lm_fun()
 
     assert_that(
@@ -326,29 +326,29 @@ simulate_joint_data <- function(
 
     os_dat_chaz <- time_dat_baseline |>
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
-        dplyr::mutate(log_bl_haz = os_fun(time)) |>
+        dplyr::mutate(log_bl_haz = os_fun(.data$time)) |>
         dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
-        dplyr::mutate(hazard_interval = .data$hazard_instant * width) |>
+        dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
         dplyr::group_by(.data$pt) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>
         dplyr::ungroup()
 
     os_dat <- os_dat_chaz|>
         dplyr::filter(.data$chazard_limit <= .data$chazard) |>
-        dplyr::select(all_of(c("pt", "time", "cov_cont", "cov_cat", "time_cen", "study", "arm"))) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "time_cen", "study", "arm"))) |>
         dplyr::group_by(.data$pt) |>
         dplyr::slice(1) |>
         dplyr::ungroup() |>
         dplyr::mutate(event = dplyr::if_else(.data$time <= .data$time_cen, 1, 0)) |>
         dplyr::mutate(time = dplyr::if_else(.data$event == 1, .data$time, .data$time_cen)) |>
-        dplyr::select(all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm")))
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm")))
 
     os_dat_censor <- os_dat_chaz |>
         dplyr::group_by(.data$pt) |>
         dplyr::slice(1) |>
         dplyr::mutate(time = max(times)) |>
         dplyr::mutate(event = 0) |>
-        dplyr::select(all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm"))) |>
+        dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm"))) |>
         dplyr::filter(!.data$pt %in% os_dat$pt)
 
     if (!nrow(os_dat_censor)== 0 ) {
@@ -369,7 +369,7 @@ simulate_joint_data <- function(
     lm_dat2 <- lm_dat |>
         dplyr::mutate(os_time = os_time) |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
-        dplyr::select(!all_of(c("os_time", "log_haz_link")))
+        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link")))
 
     assert_that(
         length(unique(os_dat_complete$pt)) == n,
