@@ -10,7 +10,7 @@ test_that("LongitudinalGSF works as expected with a single study", {
     jlist <- suppressMessages(simulate_joint_data(
         lm_fun = sim_lm_random_slope(),
         os_fun = sim_os_weibull(
-            lambda = 0.00333,  # 1/300
+            lambda = 0.00333,
             gamma = 0.97
         )
     ))
