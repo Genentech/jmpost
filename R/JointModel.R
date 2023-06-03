@@ -4,7 +4,14 @@
 #' @include ParameterList.R
 NULL
 
+# JointModel-class ----
 
+#' `JointModel`
+#'
+#' @slot stan (`StanModule`)\cr code containing the joint model specification.
+#' @slot parameters (`ParameterList`)\cr the parameter specification.
+#'
+#' @exportClass JointModel
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
@@ -13,9 +20,18 @@ NULL
     )
 )
 
+# JointModel-constructors ----
 
+#' @rdname JointModel-class
+#'
+#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
+#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param link (`Link`)\cr the link.
+#'
 #' @export
-JointModel <- function(longitudinal = NULL, survival = NULL, link = NULL) {
+JointModel <- function(longitudinal = NULL,
+                       survival = NULL,
+                       link = NULL) {
 
     longitudinal_linked <- addLink(longitudinal, link)
 
@@ -45,11 +61,9 @@ JointModel <- function(longitudinal = NULL, survival = NULL, link = NULL) {
     )
 }
 
+# as.character-JointModel ----
 
-
-#' As character
-#' @param x A `JointModel` object
-#' @export
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "JointModel",
@@ -58,19 +72,22 @@ setMethod(
     }
 )
 
+# write_stan-JointModel ----
 
-#' @export
+#' @rdname write_stan
 setMethod(
     f = "write_stan",
     signature = "JointModel",
-    definition = function(x, file_path) {
+    definition = function(object, file_path) {
         fi <- file(file_path, open = "w")
-        writeLines(as.character(x), fi)
+        writeLines(as.character(object), fi)
         close(fi)
     }
 )
 
+# compileStanModel-JointModel ----
 
+#' @rdname compileStanModel
 setMethod(
     f = "compileStanModel",
     signature = "JointModel",
@@ -80,6 +97,11 @@ setMethod(
     }
 )
 
+# sampleStanModel-JointModel ----
+
+#' @rdname sampleStanModel
+#'
+#' @param data (`DataJoint` or `list`)\cr input data.
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
@@ -115,8 +137,9 @@ setMethod(
     }
 )
 
+# initialValues-JointModel ----
 
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "JointModel",
@@ -124,29 +147,3 @@ setMethod(
         initialValues(object@parameters)
     }
 )
-
-
-add_missing_stan_blocks <- function(x) {
-    # STAN_BLOCKS is defined as a global variable in stan_module.R
-    # TODO - Make it an argument to the function
-    for (block in names(STAN_BLOCKS)) {
-        if (is.null(x[[block]])) {
-            x[[block]] <- ""
-        }
-    }
-    return(x)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

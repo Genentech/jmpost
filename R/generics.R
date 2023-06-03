@@ -1,153 +1,73 @@
-
 # "missing" = no argument provided
 # "NULL" = explicit NULL
 setClassUnion("empty", c("missing", "NULL"))
 
+# merge ----
 
 #' `merge`
 #'
-#' Description - TODO
+#' Merge two `StanModule` or `ParameterList` objects.
 #'
-#' @param object TODO
-#' @param ... TODO
+#' @param x first module.
+#' @param y second module.
+#' @param ... additional arguments.
+#'
+#' @export
 setGeneric(
     name = "merge",
     def = function(x, y, ...) standardGeneric("merge")
 )
 
+# as.character ----
 
-
-#' `addLink`
+#' Character Conversion of Different Classes
 #'
-#' Description - TODO
+#' These methods convert objects of different classes to `character`
+#' representation.
 #'
-#' @param object TODO
-#' @param ... TODO
-setGeneric(
-    name = "addLink",
-    def = function(x, y, ...) standardGeneric("addLink")
-)
-
-
-#' `write_stan`
+#' @name as.character
+#' @aliases as.character
 #'
-#' Description - TODO
+#' @param x what to convert.
 #'
-#' @param object TODO
-#' @param file_path TODO
-setGeneric(
-    name = "write_stan",
-    def = function(x, file_path) standardGeneric("write_stan")
-)
+#' @exportMethod as.character
+NULL
 
+# as.data.frame ----
 
-#' `compileStanModel`
+#' Data Frame Conversion of Different Classes
 #'
-#' Description - TODO
+#' These methods convert objects of different classes to `data.frame`
+#' representation.
 #'
-#' @param object TODO
-#' @param exe_file TODO
-#' @export
-setGeneric(
-    name = "compileStanModel",
-    def = function(object, exe_file) standardGeneric("compileStanModel")
-)
-
-
-#' `sampleStanModel`
+#' @name as.data.frame
+#' @aliases as.data.frame
 #'
-#' Description - TODO
-#'
-#' @param object TODO
-#' @param ... TODO
-#' @param exe_file TODO
-#' @export
-setGeneric(
-    name = "sampleStanModel",
-    def = function(object, ..., exe_file) standardGeneric("sampleStanModel")
-)
-
-
-# TODO - Convert this to a "as" function
-
-#' `as.StanModule`
-#'
-#' Description - TODO
-#'
-#' @param object TODO
-#' @param ... TODO
-setGeneric(
-    name = "as.StanModule",
-    def = function(object, ...) standardGeneric("as.StanModule")
-)
-
-
-#' `getParameters`
-#'
-#' Description - TODO
-#'
-#' @param object TODO
-#' @param ... TODO
-setGeneric(
-    name = "getParameters",
-    def = function(object, ...) standardGeneric("getParameters")
-)
-
-
-
-
-
-#' `extractVariableNames`
-#'
-#' @returns a `list` of variable names mapping to key variables with the
-#' source-data stored inside the data class.
-#'
-#' @keywords internal
-setGeneric(
-    name = "extractVariableNames",
-    def = function(object, ...) standardGeneric("extractVariableNames")
-)
-
-
-
-#' `initialValues`
-#'
-#' @param object TODO
-#' @param ... TODO
-#' @return a `list` of initial values to be passed to the stan sampler
-#'
-#' @keywords internal
-setGeneric(
-    name = "initialValues",
-    def = function(object, ...) standardGeneric("initialValues")
-)
-
-
-
-
-#' `size`
-#'
-#' @param object TODO
-#' @param ... TODO
-#' @return a `list` of parameter sizes
-#' @keywords internal
-setGeneric(
-    name = "size",
-    def = function(object, ...) standardGeneric("size")
-)
-
-
-#' `longitudinal`
-#'
-#' @param object (`JointModelSamples`)\cr samples to extract the longitudinal fits from.
+#' @param x what to convert.
+#' @param row.names not used.
+#' @param optional not used.
 #' @param ... not used.
 #'
-#' @return The longitudinal fit samples.
 #' @export
-setGeneric(
-    name = "longitudinal",
-    def = function(object, ...) standardGeneric("longitudinal")
-)
+NULL
+
+# as.list ----
+
+#' List Conversion of Different Classes
+#'
+#' These methods convert objects of different classes to `list`
+#' representation.
+#'
+#' @name as.list
+#' @aliases as.list
+#'
+#' @param x what to convert.
+#' @param ... not used.
+#'
+#' @export
+NULL
+
+# autoplot ----
 
 #' Plotting Methods for Different Classes
 #'
@@ -156,8 +76,184 @@ setGeneric(
 #' @name autoplot
 #' @aliases autoplot
 #'
-#' @param object (`LongitudinalSamples`)\cr what to plot.
-#' @param ... Other arguments passed to plotting methods.
+#' @param object what to plot.
+#' @param ... other arguments passed to plotting methods.
 #'
 #' @export
 NULL
+
+# show ----
+
+#' Printing of Different Classes
+#'
+#' These methods print objects of different classes.
+#'
+#' @name show
+#' @aliases show
+#'
+#' @param object what to print.
+#'
+#' @export
+NULL
+
+# names ----
+
+#' Names of Different Classes
+#'
+#' These methods return the names of objects of different classes.
+#'
+#' @name names
+#' @aliases names
+#'
+#' @param x where to get the names from.
+#'
+#' @exportMethod names
+NULL
+
+# addLink ----
+
+#' `addLink`
+#'
+#' Add a link to a longitudinal model.
+#'
+#' @param x the longitudinal model.
+#' @param y the link to be added.
+#' @param ... additional arguments.
+#'
+#' @export
+setGeneric(
+    name = "addLink",
+    def = function(x, y, ...) standardGeneric("addLink")
+)
+
+# write_stan ----
+
+#' `write_stan`
+#'
+#' Write the Stan code for a Stan module.
+#'
+#' @param object the module.
+#' @param file_path (`string`)\cr output file.
+#'
+#' @export
+setGeneric(
+    name = "write_stan",
+    def = function(object, file_path) standardGeneric("write_stan")
+)
+
+# compileStanModel ----
+
+#' `compileStanModel`
+#'
+#' Compile the Stan module.
+#'
+#' @param object the module.
+#' @param exe_file (`string`)\cr output file.
+#'
+#' @export
+setGeneric(
+    name = "compileStanModel",
+    def = function(object, exe_file) standardGeneric("compileStanModel")
+)
+
+# sampleStanModel ----
+
+#' `sampleStanModel`
+#'
+#' Sample from a Stan Module.
+#'
+#' @param object the module.
+#' @param ... additional arguments.
+#' @param exe_file (`string`)\cr output file.
+#'
+#' @export
+setGeneric(
+    name = "sampleStanModel",
+    def = function(object, ..., exe_file) standardGeneric("sampleStanModel")
+)
+
+# as.StanModule ----
+
+#' `as.StanModule`
+#'
+#' Convert a [`Link`] or [`ParameterList`] into a [`StanModule`].
+#'
+#' @param object what to convert.
+#'
+#' @keywords internal
+setGeneric(
+    name = "as.StanModule",
+    def = function(object) standardGeneric("as.StanModule")
+)
+
+# getParameters ----
+
+#' `getParameters`
+#'
+#' Obtain the parameters from a [`StanModel`].
+#'
+#' @param object where to obtain the parameters from.
+#'
+#' @keywords internal
+setGeneric(
+    name = "getParameters",
+    def = function(object) standardGeneric("getParameters")
+)
+
+# extractVariableNames ----
+
+#' `extractVariableNames`
+#'
+#' Extract the `list` of variable names mapping to key variables
+#' from a [`DataLongitudinal`] or [`DataSurvival`] object.
+#'
+#' @param object the data object.
+#'
+#' @keywords internal
+setGeneric(
+    name = "extractVariableNames",
+    def = function(object) standardGeneric("extractVariableNames")
+)
+
+# initialValues ----
+
+#' `initialValues`
+#'
+#' Obtain the `list` of initial values to be passed to the Stan sampler.
+#'
+#' @param object where to get the initial values from.
+#'
+#' @keywords internal
+setGeneric(
+    name = "initialValues",
+    def = function(object) standardGeneric("initialValues")
+)
+
+# size ----
+
+#' `size`
+#'
+#' Obtain the `list` of parameter sizes.
+#'
+#' @param object where to get the parameter sizes from.
+#'
+#' @keywords internal
+setGeneric(
+    name = "size",
+    def = function(object) standardGeneric("size")
+)
+
+# longitudinal ----
+
+#' `longitudinal`
+#'
+#' Obtain the longitudinal fit samples from [`JointModelSamples`].
+#'
+#' @param object samples to extract the longitudinal fits from.
+#' @param ... additional options.
+#'
+#' @export
+setGeneric(
+    name = "longitudinal",
+    def = function(object, ...) standardGeneric("longitudinal")
+)

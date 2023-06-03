@@ -1,21 +1,28 @@
-#' Longitudinal Samples Storage
+# LongitudinalSamples-class ----
+
+#' `LongitudinalSamples`
 #'
 #' This class is an extension of a standard `list` so that we
 #' can define custom methods for it.
 #'
-#' @name LongitudinalSamples
-#' @export
+#' @aliases LongitudinalSamples
+#' @exportClass LongitudinalSamples
 .LongitudinalSamples <- setClass(
     "LongitudinalSamples",
     contains = "list"
 )
 
-#' @rdname LongitudinalSamples
+# LongitudinalSamples-[ ----
+
+#' @rdname LongitudinalSamples-class
 #'
 #' @param x (`LongitudinalSamples`)\cr the samples object to subset.
 #' @param i (`vector`)\cr the index vector.
+#' @param j not used.
+#' @param drop not used.
+#' @param ... not used.
 #'
-#' @return The subsetted `LongitudinalSamples` object.
+#' @returns The subsetted `LongitudinalSamples` object.
 #' @export
 setMethod(
     f = "[",
@@ -27,10 +34,9 @@ setMethod(
     }
 )
 
-# autoplot ----
+# autoplot-LongitudinalSamples ----
 
 #' @rdname autoplot
-#' @export
 setMethod(
     f = "autoplot",
     signature = c(object = "LongitudinalSamples"),
@@ -44,9 +50,9 @@ setMethod(
         all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
 
         ggplot() +
-            geom_line(aes(x = time, y = median), data = all_fit_df) +
-            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
-            geom_point(aes(x = t, y = y), data = all_obs_df) +
+            geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df) +
+            geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
+            geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df) +
             xlab(expression(t)) +
             ylab(expression(y)) +
             facet_grid(~ pt_id)

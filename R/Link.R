@@ -3,6 +3,14 @@
 #' @include ParameterList.R
 NULL
 
+# Link-class ----
+
+#' `Link`
+#'
+#' @slot stan (`StanModule`)\cr code containing the link specification.
+#' @slot parameters (`ParameterList`)\cr the parameter specification.
+#'
+#' @exportClass Link
 .Link <- setClass(
     Class = "Link",
     slots = list(
@@ -11,14 +19,23 @@ NULL
     )
 )
 
+# Link-constructors ----
 
+#' @rdname Link-class
+#'
+#' @inheritParams stanmodel_arguments
+#' @param ... additional arguments passed to the constructor.
+#'
 #' @export
-Link <- function(stan = StanModule(), parameters = ParameterList(), ...) {
+Link <- function(stan = StanModule(),
+                 parameters = ParameterList(),
+                 ...) {
     .Link(stan = stan, parameters = parameters, ...)
 }
 
+# addLink-LongitudinalModel,Link ----
 
-
+#' @rdname addLink
 setMethod(
     f = "addLink",
     signature = c("LongitudinalModel", "Link"),
@@ -29,9 +46,9 @@ setMethod(
     }
 )
 
+# initialValues-Link ----
 
-
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "Link",
@@ -40,8 +57,9 @@ setMethod(
     }
 )
 
+# Link-as.StanModule ----
 
-#' @export 
+#' @rdname as.StanModule
 setMethod(
     f = "as.StanModule",
     signature = "Link",
@@ -49,7 +67,3 @@ setMethod(
         object@stan
     }
 )
-
-
-
-

@@ -1,4 +1,3 @@
-
 #' @include generics.R
 #' @include Link.R
 #' @include LongitudinalModel.R
@@ -8,40 +7,38 @@
 #' @include Parameter.R
 NULL
 
+# addLink ----
 
-#######################
-#
-#  addLink
-#
+## addLink-LongitudinalModel,NULL ----
 
+#' @rdname addLink
 setMethod(
     "addLink",
     signature = c("LongitudinalModel", "NULL"),
     definition = function(x, y, ...) x
 )
 
+## addLink-NULL,Link ----
+
+#' @rdname addLink
 setMethod(
     "addLink",
     signature = c("NULL", "Link"),
-    definition = function(x, y, ...) {
-        stop("No Longitudinal model has been defined for the link function to be combined with")
-    }
+    definition = function(x, y, ...) stop("LongitudinalModel needs to be defined")
 )
 
+## addLink-NULL,NULL ----
+
+#' @rdname addLink
 setMethod(
     "addLink",
     signature = c("NULL", "NULL"),
     definition = function(x, y, ...) NULL
 )
 
+# getParameters ----
 
-
-#######################
-#
-#  getParameters
-#
-
-
+## getParameters-NULL ----
 
 setMethod(
     f = "getParameters",
@@ -49,60 +46,67 @@ setMethod(
     definition = function(object) NULL
 )
 
+# merge ----
 
+## merge-StanModel,NULL ----
 
-#######################
-#
-#  merge
-#
-
-
-
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("StanModel", "NULL"),
     definition = function(x, y, ...) x@stan
 )
+
+## merge-NULL,StanModel ----
+
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("NULL", "StanModel"),
     definition = function(x, y, ...) y@stan
 )
 
+## merge-StanModule,NULL ----
 
-
-
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("StanModule", "NULL"),
     definition = function(x, y, ...) x
 )
+
+## merge-NULL,StanModule ----
+
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("NULL", "StanModule"),
     definition = function(x, y, ...) y
 )
 
+## merge-ParameterList,NULL ----
 
-
-
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("ParameterList", "NULL"),
     definition = function(x, y, ...) x
 )
+
+## merge-NULL,ParameterList ----
+
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("NULL", "ParameterList"),
     definition = function(x, y, ...) y
 )
 
+## merge-NULL,NULL ----
 
-
-
+#' @rdname merge
 setMethod(
     "merge",
     signature = c("NULL", "NULL"),
     definition = function(x, y, ...) NULL
 )
-
