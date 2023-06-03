@@ -137,7 +137,7 @@ link_gsf_abstract <- function(stan,
 link_gsf_ttg <- function(
         gamma = prior_normal(0, 5, init = 0)
 ) {
-    link_gsf_abstract(
+    .link_gsf_ttg(
         stan = StanModule("lm-gsf/link_ttg.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma, size = 1)),
         parameter_name = "lm_gsf_gamma",
@@ -167,9 +167,9 @@ link_gsf_ttg <- function(
 #'
 #' @export
 link_gsf_dsld <- function(
-        beta = Parameter(prior_normal(0, 5, init = 0))
+        beta = prior_normal(0, 5, init = 0)
 ) {
-    link_gsf_abstract(
+    .link_gsf_dsld(
         stan = StanModule("lm-gsf/link_dsld.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta, size = 1)),
         parameter_name = "lm_gsf_beta",
