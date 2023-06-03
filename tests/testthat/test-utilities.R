@@ -72,7 +72,7 @@ test_that("replace_with_lookup smoke tests", {
     lku <- list("a" = 3, "b" = 2, "c" = 4)
     expect_error(
         replace_with_lookup(vals, lku),
-        regexp = "`sizes` must be length 1 numerics"
+        regexp = "`sizes` must be a single number"
     )
 
 })
