@@ -31,7 +31,7 @@ setGeneric(
 #' @param x what to convert.
 #' @param ... not used.
 #'
-#' @export
+#' @exportMethod as.character
 NULL
 
 # as.data.frame ----
@@ -108,7 +108,7 @@ NULL
 #'
 #' @param x where to get the names from.
 #'
-#' @export
+#' @exportMethod names
 NULL
 
 # addLink ----
