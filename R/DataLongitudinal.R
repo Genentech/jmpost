@@ -1,4 +1,5 @@
 #' @include generics.R
+#' @include utilities.R
 NULL
 
 setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
@@ -69,7 +70,7 @@ DataLongitudinal <- function(data, formula, subject, threshold = NULL, time_grid
 
 setValidity(
     "DataLongitudinal",
-    function(object) {
+    function(object) { #nolint
         if (length(object@subject) > 1) {
             return("`subject` should be a length 1 character vector or NULL")
         }

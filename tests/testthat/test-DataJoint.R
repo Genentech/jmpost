@@ -11,7 +11,7 @@ test_that("DataJoint errors if subjects don't allign after", {
     df_long <- data.frame(
         vpt = c("A", "A", "B", "B", "C", "B"),
         vtime = c(10, 10, 20, 30, 40, 50),
-        vout = c(1,2,3,4,5, 6)
+        vout = c(1, 2, 3, 4, 5, 6)
     )
 
     do_surv <- DataSurvival(
@@ -80,15 +80,3 @@ test_that("DataJoint errors if subjects don't allign after", {
         regexp = "subjects in the longitudinal"
     )
 })
-
-
-
-
-
-
-
-
-
-
-
-

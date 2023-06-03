@@ -39,4 +39,3 @@ mcmc_results <- sampleStanModel(
 # telling us to call draws() once to load all samples into the object in memory.
 not_needed_now <- mcmc_results@results$draws()
 saveRDS(mcmc_results, file = "mcmc_results.rds")
-

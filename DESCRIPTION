@@ -46,6 +46,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate:
+    'utilities.R'
     'generics.R'
     'DataLongitudinal.R'
     'DataSurvival.R'
@@ -73,5 +74,4 @@ Collate:
     'defaults.R'
     'jmpost-package.R'
     'simulations.R'
-    'utilities.R'
 VignetteBuilder: knitr

@@ -330,7 +330,7 @@ as_stan_fragments <- function(x) {
                 break
             }
         }
-        if(!is.null(target)) {
+        if (!is.null(target)) {
             results[[target]] <- c(results[[target]], line)
         }
     }
@@ -351,7 +351,7 @@ as_stan_fragments <- function(x) {
 
     # Add missings.
     for (block in names(STAN_BLOCKS)) {
-        if(is.null(results[[block]])) {
+        if (is.null(results[[block]])) {
             results[[block]] <- ""
         }
     }

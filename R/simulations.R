@@ -70,7 +70,7 @@ gsf_ttg <- function(time, b, s, g, phi) {
 #' @export
 #' @examples
 #' gsf_dsld(1:10, 20, 0.3, 0.6, 0.2)
-gsf_dsld <- function(time, b , s, g, phi) {
+gsf_dsld <- function(time, b, s, g, phi) {
     t1 <- (1 - phi) * g * exp(g * time)
     t2 <- phi * s * exp(-s * time)
     return(b * (t1 - t2))
@@ -198,7 +198,7 @@ sim_lm_random_slope <- function(
             dplyr::mutate(sld = intercept + .data$slope_ind * .data$time + .data$err) |>
             dplyr::mutate(log_haz_link = .data$slope_ind * phi)
 
-        if ( ! .debug) {
+        if (!.debug) {
             lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
         }
         return(lm_dat)
@@ -239,7 +239,7 @@ sim_os_exponential <- function(lambda) {
 #'
 #' @returns A function of `time` returning the log hazard.
 #' @export
-sim_os_loglogistic <- function(lambda, p){
+sim_os_loglogistic <- function(lambda, p) {
     function(time) {
         c1 <- log(lambda) + log(p) + (p - 1) * (log(lambda) + log(time))
         c2 <- log(1 + (lambda * time)^p)
@@ -361,7 +361,7 @@ simulate_joint_data <- function(
         dplyr::select(dplyr::all_of(c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm"))) |>
         dplyr::filter(!.data$pt %in% os_dat$pt)
 
-    if (!nrow(os_dat_censor)== 0 ) {
+    if (!(nrow(os_dat_censor) == 0)) {
         message(sprintf("%i patients did not die before max(times)", nrow(os_dat_censor)))
     }
 

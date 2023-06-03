@@ -27,7 +27,7 @@ vignette: |
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = F
+  eval = FALSE
 )
 ```
 # Introduction
@@ -66,7 +66,7 @@ my_long_mod <- LongMod()
 my_temp_os <- LogLogisticOs()
 # The link between longitudinal and OS models
 my_link <- ttgLink()
-# The complete survival submodel 
+# The complete survival submodel
 my_os <- parametrize(osmod = my_temp_os, link = my_link)
 # The full model
 JointModel(long = my_long_mod, os = my_os)
@@ -244,7 +244,7 @@ The link is an object containing the parametrisation of the longitudinal sub-mod
 link <- HazardLink(
     parameters = "beta_ttg",
     contribution = "* rep_matrix(ttg(psi_ks, psi_kg, psi_phi), rows(time))",
-    stan = StanModule( )
+    stan = StanModule()
 )
 ```
 

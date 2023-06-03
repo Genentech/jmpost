@@ -1,5 +1,5 @@
-
 #' @include generics.R
+#' @include utilities.R
 NULL
 
 # DataSurvival-class ----
@@ -43,7 +43,7 @@ NULL
 #' @param study (`string`)\cr the name of the study variable.
 #'
 #' @export
-DataSurvival <- function(data, formula, subject, arm , study) {
+DataSurvival <- function(data, formula, subject, arm, study) {
     .DataSurvival(
         data = remove_missing_rows(data, formula, c(subject, arm, study)),
         formula = formula,
@@ -249,25 +249,4 @@ get_arm_study_data <- function(pt, arm, study) {
         arm_to_study_index = as.numeric(u_arm_study[["study"]]),
         n_studies = length(unique(u_arm_study[["study"]]))
     )
-}
-
-# pt_2_factor ----
-
-#' `pt_2_factor`
-#'
-#' Converts subject identifiers to factors.
-#' If `pt` is already a factor it will re-level it to ensure the levels are in alphabetical order.
-#' This is to ensure that [`DataLongitudinal`] and [`DataSurvival`] use identical index numbers
-#' for the subjects to ensure data alignment in the joint model.
-#'
-#' @param pt (`character` or `factor`)\cr subject identifiers
-#'
-#' @returns A `factor` with the levels in alphabetical order.
-#'
-#' @keywords internal
-pt_2_factor <- function(pt) {
-    pt_char <- as.character(pt)
-    pt_uniq <- unique(pt_char)
-    pt_uniq_ord <- pt_uniq[order(pt_uniq)]
-    factor(pt_char, levels = pt_uniq_ord)
 }

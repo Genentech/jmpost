@@ -64,7 +64,7 @@ test_that("sim_lm_random_slope works as expected", {
 
 test_that("simulate_joint_data works as expected", {
     set.seed(543)
-    times <- seq(0, 4, by = (1/365)/2)
+    times <- seq(0, 4, by = (1 / 365) / 2)
     result <- expect_silent(simulate_joint_data(
         n_arm = c(80, 80),
         times = times,
@@ -89,7 +89,7 @@ test_that("simulate_joint_data works as expected", {
             link_ttg = 0.3
         ),
         os_fun = sim_os_weibull(
-            lambda = 365 * (1/400),
+            lambda = 365 * (1 / 400),
             gamma = 1
         )
     ))

@@ -93,7 +93,7 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 #' @inheritParams prior_arguments
 #'
 #' @export
-prior_gamma <- function(alpha, beta, init = alpha/beta) {
+prior_gamma <- function(alpha, beta, init = alpha / beta) {
     .Prior(
         parameters = list(alpha = alpha, beta = beta),
         repr = "gamma({alpha}, {beta});",
@@ -108,7 +108,7 @@ prior_gamma <- function(alpha, beta, init = alpha/beta) {
 #' @inheritParams prior_arguments
 #'
 #' @export
-prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2)/2)) {
+prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "lognormal({mu}, {sigma});",
@@ -123,7 +123,7 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2)/2)) {
 #' @inheritParams prior_arguments
 #'
 #' @export
-prior_beta <- function(a, b, init = a/(a+b)) {
+prior_beta <- function(a, b, init = a / (a + b)) {
     .Prior(
         parameters = list(a = a, b = b),
         repr = "beta({a}, {b});",

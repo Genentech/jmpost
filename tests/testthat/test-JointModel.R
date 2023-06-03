@@ -13,9 +13,3 @@ test_that("JointModel smoke tests", {
     expect_equal(length(jm_char), 1)
     expect_true(nchar(jm_char) > 3000)
 })
-
-
-
-
-
-

@@ -11,7 +11,6 @@ test_that("ParameterList smoke tests", {
     # Can extract parameter names
     expect_equal(names(pl), c("inter", "myp"))
 
-    
     # Can extract initial values
     actual <- initialValues(pl)
     expected <- list(
@@ -20,7 +19,6 @@ test_that("ParameterList smoke tests", {
     )
     expect_equal(actual, expected)
 
-    
     # Can render to character
     actual <- c(
         "    inter ~ gamma(1, 2);",

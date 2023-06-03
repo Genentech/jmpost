@@ -34,7 +34,7 @@ NULL
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
 #'
 #' @export
-LongitudinalGSF <- function (
+LongitudinalGSF <- function(
     mu_bsld = prior_lognormal(log(55), 5, init = 55),
     mu_ks = prior_lognormal(0, 0.5, init = 0),
     mu_kg = prior_lognormal(-0.36, 1, init = -0.36),

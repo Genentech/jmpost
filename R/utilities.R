@@ -38,7 +38,7 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 
     missing_rows <- get_missing_rownumbers(data, formula_update)
 
-    if (length(missing_rows) == 0 ) {
+    if (length(missing_rows) == 0) {
         return(data)
     }
     message(sprintf(
@@ -59,7 +59,7 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 #' The resulting list has the same names as the original lists.
 #'
 #' @keywords internal
-expand_initial_values <- function(initial_values, sizes){
+expand_initial_values <- function(initial_values, sizes) {
     assert_that(
         is.list(initial_values),
         msg = "`initial_values` must be a list"
@@ -106,10 +106,10 @@ expand_initial_values <- function(initial_values, sizes){
 #' @keywords internal
 replace_with_lookup <- function(sizes, data) {
 
-    assert_that( is.list(sizes), msg = "`sizes` must be a list")
-    assert_that( is.list(data), msg = "`data` must be a list")
+    assert_that(is.list(sizes), msg = "`sizes` must be a list")
+    assert_that(is.list(data), msg = "`data` must be a list")
 
-    for ( idx in seq_along(sizes)) {
+    for (idx in seq_along(sizes)) {
         val <- sizes[[idx]]
         if (is.character(val)) {
             assert_that(
@@ -162,4 +162,23 @@ samples_median_ci <- function(samples, level = 0.95) {
         median = samples_median,
         samples_ci
     ))
+}
+
+#' `pt_2_factor`
+#'
+#' Converts subject identifiers to factors.
+#' If `pt` is already a factor it will re-level it to ensure the levels are in alphabetical order.
+#' This is to ensure that [`DataLongitudinal`] and [`DataSurvival`] use identical index numbers
+#' for the subjects to ensure data alignment in the joint model.
+#'
+#' @param pt (`character` or `factor`)\cr subject identifiers.
+#'
+#' @returns A `factor` with the levels in alphabetical order.
+#'
+#' @keywords internal
+pt_2_factor <- function(pt) {
+    pt_char <- as.character(pt)
+    pt_uniq <- unique(pt_char)
+    pt_uniq_ord <- pt_uniq[order(pt_uniq)]
+    factor(pt_char, levels = pt_uniq_ord)
 }
