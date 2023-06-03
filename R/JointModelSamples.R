@@ -1,12 +1,17 @@
 #' @include JointModel.R
 NULL
 
-#' Samples from a `JointModel`
+# JointModelSamples-class ----
+
+#' `JointModelSamples`
+#'
+#' Contains samples from a [`JointModel`].
 #'
 #' @slot model (`JointModel`)\cr the original model.
 #' @slot data (`list`)\cr data input.
 #' @slot init (`list`)\cr initial values.
 #' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
+#'
 #' @export
 .JointModelSamples <- setClass(
     "JointModelSamples",
@@ -17,6 +22,8 @@ NULL
         results = "ANY"
     )
 )
+
+# longitudinal-JointModelSamples ----
 
 #' @rdname longitudinal
 #'

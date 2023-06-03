@@ -17,7 +17,7 @@ Parameter(prior, name, size = 1)
 \item{size}{(\code{numeric} or \code{string})\cr dimension of the parameter.}
 }
 \description{
-\code{Parameter}
+Stores the name, the prior distribution and the size of a parameter.
 }
 \section{Slots}{
 

@@ -62,11 +62,7 @@ setValidity(
 
 # DataJoint-as.list ----
 
-#' @rdname DataJoint-class
-#'
-#' @param x (`DataJoint`)\cr to be coerced to a list.
-#'
-#' @export
+#' @rdname as.list
 setMethod(
     "as.list",
     signature = "DataJoint",
@@ -78,9 +74,9 @@ setMethod(
     }
 )
 
-#' @rdname DataJoint-class
-#'
-#' @param from (`DataJoint`)\cr to be coerced to a list.
+# coerce-DataJoint,list ----
+
+#' @rdname as.list
 #'
 #' @name coerce-DataJoint-list-method
 #' @aliases coerce,DataJoint,list-method

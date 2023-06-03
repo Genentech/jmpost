@@ -20,7 +20,9 @@ NULL
     )
 )
 
-#' @export
+# as.character-Prior ----
+
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "Prior",
@@ -29,8 +31,12 @@ setMethod(
     }
 )
 
+# coerce-Prior,character ----
 
-#' @export
+#' @rdname as.character
+#'
+#' @name coerce-Prior-character-method
+#' @aliases coerce,Prior,character-method
 setAs(
     from = "Prior",
     to = "character",
@@ -39,6 +45,14 @@ setAs(
     }
 )
 
+# initialValues-Prior ----
+
+#' @rdname initialValues
+setMethod(
+    f = "initialValues",
+    signature = "Prior",
+    definition = function(object) object@init
+)
 
 # Prior-constructors ----
 
@@ -117,7 +131,6 @@ prior_beta <- function(a, b, init = a/(a+b)) {
     )
 }
 
-
 #' Only Initial Values Specification
 #'
 #' @inheritParams prior_arguments
@@ -130,12 +143,3 @@ prior_none <- function(init = 0.00001) {
         init = init
     )
 }
-
-
-#' @export
-setMethod(
-    f = "initialValues",
-    signature = "Prior",
-    definition = function(object) object@init
-)
-

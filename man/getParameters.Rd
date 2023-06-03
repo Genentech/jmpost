@@ -5,16 +5,14 @@
 \alias{getParameters,StanModel-method}
 \title{\code{getParameters}}
 \usage{
-getParameters(object, ...)
+getParameters(object)
 
 \S4method{getParameters}{StanModel}(object)
 }
 \arguments{
-\item{object}{TODO}
-
-\item{...}{TODO}
+\item{object}{where to obtain the parameters from.}
 }
 \description{
-Description - TODO
+Obtain the parameters from a \code{\link{StanModel}}.
 }
 \keyword{internal}

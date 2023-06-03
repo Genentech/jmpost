@@ -19,7 +19,6 @@ NULL
     )
 )
 
-
 # Link-constructors ----
 
 #' @rdname Link-class
@@ -34,8 +33,9 @@ Link <- function(stan = StanModule(),
     .Link(stan = stan, parameters = parameters, ...)
 }
 
+# addLink-LongitudinalModel,Link ----
 
-
+#' @rdname addLink
 setMethod(
     f = "addLink",
     signature = c("LongitudinalModel", "Link"),
@@ -46,9 +46,9 @@ setMethod(
     }
 )
 
+# initialValues-Link ----
 
-
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "Link",
@@ -57,8 +57,9 @@ setMethod(
     }
 )
 
+# Link-as.StanModule ----
 
-#' @export
+#' @rdname as.StanModule
 setMethod(
     f = "as.StanModule",
     signature = "Link",
@@ -66,7 +67,3 @@ setMethod(
         object@stan
     }
 )
-
-
-
-

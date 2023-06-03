@@ -1,3 +1,5 @@
+# as_vcov ----
+
 #' Construct a Variance-Covariance Matrix from Standard Deviations and Correlations
 #'
 #' This function creates a variance-covariance matrix based on the input standard deviations
@@ -32,6 +34,10 @@ as_vcov <- function(sd, cor) {
     dimnames(res) <- NULL
     return(res)
 }
+
+# sim_lm_* ----
+
+## sim_lm_gsf ----
 
 #' Generalized Stein-Fojo Functionals
 #'
@@ -144,6 +150,7 @@ sim_lm_gsf <- function(
     }
 }
 
+## sim_lm_random_slope ----
 
 #' Construct a Simulation Function for Longitudinal Data from Random Slope Model
 #'
@@ -198,6 +205,7 @@ sim_lm_random_slope <- function(
     }
 }
 
+# sim_os_* ----
 
 #' Construct a Log Hazard Function for the Weibull Model
 #'
@@ -238,6 +246,8 @@ sim_os_loglogistic <- function(lambda, p){
         return(c1 - c2)
     }
 }
+
+# simulate_joint_data ----
 
 #' Construct Time Intervals
 #'

@@ -8,9 +8,9 @@
 \S4method{autoplot}{LongitudinalSamples}(object, ...)
 }
 \arguments{
-\item{object}{(\code{LongitudinalSamples})\cr what to plot.}
+\item{object}{what to plot.}
 
-\item{...}{Other arguments passed to plotting methods.}
+\item{...}{other arguments passed to plotting methods.}
 }
 \description{
 These plot methods visualize various objects.

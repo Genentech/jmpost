@@ -5,15 +5,9 @@
 \alias{DataLongitudinal-class}
 \alias{.DataLongitudinal}
 \alias{DataLongitudinal}
-\alias{as.data.frame,DataLongitudinal-method}
-\alias{as.list,DataLongitudinal-method}
 \title{\code{DataLongitudinal}}
 \usage{
 DataLongitudinal(data, formula, subject, threshold = NULL, time_grid = NULL)
-
-\S4method{as.data.frame}{DataLongitudinal}(x, row.names = NULL, optional = FALSE, ...)
-
-\S4method{as.list}{DataLongitudinal}(x)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr containing the observed longitudinal data.}
@@ -28,12 +22,6 @@ DataLongitudinal(data, formula, subject, threshold = NULL, time_grid = NULL)
 \item{time_grid}{(\code{numeric})\cr grid of time points to use for providing samples
 of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
 201 values from the minimum to the maximum observed times.}
-
-\item{x}{(\code{DataLongitudinal})\cr to be coerced.}
-
-\item{row.names}{not used.}
-
-\item{optional}{not used.}
 }
 \description{
 The \code{\link{DataLongitudinal}} class handles the processing of the longitudinal data for fitting a Joint Model.

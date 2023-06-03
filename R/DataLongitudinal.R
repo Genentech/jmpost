@@ -97,15 +97,9 @@ setValidity(
     }
 )
 
-# DataLongitudinal-as.data.frame ----
+# as.data.frame-DataLongitudinal ----
 
-#' @rdname DataLongitudinal-class
-#'
-#' @param x (`DataLongitudinal`)\cr to be coerced.
-#' @param row.names not used.
-#' @param optional not used.
-#'
-#' @export
+#' @rdname as.data.frame
 setMethod(
     "as.data.frame",
     signature = "DataLongitudinal",
@@ -117,7 +111,7 @@ setMethod(
     }
 )
 
-# DataLongitudinal-extractVariableNames ----
+# extractVariableNames-DataLongitudinal ----
 
 #' @rdname extractVariableNames
 setMethod(
@@ -134,11 +128,9 @@ setMethod(
     }
 )
 
-# DataLongitudinal-as.list ----
+# as.list-DataLongitudinal ----
 
-#' @rdname DataLongitudinal-class
-#'
-#' @export
+#' @rdname as.list
 setMethod(
     f = "as.list",
     signature = "DataLongitudinal",

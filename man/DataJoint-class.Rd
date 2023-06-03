@@ -5,23 +5,14 @@
 \alias{DataJoint-class}
 \alias{.DataJoint}
 \alias{DataJoint}
-\alias{as.list,DataJoint-method}
-\alias{coerce-DataJoint-list-method}
-\alias{coerce,DataJoint,list-method}
 \title{\code{DataJoint}}
 \usage{
 DataJoint(survival, longitudinal)
-
-\S4method{as.list}{DataJoint}(x)
 }
 \arguments{
 \item{survival}{(\code{DataSurvival})\cr object created by \code{\link[=DataSurvival]{DataSurvival()}}.}
 
 \item{longitudinal}{(\code{DataLongitudinal})\cr object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
-
-\item{x}{(\code{DataJoint})\cr to be coerced to a list.}
-
-\item{from}{(\code{DataJoint})\cr to be coerced to a list.}
 }
 \description{
 The \code{DataJoint} class handles combining data from a \code{\link{DataSurvival}} object and a

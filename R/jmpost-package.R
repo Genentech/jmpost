@@ -4,6 +4,7 @@
 #' @import assertthat
 #' @import ggplot2
 #' @import methods
+#' @import stringr
 #' @importFrom glue as_glue
 #' @importFrom tibble add_case
 #' @importFrom stats acf

@@ -16,7 +16,6 @@ NULL
     contains = "Link"
 )
 
-
 # LinkNone-constructors ----
 
 #' @rdname LinkNone-class
@@ -27,6 +26,9 @@ LinkNone <- function() {
     .LinkNone(Link(stan = stan))
 }
 
+# addLink-LongitudinalModel,LinkNone ----
+
+#' @rdname addLink
 setMethod(
     f = "addLink",
     signature = c("LongitudinalModel", "LinkNone"),
@@ -34,4 +36,3 @@ setMethod(
         x
     }
 )
-

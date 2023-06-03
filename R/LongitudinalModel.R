@@ -14,7 +14,6 @@ NULL
     contains = "StanModel"
 )
 
-
 # LongitudinalModel-constructors ----
 
 #' @rdname LongitudinalModel-class

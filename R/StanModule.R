@@ -1,6 +1,8 @@
 #' @include generics.R
 NULL
 
+# STAN_BLOCKS ----
+
 STAN_BLOCKS <- list(
     functions = "functions",
     data = "data",
@@ -10,6 +12,27 @@ STAN_BLOCKS <- list(
     model = "model",
     generated_quantities = "generated quantities"
 )
+
+# add_missing_stan_blocks ----
+
+#' Add Missing Stan Blocks
+#'
+#' @param x (`list`)\cr list of Stan code blocks
+#'
+#' @return Amended list `x` such that all blocks in the global variable
+#'   `STAN_BLOCKS` are contained.
+#'
+#' @keywords internal
+add_missing_stan_blocks <- function(x) {
+    # STAN_BLOCKS is defined as a global variable in StanModule.R
+    # TODO - Make it an argument to the function
+    for (block in names(STAN_BLOCKS)) {
+        if (is.null(x[[block]])) {
+            x[[block]] <- ""
+        }
+    }
+    return(x)
+}
 
 # StanModule-class ----
 
@@ -78,14 +101,9 @@ StanModule <- function(
     )
 }
 
-#' Convert a StanModule object into stan code
-#'
-#' Collapses a StanModule object down into a single string inserting the required block
-#' fences
-#' i.e. `data { ... }`
-#'
-#' @param x A `StanModule` object
-#' @export
+# as.character-StanModule ----
+
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "StanModule",
@@ -102,8 +120,9 @@ setMethod(
     }
 )
 
+# merge-StanModule,StanModule ----
 
-#' @export
+#' @rdname merge
 setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
@@ -128,8 +147,9 @@ setMethod(
     }
 )
 
+# compileStanModel-StanModule,character ----
 
-#' @export
+#' @rdname compileStanModel
 setMethod(
     f = "compileStanModel",
     signature = signature(object = "StanModule", exe_file = "character"),
@@ -145,8 +165,9 @@ setMethod(
     }
 )
 
+# compileStanModel-StanModule,empty ----
 
-#' @export
+#' @rdname compileStanModel
 setMethod(
     f = "compileStanModel",
     signature = signature(object = "StanModule", exe_file = "empty"),
@@ -156,11 +177,9 @@ setMethod(
     }
 )
 
+# show-StanModule ----
 
-
-
-
-#' @export
+#' @rdname show
 setMethod(
     f = "show",
     signature = "StanModule",
@@ -169,10 +188,9 @@ setMethod(
     }
 )
 
+# as.list-StanModule ----
 
-
-
-#' @export
+#' @rdname as.list
 setMethod(
     f = "as.list",
     signature = "StanModule",
@@ -186,14 +204,17 @@ setMethod(
     }
 )
 
+# is_file ----
 
-#' Is string a valid file
+#' Is String a Valid File?
 #'
 #' A utility function to check if a string is a valid file or not.
-#' Used to help address short comings of file.exists that will return TRUE
-#' for a directory as well as a file
+#' Used to help address short comings of [file.exists()] that will return `TRUE`
+#' for a directory as well as a file.
 #'
-#' @param filename A character string
+#' @param filename (`string`)\cr file name.
+#'
+#' @keywords internal
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
         return(FALSE)
@@ -212,13 +233,13 @@ is_file <- function(filename = NULL) {
     return(file.exists(filename) & !dir.exists(filename))
 }
 
+# read_stan ----
 
-
-
-#' read_stan returns stan code as a character.
+#' Stan Code as Character
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
+#'
 #' @export
 read_stan <- function(string) {
     local_inst_file <- file.path("inst", "stan", string)
@@ -233,8 +254,21 @@ read_stan <- function(string) {
     return(string)
 }
 
+# as_stan_file ----
 
-
+#' Merging Code Blocks into Stan Code Character Vector
+#'
+#' @param functions (`character`)\cr code block.
+#' @param data (`character`)\cr code block.
+#' @param transformed_data (`character`)\cr code block.
+#' @param parameters (`character`)\cr code block.
+#' @param transformed_parameters (`character`)\cr code block.
+#' @param model (`character`)\cr code block.
+#' @param generated_quantities (`character`)\cr code block.
+#'
+#' @return Character vector of the complete Stan code.
+#'
+#' @keywords internal
 as_stan_file <- function(
     functions = "",
     data = "",
@@ -258,24 +292,31 @@ as_stan_file <- function(
     return(paste0(block_strings, collapse = ""))
 }
 
+# as_stan_fragments ----
 
-
-
-# Function only works if code is in format
-# ```
-# data {
-#     <code>
-# }
-# model {
-#     <code>
-# }
-# ```
-# That is to say we do not support code in inline format i.e.
-# ```
-# data { <code> }
-# model { <code> }
-# ```
-#' @import stringr
+#' Conversion of Character Vector into Stan Code Block List
+#'
+#' @param x (`character`)\cr the single Stan code vector.
+#'
+#' @return A list with the Stan code blocks.
+#'
+#' @details
+#' Function only works if code is in format
+#' ```
+#' data {
+#'     <code>
+#' }
+#' model {
+#'     <code>
+#' }
+#' ```
+#' That is to say we do not support code in inline format i.e.
+#' ```
+#' data { <code> }
+#' model { <code> }
+#' ```
+#'
+#' @keywords internal
 as_stan_fragments <- function(x) {
     code <- unlist(stringr::str_split(x, "\n"))
     results <- list()
@@ -294,7 +335,7 @@ as_stan_fragments <- function(x) {
         }
     }
 
-    # Remove trailing "}"
+    # Remove trailing "}".
     for (block in names(results)) {
         block_length <- length(results[[block]])
         entry <- block_length
@@ -308,12 +349,11 @@ as_stan_fragments <- function(x) {
         results[[block]] <- results[[block]][-seq(entry, block_length)]
     }
 
-    # Add missings
+    # Add missings.
     for (block in names(STAN_BLOCKS)) {
         if(is.null(results[[block]])) {
             results[[block]] <- ""
         }
     }
-    return(results)
+    results
 }
-

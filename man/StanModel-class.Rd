@@ -5,12 +5,9 @@
 \alias{StanModel-class}
 \alias{.StanModel}
 \alias{StanModel}
-\alias{as.list,StanModel-method}
 \title{\code{StanModel}}
 \usage{
 StanModel(stan, parameters, ...)
-
-\S4method{as.list}{StanModel}(x)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
@@ -18,8 +15,6 @@ StanModel(stan, parameters, ...)
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
-
-\item{x}{(\code{StanModel})\cr to be coerced to a list.}
 }
 \description{
 \code{StanModel}

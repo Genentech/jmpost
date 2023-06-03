@@ -8,6 +8,8 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 
 #' `Parameter`
 #'
+#' Stores the name, the prior distribution and the size of a parameter.
+#'
 #' @slot name (`string`)\cr of the parameter.
 #' @slot prior (`Prior`)\cr for the parameter.
 #' @slot size (`numeric` or `string`)\cr dimension of the parameter.
@@ -56,18 +58,21 @@ setValidity(
     }
 )
 
+# as.character-Parameter ----
 
-
-#' @export
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "Parameter",
     definition = function(x) as(x, "character")
 )
 
+# coerce-Parameter,character ----
 
-
-#' @export
+#' @rdname as.character
+#'
+#' @name coerce-Parameter-character-method
+#' @aliases coerce,Parameter,character-method
 setAs(
     from = "Parameter",
     to = "character",
@@ -79,29 +84,29 @@ setAs(
     }
 )
 
+# names-Parameter ----
 
-
-#' @export
+#' @rdname names
 setMethod(
     f = "names",
     signature = "Parameter",
     definition = function(x) x@name
 )
 
+# initialValues-Parameter ----
 
-
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "Parameter",
     definition = function(object) initialValues(object@prior)
 )
 
+# size-Parameter ----
 
-#' @export
+#' @rdname size
 setMethod(
     f = "size",
     signature = "Parameter",
     definition = function(object) object@size
 )
-

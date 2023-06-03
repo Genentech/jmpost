@@ -33,13 +33,9 @@ StanModel <- function(stan, parameters, ...) {
     )
 }
 
-# StanModel-as.list ----
+# as.list-StanModel ----
 
-#' @rdname StanModel-class
-#'
-#' @param x (`StanModel`)\cr to be coerced to a list.
-#'
-#' @export
+#' @rdname as.list
 setMethod(
     f = "as.list",
     signature = c("StanModel"),
@@ -48,7 +44,7 @@ setMethod(
     }
 )
 
-# StanModel-getParameters ----
+# getParameters-StanModel ----
 
 #' @rdname getParameters
 setMethod(

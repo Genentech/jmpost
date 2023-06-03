@@ -1,10 +1,11 @@
-#' `get_missing_rownumbers`
+#' Row Numbers of Data with Missing Variables
 #'
-#' Returns which row numbers contain at least 1 missing observation any variables
+#' @param df (`data.frame`)\cr input data.
+#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness, if `NULL`
+#'   all variables are considered.
 #'
-#' @param df A data.frame
-#' @param formula A formula specifying which variables to inspect for missingness, if null
-#' all variables are considered
+#' @returns Numeric vector specifying which rows contain at least 1 missing observation
+#'   in any of the inspected variables.
 #'
 #' @keywords internal
 get_missing_rownumbers <- function(df, formula = NULL) {
@@ -12,23 +13,22 @@ get_missing_rownumbers <- function(df, formula = NULL) {
         formula <- ~ .
     }
     mdf <- stats::model.frame(formula, data = df, na.action = stats::na.pass)
-    missing_rows <- which(!stats::complete.cases(mdf))
-    return(missing_rows)
+    which(!stats::complete.cases(mdf))
 }
 
-
-#' `remove_missing_rows`
+#' Remove Rows with Missing Variables
 #'
-#' Removes any rows from a dataset that contain missing values. Allows users to specify which variables
-#' to inspect for missing values based on either a formula or a character vector of variable names.
+#' Removes any rows from a data set that contain missing values in the inspected
+#' variables. Allows users to specify which variables to inspect for missing values
+#' based on either a formula or a character vector of variable names.
 #'
-#' @param data A data.frame
-#' @param formula A formula specifying which variables to inspect for missingness
-#' @param extra_vars A character vector specifying which variables to inspect for missingness
+#' @param data (`data.frame`)\cr input data.
+#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness.
+#' @param extra_vars (`character`)\cr additional variables to inspect for missingness.
 #'
-#' @returns `data` after removing observations that contain missing values in the required variables
-#' Note that additional variables not listed in `formula` or `extra_vars` are not dropped and may
-#' still contain missing values
+#' @returns The `data` after removing observations that contain missing values in the required variables.
+#'   Note that additional variables not listed in `formula` or `extra_vars` are not dropped and may
+#'   still contain missing values.
 #'
 #' @keywords internal
 remove_missing_rows <- function(data, formula, extra_vars) {
@@ -45,25 +45,18 @@ remove_missing_rows <- function(data, formula, extra_vars) {
         "Note that %d observations were removed as one of more required variables contained missing values",
         length(missing_rows)
     ))
-    return(data[-missing_rows, ])
+    data[-missing_rows, ]
 }
 
-
-
-
-
-#' Replicate single values in a list based on specified sizes
+#' Replicate Single Values in a List
 #'
-#' This function takes a list of initial values and a corresponding list of sizes
-#' and replicates any single values in the initial values list according to the
-#' corresponding values in the sizes list. The resulting list has the same names
-#' as the original lists.
+#' @param initial_values (`list`)\cr initial values with names.
+#' @param sizes (`list`)\cr each size corresponds to an element in `initial_values`,
+#'   matched by the names.
 #'
-#' @param initial_values A named list of initial values.
-#' @param sizes A named list of sizes, where each size corresponds to an element in initial_values.
-#'
-#' @returns A named list of values, with any single values in the initial_values list
-#' replicated according to the corresponding values in the sizes list.
+#' @returns A named list of values, with any single values in the `initial_values` list
+#' replicated according to the corresponding values in the `sizes` list.
+#' The resulting list has the same names as the original lists.
 #'
 #' @keywords internal
 expand_initial_values <- function(initial_values, sizes){
@@ -81,14 +74,14 @@ expand_initial_values <- function(initial_values, sizes){
         msg = "`initial_values` and `sizes` must have identical names"
     )
 
-    # Check for single values in initial_values and replicate them according to sizes
+    # Check for single values in initial_values and replicate them according to sizes.
     for (name in names(initial_values)) {
         if (length(initial_values[[name]]) == 1) {
             initial_values[[name]] <- rep(initial_values[[name]], sizes[[name]])
         }
     }
 
-    # Check that each element of initial_values has the same length as specified in sizes
+    # Check that each element of initial_values has the same length as specified in sizes.
     for (name in names(initial_values)) {
         assert_that(
             length(initial_values[[name]]) == sizes[[name]],
@@ -96,23 +89,19 @@ expand_initial_values <- function(initial_values, sizes){
         )
     }
 
-    return(initial_values)
+    initial_values
 }
 
-
-
-#' replace_with_lookup
+#' Replace Character Size by Looked Up Numbers
 #'
-#' This function takes a list of sizes and a list of data and returns a modified list
-#' of sizes where each character element is replaced by the corresponding numeric value
-#' from the data list. Each element of size must be a length one numeric after the lookup
+#' @param sizes (`list`)\cr may include character elements that correspond to
+#'   names in the data list.
+#' @param data (`list`)\cr data containing numeric values.
 #'
-#' @param sizes A list of sizes, which may include character elements that correspond to
-#' names in the data list.
-#' @param data A list of data containing numeric values.
+#' @returns A list of sizes with character elements in `sizes`
+#'   replaced by their corresponding numeric values in `data`.
 #'
-#' @returns A list of sizes with character elements replaced by their corresponding
-#' numeric values.
+#' @note Each element in the final list of sizes must be a single number.
 #'
 #' @keywords internal
 replace_with_lookup <- function(sizes, data) {
@@ -125,7 +114,7 @@ replace_with_lookup <- function(sizes, data) {
         if (is.character(val)) {
             assert_that(
                 length(val) == 1,
-                msg = "character elements of `sizes` must be length 1"
+                msg = "character elements of `sizes` must be strings"
             )
             assert_that(
                 val %in% names(data),
@@ -135,7 +124,7 @@ replace_with_lookup <- function(sizes, data) {
             assert_that(
                 length(new_val) == 1,
                 is.numeric(new_val),
-                msg = "Selected values from data must be length 1 numerics"
+                msg = "Selected values from data must be single numbers"
             )
             sizes[[idx]] <- new_val
         }
@@ -143,10 +132,10 @@ replace_with_lookup <- function(sizes, data) {
         assert_that(
             is.numeric(sizes[[idx]]),
             length(sizes[[idx]]) == 1,
-            msg = "All elements of `sizes` must be length 1 numerics after lookup"
+            msg = "All elements of `sizes` must be a single number after lookup"
         )
     }
-    return(sizes)
+    sizes
 }
 
 #' Obtain Median and Credible Intervals from MCMC samples

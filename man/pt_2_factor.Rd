@@ -7,15 +7,15 @@
 pt_2_factor(pt)
 }
 \arguments{
-\item{pt}{a \code{character} or \code{factor} vector}
+\item{pt}{(\code{character} or \code{factor})\cr subject identifiers}
 }
 \value{
-a \code{factor} vector with the levels in alphabetical order
+A \code{factor} with the levels in alphabetical order.
 }
 \description{
-Converts subject identifiers to factors
-If pt is already a factor it will re-level it to ensure the levels are in alphabetical order
+Converts subject identifiers to factors.
+If \code{pt} is already a factor it will re-level it to ensure the levels are in alphabetical order.
 This is to ensure that \code{\link{DataLongitudinal}} and \code{\link{DataSurvival}} use identical index numbers
-for the subjects to ensure data alignment in the Joint Model
+for the subjects to ensure data alignment in the joint model.
 }
 \keyword{internal}

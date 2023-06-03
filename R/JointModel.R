@@ -61,11 +61,9 @@ JointModel <- function(longitudinal = NULL,
     )
 }
 
+# as.character-JointModel ----
 
-
-#' As character
-#' @param x A `JointModel` object
-#' @export
+#' @rdname as.character
 setMethod(
     f = "as.character",
     signature = "JointModel",
@@ -74,8 +72,9 @@ setMethod(
     }
 )
 
+# write_stan-JointModel ----
 
-#' @export
+#' @rdname write_stan
 setMethod(
     f = "write_stan",
     signature = "JointModel",
@@ -86,7 +85,9 @@ setMethod(
     }
 )
 
+# compileStanModel-JointModel ----
 
+#' @rdname compileStanModel
 setMethod(
     f = "compileStanModel",
     signature = "JointModel",
@@ -96,6 +97,9 @@ setMethod(
     }
 )
 
+# sampleStanModel-JointModel ----
+
+#' @rdname sampleStanModel
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
@@ -131,8 +135,9 @@ setMethod(
     }
 )
 
+# initialValues-JointModel ----
 
-#' @export
+#' @rdname initialValues
 setMethod(
     f = "initialValues",
     signature = "JointModel",
@@ -140,29 +145,3 @@ setMethod(
         initialValues(object@parameters)
     }
 )
-
-
-add_missing_stan_blocks <- function(x) {
-    # STAN_BLOCKS is defined as a global variable in stan_module.R
-    # TODO - Make it an argument to the function
-    for (block in names(STAN_BLOCKS)) {
-        if (is.null(x[[block]])) {
-            x[[block]] <- ""
-        }
-    }
-    return(x)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

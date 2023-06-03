@@ -14,7 +14,6 @@ NULL
     contains = "Link"
 )
 
-
 # LinkRandomSlope-constructors ----
 
 #' @rdname LinkRandomSlope-class

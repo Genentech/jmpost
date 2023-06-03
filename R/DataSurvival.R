@@ -2,7 +2,24 @@
 #' @include generics.R
 NULL
 
-#' @rdname DataSurvival
+# DataSurvival-class ----
+
+#' `DataSurvival`
+#'
+#' The [`DataSurvival`] class handles the processing of the survival data for fitting a Joint Model.
+#'
+#' @slot data (`data.frame`)\cr the observed time-to-event data. Note that
+#'   observations that contain missing values in the required variables are removed
+#'   in the slot.
+#' @slot formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
+#'   See [`survival::Surv()`] for more details, though note that this package only supports right censoring.
+#' @slot subject (`string`)\cr the name of the subject identifier variable.
+#' @slot arm (`string`)\cr the name of the treatment arm variable.
+#' @slot study (`string`)\cr the name of the study variable.
+#'
+#' @seealso [`DataJoint`], [`DataLongitudinal`]
+#'
+#' @exportClass DataSurvival
 .DataSurvival <- setClass(
     Class = "DataSurvival",
     representation = list(
@@ -14,25 +31,16 @@ NULL
     )
 )
 
+# DataSurvival-constructors ----
 
-#' `DataSurvival`
+#' @rdname DataSurvival-class
 #'
-#' The [`DataSurvival`] class handles the processing of the survival data for fitting a Joint Model.
-#'
-#' @param data A `data.frame` object containing the observed survival/time to event data
-#' @param formula A two sided `formula` of the form `Surv(time, event) ~ cov1 + cov2 + ...`. See [`survival::Surv()`] for more details though note that this package only supports right censoring
-#' @param subject A length 1 `character` vector specifying the name of the subject identifier variable
-#' @param arm A length 1 `character` vector specifying the name of the treatment arm variable
-#' @param study A length 1 `character` vector specifying the name of the study variable
-#'
-#' @details
-#'
-#' ## Coercion
-#' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
-#' for fitting a [`JointModel`].
-#' See the vignette (TODO) for more details
-#'
-#' @seealso [`DataJoint`], [`DataLongitudinal`]
+#' @param data (`data.frame`)\cr the observed time-to-event data.
+#' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
+#'   See [`survival::Surv()`] for more details, though note that this package only supports right censoring.
+#' @param subject (`string`)\cr the name of the subject identifier variable.
+#' @param arm (`string`)\cr the name of the treatment arm variable.
+#' @param study (`string`)\cr the name of the study variable.
 #'
 #' @export
 DataSurvival <- function(data, formula, subject, arm , study) {
@@ -44,6 +52,8 @@ DataSurvival <- function(data, formula, subject, arm , study) {
         study = study
     )
 }
+
+# Surv ----
 
 #' Survival Formula Specification
 #'
@@ -58,6 +68,7 @@ DataSurvival <- function(data, formula, subject, arm , study) {
 #' @export Surv
 NULL
 
+# DataSurvival-validity ----
 
 setValidity(
     "DataSurvival",
@@ -95,13 +106,13 @@ setValidity(
     }
 )
 
+# extractVariableNames-DataSurvival ----
 
 #' @rdname extractVariableNames
-#' @export
 setMethod(
     "extractVariableNames",
     signature = "DataSurvival",
-    definition = function(object, ...) {
+    definition = function(object) {
         list(
             arm = object@arm,
             study = object@study,
@@ -113,8 +124,9 @@ setMethod(
     }
 )
 
+# as.data.frame-DataSurvival ----
 
-#' @export
+#' @rdname as.data.frame
 setMethod(
     "as.data.frame",
     signature = "DataSurvival",
@@ -123,7 +135,12 @@ setMethod(
     }
 )
 
-#' @export
+# coerce-DataSurvival,data.frame ----
+
+#' @rdname as.data.frame
+#'
+#' @name coerce-DataSurvival-data.frame-method
+#' @aliases coerce,DataSurvival,data.frame-method
 setAs(
     from = "DataSurvival",
     to = "data.frame",
@@ -138,8 +155,9 @@ setAs(
     }
 )
 
+# as.list-DataSurvival ----
 
-#' @export
+#' @rdname as.list
 setMethod(
     "as.list",
     signature = "DataSurvival",
@@ -180,17 +198,19 @@ setMethod(
     }
 )
 
+# get_arm_study_data ----
 
 #' `get_arm_study_data`
 #'
-#' @param pt a factor vector of subject identifiers
-#' @param arm a factor vector of treatment arms. Must be same length as `pt`
-#' @param study a factor vector of study identifiers. Must be same length as `pt`
+#' @param pt (`factor`)\cr subject identifiers.
+#' @param arm (`factor`)\cr treatment arms of the same length as `pt`.
+#' @param study (`factor`)\cr study identifiers of the same length as `pt`.
 #'
 #' The function is purely a sub-component of `as.list(DataSurvival)`. Its
-#' purpose is to extract key logic into its own function to enable unit tests
+#' purpose is to extract key logic into its own function to enable unit tests.
 #'
-#' @returns TODO
+#' @returns A list with `index_per_arm`, `n_index_per_arm`, `n_arms`,
+#'   `arm_to_study_index`, and `n_studies`.
 #'
 #' @keywords internal
 get_arm_study_data <- function(pt, arm, study) {
@@ -200,8 +220,6 @@ get_arm_study_data <- function(pt, arm, study) {
         length(arm) == length(study),
         msg = "`pt`, `arm` and `study` must all have the same length"
     )
-
-    result <- list()
 
     u_arm_study <- unique(data.frame(study = study, arm = arm))
 
@@ -224,25 +242,28 @@ get_arm_study_data <- function(pt, arm, study) {
         n_per_arm[[i]] <- sum(arm == arm_selected)
     }
 
-    result[["index_per_arm"]] <- index_per_arm
-    result[["n_index_per_arm"]] <- n_per_arm
-    result[["n_arms"]] <- nrow(u_arm_study)
-    result[["arm_to_study_index"]] <- as.numeric(u_arm_study[["study"]])
-    result[["n_studies"]] <- length(unique(u_arm_study[["study"]]))
-    return(result)
+    list(
+        index_per_arm = index_per_arm,
+        n_index_per_arm = n_per_arm,
+        n_arms = nrow(u_arm_study),
+        arm_to_study_index = as.numeric(u_arm_study[["study"]]),
+        n_studies = length(unique(u_arm_study[["study"]]))
+    )
 }
 
+# pt_2_factor ----
 
 #' `pt_2_factor`
 #'
-#' Converts subject identifiers to factors
-#' If pt is already a factor it will re-level it to ensure the levels are in alphabetical order
+#' Converts subject identifiers to factors.
+#' If `pt` is already a factor it will re-level it to ensure the levels are in alphabetical order.
 #' This is to ensure that [`DataLongitudinal`] and [`DataSurvival`] use identical index numbers
-#' for the subjects to ensure data alignment in the Joint Model
+#' for the subjects to ensure data alignment in the joint model.
 #'
-#' @param pt a `character` or `factor` vector
+#' @param pt (`character` or `factor`)\cr subject identifiers
 #'
-#' @returns a `factor` vector with the levels in alphabetical order
+#' @returns A `factor` with the levels in alphabetical order.
+#'
 #' @keywords internal
 pt_2_factor <- function(pt) {
     pt_char <- as.character(pt)
@@ -250,6 +271,3 @@ pt_2_factor <- function(pt) {
     pt_uniq_ord <- pt_uniq[order(pt_uniq)]
     factor(pt_char, levels = pt_uniq_ord)
 }
-
-
-
