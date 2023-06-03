@@ -14,6 +14,12 @@
 \item{x}{(\code{LongitudinalSamples})\cr the samples object to subset.}
 
 \item{i}{(\code{vector})\cr the index vector.}
+
+\item{j}{not used.}
+
+\item{...}{not used.}
+
+\item{drop}{not used.}
 }
 \value{
 The subsetted \code{LongitudinalSamples} object.

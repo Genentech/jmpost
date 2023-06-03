@@ -9,9 +9,9 @@ prior_lognormal(mu, sigma, init = exp(mu + (sigma^2)/2))
 \arguments{
 \item{mu}{(\code{number})\cr mean of the logarithm.}
 
-\item{init}{(\code{number})\cr initial value.}
+\item{sigma}{(\code{number})\cr standard deviation of the logarithm.}
 
-\item{beta}{(\code{number})\cr standard deviation of the logarithm.}
+\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Log-Normal Prior Distribution

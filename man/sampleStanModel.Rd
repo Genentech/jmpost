@@ -15,6 +15,8 @@ sampleStanModel(object, ..., exe_file)
 \item{...}{additional arguments.}
 
 \item{exe_file}{(\code{string})\cr output file.}
+
+\item{data}{(\code{DataJoint} or \code{list})\cr input data.}
 }
 \description{
 Sample from a Stan Module.

@@ -12,6 +12,7 @@ NULL
 #' @slot init (`list`)\cr initial values.
 #' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
 #'
+#' @aliases JointModelSamples
 #' @export
 .JointModelSamples <- setClass(
     "JointModelSamples",

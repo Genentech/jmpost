@@ -29,7 +29,6 @@ setGeneric(
 #' @aliases as.character
 #'
 #' @param x what to convert.
-#' @param ... not used.
 #'
 #' @exportMethod as.character
 NULL

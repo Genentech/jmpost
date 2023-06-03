@@ -100,6 +100,8 @@ setMethod(
 # sampleStanModel-JointModel ----
 
 #' @rdname sampleStanModel
+#'
+#' @param data (`DataJoint` or `list`)\cr input data.
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",

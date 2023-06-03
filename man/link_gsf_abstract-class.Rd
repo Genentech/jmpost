@@ -12,6 +12,8 @@ link_gsf_abstract(stan, parameter, parameter_name, contribution_fname)
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
 
+\item{parameter}{(\code{ParameterList})\cr the (single) parameter specification.}
+
 \item{parameter_name}{(\code{character})\cr the name of the parameter.}
 
 \item{contribution_fname}{(\code{character})\cr the function name of the contribution.}

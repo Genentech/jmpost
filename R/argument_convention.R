@@ -7,6 +7,7 @@
 #'
 #' @param stan (`StanModule`)\cr code containing the Stan code specification.
 #' @param parameters (`ParameterList`)\cr the parameter specification.
+#' @param parameter (`ParameterList`)\cr the (single) parameter specification.
 #' @param ... additional arguments for [StanModel()].
 #'
 #' @name stanmodel_arguments

@@ -28,8 +28,6 @@
 }
 \arguments{
 \item{x}{what to convert.}
-
-\item{...}{not used.}
 }
 \description{
 These methods convert objects of different classes to \code{character}

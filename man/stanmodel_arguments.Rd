@@ -8,6 +8,8 @@
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
 
+\item{parameter}{(\code{ParameterList})\cr the (single) parameter specification.}
+
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
 \description{

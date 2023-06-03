@@ -4,6 +4,7 @@
 \name{JointModelSamples-class}
 \alias{JointModelSamples-class}
 \alias{.JointModelSamples}
+\alias{JointModelSamples}
 \title{\code{JointModelSamples}}
 \description{
 Contains samples from a \code{\link{JointModel}}.

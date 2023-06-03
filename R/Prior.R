@@ -104,7 +104,7 @@ prior_gamma <- function(alpha, beta, init = alpha/beta) {
 #' Log-Normal Prior Distribution
 #'
 #' @param mu (`number`)\cr mean of the logarithm.
-#' @param beta (`number`)\cr standard deviation of the logarithm.
+#' @param sigma (`number`)\cr standard deviation of the logarithm.
 #' @inheritParams prior_arguments
 #'
 #' @export

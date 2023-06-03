@@ -18,6 +18,9 @@
 #'
 #' @param x (`LongitudinalSamples`)\cr the samples object to subset.
 #' @param i (`vector`)\cr the index vector.
+#' @param j not used.
+#' @param drop not used.
+#' @param ... not used.
 #'
 #' @returns The subsetted `LongitudinalSamples` object.
 #' @export
@@ -31,10 +34,9 @@ setMethod(
     }
 )
 
-# LongitudinalSamples-autoplot ----
+# autoplot-LongitudinalSamples ----
 
 #' @rdname autoplot
-#' @export
 setMethod(
     f = "autoplot",
     signature = c(object = "LongitudinalSamples"),
