@@ -47,30 +47,55 @@ test_that("remove_missing_rows works as expected", {
 
 # expand_initial_values ----
 
-test_that("expand_initial_values smoke tests", {
-    vals <- list("a" = 1, "b" = 2, "c" = c(1, 2))
-    siz <- list("a" = 5, "b" = 1, "c" = 2)
+test_that("expand_initial_values works as expected", {
+    vals <- list("a" = 1, "b" = 2, "c" = c(1, 2), "d" = 10)
+    siz <- list(
+        "a" = structure(5, array = TRUE),
+        "b" = structure(1, array = TRUE),
+        "c" = structure(2, array = TRUE),
+        "d" = structure(1, array = FALSE)
+    )
     actual <- expand_initial_values(vals, siz)
-    expected <- list("a" = c(1, 1, 1, 1, 1), "b" = 2, "c" = c(1, 2))
+    expected <- list(
+        "a" = as.array(c(1, 1, 1, 1, 1)),
+        "b" = as.array(2),
+        "c" = as.array(c(1, 2)),
+        "d" = 10
+    )
     expect_equal(actual, expected)
 })
 
 # replace_with_lookup ----
 
-test_that("replace_with_lookup smoke tests", {
-
-    vals <- list(1, "b", "a", 4, 5)
-    lku <- list("a" = 3, "b" = 2, "c" = 4)
+test_that("replace_with_lookup works and sets array attributes as expected", {
+    vals <- list(1, "b", "a", "d", 5)
+    lku <- list("a" = 3, "b" = 2, "c" = 4, "d" = 1)
     actual <- replace_with_lookup(vals, lku)
-    expected <- list(1, 2, 3, 4, 5)
+    expected <- list(
+        structure(1, array = FALSE),
+        structure(2, array = TRUE),
+        structure(3, array = TRUE),
+        structure(1, array = TRUE),
+        structure(5, array = TRUE)
+    )
     expect_equal(actual, expected)
+})
 
-
+test_that("replace_with_lookup asserts sizes as numbers as expected", {
     vals <- list(1, "b", "a", 4, c(5, 6))
     lku <- list("a" = 3, "b" = 2, "c" = 4)
     expect_error(
         replace_with_lookup(vals, lku),
-        regexp = "`sizes` must be a single number"
+        regexp = "Existing values in sizes must be single numbers"
+    )
+})
+
+test_that("replace_with_lookup asserts looked up sizes as numbers as expected", {
+    vals <- list(1, "b", "a", 4, 5)
+    lku <- list("a" = 3, "b" = c(2, 3), "c" = 1)
+    expect_error(
+        replace_with_lookup(vals, lku),
+        regexp = "Selected values from data must be single numbers"
     )
 })
 

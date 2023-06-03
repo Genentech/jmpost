@@ -52,11 +52,15 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 #'
 #' @param initial_values (`list`)\cr initial values with names.
 #' @param sizes (`list`)\cr each size corresponds to an element in `initial_values`,
-#'   matched by the names.
+#'   matched by the names. An attribute `array` must be attached to each element,
+#'   see [replace_with_lookup()].
 #'
 #' @returns A named list of values, with any single values in the `initial_values` list
-#' replicated according to the corresponding values in the `sizes` list.
-#' The resulting list has the same names as the original lists.
+#'   replicated according to the corresponding values in the `sizes` list.
+#'   Even when the size is 1, the value is passed as an `array` if the corresponding
+#'   attribute is `TRUE` in `sizes`.
+#'
+#' @note The resulting list has the same names as the original lists.
 #'
 #' @keywords internal
 expand_initial_values <- function(initial_values, sizes) {
@@ -74,10 +78,19 @@ expand_initial_values <- function(initial_values, sizes) {
         msg = "`initial_values` and `sizes` must have identical names"
     )
 
-    # Check for single values in initial_values and replicate them according to sizes.
     for (name in names(initial_values)) {
+        # Check for single values and replicate them according to sizes.
         if (length(initial_values[[name]]) == 1) {
             initial_values[[name]] <- rep(initial_values[[name]], sizes[[name]])
+        }
+        # Check for array handling.
+        needs_array <- attr(sizes[[name]], "array")
+        assert_that(
+            is.flag(needs_array),
+            msg = "each sizes element must have array flag attribute"
+        )
+        if (needs_array) {
+            initial_values[[name]] <- as.array(initial_values[[name]])
         }
     }
 
@@ -101,6 +114,12 @@ expand_initial_values <- function(initial_values, sizes) {
 #' @returns A list of sizes with character elements in `sizes`
 #'   replaced by their corresponding numeric values in `data`.
 #'
+#' @details An attribute `array` for each returned list element indicates
+#'   whether the parameter needs to be handled
+#'   as an array. This is the case when the size is larger than 1, or when
+#'   the size was looked up in the `data`, because in that case it is flexible
+#'   and hence is handled as an array in the Stan code.
+#'
 #' @note Each element in the final list of sizes must be a single number.
 #'
 #' @keywords internal
@@ -122,18 +141,17 @@ replace_with_lookup <- function(sizes, data) {
             )
             new_val <- data[[val]]
             assert_that(
-                length(new_val) == 1,
-                is.numeric(new_val),
+                is.number(new_val),
                 msg = "Selected values from data must be single numbers"
             )
-            sizes[[idx]] <- new_val
+            sizes[[idx]] <- structure(new_val, array = TRUE)
+        } else {
+            assert_that(
+                is.number(val),
+                msg = "Existing values in sizes must be single numbers"
+            )
+            sizes[[idx]] <- structure(val, array = val > 1)
         }
-
-        assert_that(
-            is.numeric(sizes[[idx]]),
-            length(sizes[[idx]]) == 1,
-            msg = "All elements of `sizes` must be a single number after lookup"
-        )
     }
     sizes
 }
