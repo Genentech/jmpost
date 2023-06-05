@@ -75,6 +75,7 @@ LinkGSF <- function(
 #' @slot contribution_fname (`character`)\cr the function name of the contribution.
 #'
 #' @exportClass link_gsf_abstract
+#' @keywords internal
 .link_gsf_abstract <- setClass(
     Class = "link_gsf_abstract",
     slots = list(

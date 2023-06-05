@@ -9,3 +9,4 @@ An object of class \code{Surv}.
 \description{
 See \code{\link[survival:Surv]{survival::Surv()}} for details.
 }
+\keyword{internal}

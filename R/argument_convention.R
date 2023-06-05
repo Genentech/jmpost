@@ -11,6 +11,7 @@
 #' @param ... additional arguments for [StanModel()].
 #'
 #' @name stanmodel_arguments
+#' @keywords internal
 NULL
 
 # prior_arguments ----
@@ -23,4 +24,5 @@ NULL
 #' @param init (`number`)\cr initial value.
 #'
 #' @name prior_arguments
+#' @keywords internal
 NULL

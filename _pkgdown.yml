@@ -1,0 +1,80 @@
+---
+url: https://genentech.github.io/jmpost
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles, tutorials, news, reports]
+    right: [search, github]
+  components:
+    reports:
+      text: Reports
+      menu:
+      - text: Coverage report
+        href: coverage-report/
+      - text: Unit test report
+        href: unit-test-report/
+    github:
+      icon: fa-github
+      href: https://github.com/genentech/jmpost
+
+reference:
+  - title: Package
+    contents:
+      - jmpost-package
+  - title: Data Specification
+    contents:
+      - starts_with("Data")
+  - title: Data Simulation
+    contents:
+      - starts_with("sim")
+  - title: Prior Distributions
+    contents:
+      - Prior
+      - starts_with("prior")
+      - -prior_arguments
+  - title: Longitudinal Model Specification
+    contents:
+      - starts_with("Longitudinal")
+  - title: Survival Model Specification
+    contents:
+      - starts_with("Survival")
+  - title: Link Specification
+    contents:
+      - starts_with("Link")
+      - link_gsf_dsld
+      - link_gsf_ttg
+  - title: Joint Model Specification
+    contents:
+      - addLink
+      - JointModel
+  - title: Joint Model Fitting
+    contents:
+      - compileStanModel
+      - sampleStanModel
+  - title: Postprocessing
+    contents:
+      - JointModelSamples
+      - LongitudinalSamples
+      - longitudinal
+      - samples_median_ci
+      - autoplot
+  - title: Stan Code
+    contents:
+      - merge
+      - Parameter
+      - ParameterList
+      - read_stan
+      - StanModel
+      - StanModule
+      - write_stan
+  - title: Convenience Functions
+    contents:
+      - as.character
+      - as.data.frame
+      - as.list
+      - merge
+      - names
+      - show

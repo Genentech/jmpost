@@ -10,3 +10,4 @@
 The documentation lists all the conventional arguments for \code{\link{Prior}}
 constructors.
 }
+\keyword{internal}
