@@ -66,6 +66,7 @@ DataSurvival <- function(data, formula, subject, arm, study) {
 #'
 #' @importFrom survival Surv
 #' @export Surv
+#' @keywords internal
 NULL
 
 # DataSurvival-validity ----

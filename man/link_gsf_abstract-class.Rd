@@ -36,3 +36,4 @@ Class to specify the contents for \code{\link{LinkGSF}}.
 \note{
 Only the \code{functions} part of \code{stan} will be used.
 }
+\keyword{internal}

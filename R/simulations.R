@@ -1,40 +1,3 @@
-# as_vcov ----
-
-#' Construct a Variance-Covariance Matrix from Standard Deviations and Correlations
-#'
-#' This function creates a variance-covariance matrix based on the input standard deviations
-#' and correlations. Note that the values may be altered using [Matrix::nearPD()]
-#' in order to ensure that it is a valid positive semi-definite matrix.
-#'
-#' @param sd A numeric vector containing the standard deviations of the variables.
-#' @param cor A numeric vector containing the pairwise correlations between the variables.
-#' The vector should be in the order of the upper triangular part of the matrix, excluding
-#' the diagonal elements. e.g. for a 3x3 matrix c(0.2, 0.3, 0.4) would be the values for
-#' x_12, x_13 and x_23 of the correlation matrix respectively
-#'
-#'
-#' @returns A symmetric matrix representing the variance-covariance matrix calculated from
-#' the input standard deviations and correlations. The matrix is guaranteed to be positive
-#' semi-definite.
-#'
-#' @examples
-#' sd <- c(1, 2, 3)
-#' cor <- c(0.5, 0.6, 0.7)
-#' as_vcov(sd, cor)
-#'
-#' @export
-as_vcov <- function(sd, cor) {
-    x <- diag(rep(1, length(sd)))
-    x[upper.tri(x)] <- cor
-    x <- t(x)
-    x[upper.tri(x)] <- cor
-    res <- diag(sd) %*% x %*% diag(sd)
-    res <- as.matrix(Matrix::nearPD(res)$mat)
-    assert_that(isSymmetric(res))
-    dimnames(res) <- NULL
-    return(res)
-}
-
 # sim_lm_* ----
 
 ## sim_lm_gsf ----
@@ -49,6 +12,7 @@ as_vcov <- function(sd, cor) {
 #'
 #' @returns The function results.
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' gsf_sld(1:10, 20, 0.3, 0.6, 0.2)

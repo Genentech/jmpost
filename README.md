@@ -1,15 +1,138 @@
 
-`jmpost` is currently under development and not yet testable.
+<!-- markdownlint-disable-file -->
+<!-- README.md needs to be generated from README.Rmd. Please edit that file -->
+
+# jmpost
+
+<!-- badges: start -->
+
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Code
+Coverage](https://raw.githubusercontent.com/genentech/jmpost/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/genentech/jmpost/_xml_coverage_reports/data/main/coverage.xml)
+<!-- badges: end -->  
 
 The goal of the `jmpost` package is to fit joint models involving:
-1. a parametric time-to-event sub-model,
-2. a nonlinear (or linear) mixed-effect sub-model, describing individual time profiles (_i.e._ trajectories) for a continuous marker,
-3. a link function (_a.k.a._ association term).
-More specifically, the model implemented in this package utilizes a modeling framework described previously **[1-3]** to link overall survival to tumor size data in oncology clinical trials.
 
-**[1]** [Tardivon _et al._ Association between tumor size kinetics and survival in patients with urothelial carcinoma treated with atezolizumab: Implications for patient follow-up. _Clin Pharm Ther_, 2019](https://doi.org/10.1002/cpt.1450).  
-**[2]** [Kerioui _et al._ Bayesian inference using Hamiltonian Monte-Carlo algorithm for nonlinear joint modeling in the context of cancer immunotherapy. _Stat in Med_, 2020](https://doi.org/10.1002/sim.8756).  
-**[3]** [Kerioui _et al._ Modelling the association between biomarkers and clinical outcome: An introduction to nonlinear joint models. _Br J Clin Pharm_, 2022](https://doi.org/10.1111/bcp.15200).
+1.  a parametric time-to-event sub-model,
+2.  a nonlinear (or linear) mixed-effect sub-model, describing
+    individual time profiles (*i.e.* trajectories) for a continuous
+    marker,
+3.  a link function (*a.k.a.* association term).
 
-The models are implemented in [STAN](https://mc-stan.org/), and the package provides a flexible user interface.
-Please reach out to us via issues or email (see the `DESCRIPTION` file) if you have comments or questions, thank you!
+More specifically, the model implemented in this package utilizes a
+modeling framework described previously **\[1-3\]** to link overall
+survival to tumor size data in oncology clinical trials.
+
+**\[1\]** [Tardivon *et al.* Association between tumor size kinetics and
+survival in patients with urothelial carcinoma treated with
+atezolizumab: Implications for patient follow-up. *Clin Pharm Ther*,
+2019](https://doi.org/10.1002/cpt.1450).  
+**\[2\]** [Kerioui *et al.* Bayesian inference using Hamiltonian
+Monte-Carlo algorithm for nonlinear joint modeling in the context of
+cancer immunotherapy. *Stat in Med*,
+2020](https://doi.org/10.1002/sim.8756).  
+**\[3\]** [Kerioui *et al.* Modelling the association between biomarkers
+and clinical outcome: An introduction to nonlinear joint models. *Br J
+Clin Pharm*, 2022](https://doi.org/10.1111/bcp.15200).
+
+The models are implemented in [STAN](https://mc-stan.org/), and the
+package provides a flexible user interface. Please reach out to us via
+issues or email (see the `DESCRIPTION` file) if you have comments or
+questions or would like to get involved in the ongoing development,
+thank you!
+
+## Installation
+
+**GitHub**
+
+You can install the current development version from GitHub with:
+
+``` r
+if (!require("remotes")) {
+  install.packages("remotes")
+}
+remotes::install_github("genentech/jmpost")
+```
+
+Please note that this package requires
+[`cmdstanr`](https://mc-stan.org/cmdstanr/).
+
+**CRAN**
+
+This package has not been published to CRAN yet.
+
+## Getting Started
+
+See also the [model
+fitting](https://genentech.github.io/jmpost/main/articles/model_fitting.html)
+vignette for more details. Here we present a very basic example here.
+
+First we simulate a data set. In practice you want to follow a similar
+structure of the input data and use `DataJoint()` to bring it into the
+right format.
+
+``` r
+library(jmpost)
+set.seed(321)
+sim_data <- simulate_joint_data(
+    lm_fun = sim_lm_random_slope(),
+    os_fun = sim_os_exponential(1 / 300)
+)
+#> 1 patients did not die before max(times)
+os_data <- sim_data$os
+long_data <- sim_data$lm |>
+    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+    dplyr::arrange(time, pt)
+
+joint_data <- DataJoint(
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = long_data,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+```
+
+Then we specify the joint model, here we use a Generalized Stein-Fojo
+model for the longitudinal part, and a Weibull proportional hazards
+model for the survival part. The longitudinal model impacts the hazard
+via a term for the derivative and another term for the time-to-growth.
+
+``` r
+joint_model <- JointModel(
+    longitudinal = LongitudinalGSF(),
+    link = LinkGSF(),
+    survival = SurvivalWeibullPH()
+)
+```
+
+Finally we can sample the parameters via MCMC from the underlying Stan
+model. Note that in a real application you will choose more warm up and
+sampling iterations.
+
+``` r
+mcmc_results <- sampleStanModel(
+    joint_model,
+    data = joint_data,
+    iter_sampling = 100,
+    iter_warmup = 100,
+    chains = 1,
+    parallel_chains = 1,
+    exe_file = tempfile()
+)
+```
+
+## Citing `mmrm`
+
+To cite `mmrm` please see
+[here](https://genentech.github.io/jmpost/main/authors.html#citation).
