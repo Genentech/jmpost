@@ -42,12 +42,6 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome."><!-- mathjax -
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -70,14 +64,14 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LongitudinalGSF</span><span class="op">(</span></span>
 <span>  mu_bsld <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">55</span><span class="op">)</span>, <span class="fl">5</span>, init <span class="op">=</span> <span class="fl">55</span><span class="op">)</span>,</span>
-<span>  mu_ks <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, init <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  mu_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.36</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="op">-</span><span class="fl">0.36</span><span class="op">)</span>,</span>
+<span>  mu_ks <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">0.5</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  mu_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  mu_phi <span class="op">=</span> <span class="fu"><a href="prior_beta.html">prior_beta</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span>, init <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
-<span>  omega_bsld <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  omega_ks <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  omega_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  omega_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  sigma <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.6</span>, <span class="fl">0.8</span>, init <span class="op">=</span> <span class="op">-</span><span class="fl">1.6</span><span class="op">)</span></span>
+<span>  omega_bsld <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  omega_ks <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  omega_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  omega_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  sigma <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">0.8</span>, init <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
