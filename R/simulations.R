@@ -12,6 +12,7 @@
 #'
 #' @returns The function results.
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' gsf_sld(1:10, 20, 0.3, 0.6, 0.2)
