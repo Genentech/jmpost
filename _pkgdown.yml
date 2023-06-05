@@ -40,10 +40,13 @@ reference:
       - starts_with("Longitudinal")
   - title: Survival Model Specification
     contents:
-      - starts_with("Link")
+      - starts_with("Survival")
   - title: Link Specification
     contents:
-      - starts_with("Survival")
+      - starts_with("Link")
+      - link_gsf_abstract
+      - link_gsf_dsld
+      - link_gsf_ttg
   - title: Joint Model Specification
     contents:
       - addLink
@@ -65,6 +68,8 @@ reference:
       - Parameter
       - ParameterList
       - read_stan
+      - StanModel
+      - StanModule
       - write_stan
   - title: Convenience Functions
     contents:
@@ -76,3 +81,7 @@ reference:
       - names
       - show
       - Surv
+  - title: Standard Arguments
+    contents:
+      - prior_arguments
+      - stanmodel_arguments
