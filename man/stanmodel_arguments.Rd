@@ -16,3 +16,4 @@
 The documentation lists all the conventional arguments for wrappers around
 \code{\link[=StanModel]{StanModel()}}.
 }
+\keyword{internal}

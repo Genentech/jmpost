@@ -44,7 +44,6 @@ reference:
   - title: Link Specification
     contents:
       - starts_with("Link")
-      - link_gsf_abstract
       - link_gsf_dsld
       - link_gsf_ttg
   - title: Joint Model Specification
@@ -76,12 +75,6 @@ reference:
       - as.character
       - as.data.frame
       - as.list
-      - as_vcov
       - merge
       - names
       - show
-      - Surv
-  - title: Standard Arguments
-    contents:
-      - prior_arguments
-      - stanmodel_arguments
