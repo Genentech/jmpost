@@ -36,14 +36,14 @@ NULL
 #' @export
 LongitudinalGSF <- function(
     mu_bsld = prior_lognormal(log(55), 5, init = 55),
-    mu_ks = prior_lognormal(0, 0.5, init = 0.01),
-    mu_kg = prior_lognormal(-0.36, 1, init = 0.01),
+    mu_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
+    mu_kg = prior_lognormal(log(0.1), 1, init = 0.1),
     mu_phi = prior_beta(2, 8, init = 0.2),
-    omega_bsld = prior_lognormal(0, 1, init = 0.001),
-    omega_ks = prior_lognormal(0, 1, init = 0.001),
-    omega_kg = prior_lognormal(0, 1, init = 0.001),
-    omega_phi = prior_lognormal(0, 1, init = 0.001),
-    sigma = prior_lognormal(-1.6, 0.8, init = 0.1)
+    omega_bsld = prior_lognormal(log(0.1), 1, init = 0.1),
+    omega_ks = prior_lognormal(log(0.1), 1, init = 0.1),
+    omega_kg = prior_lognormal(log(0.1), 1, init = 0.1),
+    omega_phi = prior_lognormal(log(0.1), 1, init = 0.1),
+    sigma = prior_lognormal(log(0.1), 0.8, init = 0.1)
 ) {
     eta_prior <- prior_normal(0, 1)
     x <- LongitudinalModel(
