@@ -10,14 +10,19 @@ expand_initial_values(initial_values, sizes)
 \item{initial_values}{(\code{list})\cr initial values with names.}
 
 \item{sizes}{(\code{list})\cr each size corresponds to an element in \code{initial_values},
-matched by the names.}
+matched by the names. An attribute \code{array} must be attached to each element,
+see \code{\link[=replace_with_lookup]{replace_with_lookup()}}.}
 }
 \value{
 A named list of values, with any single values in the \code{initial_values} list
 replicated according to the corresponding values in the \code{sizes} list.
-The resulting list has the same names as the original lists.
+Even when the size is 1, the value is passed as an \code{array} if the corresponding
+attribute is \code{TRUE} in \code{sizes}.
 }
 \description{
 Replicate Single Values in a List
+}
+\note{
+The resulting list has the same names as the original lists.
 }
 \keyword{internal}

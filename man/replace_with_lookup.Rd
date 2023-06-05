@@ -19,6 +19,13 @@ replaced by their corresponding numeric values in \code{data}.
 \description{
 Replace Character Size by Looked Up Numbers
 }
+\details{
+An attribute \code{array} for each returned list element indicates
+whether the parameter needs to be handled
+as an array. This is the case when the size is larger than 1, or when
+the size was looked up in the \code{data}, because in that case it is flexible
+and hence is handled as an array in the Stan code.
+}
 \note{
 Each element in the final list of sizes must be a single number.
 }
