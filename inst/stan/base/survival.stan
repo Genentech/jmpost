@@ -74,7 +74,7 @@ data{
     matrix[Nind, p_os_cov_design] os_cov_design;
 
     int<lower=1> n_sm_time_grid;       // Number of time points in the grid.
-    vector[n_lm_time_grid] sm_time_grid; // Time points grid.
+    vector[n_sm_time_grid] sm_time_grid; // Time points grid.
 
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
@@ -169,10 +169,10 @@ generated quantities{
     // Source - base/survival.stan
     //
 
-    matrix[n_sm_time_grid, Nind] log_surv_fit_at_time_grid;
+    matrix[Nind, n_sm_time_grid] log_surv_fit_at_time_grid;
 
     for (i in 1:n_sm_time_grid) {
-        log_surv_fit_at_time_grid[i] = log_survival(rep_vector(sm_time_grid[i], Nind),
+        log_surv_fit_at_time_grid[, i] = log_survival(rep_vector(sm_time_grid[i], Nind),
         pars_os,
         pars_lm,
         nodes,

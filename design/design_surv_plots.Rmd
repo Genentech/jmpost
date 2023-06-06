@@ -79,7 +79,7 @@ Output from Stan:
 - Samples at observed time points (e.g. `log_surv_fit_at_obs_times`), this is a vector 
   in parallel to the existing `Times`. This can be in transformed parameters.
 - Samples at time point grid (e.g. `log_surv_fit_at_time_grid`), this can be a matrix with
-  `n_sm_time_grid` rows and `Nind` columns. This should happen in generated quantities
+  `Nind` rows and `n_sm_time_grid` columns. This should happen in generated quantities
   because it is not needed for the log likelihood calculations and would slow
   us down otherwise unnecessarily. For now we would need to put that separately
   into each survival model's Stan code. 
@@ -101,8 +101,8 @@ where the calculation is not yet centralized.
 Finally we can get the samples:
 
 ```{r}
-mcmc_results@results$summary("surv_fit_at_obs_times[1]")
-mcmc_results@results$summary("surv_fit_at_time_grid[1,1]")
+mcmc_results@results$summary("log_surv_fit_at_obs_times[1]")
+mcmc_results@results$summary("log_surv_fit_at_time_grid[1,2]")
 ```
 
 We definitely notice that the sampling speed is lower now with the additional
