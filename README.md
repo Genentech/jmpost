@@ -132,7 +132,7 @@ mcmc_results <- sampleStanModel(
 )
 ```
 
-## Citing `mmrm`
+## Citing `jmpost`
 
-To cite `mmrm` please see
+To cite `jmpost` please see
 [here](https://genentech.github.io/jmpost/main/authors.html#citation).
