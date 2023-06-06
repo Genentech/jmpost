@@ -21,7 +21,8 @@ single_survival <- JointModel(
 set.seed(321)
 sim_data <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(),
-    os_fun = sim_os_exponential(1 / 300)
+    os_fun = sim_os_exponential(1 / 10),
+    lambda_cen = 1 / 300
 )
 os_data <- sim_data$os
 long_data <- sim_data$lm |>
@@ -62,9 +63,11 @@ write_stan(single_survival, file_path = tmp)
 file.edit(tmp)
 ```
 
-## Obtaining survival fit samples
+## Obtaining survival fit samples for single patients
 
 So how do we now obtain patient specific samples of the fitted survival model?
+
+### Generate samples in Stan
 
 We want to generate the samples in Stan already as part of the generated quantities
 block. Note that it is not sufficient to just have them at the observed survival time
@@ -108,4 +111,193 @@ mcmc_results@results$summary("log_surv_fit_at_time_grid[1,2]")
 We definitely notice that the sampling speed is lower now with the additional
 generated quantities generation.
 
+### `survival` function as user interface
+
+Here is the prototype.
+
+```{r}
+setGeneric(
+    name = "survival", 
+    def = function(object, ...) standardGeneric("survival")
+)
+
+.SurvivalSamples <- setClass(
+    "SurvivalSamples",
+    contains = "list"
+)
+
+setMethod(
+    f = "survival",
+    signature = c(object = "JointModelSamples"),
+    definition = function(object, patients = NULL, ...) {
+        all_pts <- names(object@data$pt_to_ind)
+        if (is.null(patients)) patients <- all_pts
+        assert_that(all(patients %in% all_pts), !any(duplicated(patients)))
+        time_grid <- object@data$sm_time_grid
+        assert_that(is.numeric(object@data$sm_time_grid))
+        time_grid_index <- seq_along(time_grid)
+        log_surv_fit_at_time_grid_samples <- object@results$draws("log_surv_fit_at_time_grid")
+        log_surv_fit_at_obs_times_samples <- object@results$draws("log_surv_fit_at_obs_times")[, 1L, , drop = TRUE]
+        results <- list()
+        for (this_pt in patients) {
+            this_result <- list()
+            # Samples, also do exp() here.
+            patient_ind <- object@data$pt_to_ind[this_pt]
+            this_surv_fit_names <- paste0("log_surv_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
+            this_result$samples <- exp(log_surv_fit_at_time_grid_samples[, 1L, this_surv_fit_names, drop = TRUE])
+            # Summary.
+            surv_fit <- samples_median_ci(this_result$samples)
+            this_result$summary <- cbind(time = time_grid, surv_fit)
+            # Observations.
+            this_t <- object@data$Times[patient_ind]
+            this_death <- patient_ind %in% object@data$dead_ind_index
+            this_surv_fit <- samples_median_ci(exp(log_surv_fit_at_obs_times_samples[, patient_ind, drop = FALSE]))
+            this_result$observed <- data.frame(t = this_t, death = this_death, this_surv_fit)
+            rownames(this_result$observed) <- this_pt
+            # Save all.
+            results[[this_pt]] <- this_result
+        }
+        .SurvivalSamples(results)
+    }
+)
+
+# setMethod(
+#     f = "[",
+#     signature = "SurvivalSamples",
+#     definition = function(x, i, ...) {
+#         # Note that we cannot use `callNextMethod()` here because `list` is S3.
+#         x@.Data <- x@.Data[i]
+#         x
+#     }
+# )
+```
+
+Let's try it out:
+
+```{r}
+surv_fit_selected <- survival(mcmc_results, patients = c("pt_00011", "pt_00023")) 
+surv_fit_all <- survival(mcmc_results)
+# surv_fit_subset <- surv_fit_selected["pt_00011"]
+```
+
+This works quite ok, good! (again the subset does not work yet but let's see in the
+package later...)
+
+# Average in groups of patients (IDs)
+
+Let's add an `aggregate` method now for `SurvivalSamples`.
+
+- We just average the individual ID samples.
+- Recalculate the summary.
+- Row-bind the observations.
+
+```{r}
+setMethod(
+    f = "aggregate",
+    signature = c(x = "SurvivalSamples"),
+    definition = function(x, groups, ...) {
+        assert_that(
+            is.list(groups), 
+            !is.null(names(groups))
+        )
+        time_grid <- x[[1]]$summary$time
+        results <- list()
+        for (this_group in names(groups)) {
+            this_result <- list()
+            this_ids <- groups[[this_group]]
+            # Samples.
+            this_ids_samples <- Map("[[", x[this_ids], i = "samples")
+            this_ids_samples <- lapply(this_ids_samples, "/", length(this_ids)) 
+            this_result$samples <- Reduce(f = "+", x = this_ids_samples)
+            # Summary.
+            surv_fit <- samples_median_ci(this_result$samples)
+            this_result$summary <- cbind(time = time_grid, surv_fit)
+            # Observations.
+            this_ids_obs <- Map("[[", x[this_ids], i = "observed")
+            this_result$observed <- do.call(rbind, this_ids_obs)
+            # Save all.
+            results[[this_group]] <- this_result
+        }
+        .SurvivalSamples(results)
+    }
+)
+```
+
+Let's try it out:
+
+```{r}
+groups <- split(os_data$pt, os_data$arm)
+surv_fit_grouped <- aggregate(surv_fit_all, groups = groups)
+```
+
+That seems to work nicely!
+
+## `autoplot` method
+
+Now let's define the plot method prototype on top of `SurvivalSamples`.
+
+For now we are using the `ggkm` package to get a lightweight `geom_km` 
+for adding a Kaplan Meier curve estimate to the plots. A disadvantage here is that
+the package is not on CRAN yet. For production and before a CRAN release, we might 
+want to influence the author Michael Sachs to also publish his package on CRAN
+first.
+
+The first part here is to stack together the `data.frame` parts in a long format
+such that we can use `ggplot2` faceting.
+
+```{r}
+library(ggplot2)
+
+# remotes::install_github("sachsmc/ggkm")
+
+new_plot <- function(object, add_km = TRUE, ...) {
+    assert_that(is.flag(add_km))
+    
+    all_fit_dfs <- lapply(object, "[[", i = "summary")
+    all_fit_dfs_with_id <- Map(cbind, all_fit_dfs, id = names(object))
+    all_fit_df <- do.call(rbind, all_fit_dfs_with_id)
+    
+    obs_dfs <- lapply(object, "[[", i = "observed")
+    obs_dfs_with_id <- Map(cbind, obs_dfs, id = names(object))
+    all_obs_df <- do.call(rbind, obs_dfs_with_id)
+    # Due to https://github.com/sachsmc/ggkm/issues/5:
+    all_obs_df$death_num <- as.numeric(all_obs_df$death) 
+    
+    p <- ggplot() +
+        geom_line(aes(x = time, y = median), data = all_fit_df) +
+        geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
+        xlab(expression(t)) +
+        ylab(expression(S(t))) +
+        facet_grid(~ id)
+    if (add_km) {
+        p <- p + 
+            ggkm::geom_km(aes(time = t, status = death_num), data = all_obs_df) +
+            ggkm::geom_kmticks(aes(time = t, status = death_num), data = all_obs_df)
+    }
+    p
+}
+
+setMethod(
+    f = "autoplot",
+    signature = c(object = "SurvivalSamples"),
+    definition = new_plot
+)
+```
+
+Let's try it out:
+
+```{r}
+new_plot(surv_fit_grouped)
+new_plot(surv_fit_grouped, add_km = FALSE)
+```
+
+We can also look at individual patients:
+
+```{r}
+new_plot(surv_fit_selected)
+new_plot(surv_fit_selected, add_km = FALSE)
+```
+
+There is a warning from `ggplot2`, this seems from underlying code, see
+https://github.com/sachsmc/ggkm/issues/11 
 
