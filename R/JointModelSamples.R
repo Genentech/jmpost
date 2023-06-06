@@ -44,7 +44,7 @@ setMethod(
         assert_that(is.numeric(object@data$lm_time_grid))
         time_grid_index <- seq_along(time_grid)
         y_fit_at_grid_samples <- object@results$draws("y_fit_at_time_grid")
-        y_fit_samples <- object@results$draws("Ypred")
+        y_fit_samples <- object@results$draws("Ypred")[, 1L, , drop = TRUE]
         results <- list()
         for (this_pt in patients) {
             this_result <- list()
@@ -59,8 +59,8 @@ setMethod(
             for_this_pt <- which(object@data$ind_index == patient_ind)
             this_t <- object@data$Tobs[for_this_pt]
             this_y <- object@data$Yobs[for_this_pt]
-            this_fit <- y_fit_samples[for_this_pt]
-            this_result$observed <- data.frame(t = this_t, y = this_y, fit = this_fit)
+            this_fit <- samples_median_ci(y_fit_samples[, for_this_pt])
+            this_result$observed <- data.frame(t = this_t, y = this_y, this_fit)
             # Save all.
             results[[this_pt]] <- this_result
         }
