@@ -45,7 +45,7 @@ LongitudinalGSF <- function(
     omega_phi = prior_lognormal(log(0.1), 1, init = 0.1),
     sigma = prior_lognormal(log(0.1), 0.8, init = 0.1)
 ) {
-    eta_prior <- prior_normal(0, 1)
+    eta_prior <- prior_std_normal()
     x <- LongitudinalModel(
         stan = merge(
             StanModule("lm-gsf/model.stan"),
