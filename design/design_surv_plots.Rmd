@@ -76,21 +76,27 @@ Input to Stan (data):
 - Length of the time point grid (e.g. `n_sm_time_grid`)
 
 Output from Stan:
-- Samples at observed time points (e.g. `surv_fit_at_obs_times`), this is a vector 
+- Samples at observed time points (e.g. `log_surv_fit_at_obs_times`), this is a vector 
   in parallel to the existing `Times`. This can be in transformed parameters.
-- Samples at time point grid (e.g. `surv_fit_at_time_grid`), this can be a matrix with
-  `Nind` rows and `n_sm_time_grid` columns. This should happen in generated quantities
+- Samples at time point grid (e.g. `log_surv_fit_at_time_grid`), this can be a matrix with
+  `n_sm_time_grid` rows and `Nind` columns. This should happen in generated quantities
   because it is not needed for the log likelihood calculations and would slow
   us down otherwise unnecessarily. For now we would need to put that separately
   into each survival model's Stan code. 
 
 We are doing this here on this branch to see how easy it is:
-- In `DataSurvival.R` we need to add a `time_grid` slot, and importantly the
-  `as.list()` method needs to return the required data points.
-- We need to modify the `model.stan` file in the corresponding sub-folder for the log-logistic survival model,
-- as well as `survival.stan` in the base folder to arrange for the new inputs.
-- We also need to adapt `base.stan` so that it will actually fetch the generated quantities
-  code from the longitudinal model.
+- In `DataSurvival.R` we need to 
+    - add a `time_grid` slot and
+    - importantly the `as.list()` method needs to return the required data points
+- We need to modify `survival.stan` in the base folder
+    - to arrange for the new inputs
+    - to calculate the required survival fit samples
+
+We note that the individual `model.stan` file in the corresponding sub-folder,
+here for the log-logistic survival model, only contains the baseline hazard 
+definition and the parameters. Therefore we don't need to change anything there.
+This situation is actually easier here than for the longitudinal fit samples,
+where the calculation is not yet centralized.
 
 Finally we can get the samples:
 
