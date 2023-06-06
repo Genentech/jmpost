@@ -1,8 +1,18 @@
+# constructor ----
+
+test_that("LongitudinalSamples can be initialized", {
+    x <- list(pt_00001 = 5, pt_00002 = 10)
+    result <- .LongitudinalSamples(x)
+    expect_s4_class(result, "LongitudinalSamples")
+    expect_identical(names(result), names(x))
+})
+
 # subset ----
 
 test_that("subsetting works as expected for LongitudinalSamples", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
-    object <- longitudinal(mcmc_results, patients = c("pt_00001", "pt_00022"))
+    object <- .LongitudinalSamples(
+        list(pt_00001 = 5, pt_00002 = 10)
+    )
     result <- object["pt_00001"]
     expect_s4_class(result, "LongitudinalSamples")
     expect_length(result, 1L)

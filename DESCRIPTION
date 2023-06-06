@@ -70,6 +70,7 @@ Collate:
     'SurvivalModel.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
+    'SurvivalSamples.R'
     'SurvivalWeibullPH.R'
     'argument_convention.R'
     'defaults.R'
