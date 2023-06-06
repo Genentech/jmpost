@@ -1,0 +1,105 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Design for the survival fit plots
+
+Now let's try to wrap our head around how we can produce nice survival
+fit plots from our joint or single survival model fit.
+
+## Example
+
+Let's start with a simple example - the simplest is when we just have the
+survival model:
+
+```{r}
+single_survival <- JointModel(
+    survival = SurvivalLogLogistic()
+)
+set.seed(321)
+sim_data <- simulate_joint_data(
+    lm_fun = sim_lm_random_slope(),
+    os_fun = sim_os_exponential(1 / 300)
+)
+os_data <- sim_data$os
+long_data <- sim_data$lm |>
+    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+    dplyr::arrange(time, pt)
+joint_data <- DataJoint(
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    longitudinal = DataLongitudinal(
+        data = long_data,
+        formula = sld ~ time,
+        subject = "pt",
+        threshold = 5
+    )
+)
+mcmc_results <- sampleStanModel(
+    single_survival,
+    data = joint_data,
+    iter_sampling = 500,
+    iter_warmup = 500,
+    chains = 1,
+    parallel_chains = 1,
+    exe_file = file.path("local", "single_survival")
+)
+mcmc_results
+```
+
+It can be instructive to look at the Stan code:
+
+```{r, eval = FALSE}
+tmp <- tempfile()
+write_stan(single_survival, file_path = tmp)
+file.edit(tmp)
+```
+
+## Obtaining survival fit samples
+
+So how do we now obtain patient specific samples of the fitted survival model?
+
+We want to generate the samples in Stan already as part of the generated quantities
+block. Note that it is not sufficient to just have them at the observed survival time
+points, because then we cannot plot nice functional fits afterwards. So we need this at a 
+certain grid of time points.
+
+Input to Stan (data):
+- Time point grid (e.g. `sm_time_grid`)
+- Length of the time point grid (e.g. `n_sm_time_grid`)
+
+Output from Stan:
+- Samples at observed time points (e.g. `surv_fit_at_obs_times`), this is a vector 
+  in parallel to the existing `Times`. This can be in transformed parameters.
+- Samples at time point grid (e.g. `surv_fit_at_time_grid`), this can be a matrix with
+  `Nind` rows and `n_sm_time_grid` columns. This should happen in generated quantities
+  because it is not needed for the log likelihood calculations and would slow
+  us down otherwise unnecessarily. For now we would need to put that separately
+  into each survival model's Stan code. 
+
+We are doing this here on this branch to see how easy it is:
+- We need to modify the `model.stan` file in the corresponding sub-folder for the log-logistic survival model,
+- as well as `survival.stan` in the base folder to arrange for the new inputs.
+- In `DataSurvival.R` we need to add a `time_grid` slot, and importantly the
+  `as.list()` method needs to return the required data points.
+- We also need to adapt `base.stan` so that it will actually fetch the generated quantities
+  code from the longitudinal model.
+
+Finally we can get the samples:
+
+```{r}
+mcmc_results@results$summary("surv_fit_at_obs_times[1]")
+mcmc_results@results$summary("surv_fit_at_time_grid[1,1]")
+```
+
+We definitely notice that the sampling speed is lower now with the additional
+generated quantities generation.
+
+
