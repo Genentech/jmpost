@@ -85,10 +85,10 @@ Output from Stan:
   into each survival model's Stan code. 
 
 We are doing this here on this branch to see how easy it is:
-- We need to modify the `model.stan` file in the corresponding sub-folder for the log-logistic survival model,
-- as well as `survival.stan` in the base folder to arrange for the new inputs.
 - In `DataSurvival.R` we need to add a `time_grid` slot, and importantly the
   `as.list()` method needs to return the required data points.
+- We need to modify the `model.stan` file in the corresponding sub-folder for the log-logistic survival model,
+- as well as `survival.stan` in the base folder to arrange for the new inputs.
 - We also need to adapt `base.stan` so that it will actually fetch the generated quantities
   code from the longitudinal model.
 
