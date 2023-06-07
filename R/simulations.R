@@ -222,7 +222,7 @@ sim_os_loglogistic <- function(lambda, p) {
 get_timepoints <- function(x) {
     assert_that(length(x) == length(unique(x)))
     x_ord <- x[order(x)]
-    x_no_neg <- x_ord[x_ord >= 0]
+    x_no_neg <- x_ord[x_ord > 0]
 
     bound_lower <- c(0, x_no_neg[-length(x_no_neg)])
     bound_upper <- x_no_neg
