@@ -320,12 +320,12 @@ autoplot(surv_samples, add_km = FALSE)
 ```
 
 We can also aggregate the estimated survival curves from groups of patients, 
-using the corresponding method, and overlay the curves with the Kaplan-Meier plots:
+using the corresponding method.
 
 ```{r, warning=FALSE}
 groups <- split(os_data$pt, os_data$arm)
 surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
-autoplot(surv_grouped_samples)
+autoplot(surv_grouped_samples, add_km = FALSE)
 ```
 
 
