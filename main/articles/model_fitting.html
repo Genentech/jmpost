@@ -47,12 +47,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -357,9 +351,7 @@ the <code>JointModel</code> object, using <code><a href="../reference/write_stan
 </h3>
 <p>Finally, <code><a href="../reference/sampleStanModel.html">sampleStanModel()</a></code> is kicking off the MCMC
 sampler via <code>cmdstanr</code> in the backend. Note that in practice
-you would increase the number of warm-up and sampling iterations, here
-we are just trying to keep the vignette compilation time small
-enough.</p>
+you would increase the number of warm-up and sampling iterations.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sampleStanModel.html">sampleStanModel</a></span><span class="op">(</span></span>
 <span>    <span class="va">simple_model</span>,</span>
@@ -369,32 +361,8 @@ enough.</p>
 <span>    chains <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    parallel_chains <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    exe_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"local"</span>, <span class="st">"full"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; CmdStan path set to: /root/.cmdstan/cmdstan-2.32.2</span></span>
-<span><span class="co">#&gt; Running MCMC with 1 chain...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
-<span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/tmp/Rtmp4HRAEE/model-8e67b9d7c4f.stan', line 299, column 8 to line 303, column 10)</span></span>
-<span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
-<span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
-<span><span class="co">#&gt; Chain 1</span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 100 / 1000 [ 10%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 200 / 1000 [ 20%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 300 / 1000 [ 30%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 400 / 1000 [ 40%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 500 / 1000 [ 50%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 501 / 1000 [ 50%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 600 / 1000 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 700 / 1000 [ 70%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 20.8 seconds.</span></span>
-<span><span class="co">#&gt; Warning: 9 of 500 (2.0%) transitions ended with a divergence.</span></span>
-<span><span class="co">#&gt; See https://mc-stan.org/misc/warnings for details.</span></span>
-<span><span class="co">#&gt; Warning: 1 of 1 chains had an E-BFMI less than 0.2.</span></span>
-<span><span class="co">#&gt; See https://mc-stan.org/misc/warnings for details.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; CmdStan path set to: /root/.cmdstan/cmdstan-2.32.2</span></span></code></pre>
 <p>Note that <code>exe_file</code> is used to specify the location of
 the compiled Stan file, e.g. relative to the current working
 directory.</p>
@@ -406,7 +374,7 @@ directory.</p>
 distributions. This is using the <code>cmdstanr</code> functions,
 because the <code>results</code> element is of class
 <code>CmdStanMCMC</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"lm_rs_intercept"</span>,</span>
 <span>    <span class="st">"lm_rs_slope_mu"</span>,</span>
@@ -418,20 +386,21 @@ because the <code>results</code> element is of class
 <span>    <span class="st">"beta_os_cov"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The ESS has been capped to avoid unstable estimates.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
-<span><span class="co">#&gt;    variable       mean   median      sd     mad       q5      q95  rhat ess_bulk</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_int… 30.0     30.0     0   <span style="color: #949494;"> </span>   0   <span style="color: #949494;"> </span>   30.0     30.0     <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slo…  0.001<span style="text-decoration: underline;">09</span>  0.001<span style="text-decoration: underline;">09</span> 1.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 1.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>  0.001<span style="text-decoration: underline;">09</span>  0.001<span style="text-decoration: underline;">09</span>  1.09     8.56</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slo…  0.001<span style="text-decoration: underline;">03</span>  0.001<span style="text-decoration: underline;">03</span> 1.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>  0.001<span style="text-decoration: underline;">03</span>  0.001<span style="text-decoration: underline;">03</span>  1.07     7.80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slo…  1.00     1.00    0   <span style="color: #949494;"> </span>   0   <span style="color: #949494;"> </span>    1.00     1.00    <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sig…  2.48     2.48    1.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  2.48     2.48     2.17     1.30</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_lm_p…  0.019<span style="text-decoration: underline;">7</span>   0.019<span style="text-decoration: underline;">7</span>  3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 1.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>  0.019<span style="text-decoration: underline;">7</span>   0.019<span style="text-decoration: underline;">7</span>   1.33     2.66</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibul…  3.84     3.84    3.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 4.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  3.84     3.84     2.14     1.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibul…  2.33     2.34    4.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 5.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  2.24     2.39     2.13     1.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_c… -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">7</span>  -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">7</span>  4.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 5.25<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">8</span>  -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">6</span>   2.13     1.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_c… -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">4</span>  2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">5</span>  -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">4</span>   2.13     1.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_c…  0.005<span style="text-decoration: underline;">67</span>  0.005<span style="text-decoration: underline;">67</span> 3.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 3.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>  0.005<span style="text-decoration: underline;">64</span>  0.005<span style="text-decoration: underline;">74</span>  2.13     1.31</span></span>
+<span><span class="co">#&gt;    variable         mean  median      sd     mad       q5     q95  rhat ess_bulk</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_interc… 2.99<span style="color: #949494;">e</span>+1 3.00<span style="color: #949494;">e</span>+1 0.959   0.967   28.5     31.5    1.02      166.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slope_… 1.00<span style="color: #949494;">e</span>+0 1.00<span style="color: #949494;">e</span>+0 0.033<span style="text-decoration: underline;">6</span>  0.035<span style="text-decoration: underline;">9</span>   0.947    1.06   0.999    <span style="text-decoration: underline;">1</span>349.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slope_… 1.96<span style="color: #949494;">e</span>+0 1.96<span style="color: #949494;">e</span>+0 0.029<span style="text-decoration: underline;">6</span>  0.029<span style="text-decoration: underline;">7</span>   1.91     2.01   0.999     709.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slope_… 2.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.016<span style="text-decoration: underline;">1</span>  0.015<span style="text-decoration: underline;">9</span>   0.182    0.234  0.998     808.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma   1.89<span style="color: #949494;">e</span>+1 1.89<span style="color: #949494;">e</span>+1 0.364   0.349   18.3     19.5    1.01      494.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_lm_phi   5.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.177   0.175   -<span style="color: #BB0000;">0.295</span>    0.306  0.999     717.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull_p… 8.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 7.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.005<span style="text-decoration: underline;">05</span> 0.004<span style="text-decoration: underline;">31</span>  0.003<span style="text-decoration: underline;">20</span>  0.017<span style="text-decoration: underline;">8</span> 1.00      441.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull_p… 8.89<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 8.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.074<span style="text-decoration: underline;">1</span>  0.076<span style="text-decoration: underline;">1</span>   0.767    1.01   1.00      546.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_cov[… 1.25<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 6.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.235   0.242   -<span style="color: #BB0000;">0.368</span>    0.407  1.00      446.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_cov[… 3.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 3.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.255   0.254   -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.773  1.00      604.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_cov[… 3.62<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 3.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.103   0.105    0.189    0.523  0.999     501.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></span></code></pre></div>
 <p>We can already see here from the <code>rhat</code> statistic whether
 the MCMC sampler converged - values close to 1 indicate convergence,
@@ -457,7 +426,7 @@ chain with plots.</p>
 <p>Using the <code>draws()</code> method on the <code>results</code>
 element, we can extract the samples in a format that is understood by
 <code>bayesplot</code>. We can e.g. look at some simple trace plots:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vars_draws</span> <span class="op">&lt;-</span> <span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/" class="external-link">bayesplot</a></span><span class="op">)</span></span>
@@ -467,7 +436,7 @@ element, we can extract the samples in a format that is understood by
 <span><span class="co">#&gt;    * Does _not_ affect other ggplot2 plots</span></span>
 <span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span>
 <span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="va">vars_draws</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model_fitting_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
+<p><img src="model_fitting_files/figure-html/unnamed-chunk-1-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="longitudinal-fit-plots">Longitudinal fit plots<a class="anchor" aria-label="anchor" href="#longitudinal-fit-plots"></a>
@@ -476,11 +445,11 @@ element, we can extract the samples in a format that is understood by
 longitudinal fit samples from the result, and then plot them for all
 patients or those that we are interested in. For illustration, we will
 plot here the first 10 patients:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">selected_patients</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">long_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/longitudinal.html">longitudinal</a></span><span class="op">(</span><span class="va">mcmc_results</span>, patients <span class="op">=</span> <span class="va">selected_patients</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_samples</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="survival-fit-plots">Survival fit plots<a class="anchor" aria-label="anchor" href="#survival-fit-plots"></a>
@@ -488,17 +457,17 @@ plot here the first 10 patients:</p>
 <p>And using the <code><a href="../reference/survival.html">survival()</a></code> method we can do the same for
 the estimated survival functions. We can do this for single
 patients:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/survival.html">survival</a></span><span class="op">(</span><span class="va">mcmc_results</span>, patients <span class="op">=</span> <span class="va">selected_patients</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_samples</span>, add_km <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
 patients, using the corresponding method.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="va">os_data</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span></span>
 <span><span class="va">surv_grouped_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate.html">aggregate</a></span><span class="op">(</span><span class="fu"><a href="../reference/survival.html">survival</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span>, groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_grouped_samples</span>, add_km <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model_fitting_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="model_fitting_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
