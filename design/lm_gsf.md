@@ -1,7 +1,7 @@
 # SLD Model Specification
 
 
-## Longditudinal Model
+## Longitudinal Model
 
 $$
 y_{ij} \sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2)

@@ -23,6 +23,7 @@ Description: Implements joint models combining a non-linear mixed effects model 
     data and therefore make better decisions.
 License: Apache License (>= 2)
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
@@ -33,8 +34,8 @@ Imports:
     stringr,
     cmdstanr,
     ggplot2,
+    ggquickeda,
     statmod,
-    Matrix,
     jinjar,
     survival,
     glue,
@@ -71,6 +72,7 @@ Collate:
     'SurvivalModel.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
+    'SurvivalSamples.R'
     'SurvivalWeibullPH.R'
     'argument_convention.R'
     'defaults.R'
