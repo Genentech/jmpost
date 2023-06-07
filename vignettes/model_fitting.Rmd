@@ -244,10 +244,9 @@ cat(paste(first_part, collapse = "\n"))
 
 Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
 the backend. Note that in practice you would increase the number of 
-warm-up and sampling iterations, here we are just trying to keep the vignette
-compilation time small enough.
+warm-up and sampling iterations.
 
-```{r sampling}
+```{r sampling, eval = FALSE}
 mcmc_results <- sampleStanModel(
     simple_model,
     data = joint_data,
@@ -257,6 +256,10 @@ mcmc_results <- sampleStanModel(
     parallel_chains = 1,
     exe_file = file.path("local", "full")
 )
+```
+
+```{r read_cache, echo = FALSE}
+mcmc_results <- readRDS("mcmc_results.rds")
 ```
 
 Note that `exe_file` is used to specify the location of the compiled Stan file,
@@ -306,7 +309,7 @@ Using the `draws()` method on the `results` element, we can extract the samples
 in a format that is understood by `bayesplot`. We can e.g. look 
 at some simple trace plots:
 
-```{r}
+```{r fig.width=6}
 vars_draws <- mcmc_results@results$draws(vars)
 
 library(bayesplot)
@@ -320,7 +323,7 @@ samples from the result, and then plot them for all patients or those
 that we are interested in. For illustration, we will plot here the first
 10 patients:
 
-```{r}
+```{r fig.width=6}
 selected_patients <- head(os_data$pt, 10)
 long_samples <- longitudinal(mcmc_results, patients = selected_patients)
 autoplot(long_samples)
@@ -331,7 +334,7 @@ autoplot(long_samples)
 And using the `survival()` method we can do the same for the estimated survival
 functions. We can do this for single patients:
 
-```{r}
+```{r fig.width=6}
 surv_samples <- survival(mcmc_results, patients = selected_patients)
 autoplot(surv_samples, add_km = FALSE)
 ```
@@ -339,7 +342,7 @@ autoplot(surv_samples, add_km = FALSE)
 We can also aggregate the estimated survival curves from groups of patients, 
 using the corresponding method.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, fig.width=6}
 groups <- split(os_data$pt, os_data$arm)
 surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
 autoplot(surv_grouped_samples, add_km = FALSE)
