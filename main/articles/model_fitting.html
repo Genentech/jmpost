@@ -47,12 +47,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -346,12 +340,12 @@ sampler via <code>cmdstanr</code> in the backend.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/tmp/RtmpwRcxao/model-5ce11696df.stan', line 299, column 8 to line 303, column 10)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/tmp/Rtmpa2y9j3/model-8a36116f2c8.stan', line 299, column 8 to line 303, column 10)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/tmp/RtmpwRcxao/model-5ce11696df.stan', line 299, column 8 to line 303, column 10)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/tmp/Rtmpa2y9j3/model-8a36116f2c8.stan', line 299, column 8 to line 303, column 10)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -366,7 +360,7 @@ sampler via <code>cmdstanr</code> in the backend.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 263.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 187.4 seconds.</span></span></code></pre></div>
 <p>Note that <code>exe_file</code> is used to specify the location of
 the compiled Stan file, e.g. relative to the current working
 directory.</p>
@@ -388,20 +382,25 @@ because the <code>results</code> element is of class
 <span>    <span class="st">"beta_os_cov"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The ESS has been capped to avoid unstable estimates.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning: The ESS has been capped to avoid unstable estimates.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning: The ESS has been capped to avoid unstable estimates.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
 <span><span class="co">#&gt;    variable       mean   median      sd     mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_int… 30.0     30.0     4.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 5.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 29.9     30.1     0.998     334.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slo…  1.00     1.00    9.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 9.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.989    1.02    1.00     <span style="text-decoration: underline;">1</span>096.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slo…  2.01     2.01    9.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 8.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  2.00     2.03    1.01      735.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slo…  0.200    0.200   4.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.193    0.208   0.999     580.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sig…  2.90     2.90    1.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 1.82<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  2.87     2.94    1.00      601.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_lm_p…  0.062<span style="text-decoration: underline;">5</span>   0.064<span style="text-decoration: underline;">7</span>  5.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 6.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">1</span>   0.159   1.00      342.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibul…  0.003<span style="text-decoration: underline;">80</span>  0.003<span style="text-decoration: underline;">79</span> 7.43<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.002<span style="text-decoration: underline;">72</span>  0.005<span style="text-decoration: underline;">12</span> 1.01      214.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibul…  0.966    0.968   2.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 2.60<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.923    1.01    1.01      285.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_c… -<span style="color: #BB0000;">0.237</span>   -<span style="color: #BB0000;">0.237</span>   9.44<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 9.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.389</span>   -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">8</span>  0.999     416.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_c…  0.445    0.445   8.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 9.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.310    0.570   1.00      482.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_c…  0.290    0.289   3.35<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 3.43<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.238    0.348   1.00      460.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_int… 30.0     30.0     4.36<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 4.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 29.9     30.0     1.00      270.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slo…  1.00     1.00    9.43<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 9.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.989    1.02    0.998    <span style="text-decoration: underline;">1</span>349.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slo…  2.01     2.01    8.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 8.67<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  2.00     2.03    1.00     <span style="text-decoration: underline;">1</span>064.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slo…  0.200    0.200   4.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 5.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.192    0.208   0.999    <span style="text-decoration: underline;">1</span>349.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sig…  2.90     2.90    1.79<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 1.76<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  2.88     2.93    1.00     <span style="text-decoration: underline;">1</span>349.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_lm_p…  0.054<span style="text-decoration: underline;">9</span>   0.054<span style="text-decoration: underline;">5</span>  5.99<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 6.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">9</span>   0.152   0.999     448.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibul…  0.003<span style="text-decoration: underline;">90</span>  0.003<span style="text-decoration: underline;">83</span> 7.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.002<span style="text-decoration: underline;">82</span>  0.005<span style="text-decoration: underline;">22</span> 1.00      320.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibul…  0.964    0.964   2.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 2.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.921    1.01    1.01      371.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_c… -<span style="color: #BB0000;">0.243</span>   -<span style="color: #BB0000;">0.246</span>   8.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 8.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.383</span>   -<span style="color: #BB0000;">0.095</span><span style="color: #BB0000; text-decoration: underline;">2</span>  1.00      627.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_c…  0.441    0.441   8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 8.33<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.314    0.577   0.998     781.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_c…  0.290    0.288   3.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 2.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.235    0.348   1.01      588.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></span></code></pre></div>
 </div>
 </div>

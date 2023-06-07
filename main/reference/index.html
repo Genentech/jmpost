@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -222,11 +216,6 @@
           <code><a href="LongitudinalRandomSlope-class.html">LongitudinalRandomSlope()</a></code> 
         </dt>
         <dd><code>LongitudinalRandomSlope</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="LongitudinalSamples-class.html">`[`(<i>&lt;LongitudinalSamples&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> 
-        </dt>
-        <dd><code>LongitudinalSamples</code></dd>
       </dl></div><div class="section level2">
       <h2 id="survival-model-specification">Survival Model Specification<a class="anchor" aria-label="anchor" href="#survival-model-specification"></a></h2>
       
@@ -364,19 +353,34 @@
         <dd><code>LongitudinalSamples</code></dd>
       </dl><dl><dt>
           
+          <code><a href="SurvivalSamples-class.html">`[`(<i>&lt;SurvivalSamples&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>SurvivalSamples</code></dd>
+      </dl><dl><dt>
+          
           <code><a href="longitudinal.html">longitudinal()</a></code> 
         </dt>
         <dd><code>longitudinal</code></dd>
       </dl><dl><dt>
           
+          <code><a href="survival.html">survival()</a></code> 
+        </dt>
+        <dd><code>survival</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="aggregate.html">aggregate(<i>&lt;SurvivalSamples&gt;</i>)</a></code> 
+        </dt>
+        <dd>Aggregation Methods for Different Classes</dd>
+      </dl><dl><dt>
+          
+          <code><a href="autoplot.html">autoplot(<i>&lt;LongitudinalSamples&gt;</i>)</a></code> <code><a href="autoplot.html">autoplot(<i>&lt;SurvivalSamples&gt;</i>)</a></code> 
+        </dt>
+        <dd>Plotting Methods for Different Classes</dd>
+      </dl><dl><dt>
+          
           <code><a href="samples_median_ci.html">samples_median_ci()</a></code> 
         </dt>
         <dd>Obtain Median and Credible Intervals from MCMC samples</dd>
-      </dl><dl><dt>
-          
-          <code><a href="autoplot.html">autoplot(<i>&lt;LongitudinalSamples&gt;</i>)</a></code> 
-        </dt>
-        <dd>Plotting Methods for Different Classes</dd>
       </dl></div><div class="section level2">
       <h2 id="stan-code">Stan Code<a class="anchor" aria-label="anchor" href="#stan-code"></a></h2>
       

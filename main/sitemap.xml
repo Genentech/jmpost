@@ -88,6 +88,9 @@
     <loc>https://genentech.github.io/jmpost/main/reference/SurvivalModel-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalSamples-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/main/reference/SurvivalWeibullPH-class.html</loc>
   </url>
   <url>
@@ -95,6 +98,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/main/reference/add_missing_stan_blocks.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/main/reference/aggregate.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/main/reference/as.StanModule.html</loc>
@@ -239,6 +245,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/main/reference/stanmodel_arguments.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/main/reference/survival.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/main/reference/write_stan.html</loc>
