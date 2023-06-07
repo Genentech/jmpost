@@ -19,9 +19,9 @@ functions {
             cov_contribution,
             cols(time)
         );
-        
+
         matrix[rows(time), cols(time)] lm_link_contribution = link_contribution(time, pars_lm);
-        
+
         matrix[rows(time), cols(time)] result =
             cov_contribution_matrix +
             lm_link_contribution +
@@ -73,6 +73,9 @@ data{
     int<lower=1> p_os_cov_design;
     matrix[Nind, p_os_cov_design] os_cov_design;
 
+    int<lower=1> n_sm_time_grid;       // Number of time points in the grid.
+    vector[n_sm_time_grid] sm_time_grid; // Time points grid.
+
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
     // between 0 and 1
@@ -86,7 +89,7 @@ transformed data {
     array[rows(Times)] int time_positive = is_positive(Times);
     int n_positive = sum(time_positive);
     array[n_positive] int time_positive_index = which(time_positive);
-    
+
 {{ stan.transformed_data }}
 }
 
@@ -96,7 +99,7 @@ parameters {
     //
     // Source - base/survival.stan
     //
-    
+
     // Covariate coefficients.
     vector[p_os_cov_design] beta_os_cov;
 {{ stan.parameters }}
@@ -108,7 +111,7 @@ transformed parameters {
     //
     // Source - base/survival.stan
     //
-    
+
     // Calculate coveriate contributions to log hazard function
     vector[rows(os_cov_design)] os_cov_contribution;
     if (rows(os_cov_design) > 1) {
@@ -123,9 +126,10 @@ transformed parameters {
     // Source - base/survival.stan
     //
 
-    // Log-survival values as we need them for generated quantitities.
-    // We always add the log-survival to the log-likelihood.
-    log_lik[time_positive_index] += log_survival(
+    // Log of survival function at the observed time points.
+    vector[Nind] log_surv_fit_at_obs_times;
+    log_surv_fit_at_obs_times = rep_vector(0.0, Nind);
+    log_surv_fit_at_obs_times[time_positive_index] += log_survival(
         Times[time_positive_index],
         pars_os,
         pars_lm[time_positive_index],
@@ -133,6 +137,9 @@ transformed parameters {
         weights,
         os_cov_contribution[time_positive_index]
     );
+
+    // We always add the log-survival to the log-likelihood.
+    log_lik += log_surv_fit_at_obs_times;
 
     // In case of death we add the log-hazard on top.
     log_lik[dead_ind_index] += to_vector(
@@ -155,3 +162,21 @@ model{
     {{ stan.model }}
 }
 
+
+generated quantities{
+    //
+    // Source - base/survival.stan
+    //
+
+    matrix[Nind, n_sm_time_grid] log_surv_fit_at_time_grid;
+
+    for (i in 1:n_sm_time_grid) {
+        log_surv_fit_at_time_grid[, i] = log_survival(rep_vector(sm_time_grid[i], Nind),
+        pars_os,
+        pars_lm,
+        nodes,
+        weights,
+        os_cov_contribution
+        );
+    }
+}
