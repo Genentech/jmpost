@@ -55,6 +55,6 @@ setMethod(
             geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df) +
             xlab(expression(t)) +
             ylab(expression(y)) +
-            facet_grid(~ pt_id)
+            facet_wrap(~ pt_id)
     }
 )

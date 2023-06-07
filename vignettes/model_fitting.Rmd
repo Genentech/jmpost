@@ -47,8 +47,8 @@ simple_model <- JointModel(
 
 Note that here we use all the default options for the two models and the link,
 in particular the prior distributions and the initial values in the MCMC chain
-for the parameters are automatically chosen. Currently we can see this only
-from the arguments of the constructors:
+for the parameters are automatically chosen. We can see this 
+from the arguments of the constructors (or from the help page):
 
 ```{r constructor_args}
 args(LongitudinalRandomSlope)
@@ -116,7 +116,7 @@ Before we can fit the models, we need to prepare the data in the right format.
 
 Here we start from a simulated data set. 
 
-- We assign 500 patients each to the two treatment arms.
+- We assign 50 patients each to the two treatment arms.
 - We use a time grid from 1 to 2000, e.g. specifying the days after randomization.
 - We use an exponentially distributed censoring time with mean of 9000 days.
 - We use a categorical covariate with three levels A, B and C in the overall survival model, drawn uniformly from the three levels. (Note that this is hardcoded at the moment, so the levels need to be A, B, C.)
@@ -129,7 +129,7 @@ So let's run the code for that:
 ```{r simulate_data}
 set.seed(129)
 sim_data <- simulate_joint_data(
-    n_arm = c(500, 500),
+    n_arm = c(50, 50),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -142,7 +142,7 @@ sim_data <- simulate_joint_data(
         intercept = 30,
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
-        sigma = 3,
+        sigma = 30,
         phi = 0.1
     ),
     os_fun = sim_os_weibull(
@@ -152,7 +152,7 @@ sim_data <- simulate_joint_data(
 )
 ```
 
-We get a message here that a few patients did not die before the day 2000, but 
+We might get a message here that a few patients did not die before the day 2000, but 
 this is not of concern. Basically it just gives us a feeling of how many survival
 events are included in the data set.
 
@@ -237,7 +237,9 @@ cat(paste(first_part, collapse = "\n"))
 ## Sampling Parameters
 
 Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
-the backend.
+the backend. Note that in practice you would increase the number of 
+warmup and sampling iterations, here we are just trying to keep the vignette
+compilation time small enough.
 
 ```{r sampling}
 mcmc_results <- sampleStanModel(
@@ -254,8 +256,6 @@ mcmc_results <- sampleStanModel(
 Note that `exe_file` is used to specify the location of the compiled Stan file,
 e.g. relative to the current working directory. 
 
-We can see that there were a couple of red warnings in the beginning of the 
-sampling. However, that is not of a concern because they did not persist.
 After the sampling finishes, we can inspect the parameter distributions.
 This is using the `cmdstanr` functions, because the `results` element is of class
 `CmdStanMCMC`.
@@ -273,3 +273,60 @@ vars <- c(
 )
 mcmc_results@results$summary(vars)
 ```
+
+We can already see here from the `rhat` statistic whether the MCMC sampler
+converged - values close to 1 indicate convergence, while values larger than
+1 indicate divergence.
+
+# Plotting
+
+We can now proceed towards investigating the results of the MCMC chain with 
+plots.
+
+## Trace plots
+
+Using the `draws()` method on the `results` element, we can extract the samples
+in a format that is understood by `bayesplot`. We can e.g. look 
+at some simple trace plots:
+
+```{r}
+vars_draws <- mcmc_results@results$draws(vars)
+
+library(bayesplot)
+mcmc_trace(vars_draws)
+```
+
+## Longitudinal fit plots
+
+Using the `longitudinal()` method we can extract the longitudinal fit
+samples from the result, and then plot them for all patients or those
+that we are interested in. For illustration, we will plot here the first
+10 patients:
+
+```{r}
+selected_patients <- head(os_data$pt, 10)
+long_samples <- longitudinal(mcmc_results, patients = selected_patients)
+autoplot(long_samples)
+```
+
+## Survival fit plots
+
+And using the `survival()` method we can do the same for the estimated survival
+functions. We can do this for single patients:
+
+```{r}
+surv_samples <- survival(mcmc_results, patients = selected_patients)
+autoplot(surv_samples, add_km = FALSE)
+```
+
+We can also aggregate the estimated survival curves from groups of patients, 
+using the corresponding method, and overlay the curves with the Kaplan-Meier plots:
+
+```{r, warning=FALSE}
+groups <- split(os_data$pt, os_data$arm)
+surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
+autoplot(surv_grouped_samples)
+```
+
+
+
