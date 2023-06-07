@@ -73,3 +73,39 @@ setMethod(
         .SurvivalSamples(results)
     }
 )
+
+# SurvivalSamples-autoplot ----
+
+#' @rdname autoplot
+#' @param add_km (`flag`)\cr whether to add the Kaplan-Meier plot of the
+#'   survival data to the plots.
+setMethod(
+    f = "autoplot",
+    signature = c(object = "SurvivalSamples"),
+    function(object, add_km = TRUE, ...) {
+        assert_that(is.flag(add_km))
+
+        all_fit_dfs <- lapply(object, "[[", i = "summary")
+        all_fit_dfs_with_id <- Map(cbind, all_fit_dfs, id = names(object))
+        all_fit_df <- do.call(rbind, all_fit_dfs_with_id)
+
+        obs_dfs <- lapply(object, "[[", i = "observed")
+        obs_dfs_with_id <- Map(cbind, obs_dfs, id = names(object))
+        all_obs_df <- do.call(rbind, obs_dfs_with_id)
+        # Due to https://github.com/sachsmc/ggkm/issues/5:
+        all_obs_df$death_num <- as.numeric(all_obs_df$death)
+
+        p <- ggplot() +
+            geom_line(aes(x = time, y = median), data = all_fit_df) +
+            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
+            xlab(expression(t)) +
+            ylab(expression(S(t))) +
+            facet_grid(~ id)
+        if (add_km) {
+            p <- p +
+                ggkm::geom_km(aes(time = t, status = death_num), data = all_obs_df) +
+                ggkm::geom_kmticks(aes(time = t, status = death_num), data = all_obs_df)
+        }
+        p
+    }
+)
