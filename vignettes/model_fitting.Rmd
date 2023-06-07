@@ -144,7 +144,7 @@ sim_data <- simulate_joint_data(
         intercept = 30,
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
-        sigma = 30,
+        sigma = 20,
         phi = 0.1
     ),
     os_fun = sim_os_weibull(
@@ -244,7 +244,7 @@ cat(paste(first_part, collapse = "\n"))
 
 Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
 the backend. Note that in practice you would increase the number of 
-warmup and sampling iterations, here we are just trying to keep the vignette
+warm-up and sampling iterations, here we are just trying to keep the vignette
 compilation time small enough.
 
 ```{r sampling}
@@ -261,6 +261,8 @@ mcmc_results <- sampleStanModel(
 
 Note that `exe_file` is used to specify the location of the compiled Stan file,
 e.g. relative to the current working directory. 
+
+## Convergence checks
 
 After the sampling finishes, we can inspect the parameter distributions.
 This is using the `cmdstanr` functions, because the `results` element is of class
@@ -283,6 +285,15 @@ mcmc_results@results$summary(vars)
 We can already see here from the `rhat` statistic whether the MCMC sampler
 converged - values close to 1 indicate convergence, while values larger than
 1 indicate divergence.
+
+In general, convergence is sensitive to the choice of:
+
+- Priors
+- Initial values
+- Sufficient warm-up iterations
+
+If you don't achieve convergence, then play around with different choices
+of the above.
 
 # Plotting
 
