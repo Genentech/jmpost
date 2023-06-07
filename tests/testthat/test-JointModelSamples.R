@@ -12,7 +12,7 @@ test_that("longitudinal works as expected for JointModelSamples", {
     expect_type(one_result$samples, "double")
     expect_identical(dim(one_result$samples), c(100L, mcmc_results@data$n_lm_time_grid))
     expect_s3_class(one_result$observed, "data.frame")
-    expect_identical(colnames(one_result$observed), c("t", "y", "fit"))
+    expect_identical(colnames(one_result$observed), c("t", "y", "median", "lower", "upper"))
     expect_s3_class(one_result$summary, "data.frame")
     expect_identical(colnames(one_result$summary), c("time", "median", "lower", "upper"))
     expect_identical(nrow(one_result$summary), mcmc_results@data$n_lm_time_grid)

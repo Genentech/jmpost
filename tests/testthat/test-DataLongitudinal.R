@@ -1,6 +1,3 @@
-
-
-
 test_that("DataLongitudinal being rendered to list is as expected for simple inputs", {
     x <- data.frame(
         vpt = c("b", "a", "a", "b", "c", "a"),

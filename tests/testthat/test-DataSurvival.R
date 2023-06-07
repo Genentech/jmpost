@@ -25,9 +25,7 @@ test_that("Error Handling", {
     )
 })
 
-
-
-test_that("as.list returns expected values", {
+test_that("DataSurvival being rendered to list is as expected for simple inputs", {
 
     x <- data.frame(
         vpt = c("b", "a", "c", "d", "e"),
@@ -56,5 +54,6 @@ test_that("as.list returns expected values", {
     expect_equal(res$arm_index, c(2, 1, 1, 2, 2))
     expect_equal(res$n_index_per_arm, c(2, 3))
     expect_equal(res$index_per_arm, c(2, 3, 1, 4, 5))
-
+    expect_equal(res$sm_time_grid, seq(from = 0, to = max(x$vtime), length = 201))
+    expect_equal(res$n_sm_time_grid, 201)
 })
