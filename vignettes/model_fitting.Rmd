@@ -23,17 +23,19 @@ Here we describe the basic steps of joint model fitting with `{jmpost}`.
 # Model Specification
 
 Each `JointModel` needs to be specified with three parts:
+
 1. `longitudinal`: The model for the longitudinal outcomes.
-2. `survival`: The model for the survival outcomes.
-3. `link`: The link that specifies how the `longitudinal` model parameters enter the
+1. `survival`: The model for the survival outcomes.
+1. `link`: The link that specifies how the `longitudinal` model parameters enter the
   `survival` model.
 
 ## Default Options
 
 Let's first specify a very simple joint model with:
+
 1. A random slope model for the longitudinal outcome.
-2. A Weibull proportional hazards model for the survival outcome.
-3. The link between the two models is that the random slope from the longitudinal model
+1. A Weibull proportional hazards model for the survival outcome.
+1. The link between the two models is that the random slope from the longitudinal model
    enters as a product with a link coefficient into the linear predictor of the 
    survival model.
    
@@ -47,8 +49,8 @@ simple_model <- JointModel(
 
 Note that here we use all the default options for the two models and the link,
 in particular the prior distributions and the initial values in the MCMC chain
-for the parameters are automatically chosen. Currently we can see this only
-from the arguments of the constructors:
+for the parameters are automatically chosen. We can see this 
+from the arguments of the constructors (or from the help page):
 
 ```{r constructor_args}
 args(LongitudinalRandomSlope)
@@ -75,8 +77,8 @@ random_slope_model <- LongitudinalRandomSlope(
 
 This sets the prior for the `intercept`, without stating an explicit initial value.
 In this case the `init` value is just set to the mean of the normal distribution,
-so 40. This also sets the prior and a different than the mean initial value for the
-`slope_mu` parameter. The other paramaters are left with their default priors
+so 40. The `slope_mu` argument then also sets the prior and a custom initial value 
+for the `slope_mu` parameter. The other parameters are left with their default priors
 and initial values.
 
 ## Separate Models
@@ -116,7 +118,7 @@ Before we can fit the models, we need to prepare the data in the right format.
 
 Here we start from a simulated data set. 
 
-- We assign 500 patients each to the two treatment arms.
+- We assign 50 patients each to the two treatment arms.
 - We use a time grid from 1 to 2000, e.g. specifying the days after randomization.
 - We use an exponentially distributed censoring time with mean of 9000 days.
 - We use a categorical covariate with three levels A, B and C in the overall survival model, drawn uniformly from the three levels. (Note that this is hardcoded at the moment, so the levels need to be A, B, C.)
@@ -129,7 +131,7 @@ So let's run the code for that:
 ```{r simulate_data}
 set.seed(129)
 sim_data <- simulate_joint_data(
-    n_arm = c(500, 500),
+    n_arm = c(50, 50),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -142,7 +144,7 @@ sim_data <- simulate_joint_data(
         intercept = 30,
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
-        sigma = 3,
+        sigma = 20,
         phi = 0.1
     ),
     os_fun = sim_os_weibull(
@@ -152,7 +154,7 @@ sim_data <- simulate_joint_data(
 )
 ```
 
-We get a message here that a few patients did not die before the day 2000, but 
+We might get a message here that a few patients did not die before the day 2000, but 
 this is not of concern. Basically it just gives us a feeling of how many survival
 events are included in the data set.
 
@@ -173,6 +175,7 @@ long_data <- sim_data$lm |>
 Let's have a quick look at the format:
 
 The survival data has:
+
 - patient ID
 - time point
 - continuous covariate value
@@ -186,6 +189,7 @@ head(os_data)
 ```
 
 The longitudinal data has:
+
 - patient ID
 - time point
 - sum of longest diameters (SLD)
@@ -198,7 +202,9 @@ head(long_data)
 ```
 
 Finally, we wrap these in the data formatting functions. Here the mapping of the
-column names to the required variables happens. 
+column names to the required variables happens. This means that in our applications
+we don't have to use the same variable names as seen above, but we can use custom 
+names and then apply the mapping here.
 
 ```{r data_joint}
 joint_data <- DataJoint(
@@ -237,7 +243,9 @@ cat(paste(first_part, collapse = "\n"))
 ## Sampling Parameters
 
 Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
-the backend.
+the backend. Note that in practice you would increase the number of 
+warm-up and sampling iterations, here we are just trying to keep the vignette
+compilation time small enough.
 
 ```{r sampling}
 mcmc_results <- sampleStanModel(
@@ -254,8 +262,8 @@ mcmc_results <- sampleStanModel(
 Note that `exe_file` is used to specify the location of the compiled Stan file,
 e.g. relative to the current working directory. 
 
-We can see that there were a couple of red warnings in the beginning of the 
-sampling. However, that is not of a concern because they did not persist.
+## Convergence checks
+
 After the sampling finishes, we can inspect the parameter distributions.
 This is using the `cmdstanr` functions, because the `results` element is of class
 `CmdStanMCMC`.
@@ -273,3 +281,69 @@ vars <- c(
 )
 mcmc_results@results$summary(vars)
 ```
+
+We can already see here from the `rhat` statistic whether the MCMC sampler
+converged - values close to 1 indicate convergence, while values larger than
+1 indicate divergence.
+
+In general, convergence is sensitive to the choice of:
+
+- Priors
+- Initial values
+- Sufficient warm-up iterations
+
+If you don't achieve convergence, then play around with different choices
+of the above.
+
+# Plotting
+
+We can now proceed towards investigating the results of the MCMC chain with 
+plots.
+
+## Trace plots
+
+Using the `draws()` method on the `results` element, we can extract the samples
+in a format that is understood by `bayesplot`. We can e.g. look 
+at some simple trace plots:
+
+```{r}
+vars_draws <- mcmc_results@results$draws(vars)
+
+library(bayesplot)
+mcmc_trace(vars_draws)
+```
+
+## Longitudinal fit plots
+
+Using the `longitudinal()` method we can extract the longitudinal fit
+samples from the result, and then plot them for all patients or those
+that we are interested in. For illustration, we will plot here the first
+10 patients:
+
+```{r}
+selected_patients <- head(os_data$pt, 10)
+long_samples <- longitudinal(mcmc_results, patients = selected_patients)
+autoplot(long_samples)
+```
+
+## Survival fit plots
+
+And using the `survival()` method we can do the same for the estimated survival
+functions. We can do this for single patients:
+
+```{r}
+surv_samples <- survival(mcmc_results, patients = selected_patients)
+autoplot(surv_samples, add_km = FALSE)
+```
+
+We can also aggregate the estimated survival curves from groups of patients, 
+using the corresponding method.
+
+```{r, warning=FALSE}
+groups <- split(os_data$pt, os_data$arm)
+surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
+autoplot(surv_grouped_samples, add_km = FALSE)
+```
+
+
+
