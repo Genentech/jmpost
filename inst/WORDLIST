@@ -4,13 +4,14 @@ Fojo
 Gower
 GSF
 Hoffmann
+Kaplan
 Kerioui
 LogLogistic
-Longditudinal
 Modelling
 Nind
 Overal
 Pharm
+postprocessing
 SLD
 Sabanes
 StanAll
@@ -46,7 +47,6 @@ inits
 lm
 ln
 longMod
-longditudinal
 longmodel
 mathcal
 mesasurements
