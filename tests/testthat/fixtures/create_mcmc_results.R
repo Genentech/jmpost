@@ -1,10 +1,13 @@
-single_longitudinal <- JointModel(
-    longitudinal = LongitudinalRandomSlope()
+joint_model <- JointModel(
+    longitudinal = LongitudinalRandomSlope(),
+    survival = SurvivalExponential(),
+    link = LinkRandomSlope()
 )
 set.seed(321)
 sim_data <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(),
-    os_fun = sim_os_exponential(1 / 300)
+    os_fun = sim_os_exponential(1 / 30),
+    lambda_cen = 1 / 100
 )
 os_data <- sim_data$os
 long_data <- sim_data$lm |>
@@ -27,7 +30,7 @@ joint_data <- DataJoint(
     )
 )
 mcmc_results <- sampleStanModel(
-    single_longitudinal,
+    joint_model,
     data = joint_data,
     iter_sampling = 100,
     iter_warmup = 100,

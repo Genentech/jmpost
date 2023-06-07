@@ -67,6 +67,21 @@ NULL
 #' @export
 NULL
 
+# aggregate ----
+
+#' Aggregation Methods for Different Classes
+#'
+#' These aggregation methods allow to group samples of different objects.
+#'
+#' @name aggregate
+#' @aliases aggregate
+#'
+#' @param x what to aggregate.
+#' @param ... other arguments passed to aggregation methods.
+#'
+#' @export
+NULL
+
 # autoplot ----
 
 #' Plotting Methods for Different Classes
@@ -256,4 +271,19 @@ setGeneric(
 setGeneric(
     name = "longitudinal",
     def = function(object, ...) standardGeneric("longitudinal")
+)
+
+# survival ----
+
+#' `survival`
+#'
+#' Obtain the survival function samples from [`JointModelSamples`].
+#'
+#' @param object samples to extract the survival function values from.
+#' @param ... additional options.
+#'
+#' @export
+setGeneric(
+    name = "survival",
+    def = function(object, ...) standardGeneric("survival")
 )

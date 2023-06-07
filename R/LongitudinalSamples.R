@@ -2,8 +2,8 @@
 
 #' `LongitudinalSamples`
 #'
-#' This class is an extension of a standard `list` so that we
-#' can define custom methods for it.
+#' This class is an extension of `list`so that we
+#' can define specific longitudinal postprocessing methods for it.
 #'
 #' @aliases LongitudinalSamples
 #' @exportClass LongitudinalSamples
@@ -55,6 +55,6 @@ setMethod(
             geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df) +
             xlab(expression(t)) +
             ylab(expression(y)) +
-            facet_grid(~ pt_id)
+            facet_wrap(~ pt_id)
     }
 )

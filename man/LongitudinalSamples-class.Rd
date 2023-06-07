@@ -25,6 +25,6 @@
 The subsetted \code{LongitudinalSamples} object.
 }
 \description{
-This class is an extension of a standard \code{list} so that we
-can define custom methods for it.
+This class is an extension of \code{list}so that we
+can define specific longitudinal postprocessing methods for it.
 }

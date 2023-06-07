@@ -12,10 +12,10 @@ navbar:
     reports:
       text: Reports
       menu:
-      - text: Coverage report
-        href: coverage-report/
-      - text: Unit test report
-        href: unit-test-report/
+        - text: Coverage report
+          href: coverage-report/
+        - text: Unit test report
+          href: unit-test-report/
     github:
       icon: fa-github
       href: https://github.com/genentech/jmpost
@@ -38,9 +38,11 @@ reference:
   - title: Longitudinal Model Specification
     contents:
       - starts_with("Longitudinal")
+      - -LongitudinalSamples
   - title: Survival Model Specification
     contents:
       - starts_with("Survival")
+      - -SurvivalSamples
   - title: Link Specification
     contents:
       - starts_with("Link")
@@ -58,9 +60,12 @@ reference:
     contents:
       - JointModelSamples
       - LongitudinalSamples
+      - SurvivalSamples
       - longitudinal
-      - samples_median_ci
+      - survival
+      - aggregate
       - autoplot
+      - samples_median_ci
   - title: Stan Code
     contents:
       - merge
