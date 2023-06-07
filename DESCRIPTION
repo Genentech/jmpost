@@ -7,6 +7,7 @@ Authors@R: c(
     person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
     person("Xiaoyan", "Fang", email = "xiaoyan.fang@roche.com", role = "aut"),
     person("Francois", "Mercier", email = "francois.mercier@roche.com", role = "aut"),
+    person("Isaac", "Gravestock", email = "isaac.gravestock@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
     )
 Description: Implements joint models combining a non-linear mixed effects model for
@@ -74,5 +75,6 @@ Collate:
     'argument_convention.R'
     'defaults.R'
     'jmpost-package.R'
+    'ksim.R'
     'simulations.R'
 VignetteBuilder: knitr
