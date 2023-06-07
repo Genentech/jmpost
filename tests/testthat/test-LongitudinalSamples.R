@@ -22,7 +22,6 @@ test_that("subsetting works as expected for LongitudinalSamples", {
 # autoplot ----
 
 test_that("autoplot works as expected for LongitudinalSamples", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
     object <- longitudinal(mcmc_results, patients = c("pt_00001", "pt_00022"))
     result <- expect_silent(autoplot(object))
 

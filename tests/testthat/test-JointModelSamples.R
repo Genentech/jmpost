@@ -1,7 +1,6 @@
 # longitudinal ----
 
 test_that("longitudinal works as expected for JointModelSamples", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
     expect_s4_class(mcmc_results, "JointModelSamples")
     result <- expect_silent(longitudinal(mcmc_results))
     expect_s4_class(result, "LongitudinalSamples")
@@ -19,7 +18,6 @@ test_that("longitudinal works as expected for JointModelSamples", {
 })
 
 test_that("longitudinal allows to subset patients", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
     patients <- c("pt_00001", "pt_00005", "pt_00010", "pt_00022")
     result <- expect_silent(longitudinal(mcmc_results, patients = patients))
     expect_s4_class(result, "LongitudinalSamples")
@@ -30,7 +28,6 @@ test_that("longitudinal allows to subset patients", {
 # survival ----
 
 test_that("survival works as expected for JointModelSamples", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
     expect_s4_class(mcmc_results, "JointModelSamples")
     result <- expect_silent(survival(mcmc_results))
     expect_s4_class(result, "SurvivalSamples")
@@ -48,7 +45,6 @@ test_that("survival works as expected for JointModelSamples", {
 })
 
 test_that("survival allows to subset patients", {
-    mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
     patients <- c("pt_00001", "pt_00005", "pt_00010", "pt_00022")
     result <- expect_silent(survival(mcmc_results, patients = patients))
     expect_s4_class(result, "SurvivalSamples")
