@@ -17,6 +17,7 @@ Authors:
   \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
   \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
   \item Francois Mercier \email{francois.mercier@roche.com}
+  \item Isaac Gravestock \email{isaac.gravestock@roche.com}
 }
 
 Other contributors:
