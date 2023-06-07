@@ -100,7 +100,7 @@ setMethod(
             geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
             xlab(expression(t)) +
             ylab(expression(S(t))) +
-            facet_grid(~ id)
+            facet_wrap(~ id)
         if (add_km) {
             p <- p +
                 ggquickeda::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +

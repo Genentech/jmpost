@@ -43,6 +43,7 @@ Imports:
     methods,
     stats
 Suggests: 
+    bayesplot,
     knitr,
     rmarkdown,
     rstan,
