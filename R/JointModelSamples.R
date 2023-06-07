@@ -87,23 +87,22 @@ setMethod(
         time_grid <- object@data$sm_time_grid
         assert_that(is.numeric(object@data$sm_time_grid))
         time_grid_index <- seq_along(time_grid)
-        log_surv_fit_at_time_grid_samples <- object@results$draws("log_surv_fit_at_time_grid")
-        log_surv_fit_at_obs_times_samples <-
-            object@results$draws("log_surv_fit_at_obs_times")[, 1L, , drop = TRUE]
+        log_surv_at_grid_samples <- object@results$draws("log_surv_fit_at_time_grid")
+        log_surv_at_obs_samples <- object@results$draws("log_surv_fit_at_obs_times")[, 1L, , drop = TRUE]
         results <- list()
         for (this_pt in patients) {
             this_result <- list()
             # Samples, also do exp() here.
             patient_ind <- object@data$pt_to_ind[this_pt]
             this_surv_fit_names <- paste0("log_surv_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
-            this_result$samples <- exp(log_surv_fit_at_time_grid_samples[, 1L, this_surv_fit_names, drop = TRUE])
+            this_result$samples <- exp(log_surv_at_grid_samples[, 1L, this_surv_fit_names, drop = TRUE])
             # Summary.
             surv_fit <- samples_median_ci(this_result$samples)
             this_result$summary <- cbind(time = time_grid, surv_fit)
             # Observations.
             this_t <- object@data$Times[patient_ind]
             this_obs_death <- (patient_ind %in% object@data$dead_ind_index)
-            this_surv_fit <- samples_median_ci(exp(log_surv_fit_at_obs_times_samples[, patient_ind, drop = FALSE]))
+            this_surv_fit <- samples_median_ci(exp(log_surv_at_obs_samples[, patient_ind, drop = FALSE]))
             this_result$observed <- data.frame(t = this_t, death = this_obs_death, this_surv_fit)
             rownames(this_result$observed) <- this_pt
             # Save all.

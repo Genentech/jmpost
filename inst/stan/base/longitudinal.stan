@@ -5,7 +5,7 @@ data{
     // Source - base/longitudinal.stan
     //
 
-    // Longditudinal data
+    // Longitudinal data
     int<lower=1> Nta_total;            // Total number of tumor assessments.
     int<lower=1> Nta_obs_y;            // Number of observed tumor assessments (not censored).
     int<lower=0> Nta_cens_y;           // Number of censored tumor assessments (below threshold).
