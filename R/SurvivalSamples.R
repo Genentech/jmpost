@@ -92,19 +92,19 @@ setMethod(
         obs_dfs <- lapply(object, "[[", i = "observed")
         obs_dfs_with_id <- Map(cbind, obs_dfs, id = names(object))
         all_obs_df <- do.call(rbind, obs_dfs_with_id)
-        # Due to https://github.com/sachsmc/ggkm/issues/5:
+        # To avoid issues with logical status in the Kaplan-Meier layer.
         all_obs_df$death_num <- as.numeric(all_obs_df$death)
 
         p <- ggplot() +
-            geom_line(aes(x = time, y = median), data = all_fit_df) +
-            geom_ribbon(aes(x = time, ymin = lower, ymax = upper), data = all_fit_df, alpha = 0.3) +
+            geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df) +
+            geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
             xlab(expression(t)) +
             ylab(expression(S(t))) +
             facet_grid(~ id)
         if (add_km) {
             p <- p +
-                ggkm::geom_km(aes(time = t, status = death_num), data = all_obs_df) +
-                ggkm::geom_kmticks(aes(time = t, status = death_num), data = all_obs_df)
+                ggquickeda::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +
+                ggquickeda::geom_kmticks(aes(time = .data$t, status = .data$death_num), data = all_obs_df)
         }
         p
     }

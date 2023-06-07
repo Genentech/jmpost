@@ -32,10 +32,9 @@ Imports:
     dplyr,
     stringr,
     cmdstanr,
-    ggkm,
     ggplot2,
+    ggquickeda,
     statmod,
-    Matrix,
     jinjar,
     survival,
     glue,
@@ -47,7 +46,6 @@ Suggests:
     rmarkdown,
     rstan,
     testthat (>= 3.0.0)
-Remotes: sachsmc/ggkm
 Config/testthat/edition: 3
 Collate:
     'utilities.R'
