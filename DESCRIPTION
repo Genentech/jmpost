@@ -75,6 +75,5 @@ Collate:
     'argument_convention.R'
     'defaults.R'
     'jmpost-package.R'
-    'ksim.R'
     'simulations.R'
 VignetteBuilder: knitr
