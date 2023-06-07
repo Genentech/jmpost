@@ -157,8 +157,7 @@ model{
     //
     // Source - base/survival.stan
     //
-
-    beta_os_cov ~ normal(0, 5); // TODO - Move to r code?
+    
 
     {{ stan.model }}
 }

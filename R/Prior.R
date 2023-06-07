@@ -71,6 +71,19 @@ prior_normal <- function(mu, sigma, init = mu) {
     )
 }
 
+#' Standard Normal Prior Distribution
+#'
+#' @inheritParams prior_arguments
+#'
+#' @export
+prior_std_normal <- function(init = 0) {
+    .Prior(
+        parameters = list(),
+        repr = "std_normal();",
+        init = init
+    )
+}
+
 #' Cauchy Prior Distribution
 #'
 #' @param mu (`number`)\cr mean.
