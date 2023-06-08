@@ -6,7 +6,7 @@
 \usage{
 simulate_joint_data(
   n_arm = c(50, 80),
-  times = 1:2000,
+  times = 0:2000,
   lambda_cen = 1/3,
   beta_cont = 0.2,
   beta_cat = c(A = 0, B = -0.4, C = 0.2),
