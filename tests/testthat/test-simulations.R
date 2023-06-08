@@ -99,5 +99,5 @@ test_that("simulate_joint_data works as expected", {
     expect_equal(nrow(result$os), 80 + 80)
     expect_s3_class(result$lm, "tbl_df")
     expect_identical(names(result$lm), c("pt", "time", "sld", "study", "arm", "observed"))
-    expect_equal(nrow(result$lm), (80 + 80) * length(times[-1]))
+    expect_equal(nrow(result$lm), 97921) # calculated as sum(sapply(result$os$time, function(t) sum(times < t) + 1))
 })

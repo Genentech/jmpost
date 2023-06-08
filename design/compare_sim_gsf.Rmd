@@ -1,0 +1,386 @@
+---
+title: "Compare ksim and jmpost simulation"
+author: "Isaac Gravestock"
+date: "2023-06-06"
+output: 
+  html_document:
+      code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#' Data Simulation from Kerioui et al
+#'
+#' Simulation code slightly adapted from supplementary materials from
+#' Kerioui, M, Mercier, F, Bertrand, J, et al. Bayesian inference using Hamiltonian
+#' Monte-Carlo algorithm for nonlinear joint modeling in the context of cancer immunotherapy.
+#' Statistics in Medicine. 2020; 39: 4853– 4868. https://doi.org/10.1002/sim.8756
+#'
+#' @param N number of patients
+#' @param BSLD baseline sum of longest diameters (SLD)
+#' @param s exponential tumor shrinkage rate
+#' @param g exponential tumor growth rate
+#' @param phi proportion of cells responding to treatment
+#' @param omega_BSLD standard deviation of random effects for `BSLD`
+#' @param omega_s standard deviation of random effects for `s`
+#' @param omega_g standard deviation of random effects for `g`
+#' @param omega_phi standard deviation of random effects for `phi`
+#' @param sigma standard deviation of of tumor size
+#' @param lambda scale parameter for Weibull survival distribution
+#' @param beta coefficient of link of SLD in proportional hazards
+#' @param times observation times for tumor size. Should not exceed 693.
+#'
+#' @return A data.frame with columns
+#' ID: patient id
+#' Time: observation time for SLD
+#' SLD: sum of longest diameters,
+#' Censor_SLD: SLD value is censored (0=no, 1=yes),
+#' BSLD: baseline SLD,
+#' s: shrinkage rate,
+#' g: growth rate,
+#' phi: proportion,
+#' T: survival time,
+#' delta: survival event 
+
+ksim <- function(N = 100,
+                 BSLD = 60,
+                 s = 0.0055,
+                 g = 0.0015,
+                 phi = 0.2,
+                 omega_BSLD = 0.7,
+                 omega_s = 1,
+                 omega_g = 1,
+                 omega_phi = 1.5,
+                 sigma = 0.18,
+                 lambda = 1450,
+                 beta = 0.01,
+                 times = seq(0, 693, 63)) {
+  ###### Simulation Values ----
+
+
+  ##### Simulation of longitudinal data ----
+  SLD <- function(t, param) {
+    sld <- param[1] * (param[2] * (exp(-param[3] * t)) + (1 - param[2]) * exp(param[4] * t))
+    return(sld)
+  }
+
+  logit_inv <- function(x) {
+    return(exp(x) / (1 + exp(x)))
+  }
+
+  logit <- function(x) {
+    return(log(x / (1 - x)))
+  }
+
+  longi <- data.frame(ID = 0, Time = 0, SLD = 0, Censor_SLD = 0, BSLD = 0, s = 0, g = 0, phi = 0)
+  param <- rep(0, 4)
+
+  for (i in 1:N) {
+    param[1] <- exp(log(BSLD) + rnorm(1, 0, omega_BSLD))
+    param[2] <- logit_inv(logit(phi) + rnorm(1, 0, omega_phi))
+    param[3] <- exp(log(s) + rnorm(1, 0, omega_s))
+    param[4] <- exp(log(g) + rnorm(1, 0, omega_g))
+
+
+
+    for (t in times) {
+      censor <- 0
+      SLDtemp <- SLD(t, param)
+      errtemp <- SLDtemp * rnorm(1, 0, sigma)
+      SLDobs <- max(SLDtemp + errtemp, 2.5)
+      if (SLDtemp + errtemp <= 2.5) {
+        censor <- 1
+      }
+      longi <- rbind(longi, c(i, t, SLDobs, censor, param[1], param[3], param[4], param[2]))
+    }
+  }
+  longi <- longi[-1, ]
+
+
+
+  ###### Simulation of survival data -----
+
+  DC <- c()
+  delta <- rep(1, N)
+  for (i in 1:N) {
+    
+    # hazard function
+    h <- function(time, bsld, phi, s, g) {
+      hazard <- (1 / lambda) * exp(beta * SLD(time, c(bsld, phi, s, g)))
+      ifelse(hazard < 15 && !is.na(hazard), hazard, 15)
+    }
+    
+    # cumulative hazard function
+    H <- function(time, bsld, phi, s, g) {
+      vec <- rep(0, length(time))
+      for (i in 1:length(time)) {
+        int <- integrate(
+            Vectorize(h),
+            lower = 0,
+            upper = time[i],
+            bsld = bsld[i],
+            phi = phi[i],
+            s = s[i],
+            g = g[i]
+        )$value
+        vec[i] <- ifelse(int < 100000000, int, 100000000)
+      }
+      vec
+    }
+
+
+    # fdr de f
+    fdr <- function(time, bsld, phi, s, g) {
+      vec <- rep(0, length(time))
+      for (i in 1:length(time)) {
+        vec[i] <- 1 - exp(-H(time[i], bsld[i], phi[i], s[i], g[i]))
+      }
+      vec
+    }
+
+    # inverse fdr ()
+    fdr.inv <- function(y, bsld, phi, s, g) {
+      vec <- rep(0, length(y))
+      for (i in 1:length(y)) {
+        vec[i] <- uniroot(function(x) {
+          fdr(x, bsld[i], phi[i], s[i], g[i]) - y[i]
+        }, interval = c(0, 10000), tol = 0.1)$root
+      }
+      vec
+    }
+
+    bsld <- longi[which(longi$Time == 0 & longi$ID == i), ]$BSLD
+    phi <- longi[which(longi$Time == 0 & longi$ID == i), ]$phi
+    s <- longi[which(longi$Time == 0 & longi$ID == i), ]$s
+    g <- longi[which(longi$Time == 0 & longi$ID == i), ]$g
+
+    u <- runif(1, 0, 1)
+    DCtemp <- fdr.inv(u, bsld, phi, s, g)
+    if (DCtemp > 693) {
+      DCtemp <- 693
+      delta[i] <- 0
+    }
+
+    DC[i] <- DCtemp
+  }
+
+
+  longi_drop <- data.frame()
+  for (i in 1:N) {
+    longi_drop <- rbind(longi_drop, longi[which(longi$ID == i & longi$Time <= DC[i]), ])
+  }
+
+  TTE <- data.frame(
+      T = rep(DC[1], length(longi_drop$ID[which(longi_drop$ID == 1)])),
+      delta = rep(delta[1], length(longi_drop$ID[which(longi_drop$ID == 1)]))
+      )
+  
+  for (i in 2:N) {
+    TTE <- rbind(
+        TTE,
+        data.frame(
+            T = rep(DC[i], length(longi_drop$ID[which(longi_drop$ID == i)])),
+            delta = rep(delta[i], length(longi_drop$ID[which(longi_drop$ID == i)]))
+        )
+    )
+  }
+  
+  data <- cbind(longi_drop, TTE)
+  data
+}
+```
+
+### ksim code
+```{r}
+set.seed(123)
+s1 <- ksim(
+  N = 180,
+  BSLD = 60, # mu_bsld
+  s = 0.0055, # mu_ks
+  g = 0.0015, # mu_kg
+  phi = 0.2, # mu_phi
+  omega_BSLD = 0.7,
+  omega_d = 1,
+  omega_g = 1,
+  omega_phi = 1.5,
+  sigma = 0.18,
+  lambda = 1450,
+  beta = 0.01,
+  temps = seq(0, 693, 63)
+)
+
+s1_data_os <- s1 %>%
+  select(pt = ID, time = T, event = delta) %>%
+  distinct(pt, time, event) %>%
+  mutate(
+    study = "Study-1",
+    arm = "Group-1",
+  ) %>%
+  mutate(
+    pt = factor(pt),
+    cov_cont = runif(n()),
+    cov_cat = factor(sample(c("A", "B", "C"), size = n(), replace = TRUE))
+  )
+
+s1_data_lm <- s1 %>%
+  select(pt = ID, time = Time, sld = SLD, observed = Censor_SLD) %>%
+  mutate(pt = factor(pt), observed = if_else(observed == 0, TRUE, FALSE)) %>%
+  left_join(s1_data_os %>% distinct(pt, study, arm), by = "pt")
+
+
+s1_stan_data <- DataJoint(
+  DataSurvival(
+    s1_data_os,
+    subject = "pt",
+    arm = "arm",
+    study = "study",
+    formula = Surv(time, event) ~ cov_cont,
+  ),
+  DataLongitudinal(
+    s1_data_lm,
+    formula = sld ~ time,
+    subject = "pt",
+    threshold = 5
+  )
+)
+```
+
+
+### jmpost code
+```{r}
+set.seed(100)
+lm_sim <- sim_lm_gsf(
+  sigma = 0.18,
+  mu_s = 0.0055,
+  mu_g = 0.0015,
+  mu_phi = 0.2,
+  mu_b = 60,
+  omega_b = 0.7,
+  omega_s = 1,
+  omega_g = 1,
+  omega_phi = 1.5,
+  link_dsld = 0.03,
+)
+
+os_sim <- sim_os_exponential(1 / 1450)
+
+s2 <- simulate_joint_data(
+  n_arm = 180,
+  times = 0:693,
+  lambda_cen = 1 / 9999,
+  beta_cont = 0,
+  beta_cat = c("A" = 0, "B" = 0, "C" = 0),
+  lm_fun = lm_sim,
+  os_fun = os_sim
+)
+
+
+dat_os <- s2$os
+dat_lm <- s2$lm |>
+  dplyr::arrange(time, pt) %>%
+  filter(time %in% c(1, seq(0, 693, 63)))
+
+
+
+## Specify required variables to fit the model to within our dataset
+s2_stan_data <- DataJoint(
+  survival = DataSurvival(
+    data = dat_os,
+    formula = Surv(time, event) ~ cov_cont,
+    subject = "pt",
+    arm = "arm",
+    study = "study"
+  ),
+  longitudinal = DataLongitudinal(
+    data = dat_lm,
+    formula = sld ~ time,
+    subject = "pt",
+    threshold = 5
+  )
+)
+```
+
+## Model
+
+```{r}
+jm <- JointModel(
+  link = LinkGSF(),
+  longitudinal = LongitudinalGSF(
+    omega_ks = prior_lognormal(log(1), .5, init = .1),
+    omega_kg = prior_lognormal(log(1), .5, init = .1),
+    mu_ks = prior_lognormal(log(0.1), 0.5, init = 0.005),
+    mu_kg = prior_lognormal(log(0.1), 0.5, init = 0.005),
+    mu_bsld = prior_lognormal(mu = log(55), sigma = 1.5, init = 55)
+  ),
+  survival = SurvivalExponential()
+)
+
+
+# Create local file with stan code for debugging purposes ONLY
+write_stan(jm, "local/debug.stan")
+```
+
+## Fit ksim data
+```{r}
+set.seed(200)
+## Sample from JointModel
+mp_k <- sampleStanModel(
+  jm,
+  data = s1_stan_data,
+  iter_sampling = 500,
+  iter_warmup = 1500,
+  chains = 4,
+  parallel_chains = 4,
+  # init = NULL,
+  exe_file = file.path("local", "debug")
+)
+
+
+compare_vars <- c(
+  "lm_gsf_mu_bsld[1]",
+  "lm_gsf_mu_ks[1]",
+  "lm_gsf_mu_kg[1]",
+  "lm_gsf_mu_phi[1]",
+  "lm_gsf_omega_bsld",
+  "lm_gsf_omega_ks",
+  "lm_gsf_omega_kg",
+  "lm_gsf_omega_phi",
+  "lm_gsf_sigma",
+  "lm_gsf_gamma",
+  "beta_os_cov",
+  "sm_exp_lambda"
+)
+
+
+mp_k@results$summary(variables = compare_vars)
+
+mp_k_draws <- mp_k@results$draws(compare_vars)
+mcmc_pairs(mp_k_draws, pars = compare_vars[1:5])
+```
+
+## Fit jmpost sim data
+
+```{r}
+
+## Sample from JointModel
+mp_j <- sampleStanModel(
+  jm,
+  data = s2_stan_data,
+  iter_sampling = 500,
+  iter_warmup = 1500,
+  chains = 4,
+  parallel_chains = 4,
+  # init = NULL,
+  exe_file = file.path("local", "debug")
+)
+
+
+mp_j@results$summary(variables = compare_vars)
+
+mp_j_draws <- mp_j@results$draws(compare_vars)
+mcmc_pairs(mp_j_draws, pars = compare_vars[1:5])
+```
+

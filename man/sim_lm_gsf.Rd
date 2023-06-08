@@ -9,7 +9,7 @@ sim_lm_gsf(
   mu_s = c(3, 4),
   mu_g = c(0.2, 0.3),
   mu_phi = c(0.1, 0.2),
-  mu_b = c(50, 60),
+  mu_b = 50,
   omega_b = 0.135,
   omega_s = 0.15,
   omega_g = 0.225,

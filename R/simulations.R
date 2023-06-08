@@ -65,7 +65,7 @@ sim_lm_gsf <- function(
     mu_s = c(3, 4),
     mu_g = c(0.2, 0.3),
     mu_phi = c(0.1, 0.2),
-    mu_b = c(50, 60),
+    mu_b = 50,
     omega_b = 0.135,
     omega_s = 0.15,
     omega_g = 0.225,
@@ -222,7 +222,7 @@ sim_os_loglogistic <- function(lambda, p) {
 get_timepoints <- function(x) {
     assert_that(length(x) == length(unique(x)))
     x_ord <- x[order(x)]
-    x_no_neg <- x_ord[x_ord > 0]
+    x_no_neg <- x_ord[x_ord >= 0]
 
     bound_lower <- c(0, x_no_neg[-length(x_no_neg)])
     bound_upper <- x_no_neg
@@ -251,7 +251,7 @@ get_timepoints <- function(x) {
 #' @export
 simulate_joint_data <- function(
     n_arm = c(50, 80),   # Number of arms and number of subjects per arm
-    times = 1:2000,
+    times = 0:2000,
     lambda_cen = 1 / 3,
     beta_cont = 0.2,
     beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2),
@@ -302,7 +302,7 @@ simulate_joint_data <- function(
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
         dplyr::mutate(log_bl_haz = os_fun(.data$time)) |>
         dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
-        dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
+        dplyr::mutate(hazard_interval = dplyr::if_else(.data$width == 0, 0, .data$hazard_instant * .data$width)) |>
         dplyr::group_by(.data$pt) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>
         dplyr::ungroup()
@@ -343,15 +343,15 @@ simulate_joint_data <- function(
     lm_dat2 <- lm_dat |>
         dplyr::mutate(os_time = os_time) |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
-        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link")))
+        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link"))) |>
+        dplyr::filter(.data$observed)
 
     assert_that(
         length(unique(os_dat_complete$pt)) == n,
         n == nrow(os_dat_complete),
         all(os_dat_complete$time >= 0),
         all(os_dat_complete$event %in% c(0, 1)),
-        nrow(lm_dat2) == n * length(bounds$time),
-        all(!is.na(lm_dat2$observed))
+        nrow(lm_dat2) >= n
     )
     return(list(os = os_dat_complete, lm = lm_dat2))
 }
