@@ -8,6 +8,7 @@ test_that("LongitudinalGSF works as expected with default arguments", {
 test_that("LongitudinalGSF works as expected with a single study", {
     set.seed(123)
     jlist <- suppressMessages(simulate_joint_data(
+        times = 0:2000,
         lm_fun = sim_lm_random_slope(),
         os_fun = sim_os_weibull(
             lambda = 0.00333,
@@ -17,7 +18,7 @@ test_that("LongitudinalGSF works as expected with a single study", {
 
     dat_os <- jlist$os
     dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+        dplyr::filter(time %in% c(0, 50, 100, 150, 200, 250, 300)) |>
         dplyr::arrange(time, pt)
 
     jdat <- DataJoint(
