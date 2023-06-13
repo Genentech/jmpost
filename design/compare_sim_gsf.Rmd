@@ -359,6 +359,10 @@ compare_vars <- c(
 
 mp_k@results$summary(variables = compare_vars)
 
+not_needed <- mp_k@results$draws()
+saveRDS(mp_k, file = "mp_k.rds")
+readRDS("mp_k.rds")
+
 mp_k_draws <- mp_k@results$draws(compare_vars)
 library(bayesplot)
 mcmc_pairs(mp_k_draws, pars = compare_vars[1:5])
