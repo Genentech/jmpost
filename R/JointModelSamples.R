@@ -59,7 +59,7 @@ setMethod(
             for_this_pt <- which(object@data$ind_index == patient_ind)
             this_t <- object@data$Tobs[for_this_pt]
             this_y <- object@data$Yobs[for_this_pt]
-            this_fit <- samples_median_ci(y_fit_samples[, for_this_pt])
+            this_fit <- samples_median_ci(y_fit_samples[, for_this_pt, drop = FALSE])
             this_result$observed <- data.frame(t = this_t, y = this_y, this_fit)
             # Save all.
             results[[this_pt]] <- this_result
