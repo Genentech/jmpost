@@ -5,6 +5,8 @@ date: "2023-06-06"
 output: 
   html_document:
       code_folding: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -195,6 +197,7 @@ ksim <- function(N = 100,
 
 ### ksim code
 ```{r}
+library(dplyr)
 set.seed(123)
 s1 <- ksim(
   N = 180,
@@ -203,13 +206,13 @@ s1 <- ksim(
   g = 0.0015, # mu_kg
   phi = 0.2, # mu_phi
   omega_BSLD = 0.7,
-  omega_d = 1,
+  omega_s = 1,
   omega_g = 1,
   omega_phi = 1.5,
   sigma = 0.18,
   lambda = 1450,
   beta = 0.01,
-  temps = seq(0, 693, 63)
+  times = seq(0, 693, 63)
 )
 
 s1_data_os <- s1 %>%
@@ -354,12 +357,108 @@ compare_vars <- c(
   "sm_exp_lambda"
 )
 
-
 mp_k@results$summary(variables = compare_vars)
 
 mp_k_draws <- mp_k@results$draws(compare_vars)
+library(bayesplot)
 mcmc_pairs(mp_k_draws, pars = compare_vars[1:5])
 ```
+
+## Now make a nice plot for the hex logo
+
+```{r}
+few_pat <- head(s1_data_os$pt, 20)
+long_samples <- longitudinal(mp_k, patients = few_pat)
+autoplot(long_samples)
+surv_samples <- survival(mp_k, patients = few_pat)
+autoplot(surv_samples, add_km = FALSE)
+```
+
+Let's do it for patient 6 (longitudinal trend going up, survival of course going down).
+
+```{r}
+large_size <- 100
+make_ggplot_of_funs <- function() {
+    object <- long_samples[6]
+    all_fit_dfs <- lapply(object, "[[", i = "summary")
+    all_fit_dfs_with_pt_id <- Map(cbind, all_fit_dfs, pt_id = names(object))
+    all_fit_df <- do.call(rbind, all_fit_dfs_with_pt_id)
+    
+    obs_dfs <- lapply(object, "[[", i = "observed")
+    obs_dfs_with_pt_id <- Map(cbind, obs_dfs, pt_id = names(object))
+    all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
+    
+    long_color <- "#69b3a2"
+    surv_color <- rgb(0.2, 0.6, 0.9, 1)
+    
+    library(ggplot2)
+    p <- ggplot() +
+        geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df, color = long_color) +
+        geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3, color = long_color, fill = long_color) +
+        geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df, color = long_color) +
+        xlab(expression(t)) +
+        scale_y_continuous(
+            # Features of the first axis
+            name = "y(t)",
+            # Add a second axis and specify its features
+            sec.axis = sec_axis( trans=~./600, name="S(t)")
+        ) +
+        theme(
+            axis.title.y = element_text(color = long_color, size = large_size),
+            axis.title.y.right = element_text(color = surv_color, size = large_size)
+        )
+    
+    object <- surv_samples[6]
+    
+    all_fit_dfs <- lapply(object, "[[", i = "summary")
+    all_fit_dfs_with_id <- Map(cbind, all_fit_dfs, id = names(object))
+    all_fit_df <- do.call(rbind, all_fit_dfs_with_id)
+    
+    obs_dfs <- lapply(object, "[[", i = "observed")
+    obs_dfs_with_id <- Map(cbind, obs_dfs, id = names(object))
+    all_obs_df <- do.call(rbind, obs_dfs_with_id)
+    # To avoid issues with logical status in the Kaplan-Meier layer.
+    all_obs_df$death_num <- as.numeric(all_obs_df$death)
+    
+    p <- p +
+        geom_line(aes(x = .data$time, y = .data$median * 600), data = all_fit_df, color = surv_color) +
+        geom_ribbon(aes(x = .data$time, ymin = .data$lower * 600, ymax = .data$upper * 600), data = all_fit_df, alpha = 0.3, color = surv_color, fill = surv_color)
+    
+    p
+}
+
+make_hexplot <- function(out_path = "./man/figures/hex8.png") {
+  # Dependancies
+  require(hexSticker)
+  require(showtext)
+
+  # HexSticker
+  hexSticker::sticker(
+    subplot = make_ggplot_of_funs(),
+    package = "jmpost",
+    p_size = 140,
+    p_color = "#094F26",
+    p_y = 1.4,
+    s_y = 1,
+    s_x = 1,
+    s_width = 1.5,
+    s_height = 1,
+    h_fill = "#b7fed4",
+    h_color = "#094F26",
+    h_size = 2,
+    url = "github.com/Genentech/jmpost",
+    u_size = 24,
+    filename = out_path,
+    p_family = "mono",
+    white_around_sticker = FALSE,
+    dpi = 2000
+  )
+}
+
+make_hexplot()
+```
+
+
 
 ## Fit jmpost sim data
 
