@@ -101,3 +101,31 @@ test_that("simulate_joint_data works as expected", {
     expect_identical(names(result$lm), c("pt", "time", "sld", "study", "arm", "observed"))
     expect_equal(nrow(result$lm), 97921) # calculated as sum(sapply(result$os$time, function(t) sum(times < t) + 1))
 })
+
+test_that("simulate_joint_data leads to valid DataJoint with almost only default arguments", {
+    set.seed(321)
+    sim_data <- simulate_joint_data(
+        lm_fun = sim_lm_random_slope(),
+        os_fun = sim_os_exponential(lambda = 1 / 100)
+    )
+    os_data <- sim_data$os
+    long_data <- sim_data$lm |>
+        dplyr::arrange(time, pt)
+
+    joint_data <- DataJoint(
+        survival = DataSurvival(
+            data = os_data,
+            formula = Surv(time, event) ~ cov_cat + cov_cont,
+            subject = "pt",
+            arm = "arm",
+            study = "study"
+        ),
+        longitudinal = DataLongitudinal(
+            data = long_data,
+            formula = sld ~ time,
+            subject = "pt",
+            threshold = 5
+        )
+    )
+    expect_true(validObject(joint_data))
+})
