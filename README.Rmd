@@ -6,7 +6,7 @@ editor_options:
 <!-- markdownlint-disable-file -->
 <!-- README.md needs to be generated from README.Rmd. Please edit that file -->
 
-# jmpost
+# jmpost <a href="https://genentech.github.io/jmpost"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
