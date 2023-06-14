@@ -2,7 +2,7 @@
 <!-- markdownlint-disable-file -->
 <!-- README.md needs to be generated from README.Rmd. Please edit that file -->
 
-# jmpost
+# jmpost <a href="https://genentech.github.io/jmpost"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -78,12 +78,10 @@ library(jmpost)
 set.seed(321)
 sim_data <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(),
-    os_fun = sim_os_exponential(1 / 300)
+    os_fun = sim_os_exponential(lambda = 1 / 100)
 )
-#> 1 patients did not die before max(times)
 os_data <- sim_data$os
 long_data <- sim_data$lm |>
-    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
     dplyr::arrange(time, pt)
 
 joint_data <- DataJoint(
