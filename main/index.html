@@ -17,6 +17,12 @@
     hazard ratios. Thereby we can predict the overall survival from our phase 1 study
     data and therefore make better decisions.">
 <title>Joint Models for Predicting Overall Survival Trajectories • jmpost</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -33,6 +39,7 @@
     longitudinal measurements, with the overall survival of the patients or their 
     hazard ratios. Thereby we can predict the overall survival from our phase 1 study
     data and therefore make better decisions.">
+<meta property="og:image" content="https://genentech.github.io/jmpost/main/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -67,12 +74,6 @@
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -100,8 +101,11 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="jmpost">jmpost<a class="anchor" aria-label="anchor" href="#jmpost"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="jmpost-">jmpost 
+<a class="anchor" aria-label="anchor" href="#jmpost-"></a>
+</h1>
+</div>
 <!-- badges: start -->
 
 <p>The goal of the <code>jmpost</code> package is to fit joint models involving:</p>
@@ -137,12 +141,10 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">321</span><span class="op">)</span></span>
 <span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulate_joint_data.html">simulate_joint_data</a></span><span class="op">(</span></span>
 <span>    lm_fun <span class="op">=</span> <span class="fu"><a href="reference/sim_lm_random_slope.html">sim_lm_random_slope</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    os_fun <span class="op">=</span> <span class="fu"><a href="reference/sim_os_exponential.html">sim_os_exponential</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">300</span><span class="op">)</span></span>
+<span>    os_fun <span class="op">=</span> <span class="fu"><a href="reference/sim_os_exponential.html">sim_os_exponential</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1 patients did not die before max(times)</span></span>
 <span><span class="va">os_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">os</span></span>
 <span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">lm</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">250</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">pt</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/DataJoint-class.html">DataJoint</a></span><span class="op">(</span></span>
