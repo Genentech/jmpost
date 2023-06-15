@@ -110,5 +110,5 @@ test_that("autoplot works end to end with Kaplan-Meier plot", {
     result <- expect_silent(autoplot(object, add_km = TRUE))
     # 4 layers here, i.e. including Kaplan-Meier plot line and ticks.
     expect_identical(length(result$layers), 4L)
-    result
+    vdiffr::expect_doppelganger("SurvivalSamples autoplot with KM", result)
 })
