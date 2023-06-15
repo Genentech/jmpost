@@ -349,7 +349,7 @@ make_ggplot_of_funs <- function() {
 }
 make_ggplot_of_funs()
 
-make_hexplot <- function(out_path = "../man/figures/hex.png") {
+make_hexplot <- function(out_path = "../man/figures/logo.png") {
     require(hexSticker)
     require(showtext)
 
@@ -377,3 +377,4 @@ make_hexplot <- function(out_path = "../man/figures/hex.png") {
 }
 
 make_hexplot()
+usethis::use_logo("../man/figures/logo.png")
