@@ -104,3 +104,11 @@ test_that("autoplot does not show the Kaplan-Meier plot if disabled", {
     # Only 2 layers here, i.e. no Kaplan-Meier plot.
     expect_identical(length(result$layers), 2L)
 })
+
+test_that("autoplot works end to end with Kaplan-Meier plot", {
+    object <- survival(mcmc_results, patients = c("pt_00001", "pt_00022"))
+    result <- expect_silent(autoplot(object, add_km = TRUE))
+    # 4 layers here, i.e. including Kaplan-Meier plot line and ticks.
+    expect_identical(length(result$layers), 4L)
+    result
+})
