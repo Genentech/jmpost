@@ -5,6 +5,8 @@ date: "2023-06-06"
 output: 
   html_document:
       code_folding: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -195,6 +197,7 @@ ksim <- function(N = 100,
 
 ### ksim code
 ```{r}
+library(dplyr)
 set.seed(123)
 s1 <- ksim(
   N = 180,
@@ -203,13 +206,13 @@ s1 <- ksim(
   g = 0.0015, # mu_kg
   phi = 0.2, # mu_phi
   omega_BSLD = 0.7,
-  omega_d = 1,
+  omega_s = 1,
   omega_g = 1,
   omega_phi = 1.5,
   sigma = 0.18,
   lambda = 1450,
   beta = 0.01,
-  temps = seq(0, 693, 63)
+  times = seq(0, 693, 63)
 )
 
 s1_data_os <- s1 %>%
@@ -354,10 +357,9 @@ compare_vars <- c(
   "sm_exp_lambda"
 )
 
-
 mp_k@results$summary(variables = compare_vars)
-
 mp_k_draws <- mp_k@results$draws(compare_vars)
+library(bayesplot)
 mcmc_pairs(mp_k_draws, pars = compare_vars[1:5])
 ```
 
