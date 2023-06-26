@@ -94,7 +94,7 @@ test_that("autoplot works as expected for SurvivalSamples", {
     expect_identical(
         names(data_layer3),
         c("x", "y", "time", "survival", "status", "PANEL", "group", "colour",
-          "fill", "size", "linetype", "weight", "alpha")
+          "fill", "linewidth", "linetype", "weight", "alpha")
     )
 })
 
@@ -103,4 +103,12 @@ test_that("autoplot does not show the Kaplan-Meier plot if disabled", {
     result <- expect_silent(autoplot(object, add_km = FALSE))
     # Only 2 layers here, i.e. no Kaplan-Meier plot.
     expect_identical(length(result$layers), 2L)
+})
+
+test_that("autoplot works end to end with Kaplan-Meier plot", {
+    object <- survival(mcmc_results, patients = c("pt_00001", "pt_00022"))
+    result <- expect_silent(autoplot(object, add_km = TRUE))
+    # 4 layers here, i.e. including Kaplan-Meier plot line and ticks.
+    expect_identical(length(result$layers), 4L)
+    vdiffr::expect_doppelganger("SurvivalSamples autoplot with KM", result)
 })
