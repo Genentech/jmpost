@@ -94,7 +94,7 @@ test_that("autoplot works as expected for SurvivalSamples", {
     expect_identical(
         names(data_layer3),
         c("x", "y", "time", "survival", "status", "PANEL", "group", "colour",
-          "fill", "size", "linetype", "weight", "alpha")
+          "fill", "linewidth", "linetype", "weight", "alpha")
     )
 })
 
