@@ -34,7 +34,7 @@ Imports:
     stringr,
     cmdstanr,
     ggplot2,
-    ggquickeda,
+    ggplot2.utils,
     statmod,
     jinjar,
     survival,

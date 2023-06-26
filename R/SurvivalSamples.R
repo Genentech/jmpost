@@ -103,8 +103,8 @@ setMethod(
             facet_wrap(~ id)
         if (add_km) {
             p <- p +
-                ggquickeda::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +
-                ggquickeda::geom_kmticks(aes(time = .data$t, status = .data$death_num), data = all_obs_df)
+                ggplot2.utils::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +
+                ggplot2.utils::geom_km_ticks(aes(time = .data$t, status = .data$death_num), data = all_obs_df)
         }
         p
     }
