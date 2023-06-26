@@ -34,7 +34,7 @@ Imports:
     stringr,
     cmdstanr,
     ggplot2,
-    ggquickeda,
+    ggplot2.utils,
     statmod,
     jinjar,
     survival,
@@ -47,7 +47,8 @@ Suggests:
     knitr,
     rmarkdown,
     rstan,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    vdiffr
 Config/testthat/edition: 3
 Collate:
     'utilities.R'
