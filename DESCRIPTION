@@ -24,11 +24,14 @@ Description: Implements joint models combining a non-linear mixed effects model 
 License: Apache License (>= 2)
 Encoding: UTF-8
 Language: en-US
-Roxygen: list(markdown = TRUE)
+Config/Needs/documentation: 
+    roxytypes
+Roxygen: list(markdown = TRUE, packages = "roxytypes")
+Config/roxytypes: list(format = "(`{type}`)\\cr {description}")
 RoxygenNote: 7.2.3
-Depends:
+Depends: 
     R (>= 3.5.0)
-Imports:
+Imports: 
     assertthat,
     dplyr,
     stringr,
@@ -50,7 +53,7 @@ Suggests:
     testthat (>= 3.0.0),
     vdiffr
 Config/testthat/edition: 3
-Collate:
+Collate: 
     'utilities.R'
     'generics.R'
     'DataLongitudinal.R'
