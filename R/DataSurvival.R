@@ -231,15 +231,15 @@ setMethod(
 
 #' `get_arm_study_data`
 #'
+#' The function is purely a sub-component of `as.list(DataSurvival)`. Its
+#' purpose is to extract key logic into its own function to enable unit tests.
+#'
 #' @typed pt: factor
 #'   subject identifiers.
 #' @typed arm: factor
 #'   treatment arms of the same length as `pt`.
 #' @typed study: factor
 #'   study identifiers of the same length as `pt`.
-#' 
-#'   The function is purely a sub-component of `as.list(DataSurvival)`. Its
-#'   purpose is to extract key logic into its own function to enable unit tests.
 #'
 #' @returns A list with `index_per_arm`, `n_index_per_arm`, `n_arms`,
 #'   `arm_to_study_index`, and `n_studies`.

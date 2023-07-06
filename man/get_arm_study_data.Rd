@@ -11,16 +11,14 @@ get_arm_study_data(pt, arm, study)
 
 \item{arm}{(\code{factor})\cr treatment arms of the same length as \code{pt}.}
 
-\item{study}{(\code{factor})\cr study identifiers of the same length as \code{pt}.
-
-The function is purely a sub-component of \code{as.list(DataSurvival)}. Its
-purpose is to extract key logic into its own function to enable unit tests.}
+\item{study}{(\code{factor})\cr study identifiers of the same length as \code{pt}.}
 }
 \value{
 A list with \code{index_per_arm}, \code{n_index_per_arm}, \code{n_arms},
 \code{arm_to_study_index}, and \code{n_studies}.
 }
 \description{
-\code{get_arm_study_data}
+The function is purely a sub-component of \code{as.list(DataSurvival)}. Its
+purpose is to extract key logic into its own function to enable unit tests.
 }
 \keyword{internal}
