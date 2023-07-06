@@ -22,7 +22,8 @@ NULL
 
 #' @rdname ParameterList-class
 #'
-#' @param ... (`Parameter`)\cr which parameter specifications to include.
+#' @typed ...: Parameter
+#'   which parameter specifications to include.
 #'
 #' @export
 ParameterList <- function(...) {
