@@ -4,11 +4,16 @@
 
 #' Generalized Stein-Fojo Functionals
 #'
-#' @param time (`numeric`)\cr time grid.
-#' @param b (`number`)\cr baseline.
-#' @param s (`number`)\cr shrinkage.
-#' @param g (`number`)\cr growth.
-#' @param phi (`number`)\cr shrinkage proportion.
+#' @typed time: numeric
+#'   time grid.
+#' @typed b: number
+#'   baseline.
+#' @typed s: number
+#'   shrinkage.
+#' @typed g: number
+#'   growth.
+#' @typed phi: number
+#'   shrinkage proportion.
 #'
 #' @returns The function results.
 #' @export
@@ -42,18 +47,30 @@ gsf_dsld <- function(time, b, s, g, phi) {
 
 #' Construct a Simulation Function for Longitudinal Data from GSF Model
 #'
-#' @param sigma (`number`)\cr the variance of the longitudinal values.
-#' @param mu_s (`numeric`)\cr the mean shrinkage rates for the two treatment arms.
-#' @param mu_g (`numeric`)\cr the mean growth rates for the two treatment arms.
-#' @param mu_phi (`numeric`)\cr the mean shrinkage proportions for the two treatment arms.
-#' @param mu_b (`numeric`)\cr the mean baseline values for the two treatment arms.
-#' @param omega_b (`number`)\cr the baseline value standard deviation.
-#' @param omega_s (`number`)\cr the shrinkage rate standard deviation.
-#' @param omega_g (`number`)\cr the growth rate standard deviation.
-#' @param omega_phi (`number`)\cr the shrinkage proportion standard deviation.
-#' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
-#' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
-#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
+#' @typed sigma: number
+#'   the variance of the longitudinal values.
+#' @typed mu_s: numeric
+#'   the mean shrinkage rates for the two treatment arms.
+#' @typed mu_g: numeric
+#'   the mean growth rates for the two treatment arms.
+#' @typed mu_phi: numeric
+#'   the mean shrinkage proportions for the two treatment arms.
+#' @typed mu_b: numeric
+#'   the mean baseline values for the two treatment arms.
+#' @typed omega_b: number
+#'   the baseline value standard deviation.
+#' @typed omega_s: number
+#'   the shrinkage rate standard deviation.
+#' @typed omega_g: number
+#'   the growth rate standard deviation.
+#' @typed omega_phi: number
+#'   the shrinkage proportion standard deviation.
+#' @typed link_dsld: number
+#'   the link coefficient for the derivative contribution.
+#' @typed link_ttg: number
+#'   the link coefficient for the time-to-growth contribution.
+#' @typed .debug: flag
+#'   whether to enter debug mode such that the function
 #'   would only return a subset of columns.
 #'
 #' @returns A function with argument `lm_base` that can be used to simulate
@@ -118,12 +135,18 @@ sim_lm_gsf <- function(
 
 #' Construct a Simulation Function for Longitudinal Data from Random Slope Model
 #'
-#' @param intercept (`number`)\cr the mean baseline value.
-#' @param slope_mu (`numeric`)\cr the population slope for the two treatment arms.
-#' @param slope_sigma (`number`)\cr the random slope standard deviation.
-#' @param sigma (`number`)\cr the variance of the longitudinal values.
-#' @param phi (`number`)\cr the link coefficient for the random slope contribution.
-#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
+#' @typed intercept: number
+#'   the mean baseline value.
+#' @typed slope_mu: numeric
+#'   the population slope for the two treatment arms.
+#' @typed slope_sigma: number
+#'   the random slope standard deviation.
+#' @typed sigma: number
+#'   the variance of the longitudinal values.
+#' @typed phi: number
+#'   the link coefficient for the random slope contribution.
+#' @typed .debug: flag
+#'   whether to enter debug mode such that the function
 #'   would only return a subset of columns.
 #'
 #' @returns A function with argument `lm_base` that can be used to simulate
@@ -173,8 +196,10 @@ sim_lm_random_slope <- function(
 
 #' Construct a Log Hazard Function for the Weibull Model
 #'
-#' @param lambda (`number`)\cr the scale parameter.
-#' @param gamma (`number`)\cr the shape parameter.
+#' @typed lambda: number
+#'   the scale parameter.
+#' @typed gamma: number
+#'   the shape parameter.
 #'
 #' @returns A function of `time` returning the log hazard.
 #' @export
@@ -186,7 +211,8 @@ sim_os_weibull <- function(lambda, gamma) {
 
 #' Construct a Log Hazard Function for the Exponential Model
 #'
-#' @param lambda (`number`)\cr the rate parameter.
+#' @typed lambda: number
+#'   the rate parameter.
 #'
 #' @returns A function of `time` returning the log hazard.
 #' @export
@@ -198,8 +224,10 @@ sim_os_exponential <- function(lambda) {
 
 #' Construct a Log Hazard Function for the Log-Logistic Model
 #'
-#' @param lambda (`number`)\cr the inverse median parameter.
-#' @param p (`number`)\cr the shape parameter.
+#' @typed lambda: number
+#'   the inverse median parameter.
+#' @typed p: number
+#'   the shape parameter.
 #'
 #' @returns A function of `time` returning the log hazard.
 #' @export
@@ -215,7 +243,8 @@ sim_os_loglogistic <- function(lambda, p) {
 
 #' Construct Time Intervals
 #'
-#' @param x (`numeric`)\cr grid of time points.
+#' @typed x: numeric
+#'   grid of time points.
 #'
 #' @return A `tibble` with `lower`, `upper`, `time` and `width`.
 #' @keywords internal
@@ -239,13 +268,20 @@ get_timepoints <- function(x) {
 
 #' Simulating Joint Longitudinal and Time-to-Event Data
 #'
-#' @param n_arm (`numeric`)\cr numbers of patients per treatment arm.
-#' @param times (`numeric`)\cr time grid, e.g. specifying the days after randomization.
-#' @param lambda_cen (`number`)\cr rate of the exponential censoring distribution.
-#' @param beta_cont (`number`)\cr coefficient for the continuous covariate.
-#' @param beta_cat (`numeric`)\cr coefficients for the categorical covariate levels.
-#' @param lm_fun (`function`)\cr function of `lm_base` generating the longitudinal model outcomes.
-#' @param os_fun (`function`)\cr function of `lm_base` generating the survival model outcomes.
+#' @typed n_arm: numeric
+#'   numbers of patients per treatment arm.
+#' @typed times: numeric
+#'   time grid, e.g. specifying the days after randomization.
+#' @typed lambda_cen: number
+#'   rate of the exponential censoring distribution.
+#' @typed beta_cont: number
+#'   coefficient for the continuous covariate.
+#' @typed beta_cat: numeric
+#'   coefficients for the categorical covariate levels.
+#' @typed lm_fun: function
+#'   function of `lm_base` generating the longitudinal model outcomes.
+#' @typed os_fun: function
+#'   function of `lm_base` generating the survival model outcomes.
 #'
 #' @returns List with simulated `lm` (longitudinal) and `os` (survival) data sets.
 #' @export

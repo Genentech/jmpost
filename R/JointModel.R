@@ -26,7 +26,8 @@ NULL
 #'
 #' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
 #' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
-#' @param link (`Link`)\cr the link.
+#' @typed link: Link
+#'   the link.
 #'
 #' @export
 JointModel <- function(longitudinal = NULL,

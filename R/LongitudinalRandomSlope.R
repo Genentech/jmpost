@@ -20,11 +20,16 @@ NULL
 
 #' @rdname LongitudinalRandomSlope-class
 #'
-#' @param intercept (`Prior`)\cr for the `intercept`.
-#' @param slope_mu (`Prior`)\cr for the population slope `slope_mu`.
-#' @param slope_sigma (`Prior`)\cr for the random slope standard deviation `slope_sigma`.
-#' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
-#' @param random_slope (`Prior`)\cr must be `prior_none()`, just used to specify initial values.
+#' @typed intercept: Prior
+#'   for the `intercept`.
+#' @typed slope_mu: Prior
+#'   for the population slope `slope_mu`.
+#' @typed slope_sigma: Prior
+#'   for the random slope standard deviation `slope_sigma`.
+#' @typed sigma: Prior
+#'   for the variance of the longitudinal values `sigma`.
+#' @typed random_slope: Prior
+#'   must be `prior_none()`, just used to specify initial values.
 #'
 #' @export
 LongitudinalRandomSlope <- function(

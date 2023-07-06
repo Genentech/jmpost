@@ -39,13 +39,19 @@ NULL
 
 #' @rdname DataSurvival-class
 #'
-#' @param data (`data.frame`)\cr the observed time-to-event data.
-#' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
+#' @typed data: data.frame
+#'   the observed time-to-event data.
+#' @typed formula: formula
+#'   of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
 #'   See [`survival::Surv()`] for more details, though note that this package only supports right censoring.
-#' @param subject (`string`)\cr the name of the subject identifier variable.
-#' @param arm (`string`)\cr the name of the treatment arm variable.
-#' @param study (`string`)\cr the name of the study variable.
-#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
+#' @typed subject: string
+#'   the name of the subject identifier variable.
+#' @typed arm: string
+#'   the name of the treatment arm variable.
+#' @typed study: string
+#'   the name of the study variable.
+#' @typed time_grid: numeric
+#'   grid of time points to use for providing samples
 #'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
 #'   201 values from 0 to the maximum observed times.
 #'
@@ -225,12 +231,15 @@ setMethod(
 
 #' `get_arm_study_data`
 #'
-#' @param pt (`factor`)\cr subject identifiers.
-#' @param arm (`factor`)\cr treatment arms of the same length as `pt`.
-#' @param study (`factor`)\cr study identifiers of the same length as `pt`.
-#'
-#' The function is purely a sub-component of `as.list(DataSurvival)`. Its
-#' purpose is to extract key logic into its own function to enable unit tests.
+#' @typed pt: factor
+#'   subject identifiers.
+#' @typed arm: factor
+#'   treatment arms of the same length as `pt`.
+#' @typed study: factor
+#'   study identifiers of the same length as `pt`.
+#' 
+#'   The function is purely a sub-component of `as.list(DataSurvival)`. Its
+#'   purpose is to extract key logic into its own function to enable unit tests.
 #'
 #' @returns A list with `index_per_arm`, `n_index_per_arm`, `n_arms`,
 #'   `arm_to_study_index`, and `n_studies`.

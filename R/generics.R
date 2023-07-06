@@ -148,7 +148,8 @@ setGeneric(
 #' Write the Stan code for a Stan module.
 #'
 #' @param object the module.
-#' @param file_path (`string`)\cr output file.
+#' @typed file_path: string
+#'   output file.
 #'
 #' @export
 setGeneric(
@@ -163,7 +164,8 @@ setGeneric(
 #' Compile the Stan module.
 #'
 #' @param object the module.
-#' @param exe_file (`string`)\cr output file.
+#' @typed exe_file: string
+#'   output file.
 #'
 #' @export
 setGeneric(
@@ -179,7 +181,8 @@ setGeneric(
 #'
 #' @param object the module.
 #' @param ... additional arguments.
-#' @param exe_file (`string`)\cr output file.
+#' @typed exe_file: string
+#'   output file.
 #'
 #' @export
 setGeneric(

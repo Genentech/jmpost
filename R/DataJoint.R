@@ -25,8 +25,10 @@ NULL
 
 #' @rdname DataJoint-class
 #'
-#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
-#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
+#' @typed survival: DataSurvival
+#'   object created by [DataSurvival()].
+#' @typed longitudinal: DataLongitudinal
+#'   object created by [DataLongitudinal()].
 #'
 #' @details
 #'

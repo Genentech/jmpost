@@ -18,7 +18,8 @@ NULL
 
 #' @rdname LinkGSF-class
 #'
-#' @param components (`list`)\cr which link components should be included.
+#' @typed components: list
+#'   which link components should be included.
 #'
 #' @export
 LinkGSF <- function(
@@ -91,8 +92,10 @@ LinkGSF <- function(
 #' @rdname link_gsf_abstract-class
 #'
 #' @inheritParams stanmodel_arguments
-#' @param parameter_name (`character`)\cr the name of the parameter.
-#' @param contribution_fname (`character`)\cr the function name of the contribution.
+#' @typed parameter_name: character
+#'   the name of the parameter.
+#' @typed contribution_fname: character
+#'   the function name of the contribution.
 #'
 #' @note Only the `functions` part of `stan` will be used.
 #'
@@ -132,7 +135,8 @@ link_gsf_abstract <- function(stan,
 
 #' @rdname link_gsf_ttg-class
 #'
-#' @param gamma (`Prior`)\cr prior for the link coefficient `gamma`.
+#' @typed gamma: Prior
+#'   prior for the link coefficient `gamma`.
 #'
 #' @export
 link_gsf_ttg <- function(
@@ -164,7 +168,8 @@ link_gsf_ttg <- function(
 
 #' @rdname link_gsf_dsld-class
 #'
-#' @param beta (`Prior`)\cr prior for the link coefficient `beta`.
+#' @typed beta: Prior
+#'   prior for the link coefficient `beta`.
 #'
 #' @export
 link_gsf_dsld <- function(

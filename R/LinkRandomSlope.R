@@ -18,7 +18,8 @@ NULL
 
 #' @rdname LinkRandomSlope-class
 #'
-#' @param link_lm_phi (`Prior`)\cr prior for the link coefficient for the
+#' @typed link_lm_phi: Prior
+#'   prior for the link coefficient for the
 #'   random slope link contribution.
 #'
 #' @export

@@ -5,9 +5,12 @@
 #' The documentation lists all the conventional arguments for wrappers around
 #' [StanModel()].
 #'
-#' @param stan (`StanModule`)\cr code containing the Stan code specification.
-#' @param parameters (`ParameterList`)\cr the parameter specification.
-#' @param parameter (`ParameterList`)\cr the (single) parameter specification.
+#' @typed stan: StanModule
+#'   code containing the Stan code specification.
+#' @typed parameters: ParameterList
+#'   the parameter specification.
+#' @typed parameter: ParameterList
+#'   the (single) parameter specification.
 #' @param ... additional arguments for [StanModel()].
 #'
 #' @name stanmodel_arguments
@@ -21,7 +24,8 @@ NULL
 #' The documentation lists all the conventional arguments for [`Prior`]
 #' constructors.
 #'
-#' @param init (`number`)\cr initial value.
+#' @typed init: number
+#'   initial value.
 #'
 #' @name prior_arguments
 #' @keywords internal

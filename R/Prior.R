@@ -58,8 +58,10 @@ setMethod(
 
 #' Normal Prior Distribution
 #'
-#' @param mu (`number`)\cr mean.
-#' @param sigma (`number`)\cr standard deviation.
+#' @typed mu: number
+#'   mean.
+#' @typed sigma: number
+#'   standard deviation.
 #' @inheritParams prior_arguments
 #'
 #' @export
@@ -86,8 +88,10 @@ prior_std_normal <- function(init = 0) {
 
 #' Cauchy Prior Distribution
 #'
-#' @param mu (`number`)\cr mean.
-#' @param sigma (`number`)\cr scale.
+#' @typed mu: number
+#'   mean.
+#' @typed sigma: number
+#'   scale.
 #' @inheritParams prior_arguments
 #'
 #' @export
@@ -101,8 +105,10 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 
 #' Gamma Prior Distribution
 #'
-#' @param alpha (`number`)\cr shape.
-#' @param beta (`number`)\cr inverse scale.
+#' @typed alpha: number
+#'   shape.
+#' @typed beta: number
+#'   inverse scale.
 #' @inheritParams prior_arguments
 #'
 #' @export
@@ -116,8 +122,10 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
 
 #' Log-Normal Prior Distribution
 #'
-#' @param mu (`number`)\cr mean of the logarithm.
-#' @param sigma (`number`)\cr standard deviation of the logarithm.
+#' @typed mu: number
+#'   mean of the logarithm.
+#' @typed sigma: number
+#'   standard deviation of the logarithm.
 #' @inheritParams prior_arguments
 #'
 #' @export
@@ -131,8 +139,10 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
 
 #' Beta Prior Distribution
 #'
-#' @param a (`number`)\cr first parameter.
-#' @param b (`number`)\cr second parameter
+#' @typed a: number
+#'   first parameter.
+#' @typed b: number
+#'   second parameter
 #' @inheritParams prior_arguments
 #'
 #' @export

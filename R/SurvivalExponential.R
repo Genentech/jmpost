@@ -18,8 +18,10 @@ NULL
 
 #' @rdname SurvivalExponential-class
 #'
-#' @param lambda (`Prior`)\cr for the exponential rate `lambda`.
-#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#' @typed lambda: Prior
+#'   for the exponential rate `lambda`.
+#' @typed beta: Prior
+#'   for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalExponential <- function(

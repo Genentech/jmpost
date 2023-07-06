@@ -16,8 +16,10 @@
 
 #' @rdname LongitudinalSamples-class
 #'
-#' @param x (`LongitudinalSamples`)\cr the samples object to subset.
-#' @param i (`vector`)\cr the index vector.
+#' @typed x: LongitudinalSamples
+#'   the samples object to subset.
+#' @typed i: vector
+#'   the index vector.
 #' @param j not used.
 #' @param drop not used.
 #' @param ... not used.

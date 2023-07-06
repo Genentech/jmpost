@@ -1,6 +1,7 @@
 #' Row Numbers of Data with Missing Variables
 #'
-#' @param df (`data.frame`)\cr input data.
+#' @typed df: data.frame
+#'   input data.
 #' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness, if `NULL`
 #'   all variables are considered.
 #'
@@ -22,9 +23,11 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 #' variables. Allows users to specify which variables to inspect for missing values
 #' based on either a formula or a character vector of variable names.
 #'
-#' @param data (`data.frame`)\cr input data.
+#' @typed data: data.frame
+#'   input data.
 #' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness.
-#' @param extra_vars (`character`)\cr additional variables to inspect for missingness.
+#' @typed extra_vars: character
+#'   additional variables to inspect for missingness.
 #'
 #' @returns The `data` after removing observations that contain missing values in the required variables.
 #'   Note that additional variables not listed in `formula` or `extra_vars` are not dropped and may
@@ -50,8 +53,10 @@ remove_missing_rows <- function(data, formula, extra_vars) {
 
 #' Replicate Single Values in a List
 #'
-#' @param initial_values (`list`)\cr initial values with names.
-#' @param sizes (`list`)\cr each size corresponds to an element in `initial_values`,
+#' @typed initial_values: list
+#'   initial values with names.
+#' @typed sizes: list
+#'   each size corresponds to an element in `initial_values`,
 #'   matched by the names. An attribute `array` must be attached to each element,
 #'   see [replace_with_lookup()].
 #'
@@ -107,9 +112,11 @@ expand_initial_values <- function(initial_values, sizes) {
 
 #' Replace Character Size by Looked Up Numbers
 #'
-#' @param sizes (`list`)\cr may include character elements that correspond to
+#' @typed sizes: list
+#'   may include character elements that correspond to
 #'   names in the data list.
-#' @param data (`list`)\cr data containing numeric values.
+#' @typed data: list
+#'   data containing numeric values.
 #'
 #' @returns A list of sizes with character elements in `sizes`
 #'   replaced by their corresponding numeric values in `data`.
@@ -158,8 +165,10 @@ replace_with_lookup <- function(sizes, data) {
 
 #' Obtain Median and Credible Intervals from MCMC samples
 #'
-#' @param samples (`matrix`)\cr with samples in rows and parameters in columns.
-#' @param level (`number`)\cr credibility level to use for the credible intervals.
+#' @typed samples: matrix
+#'   with samples in rows and parameters in columns.
+#' @typed level: number
+#'   credibility level to use for the credible intervals.
 #'
 #' @returns A `data.frame` with columns `median`, `lower` and `upper`.
 #' @export

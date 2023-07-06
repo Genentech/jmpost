@@ -18,9 +18,12 @@ NULL
 
 #' @rdname SurvivalLogLogistic-class
 #'
-#' @param lambda (`Prior`)\cr for the inverse median `lambda`.
-#' @param p (`Prior`)\cr for the shape parameter `p`.
-#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#' @typed lambda: Prior
+#'   for the inverse median `lambda`.
+#' @typed p: Prior
+#'   for the shape parameter `p`.
+#' @typed beta: Prior
+#'   for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalLogLogistic <- function(

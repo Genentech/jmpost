@@ -16,8 +16,10 @@
 
 #' @rdname SurvivalSamples-class
 #'
-#' @param x (`SurvivalSamples`)\cr the samples object to subset.
-#' @param i (`vector`)\cr the index vector.
+#' @typed x: SurvivalSamples
+#'   the samples object to subset.
+#' @typed i: vector
+#'   the index vector.
 #' @param j not used.
 #' @param drop not used.
 #' @param ... not used.
@@ -37,7 +39,8 @@ setMethod(
 # SurvivalSamples-aggregate ----
 
 #' @rdname aggregate
-#' @param groups (`list`)\cr defining into which groups to aggregate
+#' @typed groups: list
+#'   defining into which groups to aggregate
 #'   individual samples, where the names are the new group labels and
 #'   the character vectors are the old individual sample labels.
 setMethod(
@@ -77,7 +80,8 @@ setMethod(
 # SurvivalSamples-autoplot ----
 
 #' @rdname autoplot
-#' @param add_km (`flag`)\cr whether to add the Kaplan-Meier plot of the
+#' @typed add_km: flag
+#'   whether to add the Kaplan-Meier plot of the
 #'   survival data to the plots.
 setMethod(
     f = "autoplot",

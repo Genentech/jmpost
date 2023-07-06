@@ -28,8 +28,10 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 
 #' @rdname Parameter-class
 #'
-#' @param prior (`Prior`)\cr for the parameter.
-#' @param name (`string`)\cr of the parameter.
+#' @typed prior: Prior
+#'   for the parameter.
+#' @typed name: string
+#'   of the parameter.
 #' @param size (`numeric` or `string`)\cr dimension of the parameter.
 #'
 #' @export

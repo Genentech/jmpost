@@ -23,15 +23,24 @@ NULL
 
 #' @rdname LongitudinalGSF-class
 #'
-#' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
-#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
-#' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
-#' @param mu_phi (`Prior`)\cr for the mean shrinkage proportion `mu_phi`.
-#' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
-#' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
-#' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
-#' @param omega_phi (`Prior`)\cr for the shrinkage proportion standard deviation `omega_phi`.
-#' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
+#' @typed mu_bsld: Prior
+#'   for the mean baseline value `mu_bsld`.
+#' @typed mu_ks: Prior
+#'   for the mean shrinkage rate `mu_ks`.
+#' @typed mu_kg: Prior
+#'   for the mean growth rate `mu_kg`.
+#' @typed mu_phi: Prior
+#'   for the mean shrinkage proportion `mu_phi`.
+#' @typed omega_bsld: Prior
+#'   for the baseline value standard deviation `omega_bsld`.
+#' @typed omega_ks: Prior
+#'   for the shrinkage rate standard deviation `omega_ks`.
+#' @typed omega_kg: Prior
+#'   for the growth rate standard deviation `omega_kg`.
+#' @typed omega_phi: Prior
+#'   for the shrinkage proportion standard deviation `omega_phi`.
+#' @typed sigma: Prior
+#'   for the variance of the longitudinal values `sigma`.
 #'
 #' @export
 LongitudinalGSF <- function(

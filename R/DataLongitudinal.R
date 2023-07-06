@@ -37,12 +37,17 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 
 #' @rdname DataLongitudinal-class
 #'
-#' @param data (`data.frame`)\cr containing the observed longitudinal data.
-#' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
-#' @param subject (`string`)\cr the name of the subject identifier variable.
-#' @param threshold (`number`)\cr cut-off value to be used to declare an observation as censored
+#' @typed data: data.frame
+#'   containing the observed longitudinal data.
+#' @typed formula: formula
+#'   of the form `outcome ~ time`, and cannot contain any additional covariates.
+#' @typed subject: string
+#'   the name of the subject identifier variable.
+#' @typed threshold: number
+#'   cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
-#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
+#' @typed time_grid: numeric
+#'   grid of time points to use for providing samples
 #'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
 #'   201 values from the minimum to the maximum observed times.
 #'
