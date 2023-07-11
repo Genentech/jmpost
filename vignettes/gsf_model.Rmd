@@ -20,5 +20,6 @@ library(jmpost)
 
 Here we describe details of fitting a Generalized Stein-Fojo (GSF) model with
 `{jmpost}`.
+Test commit in the right branch (164_gsf_vignette) by FM
 
 
