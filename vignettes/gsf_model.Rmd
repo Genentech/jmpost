@@ -1,5 +1,5 @@
 ---
-title: "How to fit a Generalized Stein-Fojo Model"
+title: "How to fit a Generalized Stein-Fojo Model in jmpost"
 package: jmpost
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,6 +20,85 @@ library(jmpost)
 
 Here we describe details of fitting a Generalized Stein-Fojo (GSF) model with
 `{jmpost}`.
-Test commit in the right branch (164_gsf_vignette) by FM
+# Test commit in the right branch (164_gsf_vignette) by FM
+
+1. Introduction
+
+{jmpost} is a free and open-source package specifically designed to support the development, fitting,
+evaluation of joint models involving (i) a time to event sub-model, (ii) a longitudinal nonlinear mixed-effects sub-model describing the time dynamics
+of biomarker data, and (iii) an association term linking these two sub-models.
+Motivated well-known case studies, {jmpost} can, for instance, be used to analyze the relationship between tumor growth inhibition (TGI) and overall survival (OS) in 
+oncology clinical drug development. The current version of {jmpost} handles nonlinear mixed-effects models (NLME) formulated as analytical functions (in contrast 
+to ordinary differential equations).
+The R package {jmpost} implements the HMC NUTS algorithm from the Stan language, developed by the Stan development <ref>. As such, it is possible to specify the
+prior distributions associated with each population parameter of a joint model.
+
+In this vignette, the focus is on the longitudinal biomarker model (ref. Main workflow, steps 1 of 4). The objectives of this vignette are to perform:
+a. parameter estimation for nonlinear mixed effects models
+   - estimating the population parameters,
+   - computing standard errors for the maximum likelihood estimates,
+   - computing the modes, quantiles, and highest density intervals (HDI).
+
+be. goodness of fit plots
+
+c. model selection
+  - comparing several models using leave-one out cross-validation (LOO-CV),
+
+2. NLME model
+
+2.1. General structure
+
+We consider the following general NLME model for continuous endpoints:
+y_ij = f(x_ij, \psi_i) + \eps_ij, with 1 <= i < =N, and 1 <= j <= n_i
+and where
+- y_ij \in \mathbb{R} is the {j}th observation of subject {i},
+- {N} is the number of subjects
+- {n_i} is the number of observations
+- x_ij are the covariates (a.k.a. predictors, design variables, design variables) assumed to be known (i.e. without measurement or standard errors)
+- for subject {i}, the vector \psi_i is the vector of individual model parameters, such that \psi_i = H(\mu, \eta_i).
+Here, \mu is a vector of fixed effects, a.k.a. population parameters, to be estimated and \eta_i is a vector of normally distributed random effects, 
+with \eta_i~i.i.d. {N}(0, \Omega).
+A frequent transformation for model parameters is the log-transformation, such that log(\psi_i) = log(\mu) + \eta_i, or equivalently
+\psi_i = \mu * exp(\eta_i).
+The residual errors \eps_ij are random variables with mean 0 and variance \sigma_res^2.
+The variance terms \Omega and \sigma_res^2 are to be estimated. We suppose that \eta_i and \eps_ij are mutually independent.
+
+The model parameters are \theta = (\mu, \Omega). We denote \L(y; \theta) the likelihood of the observations y = (y_ij; 1 <= i < =N, and 1 <= j <= n_i) 
+and p(y, \psi; \theta) the likelihood of the complete data (y, \psi) = (y_ij, \psi_i; 1 <= i < =N, and 1 <= j <= n_i).
+Thus, 
+\L(y; \theta) = \integral p(y, \psi; \theta) d\psi
+
+2.2. TGI model
+
+
+
+3. Inputs and outputs
+
+3.1. Inputs
+
+In order to fit an NLME model (alone, i.e. separately from the JM), it is necessary to define:
+- prior distributions for the vector of population parameters, \theta,
+- a data object, contained as least:
+  > xxx
+  > xxx
+  > xxx
+- a model object, selected from a pre-defined list, and identified by:
+  > the name of the model,
+  > xxx
+Then, it is necessary to specify several optimization parameters for running the HMC sampling. For this part, we refer to the vignette dedicated to 
+the Bayesian implementation of the model. Here below, we provide the list of default values for the HMC implementation.
+
+Table ... Parameters set as options in the option list.
+
+3.2. Outputs
+
+The object returned after a call to the main fitting function xxx() contains the following elements:
+- 
+
+
+
+
+
+
 
 
