@@ -10,9 +10,9 @@
 JointModel(longitudinal = NULL, survival = NULL, link = NULL)
 }
 \arguments{
-\item{longitudinal}{(\code{LongitudinalModel} or \code{NULL})\cr the longitudinal model.}
+\item{longitudinal}{(\verb{"}LongitudinalModel\code{or}NULL\verb{"})\cr the longitudinal model.}
 
-\item{survival}{(\code{SurvivalModel} or \code{NULL})\cr the survival model.}
+\item{survival}{(\verb{"}SurvivalModel\code{or}NULL\verb{"})\cr the survival model.}
 
 \item{link}{(\code{Link})\cr the link.}
 }

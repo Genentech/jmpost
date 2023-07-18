@@ -24,8 +24,10 @@ NULL
 
 #' @rdname JointModel-class
 #'
-#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
-#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @typed longitudinal: "`LongitudinalModel` or `NULL`"
+#'   the longitudinal model.
+#' @typed survival: "`SurvivalModel` or `NULL`"
+#'   the survival model.
 #' @typed link: Link
 #'   the link.
 #'
@@ -102,7 +104,8 @@ setMethod(
 
 #' @rdname sampleStanModel
 #'
-#' @param data (`DataJoint` or `list`)\cr input data.
+#' @typed data: "`DataJoint` or `list`"
+#'   input data.
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",

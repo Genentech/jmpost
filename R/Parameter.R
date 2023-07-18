@@ -32,7 +32,8 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 #'   for the parameter.
 #' @typed name: string
 #'   of the parameter.
-#' @param size (`numeric` or `string`)\cr dimension of the parameter.
+#' @typed size: "`numeric` or `string`"
+#'   dimension of the parameter.
 #'
 #' @export
 Parameter <- function(prior, name, size = 1) {

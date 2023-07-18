@@ -28,9 +28,9 @@ NULL
 
 #' @rdname longitudinal
 #'
-#' @param patients (`character` or `NULL`)\cr optional subset of patients for
-#' which the longitudinal fit samples should be extracted, the default `NULL`
-#' meaning all patients.
+#' @typed patients: "`character` or `NULL`"
+#'    optional subset of patients for which the longitudinal fit samples
+#'    should be extracted, the default `NULL` meaning all patients.
 #'
 #' @export
 setMethod(
@@ -72,9 +72,9 @@ setMethod(
 
 #' @rdname survival
 #'
-#' @param patients (`character` or `NULL`)\cr optional subset of patients for
-#' which the survival function samples should be extracted, the default `NULL`
-#' meaning all patients.
+#' @typed patients: "`character` or `NULL`"
+#'    optional subset of patients for which the survival function samples
+#'    should be extracted, the default `NULL` meaning all patients.
 #'
 #' @export
 setMethod(

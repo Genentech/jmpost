@@ -2,8 +2,8 @@
 #'
 #' @typed df: data.frame
 #'   input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness, if `NULL`
-#'   all variables are considered.
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness, if `NULL` all variables are considered.
 #'
 #' @returns Numeric vector specifying which rows contain at least 1 missing observation
 #'   in any of the inspected variables.
@@ -25,7 +25,8 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 #'
 #' @typed data: data.frame
 #'   input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness.
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness.
 #' @typed extra_vars: character
 #'   additional variables to inspect for missingness.
 #'
@@ -198,7 +199,8 @@ samples_median_ci <- function(samples, level = 0.95) {
 #' This is to ensure that [`DataLongitudinal`] and [`DataSurvival`] use identical index numbers
 #' for the subjects to ensure data alignment in the joint model.
 #'
-#' @param pt (`character` or `factor`)\cr subject identifiers.
+#' @typed pt: "`character` or `factor`"
+#'    subject identifiers.
 #'
 #' @returns A `factor` with the levels in alphabetical order.
 #'

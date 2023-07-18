@@ -242,8 +242,9 @@ is_file <- function(filename = NULL) {
 
 #' Stan Code as Character
 #'
-#' @param string Character, either the absolute path of a stan file, or the name of the stan
-#' file in the package directory or the stan code as a string.
+#' @typed string: `string`
+#'   either the absolute path of a stan file, or the name of the stan
+#'   file in the package directory or the stan code as a string.
 #'
 #' @export
 read_stan <- function(string) {

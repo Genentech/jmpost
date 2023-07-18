@@ -7,7 +7,7 @@
 pt_2_factor(pt)
 }
 \arguments{
-\item{pt}{(\code{character} or \code{factor})\cr subject identifiers.}
+\item{pt}{(\verb{"}character\code{or}factor\verb{"})\cr subject identifiers.}
 }
 \value{
 A \code{factor} with the levels in alphabetical order.
