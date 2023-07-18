@@ -1,1 +1,5 @@
-mcmc_results <- readRDS(test_path("fixtures", "mcmc_results.rds"))
+
+mcmc_results <- readRDS(
+    here::here("tests", "testthat", "fixtures", "mcmc_results.rds")
+)
+
