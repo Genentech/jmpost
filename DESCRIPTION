@@ -35,7 +35,7 @@ Roxygen:
        packages = c("roxylint", "roxytypes"),
        roclets = c("namespace", "rd", "roxylint::roxylint")
     )
-Config/roxytypes: list(format = "(`{type}`)\\cr {description}")
+Config/roxytypes: list(format = "({type})\\cr {description}")
 Config/roxylint: list(linters = roxylint::tidy)
 RoxygenNote: 7.2.3
 Depends: 

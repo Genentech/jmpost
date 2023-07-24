@@ -14,7 +14,7 @@ survival(object, ...)
 
 \item{...}{additional options.}
 
-\item{patients}{(\verb{"}character\code{or}NULL\verb{"})\cr optional subset of patients for which the survival function samples
+\item{patients}{(\code{character} or \code{NULL})\cr optional subset of patients for which the survival function samples
 should be extracted, the default \code{NULL} meaning all patients.}
 }
 \description{
