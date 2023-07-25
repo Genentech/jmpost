@@ -7,7 +7,7 @@
 \alias{LinkGSF}
 \title{\code{LinkGSF}}
 \usage{
-LinkGSF(components = list(link_gsf_dsld(), link_gsf_ttg()))
+LinkGSF(...)
 }
 \arguments{
 \item{components}{(\code{list})\cr which link components should be included.}
