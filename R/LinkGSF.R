@@ -21,12 +21,15 @@ NULL
 #' @param components (`list`)\cr which link components should be included.
 #'
 #' @export
-LinkGSF <- function(
-        components = list(
+LinkGSF <- function(...) {
+
+    components <- list(...)
+    if (!length(components)) {
+        components <- list(
             link_gsf_dsld(),
             link_gsf_ttg()
         )
-) {
+    }
 
     items <- lapply(
         components,
