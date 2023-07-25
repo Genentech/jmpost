@@ -7,12 +7,14 @@
 \alias{LinkGSF}
 \title{\code{LinkGSF}}
 \usage{
-LinkGSF(components = list(link_gsf_dsld(), link_gsf_ttg()))
+LinkGSF(...)
 }
 \arguments{
-\item{components}{(\code{list})\cr which link components should be included.}
+\item{...}{(\code{link_gsf_abstract})\cr which link components should be included. If no arguments
+are provided then this will be set to \code{\link[=link_gsf_dsld]{link_gsf_dsld()}} and \code{\link[=link_gsf_ttg]{link_gsf_ttg()}}}
 }
 \description{
-This class extends the general \code{\link{Link}} class for the \code{\link{LongitudinalGSF}}
+This class extends the general \code{\link[=Link-class]{Link}} class for
+the \code{\link[=LongitudinalGSF-class]{LongitudinalGSF}}
 model.
 }
