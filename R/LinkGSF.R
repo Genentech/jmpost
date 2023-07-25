@@ -5,7 +5,8 @@ NULL
 
 #' `LinkGSF`
 #'
-#' This class extends the general [`Link`] class for the [`LongitudinalGSF`]
+#' This class extends the general [`Link`][Link-class] class for
+#' the [`LongitudinalGSF`][LongitudinalGSF-class]
 #' model.
 #'
 #' @exportClass LinkGSF
@@ -18,7 +19,8 @@ NULL
 
 #' @rdname LinkGSF-class
 #'
-#' @param components (`list`)\cr which link components should be included.
+#' @param ... (`link_gsf_abstract`)\cr which link components should be included. If no arguments
+#' are provided then this will be set to [link_gsf_dsld()] and [link_gsf_ttg()]
 #'
 #' @export
 LinkGSF <- function(...) {
