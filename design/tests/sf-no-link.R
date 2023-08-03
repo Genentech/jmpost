@@ -103,7 +103,8 @@ jdat <- DataJoint(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5
+        threshold = 5,
+        time_grid = c(1)
     )
 )
 
