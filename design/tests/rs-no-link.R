@@ -94,9 +94,10 @@ vars <- c(
     "lm_rs_sigma"            # 3
 )
 
-mp$summary(vars)
+mp@results$summary(vars)
 
 
+x$variable
 
 ##############################
 #
@@ -104,7 +105,7 @@ mp$summary(vars)
 #
 
 slopes <- tibble(
-    est = mp$summary("lm_rs_rslope")$mean,
+    est = mp@results$summary("lm_rs_ind_rnd_slope")$mean,
     actual = dat_lm |> group_by(pt) |> slice(1) |> pull(slope_ind)
 )
 

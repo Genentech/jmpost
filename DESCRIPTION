@@ -70,6 +70,7 @@ Collate:
     'LinkRandomSlope.R'
     'LongitudinalGSF.R'
     'LongitudinalRandomSlope.R'
+    'LongitudinalSF.R'
     'LongitudinalSamples.R'
     'SurvivalModel.R'
     'SurvivalExponential.R'
@@ -79,5 +80,6 @@ Collate:
     'argument_convention.R'
     'defaults.R'
     'jmpost-package.R'
+    'simulate_sf.R'
     'simulations.R'
 VignetteBuilder: knitr
