@@ -36,13 +36,15 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
-        study = "study"
+        study = "study",
+        time_grid = c(1)
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5
+        threshold = 5,
+        time_grid = c(2)
     )
 )
 
@@ -63,7 +65,7 @@ vars <- c(
     "beta_os_cov[3]"    #  0.2
 )
 
-mp$summary(vars)
+mp@results$summary(vars)
 
 
 
