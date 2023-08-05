@@ -27,9 +27,9 @@ jlist <- simulate_joint_data(
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_gsf(
-        sigma = 0.003,
-        mu_s = c(0.2, 0.25),
-        mu_g = c(0.15, 0.2),
+        sigma = 0.005,
+        mu_s = c(0.25, 0.35),
+        mu_g = c(0.15, 0.25),
         mu_phi = c(0.4, 0.6),
         mu_b = 60,
         omega_b = 0.1,
@@ -44,10 +44,40 @@ jlist <- simulate_joint_data(
 )
 
 
+
+## Generate Test data with known parameters
+jlist <- simulate_joint_data(
+    n_arm = c(80),
+    times = seq(0, 900),
+    lambda_cen = 1 / 9000,
+    beta_cat = c(
+        "A" = 0,
+        "B" = -0.1,
+        "C" = 0.5
+    ),
+    beta_cont = 0.3,
+    lm_fun = sim_lm_gsf(
+        sigma = 0.025,
+        mu_s = c(0.007),
+        mu_g = c(0.001),
+        mu_phi = c(0.2),
+        mu_b = 60,
+        omega_b = 0.51,
+        omega_s = 0.51,
+        omega_g = 0.51,
+        omega_phi = 0.51
+    ),
+    os_fun = sim_os_exponential(
+        lambda = 1 / 400
+    )
+)
+
+
+
 ## Extract data to individual datasets
 dat_os <- jlist$os
 
-select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900) * (1 / 365)
+select_times <- seq(1, 600, by = 50)
 # select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
@@ -71,22 +101,17 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
 
-        mu_bsld = prior_lognormal(log(60), 2, init = 60),
-        mu_ks = prior_lognormal(log(0.2), 0.1, init = 0.2),
-        mu_kg = prior_lognormal(log(0.2), 0.1, init = 0.2),
-        mu_phi = prior_beta(7, 10, init = 0.4),
+        mu_bsld = prior_lognormal(log(60), 0.6, init = 60),
+        mu_ks = prior_lognormal(log(0.007), 0.6, init = 0.2),
+        mu_kg = prior_lognormal(log(0.001), 0.6, init = 0.2),
+        mu_phi = prior_beta(7, 10, init = 0.5),
 
-        omega_bsld = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_kg = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_phi = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_bsld = prior_lognormal(log(0.5), 0.6, init = 0.1),
+        omega_ks = prior_lognormal(log(0.5), 0.6, init = 0.1),
+        omega_kg = prior_lognormal(log(0.5), 0.6, init = 0.1),
+        omega_phi = prior_lognormal(log(0.5), 0.6, init = 0.1),
 
-        sigma = prior_lognormal(log(0.03), 0.1, init = 0.03),
-
-        tilde_bsld = prior_normal(0, 1, init = 0.1),
-        tilde_ks = prior_normal(0, 1, init = 0.1),
-        tilde_kg = prior_normal(0, 1, init = 0.1),
-        tilde_phi = prior_normal(0, 1, init = 0.1)
+        sigma = prior_lognormal(log(0.03), 0.6, init = 0.03)
     )
 )
 
@@ -144,7 +169,7 @@ vars <- c(
 
 
 
-mp$summary(vars)
+mp@results$summary(vars)
 
 
 

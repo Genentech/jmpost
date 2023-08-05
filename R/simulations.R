@@ -343,8 +343,7 @@ simulate_joint_data <- function(
     lm_dat2 <- lm_dat |>
         dplyr::mutate(os_time = os_time) |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
-        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link"))) |>
-        dplyr::filter(.data$observed)
+        dplyr::select(!dplyr::all_of(c("os_time", "log_haz_link")))
 
     assert_that(
         length(unique(os_dat_complete$pt)) == n,

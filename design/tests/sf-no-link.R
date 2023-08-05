@@ -17,8 +17,8 @@ devtools::load_all(export_all = FALSE)
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n_arm = c(80, 80),
-    times = seq(0, 4, by = (1/365)/2),
+    n_arm = c(300),
+    times = seq(0, 900),
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -27,17 +27,16 @@ jlist <- simulate_joint_data(
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_sf(
-        sigma = 0.003,
-        mu_s = c(0.2, 0.25),
-        mu_g = c(0.15, 0.2),
+       sigma = 0.025,
+        mu_s = c(0.007),
+        mu_g = c(0.001),
         mu_b = 60,
-        omega_b = 0.1,
-        omega_s = 0.1,
-        omega_g = 0.1
+        omega_b = 0.51,
+        omega_s = 0.51,
+        omega_g = 0.51,
     ),
-    os_fun = sim_os_weibull(
-        lambda = 365 * (1/400),
-        gamma = 1
+    os_fun = sim_os_exponential(
+        lambda = 1/400
     )
 )
 
@@ -45,7 +44,7 @@ jlist <- simulate_joint_data(
 ## Extract data to individual datasets
 dat_os <- jlist$os
 
-select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900) * (1 / 365)
+select_times <- seq(0, 600, by = 50)
 # select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
@@ -69,15 +68,15 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 jm <- JointModel(
     longitudinal = LongitudinalSF(
 
-        mu_bsld = prior_lognormal(log(60), 2, init = 60),
-        mu_ks = prior_lognormal(log(0.2), 0.1, init = 0.2),
-        mu_kg = prior_lognormal(log(0.2), 0.1, init = 0.2),
+        mu_bsld = prior_lognormal(log(60), 0.7),
+        mu_ks = prior_lognormal(log(0.007), 0.7),
+        mu_kg = prior_lognormal(log(0.001), 0.7),
 
-        omega_bsld = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_kg = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_bsld = prior_lognormal(log(0.5), 0.7),
+        omega_ks = prior_lognormal(log(0.5), 0.7),
+        omega_kg = prior_lognormal(log(0.5), 0.7),
 
-        sigma = prior_lognormal(log(0.03), 0.1, init = 0.03)
+        sigma = prior_lognormal(log(0.03), 0.7)
     )
 )
 
@@ -86,7 +85,7 @@ jm <- JointModel(
 
 
 # Create local file with stan code for debugging purposes ONLY
-write_stan(jm, "local/debug.stan")
+write_stan(jm, "local/ebug.stan")
 
 
 
@@ -97,7 +96,8 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
-        study = "study"
+        study = "study",
+        time_grid = c(1)
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
@@ -113,23 +113,30 @@ jdat <- DataJoint(
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 500,
-    iter_warmup = 1000,
-    chains = 1,
-    parallel_chains = 1,
+    iter_sampling = 1500,
+    iter_warmup = 2000,
+    chains = 2,
+    parallel_chains = 2,
     exe_file = file.path("local", "full")
 )
 
 
 
 vars <- c(
-    "lm_gsf_mu_bsld",     # 60
-    "lm_gsf_mu_kg",       # 0.15   0.2
-    "lm_gsf_mu_ks",       # 0.2    0.25
-    "lm_gsf_sigma",       # 0.003
-    "lm_gsf_omega_bsld",  # 0.1
-    "lm_gsf_omega_kg",    # 0.1
-    "lm_gsf_omega_ks"     # 0.1
+    "lm_sf_mu_bsld",     # 60
+    "lm_sf_mu_kg",       # 0.15   0.2
+    "lm_sf_mu_ks",       # 0.2    0.25
+    "lm_sf_sigma",       # 0.003
+    "lm_sf_omega_bsld",  # 0.1
+    "lm_sf_omega_kg",    # 0.1
+    "lm_sf_omega_ks"     # 0.1
+)
+
+
+vars <- c(
+    "lm_sf_mu_bsld",     # 60
+    "lm_sf_mu_kg",       # 0.15   0.2
+    "lm_sf_mu_ks"       # 0.2    0.25
 )
 
 
@@ -147,10 +154,10 @@ mp@results$summary(vars)
 
 
 library(bayesplot)
-mcmc_trace(mp@results$draws("lm_gsf_mu_bsld[1]"))
-mcmc_hist(mp@results$draws("lm_gsf_mu_bsld[1]"))
+mcmc_trace(mp@results$draws("lm_sf_mu_bsld[1]"))
+mcmc_hist(mp@results$draws("lm_sf_mu_bsld[1]"))
 
-mcmc_pairs(mp$draws(), vars)
+mcmc_pairs(mp@results$draws()[, , c(2:8)])
 
 ### Extract parameters and calculate confidence intervals
 draws_means <- mp$draws(format = "df") |>
