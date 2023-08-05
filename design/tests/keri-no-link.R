@@ -1,4 +1,17 @@
 library(here)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(tidyr)
+library(cmdstanr)
+
+# devtools::install_git("https://github.com/stan-dev/cmdstanr")
+
+devtools::document()
+devtools::load_all(export_all = FALSE)
+
+
+### Try to re-create analysis of Kerioui et. al 2020
 
 
 keri_data_location <- here("local", "Keri-Simulated_Dataset.txt")
@@ -40,21 +53,19 @@ jdat <- DataJoint(
 )
 
 
-
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
+        mu_bsld = prior_lognormal(log(60), 0.6),
+        mu_ks = prior_lognormal(log(0.3), 0.6),
+        mu_kg = prior_lognormal(log(0.2), 0.6),
+        mu_phi = prior_beta(7, 10),
 
-        mu_bsld = prior_lognormal(log(60), 0.6, init = 60),
-        mu_ks = prior_lognormal(log(0.3), 0.6, init = 0.2),
-        mu_kg = prior_lognormal(log(0.2), 0.6, init = 0.2),
-        mu_phi = prior_beta(7, 10, init = 0.5),
+        omega_bsld = prior_lognormal(log(0.1), 0.6),
+        omega_ks = prior_lognormal(log(0.1), 0.6),
+        omega_kg = prior_lognormal(log(0.1), 0.6),
+        omega_phi = prior_lognormal(log(0.1), 0.6),
 
-        omega_bsld = prior_lognormal(log(0.1), 0.6, init = 0.1),
-        omega_ks = prior_lognormal(log(0.1), 0.6, init = 0.1),
-        omega_kg = prior_lognormal(log(0.1), 0.6, init = 0.1),
-        omega_phi = prior_lognormal(log(0.1), 0.6, init = 0.1),
-
-        sigma = prior_lognormal(log(0.03), 0.6, init = 0.03)
+        sigma = prior_lognormal(log(0.03), 0.6)
     )
 )
 
