@@ -23,16 +23,17 @@ sf_sld <- function(time, b, s, g) {
 #' @export
 #' @examples
 #' sf_ttg(1:10, 20, 0.3, 0.6)
-sf_ttg <- function(time, b, s, g, phi) {
-    return(1)  # TODO
+sf_ttg <- function(time, b, s, g) {
+    (log(s) - log(g)) / (s + g)
 }
+
 
 #' @rdname sf_sld
 #' @export
 #' @examples
 #' sf_dsld(1:10, 20, 0.3, 0.6)
 sf_dsld <- function(time, b, s, g) {
-    return(1) # TODO
+    b * (g * exp(g * time) - s * exp(-s * time))
 }
 
 

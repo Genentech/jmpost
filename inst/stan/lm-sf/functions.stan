@@ -13,8 +13,8 @@ functions {
         int n = num_elements(time);
         vector[n] include_shrinkage = ifelse(
             is_negative(time),
-            rep_vector(1, n),
-            zeros_vector(n)
+            zeros_vector(n),
+            rep_vector(1, n)
         );
         vector[n] result = fmin(
             8000.0,
