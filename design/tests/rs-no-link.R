@@ -37,7 +37,7 @@ jlist <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(
         intercept = 30,
         sigma = 3,
-        slope_mu = c(1,3),
+        slope_mu = c(1, 3),
         slope_sigma = 0.2,
         phi = 0,
         .debug = TRUE
@@ -69,7 +69,8 @@ jdat <- DataJoint(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5
+        threshold = 5,
+        time_grid = c(1)
     )
 )
 
@@ -94,8 +95,7 @@ vars <- c(
     "lm_rs_sigma"            # 3
 )
 
-mp$summary(vars)
-
+mp@results$summary(vars)
 
 
 ##############################
@@ -103,18 +103,32 @@ mp$summary(vars)
 #  Check bayesian models rs parameters are correct
 #
 
-slopes <- tibble(
-    est = mp$summary("lm_rs_rslope")$mean,
-    actual = dat_lm |> group_by(pt) |> slice(1) |> pull(slope_ind)
+offsets <- tibble(
+   arm = c("Group-1", "Group-2"),
+   offset = c(1, 3)
 )
+
+est_ind_slope <- posterior::summarise_draws(mp@results, "mean") |>
+    filter(stringr::str_detect(variable, "^lm_rs_ind_rnd_slope")) |>
+    rename(est = mean) |>
+    select(est)
+
+slopes <- dat_lm |>
+    group_by(pt) |>
+    slice(1) |>
+    ungroup() |>
+    select(pt, arm, actual = slope_ind) |>
+    left_join(offsets, by = "arm") |>
+    mutate(actual_offset = actual - offset) |>
+    bind_cols(est_ind_slope) |>
+    mutate(est_offset = est - offset)
 
 mean(slopes$actual - slopes$est)
 sd(slopes$actual - slopes$est)
 
-ggplot(slopes, aes(x = est, y = actual)) +
+ggplot(slopes, aes(x = est_offset, y = actual_offset)) +
     geom_point() +
     geom_abline()
-
 
 
 
