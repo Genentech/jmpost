@@ -112,7 +112,7 @@ setValidity(
             return("Only 1 survival observation per subject is supported")
         }
         if (!is.null(object@time_grid)) {
-            if (!is.sorted(object@time_grid) ||
+            if (is.unsorted(object@time_grid) ||
                 any(duplicated(object@time_grid)) ||
                 !all(is.finite(object@time_grid))) {
                 return("`time_grid` needs to be finite, sorted, unique values numeric vector")
