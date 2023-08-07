@@ -68,6 +68,7 @@ Collate:
     'LinkGSF.R'
     'LinkNone.R'
     'LinkRandomSlope.R'
+    'LinkSF.R'
     'LongitudinalGSF.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSF.R'

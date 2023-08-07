@@ -42,9 +42,9 @@ transformed parameters {
     //
     matrix[Nind, {{ 3 + length(items)}}] pars_lm = rep_matrix( 0, Nind, {{ 3 + length(items)}});
     
-    pars_lm[,1] = lm_gsf_psi_bsld;
-    pars_lm[,2] = lm_gsf_psi_ks;
-    pars_lm[,3] = lm_gsf_psi_kg;
+    pars_lm[,1] = lm_sf_psi_bsld;
+    pars_lm[,2] = lm_sf_psi_ks;
+    pars_lm[,3] = lm_sf_psi_kg;
     {% for item in items -%}
     pars_lm[,{{3 + loop.index1}}] = rep_vector(1, Nind) .* {{ item.parameter }};
     {% endfor -%}

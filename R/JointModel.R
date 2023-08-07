@@ -127,7 +127,6 @@ setMethod(
 
         model <- compileStanModel(object, exe_file)
         results <- do.call(model$sample, args)
-
         .JointModelSamples(
             model = object,
             data = args$data,

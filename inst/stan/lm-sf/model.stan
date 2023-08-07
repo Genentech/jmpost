@@ -56,9 +56,8 @@ transformed parameters{
         lm_sf_psi_kg[ind_index]
     );
 
-
     // Reverse implementation from Rstan helper function
-    log_lik += csr_matrix_times_vector(
+    vector[Nind] log_lik_obs = csr_matrix_times_vector(
         Nind,
         Nta_obs_y,
         w_mat_inds_obs_y,
@@ -70,9 +69,19 @@ transformed parameters{
             Ypred[obs_y_index] * lm_sf_sigma
         )
     );
+    log_lik += log_lik_obs;
 
     if (Nta_cens_y > 0 ) {
-        log_lik += csr_matrix_times_vector(
+        
+        print("---Ythreshold---");
+        print(Ythreshold);
+        print("---Ypred[cens_y_index]---");
+        print(Ypred[cens_y_index]);
+        print("---lm_sf_sigma---");
+        print(lm_sf_sigma);
+        print("---Nta_cens_y---");
+        print(Nta_cens_y);
+        vector[Nind] log_lik_cens = csr_matrix_times_vector(
             Nind,
             Nta_cens_y,
             w_mat_inds_cens_y,
@@ -84,6 +93,7 @@ transformed parameters{
                 Ypred[cens_y_index] * lm_sf_sigma
             )
         );
+        log_lik += log_lik_cens;
     }
 }
 
