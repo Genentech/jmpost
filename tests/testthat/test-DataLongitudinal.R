@@ -35,22 +35,15 @@ test_that("time_grid is rejected if in an invalid format", {
     )
 
     # First check that it doesn't error when used properly
-    result <- tryCatch(
-        {
-            DataLongitudinal(
-                data = x,
-                formula = voutcome ~ vtime,
-                subject = "vpt",
-                threshold = 5,
-                time_grid = c(2, 4)
-            )
-            0
-        },
-        error = \(e) e$message,
-        warning = \(w) w$message,
-        message = \(m) m$message
+    expect_silent(
+        DataLongitudinal(
+            data = x,
+            formula = voutcome ~ vtime,
+            subject = "vpt",
+            threshold = 5,
+            time_grid = c(2, 4)
+        )
     )
-    expect_equal(result, 0)
 
     # Define combinations that we would expect to cause an error
     values <- list(
