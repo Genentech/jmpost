@@ -42,30 +42,32 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ 1,
         subject = "pt",
         arm = "arm",
-        study = "study"
+        study = "study",
+        time_grid = c(1)
     ),
     longitudinal = DataLongitudinal(
         data = k_data_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 1
+        threshold = 1,
+        time_grid = c(1)
     )
 )
 
 
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
-        mu_bsld = prior_lognormal(log(60), 0.6),
-        mu_ks = prior_lognormal(log(0.3), 0.6),
-        mu_kg = prior_lognormal(log(0.2), 0.6),
+        mu_bsld = prior_lognormal(log(60)),
+        mu_ks = prior_lognormal(log(0.3)),
+        mu_kg = prior_lognormal(log(0.2)),
         mu_phi = prior_beta(7, 10),
 
-        omega_bsld = prior_lognormal(log(0.1), 0.6),
-        omega_ks = prior_lognormal(log(0.1), 0.6),
-        omega_kg = prior_lognormal(log(0.1), 0.6),
-        omega_phi = prior_lognormal(log(0.1), 0.6),
+        omega_bsld = prior_lognormal(log(0.1)),
+        omega_ks = prior_lognormal(log(0.1)),
+        omega_kg = prior_lognormal(log(0.1)),
+        omega_phi = prior_lognormal(log(0.1)),
 
-        sigma = prior_lognormal(log(0.03), 0.6)
+        sigma = prior_lognormal(log(0.03))
     )
 )
 
