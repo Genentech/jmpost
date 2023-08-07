@@ -57,6 +57,26 @@ functions {
         vector[rows(time)] result = - (time / 2) .* (nodes_time_hazard * weights);
         return result;
     }
+    
+    
+    // Exand design matrix by parameter vector
+    vector get_os_cov_contribution(matrix design, vector beta) {
+        int n = rows(design);
+        int p = cols(design);
+        vector[n] cov_contribution;
+        if (p == 0) {
+            // 0 Vector to cover case where no covariates are defined
+            // (e.g. intercept only model)
+            cov_contribution = rep_vector(0, n);
+            return cov_contribution;
+        }
+        if (n == 1) {
+            cov_contribution[1] = (design * beta)[1];
+            return cov_contribution;
+        }
+        cov_contribution = (design * beta);
+        return cov_contribution;
+    }
 
 }
 
@@ -70,7 +90,7 @@ data{
     int<lower=1> Nind_dead;            // Number of dead individuals (observed survival time).
     array[Nind_dead] int dead_ind_index;     // Index of dead individuals (observed survival time).
     vector[Nind] Times;
-    int<lower=1> p_os_cov_design;
+    int<lower=0> p_os_cov_design;
     matrix[Nind, p_os_cov_design] os_cov_design;
 
     int<lower=1> n_sm_time_grid;       // Number of time points in the grid.
@@ -101,9 +121,13 @@ parameters {
     //
 
     // Covariate coefficients.
+    
     vector[p_os_cov_design] beta_os_cov;
+    
 {{ stan.parameters }}
 }
+
+
 
 
 
@@ -112,13 +136,11 @@ transformed parameters {
     // Source - base/survival.stan
     //
 
-    // Calculate coveriate contributions to log hazard function
-    vector[rows(os_cov_design)] os_cov_contribution;
-    if (rows(os_cov_design) > 1) {
-        os_cov_contribution = (os_cov_design * beta_os_cov);
-    } else {
-        os_cov_contribution[1] = (os_cov_design * beta_os_cov)[1];
-    }
+    // Calculate covariate contributions to log hazard function
+    vector[Nind] os_cov_contribution = get_os_cov_contribution(
+        os_cov_design,
+        beta_os_cov
+    );
 
 {{ stan.transformed_parameters }}
 
