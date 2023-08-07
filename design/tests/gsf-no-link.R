@@ -16,6 +16,7 @@ devtools::load_all(export_all = FALSE)
 
 
 ## Generate Test data with known parameters
+## (based on internal data, time in years)
 jlist <- simulate_joint_data(
     n_arm = c(80, 80),
     times = seq(0, 4, by = (1/365)/2),
@@ -27,9 +28,9 @@ jlist <- simulate_joint_data(
     ),
     beta_cont = 0.3,
     lm_fun = sim_lm_gsf(
-        sigma = 0.003,
-        mu_s = c(0.2, 0.25),
-        mu_g = c(0.15, 0.2),
+        sigma = 0.005,
+        mu_s = c(0.25, 0.35),
+        mu_g = c(0.15, 0.25),
         mu_phi = c(0.4, 0.6),
         mu_b = 60,
         omega_b = 0.1,
@@ -37,17 +38,47 @@ jlist <- simulate_joint_data(
         omega_g = 0.1,
         omega_phi = 0.2
     ),
-    os_fun = sim_os_weibull(
-        lambda = 365 * (1/400),
-        gamma = 1
+    os_fun = sim_os_exponential(
+        lambda = 1 / 400
     )
 )
+
+
+
+## Generate Test data with known parameters
+## (based on Kerioui  time in days)
+jlist <- simulate_joint_data(
+    n_arm = c(80),
+    times = seq(0, 900),
+    lambda_cen = 1 / 9000,
+    beta_cat = c(
+        "A" = 0,
+        "B" = -0.1,
+        "C" = 0.5
+    ),
+    beta_cont = 0.3,
+    lm_fun = sim_lm_gsf(
+        sigma = 0.025,
+        mu_s = c(0.007),
+        mu_g = c(0.001),
+        mu_phi = c(0.2),
+        mu_b = 60,
+        omega_b = 0.51,
+        omega_s = 0.51,
+        omega_g = 0.51,
+        omega_phi = 0.51
+    ),
+    os_fun = sim_os_exponential(
+        lambda = 1 / 400
+    )
+)
+
 
 
 ## Extract data to individual datasets
 dat_os <- jlist$os
 
-select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900) * (1 / 365)
+select_times <- seq(1, 600, by = 50)
 # select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
@@ -71,22 +102,17 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
 
-        mu_bsld = prior_lognormal(log(60), 2, init = 60),
-        mu_ks = prior_lognormal(log(0.2), 0.1, init = 0.2),
-        mu_kg = prior_lognormal(log(0.2), 0.1, init = 0.2),
-        mu_phi = prior_beta(7, 10, init = 0.4),
+        mu_bsld = prior_lognormal(log(60), 0.6),
+        mu_ks = prior_lognormal(log(0.007), 0.6),
+        mu_kg = prior_lognormal(log(0.001), 0.6),
+        mu_phi = prior_beta(7, 10),
 
-        omega_bsld = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_kg = prior_lognormal(log(0.1), 0.5, init = 0.1),
-        omega_phi = prior_lognormal(log(0.1), 0.5, init = 0.1),
+        omega_bsld = prior_lognormal(log(0.5), 0.6),
+        omega_ks = prior_lognormal(log(0.5), 0.6),
+        omega_kg = prior_lognormal(log(0.5), 0.6),
+        omega_phi = prior_lognormal(log(0.5), 0.6),
 
-        sigma = prior_lognormal(log(0.03), 0.1, init = 0.03),
-
-        tilde_bsld = prior_normal(0, 1, init = 0.1),
-        tilde_ks = prior_normal(0, 1, init = 0.1),
-        tilde_kg = prior_normal(0, 1, init = 0.1),
-        tilde_phi = prior_normal(0, 1, init = 0.1)
+        sigma = prior_lognormal(log(0.03), 0.6)
     )
 )
 
@@ -106,13 +132,15 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
-        study = "study"
+        study = "study",
+        time_grid = c(1)
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5
+        threshold = 5,
+        time_grid = c(1)
     )
 )
 
@@ -144,7 +172,7 @@ vars <- c(
 
 
 
-mp$summary(vars)
+mp@results$summary(vars)
 
 
 
@@ -187,21 +215,3 @@ draws_means |>
     arrange(key)
 
 
-
-
-
-
-devtools::document()
-devtools::load_all()
-jm <- JointModel(
-    survival_model = SurvivalWeibullPH()
-)
-mp <- sampleStanModel(
-    jm,
-    data = stan_data,
-    iter_sampling = 500,
-    iter_warmup = 1000,
-    chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "full")
-)

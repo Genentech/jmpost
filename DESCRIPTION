@@ -80,4 +80,7 @@ Collate:
     'defaults.R'
     'jmpost-package.R'
     'simulations.R'
+    'simulations_gsf.R'
+    'simulations_os.R'
+    'simulations_rs.R'
 VignetteBuilder: knitr

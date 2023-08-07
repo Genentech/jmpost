@@ -88,7 +88,7 @@ setValidity(
             return("`data[[subject]]` should be of type character or factor")
         }
         if (!is.null(object@time_grid)) {
-            if (!is.sorted(object@time_grid) ||
+            if (is.unsorted(object@time_grid) ||
                 any(duplicated(object@time_grid)) ||
                 !all(is.finite(object@time_grid))) {
                 return("`time_grid` needs to be finite, sorted, unique values numeric vector")

@@ -57,3 +57,52 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
     expect_equal(res$sm_time_grid, seq(from = 0, to = max(x$vtime), length = 201))
     expect_equal(res$n_sm_time_grid, 201)
 })
+
+
+
+
+
+
+test_that("time_grid is rejected if in an invalid format", {
+    x2 <- data.frame(
+        vpt = c("b", "a", "c"),
+        varm = c("a", "a", "a"),
+        vstudy = c("s1", "s1", "s1"),
+        vtime = c(10, 20, 30),
+        vevent = c(1, 1, 1)
+    )
+
+    # First check that it doesn't error when used properly
+    expect_silent(
+        DataSurvival(
+            data = x2,
+            formula = Surv(vtime, vevent) ~ 1,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy",
+            time_grid = c(2, 4)
+        )
+    )
+
+    # Define combinations that we would expect to cause an error
+    values <- list(
+        c(4, 2),
+        c(4, Inf),
+        c(NA_real_, 2),
+        c(2, 2)
+    )
+
+    for (value in values) {
+        expect_error(
+            DataSurvival(
+                data = x2,
+                formula = Surv(vtime, vevent) ~ 1,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy",
+                time_grid = value
+            ),
+            "`time_grid` needs to be finite"
+        )
+    }
+})
