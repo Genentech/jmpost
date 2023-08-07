@@ -13,7 +13,6 @@ functions {
         matrix pars_lm,
         vector cov_contribution
     ) {
-        //print([rows(time), cols(time), rows(cov_contribution), cols(cov_contribution)]);
         matrix[rows(time), cols(time)] log_baseline = log_h0(time, pars_os);
         matrix[rows(time), cols(time)] cov_contribution_matrix = rep_matrix(
             cov_contribution,
@@ -27,7 +26,7 @@ functions {
             lm_link_contribution +
             log_baseline
             ;
-        return result;
+         return result;
     }
 
 
@@ -141,8 +140,10 @@ transformed parameters {
     // We always add the log-survival to the log-likelihood.
     log_lik += log_surv_fit_at_obs_times;
 
+
+    
     // In case of death we add the log-hazard on top.
-    log_lik[dead_ind_index] += to_vector(
+    vector[Nind_dead] log_hazard_for_pt_who_died = to_vector(
         log_hazard(
             to_matrix(Times[dead_ind_index]),
             pars_os,
@@ -150,6 +151,7 @@ transformed parameters {
             os_cov_contribution[dead_ind_index]
         )
     );
+    log_lik[dead_ind_index] += log_hazard_for_pt_who_died;
 }
 
 

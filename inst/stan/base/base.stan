@@ -75,10 +75,8 @@ transformed parameters{
 
     // Log-likelihood values for using the loo package.
     vector[Nind] log_lik = rep_vector(0.0, Nind);
-
 {{ longitudinal.transformed_parameters }}
 {{ survival.transformed_parameters }}
-
 }
 
 
