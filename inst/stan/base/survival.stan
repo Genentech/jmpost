@@ -59,7 +59,7 @@ functions {
     }
     
     
-    // Exand design matrix by parameter vector
+    // Expand design matrix by parameter vector
     vector get_os_cov_contribution(matrix design, vector beta) {
         int n = rows(design);
         int p = cols(design);
