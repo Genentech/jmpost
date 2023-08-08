@@ -205,9 +205,7 @@ link_gsf_dsld <- function(
 #' @param beta (`Prior`)\cr prior for the link coefficient `beta`.
 #'
 #' @export
-link_gsf_identity <- function(
-        tau = prior_normal(0, 5, init = 0)
-) {
+link_gsf_identity <- function(tau = prior_normal(0, 5, init = 0)) {
     .link_gsf_identity(
         stan = StanModule("lm-gsf/link_identity.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_tau", prior = tau, size = 1)),

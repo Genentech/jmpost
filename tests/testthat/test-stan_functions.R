@@ -163,7 +163,7 @@ test_that("GSF Identity Link Function works as expected", {
     expected <- c()
     for (i in seq_len(ncol(stan_data$sld_time))) {
         sld <- gsf_sld(
-            stan_data$sld_time[,i],
+            stan_data$sld_time[, i],
             stan_data$sld_bsld,
             stan_data$sld_s,
             stan_data$sld_g,
