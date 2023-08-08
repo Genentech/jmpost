@@ -202,7 +202,7 @@ link_gsf_dsld <- function(
 
 #' @rdname link_gsf_identity-class
 #'
-#' @param beta (`Prior`)\cr prior for the link coefficient `beta`.
+#' @param tau (`Prior`)\cr prior for the link coefficient `tau`.
 #'
 #' @export
 link_gsf_identity <- function(tau = prior_normal(0, 5, init = 0)) {

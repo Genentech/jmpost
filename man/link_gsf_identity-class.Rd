@@ -10,7 +10,7 @@
 link_gsf_identity(tau = prior_normal(0, 5, init = 0))
 }
 \arguments{
-\item{beta}{(\code{Prior})\cr prior for the link coefficient \code{beta}.}
+\item{tau}{(\code{Prior})\cr prior for the link coefficient \code{tau}.}
 }
 \description{
 This class extends the general \code{\link{link_gsf_abstract}} for the identity of the
