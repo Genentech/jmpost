@@ -32,20 +32,20 @@ run_stan_function <- function(stan_insert, stan_data, fun_files) {
         StanModule(NULL_MODEL_INSERT)
     )
     mod <- cmdstan_model(write_stan_file(as.character(stan_final)))
-    devnull <- capture.output({
-        suppressMessages({
-            suppressWarnings({
+    # devnull <- capture.output({
+    #     suppressMessages({
+    #         suppressWarnings({
                 fit <- mod$sample(
                     data = stan_data,
                     refresh = 0,
                     chains = 1,
                     iter_sampling = 1,
                     iter_warmup = 1,
-                    show_messages = FALSE
-                )
-            })
-        })
-    })
+                    show_messages = TRUE
+                 )
+        #     })
+        # })
+    #})
     return(fit)
 }
 
@@ -122,7 +122,7 @@ fit <- run_stan_function(
 
 observed <- as.numeric(fit$draws(variables = "sld_results")) |> round(4)
 
-expected <- sld(
+expected <- gsf_sld(
     stan_data$sld_time,
     stan_data$sld_bsld,
     stan_data$sld_s,
@@ -168,3 +168,77 @@ expected <- pnorm(
 
 expect_equal(observed, expected)
 
+
+
+
+
+############# GSF Identity Link
+
+
+stan_insert <- "
+data {
+    int sld_n;
+    int time_p;
+    matrix[sld_n, time_p] sld_time;
+    vector[sld_n] sld_bsld;
+    vector[sld_n] sld_s;
+    vector[sld_n] sld_g;
+    vector[sld_n] sld_phi;
+}
+generated quantities {
+    matrix[sld_n, time_p] results = link_identity_contribution(
+        sld_time,
+        sld_bsld,
+        sld_s,
+        sld_g,
+        sld_phi
+    );
+}
+"
+
+stan_data <- list(
+    sld_time = matrix(
+        c(
+            0, 0.5, 1, 2,
+            0, 0.2, 0.4, 0.6,
+            0, 5, 2, 6
+        ),
+        byrow = TRUE,
+        nrow = 3
+    ),
+    sld_bsld = c(50, 40, 40),
+    sld_s = c(0.1, 0.2, 0.3),
+    sld_g = c(0.2, 0.3, 0.2),
+    sld_phi = c(0.5, 0.4, 0.5)
+)
+
+stan_data["sld_n"] <- nrow(stan_data$sld_time)
+stan_data["time_p"] <- ncol(stan_data$sld_time)
+
+
+fit <- run_stan_function(
+    stan_insert,
+    stan_data,
+    c(
+        "base/functions.stan",
+        "lm-gsf/functions.stan",
+        "lm-gsf/link_identity.stan"
+    )
+)
+
+observed <- as.numeric(fit$draws(variables = "results")) |> round(3)
+
+expected <- c()
+for (i in seq_len(ncol(stan_data$sld_time))) {
+    sld <- gsf_sld(
+        stan_data$sld_time[,i],
+        stan_data$sld_bsld,
+        stan_data$sld_s,
+        stan_data$sld_g,
+        stan_data$sld_phi
+    )
+    expected <- c(expected, sld)
+}
+expected <-  expected |> round(3)
+
+expect_equal(observed, expected)

@@ -43,6 +43,7 @@ gsf_dsld <- function(time, b, s, g, phi) {
 }
 
 
+
 #' Construct a Simulation Function for Longitudinal Data from GSF Model
 #'
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
@@ -56,8 +57,7 @@ gsf_dsld <- function(time, b, s, g, phi) {
 #' @param omega_phi (`number`)\cr the shrinkage proportion standard deviation.
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
-#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
-#'   would only return a subset of columns.
+#' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #'
 #' @returns A function with argument `lm_base` that can be used to simulate
 #'   longitudinal data from the corresponding GSF model.
@@ -75,7 +75,7 @@ sim_lm_gsf <- function(
     omega_phi = 0.75,
     link_dsld = 0,
     link_ttg = 0,
-    .debug = FALSE
+    link_identity = 0
 ) {
     function(lm_base) {
 
@@ -108,11 +108,12 @@ sim_lm_gsf <- function(
             dplyr::mutate(dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
             dplyr::mutate(ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
             dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * sigma)) |>
-            dplyr::mutate(log_haz_link = link_dsld * .data$dsld + link_ttg * .data$ttg)
-
-        if (!.debug) {
-            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
-        }
+            dplyr::mutate(
+                log_haz_link =
+                    (link_dsld * .data$dsld) +
+                    (link_ttg * .data$ttg) +
+                    (link_identity * .data$mu_sld)
+            )
         return(lm_dat)
     }
 }

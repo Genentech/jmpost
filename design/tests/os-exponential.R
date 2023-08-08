@@ -55,7 +55,7 @@ mp <- sampleStanModel(
     iter_warmup = 500,
     chains = 1,
     parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    exe_file = file.path("local", "models", "os-exponential")
 )
 
 vars <- c(

@@ -9,8 +9,7 @@ sim_lm_random_slope(
   slope_mu = c(0.01, 0.03),
   slope_sigma = 0.5,
   sigma = 2,
-  phi = 0.1,
-  .debug = FALSE
+  phi = 0.1
 )
 }
 \arguments{
@@ -23,9 +22,6 @@ sim_lm_random_slope(
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
 \item{phi}{(\code{number})\cr the link coefficient for the random slope contribution.}
-
-\item{.debug}{(\code{flag})\cr whether to enter debug mode such that the function
-would only return a subset of columns.}
 }
 \value{
 A function with argument \code{lm_base} that can be used to simulate

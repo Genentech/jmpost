@@ -27,6 +27,13 @@ test_that("link_gsf_dsld user constructor works as expected with defaults", {
 })
 
 
+# link_gsf_identity-constructors ----
+
+test_that("link_gsf_identity user constructor works as expected with defaults", {
+    result <- expect_silent(link_gsf_identity())
+    expect_s4_class(result, "link_gsf_identity")
+})
+
 
 test_that("LinkGSF returns correct defaults when no arguments are supplied", {
 
@@ -41,4 +48,8 @@ test_that("LinkGSF returns correct defaults when no arguments are supplied", {
     link <- LinkGSF(link_gsf_ttg())
     par_names <- get_par_names(link)
     expect_equal(par_names, c("lm_gsf_gamma"))
+
+    link <- LinkGSF(link_gsf_identity())
+    par_names <- get_par_names(link)
+    expect_equal(par_names, c("lm_gsf_tau"))
 })
