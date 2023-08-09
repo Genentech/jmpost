@@ -8,6 +8,8 @@ NULL
 #' @slot parameters (`list`)\cr the prior distribution parameters.
 #' @slot repr (`string`)\cr the Stan code regular expression encoding the distribution.
 #' @slot init (`numeric`)\cr the initial value.
+#' @slot validation (`list`)\cr the prior distribution parameter validation functions. Must have
+#' the same names as the `paramaters` slot.
 #'
 #' @aliases Prior
 #' @exportClass Prior

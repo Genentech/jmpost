@@ -17,5 +17,8 @@
 \item{\code{repr}}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
 
 \item{\code{init}}{(\code{numeric})\cr the initial value.}
+
+\item{\code{validation}}{(\code{list})\cr the prior distribution parameter validation functions. Must have
+the same names as the \code{paramaters} slot.}
 }}
 
