@@ -25,7 +25,7 @@ SurvivalModel <- function(stan = StanModule(),
                           parameters = ParameterList(),
                           ...) {
     base_stan <- paste0(read_stan("base/survival.stan"), collapse = "\n")
-    stan_full <- jinjar::render(
+    stan_full <- decorated_render(
         .x = base_stan,
         stan = add_missing_stan_blocks(as.list(stan))
     )

@@ -8,8 +8,8 @@ parameters {
     //
     real lm_rs_intercept;
     array [n_arms] real lm_rs_slope_mu;
-    real<lower=0> lm_rs_slope_sigma;
-    real<lower=0> lm_rs_sigma;
+    real<lower={{ machine_double_eps }}> lm_rs_slope_sigma;
+    real<lower={{ machine_double_eps }}> lm_rs_sigma;
     vector[Nind] lm_rs_ind_rnd_slope;
 }
 
@@ -18,7 +18,6 @@ transformed parameters {
     //
     // LongitudinalRandomSlope
     //
-
     for (i in 1:Nind) {
         log_lik[i] = normal_lpdf(
             lm_rs_ind_rnd_slope[i] |
