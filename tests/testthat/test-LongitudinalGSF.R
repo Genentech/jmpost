@@ -10,7 +10,7 @@ test_that("LongitudinalGSF works as expected with a single study", {
     jlist <- suppressMessages(simulate_joint_data(
         times = 0:2000,
         lm_fun = sim_lm_random_slope(),
-        os_fun = sim_os_exponential(1/200)
+        os_fun = sim_os_exponential(1 / 200)
     ))
 
     dat_os <- jlist$os

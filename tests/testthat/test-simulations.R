@@ -91,7 +91,7 @@ test_that("simulate_joint_data works as expected", {
             link_ttg = 0
         ),
         os_fun = sim_os_weibull(
-            lambda = 1/200 * 365,
+            lambda = 1 / 200 * 365,
             gamma = 0.97
         )
     ))
@@ -104,7 +104,7 @@ test_that("simulate_joint_data works as expected", {
     expect_s3_class(result$lm, "tbl_df")
     expect_identical(names(result$lm), c("pt", "time", "sld", "study", "arm", "observed"))
     expect_equal(
-        nrow(result$lm |> filter(observed)),
+        nrow(result$lm |> dplyr::filter(.data$observed)),
         sum(sapply(result$os$time, function(t) sum(times < t) + 1))
     )
 })
