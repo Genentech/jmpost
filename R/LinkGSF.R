@@ -188,7 +188,7 @@ link_gsf_dsld <- function(
 
 #' `link_gsf_identity`
 #'
-#' This class extends the general [`link_gsf_abstract`] for the identity of the
+#' This class extends the general [link_gsf_abstract()] for the identity of the
 #' sum of longest diameters (`sld`) link contribution.
 #'
 #' @exportClass link_gsf_identity
