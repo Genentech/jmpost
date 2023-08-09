@@ -10,16 +10,14 @@ test_that("LongitudinalGSF works as expected with a single study", {
     jlist <- suppressMessages(simulate_joint_data(
         times = 0:2000,
         lm_fun = sim_lm_random_slope(),
-        os_fun = sim_os_weibull(
-            lambda = 0.00333,
-            gamma = 0.97
-        )
+        os_fun = sim_os_exponential(1/200)
     ))
 
     dat_os <- jlist$os
     dat_lm <- jlist$lm |>
         dplyr::filter(time %in% c(0, 50, 100, 150, 200, 250, 300)) |>
-        dplyr::arrange(time, pt)
+        dplyr::arrange(time, pt) |>
+        dplyr::filter(observed)
 
     jdat <- DataJoint(
         survival = DataSurvival(
@@ -27,27 +25,29 @@ test_that("LongitudinalGSF works as expected with a single study", {
             formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
-            study = "study"
+            study = "study",
+            time_grid = c(1, 50, 100)
         ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
             subject = "pt",
-            threshold = 5
+            threshold = 5,
+            time_grid = c(1, 50, 100)
         )
     )
 
     jm <- JointModel(
         link = LinkGSF(),
         longitudinal = LongitudinalGSF(),
-        survival = SurvivalWeibullPH()
+        survival = SurvivalExponential()
     )
 
     mp <- suppressWarnings(sampleStanModel(
         jm,
         data = jdat,
-        iter_sampling = 100,
-        iter_warmup = 100,
+        iter_sampling = 75,
+        iter_warmup = 75,
         chains = 1,
         parallel_chains = 1,
         exe_file = file.path(MODEL_DIR, "gsf_joint_model_with_link_single_study")

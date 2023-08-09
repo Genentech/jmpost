@@ -33,6 +33,7 @@ get_timepoints <- function(x) {
 #' @param beta_cat (`numeric`)\cr coefficients for the categorical covariate levels.
 #' @param lm_fun (`function`)\cr function of `lm_base` generating the longitudinal model outcomes.
 #' @param os_fun (`function`)\cr function of `lm_base` generating the survival model outcomes.
+#' @param .silent (`flag`)\cr whether to suppress info messages
 #' @param .debug (`flag`)\cr whether to enter debug mode such that the function
 #'   would only return a subset of columns.
 #'
@@ -46,6 +47,7 @@ simulate_joint_data <- function(
     beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2),
     lm_fun,
     os_fun,
+    .silent = FALSE,
     .debug = FALSE
 ) {
     n <- sum(n_arm)
@@ -94,6 +96,8 @@ simulate_joint_data <- function(
     os_dat_chaz <- time_dat_baseline |>
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
         dplyr::mutate(log_bl_haz = os_fun(.data$evalp)) |>
+        # Fix to avoid issue with log(0) = NaN values
+        dplyr::mutate(log_bl_haz = dplyr::if_else(.data$evalp == 0, -999, log_bl_haz)) |>
         dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
         dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
         dplyr::group_by(.data$pt) |>
@@ -114,8 +118,8 @@ simulate_joint_data <- function(
         dplyr::ungroup() |>
         dplyr::mutate(event = 0)
 
-    if (!(nrow(os_had_censor) == 0)) {
-        message(sprintf("%i patients did not die before max(times)", nrow(os_had_censor)))
+    if (!(nrow(os_had_censor) == 0) && !.silent) {
+        message(sprintf("INFO: %i patients did not die before max(times)", nrow(os_had_censor)))
     }
 
     os_dat_complete <- os_had_event |>
