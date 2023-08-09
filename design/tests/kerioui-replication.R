@@ -32,6 +32,7 @@ k_data_lm <- kdata %>%
 
 
 
+
 jdat <- DataJoint(
     survival = DataSurvival(
         data = k_data_os,
