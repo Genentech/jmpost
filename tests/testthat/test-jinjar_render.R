@@ -20,7 +20,7 @@ test_that("Global variables defined by `decorated_render() are usable", {
     string <- "{{ var1 }} hi there {{ var2 }} and {{ machine_double_eps }}"
     observed <- decorated_render(.x = string, var1 = 5, var2 = "bob")
     expected <- sprintf(
-        "%d hi there %s and %5s",
+        "%d hi there %s and %s",
         5,
         "bob",
         scales::scientific(sqrt(.Machine$double.eps), digits = 8)
