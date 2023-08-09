@@ -177,7 +177,7 @@ test_that("sim_os_weibull creates a dataset with the correct parameter", {
     mod <- survreg(Surv(time, event) ~ cov_cont + cov_cat, data = osdat, dist = "weibull")
     scale <- mod$scale
 
-    ## Check covariate coeficients
+    ## Check covariate coefficients
     alpha_real <- -c(0.2, -0.6, 0.6) * scale  # Convert from PH to scale-location formulation
     alpha_obs <- coef(mod)[-1]
     alpha_se <- sqrt(diag(vcov(mod)[2:4, 2:4]))
