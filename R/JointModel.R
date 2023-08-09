@@ -50,7 +50,7 @@ JointModel <- function(longitudinal = NULL,
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
     # Resolve any lingering references from longitudinal / survival code
-    # that haven't yet been rendered (e.g. global variables set in `decorated_render()`)
+    # that haven't yet been rendered
     stan_full <- decorated_render(.x = stan_full)
 
     full_plus_funs <- merge(
