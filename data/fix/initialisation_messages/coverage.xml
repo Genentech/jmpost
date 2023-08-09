@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.945696721311475" branch-rate="0" lines-covered="923" lines-valid="976" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-09 16:03:49.097301">
+<coverage line-rate="0.945696721311475" branch-rate="0" lines-covered="923" lines-valid="976" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-09 16:52:19.386707">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -2400,11 +2400,11 @@
             </method>
             <method name="decorated_render" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="214" hits="18" branch="false"/>
-                <line number="215" hits="18" branch="false"/>
-                <line number="216" hits="18" branch="false"/>
-                <line number="217" hits="18" branch="false"/>
-                <line number="218" hits="18" branch="false"/>
+                <line number="214" hits="21" branch="false"/>
+                <line number="215" hits="21" branch="false"/>
+                <line number="216" hits="21" branch="false"/>
+                <line number="217" hits="21" branch="false"/>
+                <line number="218" hits="21" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2492,11 +2492,11 @@
             <line number="199" hits="32" branch="false"/>
             <line number="200" hits="32" branch="false"/>
             <line number="201" hits="32" branch="false"/>
-            <line number="214" hits="18" branch="false"/>
-            <line number="215" hits="18" branch="false"/>
-            <line number="216" hits="18" branch="false"/>
-            <line number="217" hits="18" branch="false"/>
-            <line number="218" hits="18" branch="false"/>
+            <line number="214" hits="21" branch="false"/>
+            <line number="215" hits="21" branch="false"/>
+            <line number="216" hits="21" branch="false"/>
+            <line number="217" hits="21" branch="false"/>
+            <line number="218" hits="21" branch="false"/>
           </lines>
         </class>
       </classes>
