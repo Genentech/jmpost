@@ -16,9 +16,35 @@ NULL
     slots = c(
         "parameters" = "list",
         "repr" = "character",
-        "init" = "numeric"
+        "init" = "numeric",
+        "validation" = "list"
     )
 )
+
+
+setValidity(
+    Class = "Prior",
+    method = function(object) {
+        for (param in names(object@parameters)) {
+            if (!param %in% names(object@validation)) {
+                return(sprintf("Parameter `%s` does not have a validation method", param))
+            }
+            if (!object@validation[[param]](object@parameters[[param]])) {
+                return_message <- sprintf(
+                    "Invalid value of `%d` for parameter `%s`",
+                    object@parameters[[param]],
+                    param
+                )
+                return(return_message)
+            }
+        }
+        return(TRUE)
+    }
+)
+
+
+
+
 
 # as.character-Prior ----
 
@@ -67,7 +93,11 @@ prior_normal <- function(mu, sigma, init = mu) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "normal({mu}, {sigma});",
-        init = init
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
     )
 }
 
@@ -95,7 +125,11 @@ prior_cauchy <- function(mu, sigma, init = mu) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "cauchy({mu}, {sigma});",
-        init = init
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
     )
 }
 
@@ -110,7 +144,11 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
     .Prior(
         parameters = list(alpha = alpha, beta = beta),
         repr = "gamma({alpha}, {beta});",
-        init = init
+        init = init,
+        validation = list(
+            alpha = \(x) x > 0,
+            beta = \(x) x > 0
+        )
     )
 }
 
@@ -125,7 +163,11 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
         repr = "lognormal({mu}, {sigma});",
-        init = init
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
     )
 }
 
@@ -140,7 +182,11 @@ prior_beta <- function(a, b, init = a / (a + b)) {
     .Prior(
         parameters = list(a = a, b = b),
         repr = "beta({a}, {b});",
-        init = init
+        init = init,
+        validation = list(
+            a = \(x) x > 0,
+            b = \(x) x > 0
+        )
     )
 }
 
