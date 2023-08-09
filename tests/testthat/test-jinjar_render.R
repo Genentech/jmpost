@@ -23,7 +23,7 @@ test_that("Global variables defined by `decorated_render() are usable", {
         "%d hi there %s and %s",
         5,
         "bob",
-        scales::scientific(sqrt(.Machine$double.eps), digits = 8)
+        scales::scientific(sqrt(.Machine$double.eps), digits = 5)
     )
     expect_equal(observed, expected)
 })

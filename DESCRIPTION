@@ -41,7 +41,6 @@ Imports:
     glue,
     tibble,
     methods,
-    scales,
     stats
 Suggests: 
     bayesplot,
@@ -49,6 +48,7 @@ Suggests:
     rmarkdown,
     rstan,
     testthat (>= 3.0.0),
+    scales,
     vdiffr
 Config/testthat/edition: 3
 Collate:

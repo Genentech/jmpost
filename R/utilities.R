@@ -213,7 +213,7 @@ pt_2_factor <- function(pt) {
 decorated_render <- function(...) {
     jinjar::render(
         ...,
-        machine_double_eps = scales::scientific(sqrt(.Machine$double.eps), digits = 8),
-        machine_double_neg_eps = scales::scientific(sqrt(.Machine$double.neg.eps), digits = 8)
+        machine_double_eps = sqrt(.Machine$double.eps),
+        machine_double_neg_eps = sqrt(.Machine$double.neg.eps)
     )
 }
