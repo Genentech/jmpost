@@ -13,6 +13,6 @@ link_gsf_identity(tau = prior_normal(0, 5, init = 0))
 \item{tau}{(\code{Prior})\cr prior for the link coefficient \code{tau}.}
 }
 \description{
-This class extends the general \code{\link{link_gsf_abstract}} for the identity of the
+This class extends the general \code{\link[=link_gsf_abstract]{link_gsf_abstract()}} for the identity of the
 sum of longest diameters (\code{sld}) link contribution.
 }
