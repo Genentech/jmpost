@@ -97,12 +97,16 @@ test_that("simulate_joint_data works as expected", {
     ))
     expect_type(result, "list")
     expect_s3_class(result$os, "tbl_df")
-    expect_true(all(
-        c("pt", "time", "cov_cont", "cov_cat", "event", "study", "arm") %in% names(result$os)
-    ))
+    expect_identical(
+        names(result$os),
+        c("pt", "time", "event", "cov_cont", "cov_cat", "study", "arm")
+    )
     expect_equal(nrow(result$os), 80 + 80)
     expect_s3_class(result$lm, "tbl_df")
-    expect_identical(names(result$lm), c("pt", "time", "sld", "study", "arm", "observed"))
+    expect_identical(
+        names(result$lm),
+        c("pt", "time", "sld", "study", "arm", "observed")
+    )
     expect_equal(
         nrow(result$lm |> dplyr::filter(.data$observed)),
         sum(sapply(result$os$time, function(t) sum(times < t) + 1))
