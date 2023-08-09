@@ -13,7 +13,7 @@ decorated_render(...)
 See \code{\link[jinjar:render]{jinjar::render}}
 }
 \description{
-Simple wrapper around \code{\link[jinjar:render]{jinjar::render}} that provides some additional default
+Simple wrapper around \code{\link[jinjar:render]{jinjar::render()}} that provides some additional default
 variables about the system (avoids each call to jinjar having to specify them)
 }
 \keyword{internal}
