@@ -12,7 +12,7 @@ NULL
 #'   observations that contain missing values in the required variables are removed
 #'   in the slot.
 #' @slot formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
-#'   See [`survival::Surv()`] for more details, though note that this package only supports right censoring.
+#'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
 #' @slot subject (`string`)\cr the name of the subject identifier variable.
 #' @slot arm (`string`)\cr the name of the treatment arm variable.
 #' @slot study (`string`)\cr the name of the study variable.
@@ -41,7 +41,7 @@ NULL
 #'
 #' @param data (`data.frame`)\cr the observed time-to-event data.
 #' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
-#'   See [`survival::Surv()`] for more details, though note that this package only supports right censoring.
+#'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
 #' @param subject (`string`)\cr the name of the subject identifier variable.
 #' @param arm (`string`)\cr the name of the treatment arm variable.
 #' @param study (`string`)\cr the name of the study variable.

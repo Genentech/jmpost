@@ -207,8 +207,8 @@ pt_2_factor <- function(pt) {
 #'
 #' Simple wrapper around [jinjar::render()] that provides some additional default
 #' variables about the system (avoids each call to jinjar having to specify them)
-#' @param ... Arguments passed onto [`jinjar::render`]
-#' @returns See [`jinjar::render`]
+#' @param ... Arguments passed onto [jinjar::render()]
+#' @returns See [jinjar::render()]
 #' @keywords internal
 decorated_render <- function(...) {
     jinjar::render(

@@ -7,10 +7,10 @@
 decorated_render(...)
 }
 \arguments{
-\item{...}{Arguments passed onto \code{\link[jinjar:render]{jinjar::render}}}
+\item{...}{Arguments passed onto \code{\link[jinjar:render]{jinjar::render()}}}
 }
 \value{
-See \code{\link[jinjar:render]{jinjar::render}}
+See \code{\link[jinjar:render]{jinjar::render()}}
 }
 \description{
 Simple wrapper around \code{\link[jinjar:render]{jinjar::render()}} that provides some additional default
