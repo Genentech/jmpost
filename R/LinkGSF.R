@@ -182,3 +182,34 @@ link_gsf_dsld <- function(
         contribution_fname = "link_dsld_contribution"
     )
 }
+
+
+# link_gsf_identity-class ----
+
+#' `link_gsf_identity`
+#'
+#' This class extends the general [link_gsf_abstract()] for the identity of the
+#' sum of longest diameters (`sld`) link contribution.
+#'
+#' @exportClass link_gsf_identity
+.link_gsf_identity <- setClass(
+    Class = "link_gsf_identity",
+    contains = "link_gsf_abstract"
+)
+
+
+# link_gsf_identity-constructors ----
+
+#' @rdname link_gsf_identity-class
+#'
+#' @param tau (`Prior`)\cr prior for the link coefficient `tau`.
+#'
+#' @export
+link_gsf_identity <- function(tau = prior_normal(0, 5, init = 0)) {
+    .link_gsf_identity(
+        stan = StanModule("lm-gsf/link_identity.stan"),
+        parameter = ParameterList(Parameter(name = "lm_gsf_tau", prior = tau, size = 1)),
+        parameter_name = "lm_gsf_tau",
+        contribution_fname = "link_identity_contribution"
+    )
+}
