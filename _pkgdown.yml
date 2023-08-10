@@ -48,6 +48,7 @@ reference:
       - starts_with("Link")
       - link_gsf_dsld
       - link_gsf_ttg
+      - link_gsf_identity
   - title: Joint Model Specification
     contents:
       - addLink

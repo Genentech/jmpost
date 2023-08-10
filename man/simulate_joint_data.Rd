@@ -11,7 +11,9 @@ simulate_joint_data(
   beta_cont = 0.2,
   beta_cat = c(A = 0, B = -0.4, C = 0.2),
   lm_fun,
-  os_fun
+  os_fun,
+  .silent = FALSE,
+  .debug = FALSE
 )
 }
 \arguments{
@@ -28,6 +30,11 @@ simulate_joint_data(
 \item{lm_fun}{(\code{function})\cr function of \code{lm_base} generating the longitudinal model outcomes.}
 
 \item{os_fun}{(\code{function})\cr function of \code{lm_base} generating the survival model outcomes.}
+
+\item{.silent}{(\code{flag})\cr whether to suppress info messages}
+
+\item{.debug}{(\code{flag})\cr whether to enter debug mode such that the function
+would only return a subset of columns.}
 }
 \value{
 List with simulated \code{lm} (longitudinal) and \code{os} (survival) data sets.
