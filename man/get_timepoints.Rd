@@ -10,7 +10,7 @@ get_timepoints(x)
 \item{x}{(\code{numeric})\cr grid of time points.}
 }
 \value{
-A \code{tibble} with \code{lower}, \code{upper}, \code{time} and \code{width}.
+A \code{tibble} with \code{lower}, \code{upper}, \code{time}, \code{eval} and \code{width}.
 }
 \description{
 Construct Time Intervals

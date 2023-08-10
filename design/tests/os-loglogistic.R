@@ -24,7 +24,7 @@ jlist <- simulate_joint_data(
 dat_os <- jlist$os
 
 dat_lm <- jlist$lm |>
-    dplyr::filter(time %in% c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900)) |>
+    dplyr::filter(time %in% seq(0,900, by=75)) |>
     dplyr::arrange(time, pt)
 
 
@@ -58,7 +58,7 @@ mp <- sampleStanModel(
     iter_sampling = 1000,
     iter_warmup = 500,
     chains = 1,
-    exe_file = file.path("local", "full")
+    exe_file = file.path("local", "models", "os-loglogistic")
 )
 
 vars <- c(

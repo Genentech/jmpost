@@ -15,7 +15,7 @@ jlist <- simulate_joint_data(
     beta_cont = 0.3,
     lm_fun = sim_lm_random_slope(phi = 0),
     os_fun = sim_os_weibull(
-        lambda = 0.00333,
+        lambda = 1/300,
         gamma = 0.97
     )
 )
@@ -29,7 +29,10 @@ dat_lm <- jlist$lm |>
 
 
 jm <- JointModel(
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(
+        lambda = prior_lognormal(log(1 / 300), 0.5),
+        gamma = prior_lognormal(log(0.97), 0.5)
+    )
 )
 
 write_stan(jm, "local/debug.stan")

@@ -6,8 +6,6 @@
 #' @param slope_sigma (`number`)\cr the random slope standard deviation.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param phi (`number`)\cr the link coefficient for the random slope contribution.
-#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
-#'   would only return a subset of columns.
 #'
 #' @returns A function with argument `lm_base` that can be used to simulate
 #'   longitudinal data from the corresponding random slope model.
@@ -18,8 +16,7 @@ sim_lm_random_slope <- function(
     slope_mu = c(0.01, 0.03),
     slope_sigma = 0.5,
     sigma = 2,
-    phi = 0.1,
-    .debug = FALSE
+    phi = 0.1
 ) {
     function(lm_base) {
 
@@ -45,9 +42,6 @@ sim_lm_random_slope <- function(
             dplyr::mutate(sld = intercept + .data$slope_ind * .data$time + .data$err) |>
             dplyr::mutate(log_haz_link = .data$slope_ind * phi)
 
-        if (!.debug) {
-            lm_dat <- lm_dat |> dplyr::select(dplyr::all_of(c("pt", "time", "sld", "log_haz_link", "study", "arm")))
-        }
         return(lm_dat)
     }
 }

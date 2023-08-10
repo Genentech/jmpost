@@ -16,7 +16,7 @@ sim_lm_gsf(
   omega_phi = 0.75,
   link_dsld = 0,
   link_ttg = 0,
-  .debug = FALSE
+  link_identity = 0
 )
 }
 \arguments{
@@ -42,8 +42,7 @@ sim_lm_gsf(
 
 \item{link_ttg}{(\code{number})\cr the link coefficient for the time-to-growth contribution.}
 
-\item{.debug}{(\code{flag})\cr whether to enter debug mode such that the function
-would only return a subset of columns.}
+\item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 }
 \value{
 A function with argument \code{lm_base} that can be used to simulate

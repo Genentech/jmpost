@@ -172,3 +172,18 @@ Where:
 
 
 
+## Identity of SLD
+
+$$
+G(t \mid b_i, s_i, g_i, \phi_i) = SLD(t, b_i, s_i, g_i, \phi)
+$$
+
+Where:
+
+* $b_i$ is the Baseline SLD measurement
+* $s_i$ is the SLD kinetics shrinkage parameter
+* $g_i$ is the SLD kinetics tumour growth parameter
+* $\phi_i$ is the proportion of cells affected by the treatment
+* $SLD(.)$ is the expected SLD function
+
+
