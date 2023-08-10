@@ -54,12 +54,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -284,14 +278,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   pt        time cov_cont cov_cat event study   arm    </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001    35   -<span style="color: #BB0000;">1.12</span>  B           1 Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002    17   -<span style="color: #BB0000;">0.990</span> C           1 Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003   876   -<span style="color: #BB0000;">1.37</span>  C           1 Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004   100   -<span style="color: #BB0000;">1.36</span>  C           1 Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     9    2.00  B           1 Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006   122    0.696 B           1 Study-1 Group-1</span></span></code></pre></div>
+<span><span class="co">#&gt;   pt        time event cov_cont cov_cat study   arm    </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001    35     1   -<span style="color: #BB0000;">1.12</span>  B       Study-1 Group-1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002    17     1   -<span style="color: #BB0000;">0.990</span> C       Study-1 Group-1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003   876     1   -<span style="color: #BB0000;">1.37</span>  C       Study-1 Group-1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004   100     1   -<span style="color: #BB0000;">1.36</span>  C       Study-1 Group-1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     9     1    2.00  B       Study-1 Group-1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006   122     1    0.696 B       Study-1 Group-1</span></span></code></pre></div>
 <p>The longitudinal data has:</p>
 <ul>
 <li>patient ID</li>

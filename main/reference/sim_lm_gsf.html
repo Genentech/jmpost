@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -82,7 +76,7 @@
 <span>  omega_phi <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>  link_dsld <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  link_ttg <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  .debug <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  link_identity <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -132,9 +126,8 @@
 <dd><p>(<code>number</code>)<br> the link coefficient for the time-to-growth contribution.</p></dd>
 
 
-<dt>.debug</dt>
-<dd><p>(<code>flag</code>)<br> whether to enter debug mode such that the function
-would only return a subset of columns.</p></dd>
+<dt>link_identity</dt>
+<dd><p>(<code>number</code>)<br> the link coefficient for the SLD Identity contribution.</p></dd>
 
 </dl></div>
     <div class="section level2">
