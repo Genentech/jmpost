@@ -1,261 +1,261 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://genentech.github.io/jmpost/main/404.html</loc>
+    <loc>https://genentech.github.io/jmpost/404.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/LICENSE.html</loc>
+    <loc>https://genentech.github.io/jmpost/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/articles/index.html</loc>
+    <loc>https://genentech.github.io/jmpost/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/articles/model_fitting.html</loc>
+    <loc>https://genentech.github.io/jmpost/articles/model_fitting.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/authors.html</loc>
+    <loc>https://genentech.github.io/jmpost/authors.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/index.html</loc>
+    <loc>https://genentech.github.io/jmpost/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/news/index.html</loc>
+    <loc>https://genentech.github.io/jmpost/news/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/DataJoint-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/DataJoint-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/DataLongitudinal-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/DataSurvival-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/DataSurvival-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/JointModel-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/JointModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/JointModelSamples-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/JointModelSamples-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/Link-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/Link-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LinkGSF-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LinkGSF-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LinkNone-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LinkNone-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LinkRandomSlope-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LinkRandomSlope-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LongitudinalGSF-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LongitudinalModel-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LongitudinalRandomSlope-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/LongitudinalSamples-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalSamples-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/Parameter-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/Parameter-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/ParameterList-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/ParameterList-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/Prior-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/StanModel-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/StanModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/StanModule-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/StanModule-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/Surv.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/Surv.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalExponential-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalExponential-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalLogLogistic-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalLogLogistic-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalModel-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalSamples-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalSamples-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/SurvivalWeibullPH-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/addLink.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/addLink.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/add_missing_stan_blocks.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/aggregate.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/aggregate.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as.StanModule.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as.character.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as.character.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as.data.frame.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as.list.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as.list.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as_stan_file.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_file.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/as_stan_fragments.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/autoplot.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/compileStanModel.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/decorated_render.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/expand_initial_values.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/extractVariableNames.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/getParameters.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/get_arm_study_data.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/get_arm_study_data.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/get_missing_rownumbers.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/get_timepoints.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/get_timepoints.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/gsf_sld.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/index.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/initialValues.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/initialValues.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/is_file.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/is_file.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/jmpost-package.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/jmpost-package.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/link_gsf_abstract-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/link_gsf_abstract-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/link_gsf_dsld-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/link_gsf_dsld-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/link_gsf_identity-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/link_gsf_identity-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/link_gsf_ttg-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/link_gsf_ttg-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/longitudinal.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/longitudinal.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/merge.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/merge.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/names.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/names.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_arguments.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_arguments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_beta.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_cauchy.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_cauchy.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_gamma.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_lognormal.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_lognormal.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_none.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_none.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_normal.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_normal.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/prior_std_normal.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/prior_std_normal.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/pt_2_factor.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/pt_2_factor.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/read_stan.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/remove_missing_rows.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/remove_missing_rows.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/replace_with_lookup.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sampleStanModel.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sampleStanModel.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/samples_median_ci.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/show.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/show.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sim_lm_gsf.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sim_lm_gsf.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sim_lm_random_slope.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sim_lm_random_slope.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sim_os_exponential.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sim_os_exponential.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sim_os_loglogistic.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sim_os_loglogistic.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/sim_os_weibull.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/sim_os_weibull.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/simulate_joint_data.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/simulate_joint_data.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/size.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/size.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/stanmodel_arguments.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/survival.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/survival.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/main/reference/write_stan.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc>
   </url>
 </urlset>
