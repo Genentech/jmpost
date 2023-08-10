@@ -1,5 +1,4 @@
 
-
 functions {
     // LinkRandomSlope
     matrix link_contribution(matrix time, matrix pars_lm) {
@@ -16,11 +15,3 @@ parameters {
     // LinkRandomSlope
     real link_lm_phi;
 }
-
-model {
-    //link_lm_phi ~ normal(0.2, 0.5);
-}
-
-
-
-

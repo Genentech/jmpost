@@ -14,8 +14,8 @@ functions {
 
 parameters {
     // SurvivalLogLogistic
-    real<lower=0.000000000001> sm_logl_lambda;
-    real<lower=0.0000001> sm_logl_p;
+    real<lower={{ machine_double_eps }}> sm_logl_lambda;
+    real<lower={{ machine_double_eps }}> sm_logl_p;
 }
 
 

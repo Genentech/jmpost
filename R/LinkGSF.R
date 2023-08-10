@@ -43,7 +43,7 @@ LinkGSF <- function(...) {
         }
     )
 
-    rendered_link <- jinjar::render(
+    rendered_link <- decorated_render(
         .x = paste0(read_stan("lm-gsf/link.stan"), collapse = "\n"),
         items = items
     )

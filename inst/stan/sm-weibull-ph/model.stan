@@ -14,8 +14,8 @@ functions {
 
 parameters {
     // SurvivalWeibullPH
-    real<lower=0.000000000001> sm_weibull_ph_lambda;
-    real<lower=0.0000001> sm_weibull_ph_gamma;
+    real<lower={{ machine_double_eps }}> sm_weibull_ph_lambda;
+    real<lower={{ machine_double_eps }}> sm_weibull_ph_gamma;
 }
 
 
