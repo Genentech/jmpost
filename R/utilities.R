@@ -200,3 +200,20 @@ pt_2_factor <- function(pt) {
     pt_uniq_ord <- pt_uniq[order(pt_uniq)]
     factor(pt_char, levels = pt_uniq_ord)
 }
+
+
+
+#' `decorated_render`
+#'
+#' Simple wrapper around [jinjar::render()] that provides some additional default
+#' variables about the system (avoids each call to jinjar having to specify them)
+#' @param ... Arguments passed onto [jinjar::render()]
+#' @returns See [jinjar::render()]
+#' @keywords internal
+decorated_render <- function(...) {
+    jinjar::render(
+        ...,
+        machine_double_eps = sqrt(.Machine$double.eps),
+        machine_double_neg_eps = sqrt(.Machine$double.neg.eps)
+    )
+}

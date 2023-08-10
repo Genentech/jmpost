@@ -12,8 +12,8 @@ devtools::load_all(export_all = FALSE)
 jm <- JointModel(
     longitudinal = LongitudinalRandomSlope(
         intercept = prior_normal(30, 2),
-        slope_sigma = prior_lognormal(0.2, sigma = 3),
-        sigma = prior_normal(3, sigma = 0.5)
+        slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
+        sigma = prior_lognormal(log(3), sigma = 0.5)
     )
 )
 
@@ -43,7 +43,7 @@ jlist <- simulate_joint_data(
         .debug = TRUE
     ),
     os_fun = sim_os_exponential(
-        lambda = 0.00333  # 1/300
+        lambda = 0.00333  # 1 / 300
     )
 )
 
@@ -75,7 +75,6 @@ jdat <- DataJoint(
     )
 )
 
-## Sample from JointModel
 mp <- sampleStanModel(
     jm,
     data = jdat,

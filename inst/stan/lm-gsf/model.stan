@@ -8,18 +8,18 @@ parameters{
     //
 
     // Population parameters.
-    vector<lower=0.0000001>[n_studies] lm_gsf_mu_bsld;
-    vector<lower=0.0000001>[n_arms] lm_gsf_mu_ks;
-    vector<lower=0.0000001>[n_arms] lm_gsf_mu_kg;
-    vector<lower=0.0000001, upper=0.9999999>[n_arms] lm_gsf_mu_phi;
+    vector<lower={{ machine_double_eps }}>[n_studies] lm_gsf_mu_bsld;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_mu_ks;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_mu_kg;
+    vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[n_arms] lm_gsf_mu_phi;
 
-    real<lower=0> lm_gsf_omega_bsld;
-    real<lower=0> lm_gsf_omega_ks;
-    real<lower=0> lm_gsf_omega_kg;
-    real<lower=0> lm_gsf_omega_phi;
+    real<lower={{ machine_double_eps }}> lm_gsf_omega_bsld;
+    real<lower={{ machine_double_eps }}> lm_gsf_omega_ks;
+    real<lower={{ machine_double_eps }}> lm_gsf_omega_kg;
+    real<lower={{ machine_double_eps }}> lm_gsf_omega_phi;
 
     // Standard deviation for RUV.
-    real<lower=0.00001, upper=100> lm_gsf_sigma;
+    real<lower={{ machine_double_eps }}> lm_gsf_sigma;
 
     // Random effects.
     vector[Nind] lm_gsf_eta_tilde_bsld;

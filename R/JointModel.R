@@ -42,13 +42,16 @@ JointModel <- function(longitudinal = NULL,
 
     base_model <- paste0(read_stan("base/base.stan"), collapse = "\n")
 
-    stan_full <- jinjar::render(
+    stan_full <- decorated_render(
         .x = base_model,
         longitudinal = add_missing_stan_blocks(as.list(longitudinal_linked)),
         survival = add_missing_stan_blocks(as.list(survival)),
         priors = as.list(parameters),
         link_none = class(link)[[1]] == "LinkNone" | is.null(link)
     )
+    # Resolve any lingering references from longitudinal / survival code
+    # that haven't yet been rendered
+    stan_full <- decorated_render(.x = stan_full)
 
     full_plus_funs <- merge(
         StanModule("base/functions.stan"),

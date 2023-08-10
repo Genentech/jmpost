@@ -17,7 +17,7 @@ functions {
 
 parameters {
     // SurvivalExponential
-    real<lower=0.00000000000001> sm_exp_lambda;
+    real<lower={{ machine_double_eps }}> sm_exp_lambda;
 }
 
 
