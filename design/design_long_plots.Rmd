@@ -50,7 +50,7 @@ mcmc_results <- sampleStanModel(
     iter_warmup = 500,
     chains = 1,
     parallel_chains = 1,
-    exe_file = file.path("local", "single_longitudinal")
+    exe_dir = file.path("local", "models")
 )
 mcmc_results
 ```

@@ -49,7 +49,7 @@ mp <- sampleStanModel(
     iter_warmup = 200,
     chains = 1,
     parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    exe_dir = file.path("local", "models")
 )
 
 results_summary <- mp@results$summary("sm_exp_lambda")
@@ -59,6 +59,5 @@ lambda_sd <- results_summary$sd
 
 z_score <- (lambda_mean - true_lambda) / lambda_sd
 expect_true(abs(z_score) <= qnorm(0.99))
-
 
 

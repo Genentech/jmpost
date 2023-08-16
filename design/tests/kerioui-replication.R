@@ -81,7 +81,7 @@ mp_k <- sampleStanModel(
     iter_warmup = 1000,
     chains = 1,
     parallel_chains = 1,
-    exe_file = file.path("local", "models", "kerioui-replication")
+    exe_dir = file.path("local", "models")
 )
 
 compare_vars <- c(

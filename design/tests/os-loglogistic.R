@@ -58,7 +58,7 @@ mp <- sampleStanModel(
     iter_sampling = 1000,
     iter_warmup = 500,
     chains = 1,
-    exe_file = file.path("local", "models", "os-loglogistic")
+    exe_dir = file.path("local", "models")
 )
 
 vars <- c(

@@ -125,8 +125,7 @@ mcmc_results <- sampleStanModel(
     iter_sampling = 100,
     iter_warmup = 100,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = tempfile()
+    parallel_chains = 1
 )
 ```
 

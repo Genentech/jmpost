@@ -60,7 +60,7 @@ test_that("Random Slope Model can recover known parameter values", {
         iter_warmup = 200,
         chains = 1,
         parallel_chains = 1,
-        exe_file = file.path(MODEL_DIR, "misc_longitudinal_simulation_concordance")
+        exe_dir = MODEL_DIR
     )
 
 

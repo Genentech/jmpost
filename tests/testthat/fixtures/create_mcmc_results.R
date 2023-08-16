@@ -35,8 +35,7 @@ mcmc_results <- sampleStanModel(
     iter_sampling = 100,
     iter_warmup = 100,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = tempfile()
+    parallel_chains = 1
 )
 # See https://mc-stan.org/cmdstanr/articles/cmdstanr-internals.html#saving-fitted-model-objects
 # telling us to call draws() once to load all samples into the object in memory.

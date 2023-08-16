@@ -338,7 +338,7 @@ mp_k <- sampleStanModel(
   chains = 4,
   parallel_chains = 4,
   # init = NULL,
-  exe_file = file.path("local", "debug")
+  exe_dir = file.path("local", "debug")
 )
 
 
@@ -376,7 +376,7 @@ mp_j <- sampleStanModel(
   chains = 4,
   parallel_chains = 4,
   # init = NULL,
-  exe_file = file.path("local", "debug")
+  exe_dir = file.path("local", "models")
 )
 
 

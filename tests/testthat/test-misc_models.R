@@ -59,7 +59,7 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
                 chains = 1,
                 refresh = 0,
                 parallel_chains = 1,
-                exe_file = file.path(MODEL_DIR, "misc_longitudinal_sample_rejection")
+                exe_dir = MODEL_DIR
             )
         })
     })

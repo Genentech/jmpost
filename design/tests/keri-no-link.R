@@ -78,7 +78,7 @@ mp_k <- sampleStanModel(
     iter_warmup = 1000,
     chains = 4,
     parallel_chains = 4,
-    exe_file = file.path("local", "debug")
+    exe_dir = file.path("local", "models")
 )
 
 compare_vars <- c(
