@@ -162,7 +162,7 @@ setMethod(
             exe_dir,
             paste0(
                 digest::digest(stan_code, "md5"),
-                if_else(is_windows(), ".exe", "")
+                if (is_windows()) ".exe" else ""
             )
         )
         x <- cmdstanr::cmdstan_model(
