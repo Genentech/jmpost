@@ -163,12 +163,13 @@ setGeneric(
 #' Compile the Stan module.
 #'
 #' @param object the module.
-#' @param exe_file (`string`)\cr output file.
+#' @param exe_dir (`string`)\cr Directory for where compiled models should be stored. If not set
+#' will default to `options("jmpost.cache.dir")``, if this is also not set will default to `tempdir()`
 #'
 #' @export
 setGeneric(
     name = "compileStanModel",
-    def = function(object, exe_file) standardGeneric("compileStanModel")
+    def = function(object, exe_dir) standardGeneric("compileStanModel")
 )
 
 # sampleStanModel ----
@@ -179,12 +180,13 @@ setGeneric(
 #'
 #' @param object the module.
 #' @param ... additional arguments.
-#' @param exe_file (`string`)\cr output file.
+#' @param exe_dir (`string`)\cr Directory for where compiled models should be stored. If not set
+#' will default to `options("jmpost.cache.dir")``, if this is also not set will default to `tempdir()`
 #'
 #' @export
 setGeneric(
     name = "sampleStanModel",
-    def = function(object, ..., exe_file) standardGeneric("sampleStanModel")
+    def = function(object, ..., exe_dir) standardGeneric("sampleStanModel")
 )
 
 # as.StanModule ----

@@ -39,12 +39,12 @@ jlist <- simulate_joint_data(
         sigma = 3,
         slope_mu = c(1, 3),
         slope_sigma = 0.2,
-        phi = 0,
-        .debug = TRUE
+        phi = 0
     ),
     os_fun = sim_os_exponential(
         lambda = 0.00333  # 1 / 300
-    )
+    ),
+    .debug = TRUE
 )
 
 
@@ -82,7 +82,7 @@ mp <- sampleStanModel(
     iter_warmup = 1000,
     chains = 1,
     parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    exe_dir = file.path("local", "models")
 )
 
 

@@ -41,6 +41,7 @@ Imports:
     glue,
     tibble,
     methods,
+    digest,
     stats
 Suggests: 
     bayesplot,

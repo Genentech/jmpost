@@ -5,16 +5,17 @@
 \alias{sampleStanModel,JointModel-method}
 \title{\code{sampleStanModel}}
 \usage{
-sampleStanModel(object, ..., exe_file)
+sampleStanModel(object, ..., exe_dir)
 
-\S4method{sampleStanModel}{JointModel}(object, data, ..., exe_file = NULL)
+\S4method{sampleStanModel}{JointModel}(object, data, ..., exe_dir)
 }
 \arguments{
 \item{object}{the module.}
 
 \item{...}{additional arguments.}
 
-\item{exe_file}{(\code{string})\cr output file.}
+\item{exe_dir}{(\code{string})\cr Directory for where compiled models should be stored. If not set
+will default to \verb{options("jmpost.cache.dir")``, if this is also not set will default to }tempdir()`}
 
 \item{data}{(\code{DataJoint} or \code{list})\cr input data.}
 }
