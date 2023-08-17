@@ -152,19 +152,18 @@ setMethod(
 #' @rdname compileStanModel
 setMethod(
     f = "compileStanModel",
-    signature = signature(object = "StanModule", exe_dir = "character"),
-    definition = function(object, exe_dir) {
+    signature = signature(object = "StanModule"),
+    definition = function(object) {
+        exe_dir <- getOption("jmpost.cache.dir")
         if (!dir.exists(exe_dir)) {
             dir.create(exe_dir, recursive = TRUE)
         }
         stan_code <- as.character(object)
-        exe_file <- file.path(
-            exe_dir,
-            paste0(
-                digest::digest(stan_code, "md5"),
-                if (is_windows()) ".exe" else ""
-            )
+        exe_name <- paste0(
+            digest::digest(stan_code, "md5"),
+            if (is_windows()) ".exe" else ""
         )
+        exe_file <- file.path(exe_dir, exe_name)
         x <- cmdstanr::cmdstan_model(
             stan_file = cmdstanr::write_stan_file(stan_code),
             exe_file = exe_file
@@ -173,20 +172,6 @@ setMethod(
     }
 )
 
-# compileStanModel-StanModule,empty ----
-
-#' @rdname compileStanModel
-setMethod(
-    f = "compileStanModel",
-    signature = signature(object = "StanModule", exe_dir = "empty"),
-    definition = function(object, exe_dir) {
-        exe_dir <- dplyr::coalesce(
-            getOption("jmpost.cache.dir"),
-            tempdir()
-        )
-        invisible(compileStanModel(object, exe_dir))
-    }
-)
 
 # show-StanModule ----
 
