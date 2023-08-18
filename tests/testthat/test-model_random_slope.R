@@ -59,8 +59,7 @@ test_that("Random Slope Model can recover known parameter values", {
         iter_sampling = 200,
         iter_warmup = 200,
         chains = 1,
-        parallel_chains = 1,
-        exe_dir = MODEL_DIR
+        parallel_chains = 1
     )
 
 

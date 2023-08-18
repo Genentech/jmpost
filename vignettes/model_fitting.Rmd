@@ -261,8 +261,6 @@ mcmc_results <- sampleStanModel(
 mcmc_results <- readRDS("mcmc_results.rds")
 ```
 
-Note that `exe_file` is used to specify the location of the compiled Stan file,
-e.g. relative to the current working directory. 
 
 ## Convergence checks
 

@@ -6,6 +6,7 @@ library(tidyr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
+option("jmpost.cache.dir" = file.path("local", "models"))
 
 
 #### Example 1 - Fully specified model
@@ -81,8 +82,7 @@ mp <- sampleStanModel(
     iter_sampling = 1000,
     iter_warmup = 1000,
     chains = 1,
-    parallel_chains = 1,
-    exe_dir = file.path("local", "models")
+    parallel_chains = 1
 )
 
 

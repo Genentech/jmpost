@@ -3,6 +3,8 @@ devtools::document()
 devtools::load_all()
 library(bayesplot)
 
+option("jmpost.cache.dir" = file.path("local", "models"))
+
 jlist <- simulate_joint_data(
     n_arm = c(1000, 1000),
     times = 1:2000,
@@ -57,8 +59,7 @@ mp <- sampleStanModel(
     data = jdat,
     iter_sampling = 1000,
     iter_warmup = 500,
-    chains = 1,
-    exe_dir = file.path("local", "models")
+    chains = 1
 )
 
 vars <- c(

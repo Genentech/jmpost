@@ -58,8 +58,7 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
                 iter_warmup = 3,
                 chains = 1,
                 refresh = 0,
-                parallel_chains = 1,
-                exe_dir = MODEL_DIR
+                parallel_chains = 1
             )
         })
     })

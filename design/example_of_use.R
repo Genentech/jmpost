@@ -135,8 +135,7 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 500,
     chains = 1,
-    parallel_chains = 1,
-    exe_dir = file.path("local", "models")
+    parallel_chains = 1
 )
 
 ## Inspect parameters from the model

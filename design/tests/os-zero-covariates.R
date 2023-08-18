@@ -1,7 +1,7 @@
 devtools::document()
 devtools::load_all()
 
-
+option("jmpost.cache.dir" = file.path("local", "models"))
 
 
 true_lambda <- 1/100
@@ -48,8 +48,7 @@ mp <- sampleStanModel(
     iter_sampling = 200,
     iter_warmup = 200,
     chains = 1,
-    parallel_chains = 1,
-    exe_dir = file.path("local", "models")
+    parallel_chains = 1
 )
 
 results_summary <- mp@results$summary("sm_exp_lambda")
