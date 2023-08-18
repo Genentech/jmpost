@@ -51,7 +51,7 @@ test_that("GSF SLD function works as expected", {
             "lm-gsf/functions.stan",
             test_path("models", "gsf_sld.stan")
         ),
-        file.path(MODEL_DIR, "test-gsf-sld")
+        file.path(CACHE_DIR, "test-gsf-sld")
     )
 
     observed <- as.numeric(fit$draws(variables = "sld_results")) |> round(4)
@@ -91,7 +91,7 @@ test_that("Normal Log Density functions work as expected", {
             "lm-gsf/functions.stan",
             test_path("models/normal_log_cumulative.stan")
         ),
-        file.path(MODEL_DIR, "test-log-cumulative")
+        file.path(CACHE_DIR, "test-log-cumulative")
     )
 
     #### vect_normal_log_dens
@@ -153,7 +153,7 @@ test_that("GSF Identity Link Function works as expected", {
             "lm-gsf/link_identity.stan",
             test_path("models", "gsf_identity_link.stan")
         ),
-        file.path(MODEL_DIR, "test-gsf_identity_link")
+        file.path(CACHE_DIR, "test-gsf_identity_link")
     )
 
     observed <- as.numeric(fit$draws(variables = "results")) |> round(3)

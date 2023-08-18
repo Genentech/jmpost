@@ -38,6 +38,7 @@ jobs:
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
         CMDSTANR_NO_VER_CHECK=true
+        JMPOST_CACHE_DIR=~/.jmpost
       additional-caches: |
         ~/.jmpost
   coverage:

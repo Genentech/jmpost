@@ -21,6 +21,6 @@ test_that("compileStanModel doesn't error if the directory doesn't exist", {
     old_path <- options("jmpost.cache.dir")
     options("jmpost.cache.dir" = fpath)
     z <- compileStanModel(smod)
-    options("jmpost.cache.dir" = old_path)
+    options(old_path)
     expect_true(file.exists(fpath))
 })

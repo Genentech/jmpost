@@ -1,6 +1,5 @@
 
 
-
 test_that("SurvivalExponential can recover true parameter (no covariates)", {
     true_lambda <- 1 / 100
 
