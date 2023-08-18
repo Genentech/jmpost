@@ -78,7 +78,7 @@ simulate_joint_data <- function(
         tibble::as_tibble() |>
         dplyr::mutate(width = rep(bounds$width, times = n)) |>
         dplyr::mutate(evalp = rep(bounds$eval, times = n)) |>
-        dplyr::select(pt, time, evalp, width)
+        dplyr::select("pt", "time", "evalp", "width")
 
     time_dat_baseline <- time_dat |>
         dplyr::left_join(os_baseline, by = "pt")
