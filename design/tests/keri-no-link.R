@@ -10,7 +10,7 @@ library(cmdstanr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
-option("jmpost.cache.dir" = file.path("local", "models"))
+options("jmpost.cache.dir" = file.path("local", "models"))
 
 ### Try to re-create analysis of Kerioui et. al 2020
 
