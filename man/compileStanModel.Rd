@@ -2,24 +2,18 @@
 % Please edit documentation in R/generics.R, R/StanModule.R, R/JointModel.R
 \name{compileStanModel}
 \alias{compileStanModel}
-\alias{compileStanModel,StanModule,character-method}
-\alias{compileStanModel,StanModule,empty-method}
-\alias{compileStanModel,JointModel,ANY-method}
+\alias{compileStanModel,StanModule-method}
+\alias{compileStanModel,JointModel-method}
 \title{\code{compileStanModel}}
 \usage{
-compileStanModel(object, exe_dir)
+compileStanModel(object)
 
-\S4method{compileStanModel}{StanModule,character}(object, exe_dir)
+\S4method{compileStanModel}{StanModule}(object)
 
-\S4method{compileStanModel}{StanModule,empty}(object, exe_dir)
-
-\S4method{compileStanModel}{JointModel,ANY}(object, exe_dir)
+\S4method{compileStanModel}{JointModel}(object)
 }
 \arguments{
 \item{object}{the module.}
-
-\item{exe_dir}{(\code{string})\cr Directory for where compiled models should be stored. If not set
-will default to \verb{options("jmpost.cache.dir")``, if this is also not set will default to }tempdir()`}
 }
 \description{
 Compile the Stan module.
