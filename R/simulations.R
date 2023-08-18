@@ -78,7 +78,7 @@ simulate_joint_data <- function(
         tibble::as_tibble() |>
         dplyr::mutate(width = rep(bounds$width, times = n)) |>
         dplyr::mutate(evalp = rep(bounds$eval, times = n)) |>
-        dplyr::select(pt, time, evalp, width)
+        dplyr::select(.data$pt, .data$time, .data$evalp, .data$width)
 
     time_dat_baseline <- time_dat |>
         dplyr::left_join(os_baseline, by = "pt")
@@ -97,7 +97,7 @@ simulate_joint_data <- function(
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
         dplyr::mutate(log_bl_haz = os_fun(.data$evalp)) |>
         # Fix to avoid issue with log(0) = NaN values
-        dplyr::mutate(log_bl_haz = dplyr::if_else(.data$evalp == 0, -999, log_bl_haz)) |>
+        dplyr::mutate(log_bl_haz = dplyr::if_else(.data$evalp == 0, -999, .data$log_bl_haz)) |>
         dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
         dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
         dplyr::group_by(.data$pt) |>
