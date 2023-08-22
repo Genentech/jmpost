@@ -163,12 +163,11 @@ setGeneric(
 #' Compile the Stan module.
 #'
 #' @param object the module.
-#' @param exe_file (`string`)\cr output file.
 #'
 #' @export
 setGeneric(
     name = "compileStanModel",
-    def = function(object, exe_file) standardGeneric("compileStanModel")
+    def = function(object) standardGeneric("compileStanModel")
 )
 
 # sampleStanModel ----
@@ -179,12 +178,11 @@ setGeneric(
 #'
 #' @param object the module.
 #' @param ... additional arguments.
-#' @param exe_file (`string`)\cr output file.
 #'
 #' @export
 setGeneric(
     name = "sampleStanModel",
-    def = function(object, ..., exe_file) standardGeneric("sampleStanModel")
+    def = function(object, ...) standardGeneric("sampleStanModel")
 )
 
 # as.StanModule ----

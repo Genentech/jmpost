@@ -1,6 +1,5 @@
 
 
-
 test_that("SurvivalExponential can recover true parameter (no covariates)", {
     true_lambda <- 1 / 100
 
@@ -45,8 +44,7 @@ test_that("SurvivalExponential can recover true parameter (no covariates)", {
         iter_sampling = 200,
         iter_warmup = 200,
         chains = 1,
-        parallel_chains = 1,
-        exe_file = file.path(MODEL_DIR, "Survival_Exponential_No_Covariates")
+        parallel_chains = 1
     )
 
     results_summary <- mp@results$summary("sm_exp_lambda")
@@ -102,8 +100,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
         iter_sampling = 300,
         iter_warmup = 300,
         chains = 1,
-        parallel_chains = 1,
-        exe_file = file.path(MODEL_DIR, "Survival_Exponential_With_Covariates")
+        parallel_chains = 1
     )
 
     # Variables to extract (order important)

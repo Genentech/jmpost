@@ -1,7 +1,5 @@
-library(cmdstanr)
 
-
-run_stan_function <- function(stan_data, fun_files, exe_path) {
+run_stan_function <- function(stan_data, fun_files, dir, basename) {
     stan_mods <- lapply(fun_files, \(i) StanModule(i))
     stan_mod <- Reduce(merge, stan_mods)
     stan_plus_user <- merge(
@@ -9,9 +7,16 @@ run_stan_function <- function(stan_data, fun_files, exe_path) {
         StanModule(test_path("models", "null_model_insert.stan"))
     )
     stan_data$null_y_data <- c(0, 1)
-    mod <- cmdstan_model(
-        stan_file = write_stan_file(as.character(stan_plus_user)),
-        exe_file = exe_path
+    mod <- cmdstanr::cmdstan_model(
+        stan_file = cmdstanr::write_stan_file(
+            as.character(stan_plus_user),
+            dir = dir,
+            basename = paste0("testfuns_", basename, ".stan")
+        ),
+        exe_file = file.path(
+            dir,
+            paste0("testfuns_", basename)
+        )
     )
     # Completely silence call to STAN as we aren't fitting a real model
     devnull <- capture.output({
@@ -51,7 +56,8 @@ test_that("GSF SLD function works as expected", {
             "lm-gsf/functions.stan",
             test_path("models", "gsf_sld.stan")
         ),
-        file.path(MODEL_DIR, "test-gsf-sld")
+        CACHE_DIR,
+        "gsf-sld"
     )
 
     observed <- as.numeric(fit$draws(variables = "sld_results")) |> round(4)
@@ -91,7 +97,8 @@ test_that("Normal Log Density functions work as expected", {
             "lm-gsf/functions.stan",
             test_path("models/normal_log_cumulative.stan")
         ),
-        file.path(MODEL_DIR, "test-log-cumulative")
+        CACHE_DIR,
+        "log-cumulative"
     )
 
     #### vect_normal_log_dens
@@ -153,7 +160,8 @@ test_that("GSF Identity Link Function works as expected", {
             "lm-gsf/link_identity.stan",
             test_path("models", "gsf_identity_link.stan")
         ),
-        file.path(MODEL_DIR, "test-gsf_identity_link")
+        CACHE_DIR,
+        "gsf_identity_link"
     )
 
     observed <- as.numeric(fit$draws(variables = "results")) |> round(3)

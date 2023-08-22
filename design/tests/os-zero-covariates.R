@@ -1,7 +1,7 @@
 devtools::document()
 devtools::load_all()
 
-
+options("jmpost.cache.dir" = file.path("local", "models"))
 
 
 true_lambda <- 1/100
@@ -48,8 +48,7 @@ mp <- sampleStanModel(
     iter_sampling = 200,
     iter_warmup = 200,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    parallel_chains = 1
 )
 
 results_summary <- mp@results$summary("sm_exp_lambda")
@@ -59,6 +58,5 @@ lambda_sd <- results_summary$sd
 
 z_score <- (lambda_mean - true_lambda) / lambda_sd
 expect_true(abs(z_score) <= qnorm(0.99))
-
 
 
