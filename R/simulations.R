@@ -113,7 +113,7 @@ simulate_joint_data <- function(
 
     os_had_censor <- os_dat_chaz |>
         dplyr::filter(!.data$pt %in% os_had_event$pt) |>
-        dplyr::group_by(pt) |>
+        dplyr::group_by(.data$pt) |>
         dplyr::slice(dplyr::n()) |>
         dplyr::ungroup() |>
         dplyr::mutate(event = 0)
