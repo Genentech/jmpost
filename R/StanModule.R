@@ -159,13 +159,20 @@ setMethod(
             dir.create(exe_dir, recursive = TRUE)
         }
         stan_code <- as.character(object)
+        hash_name <- digest::digest(stan_code, "md5")
         exe_name <- paste0(
-            digest::digest(stan_code, "md5"),
+            "model_",
+            hash_name,
             if (is_windows()) ".exe" else ""
         )
         exe_file <- file.path(exe_dir, exe_name)
+        source_file <- cmdstanr::write_stan_file(
+            code = stan_code,
+            dir = exe_dir,
+            basename = sprintf("model_%s.stan", hash_name)
+        )
         x <- cmdstanr::cmdstan_model(
-            stan_file = cmdstanr::write_stan_file(stan_code),
+            stan_file = source_file,
             exe_file = exe_file
         )
         invisible(x)

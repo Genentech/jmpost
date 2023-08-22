@@ -7,12 +7,12 @@
         cache_dir <- tempfile()
     }
 
-    current_ops <- names(options())
+    current_opts <- names(options())
     jmpost_opts <- list(
         jmpost.cache.dir = cache_dir
     )
     for (opt in names(jmpost_opts)) {
-        if (!opt %in% current_ops) {
+        if (!opt %in% current_opts) {
             options(jmpost_opts[opt])
         }
     }
