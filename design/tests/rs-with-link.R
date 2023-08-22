@@ -6,7 +6,7 @@ library(tidyr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
-
+options("jmpost.cache.dir" = file.path("local", "models"))
 
 #### Example 1 - Fully specified model - using the defaults for everything
 jm <- JointModel(
@@ -80,8 +80,7 @@ mp <- sampleStanModel(
     iter_sampling = 1000,
     iter_warmup = 1000,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    parallel_chains = 1
 )
 
 

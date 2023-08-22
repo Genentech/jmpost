@@ -15,9 +15,9 @@ $$
 
 where:
 
-* $l_{0}(t)$ is the baseline log-hazard function at time $t$ conditioned on parameters $\theta$
+* $h_{0}(t)$ is the baseline log-hazard function at time $t$ conditioned on parameters $\theta$
 * $X_i$ is the matrix of covariates for subject $i$
-* $C(t \mid \phi_i)$ is the link contribution function at time $t$ given parameters $\phi_i$ from a corresponding longitudinal
+* $C(t \mid \phi_i)$ is the link contribution function at time $t$ given parameters $\phi_i$ from a corresponding longitudinal model
 
 
 

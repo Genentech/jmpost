@@ -5,16 +5,14 @@
 \alias{sampleStanModel,JointModel-method}
 \title{\code{sampleStanModel}}
 \usage{
-sampleStanModel(object, ..., exe_file)
+sampleStanModel(object, ...)
 
-\S4method{sampleStanModel}{JointModel}(object, data, ..., exe_file = NULL)
+\S4method{sampleStanModel}{JointModel}(object, data, ...)
 }
 \arguments{
 \item{object}{the module.}
 
 \item{...}{additional arguments.}
-
-\item{exe_file}{(\code{string})\cr output file.}
 
 \item{data}{(\code{DataJoint} or \code{list})\cr input data.}
 }

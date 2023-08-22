@@ -10,6 +10,7 @@ library(cmdstanr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
+options("jmpost.cache.dir" = file.path("local", "models"))
 
 ### Try to re-create analysis of Kerioui et. al 2020
 
@@ -80,8 +81,7 @@ mp_k <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "models", "kerioui-replication")
+    parallel_chains = 1
 )
 
 compare_vars <- c(

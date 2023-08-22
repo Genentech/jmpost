@@ -140,5 +140,6 @@ test_that("samples_median_ci works with a custom credibility level", {
         upper = c(0.22, 1.76, 4),
         row.names = c("par1", "par2", "par3")
     )
+
     expect_equal(result, expected)
 })

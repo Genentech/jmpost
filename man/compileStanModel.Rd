@@ -2,23 +2,18 @@
 % Please edit documentation in R/generics.R, R/StanModule.R, R/JointModel.R
 \name{compileStanModel}
 \alias{compileStanModel}
-\alias{compileStanModel,StanModule,character-method}
-\alias{compileStanModel,StanModule,empty-method}
-\alias{compileStanModel,JointModel,ANY-method}
+\alias{compileStanModel,StanModule-method}
+\alias{compileStanModel,JointModel-method}
 \title{\code{compileStanModel}}
 \usage{
-compileStanModel(object, exe_file)
+compileStanModel(object)
 
-\S4method{compileStanModel}{StanModule,character}(object, exe_file)
+\S4method{compileStanModel}{StanModule}(object)
 
-\S4method{compileStanModel}{StanModule,empty}(object, exe_file)
-
-\S4method{compileStanModel}{JointModel,ANY}(object, exe_file)
+\S4method{compileStanModel}{JointModel}(object)
 }
 \arguments{
 \item{object}{the module.}
-
-\item{exe_file}{(\code{string})\cr output file.}
 }
 \description{
 Compile the Stan module.

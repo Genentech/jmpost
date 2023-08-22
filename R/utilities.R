@@ -217,3 +217,9 @@ decorated_render <- function(...) {
         machine_double_neg_eps = sqrt(.Machine$double.neg.eps)
     )
 }
+
+
+is_windows <- function() {
+    sysname <- Sys.info()["sysname"]
+    return(sysname == "Windows")
+}

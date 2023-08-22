@@ -49,8 +49,7 @@ test_that("LongitudinalGSF works as expected with a single study", {
         iter_sampling = 75,
         iter_warmup = 75,
         chains = 1,
-        parallel_chains = 1,
-        exe_file = file.path(MODEL_DIR, "gsf_joint_model_with_link_single_study")
+        parallel_chains = 1
     ))
 
     expect_s4_class(mp, "JointModelSamples")

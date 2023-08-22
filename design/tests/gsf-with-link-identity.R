@@ -9,6 +9,7 @@ library(cmdstanr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
+options("jmpost.cache.dir" = file.path("local", "models"))
 
 
 #### Example 1 - Fully specified model - using the defaults for everything
@@ -121,10 +122,9 @@ mp <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 1000,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "models", "gsf-with-link-identity")
+    parallel_chains = 1
 )
-    
+
 
 
 

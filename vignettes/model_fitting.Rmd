@@ -253,8 +253,7 @@ mcmc_results <- sampleStanModel(
     iter_sampling = 500,
     iter_warmup = 500,
     chains = 1,
-    parallel_chains = 1,
-    exe_file = file.path("local", "full")
+    parallel_chains = 1
 )
 ```
 
@@ -262,8 +261,6 @@ mcmc_results <- sampleStanModel(
 mcmc_results <- readRDS("mcmc_results.rds")
 ```
 
-Note that `exe_file` is used to specify the location of the compiled Stan file,
-e.g. relative to the current working directory. 
 
 ## Convergence checks
 

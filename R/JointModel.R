@@ -94,8 +94,8 @@ setMethod(
 setMethod(
     f = "compileStanModel",
     signature = "JointModel",
-    definition = function(object, exe_file) {
-        x <- compileStanModel(object@stan, exe_file)
+    definition = function(object) {
+        x <- compileStanModel(object@stan)
         invisible(x)
     }
 )
@@ -108,7 +108,7 @@ setMethod(
 setMethod(
     f = "sampleStanModel",
     signature = "JointModel",
-    definition = function(object, data, ..., exe_file = NULL) {
+    definition = function(object, data, ...) {
 
         args <- list(...)
 
@@ -128,7 +128,7 @@ setMethod(
             args[["init"]] <- function() values_initial_expanded
         }
 
-        model <- compileStanModel(object, exe_file)
+        model <- compileStanModel(object)
         results <- do.call(model$sample, args)
 
         .JointModelSamples(
