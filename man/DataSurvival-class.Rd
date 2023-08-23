@@ -7,7 +7,7 @@
 \alias{DataSurvival}
 \title{\code{DataSurvival}}
 \usage{
-DataSurvival(data, formula, subject, arm, study, time_grid = NULL)
+DataSurvival(data, formula, subject, arm, study)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr the observed time-to-event data.}
@@ -20,10 +20,6 @@ See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note 
 \item{arm}{(\code{string})\cr the name of the treatment arm variable.}
 
 \item{study}{(\code{string})\cr the name of the study variable.}
-
-\item{time_grid}{(\code{numeric})\cr grid of time points to use for providing samples
-of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
-201 values from 0 to the maximum observed times.}
 }
 \description{
 The \code{\link{DataSurvival}} class handles the processing of the survival data for fitting a Joint Model.
@@ -43,10 +39,6 @@ See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note 
 \item{\code{arm}}{(\code{string})\cr the name of the treatment arm variable.}
 
 \item{\code{study}}{(\code{string})\cr the name of the study variable.}
-
-\item{\code{time_grid}}{(\code{numeric})\cr grid of time points to use for providing samples
-of the survival functions. If \code{NULL}, will be taken as a sequence of
-201 values from 0 to the maximum observed times.}
 }}
 
 \seealso{

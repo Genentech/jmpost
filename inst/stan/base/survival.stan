@@ -93,9 +93,6 @@ data{
     int<lower=0> p_os_cov_design;
     matrix[Nind, p_os_cov_design] os_cov_design;
 
-    int<lower=1> n_sm_time_grid;       // Number of time points in the grid.
-    vector[n_sm_time_grid] sm_time_grid; // Time points grid.
-
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
     // between 0 and 1

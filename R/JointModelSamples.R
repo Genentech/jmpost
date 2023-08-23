@@ -24,90 +24,50 @@ NULL
     )
 )
 
-# longitudinal-JointModelSamples ----
 
-#' @rdname longitudinal
+#' @rdname generateQuantities
 #'
-#' @param patients (`character` or `NULL`)\cr optional subset of patients for
-#' which the longitudinal fit samples should be extracted, the default `NULL`
-#' meaning all patients.
-#'
+#' @param time_grid_lm (`numeric`)\cr grid of time points to use for providing samples
+#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
+#'   201 values from 0 to the maximum observed event time.
+#' @param time_grid_os (`numeric`)\cr grid of time points to use for providing samples
+#'   of the survival model fit functions. If `NULL`, will be taken as a sequence of
+#'   201 values from 0 to the maximum observed event time.
 #' @export
 setMethod(
-    f = "longitudinal",
+    f = "generateQuantities",
     signature = c(object = "JointModelSamples"),
-    definition = function(object, patients = NULL, ...) {
-        all_pts <- names(object@data$pt_to_ind)
-        if (is.null(patients)) patients <- all_pts
-        assert_that(all(patients %in% all_pts), !any(duplicated(patients)))
-        time_grid <- object@data$lm_time_grid
-        assert_that(is.numeric(object@data$lm_time_grid))
-        time_grid_index <- seq_along(time_grid)
-        y_fit_at_grid_samples <- object@results$draws("y_fit_at_time_grid")
-        y_fit_samples <- object@results$draws("Ypred")[, 1L, , drop = TRUE]
-        results <- list()
-        for (this_pt in patients) {
-            this_result <- list()
-            # Samples.
-            patient_ind <- object@data$pt_to_ind[this_pt]
-            this_y_fit_names <- paste0("y_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
-            this_result$samples <- y_fit_at_grid_samples[, 1L, this_y_fit_names, drop = TRUE]
-            # Summary.
-            y_fit <- samples_median_ci(this_result$samples)
-            this_result$summary <- cbind(time = time_grid, y_fit)
-            # Observations.
-            for_this_pt <- which(object@data$ind_index == patient_ind)
-            this_t <- object@data$Tobs[for_this_pt]
-            this_y <- object@data$Yobs[for_this_pt]
-            this_fit <- samples_median_ci(y_fit_samples[, for_this_pt, drop = FALSE])
-            this_result$observed <- data.frame(t = this_t, y = this_y, this_fit)
-            # Save all.
-            results[[this_pt]] <- this_result
+    definition = function(object, time_grid_lm = NULL, time_grid_sm = NULL, ...) {
+        data <- object@data
+        default_grid <- seq(from = 0, to = max(data[["Times"]]), length = 201)
+        if (is.null(time_grid_lm)) {
+            time_grid_lm <- default_grid
         }
-        .LongitudinalSamples(results)
-    }
-)
-
-# survival-JointModelSamples ----
-
-#' @rdname survival
-#'
-#' @param patients (`character` or `NULL`)\cr optional subset of patients for
-#' which the survival function samples should be extracted, the default `NULL`
-#' meaning all patients.
-#'
-#' @export
-setMethod(
-    f = "survival",
-    signature = c(object = "JointModelSamples"),
-    definition = function(object, patients = NULL, ...) {
-        all_pts <- names(object@data$pt_to_ind)
-        if (is.null(patients)) patients <- all_pts
-        assert_that(all(patients %in% all_pts), !any(duplicated(patients)))
-        time_grid <- object@data$sm_time_grid
-        assert_that(is.numeric(object@data$sm_time_grid))
-        time_grid_index <- seq_along(time_grid)
-        log_surv_at_grid_samples <- object@results$draws("log_surv_fit_at_time_grid")
-        log_surv_at_obs_samples <- object@results$draws("log_surv_fit_at_obs_times")[, 1L, , drop = TRUE]
-        results <- list()
-        for (this_pt in patients) {
-            this_result <- list()
-            # Samples, also do exp() here.
-            patient_ind <- object@data$pt_to_ind[this_pt]
-            this_surv_fit_names <- paste0("log_surv_fit_at_time_grid[", patient_ind, ",", time_grid_index, "]")
-            this_result$samples <- exp(log_surv_at_grid_samples[, 1L, this_surv_fit_names, drop = TRUE])
-            # Summary.
-            surv_fit <- samples_median_ci(this_result$samples)
-            this_result$summary <- cbind(time = time_grid, surv_fit)
-            # Observations.
-            this_t <- object@data$Times[patient_ind]
-            this_obs_death <- (patient_ind %in% object@data$dead_ind_index)
-            this_surv_fit <- samples_median_ci(exp(log_surv_at_obs_samples[, patient_ind, drop = FALSE]))
-            this_result$observed <- data.frame(t = this_t, death = this_obs_death, this_surv_fit)
-            rownames(this_result$observed) <- this_pt
-            # Save all.
-            results[[this_pt]] <- this_result
+        if (is.null(time_grid_sm)) {
+            time_grid_sm <- default_grid
         }
-        .SurvivalSamples(results)
+        validate_time_grid(time_grid_lm)
+        validate_time_grid(time_grid_sm)
+        data[["n_lm_time_grid"]] <- length(time_grid_lm)
+        data[["lm_time_grid"]] <- time_grid_lm
+        data[["n_sm_time_grid"]] <- length(time_grid_sm)
+        data[["sm_time_grid"]] <- time_grid_sm
+
+        stanObject <- object@model@stan
+        stanObject_data <- merge(
+            stanObject,
+            StanModule("base/generated_quantities_data.stan")
+        )
+        model <- compileStanModel(stanObject_data)
+
+        results <- model$generate_quantities(
+            data = data,
+            fitted_params = object@results$draws()
+        )
+        object@data <- data
+        JointModelQuantities(
+            object,
+            results
+        )
     }
 )

@@ -16,9 +16,6 @@ NULL
 #' @slot subject (`string`)\cr the name of the subject identifier variable.
 #' @slot arm (`string`)\cr the name of the treatment arm variable.
 #' @slot study (`string`)\cr the name of the study variable.
-#' @slot time_grid (`numeric`)\cr grid of time points to use for providing samples
-#'   of the survival functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed times.
 #'
 #' @seealso [`DataJoint`], [`DataLongitudinal`]
 #'
@@ -30,8 +27,7 @@ NULL
         formula = "formula",
         subject = "character",
         arm = "character",
-        study = "character",
-        time_grid = "numeric_or_NULL"
+        study = "character"
     )
 )
 
@@ -45,19 +41,15 @@ NULL
 #' @param subject (`string`)\cr the name of the subject identifier variable.
 #' @param arm (`string`)\cr the name of the treatment arm variable.
 #' @param study (`string`)\cr the name of the study variable.
-#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
-#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed times.
 #'
 #' @export
-DataSurvival <- function(data, formula, subject, arm, study, time_grid = NULL) {
+DataSurvival <- function(data, formula, subject, arm, study) {
     .DataSurvival(
         data = remove_missing_rows(data, formula, c(subject, arm, study)),
         formula = formula,
         subject = subject,
         arm = arm,
-        study = study,
-        time_grid = time_grid
+        study = study
     )
 }
 
@@ -110,13 +102,6 @@ setValidity(
         }
         if (length(dat[[x$pt]]) != length(unique(dat[[x$pt]]))) {
             return("Only 1 survival observation per subject is supported")
-        }
-        if (!is.null(object@time_grid)) {
-            if (is.unsorted(object@time_grid) ||
-                any(duplicated(object@time_grid)) ||
-                !all(is.finite(object@time_grid))) {
-                return("`time_grid` needs to be finite, sorted, unique values numeric vector")
-            }
         }
         return(TRUE)
     }
@@ -189,12 +174,6 @@ setMethod(
         # Parameters for efficient integration of hazard function -> survival function
         gh_parameters <- statmod::gauss.quad(n = 15, kind = "legendre")
 
-        sm_time_grid <- if (is.null(x@time_grid)) {
-            seq(from = 0, to = max(df[[vars$time]]), length = 201)
-        } else {
-            x@time_grid
-        }
-
         model_data <- list(
             Nind = nrow(df),
             Nind_dead = sum(df[[vars$event]]),
@@ -206,9 +185,7 @@ setMethod(
             nodes = gh_parameters$nodes,
             weights = gh_parameters$weights,
             study_index = as.numeric(df[[vars$study]]),
-            arm_index = as.numeric(df[[vars$arm]]),
-            sm_time_grid = sm_time_grid,
-            n_sm_time_grid = length(sm_time_grid)
+            arm_index = as.numeric(df[[vars$arm]])
         )
 
         arm_data <- get_arm_study_data(

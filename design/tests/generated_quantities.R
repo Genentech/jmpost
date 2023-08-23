@@ -16,7 +16,8 @@ jm <- JointModel(
         intercept = prior_normal(30, 2),
         slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
         sigma = prior_lognormal(log(3), sigma = 0.5)
-    )
+    ),
+    survival = SurvivalExponential()
 )
 
 
@@ -27,7 +28,7 @@ write_stan(jm, "local/debug.stan")
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n = c(400, 400),
+    n = c(100, 40),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -53,7 +54,7 @@ jlist <- simulate_joint_data(
 ## Extract data to individual datasets
 dat_os <- jlist$os
 dat_lm <- jlist$lm |>
-    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
+    dplyr::filter(time %in% c(1, 100, 150, 250, 300)) |>
     dplyr::arrange(time, pt)
 
 
@@ -65,15 +66,13 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
-        study = "study",
-        time_grid = c(1:300)
+        study = "study"
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5,
-        time_grid = c(1:300)
+        threshold = 5
     )
 )
 
@@ -89,3 +88,10 @@ mp <- sampleStanModel(
 
 mp@results$summary()
 
+
+gq <- generateQuantities(mp, 1:4)
+
+pts <- sample(dat_os$pt, 4)
+
+longitudinal(gq, pts) |> autoplot()
+survival(gq, pts) |> autoplot()
