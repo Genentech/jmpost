@@ -128,7 +128,9 @@ setMethod(
             args[["init"]] <- function() values_initial_expanded
         }
 
-        model <- compileStanModel(object)
+        stanObject <- object@stan
+        stanObject@generated_quantities <- ""
+        model <- compileStanModel(stanObject)
         results <- do.call(model$sample, args)
 
         .JointModelSamples(
