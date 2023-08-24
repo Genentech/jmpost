@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -73,7 +67,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">longitudinal</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for JointModelSamples</span></span>
-<span><span class="fu">longitudinal</span><span class="op">(</span><span class="va">object</span>, patients <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">longitudinal</span><span class="op">(</span><span class="va">object</span>, patients <span class="op">=</span> <span class="cn">NULL</span>, time_grid <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,6 +84,12 @@
 <dd><p>(<code>character</code> or <code>NULL</code>)<br> optional subset of patients for
 which the longitudinal fit samples should be extracted, the default <code>NULL</code>
 meaning all patients.</p></dd>
+
+
+<dt>time_grid</dt>
+<dd><p>(<code>numeric</code>)<br> grid of time points to use for providing samples
+of the longitudinal model fit functions. If <code>NULL</code>, will be taken as a sequence of
+201 values from 0 to the maximum observed event time.</p></dd>
 
 </dl></div>
 

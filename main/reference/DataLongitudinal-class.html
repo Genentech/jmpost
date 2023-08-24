@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -70,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DataLongitudinal</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, <span class="va">subject</span>, threshold <span class="op">=</span> <span class="cn">NULL</span>, time_grid <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DataLongitudinal</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, <span class="va">subject</span>, threshold <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,12 +84,6 @@
 <dt>threshold</dt>
 <dd><p>(<code>number</code>)<br> cut-off value to be used to declare an observation as censored
 (below detection limit).</p></dd>
-
-
-<dt>time_grid</dt>
-<dd><p>(<code>numeric</code>)<br> grid of time points to use for providing samples
-of the longitudinal model fit functions. If <code>NULL</code>, will be taken as a sequence of
-201 values from the minimum to the maximum observed times.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -127,12 +115,6 @@ in the slot.</p></dd>
 <dt><code>threshold</code></dt>
 <dd><p>(<code>number</code>)<br> cut-off value to be used to declare an observation as censored
 (below detection limit).</p></dd>
-
-
-<dt><code>time_grid</code></dt>
-<dd><p>(<code>numeric</code>)<br> grid of time points to use for providing samples
-of the longitudinal model fit functions. If <code>NULL</code>, will be taken as a sequence of
-201 values from the minimum to the maximum observed times.</p></dd>
 
 
 </dl></div>

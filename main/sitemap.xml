@@ -133,13 +133,19 @@
     <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/expand_patients.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/expand_time_grid.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/get_arm_study_data.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc>
