@@ -5,6 +5,11 @@
 # Session Data files
 .RData
 
+# R data objects
+.rds
+.Rds
+.RDS
+
 # User-specific files
 .Ruserdata
 
