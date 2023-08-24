@@ -15,7 +15,7 @@ generateQuantities(object, ...)
 \item{...}{additional options.}
 
 \item{patients}{(\code{character})\cr explicit vector of patient IDs for whom the
-generated quantitites should be extracted}
+generated quantities should be extracted}
 
 \item{time_grid_lm}{(\code{numeric})\cr grid of time points to use for providing samples
 of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of

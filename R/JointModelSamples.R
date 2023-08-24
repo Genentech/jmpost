@@ -27,7 +27,7 @@ NULL
 
 #' @rdname generateQuantities
 #' @param patients (`character`)\cr explicit vector of patient IDs for whom the
-#' generated quantitites should be extracted
+#' generated quantities should be extracted
 #' @param time_grid_lm (`numeric`)\cr grid of time points to use for providing samples
 #'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
 #'   201 values from 0 to the maximum observed event time.
