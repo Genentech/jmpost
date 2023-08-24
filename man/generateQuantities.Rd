@@ -21,7 +21,7 @@ generated quantities should be extracted}
 of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
 201 values from 0 to the maximum observed event time.}
 
-\item{time_grid_os}{(\code{numeric})\cr grid of time points to use for providing samples
+\item{time_grid_sm}{(\code{numeric})\cr grid of time points to use for providing samples
 of the survival model fit functions. If \code{NULL}, will be taken as a sequence of
 201 values from 0 to the maximum observed event time.}
 }

@@ -31,7 +31,7 @@ NULL
 #' @param time_grid_lm (`numeric`)\cr grid of time points to use for providing samples
 #'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
 #'   201 values from 0 to the maximum observed event time.
-#' @param time_grid_os (`numeric`)\cr grid of time points to use for providing samples
+#' @param time_grid_sm (`numeric`)\cr grid of time points to use for providing samples
 #'   of the survival model fit functions. If `NULL`, will be taken as a sequence of
 #'   201 values from 0 to the maximum observed event time.
 #' @export
@@ -54,7 +54,7 @@ setMethod(
 
         model <- compileStanModel(stanObject_data)
 
-        output <- capture.output(
+        devnull <- utils::capture.output(
             results <- model$generate_quantities(
                 data = data,
                 fitted_params = object@results$draws()

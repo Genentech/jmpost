@@ -20,14 +20,4 @@ This function checks and expands a given patients vector.
 The input vector must be unique and contain only values
 as specified by \code{all_pts}
 }
-\examples{
-expand_patients(
-    patients = c("patient1", "patient2"),
-    all_pts = c("patient1", "patient2", "patient3")
-)
-expand_patients(
-    patients = NULL,
-    all_pts = c("patient1", "patient2", "patient3")
-)
-}
 \keyword{internal}

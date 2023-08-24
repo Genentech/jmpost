@@ -21,8 +21,4 @@ This function expands a given time grid by setting a default grid if one hasn't 
 and then verifying it's properties.
 The grid must be finite, sorted, and contain unique values.
 }
-\examples{
-expand_time_grid(time_grid = c(0, 5, 10), max_time = 20)
-expand_time_grid(time_grid = NULL, max_time = 50)
-}
 \keyword{internal}

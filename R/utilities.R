@@ -235,9 +235,6 @@ is_windows <- function() {
 #' from 0 to `max_time`.
 #' @param max_time (`numeric``)\cr Specifies the maximum time to be used in creating the default grid.
 #' @return Returns the expanded time_grid.
-#' @examples
-#' expand_time_grid(time_grid = c(0, 5, 10), max_time = 20)
-#' expand_time_grid(time_grid = NULL, max_time = 50)
 #' @keywords internal
 expand_time_grid <- function(time_grid, max_time) {
     default_grid <- seq(from = 0, to = max_time, length = 201)
@@ -268,15 +265,6 @@ expand_time_grid <- function(time_grid, max_time) {
 #' If NULL, it will be set to the value of `all_pts`.
 #' @param all_pts (`character`)\cr Character vector representing all possible patients.
 #' @return Returns the expanded `patients` vector.
-#' @examples
-#' expand_patients(
-#'     patients = c("patient1", "patient2"),
-#'     all_pts = c("patient1", "patient2", "patient3")
-#' )
-#' expand_patients(
-#'     patients = NULL,
-#'     all_pts = c("patient1", "patient2", "patient3")
-#' )
 #' @keywords internal
 expand_patients <- function(patients, all_pts) {
     assert_that(
