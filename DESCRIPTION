@@ -64,7 +64,6 @@ Collate:
     'ParameterList.R'
     'StanModule.R'
     'JointModel.R'
-    'JointModelQuantities.R'
     'JointModelSamples.R'
     'StanModel.R'
     'LongitudinalModel.R'

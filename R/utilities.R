@@ -137,7 +137,7 @@ replace_with_lookup <- function(sizes, data) {
             )
             assert_that(
                 val %in% names(data),
-                msg = sprintf("`%s` is not available in `data`")
+                msg = sprintf("`%s` is not available in `data`", val)
             )
             new_val <- data[[val]]
             assert_that(
@@ -222,4 +222,75 @@ decorated_render <- function(...) {
 is_windows <- function() {
     sysname <- Sys.info()["sysname"]
     return(sysname == "Windows")
+}
+
+#' `expand_time_grid`
+#'
+#' This function expands a given time grid by setting a default grid if one hasn't been provided
+#' and then verifying it's properties.
+#' The grid must be finite, sorted, and contain unique values.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr A vector of times which quantities will be
+#' evaluated at. If NULL, a default grid will be created as a length 201 vector spanning
+#' from 0 to `max_time`.
+#' @param max_time (`numeric``)\cr Specifies the maximum time to be used in creating the default grid.
+#' @return Returns the expanded time_grid.
+#' @examples
+#' expand_time_grid(time_grid = c(0, 5, 10), max_time = 20)
+#' expand_time_grid(time_grid = NULL, max_time = 50)
+#' @keywords internal
+expand_time_grid <- function(time_grid, max_time) {
+    default_grid <- seq(from = 0, to = max_time, length = 201)
+    if (is.null(time_grid)) {
+        time_grid <- default_grid
+    }
+    assert_that(
+        !any(is.na(time_grid)),
+        is.numeric(time_grid),
+        !is.null(time_grid),
+        !is.unsorted(time_grid),
+        !any(duplicated(time_grid)),
+        all(is.finite(time_grid)),
+        msg = "`time_grid` needs to be finite, sorted, unique valued numeric vector"
+    )
+    return(time_grid)
+}
+
+
+
+#' `expand_patients`
+#'
+#' This function checks and expands a given patients vector.
+#' The input vector must be unique and contain only values
+#' as specified by `all_pts`
+#'
+#' @param patients (`character` or `NULL`)\cr Character vector representing the patients.
+#' If NULL, it will be set to the value of `all_pts`.
+#' @param all_pts (`character`)\cr Character vector representing all possible patients.
+#' @return Returns the expanded `patients` vector.
+#' @examples
+#' expand_patients(
+#'     patients = c("patient1", "patient2"),
+#'     all_pts = c("patient1", "patient2", "patient3")
+#' )
+#' expand_patients(
+#'     patients = NULL,
+#'     all_pts = c("patient1", "patient2", "patient3")
+#' )
+#' @keywords internal
+expand_patients <- function(patients, all_pts) {
+    assert_that(
+        is.character(all_pts),
+        msg = "`all_pts` must be a character vector"
+    )
+    if (is.null(patients)) {
+        patients <- unique(all_pts)
+    }
+    assert_that(
+        is.character(patients),
+        all(patients %in% all_pts),
+        !any(duplicated(patients)),
+        msg = "`patients` should be a unique character vector containing only values from the original df"
+    )
+    return(patients)
 }

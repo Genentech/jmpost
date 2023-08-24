@@ -171,9 +171,22 @@ setMethod(
             dir = exe_dir,
             basename = sprintf("model_%s.stan", hash_name)
         )
-        x <- cmdstanr::cmdstan_model(
-            stan_file = source_file,
-            exe_file = exe_file
+
+        # Suppress "model executable is up to date" message as
+        # users are not in control of the cache so this message is meaningless
+        withCallingHandlers(
+            {
+                x <- cmdstanr::cmdstan_model(
+                    stan_file = source_file,
+                    exe_file = exe_file,
+                    quiet = TRUE
+                )
+            },
+            message = function(m) {
+                if (m$message == "Model executable is up to date!\n") {
+                    invokeRestart("muffleMessage")
+                }
+            }
         )
         invisible(x)
     }

@@ -102,15 +102,13 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
-        study = "study",
-        time_grid = c(1)
+        study = "study"
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
         subject = "pt",
-        threshold = 5,
-        time_grid = c(1)
+        threshold = 5
     )
 )
 

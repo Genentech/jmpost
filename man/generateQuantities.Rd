@@ -7,12 +7,15 @@
 \usage{
 generateQuantities(object, ...)
 
-\S4method{generateQuantities}{JointModelSamples}(object, time_grid_lm = NULL, time_grid_sm = NULL, ...)
+\S4method{generateQuantities}{JointModelSamples}(object, patients, time_grid_lm, time_grid_sm, ...)
 }
 \arguments{
 \item{object}{object to obtain generated quantities from}
 
 \item{...}{additional options.}
+
+\item{patients}{(\code{character})\cr explicit vector of patient IDs for whom the
+generated quantitites should be extracted}
 
 \item{time_grid_lm}{(\code{numeric})\cr grid of time points to use for providing samples
 of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of

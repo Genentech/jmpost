@@ -78,6 +78,32 @@ functions {
         return cov_contribution;
     }
 
+
+    matrix generate_survival_quantities(
+        array[] int pt_select_index,
+        vector sm_time_grid,
+        vector pars_os,
+        matrix pars_lm,
+        data vector nodes,
+        data vector weights,
+        vector cov_contribution
+    ) {
+        int n_pt_select_index = num_elements(pt_select_index);
+        int n_sm_time_grid = num_elements(sm_time_grid);
+        matrix[n_pt_select_index, n_sm_time_grid] result;
+        for (i in 1:n_pt_select_index) {
+            int current_pt_index = pt_select_index[i];
+            result[i, ] = to_row_vector(log_survival(
+                sm_time_grid,
+                pars_os,
+                rep_matrix(pars_lm[current_pt_index, ], n_sm_time_grid),
+                nodes,
+                weights,
+                rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
+            ));
+        }
+        return result;
+    }
 }
 
 
@@ -173,29 +199,24 @@ transformed parameters {
 
 
 model{
-    //
-    // Source - base/survival.stan
-    //
-    
-
     {{ stan.model }}
 }
 
 
-generated quantities{
+generated quantities {
     //
     // Source - base/survival.stan
     //
-
-    matrix[Nind, n_sm_time_grid] log_surv_fit_at_time_grid;
-
-    for (i in 1:n_sm_time_grid) {
-        log_surv_fit_at_time_grid[, i] = log_survival(rep_vector(sm_time_grid[i], Nind),
-        pars_os,
-        pars_lm,
-        nodes,
-        weights,
-        os_cov_contribution
+    matrix[n_pt_select_index, n_sm_time_grid] log_surv_fit_at_time_grid;
+    if (n_sm_time_grid > 0) {
+        log_surv_fit_at_time_grid = generate_survival_quantities(
+            pt_select_index,
+            sm_time_grid,
+            pars_os,
+            pars_lm,
+            nodes,
+            weights,
+            os_cov_contribution
         );
     }
 }

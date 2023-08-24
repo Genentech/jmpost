@@ -28,7 +28,7 @@ write_stan(jm, "local/debug.stan")
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n = c(100, 40),
+    n = c(200, 250),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(
@@ -40,7 +40,7 @@ jlist <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(
         intercept = 30,
         sigma = 3,
-        slope_mu = c(1, 3),
+        slope_mu = c(0.01, 0.03),
         slope_sigma = 0.2,
         phi = 0
     ),
@@ -79,8 +79,8 @@ jdat <- DataJoint(
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 1000,
-    iter_warmup = 1000,
+    iter_sampling = 400,
+    iter_warmup = 400,
     chains = 1,
     parallel_chains = 1
 )
@@ -88,10 +88,11 @@ mp <- sampleStanModel(
 
 mp@results$summary()
 
-
-gq <- generateQuantities(mp, 1:4)
-
 pts <- sample(dat_os$pt, 4)
 
-longitudinal(gq, pts) |> autoplot()
-survival(gq, pts) |> autoplot()
+longitudinal(mp, pts, c(0, 10, 40, 100, 200, 300)) |>
+    autoplot()
+
+survival(mp, pts, c(0, 10, 40, 100, 200, 300)) |>
+    autoplot()
+

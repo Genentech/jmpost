@@ -152,7 +152,8 @@ setAs(
         df_fct[[vars$arm]] <- factor(df_fct[[vars$arm]])
         df_fct[[vars$study]] <- factor(df_fct[[vars$study]])
         df_fct[[vars$pt]] <- pt_2_factor(df_fct[[vars$pt]])
-        return(df_fct)
+        df_sorted <- df_fct[order(df_fct[[vars$pt]]), ]
+        return(df_sorted)
     }
 )
 
@@ -165,6 +166,7 @@ setMethod(
     definition = function(x, ...) {
 
         df <- as(x, "data.frame")
+
         vars <- extractVariableNames(x)
 
         design_mat <- stats::model.matrix(vars$frm, data = df)
@@ -184,69 +186,17 @@ setMethod(
             n_nodes = length(gh_parameters$nodes),
             nodes = gh_parameters$nodes,
             weights = gh_parameters$weights,
-            study_index = as.numeric(df[[vars$study]]),
-            arm_index = as.numeric(df[[vars$arm]])
+
+            # survival dataset is sorted by pt, as such
+            # pt_study_index[3] = study index for patient with factor-level 3
+            # This allows for easy assumptions to be made in the longitudinal data
+            # for ensuring alignment / consistency
+            n_studies = length(unique(df[[vars$study]])),
+            n_arms = length(unique(df[[vars$arm]])),
+            pt_study_index = as.numeric(df[[vars$study]]),
+            pt_arm_index = as.numeric(df[[vars$arm]])
         )
 
-        arm_data <- get_arm_study_data(
-            as.numeric(df[[vars$pt]]),
-            as.numeric(df[[vars$arm]]),
-            as.numeric(df[[vars$study]])
-        )
-
-        return(append(model_data, arm_data))
+        return(model_data)
     }
 )
-
-# get_arm_study_data ----
-
-#' `get_arm_study_data`
-#'
-#' @param pt (`factor`)\cr subject identifiers.
-#' @param arm (`factor`)\cr treatment arms of the same length as `pt`.
-#' @param study (`factor`)\cr study identifiers of the same length as `pt`.
-#'
-#' The function is purely a sub-component of `as.list(DataSurvival)`. Its
-#' purpose is to extract key logic into its own function to enable unit tests.
-#'
-#' @returns A list with `index_per_arm`, `n_index_per_arm`, `n_arms`,
-#'   `arm_to_study_index`, and `n_studies`.
-#'
-#' @keywords internal
-get_arm_study_data <- function(pt, arm, study) {
-
-    assert_that(
-        length(pt) == length(arm),
-        length(arm) == length(study),
-        msg = "`pt`, `arm` and `study` must all have the same length"
-    )
-
-    u_arm_study <- unique(data.frame(study = study, arm = arm))
-
-    # TODO - Assumption that arms are unique to studies
-    assert_that(
-        length(u_arm_study[["arm"]]) == length(unique(u_arm_study[["arm"]])),
-        length(unique(arm)) == nrow(u_arm_study),
-        msg = "Arms must be unique across Studies e.g. arm A can't be in Study-1 and Study-2"
-    )
-
-    u_arm_study_ord <- u_arm_study[order(u_arm_study[["arm"]]), ]
-
-    n_per_arm <- vector("numeric", length = length(u_arm_study_ord[["arm"]]))
-    index_per_arm <- vector("numeric", length = 0)
-
-    uniq_arm <- u_arm_study_ord[["arm"]]
-    for (i in seq_along(uniq_arm)) {
-        arm_selected <- uniq_arm[[i]]
-        index_per_arm <- c(index_per_arm, which(arm == arm_selected))
-        n_per_arm[[i]] <- sum(arm == arm_selected)
-    }
-
-    list(
-        index_per_arm = index_per_arm,
-        n_index_per_arm = n_per_arm,
-        n_arms = nrow(u_arm_study),
-        arm_to_study_index = as.numeric(u_arm_study[["study"]]),
-        n_studies = length(unique(u_arm_study[["study"]]))
-    )
-}

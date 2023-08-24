@@ -27,14 +27,12 @@ test_that("SurvivalExponential can recover true parameter (no covariates)", {
             formula = Surv(time, event) ~ 1,
             subject = "pt",
             arm = "arm",
-            study = "study",
-            time_grid = 1
+            study = "study"
         ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
-            time_grid = 1
+            subject = "pt"
         )
     )
 
@@ -44,6 +42,7 @@ test_that("SurvivalExponential can recover true parameter (no covariates)", {
         iter_sampling = 200,
         iter_warmup = 200,
         chains = 1,
+        refresh = 0,
         parallel_chains = 1
     )
 
@@ -83,14 +82,12 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
             formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
-            study = "study",
-            time_grid = 1
+            study = "study"
         ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
-            time_grid = 1
+            subject = "pt"
         )
     )
 
@@ -100,6 +97,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
         iter_sampling = 300,
         iter_warmup = 300,
         chains = 1,
+        refresh = 0,
         parallel_chains = 1
     )
 

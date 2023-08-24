@@ -22,47 +22,4 @@ test_that("DataLongitudinal being rendered to list is as expected for simple inp
     expect_equal(li$Nta_obs_y, 3)
     expect_equal(li$Nta_total, 6)
     expect_equal(li$Tobs, x$vtime)
-    expect_identical(li$n_lm_time_grid, 201L)
-    expect_length(li$lm_time_grid, 201L)
-})
-
-
-test_that("time_grid is rejected if in an invalid format", {
-    x <- data.frame(
-        vpt = c("b", "a", "a", "b", "c", "a"),
-        vtime = c(10, 20, 15, 5, 25, 35),
-        voutcome = c(2, 1, 4, 5, 6, 2)
-    )
-
-    # First check that it doesn't error when used properly
-    expect_silent(
-        DataLongitudinal(
-            data = x,
-            formula = voutcome ~ vtime,
-            subject = "vpt",
-            threshold = 5,
-            time_grid = c(2, 4)
-        )
-    )
-
-    # Define combinations that we would expect to cause an error
-    values <- list(
-        c(4, 2),
-        c(4, Inf),
-        c(NA_real_, 2),
-        c(2, 2)
-    )
-
-    for (value in values) {
-        expect_error(
-            DataLongitudinal(
-                data = x,
-                formula = voutcome ~ vtime,
-                subject = "vpt",
-                threshold = 5,
-                time_grid = value
-            ),
-            "`time_grid` needs to be finite"
-        )
-    }
 })

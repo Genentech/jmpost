@@ -143,3 +143,77 @@ test_that("samples_median_ci works with a custom credibility level", {
 
     expect_equal(result, expected)
 })
+
+
+
+test_that("expand_time_grid() works as expected", {
+
+    ## Smoke test of basic usage
+    expect_equal(
+        expand_time_grid(NULL, 5),
+        seq(0, 5, length.out = 201)
+    )
+    expect_equal(
+        expand_time_grid(c(1, 2, 3), 5),
+        c(1, 2, 3)
+    )
+    expect_equal(
+        expand_time_grid(c(1, 2, 3)),
+        c(1, 2, 3)
+    )
+
+
+    ## Error handling
+    expect_error(
+        expand_time_grid(c(1, 1, 2)),
+        regexp = "`time_grid`"
+    )
+    expect_error(
+        expand_time_grid(c(2, 1, 3)),
+        regexp = "`time_grid`"
+    )
+    expect_error(
+        expand_time_grid(c(1, 3, NA)),
+        regexp = "`time_grid`"
+    )
+    expect_error(
+        expand_time_grid(c(1, 3, -Inf)),
+        regexp = "`time_grid`"
+    )
+})
+
+
+test_that("expand_patients() works as expected", {
+
+    ## Smoke tests of basic usage
+    expect_equal(
+        expand_patients(c("A", "B"), c("A", "B", "C", "D")),
+        c("A", "B")
+    )
+    expect_equal(
+        expand_patients(c("B"), c("A", "B", "C", "D")),
+        c("B")
+    )
+    expect_equal(
+        expand_patients(NULL, c("A", "B", "C", "D")),
+        c("A", "B", "C", "D")
+    )
+    expect_equal(
+        expand_patients(NULL, c("A", "B", "C", "D", "D")),
+        c("A", "B", "C", "D")
+    )
+
+    ## Error handling
+    expect_error(
+        expand_patients("E", c("A", "B", "C", "D")),
+        regex = "`patients`"
+    )
+    expect_error(
+        expand_patients(c("A", "A"), c("A", "B", "C", "D")),
+        regex = "`patients`"
+    )
+    expect_error(
+        expand_patients(c(1, 2), c("A", "B", "C", "D")),
+        regex = "`patients`"
+    )
+})
