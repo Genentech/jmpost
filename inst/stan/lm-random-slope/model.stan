@@ -4,8 +4,9 @@
 
 parameters {
     //
-    // LongitudinalRandomSlope
+    // Source - lm-random-slope/model.stan
     //
+
     real lm_rs_intercept;
     array [n_arms] real lm_rs_slope_mu;
     real<lower={{ machine_double_eps }}> lm_rs_slope_sigma;
@@ -16,21 +17,8 @@ parameters {
 
 transformed parameters {
     //
-    // LongitudinalRandomSlope
+    // Source - lm-random-slope/model.stan
     //
-    for (i in 1:Nind) {
-        log_lik[i] = normal_lpdf(
-            lm_rs_ind_rnd_slope[i] |
-            lm_rs_slope_mu[arm_index[i]],
-            lm_rs_slope_sigma
-        );
-    }
-
-    // log_lik += vect_normal_log_dens(
-    //     lm_rs_ind_rnd_slope,
-    //     to_vector(lm_rs_slope_mu[arm_index]),
-    //     rep_vector(lm_rs_slope_sigma, Nind)
-    // );
 
     vector[Nta_total] lm_rs_rslope_ind = to_vector(lm_rs_ind_rnd_slope[ind_index]);
 
@@ -50,11 +38,31 @@ transformed parameters {
     );
 }
 
-generated quantities {
-    matrix[Nind, n_lm_time_grid] y_fit_at_time_grid;
 
-    for (i in 1:Nind) {
-        y_fit_at_time_grid[i] = lm_rs_intercept + lm_rs_ind_rnd_slope[i] .* to_row_vector(lm_time_grid);
-    }
+model {
+    //
+    // Source - lm-random-slope/model.stan
+    //
+
+    lm_rs_ind_rnd_slope ~ normal(
+        lm_rs_slope_mu[pt_arm_index],
+        lm_rs_slope_sigma
+    );
 }
 
+
+generated quantities {
+    //
+    // Source - lm-random-slope/model.stan
+    //
+    matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
+    if (n_lm_time_grid > 0) {
+        for (i in 1:n_pt_select_index) {
+            int current_pt_index = pt_select_index[i];
+            y_fit_at_time_grid[i, ] =
+                lm_rs_intercept +
+                lm_rs_ind_rnd_slope[current_pt_index] .*
+                to_row_vector(lm_time_grid);
+        }
+    }
+}

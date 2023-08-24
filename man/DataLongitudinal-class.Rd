@@ -7,7 +7,7 @@
 \alias{DataLongitudinal}
 \title{\code{DataLongitudinal}}
 \usage{
-DataLongitudinal(data, formula, subject, threshold = NULL, time_grid = NULL)
+DataLongitudinal(data, formula, subject, threshold = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr containing the observed longitudinal data.}
@@ -18,10 +18,6 @@ DataLongitudinal(data, formula, subject, threshold = NULL, time_grid = NULL)
 
 \item{threshold}{(\code{number})\cr cut-off value to be used to declare an observation as censored
 (below detection limit).}
-
-\item{time_grid}{(\code{numeric})\cr grid of time points to use for providing samples
-of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
-201 values from the minimum to the maximum observed times.}
 }
 \description{
 The \code{\link{DataLongitudinal}} class handles the processing of the longitudinal data for fitting a Joint Model.
@@ -47,10 +43,6 @@ in the slot.}
 
 \item{\code{threshold}}{(\code{number})\cr cut-off value to be used to declare an observation as censored
 (below detection limit).}
-
-\item{\code{time_grid}}{(\code{numeric})\cr grid of time points to use for providing samples
-of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
-201 values from the minimum to the maximum observed times.}
 }}
 
 \seealso{

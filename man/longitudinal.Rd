@@ -7,7 +7,7 @@
 \usage{
 longitudinal(object, ...)
 
-\S4method{longitudinal}{JointModelSamples}(object, patients = NULL, ...)
+\S4method{longitudinal}{JointModelSamples}(object, patients = NULL, time_grid = NULL, ...)
 }
 \arguments{
 \item{object}{samples to extract the longitudinal fits from.}
@@ -17,6 +17,10 @@ longitudinal(object, ...)
 \item{patients}{(\code{character} or \code{NULL})\cr optional subset of patients for
 which the longitudinal fit samples should be extracted, the default \code{NULL}
 meaning all patients.}
+
+\item{time_grid}{(\code{numeric})\cr grid of time points to use for providing samples
+of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
+201 values from 0 to the maximum observed event time.}
 }
 \description{
 Obtain the longitudinal fit samples from \code{\link{JointModelSamples}}.

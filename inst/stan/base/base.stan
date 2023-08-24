@@ -23,17 +23,12 @@ data{
     //
     // Source - base/base.stan
     //
+
     int<lower=1> Nind;                 // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
-    array[Nind] int<lower=1,upper=n_studies> study_index;  // Index of study for all individuals.
-    array[Nind] int<lower=1,upper=n_arms> arm_index;       // Index of treatment arm for all individuals.
-    array[n_arms] int<lower=1,upper=n_studies> arm_to_study_index;
-
-    // Ragged index vector of individuals per treatment arm (see R code).
-    array[n_arms] int<lower=1,upper=Nind> n_index_per_arm;
-    array[Nind] int<lower=1,upper=Nind> index_per_arm;
-
+    array[Nind] int<lower=1,upper=n_studies> pt_study_index;  // Index of study per pt (PT index sorted)
+    array[Nind] int<lower=1,upper=n_arms> pt_arm_index;       // Index of treatment arm per pt (PT index sorted)
 
 {{ survival.data }}
 {{ longitudinal.data }}

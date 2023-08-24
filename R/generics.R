@@ -285,3 +285,19 @@ setGeneric(
     name = "survival",
     def = function(object, ...) standardGeneric("survival")
 )
+
+
+# generateQuantities ----
+
+#' `generateQuantities`
+#'
+#' Obtain the generated quantities from a Stan Model.
+#'
+#' @param object object to obtain generated quantities from
+#' @param ... additional options.
+#'
+#' @export
+setGeneric(
+    name = "generateQuantities",
+    def = function(object, ...) standardGeneric("generateQuantities")
+)

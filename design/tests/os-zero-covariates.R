@@ -31,14 +31,12 @@ jdat <- DataJoint(
         formula = Surv(time, event) ~ 1,
         subject = "pt",
         arm = "arm",
-        study = "study",
-        time_grid = 1
+        study = "study"
     ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
-        subject = "pt",
-        time_grid = 1
+        subject = "pt"
     )
 )
 

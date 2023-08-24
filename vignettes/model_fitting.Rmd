@@ -246,7 +246,7 @@ Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
 the backend. Note that in practice you would increase the number of 
 warm-up and sampling iterations.
 
-```{r sampling, eval = FALSE}
+```{r sampling}
 mcmc_results <- sampleStanModel(
     simple_model,
     data = joint_data,
@@ -257,9 +257,6 @@ mcmc_results <- sampleStanModel(
 )
 ```
 
-```{r read_cache, echo = FALSE}
-mcmc_results <- readRDS("mcmc_results.rds")
-```
 
 
 ## Convergence checks
@@ -342,7 +339,7 @@ using the corresponding method.
 ```{r, warning=FALSE, fig.width=6}
 groups <- split(os_data$pt, os_data$arm)
 surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
-autoplot(surv_grouped_samples, add_km = FALSE)
+autoplot(surv_grouped_samples, add_km = TRUE)
 ```
 
 

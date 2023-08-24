@@ -17,9 +17,6 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 #' @slot subject (`string`)\cr the name of the subject identifier variable.
 #' @slot threshold (`number`)\cr cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
-#' @slot time_grid (`numeric`)\cr grid of time points to use for providing samples
-#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from the minimum to the maximum observed times.
 #'
 #' @exportClass DataLongitudinal
 .DataLongitudinal <- setClass(
@@ -28,8 +25,7 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
         data = "data.frame",
         formula = "formula",
         subject = "character",
-        threshold = "numeric_or_NULL",
-        time_grid = "numeric_or_NULL"
+        threshold = "numeric_or_NULL"
     )
 )
 
@@ -42,9 +38,6 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 #' @param subject (`string`)\cr the name of the subject identifier variable.
 #' @param threshold (`number`)\cr cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
-#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
-#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from the minimum to the maximum observed times.
 #'
 #' @details
 #'
@@ -56,13 +49,12 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 #' @seealso [`DataJoint`], [`DataSurvival`].
 #'
 #' @export
-DataLongitudinal <- function(data, formula, subject, threshold = NULL, time_grid = NULL) {
+DataLongitudinal <- function(data, formula, subject, threshold = NULL) {
     .DataLongitudinal(
         data = remove_missing_rows(data, formula, c(subject)),
         formula = formula,
         subject = subject,
-        threshold = threshold,
-        time_grid = time_grid
+        threshold = threshold
     )
 }
 
@@ -86,13 +78,6 @@ setValidity(
         pt <- object@data[[object@subject]]
         if (!(is(pt, "character") | is(pt, "factor"))) {
             return("`data[[subject]]` should be of type character or factor")
-        }
-        if (!is.null(object@time_grid)) {
-            if (is.unsorted(object@time_grid) ||
-                any(duplicated(object@time_grid)) ||
-                !all(is.finite(object@time_grid))) {
-                return("`time_grid` needs to be finite, sorted, unique values numeric vector")
-            }
         }
         return(TRUE)
     }
@@ -160,11 +145,6 @@ setMethod(
         sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[, index_obs])
         sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[, index_cen])
 
-        lm_time_grid <- if (is.null(x@time_grid)) {
-            seq(from = min(df[[vars$time]]), to = max(df[[vars$time]]), length = 201)
-        } else {
-            x@time_grid
-        }
         model_data <- list(
             Nta_total = nrow(df),
             Yobs = df[[vars$outcome]],
@@ -210,11 +190,8 @@ setMethod(
             ),
             w_mat_inds_all_y = sparse_mat_inds_all_y$w,
             v_mat_inds_all_y = sparse_mat_inds_all_y$v,
-            u_mat_inds_all_y = sparse_mat_inds_all_y$u,
+            u_mat_inds_all_y = sparse_mat_inds_all_y$u
 
-            # Time points grid
-            lm_time_grid = lm_time_grid,
-            n_lm_time_grid = length(lm_time_grid)
         )
 
         return(model_data)

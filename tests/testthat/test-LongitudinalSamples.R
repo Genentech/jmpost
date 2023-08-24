@@ -1,3 +1,5 @@
+mcmc_results <- get_mcmc_results()
+
 # constructor ----
 
 test_that("LongitudinalSamples can be initialized", {
@@ -32,8 +34,12 @@ test_that("autoplot works as expected for LongitudinalSamples", {
         c("x", "y", "PANEL", "group", "flipped_aes", "colour", "linewidth", "linetype", "alpha")
     )
     expect_identical(
-        data_layer1$x,
-        rep(mcmc_results@data$lm_time_grid, 2)
+        length(data_layer1$x),
+        201L * 2L
+    )
+    expect_identical(
+        length(unique(data_layer1$x)),
+        201L
     )
     expect_identical(
         data_layer1$y,
@@ -44,12 +50,18 @@ test_that("autoplot works as expected for LongitudinalSamples", {
     expect_s3_class(data_layer2, "data.frame")
     expect_identical(
         names(data_layer2),
-        c("x", "ymin", "ymax", "PANEL", "group", "flipped_aes", "y",
-          "colour", "fill", "linewidth", "linetype", "alpha")
+        c(
+            "x", "ymin", "ymax", "PANEL", "group", "flipped_aes", "y",
+            "colour", "fill", "linewidth", "linetype", "alpha"
+        )
     )
     expect_identical(
-        data_layer2$x,
-        rep(mcmc_results@data$lm_time_grid, 2)
+        length(data_layer2$x),
+        201L * 2L
+    )
+    expect_identical(
+        length(unique(data_layer2$x)),
+        201L
     )
     expect_identical(
         data_layer2$ymin,

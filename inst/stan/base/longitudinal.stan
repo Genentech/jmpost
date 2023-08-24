@@ -9,9 +9,6 @@ data{
     int<lower=1> Nta_total;            // Total number of tumor assessments.
     int<lower=1> Nta_obs_y;            // Number of observed tumor assessments (not censored).
     int<lower=0> Nta_cens_y;           // Number of censored tumor assessments (below threshold).
-    int<lower=1> n_lm_time_grid;       // Number of time points in the grid.
-
-    vector[n_lm_time_grid] lm_time_grid; // Time points grid.
 
     array[Nta_total] int ind_index;          // Index of individuals for each tumor assessment.
     array[Nta_obs_y] int obs_y_index;        // Index of observed tumor assessments (not censored).

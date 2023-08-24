@@ -8,20 +8,11 @@ int<lower=1> Nind        #  Number of individuals
 int<lower=1> n_studies   #  Number of different studies in the data
 int<lower=1> n_arms      #  Number of unique treatment arms (No duplicates across studies)
 
-#  Study index per patient
-array[Nind] int<lower=1,upper=n_studies> study_index
+#  Study index per patient (sorted by pt e.g. study_index[3] = study index for patient #3)
+array[Nind] int<lower=1,upper=n_studies> pt_study_index
 
-#  Arm index per patient
-array[Nind] int<lower=1,upper=n_arms> arm_index
-
-# Study index per Arm (map arms to studies)
-array[n_arms] int<lower=1,upper=n_studies> arm_to_study_index;
-
-#  Number of subjects per arm
-array[n_arms] int<lower=1,upper=Nind> n_index_per_arm
-
-#  Patient index per arm (identical to 1:Nind if sorted)
-array[Nind] int<lower=1,upper=Nind> index_per_arm
+#  Arm index per patient (sorted by pt e.g. arm_index[3] = arm index for patient #3)
+array[Nind] int<lower=1,upper=n_arms> pt_arm_index
 ```
 
 

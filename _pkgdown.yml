@@ -67,6 +67,7 @@ reference:
       - aggregate
       - autoplot
       - samples_median_ci
+      - generateQuantities
   - title: Stan Code
     contents:
       - merge

@@ -41,15 +41,13 @@ test_that("Random Slope Model can recover known parameter values", {
             formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
-            study = "study",
-            time_grid = c(1)
+            study = "study"
         ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
             subject = "pt",
-            threshold = 5,
-            time_grid = c(1)
+            threshold = 5
         )
     )
 
@@ -59,6 +57,7 @@ test_that("Random Slope Model can recover known parameter values", {
         iter_sampling = 200,
         iter_warmup = 200,
         chains = 1,
+        refresh = 0,
         parallel_chains = 1
     )
 
