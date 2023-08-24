@@ -250,7 +250,7 @@ expand_time_grid <- function(time_grid, max_time) {
         all(is.finite(time_grid)),
         msg = "`time_grid` needs to be finite, sorted, unique valued numeric vector"
     )
-    return(time_grid)
+    time_grid
 }
 
 
