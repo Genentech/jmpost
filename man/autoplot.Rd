@@ -9,7 +9,16 @@
 \usage{
 \S4method{autoplot}{LongitudinalSamples}(object, ...)
 
-\S4method{autoplot}{SurvivalSamples}(object, add_km = TRUE, ...)
+\S4method{autoplot}{SurvivalSamples}(
+  object,
+  patients,
+  time_grid = NULL,
+  type = c("surv", "haz", "loghaz", "cumhaz"),
+  add_km = FALSE,
+  add_ci = TRUE,
+  add_wrap = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{what to plot.}

@@ -1,6 +1,8 @@
 #' @include JointModel.R
 NULL
 
+setOldClass("CmdStanMCMC")
+
 # JointModelSamples-class ----
 
 #' `JointModelSamples`
@@ -18,9 +20,8 @@ NULL
     "JointModelSamples",
     slots = c(
         model = "JointModel",
-        data = "list",
-        init = "list",
-        results = "ANY"
+        data = "DataJoint",
+        results = "CmdStanMCMC"
     )
 )
 
@@ -39,7 +40,7 @@ setMethod(
     f = "generateQuantities",
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients, time_grid_lm, time_grid_sm, ...) {
-        data <- object@data
+        data <- as.list(object@data)
         data[["n_lm_time_grid"]] <- length(time_grid_lm)
         data[["lm_time_grid"]] <- time_grid_lm
         data[["n_sm_time_grid"]] <- length(time_grid_sm)
@@ -83,9 +84,9 @@ setMethod(
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients = NULL, time_grid = NULL, ...) {
 
-        data <- object@data
+        data <- as.list(object@data)
         time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
-        patients <- expand_patients(patients, names(object@data$pt_to_ind))
+        patients <- expand_patients(patients, names(data$pt_to_ind))
         gq <- generateQuantities(
             object,
             patients = patients,

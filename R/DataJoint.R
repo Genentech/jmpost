@@ -85,3 +85,35 @@ setAs(
     to = "list",
     def = function(from) as.list(from)
 )
+
+
+# TODO - Document function
+# TODO - test function
+setMethod(
+    f = "subset",
+    signature = "DataJoint",
+    definition = function(x, patients) {
+        data <- as.list(x)
+        dat <- data.frame(
+            time = data[["Times"]],
+            event = as.numeric(seq_along(data[["Times"]]) %in% data[["dead_ind_index"]]),
+            patient = names(data[["pt_to_ind"]])
+        )
+        subset_and_add_grouping(dat, patients)
+    }
+)
+
+# TODO - Document function
+# TODO - test function
+subset_and_add_grouping <- function(dat, groupings) {
+    groupings <- decompose_patients(groupings, names(data$pt_to_ind))$patients_list
+    dat_subset_list <- lapply(
+        seq_along(groupings),
+        \(i) {
+            dat_reduced <- dat[dat$patient %in% groupings[[i]], , drop = FALSE]
+            dat_reduced[["group"]] <- names(groupings)[[i]]
+            dat_reduced
+        }
+    )
+    Reduce(rbind, dat_subset_list)
+}

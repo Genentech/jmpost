@@ -76,7 +76,7 @@ jdat <- DataJoint(
     )
 )
 
-mp <- sampleStanModel(
+stan_samples <- sampleStanModel(
     jm,
     data = jdat,
     iter_sampling = 400,
@@ -86,53 +86,76 @@ mp <- sampleStanModel(
 )
 
 
-mp@results$summary()
+stan_samples@results$summary()
 
+class(stan_samples@results)
 
-longitudinal(mp, pts, c(0, 10, 40, 100, 200, 300)) |>
+survival_samples <- survival(stan_samples)
+
+longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
     autoplot()
 
 
 pts <- list(
-    "g1" = sample(dat_os$pt, 3),
-    "g2" = sample(dat_os$pt, 5),
-    "g3" = sample(dat_os$pt, 10)
+    "g1" = sample(dat_os$pt, 100),
+    "g2" = sample(dat_os$pt, 100)
 )
 
-pts <- sample(dat_os$pt, 10)
-
-surv_samps <- survival(mp)
-
 predict(
-    surv_samps,
+    survival_samples,
+    patients = pts,
+    type = "haz",
+    time_grid = c(0, 100, 200)
+)
+
+
+pts <- sample(dat_os$pt, 4)
+predict(
+    survival_samples,
     patients = pts
 )
 
+
+
+jdat@survival@data
+
+
+
+
+
+
 autoplot(
-    surv_samps,
-    pts
+    survival_samples,
+    pts,
+    add_km = TRUE
 )
 
 autoplot(
-    surv_samps,
+    survival_samples,
     pts,
     add_wrap = FALSE
 )
 
-autoplot(
-    surv_samps,
-    pts,
-    type = "cumhaz"
+pts <- list(
+    "g1" = sample(dat_os$pt, 4),
+    "g2" = sample(dat_os$pt, 4)
 )
 
 autoplot(
-    surv_samps,
+    survival_samples,
+    pts,
+    type = "cumhaz",
+    add_wrap = FALSE
+)
+
+autoplot(
+    survival_samples,
     pts,
     type = "haz"
 )
 
 autoplot(
-    surv_samps,
+    survival_samples,
     pts,
     type = "loghaz"
 )
