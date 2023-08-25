@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.934640522875817" branch-rate="0" lines-covered="1001" lines-valid="1071" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-25 10:13:22.117004">
+<coverage line-rate="0.934640522875817" branch-rate="0" lines-covered="1001" lines-valid="1071" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-25 13:49:03.303574">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
