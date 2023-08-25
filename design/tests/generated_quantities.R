@@ -90,7 +90,7 @@ stan_samples@results$summary()
 
 class(stan_samples@results)
 
-survival_samples <- survival(stan_samples)
+survival_samples <- SurvivalSamples(stan_samples)
 
 longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
     autoplot()
@@ -114,8 +114,6 @@ predict(
     survival_samples,
     patients = pts
 )
-
-
 
 jdat@survival@data
 

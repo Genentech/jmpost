@@ -5,14 +5,20 @@
 \alias{DataJoint-class}
 \alias{.DataJoint}
 \alias{DataJoint}
+\alias{subset,DataJoint-method}
 \title{\code{DataJoint}}
 \usage{
 DataJoint(survival, longitudinal)
+
+\S4method{subset}{DataJoint}(x, patients)
 }
 \arguments{
 \item{survival}{(\code{DataSurvival})\cr object created by \code{\link[=DataSurvival]{DataSurvival()}}.}
 
 \item{longitudinal}{(\code{DataLongitudinal})\cr object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
+
+\item{patients}{(\code{character} or \code{list})\cr the patients that you wish to subset the \code{data.frame}
+to contain. See details.}
 }
 \description{
 The \code{DataJoint} class handles combining data from a \code{\link{DataSurvival}} object and a
@@ -22,6 +28,9 @@ The \code{DataJoint} class handles combining data from a \code{\link{DataSurviva
 \itemize{
 \item \code{as.list(x)}, \code{as(x, "list")}: Coerces x into a list of data components required
 for fitting a \code{\link[=JointModel]{JointModel()}}. See the vignette (TODO) for more details.
+\item \code{subset(DataJoin, patients)}: Coerces the object into a \code{data.frame} containing just event times and status
+filtering for specific patients. If \code{patients} is a list then an additional variable \code{group} will be added
+onto the dataset specifying which group the row belongs to.
 }
 }
 \section{Slots}{
@@ -32,3 +41,15 @@ for fitting a \code{\link[=JointModel]{JointModel()}}. See the vignette (TODO) f
 \item{\code{longitudinal}}{(\code{DataLongitudinal})\cr object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
 }}
 
+\examples{
+\dontrun{
+pts <- c("PT1", "PT3", "PT4")
+subset(x, pts)
+
+groups <- list(
+    "g1" = c("PT1", "PT3", "PT4"),
+    "g2" = c("PT2", "PT3")
+)
+subset(x, groups)
+}
+}

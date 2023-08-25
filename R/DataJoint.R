@@ -12,6 +12,30 @@ NULL
 #' @slot survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @slot longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #'
+#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
+#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
+#' @param patients (`character` or `list`)\cr the patients that you wish to subset the `data.frame`
+#' to contain. See details.
+#' @details
+#'
+#' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
+#' for fitting a [JointModel()]. See the vignette (TODO) for more details.
+#'
+#' - `subset(DataJoin, patients)`: Coerces the object into a `data.frame` containing just event times and status
+#' filtering for specific patients. If `patients` is a list then an additional variable `group` will be added
+#' onto the dataset specifying which group the row belongs to.
+#'
+#' @examples
+#' \dontrun{
+#' pts <- c("PT1", "PT3", "PT4")
+#' subset(x, pts)
+#'
+#' groups <- list(
+#'     "g1" = c("PT1", "PT3", "PT4"),
+#'     "g2" = c("PT2", "PT3")
+#' )
+#' subset(x, groups)
+#' }
 #' @exportClass DataJoint
 .DataJoint <- setClass(
     Class = "DataJoint",
@@ -24,15 +48,6 @@ NULL
 # DataJoint-constructors ----
 
 #' @rdname DataJoint-class
-#'
-#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
-#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
-#'
-#' @details
-#'
-#' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
-#' for fitting a [JointModel()]. See the vignette (TODO) for more details.
-#'
 #' @export
 DataJoint <- function(survival, longitudinal) {
     .DataJoint(
@@ -87,8 +102,7 @@ setAs(
 )
 
 
-# TODO - Document function
-# TODO - test function
+#' @rdname DataJoint-class
 setMethod(
     f = "subset",
     signature = "DataJoint",
@@ -103,10 +117,31 @@ setMethod(
     }
 )
 
-# TODO - Document function
-# TODO - test function
+
+#' `subset_and_add_grouping`
+#'
+#' @param dat (`data.frame`) \cr Must have a column called `patient` which corresponds to the
+#' values passed to `groupings`
+#' @param groupings (`character` or `list`)\cr the patients that you wish to subset the dataset
+#' to contain. If `groupings` is a list then an additional variable `group` will be added
+#' onto the dataset specifying which group the row belongs to.
+#'
+#' @details
+#' Example of usage
+#' ```
+#' pts <- c("PT1", "PT3", "PT4")
+#' subset_and_add_grouping(dat, pts)
+#'
+#' groups <- list(
+#'     "g1" = c("PT1", "PT3", "PT4"),
+#'     "g2" = c("PT2", "PT3")
+#' )
+#' subset_and_add_grouping(dat, groups)
+#' ```
+#'
+#' @keywords internal
 subset_and_add_grouping <- function(dat, groupings) {
-    groupings <- decompose_patients(groupings, names(data$pt_to_ind))$patients_list
+    groupings <- decompose_patients(groupings, dat$patient)$patients_list
     dat_subset_list <- lapply(
         seq_along(groupings),
         \(i) {
@@ -115,5 +150,7 @@ subset_and_add_grouping <- function(dat, groupings) {
             dat_reduced
         }
     )
-    Reduce(rbind, dat_subset_list)
+    x <- Reduce(rbind, dat_subset_list)
+    row.names(x) <- NULL
+    x
 }

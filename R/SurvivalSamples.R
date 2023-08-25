@@ -4,25 +4,48 @@
 
 
 
-# TODO - Document function
-# TODO - test function
+# SurvivalSamples-class ----
+
+#' `SurvivalSamples`
+#'
+#' This class is an extension of `JointModelSamples` so that we
+#' can define specific survival postprocessing methods for it.
+#'
+#' @param patients (`character` or `list` or `NULL`)\cr which patients to calculate the desired quantities for.
+#' See details.
+#' @param time_grid (`numeric`)\cr a vector of time points to calculate the desired quantity at.
+#' @param type (`character`)\cr The quantity to be generated. Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
+#'
+#' @details
+#'
+#' ### `predict(SurvivalSamples)`
+#'
+#' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
+#' for a given set of patients at a given set of time points. If a list of patients is provided
+#' patients will be grouped together and their quantities will be point-wise averaged e.g.
+#' ```
+#' predict(
+#'     SurvivalSamples,
+#'     patients = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))
+#' )
+#' ```
+#' If `patients=NULL` then all patients from original dataset will be selected
+#'
+#' @exportClass SurvivalSamples
 .SurvivalSamples <- setClass(
     "SurvivalSamples",
     contains = "JointModelSamples"
 )
 
-# TODO - Document function
-# TODO - test function
-setMethod(
-    f = "survival",
-    signature = "JointModelSamples",
-    definition = function(object) {
-        .SurvivalSamples(object)
-    }
-)
+#' @rdname SurvivalSamples-class
+#' @export
+SurvivalSamples <- function(object) {
+    .SurvivalSamples(object)
+}
 
-# TODO - Document function
+
 # TODO - test function
+#' @rdname SurvivalSamples-class
 setMethod(
     f = "predict",
     signature = "SurvivalSamples",
@@ -63,38 +86,6 @@ setMethod(
     }
 )
 
-
-
-# TODO - document function
-# TODO - Test function
-decompose_patients <- function(patients, all_pts) {
-    if (is.character(patients)) {
-        patients <- expand_patients(patients, all_pts)
-        names(patients) <- patients
-        patients <- as.list(patients)
-    }
-    patients <- lapply(
-        patients,
-        expand_patients,
-        all_pts = all_pts
-    )
-    assert_that(
-        is.list(patients),
-        length(unique(names(patients))) == length(patients),
-        all(vapply(patients, is.character, logical(1)))
-    )
-    patients_vec <- unique(unlist(patients))
-    patients_lookup <- setNames(seq_along(patients_vec), patients_vec)
-    patients_index <- lapply(
-        patients,
-        \(x) patients_lookup[x]
-    )
-    list(
-        patients_list = patients,
-        patients_vec = patients_vec,
-        patients_index = patients_index
-    )
-}
 
 
 # TODO - Document function

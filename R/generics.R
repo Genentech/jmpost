@@ -258,21 +258,6 @@ setGeneric(
     def = function(object, ...) standardGeneric("longitudinal")
 )
 
-# survival ----
-
-#' `survival`
-#'
-#' Obtain the survival function samples from [`JointModelSamples`].
-#'
-#' @param object samples to extract the survival function values from.
-#' @param ... additional options.
-#'
-#' @export
-setGeneric(
-    name = "survival",
-    def = function(object, ...) standardGeneric("survival")
-)
-
 
 # generateQuantities ----
 
