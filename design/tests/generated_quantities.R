@@ -88,11 +88,51 @@ mp <- sampleStanModel(
 
 mp@results$summary()
 
-pts <- sample(dat_os$pt, 4)
 
 longitudinal(mp, pts, c(0, 10, 40, 100, 200, 300)) |>
     autoplot()
 
-survival(mp, pts, c(0, 10, 40, 100, 200, 300)) |>
-    autoplot()
 
+pts <- list(
+    "g1" = sample(dat_os$pt, 3),
+    "g2" = sample(dat_os$pt, 5),
+    "g3" = sample(dat_os$pt, 10)
+)
+
+pts <- sample(dat_os$pt, 10)
+
+surv_samps <- survival(mp)
+
+predict(
+    surv_samps,
+    patients = pts
+)
+
+autoplot(
+    surv_samps,
+    pts
+)
+
+autoplot(
+    surv_samps,
+    pts,
+    add_wrap = FALSE
+)
+
+autoplot(
+    surv_samps,
+    pts,
+    type = "cumhaz"
+)
+
+autoplot(
+    surv_samps,
+    pts,
+    type = "haz"
+)
+
+autoplot(
+    surv_samps,
+    pts,
+    type = "loghaz"
+)

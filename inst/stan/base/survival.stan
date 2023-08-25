@@ -79,7 +79,30 @@ functions {
     }
 
 
-    matrix generate_survival_quantities(
+    matrix generate_log_hazard_estimates(
+        array[] int pt_select_index,
+        vector sm_time_grid,
+        vector pars_os,
+        matrix pars_lm,
+        vector cov_contribution
+    ) {
+        int n_pt_select_index = num_elements(pt_select_index);
+        int n_sm_time_grid = num_elements(sm_time_grid);
+        matrix[n_pt_select_index, n_sm_time_grid] result;
+        for (i in 1:n_pt_select_index) {
+            int current_pt_index = pt_select_index[i];
+            result[i, ] = to_row_vector(log_hazard(
+                rep_matrix(sm_time_grid, 1),
+                pars_os,
+                rep_matrix(pars_lm[current_pt_index, ], n_sm_time_grid),
+                rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
+            ));
+        }
+        return result;
+    }
+
+
+    matrix generate_log_survival_estimates(
         array[] int pt_select_index,
         vector sm_time_grid,
         vector pars_os,
@@ -208,14 +231,22 @@ generated quantities {
     // Source - base/survival.stan
     //
     matrix[n_pt_select_index, n_sm_time_grid] log_surv_fit_at_time_grid;
+    matrix[n_pt_select_index, n_sm_time_grid] log_haz_fit_at_time_grid;
     if (n_sm_time_grid > 0) {
-        log_surv_fit_at_time_grid = generate_survival_quantities(
+        log_surv_fit_at_time_grid = generate_log_survival_estimates(
             pt_select_index,
             sm_time_grid,
             pars_os,
             pars_lm,
             nodes,
             weights,
+            os_cov_contribution
+        );
+        log_haz_fit_at_time_grid = generate_log_hazard_estimates(
+            pt_select_index,
+            sm_time_grid,
+            pars_os,
+            pars_lm,
             os_cov_contribution
         );
     }

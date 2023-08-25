@@ -1,78 +1,129 @@
-# SurvivalSamples-class ----
 
-#' `SurvivalSamples`
-#'
-#' This class is an extension of `list` so that we
-#' can define specific survival postprocessing methods for it.
-#'
-#' @aliases SurvivalSamples
-#' @exportClass SurvivalSamples
+
+
+
+
+
+
 .SurvivalSamples <- setClass(
     "SurvivalSamples",
-    contains = "list"
+    contains = "JointModelSamples"
 )
 
-# SurvivalSamples-[ ----
-
-#' @rdname SurvivalSamples-class
-#'
-#' @param x (`SurvivalSamples`)\cr the samples object to subset.
-#' @param i (`vector`)\cr the index vector.
-#' @param j not used.
-#' @param drop not used.
-#' @param ... not used.
-#'
-#' @returns The subsetted `SurvivalSamples` object.
-#' @export
 setMethod(
-    f = "[",
+    f = "survival",
+    signature = "JointModelSamples",
+    definition = function(object) {
+        .SurvivalSamples(object)
+    }
+)
+
+setMethod(
+    f = "predict",
     signature = "SurvivalSamples",
-    definition = function(x, i, ...) {
-        # Note that we cannot use `callNextMethod()` here because `list` is S3.
-        x@.Data <- x@.Data[i]
-        x
-    }
-)
+    definition = function(
+        object,
+        patients = NULL,
+        time_grid = NULL,
+        type = c("surv", "haz", "loghaz", "cumhaz")
+    ) {
+        type <- match.arg(type)
 
-# SurvivalSamples-aggregate ----
-
-#' @rdname aggregate
-#' @param groups (`list`)\cr defining into which groups to aggregate
-#'   individual samples, where the names are the new group labels and
-#'   the character vectors are the old individual sample labels.
-setMethod(
-    f = "aggregate",
-    signature = c(x = "SurvivalSamples"),
-    definition = function(x, groups, ...) {
-        assert_that(
-            is.list(groups),
-            !is.null(names(groups)),
-            length(x) > 0
-        )
-        x_names <- names(x)
-        x <- as(x, "list")
-        names(x) <- x_names
-        time_grid <- x[[1]]$summary$time
-        results <- list()
-        for (this_group in names(groups)) {
-            this_result <- list()
-            this_ids <- groups[[this_group]]
-            # Samples.
-            this_ids_samples <- Map("[[", x[this_ids], i = "samples")
-            this_ids_samples <- lapply(this_ids_samples, "/", length(this_ids))
-            this_result$samples <- Reduce(f = "+", x = this_ids_samples)
-            # Summary.
-            surv_fit <- samples_median_ci(this_result$samples)
-            this_result$summary <- cbind(time = time_grid, surv_fit)
-            # Observations.
-            this_ids_obs <- Map("[[", x[this_ids], i = "observed")
-            this_result$observed <- do.call(rbind, this_ids_obs)
-            # Save all.
-            results[[this_group]] <- this_result
+        if (is.character(patients)) {
+            patients <- expand_patients(patients, names(object@data$pt_to_ind))
+            names(patients) <- patients
+            patients <- as.list(patients)
         }
-        .SurvivalSamples(results)
+
+        patients <- lapply(
+            patients,
+            expand_patients,
+            all_pts = names(object@data$pt_to_ind)
+        )
+
+        assert_that(
+            is.list(patients),
+            length(unique(names(patients))) == length(patients),
+            all(vapply(patients, is.character, logical(1)))
+        )
+
+        patients_vec <- unique(unlist(patients))
+        patients_lookup <- setNames(seq_along(patients_vec), patients_vec)
+        patients_index <- lapply(
+            patients,
+            \(x) patients_lookup[x]
+        )
+
+        data <- object@data
+        time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
+
+        gq <- generateQuantities(
+            object,
+            patients = patients_vec,
+            time_grid_lm = numeric(0),
+            time_grid_sm = time_grid
+        )
+
+        quantities <- extract_quantities(gq, type)
+
+        quantities_summarised <- lapply(
+            patients_index,
+            summarise_by_group,
+            time_grid = time_grid,
+            quantities = quantities
+        )
+
+        for (i in seq_along(quantities_summarised)) {
+            quantities_summarised[[i]][["group"]] <- names(patients)[[i]]
+            quantities_summarised[[i]][["type"]] <- type
+        }
+        Reduce(rbind, quantities_summarised)
     }
 )
+
+
+summarise_by_group <- function(indexes, time_grid, quantities) {
+    stacked_quantities <- array(dim = c(
+        nrow(quantities),
+        length(time_grid),
+        length(indexes)
+    ))
+    for (i in seq_along(indexes)) {
+        index <- indexes[i]
+        index_quant_names <- sprintf(
+            "quantity[%i,%i]",
+            index,
+            seq_along(time_grid)
+        )
+        stacked_quantities[, , i] <- quantities[, index_quant_names]
+    }
+    averaged_quantities <- apply(
+        stacked_quantities,
+        c(1, 2),
+        mean,
+        simplify = TRUE
+    )
+    data.frame(
+        time = time_grid,
+        samples_median_ci(averaged_quantities)
+    )
+}
+
+extract_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz")) {
+    meta <- switch(
+        type,
+        surv = list("log_surv_fit_at_time_grid", exp),
+        cumhaz = list("log_surv_fit_at_time_grid", \(x) -x),
+        haz = list("log_haz_fit_at_time_grid", exp),
+        loghaz = list("log_haz_fit_at_time_grid", identity)
+    )
+    result <- gq$draws(meta[[1]], format = "draws_matrix")
+    result_transformed <- meta[[2]](result)
+    cnames <- colnames(result_transformed)
+    colnames(result_transformed) <- gsub(meta[[1]], "quantity", cnames)
+    result_transformed
+}
+
 
 # SurvivalSamples-autoplot ----
 
@@ -82,30 +133,62 @@ setMethod(
 setMethod(
     f = "autoplot",
     signature = c(object = "SurvivalSamples"),
-    function(object, add_km = TRUE, ...) {
+    function(
+        object,
+        patients,
+        time_grid = NULL,
+        type = c("surv", "haz", "loghaz", "cumhaz"),
+        add_km = TRUE,
+        add_ci = TRUE,
+        add_wrap = TRUE,
+        ...
+    ) {
         assert_that(is.flag(add_km))
+        type <- match.arg(type)
+        all_fit_df <- predict(object, patients, time_grid, type)
 
-        all_fit_dfs <- lapply(object, "[[", i = "summary")
-        all_fit_dfs_with_id <- Map(cbind, all_fit_dfs, id = names(object))
-        all_fit_df <- do.call(rbind, all_fit_dfs_with_id)
-
-        obs_dfs <- lapply(object, "[[", i = "observed")
-        obs_dfs_with_id <- Map(cbind, obs_dfs, id = names(object))
-        all_obs_df <- do.call(rbind, obs_dfs_with_id)
-        # To avoid issues with logical status in the Kaplan-Meier layer.
-        all_obs_df$death_num <- as.numeric(all_obs_df$death)
+        label <- switch(type,
+            "surv" = expression(S(t)),
+            "cumhaz" = expression(H(t)),
+            "haz" = expression(h(t)),
+            "loghaz" = expression(log(h(t)))
+        )
 
         p <- ggplot() +
-            geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df) +
-            geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
             xlab(expression(t)) +
-            ylab(expression(S(t))) +
-            facet_wrap(~ id)
-        if (add_km) {
-            p <- p +
-                ggplot2.utils::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +
-                ggplot2.utils::geom_km_ticks(aes(time = .data$t, status = .data$death_num), data = all_obs_df)
+            theme_bw() +
+            ylab(label)
+
+        if (add_wrap) {
+            p <- p + facet_wrap(~group)
+            aes_ci <- aes(x = .data$time, ymin = .data$lower, ymax = .data$upper)
+            aes_line <- aes(x = .data$time, y = .data$median)
+        } else {
+            aes_ci <- aes(
+                x = .data$time,
+                ymin = .data$lower,
+                ymax = .data$upper,
+                fill = .data$group,
+                group = .data$group
+            )
+            aes_line <- aes(
+                x = .data$time,
+                y = .data$median,
+                colour = .data$group,
+                group = .data$group
+            )
         }
+
+        p <- p + geom_line(aes_line, data = all_fit_df)
+
+        if (add_ci) {
+            p <- p + geom_ribbon(aes_ci, data = all_fit_df, alpha = 0.3)
+        }
+        # if (add_km) {
+        #     p <- p +
+        #         ggplot2.utils::geom_km(aes(time = .data$t, status = .data$death_num), data = all_obs_df) +
+        #         ggplot2.utils::geom_km_ticks(aes(time = .data$t, status = .data$death_num), data = all_obs_df)
+        # }
         p
     }
 )

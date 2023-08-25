@@ -67,20 +67,7 @@ NULL
 #' @export
 NULL
 
-# aggregate ----
 
-#' Aggregation Methods for Different Classes
-#'
-#' These aggregation methods allow to group samples of different objects.
-#'
-#' @name aggregate
-#' @aliases aggregate
-#'
-#' @param x what to aggregate.
-#' @param ... other arguments passed to aggregation methods.
-#'
-#' @export
-NULL
 
 # autoplot ----
 
