@@ -159,8 +159,8 @@ test_that("summarise_by_group() works as expected", {
     colnames(x) <- sprintf(
         "quantity[%i,%i]",
     #     1  2  3  4  5  6    # Column index
-        c(1, 1, 2, 2, 3, 3),
-        c(4, 5, 4, 5, 4, 5)
+        c(1, 1, 2, 2, 3, 3),  # Subject IDs
+        c(4, 5, 4, 5, 4, 5)   # Time point IDs
     )
     draws_x <- posterior::as_draws_matrix(x)
 
