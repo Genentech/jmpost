@@ -79,6 +79,8 @@ setMethod(
         )
 
         for (i in seq_along(quantities_summarised)) {
+            assert_that(nrow(quantities_summarised[[i]]) == length(time_grid))
+            quantities_summarised[[i]][["time"]] <- time_grid
             quantities_summarised[[i]][["group"]] <- names(patients$patients_list)[[i]]
             quantities_summarised[[i]][["type"]] <- type
         }
@@ -87,23 +89,65 @@ setMethod(
 )
 
 
-
-# TODO - Document function
-# TODO - test function
-summarise_by_group <- function(indexes, time_grid, quantities) {
+#' Summarise Quantities By Group
+#'
+#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and calculates
+#' summary statistics (median / lower ci / upper ci) for selected columns.
+#' A key feature is that it allows for columns to be aggregated together (see details).
+#'
+#' @param subject_index (`numeric`)\cr Which subject indices to extract from `quantities`.
+#' See details.
+#'
+#' @param time_index (`numeric`)\cr Which time point indices to extract from `quantities`.
+#' See details.
+#'
+#' @param quantities ([`posterior::draws_matrix`])\cr A matrix of sample draws.
+#' See details.
+#'
+#' @details
+#' It is assumed that `quantities` consists of the cartesian product
+#' of subject indices and time indices. That is, if the matrix contains 4 subjects and 3 time
+#' points then it should have 12 columns.
+#' It is also assumed that each column of `quantities` are named as:
+#' ```
+#' "quantity[x,y]"
+#' ```
+#' Where
+#' - `x` is the subject index
+#' - `y` is the time point index
+#'
+#' The resulting `data.frame` that is created will have 1 row per value of `time_index` where
+#' each row represents the summary statistics for that time point.
+#'
+#' Note that if multiple values are provided for `subject_index` then the pointwise average
+#' will be calculated for each time point by taking the mean across the specified subjects
+#' at that time point.
+#'
+#' @return A data frame containing 1 row per `time_index` (in order) with the following columns:
+#' - `median` - The median value of the samples in `quantities`
+#' - `lower` - The lower `95%` CI value of the samples in `quantities`
+#' - `upper` - The upper `95%` CI value of the samples in `quantities`
+#'
+#' @keywords internal
+summarise_by_group <- function(subject_index, time_index, quantities) {
+    assert_that(
+        is.numeric(subject_index),
+        is.numeric(time_index),
+        length(time_index) == length(unique(time_index)),
+        inherits(quantities, "draws_matrix")
+    )
     stacked_quantities <- array(dim = c(
         nrow(quantities),
-        length(time_grid),
-        length(indexes)
+        length(time_index),
+        length(subject_index)
     ))
-    for (i in seq_along(indexes)) {
-        index <- indexes[i]
-        index_quant_names <- sprintf(
+    for (ind in seq_along(subject_index)) {
+        quantity_index <- sprintf(
             "quantity[%i,%i]",
-            index,
-            seq_along(time_grid)
+            subject_index[ind],
+            time_index
         )
-        stacked_quantities[, , i] <- quantities[, index_quant_names]
+        stacked_quantities[, , ind] <- quantities[, quantity_index]
     }
     averaged_quantities <- apply(
         stacked_quantities,
@@ -111,11 +155,10 @@ summarise_by_group <- function(indexes, time_grid, quantities) {
         mean,
         simplify = TRUE
     )
-    data.frame(
-        time = time_grid,
-        samples_median_ci(averaged_quantities)
-    )
+    samples_median_ci(averaged_quantities)
 }
+
+
 
 # TODO - Document function
 # TODO - test function
@@ -163,6 +206,7 @@ setMethod(
     }
 )
 
+
 # TODO - Document function
 # TODO - test function
 survival_plot <- function(
@@ -175,7 +219,9 @@ survival_plot <- function(
     type <- match.arg(type)
     assert_that(
         is.flag(add_ci),
-        is.flag(add_wrap)
+        is.flag(add_wrap),
+        names(dat) %in% c("lower", "upper", "time", "group", "median"),
+        is.null(kmdf) | is.data.frame(kmdf)
     )
 
     label <- switch(type,

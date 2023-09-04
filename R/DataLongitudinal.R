@@ -131,7 +131,6 @@ setMethod(
         ) |>
             t()
 
-        # TODO - Maybe reimplement this using a more robust approach than magic number
         adj_threshold <- if (is.null(vars$threshold)) {
             -999999
         } else {
