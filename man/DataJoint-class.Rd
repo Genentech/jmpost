@@ -28,7 +28,7 @@ The \code{DataJoint} class handles combining data from a \code{\link{DataSurviva
 \itemize{
 \item \code{as.list(x)}, \code{as(x, "list")}: Coerces x into a list of data components required
 for fitting a \code{\link[=JointModel]{JointModel()}}. See the vignette (TODO) for more details.
-\item \code{subset(DataJoin, patients)}: Coerces the object into a \code{data.frame} containing just event times and status
+\item \code{subset(DataJoint, patients)}: Coerces the object into a \code{data.frame} containing just event times and status
 filtering for specific patients. If \code{patients} is a list then an additional variable \code{group} will be added
 onto the dataset specifying which group the row belongs to.
 }

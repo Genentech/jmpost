@@ -21,7 +21,7 @@ NULL
 #' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
 #' for fitting a [JointModel()]. See the vignette (TODO) for more details.
 #'
-#' - `subset(DataJoin, patients)`: Coerces the object into a `data.frame` containing just event times and status
+#' - `subset(DataJoint, patients)`: Coerces the object into a `data.frame` containing just event times and status
 #' filtering for specific patients. If `patients` is a list then an additional variable `group` will be added
 #' onto the dataset specifying which group the row belongs to.
 #'

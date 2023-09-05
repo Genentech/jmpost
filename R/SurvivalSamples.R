@@ -188,52 +188,88 @@ extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "c
 setMethod(
     f = "autoplot",
     signature = c(object = "SurvivalSamples"),
-    function(
-        object,
-        patients,
-        time_grid = NULL,
-        type = c("surv", "haz", "loghaz", "cumhaz"),
-        add_km = FALSE,
-        add_ci = TRUE,
-        add_wrap = TRUE,
-        ...
-    ) {
+    function(object,
+             patients,
+             time_grid = NULL,
+             type = c("surv", "haz", "loghaz", "cumhaz"),
+             add_km = FALSE,
+             add_ci = TRUE,
+             add_wrap = TRUE,
+             ...) {
         assert_that(is.flag(add_km))
         kmdf <- if (add_km) subset(object@data, patients) else NULL
         type <- match.arg(type)
         all_fit_df <- predict(object, patients, time_grid, type)
-        survival_plot(all_fit_df, type, add_ci, add_wrap, kmdf)
+        label <- switch(type,
+            "surv" = expression(S(t)),
+            "cumhaz" = expression(H(t)),
+            "haz" = expression(h(t)),
+            "loghaz" = expression(log(h(t)))
+        )
+        survival_plot(
+            data = all_fit_df,
+            add_ci = add_ci,
+            add_wrap = add_wrap,
+            kmdf = kmdf,
+            y_label = label
+        )
     }
 )
 
 
-# TODO - Document function
-# TODO - test function
+
+#' Survival Plot
+#'
+#' Internal plotting function to create survival plots with KM curve overlays
+#' This function predominately exists to extract core logic into its own function
+#' to enable easier unit testing.
+#'
+#' @param data (`data.frame`)\cr A `data.frame` of summary statistics for a survival
+#' curve to be plotted. See details.
+#' @param add_ci (`logical`)\cr Should confidence intervals be added? Default = `TRUE`.
+#' @param add_wrap (`logical`)\cr Should the plots be wrapped by `data$group`? Default = `TRUE`.
+#' @param kmdf (`data.frame` or `NULL`)\cr A `data.frame` of event times and status used to plot
+#' overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
+#' @param y_label (`character` or `expression`) \cr Label to display on the y-axis.
+#' Default = `expression(S(t))`
+#' @param x_label (`character` or `expression`) \cr Label to display on the x-axis.
+#'
+#' @details
+#'
+#' ## `data`
+#' Should contain the following columns:
+#' - `time` - Time point
+#' - `group` - The group in which the observation belongs to
+#' - `median` - The median value for the summary statistic
+#' - `upper` - The upper 95% CI for the summary statistic
+#' - `lower` - The lower 95% CI for the summary statistic
+#'
+#' ## `kmdf`
+#' Should contain the following columns:
+#' - `time` - The time at which an event occoured
+#' - `event` - 1/0 status indicator for the event
+#' - `group` - Which group the event belongs to, should correspond to values in `data$group`
+#' @keywords internal
 survival_plot <- function(
-    dat,
-    type = c("surv", "haz", "loghaz", "cumhaz"),
+    data,
     add_ci = TRUE,
     add_wrap = TRUE,
-    kmdf = NULL
+    kmdf = NULL,
+    y_label = expression(S(t)),
+    x_label = expression(t)
 ) {
-    type <- match.arg(type)
     assert_that(
         is.flag(add_ci),
         is.flag(add_wrap),
-        names(dat) %in% c("lower", "upper", "time", "group", "median"),
+        is.expression(y_label) || is.character(y_label),
+        is.expression(x_label) || is.character(x_label),
         is.null(kmdf) | is.data.frame(kmdf)
     )
 
-    label <- switch(type,
-        "surv" = expression(S(t)),
-        "cumhaz" = expression(H(t)),
-        "haz" = expression(h(t)),
-        "loghaz" = expression(log(h(t)))
-    )
     p <- ggplot() +
-        xlab(expression(t)) +
-        theme_bw() +
-        ylab(label)
+        xlab(x_label) +
+        ylab(y_label) +
+        theme_bw()
 
     if (add_wrap) {
         p <- p + facet_wrap(~group)
@@ -261,15 +297,11 @@ survival_plot <- function(
             colour = .data$group
         )
     }
-    p <- p + geom_line(aes_line, data = dat)
+    p <- p + geom_line(aes_line, data = data)
     if (add_ci) {
-        p <- p + geom_ribbon(aes_ci, data = dat, alpha = 0.3)
+        p <- p + geom_ribbon(aes_ci, data = data, alpha = 0.3)
     }
     if (!is.null(kmdf)) {
-        assert_that(
-            type == "surv",
-            msg = "KM curves are only supported for `type='surv'`"
-        )
         p <- p +
             ggplot2.utils::geom_km(aes_km, data = kmdf) +
             ggplot2.utils::geom_km_ticks(aes_km, data = kmdf)
