@@ -76,13 +76,18 @@ NULL
 #' These plot methods visualize various objects.
 #'
 #' @name autoplot
-#' @aliases autoplot
 #'
 #' @param object what to plot.
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @export
+#' @family autoplot
+#'
+#' @export autoplot
 NULL
+
+
+
+
 
 # show ----
 

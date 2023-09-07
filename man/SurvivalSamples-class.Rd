@@ -4,44 +4,15 @@
 \name{SurvivalSamples-class}
 \alias{SurvivalSamples-class}
 \alias{.SurvivalSamples}
-\alias{SurvivalSamples}
-\alias{predict,SurvivalSamples-method}
 \title{\code{SurvivalSamples}}
-\usage{
-SurvivalSamples(object)
-
-\S4method{predict}{SurvivalSamples}(
-  object,
-  patients = NULL,
-  time_grid = NULL,
-  type = c("surv", "haz", "loghaz", "cumhaz")
-)
-}
-\arguments{
-\item{patients}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired quantities for.
-See details.}
-
-\item{time_grid}{(\code{numeric})\cr a vector of time points to calculate the desired quantity at.}
-
-\item{type}{(\code{character})\cr The quantity to be generated. Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
-}
 \description{
-This class is an extension of \code{JointModelSamples} so that we
+This class is an extension of \link[=JointModelSamples-class]{JointModelSamples} so that we
 can define specific survival postprocessing methods for it.
 }
-\details{
-\subsection{\code{predict(SurvivalSamples)}}{
-
-This method returns a \code{data.frame} of key quantities (survival / log-hazard / etc)
-for a given set of patients at a given set of time points. If a list of patients is provided
-patients will be grouped together and their quantities will be point-wise averaged e.g.
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{predict(
-    SurvivalSamples,
-    patients = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))
-)
-}\if{html}{\out{</div>}}
-
-If \code{patients=NULL} then all patients from original dataset will be selected
+\seealso{
+Other SurvivalSamples: 
+\code{\link{SurvivalSamples}},
+\code{\link{autoplot,SurvivalSamples-method}},
+\code{\link{predict,SurvivalSamples-method}}
 }
-}
+\concept{SurvivalSamples}
