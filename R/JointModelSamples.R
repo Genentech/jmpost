@@ -11,7 +11,6 @@ setOldClass("CmdStanMCMC")
 #'
 #' @slot model (`JointModel`)\cr the original model.
 #' @slot data (`list`)\cr data input.
-#' @slot init (`list`)\cr initial values.
 #' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
 #'
 #' @aliases JointModelSamples

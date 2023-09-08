@@ -12,7 +12,6 @@ can define specific survival postprocessing methods for it.
 \seealso{
 Other SurvivalSamples: 
 \code{\link{SurvivalSamples}},
-\code{\link{autoplot,SurvivalSamples-method}},
-\code{\link{predict,SurvivalSamples-method}}
+\code{\link{autoplot,SurvivalSamples-method}}
 }
 \concept{SurvivalSamples}

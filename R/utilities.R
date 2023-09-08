@@ -162,11 +162,7 @@ replace_with_lookup <- function(sizes, data) {
 #' @param level (`number`)\cr credibility level to use for the credible intervals.
 #'
 #' @returns A `data.frame` with columns `median`, `lower` and `upper`.
-#' @export
-#'
-#' @examples
-#' set.seed(123)
-#' samples <- cbind(rnorm(100, 0, 1), rexp(100, 0.5), rpois(100, 5))
+#' @keywords internal
 #' samples_median_ci(samples)
 samples_median_ci <- function(samples, level = 0.95) {
     assert_that(is.matrix(samples))

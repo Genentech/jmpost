@@ -87,6 +87,17 @@ NULL
 
 
 
+# predict ----
+
+#' Model Predictions
+#'
+#' NOTE: This man page is for the `predict` S4 generic function defined within
+#' jmpost. See `?stats::predict` for the default method.
+#' @name predict
+#' @inheritParams stats::predict
+#' @family predict
+#' @export predict
+setGeneric("predict", predict, signature = c("object"))
 
 
 # show ----

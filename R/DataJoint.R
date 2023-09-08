@@ -91,6 +91,7 @@ setMethod(
 
 # coerce-DataJoint,list ----
 
+#' @param x (`DataJoint`) \cr A [DataJoint][DataJoint-class] object created by [DataJoint()]
 #' @rdname as.list
 #'
 #' @name coerce-DataJoint-list-method

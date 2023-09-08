@@ -43,10 +43,4 @@ of \code{c("pt1", "pt2")} and \code{c("pt3", "pt4")} respectively.
 If \code{patients=NULL} then all patients from original dataset will be selected
 }
 
-\seealso{
-Other SurvivalSamples: 
-\code{\link{SurvivalSamples-class}},
-\code{\link{SurvivalSamples}},
-\code{\link{autoplot,SurvivalSamples-method}}
-}
-\concept{SurvivalSamples}
+\concept{SurvivalSamples predict}

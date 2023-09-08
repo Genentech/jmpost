@@ -16,8 +16,6 @@ Contains samples from a \code{\link{JointModel}}.
 
 \item{\code{data}}{(\code{list})\cr data input.}
 
-\item{\code{init}}{(\code{list})\cr initial values.}
-
 \item{\code{results}}{(\code{CmdStanMCMC})\cr the results from \code{\link[=sampleStanModel]{sampleStanModel()}}.}
 }}
 
