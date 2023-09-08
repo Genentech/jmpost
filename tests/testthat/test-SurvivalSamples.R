@@ -4,7 +4,7 @@
 # by MCMC sampling this is hard to test deterministically.
 # That being said all the individual components that comprise the function have been
 # individually tested so this is regarded as being sufficient
-test_that("smoke test for predict(SurvivalSamples)", {
+test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)", {
     set.seed(739)
     jlist <- simulate_joint_data(
         n = c(250, 150),
@@ -54,7 +54,6 @@ test_that("smoke test for predict(SurvivalSamples)", {
             threshold = 5
         )
     )
-
     mp <- sampleStanModel(
         jm,
         data = jdat,
@@ -66,6 +65,9 @@ test_that("smoke test for predict(SurvivalSamples)", {
     )
 
     survsamps <- SurvivalSamples(mp)
+
+
+    ##### predict(SurvivalSamples)
 
     expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
 
@@ -98,6 +100,79 @@ test_that("smoke test for predict(SurvivalSamples)", {
     expect_equal(round(preds1$median, 5), round(exp(-preds2$median), 5))
     expect_equal(round(preds3$median, 5), round(exp(preds4$median), 5))
     expect_true(all(preds1$median != preds3$median))
+
+
+    ##### autoplot(SurvivalSamples)
+    p <- autoplot(
+        survsamps,
+        add_wrap = FALSE,
+        add_ci = FALSE,
+        c("pt_00011", "pt_00061")
+    )
+
+    dat <- predict(survsamps, c("pt_00011", "pt_00061"))
+
+    expect_length(p$layers, 1)
+    expect_equal(p$labels$y, expression(S(t)))
+    expect_true(inherits(p$facet, "FacetNull"))
+    expect_equal(dat, p$layers[[1]]$data)
+    expect_true(inherits(p$layers[[1]]$geom, "GeomLine"))
+
+    p <- autoplot(
+        survsamps,
+        add_wrap = TRUE,
+        patients = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
+        time_grid = c(10, 20, 50, 200),
+        type = "loghaz"
+    )
+
+    dat <- predict(
+        survsamps,
+        patients = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
+        time_grid = c(10, 20, 50, 200),
+        type = "loghaz"
+    )
+
+    expect_length(p$layers, 2)
+    expect_equal(p$labels$y, expression(log(h(t))))
+    expect_true(inherits(p$facet, "FacetWrap"))
+    expect_equal(dat, p$layers[[1]]$data)
+    expect_true(inherits(p$layers[[1]]$geom, "GeomLine"))
+    expect_true(inherits(p$layers[[2]]$geom, "GeomRibbon"))
+
+
+    set.seed(39130)
+    ptgroups <- list(
+        gtpt1 = sample(dat_os$pt, 20),
+        gtpt2 = sample(dat_os$pt, 20),
+        gtpt3 = sample(dat_os$pt, 20)
+    )
+    times <- seq(0, 100, by = 10)
+
+    p <- autoplot(
+        survsamps,
+        add_wrap = FALSE,
+        add_ci = FALSE,
+        add_km = TRUE,
+        patients = ptgroups,
+        time_grid = times,
+        type = "surv"
+    )
+
+    dat <- predict(
+        survsamps,
+        patients = ptgroups,
+        time_grid = times,
+        type = "surv"
+    )
+    expect_length(p$layers, 3)
+    expect_equal(p$labels$y, expression(S(t)))
+    expect_true(inherits(p$facet, "FacetNull"))
+    expect_equal(dat, p$layers[[1]]$data)
+    expect_true(inherits(p$layers[[1]]$geom, "GeomLine"))
+    expect_true(inherits(p$layers[[2]]$geom, "GeomKm"))
+    expect_true(inherits(p$layers[[3]]$geom, "GeomKmTicks"))
+
 })
 
 

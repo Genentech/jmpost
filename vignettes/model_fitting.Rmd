@@ -329,8 +329,8 @@ And using the `survival()` method we can do the same for the estimated survival
 functions. We can do this for single patients:
 
 ```{r fig.width=6}
-surv_samples <- survival(mcmc_results, patients = selected_patients)
-autoplot(surv_samples, add_km = FALSE)
+surv_samples <- SurvivalSamples(mcmc_results)
+autoplot(surv_samples, add_km = FALSE, patients = selected_patients)
 ```
 
 We can also aggregate the estimated survival curves from groups of patients, 
@@ -338,8 +338,7 @@ using the corresponding method.
 
 ```{r, warning=FALSE, fig.width=6}
 groups <- split(os_data$pt, os_data$arm)
-surv_grouped_samples <- aggregate(survival(mcmc_results), groups = groups)
-autoplot(surv_grouped_samples, add_km = TRUE)
+autoplot(surv_samples, add_km = TRUE, patients = groups)
 ```
 
 
