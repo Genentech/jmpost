@@ -94,7 +94,7 @@ setMethod(
         quantities_summarised <- lapply(
             patients$patients_index,
             summarise_by_group,
-            time_grid = time_grid,
+            time_index = seq_along(time_grid),
             quantities = quantities
         )
 

@@ -99,4 +99,3 @@ test_that("survival_plot works as expected", {
         p3
     )
 })
-

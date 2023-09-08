@@ -1,131 +1,104 @@
-mcmc_results <- get_mcmc_results()
 
-# constructor ----
-
-test_that("SurvivalSamples can be initialized", {
-    x <- list(pt_00001 = 5, pt_00002 = 10)
-    result <- .SurvivalSamples(x)
-    expect_s4_class(result, "SurvivalSamples")
-    expect_identical(names(result), names(x))
-})
-
-# subset ----
-
-test_that("subsetting works as expected for SurvivalSamples", {
-    object <- .SurvivalSamples(
-        list(pt_00001 = 5, pt_00002 = 10)
+# Note that these are more just "smoke tests" e.g. we are looking for obvious signs
+# that something has gone wrong. Given the dependence on complex objects generated
+# by MCMC sampling this is hard to test deterministically.
+# That being said all the individual components that comprise the function have been
+# individually tested so this is regarded as being sufficient
+test_that("smoke test for predict(SurvivalSamples)", {
+    set.seed(739)
+    jlist <- simulate_joint_data(
+        n = c(250, 150),
+        times = 1:2000,
+        lambda_cen = 1 / 9000,
+        lm_fun = sim_lm_random_slope(
+            intercept = 30,
+            sigma = 3,
+            slope_mu = c(1, 3),
+            slope_sigma = 0.2,
+            phi = 0
+        ),
+        os_fun = sim_os_exponential(1 / 100),
+        .debug = TRUE,
+        .silent = TRUE
     )
-    result <- object["pt_00001"]
-    expect_s4_class(result, "SurvivalSamples")
-    expect_length(result, 1L)
-    expect_identical(names(result), "pt_00001")
-})
 
-# aggregate ----
+    dat_os <- jlist$os
+    dat_lm <- jlist$lm |>
+        dplyr::filter(time %in% c(0, 1, 100, 200, 250, 300, 350)) |>
+        dplyr::arrange(pt, time)
 
-test_that("aggregate works as expected for SurvivalSamples", {
-    x <- .SurvivalSamples(
-        list(
-            id1 = list(
-                samples = matrix(1:4, 2, 2),
-                summary = data.frame(time = 1:2, median = 0:1, lower = -1:0, upper = 1:2),
-                observed = data.frame(t = 5, death = TRUE, median = 0.8, lower = 0.5, upper = 1.2)
-            ),
-            id2 = list(
-                samples = matrix(2:5, 2, 2),
-                summary = data.frame(time = 1:2, median = 0:1, lower = -1:0, upper = 1:2),
-                observed = data.frame(t = 2, death = FALSE, median = 0.2, lower = 0.3, upper = 0.9)
-            ),
-            id3 = list(
-                samples = matrix(3:6, 2, 2),
-                summary = data.frame(time = 1:2, median = 0:1, lower = -1:0, upper = 1:2),
-                observed = data.frame(t = 1, death = TRUE, median = 0.1, lower = -0.1, upper = 2)
-            )
+
+    jm <- JointModel(
+        longitudinal = LongitudinalRandomSlope(
+            intercept = prior_normal(30, 2),
+            slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
+            sigma = prior_lognormal(log(3), sigma = 0.5)
+        ),
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(1 / 100), 1 / 100)
         )
     )
-    result <- aggregate(x, groups = list(a = c("id3", "id1"), b = c("id1", "id2")))
-    expect_s4_class(result, "SurvivalSamples")
-    expect_identical(names(result), c("a", "b"))
-    expect_identical(rownames(result[["a"]]$observed), c("id3", "id1"))
-    expect_identical(rownames(result[["b"]]$observed), c("id1", "id2"))
-})
 
-# autoplot ----
-
-test_that("autoplot works as expected for SurvivalSamples", {
-    object <- survival(mcmc_results, patients = c("pt_00001", "pt_00022"))
-    result <- expect_silent(autoplot(object))
-
-    data_layer1 <- layer_data(result)
-    expect_s3_class(data_layer1, "data.frame")
-    expect_identical(
-        names(data_layer1),
-        c("x", "y", "PANEL", "group", "flipped_aes", "colour", "linewidth", "linetype", "alpha")
-    )
-    expect_identical(
-        length(data_layer1$x),
-        201L * 2L
-    )
-    expect_identical(
-        length(unique(data_layer1$x)),
-        201L
-    )
-    expect_identical(
-        data_layer1$y,
-        c(object[[1]]$summary$median, object[[2]]$summary$median)
-    )
-
-    data_layer2 <- layer_data(result, i = 2)
-    expect_s3_class(data_layer2, "data.frame")
-    expect_identical(
-        names(data_layer2),
-        c(
-            "x", "ymin", "ymax", "PANEL", "group", "flipped_aes", "y",
-            "colour", "fill", "linewidth", "linetype", "alpha"
+    jdat <- DataJoint(
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont,
+            subject = "pt",
+            arm = "arm",
+            study = "study"
+        ),
+        longitudinal = DataLongitudinal(
+            data = dat_lm,
+            formula = sld ~ time,
+            subject = "pt",
+            threshold = 5
         )
     )
-    expect_identical(
-        length(data_layer2$x),
-        201L * 2L
-    )
-    expect_identical(
-        length(unique(data_layer2$x)),
-        201L
-    )
-    expect_identical(
-        data_layer2$ymin,
-        c(object[[1]]$summary$lower, object[[2]]$summary$lower)
-    )
-    expect_identical(
-        data_layer2$ymax,
-        c(object[[1]]$summary$upper, object[[2]]$summary$upper)
+
+    mp <- sampleStanModel(
+        jm,
+        data = jdat,
+        iter_sampling = 100,
+        iter_warmup = 150,
+        chains = 1,
+        refresh = 0,
+        parallel_chains = 1
     )
 
-    data_layer3 <- layer_data(result, i = 3)
-    expect_s3_class(data_layer3, "data.frame")
-    expect_identical(
-        names(data_layer3),
-        c("x", "y", "time", "survival", "status", "PANEL", "group", "colour",
-          "fill", "linewidth", "linetype", "weight", "alpha")
-    )
+    survsamps <- SurvivalSamples(mp)
+
+    expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
+
+    preds <- predict(survsamps, list("a" = c("pt_00001", "pt_00002")), c(10, 20, 200, 300))
+    expect_equal(nrow(preds), 4)
+    expect_equal(length(unique(preds$group)), 1)
+    expect_equal(names(preds), expected_column_names)
+    expect_equal(unique(preds$type), "surv")
+
+
+    preds <- predict(survsamps, time_grid = c(10, 20, 200, 300))
+    expect_equal(nrow(preds), 4 * nrow(dat_os)) # 4 timepoints for each subject in the OS dataset
+    expect_equal(names(preds), expected_column_names)
+    expect_equal(unique(preds$group), dat_os$pt)
+
+
+    preds <- predict(survsamps, c("pt_00001", "pt_00003"))
+    expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
+    expect_equal(names(preds), expected_column_names)
+
+
+    preds1 <- predict(survsamps, "pt_00001", c(200, 300))
+    preds2 <- predict(survsamps, "pt_00001", c(200, 300), type = "cumhaz")
+    preds3 <- predict(survsamps, "pt_00001", c(200, 300), type = "haz")
+    preds4 <- predict(survsamps, "pt_00001", c(200, 300), type = "loghaz")
+    expect_equal(unique(preds1$type), "surv")
+    expect_equal(unique(preds2$type), "cumhaz")
+    expect_equal(unique(preds3$type), "haz")
+    expect_equal(unique(preds4$type), "loghaz")
+    expect_equal(round(preds1$median, 5), round(exp(-preds2$median), 5))
+    expect_equal(round(preds3$median, 5), round(exp(preds4$median), 5))
+    expect_true(all(preds1$median != preds3$median))
 })
-
-test_that("autoplot does not show the Kaplan-Meier plot if disabled", {
-    object <- survival(mcmc_results, patients = c("pt_00001", "pt_00022"))
-    result <- expect_silent(autoplot(object, add_km = FALSE))
-    # Only 2 layers here, i.e. no Kaplan-Meier plot.
-    expect_identical(length(result$layers), 2L)
-})
-
-test_that("autoplot works end to end with Kaplan-Meier plot", {
-    object <- survival(mcmc_results, patients = c("pt_00001", "pt_00022"))
-    result <- expect_silent(autoplot(object, add_km = TRUE))
-    # 4 layers here, i.e. including Kaplan-Meier plot line and ticks.
-    expect_identical(length(result$layers), 4L)
-    # TODO - Need to rework when updating plotting functions
-    ## vdiffr::expect_d  oppelganger("SurvivalSamples autoplot with KM", result)
-})
-
 
 
 
