@@ -28,7 +28,7 @@ See "Patient Specification" for more details.}
 \item{type}{(\code{character})\cr The quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
 
-\item{add_km}{(\code{logical}) \cr If \code{TRUE} kaplan-Meier curves will be added to the plot for
+\item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
 each group/patient as defined by \code{patients}}
 
 \item{add_ci}{(\code{logical}) \cr If \code{TRUE} 95\% CI will be added to the plot for

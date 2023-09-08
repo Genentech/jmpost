@@ -51,7 +51,7 @@ Should contain the following columns:
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - The time at which an event occoured
+\item \code{time} - The time at which an event occurred
 \item \code{event} - 1/0 status indicator for the event
 \item \code{group} - Which group the event belongs to, should correspond to values in \code{data$group}
 }
