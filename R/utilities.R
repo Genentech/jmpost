@@ -334,7 +334,7 @@ decompose_patients <- function(patients, all_pts) {
     )
     patients_vec_unordered <- unique(unlist(patients))
     patients_vec <- patients_vec_unordered[order(patients_vec_unordered)]
-    patients_lookup <- setNames(seq_along(patients_vec), patients_vec)
+    patients_lookup <- stats::setNames(seq_along(patients_vec), patients_vec)
     patients_index <- lapply(
         patients,
         \(x) {

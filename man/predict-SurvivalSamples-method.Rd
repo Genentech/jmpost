@@ -12,6 +12,9 @@
 )
 }
 \arguments{
+\item{object}{(\code{SurvivalSamples}) \cr A \link[=SurvivalSamples-class]{SurvivalSamples}
+object created by \code{\link[=SurvivalSamples]{SurvivalSamples()}}}
+
 \item{patients}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
 quantities for.
 See "Patient Specification" for more details.}

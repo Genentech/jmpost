@@ -16,6 +16,9 @@
 )
 }
 \arguments{
+\item{object}{(\code{SurvivalSamples}) \cr A \link[=SurvivalSamples-class]{SurvivalSamples}
+object created by \code{\link[=SurvivalSamples]{SurvivalSamples()}}}
+
 \item{patients}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
 quantities for.
 See "Patient Specification" for more details.}
@@ -33,6 +36,8 @@ each group/patient as defined by \code{patients}}
 
 \item{add_wrap}{(\code{logical}) \cr If \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
 by each group/patient as defined by \code{patients}}
+
+\item{...}{other arguments passed to plotting methods.}
 }
 \description{
 Automatic Plotting for SurvivalSamples

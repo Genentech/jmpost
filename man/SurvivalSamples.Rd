@@ -7,11 +7,11 @@
 SurvivalSamples(object)
 }
 \arguments{
-\item{object}{(\code{JointModelSamples}) \cr A \linkS4class{JointModelSamples} object}
+\item{object}{(\code{JointModelSamples}) \cr A \link[=JointModelSamples-class]{JointModelSamples} object}
 }
 \description{
-Creates a \link[=SurvivalSample-class]{SurvivalSample} object from a
-\link[=JointModelSamples-class]{JointModelSamples} objet
+Creates a \link[=SurvivalSamples-class]{SurvivalSamples} object from a
+\link[=JointModelSamples-class]{JointModelSamples} object
 }
 \seealso{
 Other SurvivalSamples: 

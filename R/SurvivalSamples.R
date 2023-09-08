@@ -2,6 +2,9 @@
 
 #' NULL Documentation page to house re-usable elements across SurvivalSamples methods/objects
 #'
+#' @param object (`SurvivalSamples`) \cr A [SurvivalSamples][SurvivalSamples-class]
+#' object created by [SurvivalSamples()]
+#'
 #' @param patients (`character` or `list` or `NULL`)\cr which patients to calculate the desired
 #' quantities for.
 #' See "Patient Specification" for more details.
@@ -44,10 +47,10 @@ NULL
 
 #' SurvivalSamples Constructor Function
 #'
-#' Creates a [SurvivalSample][SurvivalSample-class] object from a
-#' [JointModelSamples][JointModelSamples-class] objet
+#' Creates a [SurvivalSamples][SurvivalSamples-class] object from a
+#' [JointModelSamples][JointModelSamples-class] object
 #'
-#' @param object (`JointModelSamples`) \cr A [JointModelSamples-class] object
+#' @param object (`JointModelSamples`) \cr A [JointModelSamples][JointModelSamples-class] object
 #' @family SurvivalSamples
 #' @export
 SurvivalSamples <- function(object) {
@@ -221,6 +224,7 @@ extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "c
 #' each group/patient as defined by `patients`
 #' @param add_wrap (`logical`) \cr If `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
 #' by each group/patient as defined by `patients`
+#' @param ... other arguments passed to plotting methods.
 #'
 #' @family autoplot
 #' @family SurvivalSamples
