@@ -12,30 +12,19 @@ NULL
 #' @slot survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @slot longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #'
+#' @name DataJoint
+#' @aliases DataJoint-class
+#'
 #' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
-#' @param patients (`character` or `list`)\cr the patients that you wish to subset the `data.frame`
-#' to contain. See details.
 #' @details
 #'
 #' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
 #' for fitting a [JointModel()]. See the vignette (TODO) for more details.
 #'
-#' - `subset(DataJoint, patients)`: Coerces the object into a `data.frame` containing just event times and status
-#' filtering for specific patients. If `patients` is a list then an additional variable `group` will be added
-#' onto the dataset specifying which group the row belongs to.
+#' @family DataJoint
 #'
-#' @examples
-#' \dontrun{
-#' pts <- c("PT1", "PT3", "PT4")
-#' subset(x, pts)
-#'
-#' groups <- list(
-#'     "g1" = c("PT1", "PT3", "PT4"),
-#'     "g2" = c("PT2", "PT3")
-#' )
-#' subset(x, groups)
-#' }
+#' @export DataJoint
 #' @exportClass DataJoint
 .DataJoint <- setClass(
     Class = "DataJoint",
@@ -47,8 +36,7 @@ NULL
 
 # DataJoint-constructors ----
 
-#' @rdname DataJoint-class
-#' @export
+#' @rdname DataJoint
 DataJoint <- function(survival, longitudinal) {
     .DataJoint(
         survival = survival,
@@ -103,7 +91,31 @@ setAs(
 )
 
 
-#' @rdname DataJoint-class
+#' Subsetting `DataJoint` as a `data.frame`
+#'
+#' @param x (`DataJoint`) \cr A [DataJoint][DataJoint-class] object created by [DataJoint()]
+#' @param patients (`character` or `list`)\cr the patients that you wish to subset the `data.frame`
+#' to contain. See details.
+#'
+#' @description
+#'
+#' Coerces the object into a `data.frame` containing just event times and status
+#' filtering for specific patients. If `patients` is a list then an additional variable `group` will be added
+#' onto the dataset specifying which group the row belongs to.
+#'
+#' @examples
+#' \dontrun{
+#' pts <- c("PT1", "PT3", "PT4")
+#' subset(x, pts)
+#'
+#' groups <- list(
+#'     "g1" = c("PT1", "PT3", "PT4"),
+#'     "g2" = c("PT2", "PT3")
+#' )
+#' subset(x, groups)
+#' }
+#' @family DataJoint
+#' @family subset
 setMethod(
     f = "subset",
     signature = "DataJoint",

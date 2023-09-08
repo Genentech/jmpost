@@ -100,6 +100,20 @@ NULL
 setGeneric("predict", predict, signature = c("object"))
 
 
+# subset ----
+
+#' Subsetting Vectors, Matrices and Data Frames
+#'
+#' NOTE: This man page is for the `subset` S4 generic function defined within
+#' jmpost. See `?base::subset` for the default method.
+#' @name subset
+#' @inheritParams base::subset
+#' @family subset
+#' @export subset
+setGeneric("subset", subset, signature = c("x"))
+
+
+
 # show ----
 
 #' Printing of Different Classes

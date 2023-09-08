@@ -83,3 +83,4 @@ reference:
       - merge
       - names
       - show
+      - starts_with("subset")
