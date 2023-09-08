@@ -33,4 +33,3 @@ test_that("longitudinal allows to subset patients and times", {
     expect_identical(dim(one_result$samples), c(100L, length(time_grid)))
     expect_identical(nrow(one_result$summary), length(time_grid))
 })
-

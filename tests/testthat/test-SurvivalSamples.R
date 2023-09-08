@@ -67,7 +67,7 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
     survsamps <- SurvivalSamples(mp)
 
 
-    ##### predict(SurvivalSamples)
+    ##### Section for predict,SurvivalSamples
 
     expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
 
@@ -102,7 +102,7 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
     expect_true(all(preds1$median != preds3$median))
 
 
-    ##### autoplot(SurvivalSamples)
+    ##### Section for autoplot,SurvivalSamples
     p <- autoplot(
         survsamps,
         add_wrap = FALSE,

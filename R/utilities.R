@@ -317,7 +317,7 @@ expand_patients <- function(patients, all_pts) {
 #' @seealso [expand_patients()], [`predict(SurvivalSamples)`][SurvivalSamples-class]
 #' @keywords internal
 decompose_patients <- function(patients, all_pts) {
-    if (is.character(patients) | is.null(patients)) {
+    if (is.character(patients) || is.null(patients)) {
         patients <- expand_patients(patients, all_pts)
         names(patients) <- patients
         patients <- as.list(patients)
