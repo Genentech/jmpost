@@ -15,4 +15,8 @@ predict(object, ...)
 NOTE: This man page is for the \code{predict} S4 generic function defined within
 jmpost. See \code{?stats::predict} for the default method.
 }
+\seealso{
+Other predict: 
+\code{\link{predict,SurvivalSamples-method}}
+}
 \concept{predict}

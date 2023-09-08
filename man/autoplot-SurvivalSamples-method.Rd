@@ -63,7 +63,8 @@ Other autoplot:
 
 Other SurvivalSamples: 
 \code{\link{SurvivalSamples-class}},
-\code{\link{SurvivalSamples}}
+\code{\link{SurvivalSamples}},
+\code{\link{predict,SurvivalSamples-method}}
 }
 \concept{SurvivalSamples}
 \concept{autoplot}

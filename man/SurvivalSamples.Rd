@@ -16,6 +16,7 @@ Creates a \link[=SurvivalSamples-class]{SurvivalSamples} object from a
 \seealso{
 Other SurvivalSamples: 
 \code{\link{SurvivalSamples-class}},
-\code{\link{autoplot,SurvivalSamples-method}}
+\code{\link{autoplot,SurvivalSamples-method}},
+\code{\link{predict,SurvivalSamples-method}}
 }
 \concept{SurvivalSamples}

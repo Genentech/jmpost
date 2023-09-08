@@ -68,7 +68,8 @@ SurvivalSamples <- function(object) {
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #' for selected patients at a given set of time points.
 #'
-#' @family SurvivalSamples predict
+#' @family SurvivalSamples
+#' @family predict
 setMethod(
     f = "predict",
     signature = "SurvivalSamples",
