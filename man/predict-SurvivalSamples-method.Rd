@@ -46,7 +46,6 @@ If \code{patients=NULL} then all patients from original dataset will be selected
 \seealso{
 Other SurvivalSamples: 
 \code{\link{SurvivalSamples-class}},
-\code{\link{SurvivalSamples}},
 \code{\link{autoplot,SurvivalSamples-method}}
 
 Other predict: 

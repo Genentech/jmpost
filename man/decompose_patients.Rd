@@ -7,19 +7,20 @@
 decompose_patients(patients, all_pts)
 }
 \arguments{
-\item{patients}{(\code{character} or \code{list}) patient identifiers. If \code{NULL} will be set to \code{all_pts}.}
+\item{patients}{(\code{character} or \code{list})\cr patient identifiers. If \code{NULL} will be set to \code{all_pts}.}
 
-\item{all_pts}{(\code{character}) the set of allowable patient identifiers.
+\item{all_pts}{(\code{character})\cr the set of allowable patient identifiers.
 Will cause an error if any value of \code{patients} is not in this vector.}
 }
 \value{
 A list containing three components:
 \itemize{
-\item \code{patients_list}: (\code{list}) each element is named and is a character vector
-specifying which patients belong to that "group"
-\item \code{patients_vec}: (\code{character}) vector of the unique patients within \code{patients}
-\item \code{patients_index}: (\code{list}) each element is a named and is a numeric index vector
-that maps the values of \code{patients_list} to \code{patients_vec}
+\item \code{groups}: (\code{list})\cr each element of the list is a character vector
+specifying which patients belong to a given "group" where the "group" is the element name
+\item \code{unique_values}: (\code{character})\cr vector of the unique patients within \code{patients}
+\item \code{indexes}: (\code{list})\cr each element is a named and is a numeric index vector
+that maps the values of \code{grouped} to \code{unique_values}
+}
 }
 }
 \description{

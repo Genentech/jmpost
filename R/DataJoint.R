@@ -154,7 +154,7 @@ setMethod(
 #'
 #' @keywords internal
 subset_and_add_grouping <- function(dat, groupings) {
-    groupings <- decompose_patients(groupings, dat$patient)$patients_list
+    groupings <- decompose_patients(groupings, dat$patient)$groups
     dat_subset_list <- lapply(
         seq_along(groupings),
         \(i) {

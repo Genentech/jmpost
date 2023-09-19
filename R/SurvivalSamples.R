@@ -34,31 +34,29 @@ NULL
 
 # SurvivalSamples-class ----
 
-#' `SurvivalSamples`
+#' `SurvivalSamples` Object and Constructor Function
 #'
-#' This class is an extension of [JointModelSamples][JointModelSamples-class] so that we
-#' can define specific survival postprocessing methods for it.
+#' `SurvivalSamples()` creates a `SurvivalSamples` object. The `SurvivalSamples` class
+#' is an extension of the [JointModelSamples][JointModelSamples-class] class so that we
+#' can define specific survival postprocessing methods for it (e.g. there are no new
+#' additional slots defined).
 #'
+#' @param object (`JointModelSamples`) \cr A [`JointModelSamples`][JointModelSamples-class] object
 #' @family SurvivalSamples
+#' @seealso [JointModelSamples][JointModelSamples-class]
+#' @name SurvivalSamples-class
+#' @export SurvivalSamples
 .SurvivalSamples <- setClass(
     "SurvivalSamples",
     contains = "JointModelSamples"
 )
 
-#' SurvivalSamples Constructor Function
-#'
-#' Creates a [SurvivalSamples][SurvivalSamples-class] object from a
-#' [JointModelSamples][JointModelSamples-class] object
-#'
-#' @param object (`JointModelSamples`) \cr A [JointModelSamples][JointModelSamples-class] object
-#' @family SurvivalSamples
-#' @export
+#' @rdname SurvivalSamples-class
 SurvivalSamples <- function(object) {
     .SurvivalSamples(object)
 }
 
 
-# TODO - test function
 #' Predict
 #'
 #' @inheritParams SurvivalSamples-Joint
@@ -88,7 +86,7 @@ setMethod(
 
         gq <- generateQuantities(
             object,
-            patients = patients$patients_vec,
+            patients = patients$unique_values,
             time_grid_lm = numeric(0),
             time_grid_sm = time_grid
         )
@@ -96,7 +94,7 @@ setMethod(
         quantities <- extract_survival_quantities(gq, type)
 
         quantities_summarised <- lapply(
-            patients$patients_index,
+            patients$indexes,
             summarise_by_group,
             time_index = seq_along(time_grid),
             quantities = quantities
@@ -105,7 +103,7 @@ setMethod(
         for (i in seq_along(quantities_summarised)) {
             assert_that(nrow(quantities_summarised[[i]]) == length(time_grid))
             quantities_summarised[[i]][["time"]] <- time_grid
-            quantities_summarised[[i]][["group"]] <- names(patients$patients_list)[[i]]
+            quantities_summarised[[i]][["group"]] <- names(patients$groups)[[i]]
             quantities_summarised[[i]][["type"]] <- type
         }
         Reduce(rbind, quantities_summarised)
@@ -214,7 +212,6 @@ extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "c
 
 # SurvivalSamples-autoplot ----
 
-# TODO - UNIT TESTS
 #' Automatic Plotting for SurvivalSamples
 #'
 #' @inheritParams SurvivalSamples-Joint

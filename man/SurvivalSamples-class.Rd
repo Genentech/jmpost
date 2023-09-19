@@ -4,14 +4,24 @@
 \name{SurvivalSamples-class}
 \alias{SurvivalSamples-class}
 \alias{.SurvivalSamples}
-\title{\code{SurvivalSamples}}
+\alias{SurvivalSamples}
+\title{\code{SurvivalSamples} Object and Constructor Function}
+\usage{
+SurvivalSamples(object)
+}
+\arguments{
+\item{object}{(\code{JointModelSamples}) \cr A \code{\link[=JointModelSamples-class]{JointModelSamples}} object}
+}
 \description{
-This class is an extension of \link[=JointModelSamples-class]{JointModelSamples} so that we
-can define specific survival postprocessing methods for it.
+\code{SurvivalSamples()} creates a \code{SurvivalSamples} object. The \code{SurvivalSamples} class
+is an extension of the \link[=JointModelSamples-class]{JointModelSamples} class so that we
+can define specific survival postprocessing methods for it (e.g. there are no new
+additional slots defined).
 }
 \seealso{
+\link[=JointModelSamples-class]{JointModelSamples}
+
 Other SurvivalSamples: 
-\code{\link{SurvivalSamples}},
 \code{\link{autoplot,SurvivalSamples-method}},
 \code{\link{predict,SurvivalSamples-method}}
 }

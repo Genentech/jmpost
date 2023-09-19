@@ -13,7 +13,7 @@ predict(object, ...)
 }
 \description{
 NOTE: This man page is for the \code{predict} S4 generic function defined within
-jmpost. See \code{?stats::predict} for the default method.
+jmpost. See \code{\link[stats:predict]{stats::predict()}} for the default method.
 }
 \seealso{
 Other predict: 

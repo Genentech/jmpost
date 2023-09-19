@@ -224,13 +224,13 @@ test_that("decompose_patients() works as expected", {
     # Basic vector format
     actual <- decompose_patients(c("a", "b", "d"), c("a", "b", "c", "d"))
     expected <- list(
-        patients_list = list(
+        groups = list(
             "a" = "a",
             "b" = "b",
             "d" = "d"
         ),
-        patients_vec = c("a", "b", "d"),
-        patients_index = list(
+        unique_values = c("a", "b", "d"),
+        indexes = list(
             "a" = 1,
             "b" = 2,
             "d" = 3
@@ -246,12 +246,12 @@ test_that("decompose_patients() works as expected", {
         c("a", "b", "c", "d")
     )
     expected <- list(
-        patients_list = list(
+        groups = list(
             "g1" = c("b", "a"),
             "g2" = c("a", "d")
         ),
-        patients_vec = c("a", "b", "d"),
-        patients_index = list(
+        unique_values = c("a", "b", "d"),
+        indexes = list(
             "g1" = c(2, 1),
             "g2" = c(1, 3)
         )
@@ -265,11 +265,11 @@ test_that("decompose_patients() works as expected", {
         c("a", "d", "c", "b", "b", "b", "a")
     )
     expected <- list(
-        patients_list = list(
+        groups = list(
             "a" = "a", "d" = "d", "c" = "c", "b" = "b"
         ),
-        patients_vec = c("a", "b", "c", "d"),
-        patients_index = list(
+        unique_values = c("a", "b", "c", "d"),
+        indexes = list(
             "a" = 1, "d" = 4, "c" = 3, "b" = 2
         )
     )

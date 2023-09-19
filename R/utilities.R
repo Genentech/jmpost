@@ -289,18 +289,17 @@ expand_patients <- function(patients, all_pts) {
 #' The primary use of this function is to correctly setup indexing variables for
 #' predicting survival quantities (see [`predict(SurvivalSamples)`][SurvivalSamples-class])
 #'
-#' @param patients (`character` or `list`) patient identifiers. If `NULL` will be set to `all_pts`.
+#' @param patients (`character` or `list`)\cr patient identifiers. If `NULL` will be set to `all_pts`.
 #'
-#' @param all_pts (`character`) the set of allowable patient identifiers.
+#' @param all_pts (`character`)\cr the set of allowable patient identifiers.
 #' Will cause an error if any value of `patients` is not in this vector.
 #'
 #' @return A list containing three components:
-#' \itemize{
-#'   \item \code{patients_list}: (`list`) each element is named and is a character vector
-#' specifying which patients belong to that "group"
-#'   \item \code{patients_vec}: (`character`) vector of the unique patients within `patients`
-#'   \item \code{patients_index}: (`list`) each element is a named and is a numeric index vector
-#' that maps the values of `patients_list` to `patients_vec`
+#' - `groups`: (`list`)\cr each element of the list is a character vector
+#' specifying which patients belong to a given "group" where the "group" is the element name
+#' - `unique_values`: (`character`)\cr vector of the unique patients within `patients`
+#' - `indexes`: (`list`)\cr each element is a named and is a numeric index vector
+#' that maps the values of `grouped` to `unique_values`
 #' }
 #' @examples
 #' \dontrun{
@@ -340,8 +339,8 @@ decompose_patients <- function(patients, all_pts) {
         }
     )
     list(
-        patients_list = patients,
-        patients_vec = patients_vec,
-        patients_index = patients_index
+        groups = patients,
+        unique_values = patients_vec,
+        indexes = patients_index
     )
 }

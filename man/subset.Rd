@@ -13,7 +13,7 @@ subset(x, ...)
 }
 \description{
 NOTE: This man page is for the \code{subset} S4 generic function defined within
-jmpost. See \code{?base::subset} for the default method.
+jmpost. See \code{\link[base:subset]{base::subset()}} for the default method.
 }
 \seealso{
 Other subset: 

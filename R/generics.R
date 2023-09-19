@@ -92,7 +92,7 @@ NULL
 #' Model Predictions
 #'
 #' NOTE: This man page is for the `predict` S4 generic function defined within
-#' jmpost. See `?stats::predict` for the default method.
+#' jmpost. See [stats::predict()] for the default method.
 #' @name predict
 #' @inheritParams stats::predict
 #' @family predict
@@ -105,7 +105,7 @@ setGeneric("predict", predict, signature = c("object"))
 #' Subsetting Vectors, Matrices and Data Frames
 #'
 #' NOTE: This man page is for the `subset` S4 generic function defined within
-#' jmpost. See `?base::subset` for the default method.
+#' jmpost. See [base::subset()] for the default method.
 #' @name subset
 #' @inheritParams base::subset
 #' @family subset
