@@ -80,5 +80,3 @@ mcmc_trace(mp$draws("sm_logl_p"))
 #     Surv(time, event) ~ cov_cat + cov_cont,
 #     data = dat_os
 # )
-
-

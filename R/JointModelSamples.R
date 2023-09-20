@@ -1,6 +1,8 @@
 #' @include JointModel.R
 NULL
 
+setOldClass("CmdStanMCMC")
+
 # JointModelSamples-class ----
 
 #' `JointModelSamples`
@@ -9,7 +11,6 @@ NULL
 #'
 #' @slot model (`JointModel`)\cr the original model.
 #' @slot data (`list`)\cr data input.
-#' @slot init (`list`)\cr initial values.
 #' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
 #'
 #' @aliases JointModelSamples
@@ -18,9 +19,8 @@ NULL
     "JointModelSamples",
     slots = c(
         model = "JointModel",
-        data = "list",
-        init = "list",
-        results = "ANY"
+        data = "DataJoint",
+        results = "CmdStanMCMC"
     )
 )
 
@@ -39,7 +39,7 @@ setMethod(
     f = "generateQuantities",
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients, time_grid_lm, time_grid_sm, ...) {
-        data <- object@data
+        data <- as.list(object@data)
         data[["n_lm_time_grid"]] <- length(time_grid_lm)
         data[["lm_time_grid"]] <- time_grid_lm
         data[["n_sm_time_grid"]] <- length(time_grid_sm)
@@ -83,9 +83,9 @@ setMethod(
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients = NULL, time_grid = NULL, ...) {
 
-        data <- object@data
+        data <- as.list(object@data)
         time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
-        patients <- expand_patients(patients, names(object@data$pt_to_ind))
+        patients <- expand_patients(patients, names(data$pt_to_ind))
         gq <- generateQuantities(
             object,
             patients = patients,
@@ -120,67 +120,5 @@ setMethod(
             results[[this_pt]] <- this_result
         }
         .LongitudinalSamples(results)
-    }
-)
-
-
-# survival-JointModelSamples ----
-
-#' @rdname survival
-#'
-#' @param patients (`character` or `NULL`)\cr optional subset of patients for
-#' which the survival function samples should be extracted, the default `NULL`
-#' meaning all patients.
-#'
-#' @param time_grid (`numeric`)\cr grid of time points to use for providing samples
-#' of the survival model fit functions. If `NULL`, will be taken as a sequence of
-#' 201 values from 0 to the maximum observed event time.
-#'
-#' @export
-setMethod(
-    f = "survival",
-    signature = c(object = "JointModelSamples"),
-    definition = function(object, patients = NULL, time_grid = NULL, ...) {
-
-        data <- object@data
-        time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
-        patients <- expand_patients(patients, names(object@data$pt_to_ind))
-        gq <- generateQuantities(
-            object,
-            patients = patients,
-            time_grid_lm = numeric(0),
-            time_grid_sm = time_grid
-        )
-
-        log_surv_at_grid_samples <- gq$draws(format = "draws_matrix")
-        log_surv_at_obs_samples <- object@results$draws(
-            "log_surv_fit_at_obs_times",
-            format = "draws_matrix"
-        )
-
-        results <- list()
-        for (this_pt_ind in seq_along(patients)) {
-            this_pt <- patients[this_pt_ind]
-            this_result <- list()
-            patient_ind <- object@data$pt_to_ind[this_pt]
-            this_surv_fit_names <- sprintf(
-                "log_surv_fit_at_time_grid[%i,%i]",
-                this_pt_ind,
-                seq_along(time_grid)
-            )
-            this_result$samples <- exp(log_surv_at_grid_samples[, this_surv_fit_names, drop = FALSE])
-            this_result$summary <- data.frame(
-                time = time_grid,
-                samples_median_ci(this_result$samples)
-            )
-            this_result$observed <- data.frame(
-                t = data$Times[patient_ind],
-                death = (patient_ind %in% object@data$dead_ind_index),
-                samples_median_ci(exp(log_surv_at_obs_samples[, patient_ind, drop = FALSE]))
-            )
-            rownames(this_result$observed) <- this_pt
-            results[[this_pt]] <- this_result
-        }
-        .SurvivalSamples(results)
     }
 )

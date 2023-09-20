@@ -78,3 +78,9 @@ xl
 xshift
 jinjar
 tempdir
+ci
+autoplot
+cmdstanr
+Summarise
+SurvivalSamples
+DataJoint

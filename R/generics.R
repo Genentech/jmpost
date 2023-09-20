@@ -67,20 +67,7 @@ NULL
 #' @export
 NULL
 
-# aggregate ----
 
-#' Aggregation Methods for Different Classes
-#'
-#' These aggregation methods allow to group samples of different objects.
-#'
-#' @name aggregate
-#' @aliases aggregate
-#'
-#' @param x what to aggregate.
-#' @param ... other arguments passed to aggregation methods.
-#'
-#' @export
-NULL
 
 # autoplot ----
 
@@ -89,13 +76,43 @@ NULL
 #' These plot methods visualize various objects.
 #'
 #' @name autoplot
-#' @aliases autoplot
 #'
 #' @param object what to plot.
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @export
+#' @family autoplot
+#'
+#' @export autoplot
 NULL
+
+
+
+# predict ----
+
+#' Model Predictions
+#'
+#' NOTE: This man page is for the `predict` S4 generic function defined within
+#' jmpost. See [stats::predict()] for the default method.
+#' @name predict
+#' @inheritParams stats::predict
+#' @family predict
+#' @export predict
+setGeneric("predict", predict, signature = c("object"))
+
+
+# subset ----
+
+#' Subsetting Vectors, Matrices and Data Frames
+#'
+#' NOTE: This man page is for the `subset` S4 generic function defined within
+#' jmpost. See [base::subset()] for the default method.
+#' @name subset
+#' @inheritParams base::subset
+#' @family subset
+#' @export subset
+setGeneric("subset", subset, signature = c("x"))
+
+
 
 # show ----
 
@@ -269,21 +286,6 @@ setGeneric(
 setGeneric(
     name = "longitudinal",
     def = function(object, ...) standardGeneric("longitudinal")
-)
-
-# survival ----
-
-#' `survival`
-#'
-#' Obtain the survival function samples from [`JointModelSamples`].
-#'
-#' @param object samples to extract the survival function values from.
-#' @param ... additional options.
-#'
-#' @export
-setGeneric(
-    name = "survival",
-    def = function(object, ...) standardGeneric("survival")
 )
 
 

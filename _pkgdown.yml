@@ -63,10 +63,8 @@ reference:
       - LongitudinalSamples
       - SurvivalSamples
       - longitudinal
-      - survival
-      - aggregate
-      - autoplot
-      - samples_median_ci
+      - starts_with("autoplot")
+      - starts_with("predict")
       - generateQuantities
   - title: Stan Code
     contents:
@@ -85,3 +83,4 @@ reference:
       - merge
       - names
       - show
+      - starts_with("subset")

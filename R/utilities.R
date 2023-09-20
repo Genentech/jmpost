@@ -162,11 +162,7 @@ replace_with_lookup <- function(sizes, data) {
 #' @param level (`number`)\cr credibility level to use for the credible intervals.
 #'
 #' @returns A `data.frame` with columns `median`, `lower` and `upper`.
-#' @export
-#'
-#' @examples
-#' set.seed(123)
-#' samples <- cbind(rnorm(100, 0, 1), rexp(100, 0.5), rpois(100, 5))
+#' @keywords internal
 #' samples_median_ci(samples)
 samples_median_ci <- function(samples, level = 0.95) {
     assert_that(is.matrix(samples))
@@ -281,4 +277,69 @@ expand_patients <- function(patients, all_pts) {
         msg = "`patients` should be a unique character vector containing only values from the original df"
     )
     return(patients)
+}
+
+
+
+#' Decompose Patients into Relevant Components
+#'
+#' This function takes in a character vector or list of patients and decomposes it into a
+#' structured format.
+#'
+#' The primary use of this function is to correctly setup indexing variables for
+#' predicting survival quantities (see [`predict(SurvivalSamples)`][SurvivalSamples-class])
+#'
+#' @param patients (`character` or `list`)\cr patient identifiers. If `NULL` will be set to `all_pts`.
+#'
+#' @param all_pts (`character`)\cr the set of allowable patient identifiers.
+#' Will cause an error if any value of `patients` is not in this vector.
+#'
+#' @return A list containing three components:
+#' - `groups`: (`list`)\cr each element of the list is a character vector
+#' specifying which patients belong to a given "group" where the "group" is the element name
+#' - `unique_values`: (`character`)\cr vector of the unique patients within `patients`
+#' - `indexes`: (`list`)\cr each element is a named and is a numeric index vector
+#' that maps the values of `grouped` to `unique_values`
+#' @examples
+#' \dontrun{
+#' result <- decompose_patients(c("A", "B"), c("A", "B", "C", "D"))
+#' result <- decompose_patients(
+#'     list("g1" = c("A", "B"), "g2" = c("B", "C")),
+#'     c("A", "B", "C", "D")
+#' )
+#' }
+#' @seealso [expand_patients()], [`predict(SurvivalSamples)`][SurvivalSamples-class]
+#' @keywords internal
+decompose_patients <- function(patients, all_pts) {
+    if (is.character(patients) || is.null(patients)) {
+        patients <- expand_patients(patients, all_pts)
+        names(patients) <- patients
+        patients <- as.list(patients)
+    }
+    patients <- lapply(
+        patients,
+        expand_patients,
+        all_pts = all_pts
+    )
+    assert_that(
+        is.list(patients),
+        length(unique(names(patients))) == length(patients),
+        all(vapply(patients, is.character, logical(1)))
+    )
+    patients_vec_unordered <- unique(unlist(patients))
+    patients_vec <- patients_vec_unordered[order(patients_vec_unordered)]
+    patients_lookup <- stats::setNames(seq_along(patients_vec), patients_vec)
+    patients_index <- lapply(
+        patients,
+        \(x) {
+            z <- patients_lookup[x]
+            names(z) <- NULL
+            z
+        }
+    )
+    list(
+        groups = patients,
+        unique_values = patients_vec,
+        indexes = patients_index
+    )
 }

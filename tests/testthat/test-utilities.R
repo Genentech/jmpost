@@ -217,3 +217,73 @@ test_that("expand_patients() works as expected", {
         regex = "`patients`"
     )
 })
+
+
+test_that("decompose_patients() works as expected", {
+
+    # Basic vector format
+    actual <- decompose_patients(c("a", "b", "d"), c("a", "b", "c", "d"))
+    expected <- list(
+        groups = list(
+            "a" = "a",
+            "b" = "b",
+            "d" = "d"
+        ),
+        unique_values = c("a", "b", "d"),
+        indexes = list(
+            "a" = 1,
+            "b" = 2,
+            "d" = 3
+        )
+    )
+    expect_equal(actual, expected)
+
+
+
+    # list format
+    actual <- decompose_patients(
+        list("g1" = c("b", "a"), "g2" = c("a", "d")),
+        c("a", "b", "c", "d")
+    )
+    expected <- list(
+        groups = list(
+            "g1" = c("b", "a"),
+            "g2" = c("a", "d")
+        ),
+        unique_values = c("a", "b", "d"),
+        indexes = list(
+            "g1" = c(2, 1),
+            "g2" = c(1, 3)
+        )
+    )
+    expect_equal(actual, expected)
+
+
+    # NULL is correctly expanded
+    actual <- decompose_patients(
+        NULL,
+        c("a", "d", "c", "b", "b", "b", "a")
+    )
+    expected <- list(
+        groups = list(
+            "a" = "a", "d" = "d", "c" = "c", "b" = "b"
+        ),
+        unique_values = c("a", "b", "c", "d"),
+        indexes = list(
+            "a" = 1, "d" = 4, "c" = 3, "b" = 2
+        )
+    )
+    expect_equal(actual, expected)
+
+    # errors if patient doesn't exist
+    expect_error(
+        decompose_patients("e", c("a", "d", "c", "b", "b")),
+        regexp = "`patients`"
+    )
+    # errors if group has same patient twice
+    expect_error(
+        decompose_patients(list("g1" = c("a", "a")), c("a", "d", "c", "b", "b")),
+        regexp = "`patients`"
+    )
+
+})

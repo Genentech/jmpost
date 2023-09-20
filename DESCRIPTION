@@ -42,6 +42,7 @@ Imports:
     tibble,
     methods,
     digest,
+    posterior,
     stats
 Suggests: 
     bayesplot,

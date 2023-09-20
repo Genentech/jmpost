@@ -111,14 +111,7 @@ setMethod(
     definition = function(object, data, ...) {
 
         args <- list(...)
-
-        if (is(data, "DataJoint")) {
-            args[["data"]] <- as.list(data)
-        } else if (is(data, "list")) {
-            args[["data"]] <- data
-        } else {
-            stop("`data` must either be a list or a DataJoint object")
-        }
+        args[["data"]] <- as.list(data)
 
         if (!"init" %in% names(args)) {
             values_initial <- initialValues(object)
@@ -135,8 +128,7 @@ setMethod(
 
         .JointModelSamples(
             model = object,
-            data = args$data,
-            init = values_initial_expanded,
+            data = data,
             results = results
         )
     }

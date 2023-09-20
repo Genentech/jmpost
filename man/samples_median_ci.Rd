@@ -17,8 +17,5 @@ A \code{data.frame} with columns \code{median}, \code{lower} and \code{upper}.
 \description{
 Obtain Median and Credible Intervals from MCMC samples
 }
-\examples{
-set.seed(123)
-samples <- cbind(rnorm(100, 0, 1), rexp(100, 0.5), rpois(100, 5))
-samples_median_ci(samples)
-}
+\keyword{internal}
+\keyword{samples_median_ci(samples)}

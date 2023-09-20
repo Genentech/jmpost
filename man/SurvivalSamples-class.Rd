@@ -5,26 +5,24 @@
 \alias{SurvivalSamples-class}
 \alias{.SurvivalSamples}
 \alias{SurvivalSamples}
-\alias{[,SurvivalSamples,ANY,ANY,ANY-method}
-\title{\code{SurvivalSamples}}
+\title{\code{SurvivalSamples} Object and Constructor Function}
 \usage{
-\S4method{[}{SurvivalSamples,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+SurvivalSamples(object)
 }
 \arguments{
-\item{x}{(\code{SurvivalSamples})\cr the samples object to subset.}
-
-\item{i}{(\code{vector})\cr the index vector.}
-
-\item{j}{not used.}
-
-\item{...}{not used.}
-
-\item{drop}{not used.}
-}
-\value{
-The subsetted \code{SurvivalSamples} object.
+\item{object}{(\code{JointModelSamples}) \cr A \code{\link[=JointModelSamples-class]{JointModelSamples}} object}
 }
 \description{
-This class is an extension of \code{list} so that we
-can define specific survival postprocessing methods for it.
+\code{SurvivalSamples()} creates a \code{SurvivalSamples} object. The \code{SurvivalSamples} class
+is an extension of the \link[=JointModelSamples-class]{JointModelSamples} class so that we
+can define specific survival postprocessing methods for it (e.g. there are no new
+additional slots defined).
 }
+\seealso{
+\link[=JointModelSamples-class]{JointModelSamples}
+
+Other SurvivalSamples: 
+\code{\link{autoplot,SurvivalSamples-method}},
+\code{\link{predict,SurvivalSamples-method}}
+}
+\concept{SurvivalSamples}

@@ -25,7 +25,6 @@ STAN_BLOCKS <- list(
 #' @keywords internal
 add_missing_stan_blocks <- function(x) {
     # STAN_BLOCKS is defined as a global variable in StanModule.R
-    # TODO - Make it an argument to the function
     for (block in names(STAN_BLOCKS)) {
         if (is.null(x[[block]])) {
             x[[block]] <- ""

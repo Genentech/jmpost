@@ -27,7 +27,7 @@
 \S4method{as.list}{StanModel}(x)
 }
 \arguments{
-\item{x}{what to convert.}
+\item{x}{(\code{DataJoint}) \cr A \link[=DataJoint-class]{DataJoint} object created by \code{\link[=DataJoint]{DataJoint()}}}
 
 \item{...}{not used.}
 }
