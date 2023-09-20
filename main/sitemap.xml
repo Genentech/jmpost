@@ -22,7 +22,7 @@
     <loc>https://genentech.github.io/jmpost/news/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataJoint-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/DataJoint.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-class.html</loc>
@@ -88,6 +88,9 @@
     <loc>https://genentech.github.io/jmpost/reference/SurvivalModel-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalSamples-Joint.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/SurvivalSamples-class.html</loc>
   </url>
   <url>
@@ -98,9 +101,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/aggregate.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc>
@@ -121,10 +121,16 @@
     <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/autoplot-SurvivalSamples-method.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/decompose_patients.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
@@ -140,6 +146,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/extract_survival_quantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc>
@@ -188,6 +197,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/names.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/predict-SurvivalSamples-method.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/predict.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_arguments.html</loc>
@@ -259,7 +274,19 @@
     <loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/survival.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/subset-DataJoint-method.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/subset.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/summarise_by_group.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc>

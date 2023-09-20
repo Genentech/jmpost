@@ -54,12 +54,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -318,7 +312,7 @@ means that in our applications we don’t have to use the same variable
 names as seen above, but we can use custom names and then apply the
 mapping here.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint-class.html">DataJoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint.html">DataJoint</a></span><span class="op">(</span></span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/DataSurvival-class.html">DataSurvival</a></span><span class="op">(</span></span>
 <span>        data <span class="op">=</span> <span class="va">os_data</span>,</span>
 <span>        formula <span class="op">=</span> <span class="fu"><a href="../reference/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="va">cov_cat</span> <span class="op">+</span> <span class="va">cov_cont</span>,</span>
@@ -389,7 +383,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 9.0 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 7.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -477,19 +471,18 @@ plot here the first 10 patients:</p>
 <div class="section level3">
 <h3 id="survival-fit-plots">Survival fit plots<a class="anchor" aria-label="anchor" href="#survival-fit-plots"></a>
 </h3>
-<p>And using the <code><a href="../reference/survival.html">survival()</a></code> method we can do the same for
+<p>And using the <code>survival()</code> method we can do the same for
 the estimated survival functions. We can do this for single
 patients:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">surv_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/survival.html">survival</a></span><span class="op">(</span><span class="va">mcmc_results</span>, patients <span class="op">=</span> <span class="va">selected_patients</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_samples</span>, add_km <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">surv_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalSamples-class.html">SurvivalSamples</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_samples</span>, add_km <span class="op">=</span> <span class="cn">FALSE</span>, patients <span class="op">=</span> <span class="va">selected_patients</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
 patients, using the corresponding method.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="va">os_data</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span></span>
-<span><span class="va">surv_grouped_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate.html">aggregate</a></span><span class="op">(</span><span class="fu"><a href="../reference/survival.html">survival</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span>, groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_grouped_samples</span>, add_km <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_samples</span>, add_km <span class="op">=</span> <span class="cn">TRUE</span>, patients <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 </div>
 </div>
