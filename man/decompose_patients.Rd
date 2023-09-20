@@ -22,7 +22,6 @@ specifying which patients belong to a given "group" where the "group" is the ele
 that maps the values of \code{grouped} to \code{unique_values}
 }
 }
-}
 \description{
 This function takes in a character vector or list of patients and decomposes it into a
 structured format.

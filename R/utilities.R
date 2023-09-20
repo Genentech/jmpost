@@ -300,7 +300,6 @@ expand_patients <- function(patients, all_pts) {
 #' - `unique_values`: (`character`)\cr vector of the unique patients within `patients`
 #' - `indexes`: (`list`)\cr each element is a named and is a numeric index vector
 #' that maps the values of `grouped` to `unique_values`
-#' }
 #' @examples
 #' \dontrun{
 #' result <- decompose_patients(c("A", "B"), c("A", "B", "C", "D"))
