@@ -87,5 +87,6 @@ Collate:
     'simulations_gsf.R'
     'simulations_os.R'
     'simulations_rs.R'
+    'survivalQuantities.R'
     'zzz.R'
 VignetteBuilder: knitr

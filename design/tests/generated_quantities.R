@@ -101,24 +101,26 @@ pts <- list(
     "g2" = sample(dat_os$pt, 100)
 )
 
-predict(
-    survival_samples,
+
+samps <- extractSurvivalQuantities(
+    stan_samples,
     patients = pts,
     type = "haz",
     time_grid = c(0, 100, 200)
 )
+summary(samps)
+as.data.frame(samps) |> tibble()
+
+
 
 
 pts <- sample(dat_os$pt, 4)
-predict(
-    survival_samples,
+samps <- extractSurvivalQuantities(
+    stan_samples,
     patients = pts
 )
-
-jdat@survival@data
-
-
-
+summary(samps)
+as.data.frame(samps) |> tibble()
 
 
 

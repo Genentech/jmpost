@@ -23,6 +23,6 @@ additional slots defined).
 
 Other SurvivalSamples: 
 \code{\link{autoplot,SurvivalSamples-method}},
-\code{\link{predict,SurvivalSamples-method}}
+\code{\link{extractQuantities,SurvivalSamples-method}}
 }
 \concept{SurvivalSamples}

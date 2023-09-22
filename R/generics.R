@@ -87,17 +87,17 @@ NULL
 
 
 
-# predict ----
+# summary ----
 
-#' Model Predictions
+#' Object Summaries
 #'
-#' NOTE: This man page is for the `predict` S4 generic function defined within
-#' jmpost. See [stats::predict()] for the default method.
-#' @name predict
-#' @inheritParams stats::predict
-#' @family predict
-#' @export predict
-setGeneric("predict", predict, signature = c("object"))
+#' NOTE: This man page is for the `summary` S4 generic function defined within
+#' jmpost. See [base::summary()] for the default method.
+#' @name summary
+#' @inheritParams base::summary
+#' @family summary
+#' @export summary
+setGeneric("summary", base::summary, signature = c("object"))
 
 
 # subset ----
@@ -303,3 +303,21 @@ setGeneric(
     name = "generateQuantities",
     def = function(object, ...) standardGeneric("generateQuantities")
 )
+
+
+# extractSurvivalQuantities ----
+
+#' `extractSurvivalQuantities`
+#'
+#' Extracts quantity samples from a stan model
+#'
+#' @param object object to obtain quantities from
+#' @param ... additional options.
+#'
+#' @family extractSamples
+#' @export
+setGeneric(
+    name = "extractSurvivalQuantities",
+    def = function(object, ...) standardGeneric("extractSurvivalQuantities")
+)
+

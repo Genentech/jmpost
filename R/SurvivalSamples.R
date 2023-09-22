@@ -57,58 +57,8 @@ SurvivalSamples <- function(object) {
 }
 
 
-#' Predict
-#'
-#' @inheritParams SurvivalSamples-Joint
-#' @inheritSection SurvivalSamples-Joint Patient Specification
-#'
-#' @description
-#' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
-#' for selected patients at a given set of time points.
-#'
-#' @family SurvivalSamples
-#' @family predict
-setMethod(
-    f = "predict",
-    signature = "SurvivalSamples",
-    definition = function(
-        object,
-        patients = NULL,
-        time_grid = NULL,
-        type = c("surv", "haz", "loghaz", "cumhaz")
-    ) {
-        type <- match.arg(type)
 
-        data <- as.list(object@data)
-        patients <- decompose_patients(patients, names(data$pt_to_ind))
 
-        time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
-
-        gq <- generateQuantities(
-            object,
-            patients = patients$unique_values,
-            time_grid_lm = numeric(0),
-            time_grid_sm = time_grid
-        )
-
-        quantities <- extract_survival_quantities(gq, type)
-
-        quantities_summarised <- lapply(
-            patients$indexes,
-            summarise_by_group,
-            time_index = seq_along(time_grid),
-            quantities = quantities
-        )
-
-        for (i in seq_along(quantities_summarised)) {
-            assert_that(nrow(quantities_summarised[[i]]) == length(time_grid))
-            quantities_summarised[[i]][["time"]] <- time_grid
-            quantities_summarised[[i]][["group"]] <- names(patients$groups)[[i]]
-            quantities_summarised[[i]][["type"]] <- type
-        }
-        Reduce(rbind, quantities_summarised)
-    }
-)
 
 
 #' Summarise Quantities By Group
@@ -171,13 +121,12 @@ summarise_by_group <- function(subject_index, time_index, quantities) {
         )
         stacked_quantities[, , ind] <- quantities[, quantity_index]
     }
-    averaged_quantities <- apply(
+    apply(
         stacked_quantities,
         c(1, 2),
         mean,
         simplify = TRUE
     )
-    samples_median_ci(averaged_quantities)
 }
 
 
