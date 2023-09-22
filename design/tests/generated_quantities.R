@@ -90,26 +90,12 @@ stan_samples@results$summary()
 
 class(stan_samples@results)
 
-survival_samples <- SurvivalSamples(stan_samples)
 
 longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
     autoplot()
 
 
-pts <- list(
-    "g1" = sample(dat_os$pt, 100),
-    "g2" = sample(dat_os$pt, 100)
-)
 
-
-samps <- extractSurvivalQuantities(
-    stan_samples,
-    patients = pts,
-    type = "haz",
-    time_grid = c(0, 100, 200)
-)
-summary(samps)
-as.data.frame(samps) |> tibble()
 
 
 
@@ -121,41 +107,44 @@ samps <- extractSurvivalQuantities(
 )
 summary(samps)
 as.data.frame(samps) |> tibble()
+autoplot(samps)
 
 
 
+
+
+pts <- list(
+    "g1" = sample(dat_os$pt, 100),
+    "g2" = sample(dat_os$pt, 100)
+)
+samps <- extractSurvivalQuantities(
+    stan_samples,
+    patients = pts,
+    type = "surv",
+    time_grid = c(0, 100, 200)
+)
+summary(samps)
+as.data.frame(samps) |> tibble()
+autoplot(samps)
+
+
+
+
+pts <- list(
+    "g1" = sample(dat_os$pt, 10),
+    "g2" = sample(dat_os$pt, 10)
+)
+samps <- extractSurvivalQuantities(
+    stan_samples,
+    patients = pts,
+    type = "surv"
+)
 autoplot(
-    survival_samples,
-    pts,
+    samps,
     add_km = TRUE
 )
 
 autoplot(
-    survival_samples,
-    pts,
+    samps,
     add_wrap = FALSE
-)
-
-pts <- list(
-    "g1" = sample(dat_os$pt, 4),
-    "g2" = sample(dat_os$pt, 4)
-)
-
-autoplot(
-    survival_samples,
-    pts,
-    type = "cumhaz",
-    add_wrap = FALSE
-)
-
-autoplot(
-    survival_samples,
-    pts,
-    type = "haz"
-)
-
-autoplot(
-    survival_samples,
-    pts,
-    type = "loghaz"
 )

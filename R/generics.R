@@ -305,7 +305,6 @@ setGeneric(
 )
 
 
-# extractSurvivalQuantities ----
 
 #' `extractSurvivalQuantities`
 #'
@@ -314,10 +313,13 @@ setGeneric(
 #' @param object object to obtain quantities from
 #' @param ... additional options.
 #'
-#' @family extractSamples
+#' @family extractSurvivalQuantities
 #' @export
 setGeneric(
     name = "extractSurvivalQuantities",
     def = function(object, ...) standardGeneric("extractSurvivalQuantities")
 )
+
+
+
 
