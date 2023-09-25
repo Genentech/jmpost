@@ -103,7 +103,7 @@ longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
 pts <- sample(dat_os$pt, 4)
 samps <- extractSurvivalQuantities(
     stan_samples,
-    patients = pts
+    patients =  sample(dat_os$pt, 4)
 )
 summary(samps)
 as.data.frame(samps) |> tibble()

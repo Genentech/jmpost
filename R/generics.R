@@ -319,7 +319,3 @@ setGeneric(
     name = "extractSurvivalQuantities",
     def = function(object, ...) standardGeneric("extractSurvivalQuantities")
 )
-
-
-
-

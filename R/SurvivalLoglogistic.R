@@ -24,9 +24,9 @@ NULL
 #'
 #' @export
 SurvivalLogLogistic <- function(
-         lambda = prior_lognormal(log(0.1), 5, init = 0.1),
-         p = prior_gamma(2, 5, init = 0.5),
-         beta = prior_normal(0, 5)
+    lambda = prior_lognormal(log(0.1), 5, init = 0.1),
+    p = prior_gamma(2, 5, init = 0.5),
+    beta = prior_normal(0, 5)
 ) {
     .SurvivalLogLogistic(
         SurvivalModel(

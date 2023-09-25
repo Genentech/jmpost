@@ -5,20 +5,44 @@
 \alias{SurvivalQuantities-class}
 \alias{.SurvivalQuantities}
 \alias{SurvivalQuantities}
-\title{title}
+\title{SurvivalQuantities}
 \usage{
 SurvivalQuantities(quantities, groups, type, time_grid, data)
 }
 \arguments{
-\item{object}{(\code{JointModelSamples}) \cr A \code{\link[=JointModelSamples-class]{JointModelSamples}} object}
+\item{quantities}{(\code{JointModelSamples}) \cr A \href{JointModelSamples-class}{JointModelSamples} object}
+
+\item{groups}{See slot section for details}
+
+\item{type}{See slot section for details}
+
+\item{time_grid}{See slot section for details}
+
+\item{data}{See slot section for details}
 }
 \description{
-#TODO
+Constructor function to generate a \code{SurvivalQuantities} object.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{quantities}}{See argument section for details}
+
+\item{\code{groups}}{See argument section for details}
+
+\item{\code{type}}{See See argument section for details}
+
+\item{\code{time_grid}}{See argument section for details}
+
+\item{\code{data}}{See argument section for details}
+}}
+
 \seealso{
 \link[=JointModelSamples-class]{JointModelSamples}
 
 Other SurvivalQuantities: 
+\code{\link{as.data.frame,SurvivalQuantities-method}},
+\code{\link{autoplot,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
 \concept{SurvivalQuantities}

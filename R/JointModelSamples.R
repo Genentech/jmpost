@@ -10,9 +10,9 @@ setOldClass("CmdStanMCMC")
 #'
 #' Contains samples from a [`JointModel`].
 #'
-#' @slot model (`JointModel`)\cr the original model.
-#' @slot data (`list`)\cr data input.
-#' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
+#' @slot model ([`JointModel`])\cr the model that the samples were drawn from.
+#' @slot data ([`DataJoint`])\cr the data that the model was fitted on.
+#' @slot results ([`CmdStanMCMC`])\cr the STAN samples.
 #'
 #' @aliases JointModelSamples
 #' @export
@@ -83,7 +83,6 @@ setMethod(
     f = "longitudinal",
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients = NULL, time_grid = NULL, ...) {
-
         data <- as.list(object@data)
         time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
         patients <- expand_patients(patients, names(data$pt_to_ind))
@@ -114,7 +113,7 @@ setMethod(
             for_this_pt <- which(data$ind_index == data$pt_to_ind[this_pt])
             this_fit <- samples_median_ci(y_fit_samples[, for_this_pt, drop = FALSE])
             this_result$observed <- data.frame(
-                t =  data$Tobs[for_this_pt],
+                t = data$Tobs[for_this_pt],
                 y = data$Yobs[for_this_pt],
                 this_fit
             )
@@ -128,7 +127,15 @@ setMethod(
 
 
 
-#TODO - Documentation
+#' extractSurvivalQuantities
+#'
+#' Derive survival quantities from a given set of model samples.
+#'
+#' @param object ([`JointModelSamples`]) \cr The samples that we want to derive survival
+#' quantities from.
+#' @inheritParams SurvivalQuantities-Shared
+#' @inheritSection SurvivalQuantities-Shared Patient Specification
+#' @returns a [`SurvivalQuantities`] object
 setMethod(
     f = "extractSurvivalQuantities",
     signature = "JointModelSamples",
@@ -171,11 +178,10 @@ setMethod(
 )
 
 
-#' Summarise Quantities By Group
+#' Extract and Average Quantities By Group Index
 #'
-#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and calculates
-#' summary statistics (median / lower ci / upper ci) for selected columns.
-#' A key feature is that it allows for columns to be aggregated together (see details).
+#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and extracts
+#' the specified columns and aggregates them by calculating the pointwise average.
 #'
 #' @param subject_index (`numeric`)\cr Which subject indices to extract from `quantities`.
 #' See details.
@@ -198,15 +204,11 @@ setMethod(
 #' - `x` is the subject index
 #' - `y` is the time point index
 #'
-#' The resulting `data.frame` that is created will have 1 row per value of `time_index` where
-#' each row represents the summary statistics for that time point.
+#' This function returns a `matrix` with 1 row per sample and 1 column per `time_index`.
 #'
 #' Note that if multiple values are provided for `subject_index` then the pointwise average
 #' will be calculated for each time point by taking the mean across the specified subjects
-#' at that time point.
-#'
-#' @return
-#' #TODO - update documentation
+#' at each time point.
 #'
 #' @keywords internal
 average_samples_by_index <- function(subject_index, time_index, quantities) {
@@ -246,7 +248,7 @@ average_samples_by_index <- function(subject_index, time_index, quantities) {
 #' the desired ones and return them them as a user friendly [posterior::draws_matrix] object
 #'
 #' @param gq (`CmdStanGQ`) \cr A [cmdstanr::CmdStanGQ] object created by [generateQuantities]
-#' @inheritParams SurvivalQuantities-Joint
+#' @inheritParams SurvivalQuantities-Shared
 #' @keywords internal
 extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz")) {
     type <- match.arg(type)

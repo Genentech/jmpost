@@ -7,8 +7,7 @@
 \S4method{autoplot}{SurvivalQuantities}(object, add_km = FALSE, add_ci = TRUE, add_wrap = TRUE, ...)
 }
 \arguments{
-\item{object}{(\code{SurvivalSamples}) \cr A \link[=SurvivalSamples-class]{SurvivalSamples}
-object created by \code{\link[=SurvivalSamples]{SurvivalSamples()}}}
+\item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
 
 \item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
 each group/patient as defined by \code{patients}}
@@ -27,6 +26,11 @@ Automatic Plotting for SurvivalSamples
 \seealso{
 Other autoplot: 
 \code{\link{autoplot}()}
+
+Other SurvivalQuantities: 
+\code{\link{SurvivalQuantities-class}},
+\code{\link{as.data.frame,SurvivalQuantities-method}},
+\code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{SurvivalSamples}
+\concept{SurvivalQuantities}
 \concept{autoplot}

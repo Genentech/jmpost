@@ -2,7 +2,7 @@
 % Please edit documentation in R/JointModelSamples.R
 \name{average_samples_by_index}
 \alias{average_samples_by_index}
-\title{Summarise Quantities By Group}
+\title{Extract and Average Quantities By Group Index}
 \usage{
 average_samples_by_index(subject_index, time_index, quantities)
 }
@@ -16,13 +16,9 @@ See details.}
 \item{quantities}{(\code{\link[posterior:draws_matrix]{posterior::draws_matrix}})\cr A matrix of sample draws.
 See details.}
 }
-\value{
-#TODO - update documentation
-}
 \description{
-This function takes a \code{\link[posterior:draws_matrix]{posterior::draws_matrix()}} (matrix of cmdstanr sample draws) and calculates
-summary statistics (median / lower ci / upper ci) for selected columns.
-A key feature is that it allows for columns to be aggregated together (see details).
+This function takes a \code{\link[posterior:draws_matrix]{posterior::draws_matrix()}} (matrix of cmdstanr sample draws) and extracts
+the specified columns and aggregates them by calculating the pointwise average.
 }
 \details{
 It is assumed that \code{quantities} consists of the cartesian product
@@ -39,11 +35,10 @@ Where
 \item \code{y} is the time point index
 }
 
-The resulting \code{data.frame} that is created will have 1 row per value of \code{time_index} where
-each row represents the summary statistics for that time point.
+This function returns a \code{matrix} with 1 row per sample and 1 column per \code{time_index}.
 
 Note that if multiple values are provided for \code{subject_index} then the pointwise average
 will be calculated for each time point by taking the mean across the specified subjects
-at that time point.
+at each time point.
 }
 \keyword{internal}

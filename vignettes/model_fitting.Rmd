@@ -325,20 +325,29 @@ autoplot(long_samples)
 
 ## Survival fit plots
 
-And using the `survival()` method we can do the same for the estimated survival
-functions. We can do this for single patients:
+And using the `extractSurvivalQuantities()` method we can do the same for the estimated survival
+functions.
 
 ```{r fig.width=6}
-surv_samples <- SurvivalSamples(mcmc_results)
-autoplot(surv_samples, add_km = FALSE, patients = selected_patients)
+surv_quantities <- extractSurvivalQuantities(
+    mcmc_results,
+    patients = selected_patients
+)
+as.data.frame(surv_quantities)
+summary(surv_quantities)
+autoplot(surv_quantities)
 ```
 
-We can also aggregate the estimated survival curves from groups of patients, 
+We can also aggregatea the estimated survivl curves from groups of patients, 
 using the corresponding method.
 
 ```{r, warning=FALSE, fig.width=6}
 groups <- split(os_data$pt, os_data$arm)
-autoplot(surv_samples, add_km = TRUE, patients = groups)
+surv_quantities <- extractSurvivalQuantities(
+    groups,
+    patients = selected_patients
+)
+autoplot(ssurv_quantitie, add_km = TRUE)
 ```
 
 

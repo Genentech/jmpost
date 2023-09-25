@@ -12,7 +12,9 @@ for selected patients at a given set of time points.
 }
 \seealso{
 Other SurvivalQuantities: 
-\code{\link{SurvivalQuantities-class}}
+\code{\link{SurvivalQuantities-class}},
+\code{\link{as.data.frame,SurvivalQuantities-method}},
+\code{\link{autoplot,SurvivalQuantities-method}}
 
 Other summary: 
 \code{\link{summary}()}

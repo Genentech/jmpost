@@ -2,11 +2,7 @@
 #' @include DataJoint.R
 NULL
 
-#TODO
-#' NULL Documentation page to house re-usable elements across SurvivalQuantity methods/objects
-#'
-#' @param object (`SurvivalSamples`) \cr A [SurvivalSamples][SurvivalSamples-class]
-#' object created by [SurvivalSamples()]
+#' NULL Documentation page to house re-usable elements across SurvivalQuantities methods/objects
 #'
 #' @param patients (`character` or `list` or `NULL`)\cr which patients to calculate the desired
 #' quantities for.
@@ -17,7 +13,7 @@ NULL
 #'
 #' @param time_grid (`numeric`)\cr a vector of time points to calculate the desired quantity at.
 #'
-#' @name SurvivalQuantities-Joint
+#' @name SurvivalQuantities-Shared
 #'
 #' @section Patient Specification:
 #' If `patients` is a character vector then quantities / summary statistics
@@ -36,11 +32,22 @@ NULL
 
 
 
-#' title
+#' SurvivalQuantities
 #'
-#' #TODO
+#' Constructor function to generate a `SurvivalQuantities` object.
 #'
-#' @param object (`JointModelSamples`) \cr A [`JointModelSamples`][JointModelSamples-class] object
+#' @param quantities (`JointModelSamples`) \cr A [JointModelSamples](JointModelSamples-class) object
+#' @param groups See slot section for details
+#' @param type See slot section for details
+#' @param time_grid See slot section for details
+#' @param data See slot section for details
+#'
+#' @slot quantities See argument section for details
+#' @slot groups See argument section for details
+#' @slot type See See argument section for details
+#' @slot time_grid See argument section for details
+#' @slot data See argument section for details
+#'
 #' @family SurvivalQuantities
 #' @seealso [JointModelSamples][JointModelSamples-class]
 #' @name SurvivalQuantities-class
@@ -65,10 +72,6 @@ SurvivalQuantities <- function(quantities, groups, type, time_grid, data) {
         data = data
     )
 }
-
-
-
-
 setValidity(
     Class = "SurvivalQuantities",
     method = function(object) {
@@ -138,6 +141,12 @@ setMethod(
 )
 
 
+#' `as.data.frame`
+#'
+#' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
+#' @param ... Not used
+#' @family as.data.frame
+#' @family SurvivalQuantities
 setMethod(
     f = "as.data.frame",
     signature = "SurvivalQuantities",
@@ -176,7 +185,7 @@ setMethod(
 
 #' Automatic Plotting for SurvivalSamples
 #'
-#' @inheritParams SurvivalQuantities-Joint
+#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities
 #' @param add_km (`logical`) \cr If `TRUE` Kaplan-Meier curves will be added to the plot for
 #' each group/patient as defined by `patients`
 #' @param add_ci (`logical`) \cr If `TRUE` 95% CI will be added to the plot for
@@ -186,7 +195,7 @@ setMethod(
 #' @param ... other arguments passed to plotting methods.
 #'
 #' @family autoplot
-#' @family SurvivalSamples
+#' @family SurvivalQuantities
 #'
 setMethod(
     f = "autoplot",
@@ -307,4 +316,3 @@ survival_plot <- function(
     }
     p
 }
-
