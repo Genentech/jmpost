@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -74,15 +68,15 @@
     
 
 <dl><dt><code>model</code></dt>
-<dd><p>(<code>JointModel</code>)<br> the original model.</p></dd>
+<dd><p>(<code><a href="JointModel-class.html">JointModel</a></code>)<br> the model that the samples were drawn from.</p></dd>
 
 
 <dt><code>data</code></dt>
-<dd><p>(<code>list</code>)<br> data input.</p></dd>
+<dd><p>(<code><a href="DataJoint.html">DataJoint</a></code>)<br> the data that the model was fitted on.</p></dd>
 
 
 <dt><code>results</code></dt>
-<dd><p>(<code>CmdStanMCMC</code>)<br> the results from <code><a href="sampleStanModel.html">sampleStanModel()</a></code>.</p></dd>
+<dd><p>(<code>CmdStanMCMC</code>)<br> the STAN samples.</p></dd>
 
 
 </dl></div>

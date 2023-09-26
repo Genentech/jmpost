@@ -88,10 +88,7 @@
     <loc>https://genentech.github.io/jmpost/reference/SurvivalModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalSamples-Joint.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalSamples-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc>
@@ -109,6 +106,9 @@
     <loc>https://genentech.github.io/jmpost/reference/as.character.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.data.frame-SurvivalQuantities-method.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.html</loc>
   </url>
   <url>
@@ -121,10 +121,13 @@
     <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/autoplot-SurvivalSamples-method.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/autoplot-SurvivalQuantities-method.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/average_samples_by_index.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
@@ -197,12 +200,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/names.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/predict-SurvivalSamples-method.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/predict.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_arguments.html</loc>
@@ -283,7 +280,10 @@
     <loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/summarise_by_group.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/summary-SurvivalQuantities-method.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/summary.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc>
