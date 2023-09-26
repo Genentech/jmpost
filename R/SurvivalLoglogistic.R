@@ -14,6 +14,7 @@ NULL
     contains = "SurvivalModel"
 )
 
+
 # SurvivalLogLogistic-constructors ----
 
 #' @rdname SurvivalLogLogistic-class
