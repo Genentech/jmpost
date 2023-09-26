@@ -40,9 +40,9 @@ Constructor function to generate a \code{SurvivalQuantities} object.
 \seealso{
 \link[=JointModelSamples-class]{JointModelSamples}
 
-Other SurvivalQuantities: 
+Other \code{SurvivalQuantities}: 
 \code{\link{as.data.frame,SurvivalQuantities-method}},
 \code{\link{autoplot,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{SurvivalQuantities}
+\concept{\code{SurvivalQuantities}}

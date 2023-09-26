@@ -308,7 +308,7 @@ expand_patients <- function(patients, all_pts) {
 #'     c("A", "B", "C", "D")
 #' )
 #' }
-#' @seealso [expand_patients()], [`predict(SurvivalSamples)`][SurvivalSamples-class]
+#' @seealso [expand_patients()], [`summary(SurvivalQuantities)`][SurvivalQuantities-class]
 #' @keywords internal
 decompose_patients <- function(patients, all_pts) {
     if (is.character(patients) || is.null(patients)) {

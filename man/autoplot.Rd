@@ -16,7 +16,7 @@
 These plot methods visualize various objects.
 }
 \seealso{
-Other autoplot: 
+Other \code{autoplot}: 
 \code{\link{autoplot,SurvivalQuantities-method}}
 }
-\concept{autoplot}
+\concept{\code{autoplot}}

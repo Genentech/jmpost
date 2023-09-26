@@ -80,7 +80,7 @@ NULL
 #' @param object what to plot.
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @family autoplot
+#' @family `autoplot`
 #'
 #' @export autoplot
 NULL
@@ -95,7 +95,7 @@ NULL
 #' jmpost. See [base::summary()] for the default method.
 #' @name summary
 #' @inheritParams base::summary
-#' @family summary
+#' @family `summary`
 #' @export summary
 setGeneric("summary", base::summary, signature = c("object"))
 
@@ -108,7 +108,7 @@ setGeneric("summary", base::summary, signature = c("object"))
 #' jmpost. See [base::subset()] for the default method.
 #' @name subset
 #' @inheritParams base::subset
-#' @family subset
+#' @family `subset`
 #' @export subset
 setGeneric("subset", subset, signature = c("x"))
 
@@ -313,7 +313,7 @@ setGeneric(
 #' @param object object to obtain quantities from
 #' @param ... additional options.
 #'
-#' @family extractSurvivalQuantities
+#' @family `extractSurvivalQuantities`
 #' @export
 setGeneric(
     name = "extractSurvivalQuantities",

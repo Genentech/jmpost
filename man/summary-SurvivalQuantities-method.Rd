@@ -6,18 +6,23 @@
 \usage{
 \S4method{summary}{SurvivalQuantities}(object, conf.level = 0.95)
 }
+\arguments{
+\item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities.}
+
+\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+}
 \description{
 This method returns a \code{data.frame} of key quantities (survival / log-hazard / etc)
 for selected patients at a given set of time points.
 }
 \seealso{
-Other SurvivalQuantities: 
+Other \code{SurvivalQuantities}: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame,SurvivalQuantities-method}},
 \code{\link{autoplot,SurvivalQuantities-method}}
 
-Other summary: 
+Other \code{summary}: 
 \code{\link{summary}()}
 }
-\concept{SurvivalQuantities}
-\concept{summary}
+\concept{\code{SurvivalQuantities}}
+\concept{\code{summary}}

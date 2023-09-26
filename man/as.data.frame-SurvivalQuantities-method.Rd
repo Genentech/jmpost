@@ -9,16 +9,20 @@
 \arguments{
 \item{x}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
 
+\item{row.names}{not used.}
+
+\item{optional}{not used.}
+
 \item{...}{Not used}
 }
 \description{
 \code{as.data.frame}
 }
 \seealso{
-Other SurvivalQuantities: 
+Other \code{SurvivalQuantities}: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{autoplot,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{SurvivalQuantities}
-\concept{as.data.frame}
+\concept{\code{SurvivalQuantities}}
+\concept{\code{as.data.frame}}

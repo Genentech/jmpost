@@ -48,7 +48,7 @@ NULL
 #' @slot time_grid See argument section for details
 #' @slot data See argument section for details
 #'
-#' @family SurvivalQuantities
+#' @family `SurvivalQuantities`
 #' @seealso [JointModelSamples][JointModelSamples-class]
 #' @name SurvivalQuantities-class
 #' @export SurvivalQuantities
@@ -114,8 +114,11 @@ setValidity(
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #' for selected patients at a given set of time points.
 #'
-#' @family SurvivalQuantities
-#' @family summary
+#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities.
+#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#'
+#' @family `SurvivalQuantities`
+#' @family `summary`
 setMethod(
     f = "summary",
     signature = "SurvivalQuantities",
@@ -145,8 +148,9 @@ setMethod(
 #'
 #' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
 #' @param ... Not used
-#' @family as.data.frame
-#' @family SurvivalQuantities
+#' @inheritParams as.data.frame
+#' @family `as.data.frame`
+#' @family `SurvivalQuantities`
 setMethod(
     f = "as.data.frame",
     signature = "SurvivalQuantities",
@@ -194,8 +198,8 @@ setMethod(
 #' by each group/patient as defined by `patients`
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @family autoplot
-#' @family SurvivalQuantities
+#' @family `autoplot`
+#' @family `SurvivalQuantities`
 #'
 setMethod(
     f = "autoplot",

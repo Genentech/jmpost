@@ -40,6 +40,6 @@ result <- decompose_patients(
 }
 }
 \seealso{
-\code{\link[=expand_patients]{expand_patients()}}, \code{\link[=SurvivalSamples-class]{predict(SurvivalSamples)}}
+\code{\link[=expand_patients]{expand_patients()}}, \code{\link[=SurvivalQuantities-class]{summary(SurvivalQuantities)}}
 }
 \keyword{internal}

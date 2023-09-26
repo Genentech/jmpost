@@ -33,7 +33,7 @@ for fitting a \code{\link[=JointModel]{JointModel()}}. See the vignette (TODO) f
 }}
 
 \seealso{
-Other DataJoint: 
+Other \code{DataJoint}: 
 \code{\link{subset,DataJoint-method}}
 }
-\concept{DataJoint}
+\concept{\code{DataJoint}}

@@ -22,7 +22,7 @@ NULL
 #' - `as.list(x)`, `as(x, "list")`: Coerces x into a list of data components required
 #' for fitting a [JointModel()]. See the vignette (TODO) for more details.
 #'
-#' @family DataJoint
+#' @family `DataJoint`
 #'
 #' @export DataJoint
 #' @exportClass DataJoint
@@ -114,8 +114,8 @@ setAs(
 #' )
 #' subset(x, groups)
 #' }
-#' @family DataJoint
-#' @family subset
+#' @family `DataJoint`
+#' @family `subset`
 setMethod(
     f = "subset",
     signature = "DataJoint",

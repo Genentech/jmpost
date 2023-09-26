@@ -12,8 +12,8 @@ editor_options:
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 library(jmpost)
 ```
@@ -344,8 +344,8 @@ using the corresponding method.
 ```{r, warning=FALSE, fig.width=6}
 groups <- split(os_data$pt, os_data$arm)
 surv_quantities <- extractSurvivalQuantities(
-    groups,
-    patients = selected_patients
+    mcmc_results,
+    patients = groups
 )
 autoplot(surv_quantities, add_km = TRUE)
 ```

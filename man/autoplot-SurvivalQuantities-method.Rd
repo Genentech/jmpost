@@ -24,13 +24,13 @@ by each group/patient as defined by \code{patients}}
 Automatic Plotting for SurvivalSamples
 }
 \seealso{
-Other autoplot: 
+Other \code{autoplot}: 
 \code{\link{autoplot}()}
 
-Other SurvivalQuantities: 
+Other \code{SurvivalQuantities}: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{SurvivalQuantities}
-\concept{autoplot}
+\concept{\code{SurvivalQuantities}}
+\concept{\code{autoplot}}

@@ -14,4 +14,4 @@ extractSurvivalQuantities(object, ...)
 \description{
 Extracts quantity samples from a stan model
 }
-\concept{extractSurvivalQuantities}
+\concept{\code{extractSurvivalQuantities}}
