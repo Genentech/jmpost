@@ -19,10 +19,10 @@
 \code{as.data.frame}
 }
 \seealso{
-Other \code{SurvivalQuantities}: 
+Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{autoplot,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{\code{SurvivalQuantities}}
-\concept{\code{as.data.frame}}
+\concept{SurvivalQuantities}
+\concept{as.data.frame}

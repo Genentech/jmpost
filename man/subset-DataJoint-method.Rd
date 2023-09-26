@@ -30,11 +30,11 @@ subset(x, groups)
 }
 }
 \seealso{
-Other \code{DataJoint}: 
+Other DataJoint: 
 \code{\link{DataJoint}}
 
-Other \code{subset}: 
+Other subset: 
 \code{\link{subset}()}
 }
-\concept{\code{DataJoint}}
-\concept{\code{subset}}
+\concept{DataJoint}
+\concept{subset}

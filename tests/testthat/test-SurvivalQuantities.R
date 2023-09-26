@@ -66,7 +66,7 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
 
     expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
 
-    survsamps <- extractSurvivalQuantities(
+    survsamps <- SurvivalQuantities(
         mp,
         list("a" = c("pt_00001", "pt_00002")),
         c(10, 20, 200, 300)
@@ -78,24 +78,24 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
     expect_equal(unique(preds$type), "surv")
 
 
-    survsamps <- extractSurvivalQuantities(mp, time_grid = c(10, 20, 200, 300))
+    survsamps <- SurvivalQuantities(mp, time_grid = c(10, 20, 200, 300))
     preds <- summary(survsamps)
     expect_equal(nrow(preds), 4 * nrow(dat_os)) # 4 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$group), dat_os$pt)
 
 
-    survsamps <- extractSurvivalQuantities(mp, c("pt_00001", "pt_00003"))
+    survsamps <- SurvivalQuantities(mp, c("pt_00001", "pt_00003"))
     preds <- preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
 
 
 
-    preds1 <- extractSurvivalQuantities(mp, "pt_00001", c(200, 300)) |> summary()
-    preds2 <- extractSurvivalQuantities(mp, "pt_00001", c(200, 300), type = "cumhaz") |> summary()
-    preds3 <- extractSurvivalQuantities(mp, "pt_00001", c(200, 300), type = "haz") |> summary()
-    preds4 <- extractSurvivalQuantities(mp, "pt_00001", c(200, 300), type = "loghaz") |> summary()
+    preds1 <- SurvivalQuantities(mp, "pt_00001", c(200, 300)) |> summary()
+    preds2 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "cumhaz") |> summary()
+    preds3 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "haz") |> summary()
+    preds4 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "loghaz") |> summary()
     expect_equal(unique(preds1$type), "surv")
     expect_equal(unique(preds2$type), "cumhaz")
     expect_equal(unique(preds3$type), "haz")
@@ -107,7 +107,7 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
 
     ##### Section for autoplot,SurvivalSamples
 
-    samps <- extractSurvivalQuantities(mp, c("pt_00011", "pt_00061"))
+    samps <- SurvivalQuantities(mp, c("pt_00011", "pt_00061"))
     p <- autoplot(
         samps,
         add_wrap = FALSE,
@@ -121,9 +121,9 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
     expect_true(inherits(p$layers[[1]]$geom, "GeomLine"))
 
 
-    samps <- extractSurvivalQuantities(
+    samps <- SurvivalQuantities(
         mp,
-        patients = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
+        groups = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
         type = "loghaz",
         time_grid = c(10, 20, 50, 200)
     )
@@ -144,7 +144,7 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
         gtpt3 = sample(dat_os$pt, 20)
     )
     times <- seq(0, 100, by = 10)
-    samps <- extractSurvivalQuantities(mp, ptgroups, times, type = "surv")
+    samps <- SurvivalQuantities(mp, ptgroups, times, type = "surv")
     p <- autoplot(
         samps,
         add_wrap = FALSE,

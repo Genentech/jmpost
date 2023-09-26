@@ -16,7 +16,7 @@ NOTE: This man page is for the \code{subset} S4 generic function defined within
 jmpost. See \code{\link[base:subset]{base::subset()}} for the default method.
 }
 \seealso{
-Other \code{subset}: 
+Other subset: 
 \code{\link{subset,DataJoint-method}}
 }
-\concept{\code{subset}}
+\concept{subset}

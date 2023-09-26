@@ -287,7 +287,7 @@ expand_patients <- function(patients, all_pts) {
 #' structured format.
 #'
 #' The primary use of this function is to correctly setup indexing variables for
-#' predicting survival quantities (see [`predict(SurvivalSamples)`][SurvivalSamples-class])
+#' predicting survival quantities (see [SurvivalQuantities()])
 #'
 #' @param patients (`character` or `list`)\cr patient identifiers. If `NULL` will be set to `all_pts`.
 #'
@@ -308,7 +308,7 @@ expand_patients <- function(patients, all_pts) {
 #'     c("A", "B", "C", "D")
 #' )
 #' }
-#' @seealso [expand_patients()], [`summary(SurvivalQuantities)`][SurvivalQuantities-class]
+#' @seealso [expand_patients()], [SurvivalQuantities()]
 #' @keywords internal
 decompose_patients <- function(patients, all_pts) {
     if (is.character(patients) || is.null(patients)) {

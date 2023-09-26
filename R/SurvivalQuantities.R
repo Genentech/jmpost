@@ -2,54 +2,45 @@
 #' @include DataJoint.R
 NULL
 
-#' NULL Documentation page to house re-usable elements across `SurvivalQuantities` methods/objects
-#'
-#' @param patients (`character` or `list` or `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#' See "Patient Specification" for more details.
-#'
-#' @param type (`character`)\cr The quantity to be generated.
-#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
-#'
-#' @param time_grid (`numeric`)\cr a vector of time points to calculate the desired quantity at.
-#'
-#' @name SurvivalQuantities-Shared
-#'
-#' @section Patient Specification:
-#' If `patients` is a character vector then quantities / summary statistics
-#' will only be calculated for those specific patients
-#'
-#' If `patients` is a list then any elements with more than 1 patient ID will be grouped together
-#' and their quantities / summary statistics (as selected by `type`)
-#' will be calculated by taking the point-wise average. For example:
-#' `patients = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))` would result
-#' in 2 groups being created whose values are the pointwise average
-#' of `c("pt1", "pt2")` and `c("pt3", "pt4")` respectively.
-#'
-#' If `patients=NULL` then all patients from original dataset will be selected
-#' @keywords internal
-NULL
-
-
 
 #' `SurvivalQuantities` Object & Constructor Function
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
 #'
-#' @param quantities (`JointModelSamples`) \cr A [JointModelSamples](JointModelSamples-class) object
-#' @param groups See slot section for details
-#' @param type See slot section for details
-#' @param time_grid See slot section for details
-#' @param data See slot section for details
+#' @param object ([`JointModelSamples`]) \cr Samples as drawn from a Joint Model
 #'
-#' @slot quantities See argument section for details
-#' @slot groups See argument section for details
-#' @slot type See See argument section for details
-#' @slot time_grid See argument section for details
-#' @slot data See argument section for details
+#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
+#' quantities for.
+#' See "Group Specification" for more details.
 #'
-#' @family `SurvivalQuantities`
-#' @seealso [JointModelSamples][JointModelSamples-class]
+#' @param type (`character`)\cr The quantity to be generated.
+#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`
+#'
+#'
+#' @slot quantities (`list`)\cr Contains 1 named element per element of `groups`.
+#' Each element is a matrix of averaged samples for the corresponding patient
+#' @slot groups (`list`)\cr See argument section for details
+#' @slot type (`character`)\cr See See argument section for details
+#' @slot time_grid (`numeric`)\cr See argument section for details
+#' @slot data ([`DataJoint`])\cr The data that the Joint Model was fitted to to produce
+#' the samples/quantities
+#'
+#' @section Group Specification:
+#' If `groups` is a character vector of subject IDs then the survival quantities will
+#' only be calculated for those specific subjects.
+#'
+#' If `groups` is a list then any elements with more than 1 subject ID will be grouped together
+#' and their quantities will be calculated by taking a point-wise average.
+#' For example: `groups = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))` would result
+#' in 2 groups being created whose values are the pointwise average
+#' of `c("pt1", "pt2")` and `c("pt3", "pt4")` respectively.
+#'
+#' If `groups=NULL` then all subjects from original dataset will be selected
+#'
+#' @family SurvivalQuantities
 #' @name SurvivalQuantities-class
 #' @export SurvivalQuantities
 .SurvivalQuantities <- setClass(
@@ -62,16 +53,46 @@ NULL
         "data" = "DataJoint"
     )
 )
+
 #' @rdname SurvivalQuantities-class
-SurvivalQuantities <- function(quantities, groups, type, time_grid, data) {
+SurvivalQuantities <- function(
+    object,
+    groups = NULL,
+    time_grid = NULL,
+    type = c("surv", "haz", "loghaz", "cumhaz")
+) {
+    type <- match.arg(type)
+
+    data <- as.list(object@data)
+    patients <- decompose_patients(groups, names(data$pt_to_ind))
+
+    time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
+
+    gq <- generateQuantities(
+        object,
+        patients = patients$unique_values,
+        time_grid_lm = numeric(0),
+        time_grid_sm = time_grid
+    )
+
+    quantities_raw <- extract_survival_quantities(gq, type)
+
+    quantities <- lapply(
+        patients$indexes,
+        average_samples_by_index,
+        time_index = seq_along(time_grid),
+        quantities = quantities_raw
+    )
+
     .SurvivalQuantities(
         quantities = quantities,
-        groups = groups,
+        groups = patients$groups,
         type = type,
         time_grid = time_grid,
-        data = data
+        data = object@data
     )
 }
+
 setValidity(
     Class = "SurvivalQuantities",
     method = function(object) {
@@ -112,13 +133,12 @@ setValidity(
 #'
 #' @description
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
-#' for selected patients at a given set of time points.
 #'
 #' @param object ([`SurvivalQuantities`]) \cr Survival Quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
 #'
-#' @family `SurvivalQuantities`
-#' @family `summary`
+#' @family SurvivalQuantities
+#' @family summary
 setMethod(
     f = "summary",
     signature = "SurvivalQuantities",
@@ -149,8 +169,8 @@ setMethod(
 #' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
 #' @param ... Not used
 #' @inheritParams as.data.frame
-#' @family `as.data.frame`
-#' @family `SurvivalQuantities`
+#' @family as.data.frame
+#' @family SurvivalQuantities
 setMethod(
     f = "as.data.frame",
     signature = "SurvivalQuantities",
@@ -191,15 +211,15 @@ setMethod(
 #'
 #' @param object ([`SurvivalQuantities`]) \cr Survival Quantities
 #' @param add_km (`logical`) \cr If `TRUE` Kaplan-Meier curves will be added to the plot for
-#' each group/patient as defined by `patients`
+#' each group/patient
 #' @param add_ci (`logical`) \cr If `TRUE` 95% CI will be added to the plot for
-#' each group/patient as defined by `patients`
+#' each group/patient
 #' @param add_wrap (`logical`) \cr If `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
-#' by each group/patient as defined by `patients`
+#' by each group/patient
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @family `autoplot`
-#' @family `SurvivalQuantities`
+#' @family autoplot
+#' @family SurvivalQuantities
 #'
 setMethod(
     f = "autoplot",
@@ -319,4 +339,97 @@ survival_plot <- function(
             ggplot2.utils::geom_km_ticks(aes_km, data = kmdf)
     }
     p
+}
+
+
+
+
+#' Extract and Average Quantities By Group Index
+#'
+#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and extracts
+#' the specified columns and aggregates them by calculating the pointwise average.
+#'
+#' @param subject_index (`numeric`)\cr Which subject indices to extract from `quantities`.
+#' See details.
+#'
+#' @param time_index (`numeric`)\cr Which time point indices to extract from `quantities`.
+#' See details.
+#'
+#' @param quantities ([`posterior::draws_matrix`])\cr A matrix of sample draws.
+#' See details.
+#'
+#' @details
+#' It is assumed that `quantities` consists of the cartesian product
+#' of subject indices and time indices. That is, if the matrix contains 4 subjects and 3 time
+#' points then it should have 12 columns.
+#' It is also assumed that each column of `quantities` are named as:
+#' ```
+#' "quantity[x,y]"
+#' ```
+#' Where
+#' - `x` is the subject index
+#' - `y` is the time point index
+#'
+#' This function returns a `matrix` with 1 row per sample and 1 column per `time_index`.
+#'
+#' Note that if multiple values are provided for `subject_index` then the pointwise average
+#' will be calculated for each time point by taking the mean across the specified subjects
+#' at each time point.
+#'
+#' @keywords internal
+average_samples_by_index <- function(subject_index, time_index, quantities) {
+    assert_that(
+        is.numeric(subject_index),
+        is.numeric(time_index),
+        length(time_index) == length(unique(time_index)),
+        inherits(quantities, "draws_matrix")
+    )
+    stacked_quantities <- array(dim = c(
+        nrow(quantities),
+        length(time_index),
+        length(subject_index)
+    ))
+    for (ind in seq_along(subject_index)) {
+        quantity_index <- sprintf(
+            "quantity[%i,%i]",
+            subject_index[ind],
+            time_index
+        )
+        stacked_quantities[, , ind] <- quantities[, quantity_index]
+    }
+    apply(
+        stacked_quantities,
+        c(1, 2),
+        mean,
+        simplify = TRUE
+    )
+}
+
+
+
+#' Extract Survival Quantities
+#'
+#' Utility function to extract generated quantities from a [cmdstanr::CmdStanGQ] object.
+#' Multiple quantities are generated by default so this is a convenience function to extract
+#' the desired ones and return them them as a user friendly [posterior::draws_matrix] object
+#'
+#' @param gq (`CmdStanGQ`) \cr A [cmdstanr::CmdStanGQ] object created by [generateQuantities]
+#' @inheritParams SurvivalQuantities-class
+#' @keywords internal
+extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz")) {
+    type <- match.arg(type)
+    assert_that(
+        inherits(gq, "CmdStanGQ")
+    )
+    meta <- switch(type,
+        surv = list("log_surv_fit_at_time_grid", exp),
+        cumhaz = list("log_surv_fit_at_time_grid", \(x) -x),
+        haz = list("log_haz_fit_at_time_grid", exp),
+        loghaz = list("log_haz_fit_at_time_grid", identity)
+    )
+    result <- gq$draws(meta[[1]], format = "draws_matrix")
+    result_transformed <- meta[[2]](result)
+    cnames <- colnames(result_transformed)
+    colnames(result_transformed) <- gsub(meta[[1]], "quantity", cnames)
+    result_transformed
 }

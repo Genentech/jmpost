@@ -16,7 +16,7 @@ NOTE: This man page is for the \code{summary} S4 generic function defined within
 jmpost. See \code{\link[base:summary]{base::summary()}} for the default method.
 }
 \seealso{
-Other \code{summary}: 
+Other summary: 
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{\code{summary}}
+\concept{summary}

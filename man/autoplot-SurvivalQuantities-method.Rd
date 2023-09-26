@@ -10,13 +10,13 @@
 \item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
 
 \item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
-each group/patient as defined by \code{patients}}
+each group/patient}
 
 \item{add_ci}{(\code{logical}) \cr If \code{TRUE} 95\% CI will be added to the plot for
-each group/patient as defined by \code{patients}}
+each group/patient}
 
 \item{add_wrap}{(\code{logical}) \cr If \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
-by each group/patient as defined by \code{patients}}
+by each group/patient}
 
 \item{...}{other arguments passed to plotting methods.}
 }
@@ -24,13 +24,13 @@ by each group/patient as defined by \code{patients}}
 Automatic Plotting for SurvivalSamples
 }
 \seealso{
-Other \code{autoplot}: 
+Other autoplot: 
 \code{\link{autoplot}()}
 
-Other \code{SurvivalQuantities}: 
+Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame,SurvivalQuantities-method}},
 \code{\link{summary,SurvivalQuantities-method}}
 }
-\concept{\code{SurvivalQuantities}}
-\concept{\code{autoplot}}
+\concept{SurvivalQuantities}
+\concept{autoplot}

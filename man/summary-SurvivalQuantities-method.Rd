@@ -13,16 +13,15 @@
 }
 \description{
 This method returns a \code{data.frame} of key quantities (survival / log-hazard / etc)
-for selected patients at a given set of time points.
 }
 \seealso{
-Other \code{SurvivalQuantities}: 
+Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame,SurvivalQuantities-method}},
 \code{\link{autoplot,SurvivalQuantities-method}}
 
-Other \code{summary}: 
+Other summary: 
 \code{\link{summary}()}
 }
-\concept{\code{SurvivalQuantities}}
-\concept{\code{summary}}
+\concept{SurvivalQuantities}
+\concept{summary}
