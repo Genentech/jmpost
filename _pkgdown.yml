@@ -42,7 +42,7 @@ reference:
   - title: Survival Model Specification
     contents:
       - starts_with("Survival")
-      - -SurvivalSamples
+      - -SurvivalQuantities
   - title: Link Specification
     contents:
       - starts_with("Link")
@@ -61,7 +61,7 @@ reference:
     contents:
       - JointModelSamples
       - LongitudinalSamples
-      - SurvivalSamples
+      - SurvivalQuantities
       - longitudinal
       - starts_with("autoplot")
       - starts_with("predict")
