@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.941328731665229" branch-rate="0" lines-covered="1091" lines-valid="1159" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-09-26 14:49:02.400491">
+<coverage line-rate="0.941328731665229" branch-rate="0" lines-covered="1091" lines-valid="1159" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-09-26 15:31:34.751907">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -608,10 +608,11 @@
                 <line number="92" hits="3" branch="false"/>
                 <line number="93" hits="3" branch="false"/>
                 <line number="94" hits="3" branch="false"/>
+                <line number="96" hits="3" branch="false"/>
                 <line number="97" hits="3" branch="false"/>
-                <line number="98" hits="3" branch="false"/>
+                <line number="99" hits="3" branch="false"/>
                 <line number="100" hits="3" branch="false"/>
-                <line number="101" hits="3" branch="false"/>
+                <line number="101" hits="136" branch="false"/>
                 <line number="102" hits="136" branch="false"/>
                 <line number="103" hits="136" branch="false"/>
                 <line number="104" hits="136" branch="false"/>
@@ -631,8 +632,7 @@
                 <line number="118" hits="136" branch="false"/>
                 <line number="119" hits="136" branch="false"/>
                 <line number="120" hits="136" branch="false"/>
-                <line number="121" hits="136" branch="false"/>
-                <line number="123" hits="3" branch="false"/>
+                <line number="122" hits="3" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -666,10 +666,11 @@
             <line number="92" hits="3" branch="false"/>
             <line number="93" hits="3" branch="false"/>
             <line number="94" hits="3" branch="false"/>
+            <line number="96" hits="3" branch="false"/>
             <line number="97" hits="3" branch="false"/>
-            <line number="98" hits="3" branch="false"/>
+            <line number="99" hits="3" branch="false"/>
             <line number="100" hits="3" branch="false"/>
-            <line number="101" hits="3" branch="false"/>
+            <line number="101" hits="136" branch="false"/>
             <line number="102" hits="136" branch="false"/>
             <line number="103" hits="136" branch="false"/>
             <line number="104" hits="136" branch="false"/>
@@ -689,8 +690,7 @@
             <line number="118" hits="136" branch="false"/>
             <line number="119" hits="136" branch="false"/>
             <line number="120" hits="136" branch="false"/>
-            <line number="121" hits="136" branch="false"/>
-            <line number="123" hits="3" branch="false"/>
+            <line number="122" hits="3" branch="false"/>
           </lines>
         </class>
         <class name="Link.R" filename="R/Link.R" line-rate="1" branch-rate="0" complexity="0">
@@ -2157,6 +2157,7 @@
           <methods>
             <method name="SurvivalLogLogistic" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
+                <line number="31" hits="0" branch="false"/>
                 <line number="32" hits="0" branch="false"/>
                 <line number="33" hits="0" branch="false"/>
                 <line number="34" hits="0" branch="false"/>
@@ -2166,11 +2167,11 @@
                 <line number="38" hits="0" branch="false"/>
                 <line number="39" hits="0" branch="false"/>
                 <line number="40" hits="0" branch="false"/>
-                <line number="41" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
+            <line number="31" hits="0" branch="false"/>
             <line number="32" hits="0" branch="false"/>
             <line number="33" hits="0" branch="false"/>
             <line number="34" hits="0" branch="false"/>
@@ -2180,7 +2181,6 @@
             <line number="38" hits="0" branch="false"/>
             <line number="39" hits="0" branch="false"/>
             <line number="40" hits="0" branch="false"/>
-            <line number="41" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="SurvivalModel.R" filename="R/SurvivalModel.R" line-rate="1" branch-rate="0" complexity="0">
