@@ -93,6 +93,7 @@ setMethod(
             time_grid_sm = numeric(0)
         )
 
+
         y_fit_at_grid_samples <- gq$draws(format = "draws_matrix")
         y_fit_samples <- object@results$draws("Ypred", format = "draws_matrix")
 
