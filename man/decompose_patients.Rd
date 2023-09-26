@@ -28,7 +28,7 @@ structured format.
 }
 \details{
 The primary use of this function is to correctly setup indexing variables for
-predicting survival quantities (see \code{\link[=SurvivalSamples-class]{predict(SurvivalSamples)}})
+predicting survival quantities (see \code{\link[=SurvivalQuantities]{SurvivalQuantities()}})
 }
 \examples{
 \dontrun{
@@ -40,6 +40,6 @@ result <- decompose_patients(
 }
 }
 \seealso{
-\code{\link[=expand_patients]{expand_patients()}}, \code{\link[=SurvivalSamples-class]{predict(SurvivalSamples)}}
+\code{\link[=expand_patients]{expand_patients()}}, \code{\link[=SurvivalQuantities]{SurvivalQuantities()}}
 }
 \keyword{internal}

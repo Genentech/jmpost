@@ -84,3 +84,6 @@ cmdstanr
 Summarise
 SurvivalSamples
 DataJoint
+SurvivalQuantities
+as.data.frame
+subset

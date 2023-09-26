@@ -3,8 +3,8 @@
 # that something has gone wrong. Given the dependence on complex objects generated
 # by MCMC sampling this is hard to test deterministically.
 # That being said all the individual components that comprise the function have been
-# individually tested so this is regarded as being sufficient
-test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)", {
+# tested thoroughly so this is regarded as being sufficient
+test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuantities)", {
     set.seed(739)
     jlist <- simulate_joint_data(
         n = c(250, 150),
@@ -64,35 +64,38 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
         parallel_chains = 1
     )
 
-    survsamps <- SurvivalSamples(mp)
-
-
-    ##### Section for predict,SurvivalSamples
-
     expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
 
-    preds <- predict(survsamps, list("a" = c("pt_00001", "pt_00002")), c(10, 20, 200, 300))
+    survsamps <- SurvivalQuantities(
+        mp,
+        list("a" = c("pt_00001", "pt_00002")),
+        c(10, 20, 200, 300)
+    )
+    preds <- summary(survsamps)
     expect_equal(nrow(preds), 4)
     expect_equal(length(unique(preds$group)), 1)
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$type), "surv")
 
 
-    preds <- predict(survsamps, time_grid = c(10, 20, 200, 300))
+    survsamps <- SurvivalQuantities(mp, time_grid = c(10, 20, 200, 300))
+    preds <- summary(survsamps)
     expect_equal(nrow(preds), 4 * nrow(dat_os)) # 4 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$group), dat_os$pt)
 
 
-    preds <- predict(survsamps, c("pt_00001", "pt_00003"))
+    survsamps <- SurvivalQuantities(mp, c("pt_00001", "pt_00003"))
+    preds <- preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
 
 
-    preds1 <- predict(survsamps, "pt_00001", c(200, 300))
-    preds2 <- predict(survsamps, "pt_00001", c(200, 300), type = "cumhaz")
-    preds3 <- predict(survsamps, "pt_00001", c(200, 300), type = "haz")
-    preds4 <- predict(survsamps, "pt_00001", c(200, 300), type = "loghaz")
+
+    preds1 <- SurvivalQuantities(mp, "pt_00001", c(200, 300)) |> summary()
+    preds2 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "cumhaz") |> summary()
+    preds3 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "haz") |> summary()
+    preds4 <- SurvivalQuantities(mp, "pt_00001", c(200, 300), type = "loghaz") |> summary()
     expect_equal(unique(preds1$type), "surv")
     expect_equal(unique(preds2$type), "cumhaz")
     expect_equal(unique(preds3$type), "haz")
@@ -103,36 +106,29 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
 
 
     ##### Section for autoplot,SurvivalSamples
+
+    samps <- SurvivalQuantities(mp, c("pt_00011", "pt_00061"))
     p <- autoplot(
-        survsamps,
+        samps,
         add_wrap = FALSE,
-        add_ci = FALSE,
-        c("pt_00011", "pt_00061")
+        add_ci = FALSE
     )
-
-    dat <- predict(survsamps, c("pt_00011", "pt_00061"))
-
+    dat <- summary(samps)
     expect_length(p$layers, 1)
     expect_equal(p$labels$y, expression(S(t)))
     expect_true(inherits(p$facet, "FacetNull"))
     expect_equal(dat, p$layers[[1]]$data)
     expect_true(inherits(p$layers[[1]]$geom, "GeomLine"))
 
-    p <- autoplot(
-        survsamps,
-        add_wrap = TRUE,
-        patients = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
-        time_grid = c(10, 20, 50, 200),
-        type = "loghaz"
-    )
 
-    dat <- predict(
-        survsamps,
-        patients = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
-        time_grid = c(10, 20, 50, 200),
-        type = "loghaz"
+    samps <- SurvivalQuantities(
+        mp,
+        groups = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
+        type = "loghaz",
+        time_grid = c(10, 20, 50, 200)
     )
-
+    p <- autoplot(samps, add_wrap = TRUE)
+    dat <- summary(samps)
     expect_length(p$layers, 2)
     expect_equal(p$labels$y, expression(log(h(t))))
     expect_true(inherits(p$facet, "FacetWrap"))
@@ -148,23 +144,14 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
         gtpt3 = sample(dat_os$pt, 20)
     )
     times <- seq(0, 100, by = 10)
-
+    samps <- SurvivalQuantities(mp, ptgroups, times, type = "surv")
     p <- autoplot(
-        survsamps,
+        samps,
         add_wrap = FALSE,
         add_ci = FALSE,
-        add_km = TRUE,
-        patients = ptgroups,
-        time_grid = times,
-        type = "surv"
+        add_km = TRUE
     )
-
-    dat <- predict(
-        survsamps,
-        patients = ptgroups,
-        time_grid = times,
-        type = "surv"
-    )
+    dat <- summary(samps)
     expect_length(p$layers, 3)
     expect_equal(p$labels$y, expression(S(t)))
     expect_true(inherits(p$facet, "FacetNull"))
@@ -178,7 +165,7 @@ test_that("smoke test for predict(SurvivalSamples) and autoplot(SurvivalSamples)
 
 
 
-test_that("summarise_by_group() works as expected", {
+test_that("average_samples_by_index() works as expected", {
     get_ci_summary <- function(vec) {
         if (inherits(vec, "matrix")) {
             vec <- rowMeans(vec)
@@ -214,48 +201,48 @@ test_that("summarise_by_group() works as expected", {
 
 
     ## 1 subject 1 timepoint
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = 1,
         time_index = 4,
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         get_ci_summary(x[, 1])
     )
 
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = 1,
         time_index = 5,
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         get_ci_summary(x[, 2])
     )
 
 
     ## Select multiple subjects to collapse into a single "aggregate subject"
     ## at a single timepoint
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = c(1, 2),
         time_index = 5,
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         get_ci_summary(rowMeans(x[, c(2, 4)]))
     )
 
 
     ## 1 subject at multiple time points
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = c(3),
         time_index = c(4, 5),
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         dplyr::bind_rows(
             get_ci_summary(x[, 5]),
             get_ci_summary(x[, 6])
@@ -265,13 +252,13 @@ test_that("summarise_by_group() works as expected", {
 
     ## Selecting multiple subjects to collapse into a single "agregate subject"
     ## at multiple timepoints
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = c(1, 3),
         time_index = c(4, 5),
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         dplyr::bind_rows(
             get_ci_summary(x[, c(1, 5)]),
             get_ci_summary(x[, c(2, 6)])
@@ -279,13 +266,13 @@ test_that("summarise_by_group() works as expected", {
     )
 
     ## Can select the same subject multiple times
-    actual <- summarise_by_group(
+    actual <- average_samples_by_index(
         subject_index = c(3, 3, 3, 2),
         time_index = c(4, 5),
         quantities = draws_x
     )
     expect_equal(
-        actual,
+        actual |> samples_median_ci(),
         dplyr::bind_rows(
             get_ci_summary(x[, c(5, 5, 5, 3)]),
             get_ci_summary(x[, c(6, 6, 6, 4)])

@@ -12,10 +12,10 @@ Contains samples from a \code{\link{JointModel}}.
 \section{Slots}{
 
 \describe{
-\item{\code{model}}{(\code{JointModel})\cr the original model.}
+\item{\code{model}}{(\code{\link{JointModel}})\cr the model that the samples were drawn from.}
 
-\item{\code{data}}{(\code{list})\cr data input.}
+\item{\code{data}}{(\code{\link{DataJoint}})\cr the data that the model was fitted on.}
 
-\item{\code{results}}{(\code{CmdStanMCMC})\cr the results from \code{\link[=sampleStanModel]{sampleStanModel()}}.}
+\item{\code{results}}{(\code{\link{CmdStanMCMC}})\cr the STAN samples.}
 }}
 

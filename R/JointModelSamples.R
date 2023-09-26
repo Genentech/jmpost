@@ -1,4 +1,5 @@
 #' @include JointModel.R
+#' @include SurvivalQuantities.R
 NULL
 
 setOldClass("CmdStanMCMC")
@@ -9,9 +10,9 @@ setOldClass("CmdStanMCMC")
 #'
 #' Contains samples from a [`JointModel`].
 #'
-#' @slot model (`JointModel`)\cr the original model.
-#' @slot data (`list`)\cr data input.
-#' @slot results (`CmdStanMCMC`)\cr the results from [sampleStanModel()].
+#' @slot model ([`JointModel`])\cr the model that the samples were drawn from.
+#' @slot data ([`DataJoint`])\cr the data that the model was fitted on.
+#' @slot results ([`CmdStanMCMC`])\cr the STAN samples.
 #'
 #' @aliases JointModelSamples
 #' @export
@@ -82,7 +83,6 @@ setMethod(
     f = "longitudinal",
     signature = c(object = "JointModelSamples"),
     definition = function(object, patients = NULL, time_grid = NULL, ...) {
-
         data <- as.list(object@data)
         time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
         patients <- expand_patients(patients, names(data$pt_to_ind))
@@ -113,7 +113,7 @@ setMethod(
             for_this_pt <- which(data$ind_index == data$pt_to_ind[this_pt])
             this_fit <- samples_median_ci(y_fit_samples[, for_this_pt, drop = FALSE])
             this_result$observed <- data.frame(
-                t =  data$Tobs[for_this_pt],
+                t = data$Tobs[for_this_pt],
                 y = data$Yobs[for_this_pt],
                 this_fit
             )

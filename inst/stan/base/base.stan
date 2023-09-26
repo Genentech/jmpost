@@ -11,10 +11,8 @@ functions {
         return  rep_matrix(0, rows(time), cols(time));
     }
 {% endif %}
-
 {{ longitudinal.functions }}
 {{ survival.functions }}
-
 }
 
 
