@@ -2,7 +2,7 @@
 % Please edit documentation in R/JointModelSamples.R
 \name{extractSurvivalQuantities,JointModelSamples-method}
 \alias{extractSurvivalQuantities,JointModelSamples-method}
-\title{extractSurvivalQuantities}
+\title{\code{extractSurvivalQuantities}}
 \usage{
 \S4method{extractSurvivalQuantities}{JointModelSamples}(
   object,

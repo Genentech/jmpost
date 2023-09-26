@@ -2,7 +2,7 @@
 #' @include DataJoint.R
 NULL
 
-#' NULL Documentation page to house re-usable elements across SurvivalQuantities methods/objects
+#' NULL Documentation page to house re-usable elements across `SurvivalQuantities` methods/objects
 #'
 #' @param patients (`character` or `list` or `NULL`)\cr which patients to calculate the desired
 #' quantities for.
@@ -32,7 +32,7 @@ NULL
 
 
 
-#' SurvivalQuantities
+#' `SurvivalQuantities` Object & Constructor Function
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
 #'

@@ -338,7 +338,7 @@ summary(surv_quantities)
 autoplot(surv_quantities)
 ```
 
-We can also aggregatea the estimated survivl curves from groups of patients, 
+We can also aggregate the estimated survival curves from groups of patients, 
 using the corresponding method.
 
 ```{r, warning=FALSE, fig.width=6}
@@ -347,7 +347,7 @@ surv_quantities <- extractSurvivalQuantities(
     groups,
     patients = selected_patients
 )
-autoplot(ssurv_quantitie, add_km = TRUE)
+autoplot(surv_quantities, add_km = TRUE)
 ```
 
 

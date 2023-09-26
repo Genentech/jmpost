@@ -127,7 +127,7 @@ setMethod(
 
 
 
-#' extractSurvivalQuantities
+#' `extractSurvivalQuantities`
 #'
 #' Derive survival quantities from a given set of model samples.
 #'

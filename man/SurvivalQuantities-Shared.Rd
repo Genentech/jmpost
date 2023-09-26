@@ -2,7 +2,7 @@
 % Please edit documentation in R/SurvivalQuantities.R
 \name{SurvivalQuantities-Shared}
 \alias{SurvivalQuantities-Shared}
-\title{NULL Documentation page to house re-usable elements across SurvivalQuantities methods/objects}
+\title{NULL Documentation page to house re-usable elements across \code{SurvivalQuantities} methods/objects}
 \arguments{
 \item{patients}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
 quantities for.
@@ -14,7 +14,7 @@ Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
 \item{time_grid}{(\code{numeric})\cr a vector of time points to calculate the desired quantity at.}
 }
 \description{
-NULL Documentation page to house re-usable elements across SurvivalQuantities methods/objects
+NULL Documentation page to house re-usable elements across \code{SurvivalQuantities} methods/objects
 }
 \section{Patient Specification}{
 

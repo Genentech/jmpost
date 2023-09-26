@@ -5,7 +5,7 @@
 \alias{SurvivalQuantities-class}
 \alias{.SurvivalQuantities}
 \alias{SurvivalQuantities}
-\title{SurvivalQuantities}
+\title{\code{SurvivalQuantities} Object & Constructor Function}
 \usage{
 SurvivalQuantities(quantities, groups, type, time_grid, data)
 }
