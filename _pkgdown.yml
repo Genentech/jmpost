@@ -62,6 +62,7 @@ reference:
       - JointModelSamples
       - LongitudinalSamples
       - SurvivalQuantities
+      - ends_with("SurvivalQuantities-method")
       - longitudinal
       - starts_with("autoplot")
       - starts_with("predict")
@@ -80,6 +81,7 @@ reference:
       - as.character
       - as.data.frame
       - as.list
+      - summary
       - merge
       - names
       - show
