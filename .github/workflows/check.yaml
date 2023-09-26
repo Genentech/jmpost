@@ -15,6 +15,7 @@ on:
     branches:
       - main
       - develop
+      - lintr-test
   workflow_dispatch:
 
   # Rerun workflows once pkgdown has finished running, to add coverage
@@ -52,10 +53,10 @@ jobs:
         CMDSTAN_PATH=/root/.cmdstan
         CMDSTANR_NO_VER_CHECK=true
   ### Disabled pending https://github.com/insightsengineering/idr-tasks/issues/667
-  # linter:
-  #   if: github.event_name == 'pull_request'
-  #   name: SuperLinter 🦸‍♀️
-  #   uses: insightsengineering/r.pkg.template/.github/workflows/linter.yaml@main
+  linter:
+    # if: github.event_name == 'pull_request'
+    name: SuperLinter 🦸‍♀️
+    uses: insightsengineering/r.pkg.template/.github/workflows/linter.yaml@main
   roxygen:
     name: Roxygen 🅾
     uses: insightsengineering/r.pkg.template/.github/workflows/roxygen.yaml@main
