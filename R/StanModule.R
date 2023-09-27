@@ -20,7 +20,7 @@ STAN_BLOCKS <- list(
 #' @param x (`list`)\cr list of Stan code blocks
 #'
 #' @return Amended list `x` such that all blocks in the global variable
-#'   `STAN_BLOCKS` are contained.
+#' `STAN_BLOCKS` are contained.
 #'
 #' @keywords internal
 add_missing_stan_blocks <- function(x) {
@@ -35,7 +35,13 @@ add_missing_stan_blocks <- function(x) {
 
 # StanModule-class ----
 
-#' `StanModule`
+#' `StanModule` Object and Constructor Function
+#'
+#' @param x (`string`)\cr file path to a Stan program or a character vector
+#' of Stan code to be parsed.
+#' @param priors (`list`)\cr the prior specifications.
+#' @param inits (`list`)\cr the initial values.
+#' @param ... additional arguments passed to the constructor.
 #'
 #' @slot functions (`character`)\cr the `functions` block.
 #' @slot data (`character`)\cr the `data` block.
@@ -48,6 +54,8 @@ add_missing_stan_blocks <- function(x) {
 #' @slot inits (`list`)\cr the initial values.
 #'
 #' @exportClass StanModule
+#' @export StanModule
+#' @family StanModule
 .StanModule <- setClass(
     Class = "StanModule",
     slots = list(
@@ -66,13 +74,6 @@ add_missing_stan_blocks <- function(x) {
 # StanModule-constructors ----
 
 #' @rdname StanModule-class
-#'
-#' @param x (`string`)\cr file name of the Stan code which should be parsed.
-#' @param priors (`list`)\cr the prior specifications.
-#' @param inits (`list`)\cr the initial values.
-#' @param ... additional arguments passed to the constructor.
-#'
-#' @export
 StanModule <- function(
     x = "",
     priors = list(),
@@ -90,7 +91,7 @@ StanModule <- function(
         functions = code_fragments$functions,
         data = code_fragments$data,
         transformed_data = code_fragments$transformed_data,
-        parameters =  code_fragments$parameters,
+        parameters = code_fragments$parameters,
         transformed_parameters = code_fragments$transformed_parameters,
         model = code_fragments$model,
         generated_quantities = code_fragments$generated_quantities,
@@ -102,22 +103,27 @@ StanModule <- function(
 
 # as.character-StanModule ----
 
-#' @rdname as.character
-setMethod(
-    f = "as.character",
-    signature = "StanModule",
-    definition = function(x) {
-        as_stan_file(
-            functions = x@functions,
-            data = x@data,
-            transformed_data = x@transformed_data,
-            parameters = x@parameters,
-            transformed_parameters = x@transformed_parameters,
-            model = x@model,
-            generated_quantities = x@generated_quantities
-        )
-    }
-)
+#' `StanModule` -> `character`
+#' @param x ([`StanModule`])\cr A stan program
+#' @param ... Not Used.
+#' @description
+#' Converts a [`StanModule`] object into a valid Stan program file where each
+#' line of the returned `character` vector represents a line of the program
+#' @family StanModule
+#' @export
+as.character.StanModule <- function(x, ...) {
+    as_stan_file(
+        functions = x@functions,
+        data = x@data,
+        transformed_data = x@transformed_data,
+        parameters = x@parameters,
+        transformed_parameters = x@transformed_parameters,
+        model = x@model,
+        generated_quantities = x@generated_quantities
+    )
+}
+
+
 
 # merge-StanModule,StanModule ----
 
@@ -149,47 +155,44 @@ setMethod(
 # compileStanModel-StanModule,character ----
 
 #' @rdname compileStanModel
-setMethod(
-    f = "compileStanModel",
-    signature = signature(object = "StanModule"),
-    definition = function(object) {
-        exe_dir <- getOption("jmpost.cache.dir")
-        if (!dir.exists(exe_dir)) {
-            dir.create(exe_dir, recursive = TRUE)
-        }
-        stan_code <- as.character(object)
-        hash_name <- digest::digest(stan_code, "md5")
-        exe_name <- paste0(
-            "model_",
-            hash_name,
-            if (is_windows()) ".exe" else ""
-        )
-        exe_file <- file.path(exe_dir, exe_name)
-        source_file <- cmdstanr::write_stan_file(
-            code = stan_code,
-            dir = exe_dir,
-            basename = sprintf("model_%s.stan", hash_name)
-        )
-
-        # Suppress "model executable is up to date" message as
-        # users are not in control of the cache so this message is meaningless
-        withCallingHandlers(
-            {
-                x <- cmdstanr::cmdstan_model(
-                    stan_file = source_file,
-                    exe_file = exe_file,
-                    quiet = TRUE
-                )
-            },
-            message = function(m) {
-                if (m$message == "Model executable is up to date!\n") {
-                    invokeRestart("muffleMessage")
-                }
-            }
-        )
-        invisible(x)
+compileStanModel.StanModule <- function(object) {
+    exe_dir <- getOption("jmpost.cache.dir")
+    if (!dir.exists(exe_dir)) {
+        dir.create(exe_dir, recursive = TRUE)
     }
-)
+    stan_code <- as.character(object)
+    hash_name <- digest::digest(stan_code, "md5")
+    exe_name <- paste0(
+        "model_",
+        hash_name,
+        if (is_windows()) ".exe" else ""
+    )
+    exe_file <- file.path(exe_dir, exe_name)
+    source_file <- cmdstanr::write_stan_file(
+        code = stan_code,
+        dir = exe_dir,
+        basename = sprintf("model_%s.stan", hash_name)
+    )
+
+    # Suppress "model executable is up to date" message as
+    # users are not in control of the cache so this message is meaningless
+    withCallingHandlers(
+        {
+            x <- cmdstanr::cmdstan_model(
+                stan_file = source_file,
+                exe_file = exe_file,
+                quiet = TRUE
+            )
+        },
+        message = function(m) {
+            if (m$message == "Model executable is up to date!\n") {
+                invokeRestart("muffleMessage")
+            }
+        }
+    )
+    invisible(x)
+}
+
 
 
 # show-StanModule ----
@@ -205,19 +208,22 @@ setMethod(
 
 # as.list-StanModule ----
 
-#' @rdname as.list
-setMethod(
-    f = "as.list",
-    signature = "StanModule",
-    definition = function(x) {
-        string <- as.character(x)
-        li <- as_stan_fragments(string)
-        for (block in names(STAN_BLOCKS)) {
-            li[[block]] <- paste(li[[block]], collapse = "\n")
-        }
-        return(li)
+#' `StanModule` -> `list`
+#' @description
+#' Returns a named list where each element of the list corresponds
+#' to a Stan modelling block e.g. `data`, `model`, etc.
+#' @param x ([`StanModule`])\cr A Stan Module
+#' @param ... Not Used.
+#' @family StanModule
+#' @export
+as.list.StanModule <- function(x, ...) {
+    string <- as.character(x)
+    li <- as_stan_fragments(string)
+    for (block in names(STAN_BLOCKS)) {
+        li[[block]] <- paste(li[[block]], collapse = "\n")
     }
-)
+    return(li)
+}
 
 # is_file ----
 
@@ -254,8 +260,6 @@ is_file <- function(filename = NULL) {
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
-#'
-#' @export
 read_stan <- function(string) {
     local_inst_file <- file.path("inst", "stan", string)
     system_file <- system.file(file.path("stan", string), package = "jmpost")

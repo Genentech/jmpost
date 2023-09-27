@@ -5,12 +5,13 @@
 \alias{StanModule-class}
 \alias{.StanModule}
 \alias{StanModule}
-\title{\code{StanModule}}
+\title{\code{StanModule} Object and Constructor Function}
 \usage{
 StanModule(x = "", priors = list(), inits = list(), ...)
 }
 \arguments{
-\item{x}{(\code{string})\cr file name of the Stan code which should be parsed.}
+\item{x}{(\code{string})\cr file path to a Stan program or a character vector
+of Stan code to be parsed.}
 
 \item{priors}{(\code{list})\cr the prior specifications.}
 
@@ -19,7 +20,7 @@ StanModule(x = "", priors = list(), inits = list(), ...)
 \item{...}{additional arguments passed to the constructor.}
 }
 \description{
-\code{StanModule}
+\code{StanModule} Object and Constructor Function
 }
 \section{Slots}{
 
@@ -43,3 +44,9 @@ StanModule(x = "", priors = list(), inits = list(), ...)
 \item{\code{inits}}{(\code{list})\cr the initial values.}
 }}
 
+\seealso{
+Other StanModule: 
+\code{\link{as.character.StanModule}()},
+\code{\link{as.list.StanModule}()}
+}
+\concept{StanModule}

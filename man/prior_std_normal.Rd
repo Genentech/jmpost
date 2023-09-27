@@ -12,3 +12,16 @@ prior_std_normal(init = 0)
 \description{
 Standard Normal Prior Distribution
 }
+\seealso{
+Other Prior: 
+\code{\link{Prior-Getter-Methods}},
+\code{\link{Prior-class}},
+\code{\link{as.character.Prior}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_cauchy}()},
+\code{\link{prior_gamma}()},
+\code{\link{prior_lognormal}()},
+\code{\link{prior_none}()},
+\code{\link{prior_normal}()}
+}
+\concept{Prior}

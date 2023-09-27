@@ -2,12 +2,12 @@
 % Please edit documentation in R/generics.R, R/StanModel.R
 \name{getParameters}
 \alias{getParameters}
-\alias{getParameters,StanModel-method}
+\alias{getParameters.StanModel}
 \title{\code{getParameters}}
 \usage{
 getParameters(object)
 
-\S4method{getParameters}{StanModel}(object)
+\method{getParameters}{StanModel}(object)
 }
 \arguments{
 \item{object}{where to obtain the parameters from.}

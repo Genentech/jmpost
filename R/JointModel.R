@@ -4,13 +4,32 @@
 #' @include ParameterList.R
 NULL
 
+
+#' Re-used documentation for `JointModel-Shared`
+#'
+#' @param object ([`JointModel`]) \cr Joint model specification.
+#' @param x ([`JointModel`]) \cr Joint model specification.
+#' @param ... Not Used.
+#'
+#' @name JointModel-Shared
+#' @keywords internal
+NULL
+
+
 # JointModel-class ----
 
-#' `JointModel`
+#' Joint Model Object and Constructor Function
 #'
 #' @slot stan (`StanModule`)\cr code containing the joint model specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
+#'
+#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
+#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param link (`Link`)\cr the link.
+#'
+#' @family JointModel
+#' @export JointModel
 #' @exportClass JointModel
 .JointModel <- setClass(
     Class = "JointModel",
@@ -20,15 +39,7 @@ NULL
     )
 )
 
-# JointModel-constructors ----
-
 #' @rdname JointModel-class
-#'
-#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
-#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
-#' @param link (`Link`)\cr the link.
-#'
-#' @export
 JointModel <- function(longitudinal = NULL,
                        survival = NULL,
                        link = NULL) {
@@ -64,83 +75,75 @@ JointModel <- function(longitudinal = NULL,
     )
 }
 
-# as.character-JointModel ----
+#' `JointModel` -> `character`
+#'
+#' Renders a [`JointModel`] object to a stan program
+#'
+#' @inheritParams JointModel-Shared
+#' @family JointModel
+#' @export
+as.character.JointModel <- function(x, ...) {
+    as.character(x@stan)
+}
 
-#' @rdname as.character
-setMethod(
-    f = "as.character",
-    signature = "JointModel",
-    definition = function(x) {
-        as.character(x@stan)
-    }
-)
 
 # write_stan-JointModel ----
 
 #' @rdname write_stan
-setMethod(
-    f = "write_stan",
-    signature = "JointModel",
-    definition = function(object, file_path) {
-        fi <- file(file_path, open = "w")
-        writeLines(as.character(object), fi)
-        close(fi)
-    }
-)
+#' @export
+write_stan.JointModel <- function(object, file_path) {
+    fi <- file(file_path, open = "w")
+    writeLines(as.character(object), fi)
+    close(fi)
+}
+
 
 # compileStanModel-JointModel ----
 
 #' @rdname compileStanModel
-setMethod(
-    f = "compileStanModel",
-    signature = "JointModel",
-    definition = function(object) {
-        x <- compileStanModel(object@stan)
-        invisible(x)
-    }
-)
+#' @export
+compileStanModel.JointModel <- function(object) {
+    x <- compileStanModel(object@stan)
+    invisible(x)
+}
+
 
 # sampleStanModel-JointModel ----
 
 #' @rdname sampleStanModel
 #'
 #' @param data (`DataJoint` or `list`)\cr input data.
-setMethod(
-    f = "sampleStanModel",
-    signature = "JointModel",
-    definition = function(object, data, ...) {
+#' @export
+sampleStanModel.JointModel <- function(object, data, ...) {
 
-        args <- list(...)
-        args[["data"]] <- as.list(data)
+    args <- list(...)
+    args[["data"]] <- as.list(data)
 
-        if (!"init" %in% names(args)) {
-            values_initial <- initialValues(object)
-            values_sizes <- size(object@parameters)
-            values_sizes_complete <- replace_with_lookup(values_sizes, args[["data"]])
-            values_initial_expanded <- expand_initial_values(values_initial, values_sizes_complete)
-            args[["init"]] <- function() values_initial_expanded
-        }
-
-        stanObject <- object@stan
-        stanObject@generated_quantities <- ""
-        model <- compileStanModel(stanObject)
-        results <- do.call(model$sample, args)
-
-        .JointModelSamples(
-            model = object,
-            data = data,
-            results = results
-        )
+    if (!"init" %in% names(args)) {
+        values_initial <- initialValues(object)
+        values_sizes <- size(object@parameters)
+        values_sizes_complete <- replace_with_lookup(values_sizes, args[["data"]])
+        values_initial_expanded <- expand_initial_values(values_initial, values_sizes_complete)
+        args[["init"]] <- function() values_initial_expanded
     }
-)
+
+    stanObject <- object@stan
+    stanObject@generated_quantities <- ""
+    model <- compileStanModel(stanObject)
+    results <- do.call(model$sample, args)
+
+    .JointModelSamples(
+        model = object,
+        data = data,
+        results = results
+    )
+}
+
 
 # initialValues-JointModel ----
 
 #' @rdname initialValues
-setMethod(
-    f = "initialValues",
-    signature = "JointModel",
-    definition = function(object) {
-        initialValues(object@parameters)
-    }
-)
+#' @export
+initialValues.JointModel <- function(object) {
+    initialValues(object@parameters)
+}

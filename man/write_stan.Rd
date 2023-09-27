@@ -2,12 +2,12 @@
 % Please edit documentation in R/generics.R, R/JointModel.R
 \name{write_stan}
 \alias{write_stan}
-\alias{write_stan,JointModel-method}
+\alias{write_stan.JointModel}
 \title{\code{write_stan}}
 \usage{
 write_stan(object, file_path)
 
-\S4method{write_stan}{JointModel}(object, file_path)
+\method{write_stan}{JointModel}(object, file_path)
 }
 \arguments{
 \item{object}{the module.}

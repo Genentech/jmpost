@@ -62,8 +62,8 @@ If \code{groups=NULL} then all subjects from original dataset will be selected
 
 \seealso{
 Other SurvivalQuantities: 
-\code{\link{as.data.frame,SurvivalQuantities-method}},
-\code{\link{autoplot,SurvivalQuantities-method}},
-\code{\link{summary,SurvivalQuantities-method}}
+\code{\link{as.data.frame.SurvivalQuantities}()},
+\code{\link{autoplot.SurvivalQuantities}()},
+\code{\link{summary.SurvivalQuantities}()}
 }
 \concept{SurvivalQuantities}

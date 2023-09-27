@@ -5,20 +5,45 @@
 \alias{Prior-class}
 \alias{.Prior}
 \alias{Prior}
-\title{\code{Prior}}
+\title{Prior Object and Constructor Function}
+\usage{
+Prior(parameters, repr, init, validation)
+}
+\arguments{
+\item{parameters}{(\code{list})\cr the prior distribution parameters.}
+
+\item{repr}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
+
+\item{init}{(\code{numeric})\cr the initial value.}
+
+\item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
+the same names as the \code{paramaters} slot.}
+}
 \description{
-\code{Prior}
+Specifies the prior distribution in a Stan Model
 }
 \section{Slots}{
 
 \describe{
-\item{\code{parameters}}{(\code{list})\cr the prior distribution parameters.}
+\item{\code{parameters}}{(\code{list})\cr See arguments.}
 
-\item{\code{repr}}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
+\item{\code{repr}}{(\code{string})\cr See arguments.}
 
-\item{\code{init}}{(\code{numeric})\cr the initial value.}
+\item{\code{init}}{(\code{numeric})\cr See arguments.}
 
-\item{\code{validation}}{(\code{list})\cr the prior distribution parameter validation functions. Must have
-the same names as the \code{paramaters} slot.}
+\item{\code{validation}}{(\code{list})\cr See arguments.}
 }}
 
+\seealso{
+Other Prior: 
+\code{\link{Prior-Getter-Methods}},
+\code{\link{as.character.Prior}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_cauchy}()},
+\code{\link{prior_gamma}()},
+\code{\link{prior_lognormal}()},
+\code{\link{prior_none}()},
+\code{\link{prior_normal}()},
+\code{\link{prior_std_normal}()}
+}
+\concept{Prior}

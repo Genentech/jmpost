@@ -136,76 +136,67 @@ setValidity(
 #'
 #' @param object ([`SurvivalQuantities`]) \cr Survival Quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @param ... Not used.
 #'
 #' @family SurvivalQuantities
 #' @family summary
-setMethod(
-    f = "summary",
-    signature = "SurvivalQuantities",
-    definition = function(
-        object,
-        conf.level = 0.95
-    ) {
+#' @export
+summary.SurvivalQuantities <- function(
+    object,
+    conf.level = 0.95,
+    ...
+) {
 
-        quantities_summarised <- lapply(
-            object@quantities,
-            samples_median_ci,
-            level = conf.level
-        )
+    quantities_summarised <- lapply(
+        object@quantities,
+        samples_median_ci,
+        level = conf.level
+    )
 
-        for (i in seq_along(quantities_summarised)) {
-            assert_that(nrow(quantities_summarised[[i]]) == length(object@time_grid))
-            quantities_summarised[[i]][["time"]] <- object@time_grid
-            quantities_summarised[[i]][["group"]] <- names(object@groups)[[i]]
-            quantities_summarised[[i]][["type"]] <- object@type
-        }
-        Reduce(rbind, quantities_summarised)
+    for (i in seq_along(quantities_summarised)) {
+        assert_that(nrow(quantities_summarised[[i]]) == length(object@time_grid))
+        quantities_summarised[[i]][["time"]] <- object@time_grid
+        quantities_summarised[[i]][["group"]] <- names(object@groups)[[i]]
+        quantities_summarised[[i]][["type"]] <- object@type
     }
-)
+    Reduce(rbind, quantities_summarised)
+}
+
 
 
 #' `as.data.frame`
 #'
 #' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
 #' @param ... Not used
-#' @inheritParams as.data.frame
-#' @family as.data.frame
 #' @family SurvivalQuantities
-setMethod(
-    f = "as.data.frame",
-    signature = "SurvivalQuantities",
-    definition = function(x, ...) {
-
-        quantities_df <- lapply(
-            x@quantities,
-            \(element) {
-                n <- nrow(element)
-                values <- as.vector(element)
-                times <- rep(x@time_grid, each = n)
-                type <- rep(x@type, each = length(x@time_grid) * n)
-                assert_that(
-                    length(values) == length(times),
-                    length(times) == length(type)
-                )
-                data.frame(
-                    values = values,
-                    time = times,
-                    type = type,
-                    stringsAsFactors = FALSE
-                )
-            }
-        )
-        for (i in seq_along(quantities_df)) {
-            quantities_df[[i]]["group"] <- names(x@groups)[[i]]
+#' @export
+as.data.frame.SurvivalQuantities <- function(x, ...) {
+    quantities_df <- lapply(
+        x@quantities,
+        \(element) {
+            n <- nrow(element)
+            values <- as.vector(element)
+            times <- rep(x@time_grid, each = n)
+            type <- rep(x@type, each = length(x@time_grid) * n)
+            assert_that(
+                length(values) == length(times),
+                length(times) == length(type)
+            )
+            data.frame(
+                values = values,
+                time = times,
+                type = type,
+                stringsAsFactors = FALSE
+            )
         }
-        res <- Reduce(rbind, quantities_df)
-        res[, c("values", "time", "group", "type")]
+    )
+    for (i in seq_along(quantities_df)) {
+        quantities_df[[i]]["group"] <- names(x@groups)[[i]]
     }
-)
+    res <- Reduce(rbind, quantities_df)
+    res[, c("values", "time", "group", "type")]
+}
 
-
-
-# SurvivalSamples-autoplot ----
 
 #' Automatic Plotting for SurvivalSamples
 #'
@@ -218,35 +209,34 @@ setMethod(
 #' by each group/patient
 #' @param ... other arguments passed to plotting methods.
 #'
-#' @family autoplot
+#' @importFrom ggplot2 autoplot
+#' @export autoplot
 #' @family SurvivalQuantities
-#'
-setMethod(
-    f = "autoplot",
-    signature = c(object = "SurvivalQuantities"),
-    function(object,
-             add_km = FALSE,
-             add_ci = TRUE,
-             add_wrap = TRUE,
-             ...) {
-        assert_that(is.flag(add_km))
-        kmdf <- if (add_km) subset(object@data, object@groups) else NULL
-        all_fit_df <- summary(object)
-        label <- switch(object@type,
-            "surv" = expression(S(t)),
-            "cumhaz" = expression(H(t)),
-            "haz" = expression(h(t)),
-            "loghaz" = expression(log(h(t)))
-        )
-        survival_plot(
-            data = all_fit_df,
-            add_ci = add_ci,
-            add_wrap = add_wrap,
-            kmdf = kmdf,
-            y_label = label
-        )
-    }
-)
+#' @export
+autoplot.SurvivalQuantities <- function(object,
+    add_km = FALSE,
+    add_ci = TRUE,
+    add_wrap = TRUE,
+    ...
+) {
+    assert_that(is.flag(add_km))
+    kmdf <- if (add_km) subset(object@data, object@groups) else NULL
+    all_fit_df <- summary(object)
+    label <- switch(object@type,
+        "surv" = expression(S(t)),
+        "cumhaz" = expression(H(t)),
+        "haz" = expression(h(t)),
+        "loghaz" = expression(log(h(t)))
+    )
+    survival_plot(
+        data = all_fit_df,
+        add_ci = add_ci,
+        add_wrap = add_wrap,
+        kmdf = kmdf,
+        y_label = label
+    )
+}
+
 
 
 

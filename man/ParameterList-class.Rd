@@ -16,3 +16,17 @@ ParameterList(...)
 This class extends the general \code{\link{list}} type for containing \code{\link{Parameter}}
 specifications.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{parameters}}{(\code{list}) \cr a list of \code{\link{Parameter}} objects}
+}}
+
+\seealso{
+Other ParameterList: 
+\code{\link{ParameterList-Getter-Methods}},
+\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.character.ParameterList}()},
+\code{\link{as.list.ParameterList}()}
+}
+\concept{ParameterList}

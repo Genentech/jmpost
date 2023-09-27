@@ -3,6 +3,16 @@
 #' @include Prior.R
 NULL
 
+
+#' ParameterList-Shared
+#' @param object (`ParameterList`) \cr A List of [`Parameter`] Objects.
+#' @param x (`ParameterList`) \cr A List of [`Parameter`] Objects.
+#' @param ... Not Used.
+#' @keywords internal
+#' @name ParameterList-Shared
+NULL
+
+
 # ParameterList-class ----
 
 #' `ParameterList`
@@ -10,21 +20,19 @@ NULL
 #' This class extends the general [`list`] type for containing [`Parameter`]
 #' specifications.
 #'
-#' @exportClass LinkGSF
+#'
+#' @param ... (`Parameter`)\cr which parameter specifications to include.
+#' @slot parameters (`list`) \cr a list of [`Parameter`] objects
+#' @family ParameterList
+#' @export ParameterList
+#' @exportClass ParameterList
 .ParameterList <- setClass(
     Class = "ParameterList",
     slots = c(
         parameters = "list"
     )
 )
-
-# ParameterList-constructors ----
-
 #' @rdname ParameterList-class
-#'
-#' @param ... (`Parameter`)\cr which parameter specifications to include.
-#'
-#' @export
 ParameterList <- function(...) {
     .ParameterList(parameters = list(...))
 }
@@ -42,54 +50,44 @@ setValidity(
     }
 )
 
-# coerce-ParameterList,character ----
 
-#' @rdname as.character
-#'
-#' @name coerce-ParameterList-character-method
-#' @aliases coerce,ParameterList,character-method
-setAs(
-    from = "ParameterList",
-    to = "character",
-    def = function(from) {
-        strings <- vapply(
-            from@parameters,
-            as.character,
-            character(1)
-        )
-        indentation <- paste0(rep(" ", 4), collapse = "")
-        strings_indented <- paste0(indentation, strings)
-        paste(strings_indented, collapse = "\n")
-    }
-)
+#' `ParameterList` -> `character`
+#' @description
+#' Converts a [`ParameterList`] to a Stan model-block indented by 4 spaces
+#' @inheritParams ParameterList-Shared
+#' @family ParameterList
+#' @export
+as.character.ParameterList <- function(x, ...) {
+    strings <- vapply(
+        x@parameters,
+        as.character,
+        character(1)
+    )
+    indentation <- paste0(rep(" ", 4), collapse = "")
+    strings_indented <- paste0(indentation, strings)
+    paste(strings_indented, collapse = "\n")
+}
 
-# as.character-ParameterList ----
 
-#' @rdname as.character
-setMethod(
-    f = "as.character",
-    signature = "ParameterList",
-    definition = function(x) {
-        as(x, "character")
-    }
-)
 
 # as.StanModule-ParameterList ----
 
-#' @rdname as.StanModule
-setMethod(
-    f = "as.StanModule",
-    signature = "ParameterList",
-    definition = function(object) {
-        x <- paste(
-            "model {",
-            as(object, "character"),
-            "}",
-            sep = "\n"
-        )
-        StanModule(x = x)
-    }
-)
+#' `ParameterList` -> `StanModule`
+#' @description
+#' Returns a [`StanModule`] object of the model parameters.
+#' @inheritParams ParameterList-Shared
+#' @family ParameterList
+#' @export
+as.StanModule.ParameterList <- function(object) {
+    x <- paste(
+        "model {",
+        as.character(object),
+        "}",
+        sep = "\n"
+    )
+    StanModule(x = x)
+}
+
 
 # merge-ParameterList,ParameterList ----
 
@@ -105,49 +103,50 @@ setMethod(
 
 # as.list-ParameterList ----
 
-#' @rdname as.list
-setMethod(
-    f = "as.list",
-    signature = "ParameterList",
-    definition = function(x) {
-        as.list(as.StanModule(x))
-    }
-)
+#' `ParameterList` -> `list`
+#' @description
+#' Returns a named list where each element of the list corresponds
+#' to a Stan modelling block e.g. `data`, `model`, etc.
+#' @inheritParams ParameterList-Shared
+#' @family ParameterList
+#' @export
+as.list.ParameterList <- function(x, ...) {
+    as.list(as.StanModule(x))
+}
 
-# initialValues-ParameterList ----
 
-#' @rdname initialValues
-setMethod(
-    f = "initialValues",
-    signature = "ParameterList",
-    definition = function(object) {
-        vals <- lapply(object@parameters, initialValues)
-        name <- vapply(object@parameters, names, character(1))
-        names(vals) <- name
-        return(vals)
-    }
-)
 
-# names-ParameterList ----
 
-#' @rdname names
-setMethod(
-    f = "names",
-    signature = "ParameterList",
-    definition = function(x) {
-        vapply(x@parameters, names, character(1))
-    }
-)
+#' Parameter-List Getter Functions
+#' @description
+#' Getter functions for the slots of a [`ParameterList`] object
+#' @inheritParams ParameterList-Shared
+#' @family ParameterList
+#' @name ParameterList-Getter-Methods
+NULL
 
-# size-ParameterList ----
 
-#' @rdname size
-setMethod(
-    f = "size",
-    signature = "ParameterList",
-    definition = function(object) {
-        x <- lapply(object@parameters, size)
-        names(x) <- names(object)
-        return(x)
-    }
-)
+#' @describeIn ParameterList-Getter-Methods The parameter-list's parameter names
+#' @export
+names.ParameterList <- function(x) {
+    vapply(x@parameters, names, character(1))
+}
+
+
+#' @describeIn ParameterList-Getter-Methods The parameter-list's parameter initial values
+#' @export
+initialValues.ParameterList <- function(object) {
+    vals <- lapply(object@parameters, initialValues)
+    name <- vapply(object@parameters, names, character(1))
+    names(vals) <- name
+    return(vals)
+}
+
+
+#' @describeIn ParameterList-Getter-Methods The parameter-list's parameter dimensionality
+#' @export
+size.ParameterList <- function(object) {
+    x <- lapply(object@parameters, size)
+    names(x) <- names(object)
+    return(x)
+}

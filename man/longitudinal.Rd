@@ -2,17 +2,17 @@
 % Please edit documentation in R/generics.R, R/JointModelSamples.R
 \name{longitudinal}
 \alias{longitudinal}
-\alias{longitudinal,JointModelSamples-method}
+\alias{longitudinal.JointModelSamples}
 \title{\code{longitudinal}}
 \usage{
 longitudinal(object, ...)
 
-\S4method{longitudinal}{JointModelSamples}(object, patients = NULL, time_grid = NULL, ...)
+\method{longitudinal}{JointModelSamples}(object, patients = NULL, time_grid = NULL, ...)
 }
 \arguments{
 \item{object}{samples to extract the longitudinal fits from.}
 
-\item{...}{additional options.}
+\item{...}{Not Used.}
 
 \item{patients}{(\code{character} or \code{NULL})\cr optional subset of patients for
 which the longitudinal fit samples should be extracted, the default \code{NULL}

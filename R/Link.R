@@ -49,21 +49,14 @@ setMethod(
 # initialValues-Link ----
 
 #' @rdname initialValues
-setMethod(
-    f = "initialValues",
-    signature = "Link",
-    definition = function(object) {
-        initialValues(object@parameters)
-    }
-)
+initialValues.Link <- function(object) {
+    initialValues(object@parameters)
+}
+
 
 # Link-as.StanModule ----
 
 #' @rdname as.StanModule
-setMethod(
-    f = "as.StanModule",
-    signature = "Link",
-    definition = function(object) {
-        object@stan
-    }
-)
+as.StanModule.Link <- function(object) {
+    object@stan
+}

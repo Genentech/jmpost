@@ -1,17 +1,39 @@
 #' @include generics.R
 NULL
 
+#' `Prior` Function Arguments
+#'
+#' The documentation lists all the conventional arguments for [`Prior`]
+#' constructors.
+#'
+#' @param init (`number`)\cr initial value.
+#' @param x ([`Prior`])\cr A Prior Distribution
+#' @param object ([`Prior`])\cr A Prior Distribution
+#' @param ... Not Used.
+#'
+#' @name Prior-Shared
+#' @keywords internal
+NULL
+
 # Prior-class ----
 
-#' `Prior`
+#' Prior Object and Constructor Function
 #'
-#' @slot parameters (`list`)\cr the prior distribution parameters.
-#' @slot repr (`string`)\cr the Stan code regular expression encoding the distribution.
-#' @slot init (`numeric`)\cr the initial value.
-#' @slot validation (`list`)\cr the prior distribution parameter validation functions. Must have
+#' Specifies the prior distribution in a Stan Model
+#'
+#' @param parameters (`list`)\cr the prior distribution parameters.
+#' @param repr (`string`)\cr the Stan code regular expression encoding the distribution.
+#' @param init (`numeric`)\cr the initial value.
+#' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
 #'
-#' @aliases Prior
+#' @slot parameters (`list`)\cr See arguments.
+#' @slot repr (`string`)\cr See arguments.
+#' @slot init (`numeric`)\cr See arguments.
+#' @slot validation (`list`)\cr See arguments.
+#'
+#' @family Prior
+#' @export Prior
 #' @exportClass Prior
 .Prior <- setClass(
     Class = "Prior",
@@ -22,6 +44,16 @@ NULL
         "validation" = "list"
     )
 )
+
+#' @rdname Prior-class
+Prior <- function(parameters, repr, init, validation) {
+    .Prior(
+        parameters = parameters,
+        repr = repr,
+        init = init,
+        validation = validation
+    )
+}
 
 
 setValidity(
@@ -47,40 +79,35 @@ setValidity(
 
 
 
-
-# as.character-Prior ----
-
-#' @rdname as.character
-setMethod(
-    f = "as.character",
-    signature = "Prior",
-    definition = function(x) {
-        as(x, "character")
-    }
-)
-
 # coerce-Prior,character ----
 
-#' @rdname as.character
-#'
-#' @name coerce-Prior-character-method
-#' @aliases coerce,Prior,character-method
-setAs(
-    from = "Prior",
-    to = "character",
-    def = function(from) {
-        glue::glue(from@repr, .envir = list2env(from@parameters))
-    }
-)
+#' `Prior` -> `character`
+#' @description
+#' Returns the character representation of the distribution by inserting the
+#' distribution parameters into the `x@repr` string
+#' @inheritParams Prior-Shared
+#' @family Prior
+#' @export
+as.character.Prior <- function(x, ...) {
+    glue::glue(x@repr, .envir = list2env(x@parameters))
+}
+
+#' Prior Getter Functions
+#' @description
+#' Getter functions for the slots of a [`Prior`] object
+#' @inheritParams Prior-Shared
+#' @family Prior
+#' @name Prior-Getter-Methods
+NULL
+
+
 
 # initialValues-Prior ----
 
-#' @rdname initialValues
-setMethod(
-    f = "initialValues",
-    signature = "Prior",
-    definition = function(object) object@init
-)
+#' @describeIn Prior-Getter-Methods The prior's initial value
+#' @export
+initialValues.Prior <- function(object) object@init
+
 
 # Prior-constructors ----
 
@@ -88,8 +115,8 @@ setMethod(
 #'
 #' @param mu (`number`)\cr mean.
 #' @param sigma (`number`)\cr standard deviation.
-#' @inheritParams prior_arguments
-#'
+#' @inheritParams Prior-Shared
+#' @family Prior
 #' @export
 prior_normal <- function(mu, sigma, init = mu) {
     .Prior(
@@ -105,8 +132,9 @@ prior_normal <- function(mu, sigma, init = mu) {
 
 #' Standard Normal Prior Distribution
 #'
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
 #'
+#' @family Prior
 #' @export
 prior_std_normal <- function(init = 0) {
     .Prior(
@@ -120,7 +148,8 @@ prior_std_normal <- function(init = 0) {
 #'
 #' @param mu (`number`)\cr mean.
 #' @param sigma (`number`)\cr scale.
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
+#' @family Prior
 #'
 #' @export
 prior_cauchy <- function(mu, sigma, init = mu) {
@@ -139,7 +168,8 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 #'
 #' @param alpha (`number`)\cr shape.
 #' @param beta (`number`)\cr inverse scale.
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
+#' @family Prior
 #'
 #' @export
 prior_gamma <- function(alpha, beta, init = alpha / beta) {
@@ -158,7 +188,8 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
 #'
 #' @param mu (`number`)\cr mean of the logarithm.
 #' @param sigma (`number`)\cr standard deviation of the logarithm.
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
+#' @family Prior
 #'
 #' @export
 prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
@@ -177,7 +208,8 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
 #'
 #' @param a (`number`)\cr first parameter.
 #' @param b (`number`)\cr second parameter
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
+#' @family Prior
 #'
 #' @export
 prior_beta <- function(a, b, init = a / (a + b)) {
@@ -194,7 +226,8 @@ prior_beta <- function(a, b, init = a / (a + b)) {
 
 #' Only Initial Values Specification
 #'
-#' @inheritParams prior_arguments
+#' @inheritParams Prior-Shared
+#' @family Prior
 #'
 #' @export
 prior_none <- function(init = 0.00001) {

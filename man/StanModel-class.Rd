@@ -5,25 +5,28 @@
 \alias{StanModel-class}
 \alias{.StanModel}
 \alias{StanModel}
-\title{\code{StanModel}}
+\title{Stan Model Object and Constructor Function}
 \usage{
-StanModel(stan, parameters, ...)
+StanModel(stan, parameters)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
-
-\item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
 \description{
-\code{StanModel}
+Stan Model Object and Constructor Function
 }
 \section{Slots}{
 
 \describe{
-\item{\code{stan}}{(\code{StanModule})\cr code containing the Stan code specification.}
+\item{\code{stan}}{(\code{StanModule})\cr See Arguments.}
 
-\item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
+\item{\code{parameters}}{(\code{ParameterList})\cr See Arguments.}
 }}
 
+\seealso{
+Other StanModel: 
+\code{\link{as.list.StanModel}()}
+}
+\concept{StanModel}

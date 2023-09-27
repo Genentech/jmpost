@@ -27,7 +27,7 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     assertthat,
     dplyr,
@@ -80,8 +80,8 @@ Collate:
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
-    'argument_convention.R'
     'defaults.R'
+    'external-exports.R'
     'jmpost-package.R'
     'simulations.R'
     'simulations_gsf.R'

@@ -29,3 +29,9 @@ Stores the name, the prior distribution and the size of a parameter.
 \item{\code{size}}{(\code{numeric} or \code{string})\cr dimension of the parameter.}
 }}
 
+\seealso{
+Other Parameter: 
+\code{\link{Parameter-Getter-Methods}},
+\code{\link{as.character.Parameter}()}
+}
+\concept{Parameter}

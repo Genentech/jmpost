@@ -2,12 +2,12 @@
 % Please edit documentation in R/generics.R, R/JointModelSamples.R
 \name{generateQuantities}
 \alias{generateQuantities}
-\alias{generateQuantities,JointModelSamples-method}
+\alias{generateQuantities.JointModelSamples}
 \title{\code{generateQuantities}}
 \usage{
 generateQuantities(object, ...)
 
-\S4method{generateQuantities}{JointModelSamples}(object, patients, time_grid_lm, time_grid_sm, ...)
+\method{generateQuantities}{JointModelSamples}(object, patients, time_grid_lm, time_grid_sm, ...)
 }
 \arguments{
 \item{object}{object to obtain generated quantities from}

@@ -2,14 +2,34 @@
 #' @include ParameterList.R
 NULL
 
+#' `StanModel` Function Arguments
+#'
+#' The documentation lists all the conventional arguments for wrappers around
+#' [StanModel()].
+#'
+#' @param stan (`StanModule`)\cr code containing the Stan code specification.
+#' @param parameters (`ParameterList`)\cr the parameter specification.
+#' @param parameter (`ParameterList`)\cr the (single) parameter specification.
+#' @param ... additional arguments for [StanModel()].
+#'
+#' @name stanmodel_arguments
+#' @keywords internal
+NULL
+
 # StanModel-class ----
 
-#' `StanModel`
+
+#' Stan Model Object and Constructor Function
 #'
-#' @slot stan (`StanModule`)\cr code containing the Stan code specification.
-#' @slot parameters (`ParameterList`)\cr the parameter specification.
+#' @param stan (`StanModule`)\cr code containing the Stan code specification.
+#' @param parameters (`ParameterList`)\cr the parameter specification.
 #'
+#' @slot stan (`StanModule`)\cr See Arguments.
+#' @slot parameters (`ParameterList`)\cr See Arguments.
+#'
+#' @export StanModel
 #' @exportClass StanModel
+#' @family StanModel
 .StanModel <- setClass(
     Class = "StanModel",
     slots = list(
@@ -21,36 +41,28 @@ NULL
 # StanModel-constructor ----
 
 #' @rdname StanModel-class
-#'
-#' @inheritParams stanmodel_arguments
-#'
-#' @export
-StanModel <- function(stan, parameters, ...) {
+StanModel <- function(stan, parameters) {
     .StanModel(
         stan = stan,
-        parameters = parameters,
-        ...
+        parameters = parameters
     )
 }
 
 # as.list-StanModel ----
 
-#' @rdname as.list
-setMethod(
-    f = "as.list",
-    signature = c("StanModel"),
-    definition = function(x) {
-        as.list(x@stan)
-    }
-)
+#' `StanModel` -> `list`
+#' @description
+#' Returns a named list where each element of the list corresponds
+#' to a Stan modelling block e.g. `data`, `model`, etc.
+#' @param x ([`StanModel`])\cr A Stan Model
+#' @param ... Not Used.
+#' @family StanModel
+#' @export
+as.list.StanModel <- function(x, ...) {
+    as.list(x@stan)
+}
 
 # getParameters-StanModel ----
 
 #' @rdname getParameters
-setMethod(
-    f = "getParameters",
-    signature = "StanModel",
-    definition = function(object) {
-        object@parameters
-    }
-)
+getParameters.StanModel <- function(object) object@parameters
