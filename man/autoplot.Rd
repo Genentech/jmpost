@@ -2,7 +2,7 @@
 % Please edit documentation in R/external-exports.R
 \name{autoplot}
 \alias{autoplot}
-\title{Create a complete ggplot appropriate to a particular data type}
+\title{Create a complete \code{ggplot} appropriate to a particular data type}
 \description{
 See \code{\link[ggplot2:autoplot]{ggplot2::autoplot()}} for details.
 }

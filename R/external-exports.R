@@ -19,7 +19,7 @@ NULL
 
 # autoplot ----
 
-#' Create a complete ggplot appropriate to a particular data type
+#' Create a complete `ggplot` appropriate to a particular data type
 #'
 #' See [ggplot2::autoplot()] for details.
 #'

@@ -20,9 +20,9 @@ Stan Model Object and Constructor Function
 \section{Slots}{
 
 \describe{
-\item{\code{stan}}{(\code{StanModule})\cr See Arguements.}
+\item{\code{stan}}{(\code{StanModule})\cr See Arguments.}
 
-\item{\code{parameters}}{(\code{ParameterList})\cr See Arguements.}
+\item{\code{parameters}}{(\code{ParameterList})\cr See Arguments.}
 }}
 
 \seealso{

@@ -24,8 +24,8 @@ NULL
 #' @param stan (`StanModule`)\cr code containing the Stan code specification.
 #' @param parameters (`ParameterList`)\cr the parameter specification.
 #'
-#' @slot stan (`StanModule`)\cr See Arguements.
-#' @slot parameters (`ParameterList`)\cr See Arguements.
+#' @slot stan (`StanModule`)\cr See Arguments.
+#' @slot parameters (`ParameterList`)\cr See Arguments.
 #'
 #' @export StanModel
 #' @exportClass StanModel
