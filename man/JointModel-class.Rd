@@ -5,7 +5,7 @@
 \alias{JointModel-class}
 \alias{.JointModel}
 \alias{JointModel}
-\title{\code{JointModel}}
+\title{Joint Model Object and Constructor Function}
 \usage{
 JointModel(longitudinal = NULL, survival = NULL, link = NULL)
 }
@@ -17,7 +17,7 @@ JointModel(longitudinal = NULL, survival = NULL, link = NULL)
 \item{link}{(\code{Link})\cr the link.}
 }
 \description{
-\code{JointModel}
+Joint Model Object and Constructor Function
 }
 \section{Slots}{
 
@@ -27,3 +27,8 @@ JointModel(longitudinal = NULL, survival = NULL, link = NULL)
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
 }}
 
+\seealso{
+Other JointModel: 
+\code{\link{as.character.JointModel}()}
+}
+\concept{JointModel}

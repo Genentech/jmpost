@@ -5,7 +5,7 @@
 \alias{DataSurvival-class}
 \alias{.DataSurvival}
 \alias{DataSurvival}
-\title{\code{DataSurvival}}
+\title{Survival Data Object and Constructor Function}
 \usage{
 DataSurvival(data, formula, subject, arm, study)
 }
@@ -15,11 +15,11 @@ DataSurvival(data, formula, subject, arm, study)
 \item{formula}{(\code{formula})\cr of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
 See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
 
-\item{subject}{(\code{string})\cr the name of the subject identifier variable.}
+\item{subject}{(\code{character})\cr the name of the subject identifier variable.}
 
-\item{arm}{(\code{string})\cr the name of the treatment arm variable.}
+\item{arm}{(\code{character})\cr the name of the treatment arm variable.}
 
-\item{study}{(\code{string})\cr the name of the study variable.}
+\item{study}{(\code{character})\cr the name of the study variable.}
 }
 \description{
 The \code{\link{DataSurvival}} class handles the processing of the survival data for fitting a Joint Model.
@@ -27,20 +27,26 @@ The \code{\link{DataSurvival}} class handles the processing of the survival data
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{(\code{data.frame})\cr the observed time-to-event data. Note that
-observations that contain missing values in the required variables are removed
-in the slot.}
+\item{\code{data}}{(\code{data.frame})\cr See Arguments for details.}
 
-\item{\code{formula}}{(\code{formula})\cr of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
-See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
+\item{\code{formula}}{(\code{formula})\cr See Arguments for details.}
 
-\item{\code{subject}}{(\code{string})\cr the name of the subject identifier variable.}
+\item{\code{subject}}{(\code{character})\cr See Arguments for details.}
 
-\item{\code{arm}}{(\code{string})\cr the name of the treatment arm variable.}
+\item{\code{arm}}{(\code{character})\cr See Arguments for details.}
 
-\item{\code{study}}{(\code{string})\cr the name of the study variable.}
+\item{\code{study}}{(\code{character})\cr See Arguments for details.}
 }}
 
 \seealso{
-\code{\link{DataJoint}}, \code{\link{DataLongitudinal}}
+Other DataObjects: 
+\code{\link{DataJoint-class}},
+\code{\link{DataLongitudinal-class}}
+
+Other DataSurvival: 
+\code{\link{as.data.frame.DataSurvival}()},
+\code{\link{as.list.DataSurvival}()},
+\code{\link{extractVariableNames.DataSurvival}()}
 }
+\concept{DataObjects}
+\concept{DataSurvival}

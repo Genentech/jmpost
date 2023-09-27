@@ -1,5 +1,5 @@
 ---
-url: https://genentech.github.io/jmpost
+url: https://genentech.github.io/jmpost/
 
 template:
   bootstrap: 5
@@ -18,7 +18,7 @@ navbar:
           href: unit-test-report/
     github:
       icon: fa-github
-      href: https://github.com/genentech/jmpost
+      href: https://github.com/genentech/jmpost/
 
 reference:
   - title: Package

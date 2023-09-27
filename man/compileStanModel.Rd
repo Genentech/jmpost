@@ -2,15 +2,15 @@
 % Please edit documentation in R/generics.R, R/StanModule.R, R/JointModel.R
 \name{compileStanModel}
 \alias{compileStanModel}
-\alias{compileStanModel,StanModule-method}
-\alias{compileStanModel,JointModel-method}
+\alias{compileStanModel.StanModule}
+\alias{compileStanModel.JointModel}
 \title{\code{compileStanModel}}
 \usage{
 compileStanModel(object)
 
-\S4method{compileStanModel}{StanModule}(object)
+\method{compileStanModel}{StanModule}(object)
 
-\S4method{compileStanModel}{JointModel}(object)
+\method{compileStanModel}{JointModel}(object)
 }
 \arguments{
 \item{object}{the module.}

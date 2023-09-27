@@ -12,3 +12,16 @@ prior_none(init = 1e-05)
 \description{
 Only Initial Values Specification
 }
+\seealso{
+Other Prior: 
+\code{\link{Prior-Getter-Methods}},
+\code{\link{Prior-class}},
+\code{\link{as.character.Prior}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_cauchy}()},
+\code{\link{prior_gamma}()},
+\code{\link{prior_lognormal}()},
+\code{\link{prior_normal}()},
+\code{\link{prior_std_normal}()}
+}
+\concept{Prior}

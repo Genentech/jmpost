@@ -10,11 +10,16 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 #'
 #' Stores the name, the prior distribution and the size of a parameter.
 #'
+#' @param prior (`Prior`)\cr for the parameter.
+#' @param name (`string`)\cr of the parameter.
+#' @param size (`numeric` or `string`)\cr dimension of the parameter.
 #' @slot name (`string`)\cr of the parameter.
 #' @slot prior (`Prior`)\cr for the parameter.
 #' @slot size (`numeric` or `string`)\cr dimension of the parameter.
 #'
+#' @family Parameter
 #' @exportClass Parameter
+#' @export Parameter
 .Parameter <- setClass(
     Class = "Parameter",
     slots = list(
@@ -23,16 +28,7 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
         "size" = "numeric_OR_character"
     )
 )
-
-# Parameter-constructors ----
-
 #' @rdname Parameter-class
-#'
-#' @param prior (`Prior`)\cr for the parameter.
-#' @param name (`string`)\cr of the parameter.
-#' @param size (`numeric` or `string`)\cr dimension of the parameter.
-#'
-#' @export
 Parameter <- function(prior, name, size = 1) {
     .Parameter(
         prior = prior,
@@ -40,9 +36,6 @@ Parameter <- function(prior, name, size = 1) {
         size = size
     )
 }
-
-# Parameter-validity ----
-
 setValidity(
     Class = "Parameter",
     method = function(object) {
@@ -58,55 +51,43 @@ setValidity(
     }
 )
 
-# as.character-Parameter ----
 
-#' @rdname as.character
-setMethod(
-    f = "as.character",
-    signature = "Parameter",
-    definition = function(x) as(x, "character")
-)
-
-# coerce-Parameter,character ----
-
-#' @rdname as.character
+#' `Parameter` -> `character`
 #'
-#' @name coerce-Parameter-character-method
-#' @aliases coerce,Parameter,character-method
-setAs(
-    from = "Parameter",
-    to = "character",
-    def = function(from) {
-        if (as.character(from@prior) == "") {
-             return("")
-        }
-        glue::glue("{name} ~ {dist}", name = from@name, dist = as(from@prior, "character"))
+#' @param x (`Paramater`) \cr A model parameter
+#' @param ... Not Used.
+#'
+#' @description
+#' Converts a parameter object into its corresponding Stan code representation
+#' @family Parameter
+#' @export
+as.character.Parameter <- function(x, ...) {
+    if (as.character(x@prior) == "") {
+        return("")
     }
-)
+    glue::glue("{name} ~ {dist}", name = x@name, dist = as.character(x@prior))
+}
 
-# names-Parameter ----
 
-#' @rdname names
-setMethod(
-    f = "names",
-    signature = "Parameter",
-    definition = function(x) x@name
-)
+#' Parameter Getter Functions
+#'
+#' @param x (`Paramater`) \cr A model parameter
+#' @param object (`Paramater`) \cr A model parameter
+#'
+#' @description
+#' Getter functions for the slots of a [`Parameter`] object
+#' @family Parameter
+#' @name Parameter-Getter-Methods
+NULL
 
-# initialValues-Parameter ----
+#' @describeIn Parameter-Getter-Methods The parameter's name
+#' @export
+names.Parameter <- function(x) x@name
 
-#' @rdname initialValues
-setMethod(
-    f = "initialValues",
-    signature = "Parameter",
-    definition = function(object) initialValues(object@prior)
-)
+#' @describeIn Parameter-Getter-Methods The parameter's initial values
+#' @export
+initialValues.Parameter <- function(object) initialValues(object@prior)
 
-# size-Parameter ----
-
-#' @rdname size
-setMethod(
-    f = "size",
-    signature = "Parameter",
-    definition = function(object) object@size
-)
+#' @describeIn Parameter-Getter-Methods The parameter's dimensionality
+#' @export
+size.Parameter <- function(object) object@size

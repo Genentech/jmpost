@@ -5,7 +5,7 @@
 \alias{DataLongitudinal-class}
 \alias{.DataLongitudinal}
 \alias{DataLongitudinal}
-\title{\code{DataLongitudinal}}
+\title{Longitudinal Data Object and Constructor Function}
 \usage{
 DataLongitudinal(data, formula, subject, threshold = NULL)
 }
@@ -14,37 +14,36 @@ DataLongitudinal(data, formula, subject, threshold = NULL)
 
 \item{formula}{(\code{formula})\cr of the form \code{outcome ~ time}, and cannot contain any additional covariates.}
 
-\item{subject}{(\code{string})\cr the name of the subject identifier variable.}
+\item{subject}{(\code{character})\cr the name of the subject identifier variable.}
 
-\item{threshold}{(\code{number})\cr cut-off value to be used to declare an observation as censored
+\item{threshold}{(\code{numeric})\cr cut-off value to be used to declare an observation as censored
 (below detection limit).}
 }
 \description{
 The \code{\link{DataLongitudinal}} class handles the processing of the longitudinal data for fitting a Joint Model.
 }
-\details{
-\itemize{
-\item \code{as.list(x)}, \code{as(x, "list")}: Coerces x into a list of data components required
-for fitting a \code{\link{JointModel}}.
-See the vignette (TODO) for more details
-\item \code{as.data.frame(x)}
-}
-}
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{(\code{data.frame})\cr containing the observed longitudinal data. Note that
-observations that contain missing values in the required variables are removed
-in the slot.}
+\item{\code{data}}{(\code{data.frame})\cr See Arguments for details; Note that
+observations that contain missing values in the required variables are removed.}
 
-\item{\code{formula}}{(\code{formula})\cr of the form \code{outcome ~ time}, and cannot contain any additional covariates.}
+\item{\code{formula}}{(\code{formula})\cr See Arguments for details}
 
-\item{\code{subject}}{(\code{string})\cr the name of the subject identifier variable.}
+\item{\code{subject}}{(\code{character})\cr See Arguments for details}
 
-\item{\code{threshold}}{(\code{number})\cr cut-off value to be used to declare an observation as censored
-(below detection limit).}
+\item{\code{threshold}}{(\code{numeric})\cr See Arguments for details}
 }}
 
 \seealso{
-\code{\link{DataJoint}}, \code{\link{DataSurvival}}.
+Other DataObjects: 
+\code{\link{DataJoint-class}},
+\code{\link{DataSurvival-class}}
+
+Other DataLongitudinal: 
+\code{\link{as.data.frame.DataLongitudinal}()},
+\code{\link{as.list.DataLongitudinal}()},
+\code{\link{extractVariableNames.DataLongitudinal}()}
 }
+\concept{DataLongitudinal}
+\concept{DataObjects}

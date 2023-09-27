@@ -13,105 +13,11 @@ setClassUnion("empty", c("missing", "NULL"))
 #' @param ... additional arguments.
 #'
 #' @export
+# Needs to be S4 for multiple dispatch !
 setGeneric(
     name = "merge",
     def = function(x, y, ...) standardGeneric("merge")
 )
-
-# as.character ----
-
-#' Character Conversion of Different Classes
-#'
-#' These methods convert objects of different classes to `character`
-#' representation.
-#'
-#' @name as.character
-#' @aliases as.character
-#'
-#' @param x what to convert.
-#'
-#' @exportMethod as.character
-NULL
-
-# as.data.frame ----
-
-#' Data Frame Conversion of Different Classes
-#'
-#' These methods convert objects of different classes to `data.frame`
-#' representation.
-#'
-#' @name as.data.frame
-#' @aliases as.data.frame
-#'
-#' @param x what to convert.
-#' @param row.names not used.
-#' @param optional not used.
-#' @param ... not used.
-#'
-#' @export
-NULL
-
-# as.list ----
-
-#' List Conversion of Different Classes
-#'
-#' These methods convert objects of different classes to `list`
-#' representation.
-#'
-#' @name as.list
-#' @aliases as.list
-#'
-#' @param x what to convert.
-#' @param ... not used.
-#'
-#' @export
-NULL
-
-
-
-# autoplot ----
-
-#' Plotting Methods for Different Classes
-#'
-#' These plot methods visualize various objects.
-#'
-#' @name autoplot
-#'
-#' @param object what to plot.
-#' @param ... other arguments passed to plotting methods.
-#'
-#' @family autoplot
-#'
-#' @export autoplot
-NULL
-
-
-
-# summary ----
-
-#' Object Summaries
-#'
-#' NOTE: This man page is for the `summary` S4 generic function defined within
-#' jmpost. See [base::summary()] for the default method.
-#' @name summary
-#' @inheritParams base::summary
-#' @family summary
-#' @export summary
-setGeneric("summary", base::summary, signature = c("object"))
-
-
-# subset ----
-
-#' Subsetting Vectors, Matrices and Data Frames
-#'
-#' NOTE: This man page is for the `subset` S4 generic function defined within
-#' jmpost. See [base::subset()] for the default method.
-#' @name subset
-#' @inheritParams base::subset
-#' @family subset
-#' @export subset
-setGeneric("subset", subset, signature = c("x"))
-
 
 
 # show ----
@@ -128,19 +34,7 @@ setGeneric("subset", subset, signature = c("x"))
 #' @export
 NULL
 
-# names ----
 
-#' Names of Different Classes
-#'
-#' These methods return the names of objects of different classes.
-#'
-#' @name names
-#' @aliases names
-#'
-#' @param x where to get the names from.
-#'
-#' @exportMethod names
-NULL
 
 # addLink ----
 
@@ -153,10 +47,13 @@ NULL
 #' @param ... additional arguments.
 #'
 #' @export
+# Needs to be S4 for multiple dispatch !
 setGeneric(
     name = "addLink",
     def = function(x, y, ...) standardGeneric("addLink")
 )
+
+
 
 # write_stan ----
 
@@ -168,10 +65,9 @@ setGeneric(
 #' @param file_path (`string`)\cr output file.
 #'
 #' @export
-setGeneric(
-    name = "write_stan",
-    def = function(object, file_path) standardGeneric("write_stan")
-)
+write_stan <- function(object, file_path) {
+    UseMethod("write_stan")
+}
 
 # compileStanModel ----
 
@@ -182,10 +78,10 @@ setGeneric(
 #' @param object the module.
 #'
 #' @export
-setGeneric(
-    name = "compileStanModel",
-    def = function(object) standardGeneric("compileStanModel")
-)
+compileStanModel <- function(object) {
+    UseMethod("compileStanModel")
+}
+
 
 # sampleStanModel ----
 
@@ -197,10 +93,10 @@ setGeneric(
 #' @param ... additional arguments.
 #'
 #' @export
-setGeneric(
-    name = "sampleStanModel",
-    def = function(object, ...) standardGeneric("sampleStanModel")
-)
+sampleStanModel <- function(object, ...) {
+    UseMethod("sampleStanModel")
+}
+
 
 # as.StanModule ----
 
@@ -211,10 +107,10 @@ setGeneric(
 #' @param object what to convert.
 #'
 #' @keywords internal
-setGeneric(
-    name = "as.StanModule",
-    def = function(object) standardGeneric("as.StanModule")
-)
+as.StanModule <- function(object) {
+    UseMethod("as.StanModule")
+}
+
 
 # getParameters ----
 
@@ -225,25 +121,27 @@ setGeneric(
 #' @param object where to obtain the parameters from.
 #'
 #' @keywords internal
-setGeneric(
-    name = "getParameters",
-    def = function(object) standardGeneric("getParameters")
-)
+getParameters <- function(object) {
+    UseMethod("getParameters")
+}
+
 
 # extractVariableNames ----
 
-#' `extractVariableNames`
+#' Extract Mapping to Standardised Variable Names
 #'
-#' Extract the `list` of variable names mapping to key variables
-#' from a [`DataLongitudinal`] or [`DataSurvival`] object.
+#' @description
+#' Extract a `list` that maps the variable names in a user-defined
+#' `data.frame` to standardised values.
 #'
 #' @param object the data object.
-#'
+#' @family extractVariableNames
 #' @keywords internal
-setGeneric(
-    name = "extractVariableNames",
-    def = function(object) standardGeneric("extractVariableNames")
-)
+extractVariableNames <- function(object) {
+    UseMethod("extractVariableNames")
+}
+
+
 
 # initialValues ----
 
@@ -254,10 +152,10 @@ setGeneric(
 #' @param object where to get the initial values from.
 #'
 #' @keywords internal
-setGeneric(
-    name = "initialValues",
-    def = function(object) standardGeneric("initialValues")
-)
+initialValues <- function(object) {
+    UseMethod("initialValues")
+}
+
 
 # size ----
 
@@ -268,10 +166,9 @@ setGeneric(
 #' @param object where to get the parameter sizes from.
 #'
 #' @keywords internal
-setGeneric(
-    name = "size",
-    def = function(object) standardGeneric("size")
-)
+size <- function(object) {
+    UseMethod("size")
+}
 
 # longitudinal ----
 
@@ -283,10 +180,9 @@ setGeneric(
 #' @param ... additional options.
 #'
 #' @export
-setGeneric(
-    name = "longitudinal",
-    def = function(object, ...) standardGeneric("longitudinal")
-)
+longitudinal <- function(object, ...) {
+    UseMethod("longitudinal")
+}
 
 
 # generateQuantities ----
@@ -299,7 +195,6 @@ setGeneric(
 #' @param ... additional options.
 #'
 #' @export
-setGeneric(
-    name = "generateQuantities",
-    def = function(object, ...) standardGeneric("generateQuantities")
-)
+generateQuantities <- function(object, ...) {
+    UseMethod("generateQuantities")
+}

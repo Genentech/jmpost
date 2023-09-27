@@ -2,12 +2,12 @@
 % Please edit documentation in R/generics.R, R/JointModel.R
 \name{sampleStanModel}
 \alias{sampleStanModel}
-\alias{sampleStanModel,JointModel-method}
+\alias{sampleStanModel.JointModel}
 \title{\code{sampleStanModel}}
 \usage{
 sampleStanModel(object, ...)
 
-\S4method{sampleStanModel}{JointModel}(object, data, ...)
+\method{sampleStanModel}{JointModel}(object, data, ...)
 }
 \arguments{
 \item{object}{the module.}

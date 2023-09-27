@@ -38,13 +38,13 @@ setMethod(
 
 # getParameters ----
 
-## getParameters-NULL ----
+getParameters.default <- function(object) {
+    if (missing(object) || is.null(object)) {
+        return(NULL)
+    }
+    stop(sprintf("No default method implemented for getParameters(<%s>)", typeof(object)))
+}
 
-setMethod(
-    f = "getParameters",
-    signature = "NULL",
-    definition = function(object) NULL
-)
 
 # merge ----
 

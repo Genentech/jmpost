@@ -16,3 +16,16 @@ prior_cauchy(mu, sigma, init = mu)
 \description{
 Cauchy Prior Distribution
 }
+\seealso{
+Other Prior: 
+\code{\link{Prior-Getter-Methods}},
+\code{\link{Prior-class}},
+\code{\link{as.character.Prior}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_gamma}()},
+\code{\link{prior_lognormal}()},
+\code{\link{prior_none}()},
+\code{\link{prior_normal}()},
+\code{\link{prior_std_normal}()}
+}
+\concept{Prior}
