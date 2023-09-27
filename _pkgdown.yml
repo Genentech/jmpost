@@ -21,68 +21,114 @@ navbar:
       href: https://github.com/genentech/jmpost/
 
 reference:
+
   - title: Package
     contents:
       - jmpost-package
+  
   - title: Data Specification
     contents:
-      - starts_with("Data")
+      - DataJoint
+      - DataLongitudinal
+      - DataSurvival
+  
   - title: Data Simulation
     contents:
-      - starts_with("sim")
+      - simulate_joint_data
+      - sim_lm_gsf
+      - sim_lm_random_slope
+      - sim_os_exponential
+      - sim_os_loglogistic
+      - sim_os_weibull
+  
   - title: Prior Distributions
     contents:
       - Prior
-      - starts_with("prior")
-      - -prior_arguments
+      - prior_beta
+      - prior_cauchy
+      - prior_gamma
+      - prior_lognormal
+      - prior_none
+      - prior_normal
+      - prior_std_normal
+  
   - title: Longitudinal Model Specification
     contents:
-      - starts_with("Longitudinal")
-      - -LongitudinalSamples
+      - LongitudinalRandomSlope
+      - LongitudinalGSF
+      - LongitudinalModel
+  
   - title: Survival Model Specification
     contents:
-      - starts_with("Survival")
-      - -SurvivalQuantities
+      - SurvivalExponential
+      - SurvivalLogLogistic
+      - SurvivalModel
+      - SurvivalWeibullPH
+  
+  
   - title: Link Specification
     contents:
-      - starts_with("Link")
       - link_gsf_dsld
       - link_gsf_ttg
       - link_gsf_identity
+      - Link
+      - LinkGSF
+      - LinkNone
+      - LinkRandomSlope
+  
   - title: Joint Model Specification
     contents:
       - addLink
       - JointModel
+  
   - title: Joint Model Fitting
     contents:
       - compileStanModel
       - sampleStanModel
+  
   - title: Postprocessing
     contents:
       - JointModelSamples
       - LongitudinalSamples
       - SurvivalQuantities
-      - ends_with("SurvivalQuantities-method")
       - longitudinal
-      - starts_with("autoplot")
-      - starts_with("predict")
       - generateQuantities
+      - summary.SurvivalQuantities
+      - autoplot.LongitudinalSamples
+      - autoplot
+      - autoplot.SurvivalQuantities
+  
   - title: Stan Code
     contents:
-      - merge
       - Parameter
+      - Parameter-Getter-Methods
       - ParameterList
+      - ParameterList-Getter-Methods
+      - Prior-Getter-Methods
       - read_stan
       - StanModel
       - StanModule
       - write_stan
+  
   - title: Convenience Functions
     contents:
-      - as.character
-      - as.data.frame
-      - as.list
-      - summary
       - merge
-      - names
       - show
-      - starts_with("subset")
+      - as.StanModule.ParameterList
+      - as.character.JointModel
+      - as.character.Parameter
+      - as.character.ParameterList
+      - as.character.Prior
+      - as.character.StanModule
+      - as.data.frame.DataLongitudinal
+      - as.data.frame.DataSurvival
+      - as.data.frame.SurvivalQuantities
+      - as.list.DataJoint
+      - as.list.DataLongitudinal
+      - as.list.DataSurvival
+      - as.list.ParameterList
+      - as.list.StanModel
+      - as.list.StanModule
+      - subset.DataJoint
+      - extractVariableNames.DataLongitudinal
+
