@@ -54,12 +54,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -74,7 +68,7 @@
 
       <ul class="navbar-nav">
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/genentech/jmpost">
+  <a class="external-link nav-link" href="https://github.com/genentech/jmpost/">
     <span class="fa fa-github"></span>
      
   </a>
@@ -318,7 +312,7 @@ means that in our applications we don’t have to use the same variable
 names as seen above, but we can use custom names and then apply the
 mapping here.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint.html">DataJoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint-class.html">DataJoint</a></span><span class="op">(</span></span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/DataSurvival-class.html">DataSurvival</a></span><span class="op">(</span></span>
 <span>        data <span class="op">=</span> <span class="va">os_data</span>,</span>
 <span>        formula <span class="op">=</span> <span class="fu"><a href="../reference/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">event</span><span class="op">)</span> <span class="op">~</span> <span class="va">cov_cat</span> <span class="op">+</span> <span class="va">cov_cont</span>,</span>
@@ -389,7 +383,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 7.6 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 9.1 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -484,7 +478,7 @@ same for the estimated survival functions.</p>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    groups <span class="op">=</span> <span class="va">selected_patients</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          values    time    group type</span></span>
 <span><span class="co">#&gt; 1     1.0000000   0.000 pt_00001 surv</span></span>
 <span><span class="co">#&gt; 2     1.0000000   0.000 pt_00001 surv</span></span>
@@ -25486,7 +25480,7 @@ same for the estimated survival functions.</p>
 <span><span class="co">#&gt; 24998 0.2759598 474.565 pt_00001 surv</span></span>
 <span><span class="co">#&gt; 24999 0.2944577 474.565 pt_00001 surv</span></span>
 <span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 980001 rows ]</span></span>
-<span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            median        lower        upper     time    group type</span></span>
 <span><span class="co">#&gt; 1    1.000000e+00 1.000000e+00 1.0000000000    0.000 pt_00001 surv</span></span>
 <span><span class="co">#&gt; 2    9.600392e-01 9.258268e-01 0.9806430799    9.685 pt_00001 surv</span></span>
