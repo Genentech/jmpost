@@ -7,7 +7,7 @@
 \alias{StanModel}
 \title{Stan Model Object and Constructor Function}
 \usage{
-StanModel(stan, parameters, ...)
+StanModel(stan, parameters)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}

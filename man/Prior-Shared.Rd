@@ -8,6 +8,8 @@
 
 \item{x}{(\code{\link{Prior}})\cr A Prior Distribution}
 
+\item{object}{(\code{\link{Prior}})\cr A Prior Distribution}
+
 \item{...}{Not Used.}
 }
 \description{

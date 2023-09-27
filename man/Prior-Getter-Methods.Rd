@@ -7,6 +7,9 @@
 \usage{
 \method{initialValues}{Prior}(object)
 }
+\arguments{
+\item{object}{(\code{\link{Prior}})\cr A Prior Distribution}
+}
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object
 }
