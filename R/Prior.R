@@ -204,6 +204,20 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
     )
 }
 
+
+prior_gumbel <- function(mu, beta, init = mu + sigma * 0.577215664901) {
+    .Prior(
+        parameters = list(mu = mu, beta = beta),
+        repr = "gumbel({mu}, {beta});",
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            beta = \(x) x > 0
+        )
+    )
+}
+
+
 #' Beta Prior Distribution
 #'
 #' @param a (`number`)\cr first parameter.
