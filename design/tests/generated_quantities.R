@@ -86,24 +86,23 @@ stan_samples <- sampleStanModel(
 )
 
 
-stan_samples@results$summary()
 
-class(stan_samples@results)
-
-
-longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
-    autoplot()
-
-
-
+pts <- sample(dat_os$pt, 4)
+samps <- LongitudinalQuantities(
+    stan_samples,
+    groups = sample(dat_os$pt, 4)
+)
+summary(samps)
+as.data.frame(samps) |> tibble()
+autoplot(samps)
 
 
 
 
 pts <- sample(dat_os$pt, 4)
-samps <- extractSurvivalQuantities(
+samps <- SurvivalQuantities(
     stan_samples,
-    patients =  sample(dat_os$pt, 4)
+    groups = sample(dat_os$pt, 4)
 )
 summary(samps)
 as.data.frame(samps) |> tibble()
