@@ -13,7 +13,7 @@ extract_observed_values(object)
 A data.frame with the following columns
 \itemize{
 \item \code{subject} (\code{character})\cr The subject identifier
-\item \code{time} (\code{numeric})\cr The time at which the observation occured
+\item \code{time} (\code{numeric})\cr The time at which the observation occurred
 \item \code{Yob} (\code{numeric})\cr The observed value
 }
 }

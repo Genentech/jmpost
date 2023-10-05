@@ -23,6 +23,7 @@
 # element and (b) is formating it as expected
 
 test_that("extract_quantities() works as expected", {
+    set.seed(1910)
     log_surv <- matrix(log(runif(30)), nrow = 6)
     log_haz <- matrix(rnorm(40), nrow = 10)
     y_fit <- matrix(rnorm(50), nrow = 25)

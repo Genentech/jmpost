@@ -37,7 +37,7 @@ Should contain the following columns:
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - The time at which the observed value occured
+\item \code{time} - The time at which the observed value occurred
 \item \code{Yob} - The real observed value
 \item \code{group} - Which group the event belongs to, should correspond to values in \code{data$group}
 }

@@ -152,7 +152,7 @@ summary.LongitudinalQuantities <- function(
 #'
 #' ## `data_obs`
 #' Should contain the following columns:
-#' - `time` - The time at which the observed value occured
+#' - `time` - The time at which the observed value occurred
 #' - `Yob` - The real observed value
 #' - `group` - Which group the event belongs to, should correspond to values in `data$group`
 #' @keywords internal

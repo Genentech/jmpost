@@ -52,6 +52,6 @@ test_that("longitudinal_plot() works as expected", {
 
     vdiffr::expect_doppelganger(
         "longitudinal_plot without ci",
-        p1
+        p2
     )
 })

@@ -170,7 +170,7 @@ subset_and_add_grouping <- function(dat, groupings) {
 #' @param object ([`DataJoint`])\cr The data used to fit a [`JointModel`]
 #' @return A data.frame with the following columns
 #' - `subject` (`character`)\cr The subject identifier
-#' - `time` (`numeric`)\cr The time at which the observation occured
+#' - `time` (`numeric`)\cr The time at which the observation occurred
 #' - `Yob` (`numeric`)\cr The observed value
 #' @keywords internal
 extract_observed_values <- function(object) {
