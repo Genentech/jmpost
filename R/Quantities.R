@@ -72,12 +72,16 @@ dim.Quantities <- function(x) {
 #' `Quantities` -> `data.frame`
 #'
 #' @param x ([`Quantities`]) \cr Any generated model quantity
+#' @param time_grid (`numeric`)\cr Sets the `time` variable. Must be equal in length to `ncol(x)`
+#' @param type (`character`)\cr Sets the `type` variable.
+#' @param groups (`list`)\cr Named `list`. The element names are used to set the `group` variable
 #' @param ... Not used
 #'
 #' @keywords internal
 #' @family Quantities
 #' @export
-as.data.frame.Quantities <- function(x, time_grid, type, groups) {
+as.data.frame.Quantities <- function(x, time_grid, type, groups, ...) {
+    assert_that(length(time_grid) == ncol(x))
     quantities_df <- lapply(
         x,
         \(element) {
@@ -131,7 +135,7 @@ as.data.frame.Quantities <- function(x, time_grid, type, groups) {
 #' @keywords internal
 #' @family Quantities
 #' @export
-summary.Quantities <- function(object, time_grid, type, groups, conf.level = 0.95) {
+summary.Quantities <- function(object, time_grid, type, groups, conf.level = 0.95, ...) {
 
     assert_that(
         ncol(object) == length(time_grid),

@@ -4,7 +4,7 @@
 \alias{summary.Quantities}
 \title{summary}
 \usage{
-\method{summary}{Quantities}(object, time_grid, type, groups, conf.level = 0.95)
+\method{summary}{Quantities}(object, time_grid, type, groups, conf.level = 0.95, ...)
 }
 \arguments{
 \item{object}{(\code{\link{Quantities}}) \cr Any generated model quantity}
