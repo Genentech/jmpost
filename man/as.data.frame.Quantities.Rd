@@ -4,18 +4,18 @@
 \alias{as.data.frame.Quantities}
 \title{\code{Quantities} -> \code{data.frame}}
 \usage{
-\method{as.data.frame}{Quantities}(x, time_grid, type, groups, ...)
+\method{as.data.frame}{Quantities}(x, ..., time_grid, type, groups)
 }
 \arguments{
 \item{x}{(\code{\link{Quantities}}) \cr Any generated model quantity}
+
+\item{...}{Not used}
 
 \item{time_grid}{(\code{numeric})\cr Sets the \code{time} variable. Must be equal in length to \code{ncol(x)}}
 
 \item{type}{(\code{character})\cr Sets the \code{type} variable.}
 
 \item{groups}{(\code{list})\cr Named \code{list}. The element names are used to set the \code{group} variable}
-
-\item{...}{Not used}
 }
 \description{
 \code{Quantities} -> \code{data.frame}

@@ -80,7 +80,7 @@ dim.Quantities <- function(x) {
 #' @keywords internal
 #' @family Quantities
 #' @export
-as.data.frame.Quantities <- function(x, time_grid, type, groups, ...) {
+as.data.frame.Quantities <- function(x, ..., time_grid, type, groups) {
     assert_that(length(time_grid) == ncol(x))
     quantities_df <- lapply(
         x,
