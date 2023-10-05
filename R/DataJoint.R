@@ -162,3 +162,25 @@ subset_and_add_grouping <- function(dat, groupings) {
     row.names(x) <- NULL
     x
 }
+
+
+#' Extract Observed Longitudinal Values
+#'
+#' Utility function to extract the observed longitudinal values from a [`DataJoint`] object
+#' @param object ([`DataJoint`])\cr The data used to fit a [`JointModel`]
+#' @return A data.frame with the following columns
+#' - `subject` (`character`)\cr The subject identifier
+#' - `time` (`numeric`)\cr The time at which the observation occured
+#' - `Yob` (`numeric`)\cr The observed value
+#' @keywords internal
+extract_observed_values <- function(object) {
+    assert_that(inherits(object, "DataJoint"))
+    data <- as.list(object)
+    x <- data.frame(
+        subject = names(data$pt_to_ind)[data$ind_index],
+        time = data$Tobs,
+        Yob = data$Yobs
+    )
+    row.names(x) <- NULL
+    x
+}

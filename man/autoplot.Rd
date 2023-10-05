@@ -6,4 +6,9 @@
 \description{
 See \code{\link[ggplot2:autoplot]{ggplot2::autoplot()}} for details.
 }
+\seealso{
+Other autoplot: 
+\code{\link{autoplot.LongitudinalQuantities}()},
+\code{\link{autoplot.SurvivalQuantities}()}
+}
 \concept{autoplot}

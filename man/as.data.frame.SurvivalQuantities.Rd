@@ -2,7 +2,7 @@
 % Please edit documentation in R/SurvivalQuantities.R
 \name{as.data.frame.SurvivalQuantities}
 \alias{as.data.frame.SurvivalQuantities}
-\title{\code{as.data.frame}}
+\title{\code{SurvivalQuantities} -> \code{data.frame}}
 \usage{
 \method{as.data.frame}{SurvivalQuantities}(x, ...)
 }
@@ -12,7 +12,7 @@
 \item{...}{Not used}
 }
 \description{
-\code{as.data.frame}
+\code{SurvivalQuantities} -> \code{data.frame}
 }
 \seealso{
 Other SurvivalQuantities: 

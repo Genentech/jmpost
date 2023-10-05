@@ -319,8 +319,13 @@ that we are interested in. For illustration, we will plot here the first
 
 ```{r fig.width=6}
 selected_patients <- head(os_data$pt, 10)
-long_samples <- longitudinal(mcmc_results, patients = selected_patients)
-autoplot(long_samples)
+long_quantities <- LongitudinalQuantities(
+    mcmc_results,
+    groups = selected_patients
+)
+as.data.frame(long_quantities)
+summary(long_quantities)
+autoplot(long_quantities)
 ```
 
 ## Survival fit plots

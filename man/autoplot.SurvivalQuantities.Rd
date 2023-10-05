@@ -2,31 +2,36 @@
 % Please edit documentation in R/SurvivalQuantities.R
 \name{autoplot.SurvivalQuantities}
 \alias{autoplot.SurvivalQuantities}
-\title{Automatic Plotting for SurvivalSamples}
+\title{Automatic Plotting for LongitudinalQuantities}
 \usage{
-\method{autoplot}{SurvivalQuantities}(object, add_km = FALSE, add_ci = TRUE, add_wrap = TRUE, ...)
+\method{autoplot}{SurvivalQuantities}(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 }
 \arguments{
 \item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
 
-\item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
-each group/patient}
+\item{conf.level}{(\code{numeric}) \cr confidence level of the interval. If values of \code{FALSE},
+\code{NULL} or \code{0} are provided then confidence regions will not be added to the plot}
 
-\item{add_ci}{(\code{logical}) \cr If \code{TRUE} 95\% CI will be added to the plot for
+\item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
 each group/patient}
 
 \item{add_wrap}{(\code{logical}) \cr If \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
 by each group/patient}
 
-\item{...}{other arguments passed to plotting methods.}
+\item{...}{Not Used.}
 }
 \description{
-Automatic Plotting for SurvivalSamples
+Automatic Plotting for LongitudinalQuantities
 }
 \seealso{
 Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
+
+Other autoplot: 
+\code{\link{autoplot.LongitudinalQuantities}()},
+\code{\link{autoplot}()}
 }
 \concept{SurvivalQuantities}
+\concept{autoplot}

@@ -10,9 +10,9 @@ editor_options:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "README-"
 )
 ```
 
@@ -45,7 +45,7 @@ You can install the current development version from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 if (!require("remotes")) {
-  install.packages("remotes")
+    install.packages("remotes")
 }
 remotes::install_github("genentech/jmpost")
 ```

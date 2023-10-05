@@ -33,8 +33,8 @@ Constructor function to generate a \code{SurvivalQuantities} object.
 \section{Slots}{
 
 \describe{
-\item{\code{quantities}}{(\code{list})\cr Contains 1 named element per element of \code{groups}.
-Each element is a matrix of averaged samples for the corresponding patient}
+\item{\code{quantities}}{(\code{Quantities})\cr The sampled quantities. Should contain 1 element per
+element of \code{group}}
 
 \item{\code{groups}}{(\code{list})\cr See argument section for details}
 

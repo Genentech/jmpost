@@ -1,22 +1,54 @@
-# LongitudinalSamples-class ----
 
-# TODO - Documentation
+#' @include DataJoint.R
+#' @include Quantities.R
+NULL
+
+
+#' `LongitudinalQuantities` Object & Constructor Function
+#'
+#' Constructor function to generate a `LongitudinalQuantities` object.
+#'
+#' @param object ([`JointModelSamples`]) \cr Samples as drawn from a Joint Model
+#'
+#' @param groups (`character`, `NULL`)\cr which patients to calculate the desired
+#' quantities for.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_longitudinal_time, length = 201)`
+#'
+#' @details
+#' Note that unlike [SurvivalQuantities], [LongitudinalQuantities] does not support
+#' group aggregation.
+#'
+#' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
+#' element of `group`
+#' @slot groups (`list`)\cr See argument section for details
+#' @slot time_grid (`numeric`)\cr See argument section for details
+#' @slot data ([`DataJoint`])\cr The data that the Joint Model was fitted to to produce
+#' the samples/quantities
+#'
+#'
+#' @family LongitudinalQuantities
+#' @name LongitudinalQuantities-class
+#' @export LongitudinalQuantities
 .LongitudinalQuantities <- setClass(
     "LongitudinalQuantities",
     slots = c(
-        "quantities" = "list",
-        "quantities_predicted" = "list",
+        "quantities" = "Quantities",
+        "data" = "DataJoint",
         "groups" = "list",
         "time_grid" = "numeric"
     )
 )
+
+#' @rdname LongitudinalQuantities-class
 LongitudinalQuantities <- function(
     object,
     groups = NULL,
     time_grid = NULL
 ) {
-    assert_that(inhertits(object, "JointModelSamples"))
-    assert_that(is.character(groups))
+    assert_that(inherits(object, "JointModelSamples"))
+    assert_that(is.null(groups) || is.character(groups))
     data <- as.list(object@data)
     patients <- decompose_patients(groups, names(data$pt_to_ind))
     time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
@@ -27,11 +59,9 @@ LongitudinalQuantities <- function(
         time_grid_lm = time_grid,
         time_grid_sm = numeric(0)
     )
-browser()
-    # extract_survival_quantities
-    quantities_raw <- extract_longitudinal_quantities(gq)
 
-    # TODO - Think this can be deleted
+    quantities_raw <- extract_quantities(gq, type = "lm_identity")
+
     quantities <- lapply(
         patients$indexes,
         average_samples_by_index,
@@ -40,120 +70,145 @@ browser()
     )
 
     .LongitudinalQuantities(
-        quantities = quantities,
-        quantities_predicted = object@data,
+        quantities = Quantities(quantities),
+        data = object@data,
         groups = patients$groups,
         time_grid = time_grid
     )
 }
 
 
-summarise_ypred <- function(object) {
-    assert_that(inhertits(object, "JointModelSamples"))
-    data <- as.list(object@data)
-    y_fit_samples <- object@results$draws("Ypred", format = "draws_matrix")
-    x <- data.frame(
-        subject = names(data$pt_to_ind)[data$ind_index],
-        time = data$Tobs,
-        samples_median_ci(y_fit_samples)
+
+
+#' `as.data.frame`
+#'
+#' @param x ([`LongitudinalQuantities`]) \cr Longitudinal Quantities
+#' @param ... Not used
+#' @family LongitudinalQuantities
+#' @export
+as.data.frame.LongitudinalQuantities <- function(x, ...) {
+    res <- as.data.frame(
+        x@quantities,
+        time_grid = x@time_grid,
+        groups = x@groups,
+        type = "na"
     )
-    row.names(x) <- NULL
-    x
+    res["type"] <- NULL
+    return(res)
 }
 
 
 
-# TODO - merge this with survival version it is just an identity mapping
-extract_longitudinal_quantities <- function(gq) {
-    assert_that(
-        inherits(gq, "CmdStanGQ")
-    )
-    result <- gq$draws("y_fit_at_time_grid", format = "draws_matrix")
-    cnames <- colnames(result)
-    colnames(result) <- gsub("y_fit_at_time_grid", "quantity", cnames)
-    result
-}
-
-# y_fit_at_grid_samples <- gq$draws(format = "draws_matrix")
-
-# data frame of ypred values
-
-
-
-
-    # results <- list()
-    # for (this_pt_ind in seq_along(patients)) {
-    #     this_pt <- patients[this_pt_ind]
-    #     this_result <- list()
-    #     this_y_fit_names <- sprintf(
-    #         "y_fit_at_time_grid[%i,%i]",
-    #         this_pt_ind,
-    #         seq_along(time_grid)
-    #     )
-    #     this_result$samples <- y_fit_at_grid_samples[, this_y_fit_names, drop = FALSE]
-    #     this_result$summary <- data.frame(
-    #         time = time_grid,
-    #         samples_median_ci(this_result$samples)
-    #     )
-    #     for_this_pt <- which(data$ind_index == data$pt_to_ind[this_pt])
-    #     this_fit <- samples_median_ci(y_fit_samples[, for_this_pt, drop = FALSE])
-    #     this_result$observed <- data.frame(
-    #         t = data$Tobs[for_this_pt],
-    #         y = data$Yobs[for_this_pt],
-    #         this_fit
-    #     )
-    #     results[[this_pt]] <- this_result
-    # }
-
-
-
-as.data.frame.LongitudinalQuantities <- function(...) {}
-
-
-
-
+#' summary
+#'
+#'
+#' @description
+#' This method returns a `data.frame` of the longitudinal quantities
+#'
+#' @param object ([`LongitudinalQuantities`]) \cr Survival Quantities.
+#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @param ... Not used.
+#'
+#' @family LongitudinalQuantities
+#' @family summary
+#' @export
 summary.LongitudinalQuantities <- function(
     object,
     conf.level = 0.95,
     ...
 ) {
-    #TODO 
+    res <- summary(
+        object@quantities,
+        time_grid = object@time_grid,
+        groups = object@groups,
+        type = "na",
+        conf.level = conf.level
+    )
+    res["type"] <- NULL
+    return(res)
 }
 
 
-
-
-longitudinal_plot <- function(...) {}
-
-autoplot.LongitudinalSamples <- function(object, ...) {
-    all_fit_dfs <- lapply(object, "[[", i = "summary")
-    all_fit_dfs_with_pt_id <- Map(cbind, all_fit_dfs, pt_id = names(object))
-    all_fit_df <- do.call(rbind, all_fit_dfs_with_pt_id)
-
-    obs_dfs <- lapply(object, "[[", i = "observed")
-    obs_dfs_with_pt_id <- Map(cbind, obs_dfs, pt_id = names(object))
-    all_obs_df <- do.call(rbind, obs_dfs_with_pt_id)
-
-    ggplot() +
-        geom_line(aes(x = .data$time, y = .data$median), data = all_fit_df) +
-        geom_ribbon(aes(x = .data$time, ymin = .data$lower, ymax = .data$upper), data = all_fit_df, alpha = 0.3) +
-        geom_point(aes(x = .data$t, y = .data$y), data = all_obs_df) +
+#' Longitudinal Plot
+#'
+#' Internal plotting function to create longitudinal plots
+#' This function predominately exists to extract core logic into its own function
+#' to enable easier unit testing.
+#'
+#' @param data (`data.frame`)\cr A `data.frame` of summary statistics for longitudinal
+#' value estimates. See details.
+#' @param data_obs (`data.frame`)\cr A `data.frame` of real observed values to be
+#' overlaid for reference.  See details.
+#' @param add_ci (`logical`)\cr Should confidence intervals be added? Default = `TRUE`.
+#' @details
+#'
+#' ## `data`
+#' Should contain the following columns:
+#' - `time` - Time point
+#' - `group` - The group in which the observation belongs to
+#' - `median` - The median value for the summary statistic
+#' - `upper` - The upper 95% CI for the summary statistic
+#' - `lower` - The lower 95% CI for the summary statistic
+#'
+#' ## `data_obs`
+#' Should contain the following columns:
+#' - `time` - The time at which the observed value occured
+#' - `Yob` - The real observed value
+#' - `group` - Which group the event belongs to, should correspond to values in `data$group`
+#' @keywords internal
+longitudinal_plot <- function(
+    data,
+    data_obs = NULL,
+    add_ci = FALSE
+) {
+    p <- ggplot() +
+        geom_line(aes(x = .data$time, y = .data$median), data = data) +
         xlab(expression(t)) +
         ylab(expression(y)) +
-        facet_wrap(~ pt_id)
+        facet_wrap(~group) +
+        theme_bw()
+
+    if (add_ci) {
+        p <- p + geom_ribbon(
+            aes(x = .data$time, ymin = .data$lower, ymax = .data$upper),
+            data = data,
+            alpha = 0.3
+        )
+    }
+
+    if (!is.null(data_obs)) {
+        p <- p + geom_point(aes(x = .data$time, y = .data$Yob), data = data_obs)
+    }
+    return(p)
 }
 
 
-# Manually specify flow + features
-adsl <- dm |>
-    mutate(VAR1 = derive_var1(inp1, inp2)) |>
-    mutate(VAR2 = derive_var2(inp1, inp3))
-
-# wrapper + Specific feature flag
-make_adsl(add_total_column = TRUE)
-
-# Wrapper + study flag (logic in wrapper)
-make_adsl(is_study_x = TRUE)
-
-# Logic in wrapper from environment variables or something
-make_adsl()
+#' Automatic Plotting for LongitudinalQuantities
+#'
+#' @param object ([`LongitudinalQuantities`]) \cr Longitudinal Quantities
+#' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
+#' `NULL` or `0` are provided then confidence regions will not be added to the plot
+#' @param ... Not used.
+#'
+#' @family LongitudinalQuantities
+#' @family autoplot
+#' @export
+autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
+    include_ci <- !is.null(conf.level) && is.numeric(conf.level) && conf.level > 0
+    # If CI aren't needed supply a default 0.95 to summary function as it needs
+    # a value to be specified to work
+    conf.level <- if (include_ci) conf.level else 0.95
+    data_sum <- summary(object, conf.level = conf.level)
+    data_obs <- extract_observed_values(object@data)
+    assert_that(
+        "group" %in% names(data_sum),
+        "subject" %in% names(data_obs)
+    )
+    data_obs$group <- data_obs$subject
+    data_obs <- data_obs[data_obs$group %in% data_sum$group, ]
+    longitudinal_plot(
+        data = data_sum,
+        data_obs = data_obs,
+        add_ci = include_ci
+    )
+}

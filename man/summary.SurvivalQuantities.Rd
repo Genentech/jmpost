@@ -21,6 +21,9 @@ Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()}
+
+Other summary: 
+\code{\link{summary.LongitudinalQuantities}()}
 }
 \concept{SurvivalQuantities}
 \concept{summary}

@@ -65,6 +65,7 @@ Collate:
     'ParameterList.R'
     'StanModule.R'
     'JointModel.R'
+    'Quantities.R'
     'SurvivalQuantities.R'
     'JointModelSamples.R'
     'StanModel.R'
