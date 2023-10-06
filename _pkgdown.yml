@@ -132,4 +132,3 @@ reference:
       - as.list.StanModule
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal
-
