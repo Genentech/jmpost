@@ -141,7 +141,7 @@ link_gsf_abstract <- function(stan,
 #'
 #' @export
 link_gsf_ttg <- function(
-        gamma = prior_normal(0, 5, init = 0)
+    gamma = prior_normal(0, 5, init = 0)
 ) {
     .link_gsf_ttg(
         stan = StanModule("lm-gsf/link_ttg.stan"),
@@ -173,7 +173,7 @@ link_gsf_ttg <- function(
 #'
 #' @export
 link_gsf_dsld <- function(
-        beta = prior_normal(0, 5, init = 0)
+    beta = prior_normal(0, 5, init = 0)
 ) {
     .link_gsf_dsld(
         stan = StanModule("lm-gsf/link_dsld.stan"),
