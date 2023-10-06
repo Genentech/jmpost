@@ -11,7 +11,8 @@ as_stan_file(
   parameters = "",
   transformed_parameters = "",
   model = "",
-  generated_quantities = ""
+  generated_quantities = "",
+  stan_blocks = STAN_BLOCKS
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ as_stan_file(
 \item{model}{(\code{character})\cr code block.}
 
 \item{generated_quantities}{(\code{character})\cr code block.}
+
+\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
 }
 \value{
 Character vector of the complete Stan code.
