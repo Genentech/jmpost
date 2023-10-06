@@ -196,7 +196,7 @@ longitudinal_plot <- function(
 autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
     include_ci <- !is.null(conf.level) && is.numeric(conf.level) && conf.level > 0
     # If CI aren't needed supply a default 0.95 to summary function as it needs
-    # a value to be specified to work
+    # a value to be specified to work.
     conf.level <- if (include_ci) conf.level else 0.95
     data_sum <- summary(object, conf.level = conf.level)
     data_obs <- extract_observed_values(object@data)
