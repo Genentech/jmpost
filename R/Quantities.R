@@ -60,10 +60,8 @@ dim.Quantities <- function(x) {
     num_cols <- vapply(x, ncol, numeric(1))
     u_num_rows <- unique(num_rows)
     u_num_cols <- unique(num_cols)
-    assert_that(
-        length(u_num_cols) == 1,
-        length(u_num_rows) == 1
-    )
+    assert_number(u_num_cols)
+    assert_number(u_num_cols)
     return(c(u_num_rows, u_num_cols))
 }
 
@@ -137,10 +135,9 @@ as.data.frame.Quantities <- function(x, ..., time_grid, type, groups) {
 #' @export
 summary.Quantities <- function(object, time_grid, type, groups, conf.level = 0.95, ...) {
 
+    assert_string(type)
     assert_that(
         ncol(object) == length(time_grid),
-        is.character(type),
-        length(type) == 1,
         is.list(groups),
         length(names(groups)) == length(groups),
         all(names(groups) != ""),
@@ -236,9 +233,7 @@ average_samples_by_index <- function(subject_index, time_index, quantities) {
 #' @keywords internal
 extract_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz", "lm_identity")) {
     type <- match.arg(type)
-    assert_that(
-        inherits(gq, "CmdStanGQ")
-    )
+    assert_class(gq, "CmdStanGQ")
     meta <- switch(type,
         surv = list("log_surv_fit_at_time_grid", exp),
         cumhaz = list("log_surv_fit_at_time_grid", \(x) -x),

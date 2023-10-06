@@ -46,8 +46,8 @@ LongitudinalQuantities <- function(
     groups = NULL,
     time_grid = NULL
 ) {
-    assert_that(inherits(object, "JointModelSamples"))
-    assert_that(is.null(groups) || is.character(groups))
+    assert_class(object, "JointModelSamples")
+    assert_character(groups, null.ok = TRUE)
     data <- as.list(object@data)
     patients <- decompose_patients(groups, names(data$pt_to_ind))
     time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))

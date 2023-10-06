@@ -30,6 +30,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     assertthat,
+    checkmate,
     dplyr,
     stringr,
     cmdstanr,

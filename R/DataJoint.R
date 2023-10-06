@@ -173,7 +173,7 @@ subset_and_add_grouping <- function(dat, groupings) {
 #' - `Yob` (`numeric`)\cr The observed value
 #' @keywords internal
 extract_observed_values <- function(object) {
-    assert_that(inherits(object, "DataJoint"))
+    assert_class(object, "DataJoint")
     data <- as.list(object)
     x <- data.frame(
         subject = names(data$pt_to_ind)[data$ind_index],
