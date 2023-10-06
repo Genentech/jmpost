@@ -3,6 +3,13 @@ NULL
 
 # STAN_BLOCKS ----
 
+#' List of Stan Blocks
+#'
+#' @description
+#' A list with 1 element per standard Stan program blocks.
+#' This object is  mostly used internally as a reference for
+#' what blocks are expected to exist within a given Stan program.
+#'
 #' @export
 STAN_BLOCKS <- list(
     functions = "functions",
