@@ -167,7 +167,7 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 }
 
 
-#' Automatic Plotting for LongitudinalQuantities
+#' Automatic Plotting for `SurvivalQuantities``
 #'
 #' @param object ([`SurvivalQuantities`]) \cr survival quantities.
 #' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
@@ -237,17 +237,17 @@ autoplot.SurvivalQuantities <- function(object,
 #'
 #' ## `data`
 #' Should contain the following columns:
-#' - `time` - Time point
-#' - `group` - The group in which the observation belongs to
-#' - `median` - The median value for the summary statistic
-#' - `upper` - The upper 95% CI for the summary statistic
-#' - `lower` - The lower 95% CI for the summary statistic
+#' - `time` (`numeric`) \cr time point for the summary statistic.
+#' - `group` (`character`) \cr the group in which the observation belongs to.
+#' - `median` (`numeric`) \cr the median value for the summary statistic.
+#' - `upper` (`numeric`) \cr the upper 95% CI for the summary statistic.
+#' - `lower` (`numeric`) \cr the lower 95% CI for the summary statistic.
 #'
 #' ## `kmdf`
 #' Should contain the following columns:
-#' - `time` - The time at which an event occurred
-#' - `event` - 1/0 status indicator for the event
-#' - `group` - Which group the event belongs to, should correspond to values in `data$group`
+#' - `time` (`numeric`) \cr the time at which an event occurred.
+#' - `event` (`numeric`) \cr 1/0 status indicator for the event.
+#' - `group` (`character`) \cr which group the event belongs to, should correspond to values in `data$group`.
 #' @keywords internal
 survival_plot <- function(
     data,

@@ -14,7 +14,7 @@
 \item{...}{Not used.}
 }
 \description{
-This method returns a \code{data.frame} of the longitudinal quantities
+This method returns a \code{data.frame} of the longitudinal quantities.
 }
 \seealso{
 Other LongitudinalQuantities: 

@@ -39,11 +39,11 @@ to enable easier unit testing.
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - Time point
-\item \code{group} - The group in which the observation belongs to
-\item \code{median} - The median value for the summary statistic
-\item \code{upper} - The upper 95\% CI for the summary statistic
-\item \code{lower} - The lower 95\% CI for the summary statistic
+\item \code{time} (\code{numeric}) \cr time point for the summary statistic.
+\item \code{group} (\code{character}) \cr the group in which the observation belongs to.
+\item \code{median} (\code{numeric}) \cr the median value for the summary statistic.
+\item \code{upper} (\code{numeric}) \cr the upper 95\% CI for the summary statistic.
+\item \code{lower} (\code{numeric}) \cr the lower 95\% CI for the summary statistic.
 }
 }
 
@@ -51,9 +51,9 @@ Should contain the following columns:
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - The time at which an event occurred
-\item \code{event} - 1/0 status indicator for the event
-\item \code{group} - Which group the event belongs to, should correspond to values in \code{data$group}
+\item \code{time} (\code{numeric}) \cr the time at which an event occurred.
+\item \code{event} (\code{numeric}) \cr 1/0 status indicator for the event.
+\item \code{group} (\code{character}) \cr which group the event belongs to, should correspond to values in \code{data$group}.
 }
 }
 }

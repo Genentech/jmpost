@@ -2,7 +2,7 @@
 % Please edit documentation in R/SurvivalQuantities.R
 \name{autoplot.SurvivalQuantities}
 \alias{autoplot.SurvivalQuantities}
-\title{Automatic Plotting for LongitudinalQuantities}
+\title{Automatic Plotting for `SurvivalQuantities``}
 \usage{
 \method{autoplot}{SurvivalQuantities}(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 }
@@ -21,7 +21,7 @@ by each group/patient.}
 \item{...}{not used.}
 }
 \description{
-Automatic Plotting for LongitudinalQuantities
+Automatic Plotting for `SurvivalQuantities``
 }
 \seealso{
 Other SurvivalQuantities: 

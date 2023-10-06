@@ -2,7 +2,7 @@
 % Please edit documentation in R/LongitudinalQuantities.R
 \name{autoplot.LongitudinalQuantities}
 \alias{autoplot.LongitudinalQuantities}
-\title{Automatic Plotting for LongitudinalQuantities}
+\title{Automatic Plotting for \code{LongitudinalQuantities}}
 \usage{
 \method{autoplot}{LongitudinalQuantities}(object, conf.level = 0.95, ...)
 }
@@ -15,7 +15,7 @@
 \item{...}{not used.}
 }
 \description{
-Automatic Plotting for LongitudinalQuantities
+Automatic Plotting for \code{LongitudinalQuantities}
 }
 \seealso{
 Other LongitudinalQuantities: 

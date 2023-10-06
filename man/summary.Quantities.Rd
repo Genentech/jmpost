@@ -23,12 +23,12 @@ Must be equal in length to \code{ncol(object)}.}
 \value{
 A \code{data.frame} with the following variables:
 \itemize{
-\item \code{median} - The median value of the quantity
-\item \code{lower} - The lower CI value of the quantity
-\item \code{upper} -  The upper CI value of the quantity
-\item \code{time} - The time point which the quantity is for
-\item \code{group} - Which group the quantity belongs to
-\item \code{type} - What type of quantity is it
+\item \code{median} (\code{numeric}) \cr the median value of the quantity.
+\item \code{lower} (\code{numeric}) \cr the lower CI value of the quantity.
+\item \code{upper} (\code{numeric}) \cr the upper CI value of the quantity.
+\item \code{time} (\code{numeric}) \cr the time point which the quantity is for.
+\item \code{group} (\code{character}) \cr which group the quantity belongs to.
+\item \code{type} (\code{character}) \cr what type of quantity is it.
 }
 }
 \description{

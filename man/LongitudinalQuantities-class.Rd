@@ -22,7 +22,7 @@ quantity at. If \code{NULL} will be set to \code{seq(0, max_longitudinal_time, l
 Constructor function to generate a \code{LongitudinalQuantities} object.
 }
 \details{
-Note that unlike \link{SurvivalQuantities}, \link{LongitudinalQuantities} does not support
+Note that unlike \code{\link{SurvivalQuantities}}, \code{\link{LongitudinalQuantities}} does not support
 group aggregation.
 }
 \section{Slots}{

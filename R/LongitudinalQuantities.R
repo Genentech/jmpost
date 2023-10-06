@@ -9,7 +9,7 @@ NULL
 #' Constructor function to generate a `LongitudinalQuantities` object.
 #'
 #' @details
-#' Note that unlike [SurvivalQuantities], [LongitudinalQuantities] does not support
+#' Note that unlike [`SurvivalQuantities`], [`LongitudinalQuantities`] does not support
 #' group aggregation.
 #'
 #' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
@@ -102,7 +102,7 @@ as.data.frame.LongitudinalQuantities <- function(x, ...) {
 #'
 #'
 #' @description
-#' This method returns a `data.frame` of the longitudinal quantities
+#' This method returns a `data.frame` of the longitudinal quantities.
 #'
 #' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
@@ -143,17 +143,18 @@ summary.LongitudinalQuantities <- function(
 #'
 #' ## `data`
 #' Should contain the following columns:
-#' - `time` - Time point
-#' - `group` - The group in which the observation belongs to
-#' - `median` - The median value for the summary statistic
-#' - `upper` - The upper 95% CI for the summary statistic
-#' - `lower` - The lower 95% CI for the summary statistic
+#' - `time` (`numeric`) \cr time point for the summary statistic.
+#' - `group` (`character`) \cr the group in which the observation belongs to.
+#' - `median` (`numeric`) \cr the median value for the summary statistic.
+#' - `upper` (`numeric`) \cr the upper 95% CI for the summary statistic.
+#' - `lower` (`numeric`) \cr the lower 95% CI for the summary statistic.
 #'
 #' ## `data_obs`
 #' Should contain the following columns:
-#' - `time` - The time at which the observed value occurred
-#' - `Yob` - The real observed value
-#' - `group` - Which group the event belongs to, should correspond to values in `data$group`
+#' - `time` (`numeric`) \cr the time at which the observed value occurred.
+#' - `Yob` (`numeric`) \cr the real observed value.
+#' - `group` (`character`) \cr which group the event belongs to, should correspond to
+#' values in `data$group`.
 #' @keywords internal
 longitudinal_plot <- function(
     data,
@@ -182,7 +183,7 @@ longitudinal_plot <- function(
 }
 
 
-#' Automatic Plotting for LongitudinalQuantities
+#' Automatic Plotting for `LongitudinalQuantities`
 #'
 #' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,

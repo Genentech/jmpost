@@ -123,12 +123,12 @@ as.data.frame.Quantities <- function(x, ..., time_grid, type, groups) {
 #'
 #' @returns
 #' A `data.frame` with the following variables:
-#' - `median` - The median value of the quantity
-#' - `lower` - The lower CI value of the quantity
-#' - `upper` -  The upper CI value of the quantity
-#' - `time` - The time point which the quantity is for
-#' - `group` - Which group the quantity belongs to
-#' - `type` - What type of quantity is it
+#' - `median` (`numeric`) \cr the median value of the quantity.
+#' - `lower` (`numeric`) \cr the lower CI value of the quantity.
+#' - `upper` (`numeric`) \cr the upper CI value of the quantity.
+#' - `time` (`numeric`) \cr the time point which the quantity is for.
+#' - `group` (`character`) \cr which group the quantity belongs to.
+#' - `type` (`character`) \cr what type of quantity is it.
 #'
 #' @keywords internal
 #' @family Quantities
