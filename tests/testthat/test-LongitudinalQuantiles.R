@@ -90,7 +90,7 @@ test_that("Test that LongitudinalQuantities works as expected", {
     ### LongitudinalQuantities does not support group aggregation
     expect_error(
         LongitudinalQuantities(mp, groups = list("a" = c("pt_00011", "pt_00012"))),
-        regexp = "groups is not a character vector"
+        regexp = "not 'list'"
     )
 
 
