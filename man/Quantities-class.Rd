@@ -10,8 +10,8 @@
 Quantities(x)
 }
 \arguments{
-\item{x}{(\code{list})\cr A \code{list} of \code{matrix} objects. Each matrix must have the exact
-same dimensions}
+\item{x}{(\code{list})\cr a \code{list} of \code{matrix} objects. Each matrix must have the exact
+same dimensions.}
 }
 \description{
 A simple wrapper around a \code{list} to ensure each element complies

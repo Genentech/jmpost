@@ -7,9 +7,9 @@
 \method{as.data.frame}{SurvivalQuantities}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
+\item{x}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
 
-\item{...}{Not used}
+\item{...}{not used.}
 }
 \description{
 \code{SurvivalQuantities} -> \code{data.frame}

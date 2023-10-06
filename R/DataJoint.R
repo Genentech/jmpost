@@ -90,8 +90,8 @@ as.list.DataJoint <- function(x, ...) {
 
 #' Subsetting `DataJoint` as a `data.frame`
 #'
-#' @param x (`DataJoint`) \cr A [DataJoint][DataJoint-class] object created by [DataJoint()]
-#' @param patients (`character` or `list`)\cr the patients that you wish to subset the `data.frame`
+#' @param x (`DataJoint`) \cr object created by [DataJoint()].
+#' @param patients (`character` or `list`)\cr patients that you wish to subset the `data.frame`
 #' to contain. See details.
 #' @param ... Not used.
 #'
@@ -128,9 +128,9 @@ subset.DataJoint <- function(x, patients, ...) {
 
 #' `subset_and_add_grouping`
 #'
-#' @param dat (`data.frame`) \cr Must have a column called `patient` which corresponds to the
-#' values passed to `groupings`
-#' @param groupings (`character` or `list`)\cr the patients that you wish to subset the dataset
+#' @param dat (`data.frame`) \cr must have a column called `patient` which corresponds to the
+#' values passed to `groupings`.
+#' @param groupings (`character` or `list`)\cr patients that you wish to subset the dataset
 #' to contain. If `groupings` is a list then an additional variable `group` will be added
 #' onto the dataset specifying which group the row belongs to.
 #'
@@ -167,7 +167,7 @@ subset_and_add_grouping <- function(dat, groupings) {
 #' Extract Observed Longitudinal Values
 #'
 #' Utility function to extract the observed longitudinal values from a [`DataJoint`] object
-#' @param object ([`DataJoint`])\cr The data used to fit a [`JointModel`]
+#' @param object ([`DataJoint`])\cr data used to fit a [`JointModel`].
 #' @return A data.frame with the following columns
 #' - `subject` (`character`)\cr The subject identifier
 #' - `time` (`numeric`)\cr The time at which the observation occurred

@@ -7,9 +7,9 @@
 \method{subset}{DataJoint}(x, patients, ...)
 }
 \arguments{
-\item{x}{(\code{DataJoint}) \cr A \link[=DataJoint-class]{DataJoint} object created by \code{\link[=DataJoint]{DataJoint()}}}
+\item{x}{(\code{DataJoint}) \cr object created by \code{\link[=DataJoint]{DataJoint()}}.}
 
-\item{patients}{(\code{character} or \code{list})\cr the patients that you wish to subset the \code{data.frame}
+\item{patients}{(\code{character} or \code{list})\cr patients that you wish to subset the \code{data.frame}
 to contain. See details.}
 
 \item{...}{Not used.}

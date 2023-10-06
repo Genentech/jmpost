@@ -7,12 +7,12 @@
 \method{autoplot}{LongitudinalQuantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{LongitudinalQuantities}}) \cr Longitudinal Quantities}
+\item{object}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval. If values of \code{FALSE},
-\code{NULL} or \code{0} are provided then confidence regions will not be added to the plot}
+\code{NULL} or \code{0} are provided then confidence regions will not be added to the plot.}
 
-\item{...}{Not used.}
+\item{...}{not used.}
 }
 \description{
 Automatic Plotting for LongitudinalQuantities

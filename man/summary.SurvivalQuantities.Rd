@@ -7,11 +7,11 @@
 \method{summary}{SurvivalQuantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities.}
+\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
 
-\item{...}{Not used.}
+\item{...}{not used.}
 }
 \description{
 This method returns a \code{data.frame} of key quantities (survival / log-hazard / etc)

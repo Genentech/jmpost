@@ -7,18 +7,18 @@
 \method{autoplot}{SurvivalQuantities}(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 }
 \arguments{
-\item{object}{(\code{\link{SurvivalQuantities}}) \cr Survival Quantities}
+\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval. If values of \code{FALSE},
 \code{NULL} or \code{0} are provided then confidence regions will not be added to the plot}
 
-\item{add_km}{(\code{logical}) \cr If \code{TRUE} Kaplan-Meier curves will be added to the plot for
-each group/patient}
+\item{add_km}{(\code{logical}) \cr if \code{TRUE} Kaplan-Meier curves will be added to the plot for
+each group/patient.}
 
-\item{add_wrap}{(\code{logical}) \cr If \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
-by each group/patient}
+\item{add_wrap}{(\code{logical}) \cr if \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
+by each group/patient.}
 
-\item{...}{Not Used.}
+\item{...}{not used.}
 }
 \description{
 Automatic Plotting for LongitudinalQuantities

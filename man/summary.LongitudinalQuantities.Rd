@@ -7,7 +7,7 @@
 \method{summary}{LongitudinalQuantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{LongitudinalQuantities}}) \cr Survival Quantities.}
+\item{object}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
 

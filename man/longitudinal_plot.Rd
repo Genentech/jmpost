@@ -7,10 +7,10 @@
 longitudinal_plot(data, data_obs = NULL, add_ci = FALSE)
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr A \code{data.frame} of summary statistics for longitudinal
+\item{data}{(\code{data.frame})\cr summary statistics for longitudinal
 value estimates. See details.}
 
-\item{data_obs}{(\code{data.frame})\cr A \code{data.frame} of real observed values to be
+\item{data_obs}{(\code{data.frame})\cr real observed values to be
 overlaid for reference.  See details.}
 
 \item{add_ci}{(\code{logical})\cr Should confidence intervals be added? Default = \code{TRUE}.}

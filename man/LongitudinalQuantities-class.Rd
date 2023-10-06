@@ -10,13 +10,13 @@
 LongitudinalQuantities(object, groups = NULL, time_grid = NULL)
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr Samples as drawn from a Joint Model}
+\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
 \item{groups}{(\code{character}, \code{NULL})\cr which patients to calculate the desired
 quantities for.}
 
 \item{time_grid}{(\code{numeric} or \code{NULL})\cr a vector of time points to calculate the desired
-quantity at. If \code{NULL} will be set to \code{seq(0, max_longitudinal_time, length = 201)}}
+quantity at. If \code{NULL} will be set to \code{seq(0, max_longitudinal_time, length = 201)}.}
 }
 \description{
 Constructor function to generate a \code{LongitudinalQuantities} object.

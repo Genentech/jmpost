@@ -7,13 +7,13 @@
 average_samples_by_index(subject_index, time_index, quantities)
 }
 \arguments{
-\item{subject_index}{(\code{numeric})\cr Which subject indices to extract from \code{quantities}.
+\item{subject_index}{(\code{numeric})\cr which subject indices to extract from \code{quantities}.
 See details.}
 
-\item{time_index}{(\code{numeric})\cr Which time point indices to extract from \code{quantities}.
+\item{time_index}{(\code{numeric})\cr which time point indices to extract from \code{quantities}.
 See details.}
 
-\item{quantities}{(\code{\link[posterior:draws_matrix]{posterior::draws_matrix}})\cr A matrix of sample draws.
+\item{quantities}{(\code{\link[posterior:draws_matrix]{posterior::draws_matrix}})\cr sample draws.
 See details.}
 }
 \description{

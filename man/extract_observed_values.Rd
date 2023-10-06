@@ -7,7 +7,7 @@
 extract_observed_values(object)
 }
 \arguments{
-\item{object}{(\code{\link{DataJoint}})\cr The data used to fit a \code{\link{JointModel}}}
+\item{object}{(\code{\link{DataJoint}})\cr data used to fit a \code{\link{JointModel}}.}
 }
 \value{
 A data.frame with the following columns

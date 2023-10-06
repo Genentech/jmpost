@@ -7,17 +7,18 @@
 \method{summary}{Quantities}(object, time_grid, type, groups, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Quantities}}) \cr Any generated model quantity}
+\item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
 
-\item{time_grid}{(\code{numeric})\cr Sets the \code{time} variable. Must be equal in length to \code{ncol(object)}}
+\item{time_grid}{(\code{numeric})\cr sets the \code{time} variable.
+Must be equal in length to \code{ncol(object)}.}
 
-\item{type}{(\code{character})\cr Sets the \code{type} variable.}
+\item{type}{(\code{character})\cr sets the \code{type} variable.}
 
-\item{groups}{(\code{list})\cr Named \code{list}. The element names are used to set the \code{group} variable}
+\item{groups}{(\code{list})\cr named \code{list}. The element names are used to set the \code{group} variable.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
 
-\item{...}{Not used.}
+\item{...}{not used.}
 }
 \value{
 A \code{data.frame} with the following variables:

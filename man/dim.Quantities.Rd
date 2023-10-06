@@ -7,7 +7,7 @@
 \method{dim}{Quantities}(x)
 }
 \arguments{
-\item{x}{(\code{\link{Quantities}}) \cr Any generated model quantity
+\item{x}{(\code{\link{Quantities}}) \cr generated quantities.
 
 Returns the number of rows and columns within any given
 element of the \link{Quantities} object. As each element is of the same

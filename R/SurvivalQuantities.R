@@ -8,17 +8,17 @@ NULL
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
 #'
-#' @param object ([`JointModelSamples`]) \cr Samples as drawn from a Joint Model
+#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #'
 #' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
 #' quantities for.
 #' See "Group Specification" for more details.
 #'
-#' @param type (`character`)\cr The quantity to be generated.
+#' @param type (`character`)\cr quantity to be generated.
 #' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
 #'
-#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`
+#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
 #'
 #'
 #' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
@@ -130,9 +130,9 @@ setValidity(
 #' @description
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #'
-#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities.
+#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... Not used.
+#' @param ... not used.
 #'
 #' @family SurvivalQuantities
 #' @family summary
@@ -155,8 +155,8 @@ summary.SurvivalQuantities <- function(
 
 #' `SurvivalQuantities` -> `data.frame`
 #'
-#' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
-#' @param ... Not used
+#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param ... not used.
 #' @family SurvivalQuantities
 #' @export
 as.data.frame.SurvivalQuantities <- function(x, ...) {
@@ -171,14 +171,14 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 
 #' Automatic Plotting for LongitudinalQuantities
 #'
-#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities
-#' @param add_km (`logical`) \cr If `TRUE` Kaplan-Meier curves will be added to the plot for
-#' each group/patient
-#' @param add_wrap (`logical`) \cr If `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
-#' by each group/patient
+#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
+#' each group/patient.
+#' @param add_wrap (`logical`) \cr if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
+#' by each group/patient.
 #' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
 #' `NULL` or `0` are provided then confidence regions will not be added to the plot
-#' @param ... Not Used.
+#' @param ... not used.
 #'
 #' @family SurvivalQuantities
 #' @family autoplot
@@ -225,15 +225,15 @@ autoplot.SurvivalQuantities <- function(object,
 #' This function predominately exists to extract core logic into its own function
 #' to enable easier unit testing.
 #'
-#' @param data (`data.frame`)\cr A `data.frame` of summary statistics for a survival
+#' @param data (`data.frame`)\cr summary statistics for a survival
 #' curve to be plotted. See details.
-#' @param add_ci (`logical`)\cr Should confidence intervals be added? Default = `TRUE`.
-#' @param add_wrap (`logical`)\cr Should the plots be wrapped by `data$group`? Default = `TRUE`.
-#' @param kmdf (`data.frame` or `NULL`)\cr A `data.frame` of event times and status used to plot
+#' @param add_ci (`logical`)\cr should confidence intervals be added? Default = `TRUE`.
+#' @param add_wrap (`logical`)\cr should the plots be wrapped by `data$group`? Default = `TRUE`.
+#' @param kmdf (`data.frame` or `NULL`)\cr event times and status used to plot
 #' overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
-#' @param y_label (`character` or `expression`) \cr Label to display on the y-axis.
-#' Default = `expression(S(t))`
-#' @param x_label (`character` or `expression`) \cr Label to display on the x-axis.
+#' @param y_label (`character` or `expression`) \cr label to display on the y-axis.
+#' Default = `expression(S(t))`.
+#' @param x_label (`character` or `expression`) \cr label to display on the x-axis.
 #'
 #' @details
 #'

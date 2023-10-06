@@ -15,16 +15,16 @@ SurvivalQuantities(
 )
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr Samples as drawn from a Joint Model}
+\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
 \item{groups}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
 quantities for.
 See "Group Specification" for more details.}
 
-\item{time_grid}{(\code{numeric} or \code{NULL})\cr a vector of time points to calculate the desired
-quantity at. If \code{NULL} will be set to \code{seq(0, max_survival_time, length = 201)}}
+\item{time_grid}{(\code{numeric} or \code{NULL})\cr vector of time points to calculate the desired
+quantity at. If \code{NULL} will be set to \code{seq(0, max_survival_time, length = 201)}.}
 
-\item{type}{(\code{character})\cr The quantity to be generated.
+\item{type}{(\code{character})\cr quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
 }
 \description{

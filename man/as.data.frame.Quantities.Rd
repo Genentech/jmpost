@@ -7,15 +7,15 @@
 \method{as.data.frame}{Quantities}(x, ..., time_grid, type, groups)
 }
 \arguments{
-\item{x}{(\code{\link{Quantities}}) \cr Any generated model quantity}
+\item{x}{(\code{\link{Quantities}}) \cr generated quantities.}
 
-\item{...}{Not used}
+\item{...}{not used.}
 
-\item{time_grid}{(\code{numeric})\cr Sets the \code{time} variable. Must be equal in length to \code{ncol(x)}}
+\item{time_grid}{(\code{numeric})\cr sets the \code{time} variable. Must be equal in length to \code{ncol(x)}.}
 
-\item{type}{(\code{character})\cr Sets the \code{type} variable.}
+\item{type}{(\code{character})\cr sets the \code{type} variable.}
 
-\item{groups}{(\code{list})\cr Named \code{list}. The element names are used to set the \code{group} variable}
+\item{groups}{(\code{list})\cr named \code{list}. The element names are used to set the \code{group} variable.}
 }
 \description{
 \code{Quantities} -> \code{data.frame}
