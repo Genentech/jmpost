@@ -21,7 +21,7 @@ NULL
 #' specifications.
 #'
 #'
-#' @param ... (`Parameter`)\cr which parameter specifications to include.
+
 #' @slot parameters (`list`) \cr a list of [`Parameter`] objects
 #' @family ParameterList
 #' @export ParameterList
@@ -32,6 +32,7 @@ NULL
         parameters = "list"
     )
 )
+#' @param ... (`Parameter`)\cr which parameter specifications to include.
 #' @rdname ParameterList-class
 ParameterList <- function(...) {
     .ParameterList(parameters = list(...))

@@ -5,9 +5,6 @@
 #' A simple wrapper around a `list` to ensure each element complies
 #' to specific formatting rules
 #'
-#' @param x (`list`)\cr a `list` of `matrix` objects. Each matrix must have the exact
-#' same dimensions.
-#'
 #' @keywords internal
 #' @name Quantities-class
 #' @family Quantities
@@ -16,6 +13,8 @@
     contains = "list"
 )
 
+#' @param x (`list`)\cr a `list` of `matrix` objects. Each matrix must have the exact
+#' same dimensions.
 #' @rdname Quantities-class
 Quantities <- function(x) {
     .Quantities(x)

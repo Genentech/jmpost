@@ -20,13 +20,6 @@ NULL
 #'
 #' The [`DataSurvival`] class handles the processing of the survival data for fitting a Joint Model.
 #'
-#' @param data (`data.frame`)\cr the observed time-to-event data.
-#' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
-#'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
-#' @param subject (`character`)\cr the name of the subject identifier variable.
-#' @param arm (`character`)\cr the name of the treatment arm variable.
-#' @param study (`character`)\cr the name of the study variable.
-#'
 #' @slot data (`data.frame`)\cr See Arguments for details.
 #' @slot formula (`formula`)\cr See Arguments for details.
 #' @slot subject (`character`)\cr See Arguments for details.
@@ -48,6 +41,12 @@ NULL
     )
 )
 
+#' @param data (`data.frame`)\cr the observed time-to-event data.
+#' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
+#'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
+#' @param subject (`character`)\cr the name of the subject identifier variable.
+#' @param arm (`character`)\cr the name of the treatment arm variable.
+#' @param study (`character`)\cr the name of the study variable.
 #' @rdname DataSurvival-class
 DataSurvival <- function(data, formula, subject, arm, study) {
     .DataSurvival(

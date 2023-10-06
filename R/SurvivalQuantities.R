@@ -8,19 +8,6 @@ NULL
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
 #'
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
-#'
-#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#' See "Group Specification" for more details.
-#'
-#' @param type (`character`)\cr quantity to be generated.
-#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
-#'
-#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
-#'
-#'
 #' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
 #' element of `group`
 #' @slot groups (`list`)\cr See argument section for details
@@ -55,6 +42,17 @@ NULL
     )
 )
 
+#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#'
+#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
+#' quantities for.
+#' See "Group Specification" for more details.
+#'
+#' @param type (`character`)\cr quantity to be generated.
+#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
 #' @rdname SurvivalQuantities-class
 SurvivalQuantities <- function(
     object,

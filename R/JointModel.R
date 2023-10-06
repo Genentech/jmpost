@@ -23,11 +23,6 @@ NULL
 #' @slot stan (`StanModule`)\cr code containing the joint model specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
-#'
-#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
-#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
-#' @param link (`Link`)\cr the link.
-#'
 #' @family JointModel
 #' @export JointModel
 #' @exportClass JointModel
@@ -39,6 +34,9 @@ NULL
     )
 )
 
+#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
+#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param link (`Link`)\cr the link.
 #' @rdname JointModel-class
 JointModel <- function(longitudinal = NULL,
                        survival = NULL,

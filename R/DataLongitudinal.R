@@ -20,12 +20,6 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 #'
 #' The [`DataLongitudinal`] class handles the processing of the longitudinal data for fitting a Joint Model.
 #'
-#' @param data (`data.frame`)\cr containing the observed longitudinal data.
-#' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
-#' @param subject (`character`)\cr the name of the subject identifier variable.
-#' @param threshold (`numeric`)\cr cut-off value to be used to declare an observation as censored
-#'   (below detection limit).
-#'
 #'
 #' @slot data (`data.frame`)\cr See Arguments for details; Note that
 #'   observations that contain missing values in the required variables are removed.
@@ -47,6 +41,12 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
     )
 )
 
+
+#' @param data (`data.frame`)\cr containing the observed longitudinal data.
+#' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
+#' @param subject (`character`)\cr the name of the subject identifier variable.
+#' @param threshold (`numeric`)\cr cut-off value to be used to declare an observation as censored
+#'   (below detection limit).
 #' @rdname DataLongitudinal-class
 DataLongitudinal <- function(data, formula, subject, threshold = NULL) {
     .DataLongitudinal(

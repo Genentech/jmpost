@@ -8,14 +8,6 @@ NULL
 #'
 #' Constructor function to generate a `LongitudinalQuantities` object.
 #'
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
-#'
-#' @param groups (`character`, `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#'
-#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_longitudinal_time, length = 201)`.
-#'
 #' @details
 #' Note that unlike [SurvivalQuantities], [LongitudinalQuantities] does not support
 #' group aggregation.
@@ -41,6 +33,13 @@ NULL
     )
 )
 
+#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#'
+#' @param groups (`character`, `NULL`)\cr which patients to calculate the desired
+#' quantities for.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_longitudinal_time, length = 201)`.
 #' @rdname LongitudinalQuantities-class
 LongitudinalQuantities <- function(
     object,

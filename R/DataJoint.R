@@ -28,9 +28,6 @@ NULL
 #' @slot longitudinal (`DataLongitudinal`)\cr See Argument for details.
 #'
 #'
-#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
-#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
-#'
 #' @family DataObjects
 #' @family DataJoint
 #' @export DataJoint
@@ -43,6 +40,8 @@ NULL
     )
 )
 
+#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
+#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
 DataJoint <- function(survival, longitudinal) {
     .DataJoint(
