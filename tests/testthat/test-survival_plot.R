@@ -10,7 +10,7 @@ test_that("survival_plot works as expected", {
             event = ifelse(e_time <= c_time, 1, 0),
             time = ifelse(e_time <= c_time, e_time, c_time),
             group = group
-        )|> dplyr::select(time, event, group)
+        ) |> dplyr::select(time, event, group)
     }
 
     dat <- dplyr::bind_rows(

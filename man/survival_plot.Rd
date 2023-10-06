@@ -14,20 +14,20 @@ survival_plot(
 )
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr A \code{data.frame} of summary statistics for a survival
+\item{data}{(\code{data.frame})\cr summary statistics for a survival
 curve to be plotted. See details.}
 
-\item{add_ci}{(\code{logical})\cr Should confidence intervals be added? Default = \code{TRUE}.}
+\item{add_ci}{(\code{logical})\cr should confidence intervals be added? Default = \code{TRUE}.}
 
-\item{add_wrap}{(\code{logical})\cr Should the plots be wrapped by \code{data$group}? Default = \code{TRUE}.}
+\item{add_wrap}{(\code{logical})\cr should the plots be wrapped by \code{data$group}? Default = \code{TRUE}.}
 
-\item{kmdf}{(\code{data.frame} or \code{NULL})\cr A \code{data.frame} of event times and status used to plot
+\item{kmdf}{(\code{data.frame} or \code{NULL})\cr event times and status used to plot
 overlaying KM curves. If \code{NULL} no KM curve will be plotted. See details.}
 
-\item{y_label}{(\code{character} or \code{expression}) \cr Label to display on the y-axis.
-Default = \code{expression(S(t))}}
+\item{y_label}{(\code{character} or \code{expression}) \cr label to display on the y-axis.
+Default = \code{expression(S(t))}.}
 
-\item{x_label}{(\code{character} or \code{expression}) \cr Label to display on the x-axis.}
+\item{x_label}{(\code{character} or \code{expression}) \cr label to display on the x-axis.}
 }
 \description{
 Internal plotting function to create survival plots with KM curve overlays
@@ -39,11 +39,11 @@ to enable easier unit testing.
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - Time point
-\item \code{group} - The group in which the observation belongs to
-\item \code{median} - The median value for the summary statistic
-\item \code{upper} - The upper 95\% CI for the summary statistic
-\item \code{lower} - The lower 95\% CI for the summary statistic
+\item \code{time} (\code{numeric}) \cr time point for the summary statistic.
+\item \code{group} (\code{character}) \cr the group in which the observation belongs to.
+\item \code{median} (\code{numeric}) \cr the median value for the summary statistic.
+\item \code{upper} (\code{numeric}) \cr the upper 95\% CI for the summary statistic.
+\item \code{lower} (\code{numeric}) \cr the lower 95\% CI for the summary statistic.
 }
 }
 
@@ -51,9 +51,9 @@ Should contain the following columns:
 
 Should contain the following columns:
 \itemize{
-\item \code{time} - The time at which an event occurred
-\item \code{event} - 1/0 status indicator for the event
-\item \code{group} - Which group the event belongs to, should correspond to values in \code{data$group}
+\item \code{time} (\code{numeric}) \cr the time at which an event occurred.
+\item \code{event} (\code{numeric}) \cr 1/0 status indicator for the event.
+\item \code{group} (\code{character}) \cr which group the event belongs to, should correspond to values in \code{data$group}.
 }
 }
 }

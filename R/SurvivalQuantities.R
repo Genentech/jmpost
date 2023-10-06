@@ -1,5 +1,6 @@
 
 #' @include DataJoint.R
+#' @include Quantities.R
 NULL
 
 
@@ -7,21 +8,8 @@ NULL
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
 #'
-#' @param object ([`JointModelSamples`]) \cr Samples as drawn from a Joint Model
-#'
-#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#' See "Group Specification" for more details.
-#'
-#' @param type (`character`)\cr The quantity to be generated.
-#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
-#'
-#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`
-#'
-#'
-#' @slot quantities (`list`)\cr Contains 1 named element per element of `groups`.
-#' Each element is a matrix of averaged samples for the corresponding patient
+#' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
+#' element of `group`
 #' @slot groups (`list`)\cr See argument section for details
 #' @slot type (`character`)\cr See See argument section for details
 #' @slot time_grid (`numeric`)\cr See argument section for details
@@ -46,7 +34,7 @@ NULL
 .SurvivalQuantities <- setClass(
     Class = "SurvivalQuantities",
     slots = c(
-        "quantities" = "list",
+        "quantities" = "Quantities",
         "groups" = "list",
         "type" = "character",
         "time_grid" = "numeric",
@@ -54,6 +42,17 @@ NULL
     )
 )
 
+#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#'
+#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
+#' quantities for.
+#' See "Group Specification" for more details.
+#'
+#' @param type (`character`)\cr quantity to be generated.
+#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
+#'
+#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
+#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
 #' @rdname SurvivalQuantities-class
 SurvivalQuantities <- function(
     object,
@@ -75,7 +74,7 @@ SurvivalQuantities <- function(
         time_grid_sm = time_grid
     )
 
-    quantities_raw <- extract_survival_quantities(gq, type)
+    quantities_raw <- extract_quantities(gq, type)
 
     quantities <- lapply(
         patients$indexes,
@@ -85,7 +84,7 @@ SurvivalQuantities <- function(
     )
 
     .SurvivalQuantities(
-        quantities = quantities,
+        quantities = Quantities(quantities),
         groups = patients$groups,
         type = type,
         time_grid = time_grid,
@@ -111,13 +110,8 @@ setValidity(
         if (length(object@time_grid) == 0) {
             return("`time_grid` cannot be length 0")
         }
-        for (element in object@quantities) {
-            if (!inherits(element, "matrix")) {
-                return("each element of `quantities` must be a matrix")
-            }
-            if (ncol(element) != length(object@time_grid)) {
-                return("each element of `quantities` must have #columns = `length(time_grid)`")
-            }
+        if (ncol(object@quantities) != length(object@time_grid)) {
+            return("`quantities` must have #columns = `length(time_grid)`")
         }
         for (group in object@groups) {
             if (!(is.character(group) && length(group > 0))) {
@@ -134,9 +128,9 @@ setValidity(
 #' @description
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #'
-#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities.
+#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... Not used.
+#' @param ... not used.
 #'
 #' @family SurvivalQuantities
 #' @family summary
@@ -146,82 +140,65 @@ summary.SurvivalQuantities <- function(
     conf.level = 0.95,
     ...
 ) {
-
-    quantities_summarised <- lapply(
+    summary(
         object@quantities,
-        samples_median_ci,
-        level = conf.level
+        time_grid = object@time_grid,
+        groups = object@groups,
+        type = object@type,
+        conf.level = conf.level
     )
-
-    for (i in seq_along(quantities_summarised)) {
-        assert_that(nrow(quantities_summarised[[i]]) == length(object@time_grid))
-        quantities_summarised[[i]][["time"]] <- object@time_grid
-        quantities_summarised[[i]][["group"]] <- names(object@groups)[[i]]
-        quantities_summarised[[i]][["type"]] <- object@type
-    }
-    Reduce(rbind, quantities_summarised)
 }
 
 
 
-#' `as.data.frame`
+#' `SurvivalQuantities` -> `data.frame`
 #'
-#' @param x ([`SurvivalQuantities`]) \cr Survival Quantities
-#' @param ... Not used
+#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param ... not used.
 #' @family SurvivalQuantities
 #' @export
 as.data.frame.SurvivalQuantities <- function(x, ...) {
-    quantities_df <- lapply(
+    as.data.frame(
         x@quantities,
-        \(element) {
-            n <- nrow(element)
-            values <- as.vector(element)
-            times <- rep(x@time_grid, each = n)
-            type <- rep(x@type, each = length(x@time_grid) * n)
-            assert_that(
-                length(values) == length(times),
-                length(times) == length(type)
-            )
-            data.frame(
-                values = values,
-                time = times,
-                type = type,
-                stringsAsFactors = FALSE
-            )
-        }
+        time_grid = x@time_grid,
+        groups = x@groups,
+        type = x@type
     )
-    for (i in seq_along(quantities_df)) {
-        quantities_df[[i]]["group"] <- names(x@groups)[[i]]
-    }
-    res <- Reduce(rbind, quantities_df)
-    res[, c("values", "time", "group", "type")]
 }
 
 
-#' Automatic Plotting for SurvivalSamples
+#' Automatic Plotting for `SurvivalQuantities``
 #'
-#' @param object ([`SurvivalQuantities`]) \cr Survival Quantities
-#' @param add_km (`logical`) \cr If `TRUE` Kaplan-Meier curves will be added to the plot for
-#' each group/patient
-#' @param add_ci (`logical`) \cr If `TRUE` 95% CI will be added to the plot for
-#' each group/patient
-#' @param add_wrap (`logical`) \cr If `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
-#' by each group/patient
-#' @param ... other arguments passed to plotting methods.
+#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
+#' each group/patient.
+#' @param add_wrap (`logical`) \cr if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
+#' by each group/patient.
+#' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
+#' `NULL` or `0` are provided then confidence regions will not be added to the plot
+#' @param ... not used.
 #'
-#' @importFrom ggplot2 autoplot
-#' @export autoplot
 #' @family SurvivalQuantities
+#' @family autoplot
 #' @export
 autoplot.SurvivalQuantities <- function(object,
+    conf.level = 0.95,
     add_km = FALSE,
-    add_ci = TRUE,
     add_wrap = TRUE,
     ...
 ) {
-    assert_that(is.flag(add_km))
+    include_ci <- !is.null(conf.level) && is.numeric(conf.level) && conf.level > 0
+    # If CI aren't needed supply a default 0.95 to summary function as it needs
+    # a value to be specified to work
+    conf.level <- if (include_ci) conf.level else 0.95
+    assert_that(
+        is.flag(add_km),
+        length(conf.level) == 1,
+        conf.level < 1,
+        is.flag(add_wrap)
+    )
     kmdf <- if (add_km) subset(object@data, object@groups) else NULL
-    all_fit_df <- summary(object)
+    all_fit_df <- summary(object, conf.level = conf.level)
     label <- switch(object@type,
         "surv" = expression(S(t)),
         "cumhaz" = expression(H(t)),
@@ -230,7 +207,7 @@ autoplot.SurvivalQuantities <- function(object,
     )
     survival_plot(
         data = all_fit_df,
-        add_ci = add_ci,
+        add_ci = include_ci,
         add_wrap = add_wrap,
         kmdf = kmdf,
         y_label = label
@@ -246,31 +223,31 @@ autoplot.SurvivalQuantities <- function(object,
 #' This function predominately exists to extract core logic into its own function
 #' to enable easier unit testing.
 #'
-#' @param data (`data.frame`)\cr A `data.frame` of summary statistics for a survival
+#' @param data (`data.frame`)\cr summary statistics for a survival
 #' curve to be plotted. See details.
-#' @param add_ci (`logical`)\cr Should confidence intervals be added? Default = `TRUE`.
-#' @param add_wrap (`logical`)\cr Should the plots be wrapped by `data$group`? Default = `TRUE`.
-#' @param kmdf (`data.frame` or `NULL`)\cr A `data.frame` of event times and status used to plot
+#' @param add_ci (`logical`)\cr should confidence intervals be added? Default = `TRUE`.
+#' @param add_wrap (`logical`)\cr should the plots be wrapped by `data$group`? Default = `TRUE`.
+#' @param kmdf (`data.frame` or `NULL`)\cr event times and status used to plot
 #' overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
-#' @param y_label (`character` or `expression`) \cr Label to display on the y-axis.
-#' Default = `expression(S(t))`
-#' @param x_label (`character` or `expression`) \cr Label to display on the x-axis.
+#' @param y_label (`character` or `expression`) \cr label to display on the y-axis.
+#' Default = `expression(S(t))`.
+#' @param x_label (`character` or `expression`) \cr label to display on the x-axis.
 #'
 #' @details
 #'
 #' ## `data`
 #' Should contain the following columns:
-#' - `time` - Time point
-#' - `group` - The group in which the observation belongs to
-#' - `median` - The median value for the summary statistic
-#' - `upper` - The upper 95% CI for the summary statistic
-#' - `lower` - The lower 95% CI for the summary statistic
+#' - `time` (`numeric`) \cr time point for the summary statistic.
+#' - `group` (`character`) \cr the group in which the observation belongs to.
+#' - `median` (`numeric`) \cr the median value for the summary statistic.
+#' - `upper` (`numeric`) \cr the upper 95% CI for the summary statistic.
+#' - `lower` (`numeric`) \cr the lower 95% CI for the summary statistic.
 #'
 #' ## `kmdf`
 #' Should contain the following columns:
-#' - `time` - The time at which an event occurred
-#' - `event` - 1/0 status indicator for the event
-#' - `group` - Which group the event belongs to, should correspond to values in `data$group`
+#' - `time` (`numeric`) \cr the time at which an event occurred.
+#' - `event` (`numeric`) \cr 1/0 status indicator for the event.
+#' - `group` (`character`) \cr which group the event belongs to, should correspond to values in `data$group`.
 #' @keywords internal
 survival_plot <- function(
     data,
@@ -329,97 +306,4 @@ survival_plot <- function(
             ggplot2.utils::geom_km_ticks(aes_km, data = kmdf)
     }
     p
-}
-
-
-
-
-#' Extract and Average Quantities By Group Index
-#'
-#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and extracts
-#' the specified columns and aggregates them by calculating the pointwise average.
-#'
-#' @param subject_index (`numeric`)\cr Which subject indices to extract from `quantities`.
-#' See details.
-#'
-#' @param time_index (`numeric`)\cr Which time point indices to extract from `quantities`.
-#' See details.
-#'
-#' @param quantities ([`posterior::draws_matrix`])\cr A matrix of sample draws.
-#' See details.
-#'
-#' @details
-#' It is assumed that `quantities` consists of the cartesian product
-#' of subject indices and time indices. That is, if the matrix contains 4 subjects and 3 time
-#' points then it should have 12 columns.
-#' It is also assumed that each column of `quantities` are named as:
-#' ```
-#' "quantity[x,y]"
-#' ```
-#' Where
-#' - `x` is the subject index
-#' - `y` is the time point index
-#'
-#' This function returns a `matrix` with 1 row per sample and 1 column per `time_index`.
-#'
-#' Note that if multiple values are provided for `subject_index` then the pointwise average
-#' will be calculated for each time point by taking the mean across the specified subjects
-#' at each time point.
-#'
-#' @keywords internal
-average_samples_by_index <- function(subject_index, time_index, quantities) {
-    assert_that(
-        is.numeric(subject_index),
-        is.numeric(time_index),
-        length(time_index) == length(unique(time_index)),
-        inherits(quantities, "draws_matrix")
-    )
-    stacked_quantities <- array(dim = c(
-        nrow(quantities),
-        length(time_index),
-        length(subject_index)
-    ))
-    for (ind in seq_along(subject_index)) {
-        quantity_index <- sprintf(
-            "quantity[%i,%i]",
-            subject_index[ind],
-            time_index
-        )
-        stacked_quantities[, , ind] <- quantities[, quantity_index]
-    }
-    apply(
-        stacked_quantities,
-        c(1, 2),
-        mean,
-        simplify = TRUE
-    )
-}
-
-
-
-#' Extract Survival Quantities
-#'
-#' Utility function to extract generated quantities from a [cmdstanr::CmdStanGQ] object.
-#' Multiple quantities are generated by default so this is a convenience function to extract
-#' the desired ones and return them them as a user friendly [posterior::draws_matrix] object
-#'
-#' @param gq (`CmdStanGQ`) \cr A [cmdstanr::CmdStanGQ] object created by [generateQuantities]
-#' @inheritParams SurvivalQuantities-class
-#' @keywords internal
-extract_survival_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz")) {
-    type <- match.arg(type)
-    assert_that(
-        inherits(gq, "CmdStanGQ")
-    )
-    meta <- switch(type,
-        surv = list("log_surv_fit_at_time_grid", exp),
-        cumhaz = list("log_surv_fit_at_time_grid", \(x) -x),
-        haz = list("log_haz_fit_at_time_grid", exp),
-        loghaz = list("log_haz_fit_at_time_grid", identity)
-    )
-    result <- gq$draws(meta[[1]], format = "draws_matrix")
-    result_transformed <- meta[[2]](result)
-    cnames <- colnames(result_transformed)
-    colnames(result_transformed) <- gsub(meta[[1]], "quantity", cnames)
-    result_transformed
 }

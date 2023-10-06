@@ -10,9 +10,6 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 #'
 #' Stores the name, the prior distribution and the size of a parameter.
 #'
-#' @param prior (`Prior`)\cr for the parameter.
-#' @param name (`string`)\cr of the parameter.
-#' @param size (`numeric` or `string`)\cr dimension of the parameter.
 #' @slot name (`string`)\cr of the parameter.
 #' @slot prior (`Prior`)\cr for the parameter.
 #' @slot size (`numeric` or `string`)\cr dimension of the parameter.
@@ -28,6 +25,9 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
         "size" = "numeric_OR_character"
     )
 )
+#' @param prior (`Prior`)\cr for the parameter.
+#' @param name (`string`)\cr of the parameter.
+#' @param size (`numeric` or `string`)\cr dimension of the parameter.
 #' @rdname Parameter-class
 Parameter <- function(prior, name, size = 1) {
     .Parameter(

@@ -170,20 +170,6 @@ size <- function(object) {
     UseMethod("size")
 }
 
-# longitudinal ----
-
-#' `longitudinal`
-#'
-#' Obtain the longitudinal fit samples from [`JointModelSamples`].
-#'
-#' @param object samples to extract the longitudinal fits from.
-#' @param ... additional options.
-#'
-#' @export
-longitudinal <- function(object, ...) {
-    UseMethod("longitudinal")
-}
-
 
 # generateQuantities ----
 

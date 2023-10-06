@@ -89,13 +89,13 @@ reference:
   - title: Postprocessing
     contents:
       - JointModelSamples
-      - LongitudinalSamples
+      - LongitudinalQuantities
       - SurvivalQuantities
-      - longitudinal
       - generateQuantities
+      - summary.LongitudinalQuantities
       - summary.SurvivalQuantities
-      - autoplot.LongitudinalSamples
       - autoplot
+      - autoplot.LongitudinalQuantities
       - autoplot.SurvivalQuantities
   
   - title: Stan Code
@@ -122,6 +122,7 @@ reference:
       - as.character.StanModule
       - as.data.frame.DataLongitudinal
       - as.data.frame.DataSurvival
+      - as.data.frame.LongitudinalQuantities
       - as.data.frame.SurvivalQuantities
       - as.list.DataJoint
       - as.list.DataLongitudinal
@@ -131,4 +132,3 @@ reference:
       - as.list.StanModule
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal
-

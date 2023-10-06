@@ -30,6 +30,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     assertthat,
+    checkmate,
     dplyr,
     stringr,
     cmdstanr,
@@ -65,6 +66,7 @@ Collate:
     'ParameterList.R'
     'StanModule.R'
     'JointModel.R'
+    'Quantities.R'
     'SurvivalQuantities.R'
     'JointModelSamples.R'
     'StanModel.R'
@@ -74,8 +76,8 @@ Collate:
     'LinkNone.R'
     'LinkRandomSlope.R'
     'LongitudinalGSF.R'
+    'LongitudinalQuantities.R'
     'LongitudinalRandomSlope.R'
-    'LongitudinalSamples.R'
     'SurvivalModel.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'

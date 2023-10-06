@@ -7,10 +7,10 @@
 subset_and_add_grouping(dat, groupings)
 }
 \arguments{
-\item{dat}{(\code{data.frame}) \cr Must have a column called \code{patient} which corresponds to the
-values passed to \code{groupings}}
+\item{dat}{(\code{data.frame}) \cr must have a column called \code{patient} which corresponds to the
+values passed to \code{groupings}.}
 
-\item{groupings}{(\code{character} or \code{list})\cr the patients that you wish to subset the dataset
+\item{groupings}{(\code{character} or \code{list})\cr patients that you wish to subset the dataset
 to contain. If \code{groupings} is a list then an additional variable \code{group} will be added
 onto the dataset specifying which group the row belongs to.}
 }

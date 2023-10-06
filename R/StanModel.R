@@ -21,9 +21,6 @@ NULL
 
 #' Stan Model Object and Constructor Function
 #'
-#' @param stan (`StanModule`)\cr code containing the Stan code specification.
-#' @param parameters (`ParameterList`)\cr the parameter specification.
-#'
 #' @slot stan (`StanModule`)\cr See Arguments.
 #' @slot parameters (`ParameterList`)\cr See Arguments.
 #'
@@ -40,6 +37,8 @@ NULL
 
 # StanModel-constructor ----
 
+#' @param stan (`StanModule`)\cr code containing the Stan code specification.
+#' @param parameters (`ParameterList`)\cr the parameter specification.
 #' @rdname StanModel-class
 StanModel <- function(stan, parameters) {
     .StanModel(

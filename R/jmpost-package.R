@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 #' @import assertthat
+#' @import checkmate
 #' @import ggplot2
 #' @import methods
 #' @import stringr

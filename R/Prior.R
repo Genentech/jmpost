@@ -21,12 +21,6 @@ NULL
 #'
 #' Specifies the prior distribution in a Stan Model
 #'
-#' @param parameters (`list`)\cr the prior distribution parameters.
-#' @param repr (`string`)\cr the Stan code regular expression encoding the distribution.
-#' @param init (`numeric`)\cr the initial value.
-#' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
-#' the same names as the `paramaters` slot.
-#'
 #' @slot parameters (`list`)\cr See arguments.
 #' @slot repr (`string`)\cr See arguments.
 #' @slot init (`numeric`)\cr See arguments.
@@ -45,6 +39,11 @@ NULL
     )
 )
 
+#' @param parameters (`list`)\cr the prior distribution parameters.
+#' @param repr (`string`)\cr the Stan code regular expression encoding the distribution.
+#' @param init (`numeric`)\cr the initial value.
+#' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
+#' the same names as the `paramaters` slot.
 #' @rdname Prior-class
 Prior <- function(parameters, repr, init, validation) {
     .Prior(

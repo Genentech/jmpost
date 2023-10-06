@@ -1,11 +1,11 @@
 
+devtools::document()
+devtools::load_all(export_all = FALSE)
+
 library(dplyr)
 library(ggplot2)
 library(stringr)
 library(tidyr)
-
-devtools::document()
-devtools::load_all(export_all = FALSE)
 
 options("jmpost.cache.dir" = file.path("local", "models"))
 
@@ -45,7 +45,7 @@ jlist <- simulate_joint_data(
         phi = 0
     ),
     os_fun = sim_os_exponential(
-        lambda = 0.00333  # 1 / 300
+        lambda = 0.00333  # true value = 1 / 300
     ),
     .debug = TRUE
 )
@@ -86,24 +86,22 @@ stan_samples <- sampleStanModel(
 )
 
 
-stan_samples@results$summary()
-
-class(stan_samples@results)
-
-
-longitudinal(stan_samples, sample(dat_os$pt, 5), c(0, 10, 40, 100, 200, 300)) |>
-    autoplot()
-
-
-
+pts <- sample(dat_os$pt, 4)
+samps <- LongitudinalQuantities(
+    stan_samples,
+    groups = sample(dat_os$pt, 4)
+)
+summary(samps)
+as.data.frame(samps) |> tibble()
+autoplot(samps)
 
 
 
 
 pts <- sample(dat_os$pt, 4)
-samps <- extractSurvivalQuantities(
+samps <- SurvivalQuantities(
     stan_samples,
-    patients =  sample(dat_os$pt, 4)
+    groups = sample(dat_os$pt, 4)
 )
 summary(samps)
 as.data.frame(samps) |> tibble()

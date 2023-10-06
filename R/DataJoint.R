@@ -28,9 +28,6 @@ NULL
 #' @slot longitudinal (`DataLongitudinal`)\cr See Argument for details.
 #'
 #'
-#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
-#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
-#'
 #' @family DataObjects
 #' @family DataJoint
 #' @export DataJoint
@@ -43,6 +40,8 @@ NULL
     )
 )
 
+#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
+#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
 DataJoint <- function(survival, longitudinal) {
     .DataJoint(
@@ -90,8 +89,8 @@ as.list.DataJoint <- function(x, ...) {
 
 #' Subsetting `DataJoint` as a `data.frame`
 #'
-#' @param x (`DataJoint`) \cr A [DataJoint][DataJoint-class] object created by [DataJoint()]
-#' @param patients (`character` or `list`)\cr the patients that you wish to subset the `data.frame`
+#' @param x (`DataJoint`) \cr object created by [DataJoint()].
+#' @param patients (`character` or `list`)\cr patients that you wish to subset the `data.frame`
 #' to contain. See details.
 #' @param ... Not used.
 #'
@@ -128,9 +127,9 @@ subset.DataJoint <- function(x, patients, ...) {
 
 #' `subset_and_add_grouping`
 #'
-#' @param dat (`data.frame`) \cr Must have a column called `patient` which corresponds to the
-#' values passed to `groupings`
-#' @param groupings (`character` or `list`)\cr the patients that you wish to subset the dataset
+#' @param dat (`data.frame`) \cr must have a column called `patient` which corresponds to the
+#' values passed to `groupings`.
+#' @param groupings (`character` or `list`)\cr patients that you wish to subset the dataset
 #' to contain. If `groupings` is a list then an additional variable `group` will be added
 #' onto the dataset specifying which group the row belongs to.
 #'
@@ -159,6 +158,28 @@ subset_and_add_grouping <- function(dat, groupings) {
         }
     )
     x <- Reduce(rbind, dat_subset_list)
+    row.names(x) <- NULL
+    x
+}
+
+
+#' Extract Observed Longitudinal Values
+#'
+#' Utility function to extract the observed longitudinal values from a [`DataJoint`] object
+#' @param object ([`DataJoint`])\cr data used to fit a [`JointModel`].
+#' @return A data.frame with the following columns
+#' - `subject` (`character`)\cr The subject identifier
+#' - `time` (`numeric`)\cr The time at which the observation occurred
+#' - `Yob` (`numeric`)\cr The observed value
+#' @keywords internal
+extract_observed_values <- function(object) {
+    assert_class(object, "DataJoint")
+    data <- as.list(object)
+    x <- data.frame(
+        subject = names(data$pt_to_ind)[data$ind_index],
+        time = data$Tobs,
+        Yob = data$Yobs
+    )
     row.names(x) <- NULL
     x
 }
