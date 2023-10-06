@@ -34,12 +34,6 @@ to enable easier unit testing."><meta property="og:image" content="https://genen
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -89,30 +83,30 @@ to enable easier unit testing.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>(<code>data.frame</code>)<br> A <code>data.frame</code> of summary statistics for a survival
+<dd><p>(<code>data.frame</code>)<br> summary statistics for a survival
 curve to be plotted. See details.</p></dd>
 
 
 <dt>add_ci</dt>
-<dd><p>(<code>logical</code>)<br> Should confidence intervals be added? Default = <code>TRUE</code>.</p></dd>
+<dd><p>(<code>logical</code>)<br> should confidence intervals be added? Default = <code>TRUE</code>.</p></dd>
 
 
 <dt>add_wrap</dt>
-<dd><p>(<code>logical</code>)<br> Should the plots be wrapped by <code>data$group</code>? Default = <code>TRUE</code>.</p></dd>
+<dd><p>(<code>logical</code>)<br> should the plots be wrapped by <code>data$group</code>? Default = <code>TRUE</code>.</p></dd>
 
 
 <dt>kmdf</dt>
-<dd><p>(<code>data.frame</code> or <code>NULL</code>)<br> A <code>data.frame</code> of event times and status used to plot
+<dd><p>(<code>data.frame</code> or <code>NULL</code>)<br> event times and status used to plot
 overlaying KM curves. If <code>NULL</code> no KM curve will be plotted. See details.</p></dd>
 
 
 <dt>y_label</dt>
-<dd><p>(<code>character</code> or <code>expression</code>) <br> Label to display on the y-axis.
-Default = <code>expression(S(t))</code></p></dd>
+<dd><p>(<code>character</code> or <code>expression</code>) <br> label to display on the y-axis.
+Default = <code>expression(S(t))</code>.</p></dd>
 
 
 <dt>x_label</dt>
-<dd><p>(<code>character</code> or <code>expression</code>) <br> Label to display on the x-axis.</p></dd>
+<dd><p>(<code>character</code> or <code>expression</code>) <br> label to display on the x-axis.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -122,20 +116,20 @@ Default = <code>expression(S(t))</code></p></dd>
 <h3 id="data"><code>data</code><a class="anchor" aria-label="anchor" href="#data"></a></h3>
 
 
-<p>Should contain the following columns:</p><ul><li><p><code>time</code> - Time point</p></li>
-<li><p><code>group</code> - The group in which the observation belongs to</p></li>
-<li><p><code>median</code> - The median value for the summary statistic</p></li>
-<li><p><code>upper</code> - The upper 95% CI for the summary statistic</p></li>
-<li><p><code>lower</code> - The lower 95% CI for the summary statistic</p></li>
+<p>Should contain the following columns:</p><ul><li><p><code>time</code> (<code>numeric</code>) <br> time point for the summary statistic.</p></li>
+<li><p><code>group</code> (<code>character</code>) <br> the group in which the observation belongs to.</p></li>
+<li><p><code>median</code> (<code>numeric</code>) <br> the median value for the summary statistic.</p></li>
+<li><p><code>upper</code> (<code>numeric</code>) <br> the upper 95% CI for the summary statistic.</p></li>
+<li><p><code>lower</code> (<code>numeric</code>) <br> the lower 95% CI for the summary statistic.</p></li>
 </ul></div>
 
 <div class="section">
 <h3 id="kmdf"><code>kmdf</code><a class="anchor" aria-label="anchor" href="#kmdf"></a></h3>
 
 
-<p>Should contain the following columns:</p><ul><li><p><code>time</code> - The time at which an event occurred</p></li>
-<li><p><code>event</code> - 1/0 status indicator for the event</p></li>
-<li><p><code>group</code> - Which group the event belongs to, should correspond to values in <code>data$group</code></p></li>
+<p>Should contain the following columns:</p><ul><li><p><code>time</code> (<code>numeric</code>) <br> the time at which an event occurred.</p></li>
+<li><p><code>event</code> (<code>numeric</code>) <br> 1/0 status indicator for the event.</p></li>
+<li><p><code>group</code> (<code>character</code>) <br> which group the event belongs to, should correspond to values in <code>data$group</code>.</p></li>
 </ul></div>
 
     </div>

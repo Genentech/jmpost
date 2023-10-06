@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -76,12 +70,12 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dat</dt>
-<dd><p>(<code>data.frame</code>) <br> Must have a column called <code>patient</code> which corresponds to the
-values passed to <code>groupings</code></p></dd>
+<dd><p>(<code>data.frame</code>) <br> must have a column called <code>patient</code> which corresponds to the
+values passed to <code>groupings</code>.</p></dd>
 
 
 <dt>groupings</dt>
-<dd><p>(<code>character</code> or <code>list</code>)<br> the patients that you wish to subset the dataset
+<dd><p>(<code>character</code> or <code>list</code>)<br> patients that you wish to subset the dataset
 to contain. If <code>groupings</code> is a list then an additional variable <code>group</code> will be added
 onto the dataset specifying which group the row belongs to.</p></dd>
 

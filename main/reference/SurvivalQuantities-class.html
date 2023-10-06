@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -81,7 +75,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>(<code><a href="JointModelSamples-class.html">JointModelSamples</a></code>) <br> Samples as drawn from a Joint Model</p></dd>
+<dd><p>(<code><a href="JointModelSamples-class.html">JointModelSamples</a></code>) <br> samples as drawn from a Joint Model.</p></dd>
 
 
 <dt>groups</dt>
@@ -91,12 +85,12 @@ See "Group Specification" for more details.</p></dd>
 
 
 <dt>time_grid</dt>
-<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> a vector of time points to calculate the desired
-quantity at. If <code>NULL</code> will be set to <code>seq(0, max_survival_time, length = 201)</code></p></dd>
+<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> vector of time points to calculate the desired
+quantity at. If <code>NULL</code> will be set to <code>seq(0, max_survival_time, length = 201)</code>.</p></dd>
 
 
 <dt>type</dt>
-<dd><p>(<code>character</code>)<br> The quantity to be generated.
+<dd><p>(<code>character</code>)<br> quantity to be generated.
 Must be one of <code>surv</code>, <code>haz</code>, <code>loghaz</code>, <code>cumhaz</code>.</p></dd>
 
 </dl></div>
@@ -105,8 +99,8 @@ Must be one of <code>surv</code>, <code>haz</code>, <code>loghaz</code>, <code>c
     
 
 <dl><dt><code>quantities</code></dt>
-<dd><p>(<code>list</code>)<br> Contains 1 named element per element of <code>groups</code>.
-Each element is a matrix of averaged samples for the corresponding patient</p></dd>
+<dd><p>(<code>Quantities</code>)<br> The sampled quantities. Should contain 1 element per
+element of <code>group</code></p></dd>
 
 
 <dt><code>groups</code></dt>

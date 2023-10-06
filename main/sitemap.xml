@@ -67,10 +67,10 @@
     <loc>https://genentech.github.io/jmpost/reference/LongitudinalModel-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalSamples-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc>
@@ -95,6 +95,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/Quantities-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/StanModel-class.html</loc>
@@ -154,6 +157,12 @@
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.Quantities.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc>
   </url>
   <url>
@@ -181,7 +190,7 @@
     <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalSamples.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.html</loc>
@@ -202,6 +211,9 @@
     <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/dim.Quantities.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
   </url>
   <url>
@@ -220,7 +232,10 @@
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/extract_survival_quantities.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/extract_observed_values.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/extract_quantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc>
@@ -262,7 +277,7 @@
     <loc>https://genentech.github.io/jmpost/reference/link_gsf_ttg-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/longitudinal.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/longitudinal_plot.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/merge.html</loc>
@@ -338,6 +353,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/summary.Quantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.html</loc>
