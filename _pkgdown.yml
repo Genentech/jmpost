@@ -1,6 +1,8 @@
 ---
 url: https://genentech.github.io/jmpost/
 
+destination: docs/
+
 template:
   bootstrap: 5
 

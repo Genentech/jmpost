@@ -82,6 +82,3 @@ inst/stanmodels/stan_model
 
 # Log files
 *.log
-
-# VS Code
-.vscode
