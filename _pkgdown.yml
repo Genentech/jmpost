@@ -132,3 +132,7 @@ reference:
       - as.list.StanModule
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal
+  
+  - title: Miscellaneous 
+    contents:
+      - STANBLOCKS
