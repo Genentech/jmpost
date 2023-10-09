@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "R: Test (with cache)",
+			"type": "R",
+			"code": [
+				"devtools::test()"
+			],
+			"env": {
+				"JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache"
+			},
+			"problemMatcher": [
+				"$testthat"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		},
+		{
+			"label": "R: Build pkgdown site",
+			"type": "R",
+			"code": [
+				"devtools::install()",
+				"di <- tempfile()",
+				"dir.create(di)",
+				"pkgdown::build_site(devel = TRUE, override = list(destination = di))"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		}
+	]
+}

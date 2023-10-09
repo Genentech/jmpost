@@ -4,10 +4,12 @@
 \alias{as_stan_fragments}
 \title{Conversion of Character Vector into Stan Code Block List}
 \usage{
-as_stan_fragments(x)
+as_stan_fragments(x, stan_blocks = STAN_BLOCKS)
 }
 \arguments{
 \item{x}{(\code{character})\cr the single Stan code vector.}
+
+\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
 }
 \value{
 A list with the Stan code blocks.

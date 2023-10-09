@@ -3,6 +3,14 @@ NULL
 
 # STAN_BLOCKS ----
 
+#' List of Stan Blocks
+#'
+#' @description
+#' A list with 1 element per standard Stan program blocks.
+#' This object is  mostly used internally as a reference for
+#' what blocks are expected to exist within a given Stan program.
+#'
+#' @export
 STAN_BLOCKS <- list(
     functions = "functions",
     data = "data",
@@ -18,14 +26,14 @@ STAN_BLOCKS <- list(
 #' Add Missing Stan Blocks
 #'
 #' @param x (`list`)\cr list of Stan code blocks
+#' @param stan_blocks (`list`)\cr reference list of stan blocks.
 #'
 #' @return Amended list `x` such that all blocks in the global variable
 #' `STAN_BLOCKS` are contained.
 #'
 #' @keywords internal
-add_missing_stan_blocks <- function(x) {
-    # STAN_BLOCKS is defined as a global variable in StanModule.R
-    for (block in names(STAN_BLOCKS)) {
+add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
+    for (block in names(stan_blocks)) {
         if (is.null(x[[block]])) {
             x[[block]] <- ""
         }
@@ -127,13 +135,14 @@ as.character.StanModule <- function(x, ...) {
 
 # merge-StanModule,StanModule ----
 
+#' @param stan_blocks (`list`)\cr reference list of stan blocks.
 #' @rdname merge
 setMethod(
     f = "merge",
     signature = c("StanModule", "StanModule"),
-    definition = function(x, y, ...) {
+    definition = function(x, y, stan_blocks = STAN_BLOCKS, ...) {
         stan_fragments <- lapply(
-            names(STAN_BLOCKS),
+            names(stan_blocks),
             \(par) {
                 new_string <- c(slot(x, par), slot(y, par))
                 if (all(new_string == "")) {
@@ -142,7 +151,7 @@ setMethod(
                 return(new_string)
             }
         )
-        names(stan_fragments) <- names(STAN_BLOCKS)
+        names(stan_fragments) <- names(stan_blocks)
         stan_code <- do.call(as_stan_file, stan_fragments)
         StanModule(
             x = stan_code,
@@ -213,13 +222,14 @@ setMethod(
 #' Returns a named list where each element of the list corresponds
 #' to a Stan modelling block e.g. `data`, `model`, etc.
 #' @param x ([`StanModule`])\cr A Stan Module
+#' @param stan_blocks (`list`)\cr reference list of stan blocks.
 #' @param ... Not Used.
 #' @family StanModule
 #' @export
-as.list.StanModule <- function(x, ...) {
+as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
     string <- as.character(x)
     li <- as_stan_fragments(string)
-    for (block in names(STAN_BLOCKS)) {
+    for (block in names(stan_blocks)) {
         li[[block]] <- paste(li[[block]], collapse = "\n")
     }
     return(li)
@@ -284,6 +294,7 @@ read_stan <- function(string) {
 #' @param transformed_parameters (`character`)\cr code block.
 #' @param model (`character`)\cr code block.
 #' @param generated_quantities (`character`)\cr code block.
+#' @param stan_blocks (`list`)\cr reference list of stan blocks.
 #'
 #' @return Character vector of the complete Stan code.
 #'
@@ -295,14 +306,15 @@ as_stan_file <- function(
     parameters = "",
     transformed_parameters = "",
     model = "",
-    generated_quantities = ""
+    generated_quantities = "",
+    stan_blocks = STAN_BLOCKS
 ) {
     block_strings <- lapply(
-        names(STAN_BLOCKS),
+        names(stan_blocks),
         function(id) {
             char <- get(id)
             if (any(nchar(char) >= 1)) {
-                return(sprintf("%s {\n%s\n}\n\n", STAN_BLOCKS[[id]], paste(char, collapse = "\n")))
+                return(sprintf("%s {\n%s\n}\n\n", stan_blocks[[id]], paste(char, collapse = "\n")))
             } else {
                 return("")
             }
@@ -316,6 +328,7 @@ as_stan_file <- function(
 #' Conversion of Character Vector into Stan Code Block List
 #'
 #' @param x (`character`)\cr the single Stan code vector.
+#' @param stan_blocks (`list`)\cr reference list of stan blocks.
 #'
 #' @return A list with the Stan code blocks.
 #'
@@ -336,13 +349,13 @@ as_stan_file <- function(
 #' ```
 #'
 #' @keywords internal
-as_stan_fragments <- function(x) {
+as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
     code <- unlist(stringr::str_split(x, "\n"))
     results <- list()
     target <- NULL
     for (line in code) {
-        for (block in names(STAN_BLOCKS)) {
-            regex <- sprintf("^%s *\\{ *$", STAN_BLOCKS[[block]])
+        for (block in names(stan_blocks)) {
+            regex <- sprintf("^%s *\\{ *$", stan_blocks[[block]])
             if (stringr::str_detect(line, regex)) {
                 target <- block
                 line <- NULL
@@ -369,7 +382,7 @@ as_stan_fragments <- function(x) {
     }
 
     # Add missings.
-    for (block in names(STAN_BLOCKS)) {
+    for (block in names(stan_blocks)) {
         if (is.null(results[[block]])) {
             results[[block]] <- ""
         }

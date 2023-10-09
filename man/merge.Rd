@@ -18,7 +18,7 @@ merge(x, y, ...)
 
 \S4method{merge}{ParameterList,ParameterList}(x, y)
 
-\S4method{merge}{StanModule,StanModule}(x, y, ...)
+\S4method{merge}{StanModule,StanModule}(x, y, stan_blocks = STAN_BLOCKS, ...)
 
 \S4method{merge}{StanModel,`NULL`}(x, y, ...)
 
@@ -40,6 +40,8 @@ merge(x, y, ...)
 \item{y}{second module.}
 
 \item{...}{additional arguments.}
+
+\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
 }
 \description{
 Merge two \code{StanModule} or \code{ParameterList} objects.

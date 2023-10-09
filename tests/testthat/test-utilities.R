@@ -287,3 +287,22 @@ test_that("decompose_patients() works as expected", {
     )
 
 })
+
+
+test_that("add_missing_stan_blocks() works as expected", {
+    x <- list("data" = "abc", "model" = "das")
+    actual <- add_missing_stan_blocks(x)
+    expected <- STAN_BLOCKS
+    for (i in names(expected)) expected[[i]] <- ""
+    expected$data <- x$data
+    expected$model <- x$model
+    names_in_order <- c(
+        "data", "model",
+        names(expected)[!names(expected) %in% names(x)]
+    )
+    expect_equal(actual, expected[names_in_order])
+
+    x <- list("data" = "abc", "model" = "das")
+    actual <- add_missing_stan_blocks(x, list("el1" = 1, "model" = 2))
+    expect_equal(actual, list("data" = "abc", "model" = "das", "el1" = ""))
+})

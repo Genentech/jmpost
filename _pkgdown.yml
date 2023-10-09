@@ -1,6 +1,8 @@
 ---
 url: https://genentech.github.io/jmpost/
 
+destination: docs/
+
 template:
   bootstrap: 5
 
@@ -132,3 +134,7 @@ reference:
       - as.list.StanModule
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal
+  
+  - title: Miscellaneous 
+    contents:
+      - STAN_BLOCKS

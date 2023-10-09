@@ -4,10 +4,12 @@
 \alias{as.list.StanModule}
 \title{\code{StanModule} -> \code{list}}
 \usage{
-\method{as.list}{StanModule}(x, ...)
+\method{as.list}{StanModule}(x, stan_blocks = STAN_BLOCKS, ...)
 }
 \arguments{
 \item{x}{(\code{\link{StanModule}})\cr A Stan Module}
+
+\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
 
 \item{...}{Not Used.}
 }
