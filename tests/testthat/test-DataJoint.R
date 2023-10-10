@@ -40,7 +40,17 @@ test_that("DataJoint basic usage", {
     expect_equal(li$Nta_total, 6)
     expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3))
     expect_equal(li$n_arms, 3)
+    expect_equal(li$pt_study_index, c(2, 1, 1))
     expect_equal(li$n_studies, 2)
+    expect_equal(li$pt_arm_index, c(3, 2, 1))
+    expect_equal(li$Times, c(150, 200, 100))
+    expect_equal(li$ind_index, c(1, 2, 2, 2, 3, 3))
+    expect_equal(li$obs_y_index, c(1:6))
+    expect_equal(li$cens_y_index, integer(0))
+    expect_equal(li$Yobs, c(5, 3, 4, 6, 1, 2))
+    expect_equal(li$dead_ind_index, c(1, 2))
+    expect_equal(li$os_cov_design, matrix(c(4, 2, 5), ncol = 1), ignore_attr = TRUE)
+    expect_equal(li$Ythreshold, -999999)
 })
 
 
@@ -148,6 +158,57 @@ test_that("DataJoint errors if inconsistent subject IDs", {
             )
         ),
         "`subjects` that are not present in `longitudinal"
+    )
+
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),
+        varm = c("A2", "A3", "A4", "A4"),
+        vstudy = c("S1", "S1", "S2", "S2")
+    )
+
+    df_surv <- data.frame(
+        vpt2 = c("A", "B", "C"),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+
+    df_long <- data.frame(
+        vpt2 = c("A", "A", "B", "B", "B", "B"),
+        vtime = c(10, 10, 20, 30, 40, 50),
+        vout = c(1, 2, 3, 4, 5, 6)
+    )
+
+    expect_error(
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            survival = DataSurvival(
+                data = df_surv,
+                formula = Surv(vtime, vevent) ~ vct
+            )
+        ),
+        "`vpt` not found in `survival`"
+    )
+
+    expect_error(
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            longitudinal = DataLongitudinal(
+                data = df_long,
+                formula = vout ~ vtime
+            )
+        ),
+        "`vpt` not found in `longitudinal`"
     )
 
 })
