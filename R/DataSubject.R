@@ -57,20 +57,21 @@ extractVariableNames.DataSubject <- function(object) {
 }
 
 #TODO docs
+#' @export
 #' @family as_stan_list
 as_stan_list.DataSubject <- function(x) {
-    df <- as.data.frame(x)
+    df <- as.data.frame(suit_up(x))
     vars <- extractVariableNames(x)
     list(
         Nind = nrow(df),
-        pt_to_ind = stats::setNames(
-            seq_len(nlevels(df[[vars$subject]])),
-            levels(df[[vars$subject]])
-        ),
         n_studies = length(unique(df[[vars$study]])),
         n_arms = length(unique(df[[vars$arm]])),
         pt_study_index = as.numeric(df[[vars$study]]),
-        pt_arm_index = as.numeric(df[[vars$arm]])
+        pt_arm_index = as.numeric(df[[vars$arm]]),
+        pt_to_ind = stats::setNames(
+            seq_len(nlevels(df[[vars$subject]])),
+            levels(df[[vars$subject]])
+        )
     )
 }
 
