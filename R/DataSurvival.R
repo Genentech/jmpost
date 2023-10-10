@@ -18,7 +18,8 @@ NULL
 
 #' Survival Data Object and Constructor Function
 #'
-#' The [`DataSurvival`] class handles the processing of the survival data for fitting a Joint Model.
+#' The [`DataSurvival`] class handles the processing of the survival data
+#' for fitting a [`JointModel`].
 #'
 #' @slot data (`data.frame`)\cr See Arguments for details.
 #' @slot formula (`formula`)\cr See Arguments for details.
@@ -110,13 +111,8 @@ as.data.frame.DataSurvival <- function(x, ...) {
 
 
 
-#' `DataSurvival` -> `list`
-#' @inheritParams DataSurvival-Shared
-#' @description
-#' Coerces  [`DataSurvival`] into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @rdname as_stan_list
 #' @family DataSurvival
-#' @family as_stan_list
 #' @export
 as_stan_list.DataSurvival <- function(object, ...) {
     df <- as.data.frame(object)
@@ -143,9 +139,14 @@ as_stan_list.DataSurvival <- function(object, ...) {
     return(model_data)
 }
 
+#' @rdname as_stan_list
+#' @export
+as.list.DataSurvival <- function(x, ...) {
+    as_stan_list(x, ...)
+}
 
-# TODO - docs
-suit_up.DataSurvival <- function(object, subject_var, subject_ord, ...) {
+#' @rdname harmonise
+harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
 
     data <- as.data.frame(object)
 

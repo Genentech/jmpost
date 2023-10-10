@@ -186,23 +186,58 @@ generateQuantities <- function(object, ...) {
 }
 
 
-# TODO - docs
-suit_up <- function(object, ...) {
-    UseMethod("suit_up")
+#' Prepare Data Object
+#'
+#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr data object to "harmonise"
+#' @param subject_var (`character`) \cr the name of the variable containing the subject identifier.
+#' @param subject_ord (`character`) \cr the expected levels (in order) of the subject identifier.
+#' @param ... not used.
+#'
+#' @details
+#' This utility function prepares the datasets in the data objects in order to ensure they
+#' are consistent and compatible with each other.
+#'
+#' In particular it ensures that the `subject` variable, as specified by `DataSubject`,
+#' is available in `DataLongitudinal` and `DataSurvival` and that all levels are present
+#' in all 3 data objects.
+#'
+#' It also sorts the datasets to ensure that indexes are consistent e.g. index 1 for
+#' `DataSubject@data` corresponds to the same subject as index 1 for `DataSurvival@data`.
+#' For `DataLongitudinal` the data is additionally sorted by time and outcome value.
+#'
+#' @seealso [`DataJoint`], [`DataSurvival`], [`DataSubject`], [`DataLongitudinal`]
+#'
+#' @keywords internal
+#' @return Returns the original object but with the data standardised (see details)
+harmonise <- function(object, ...) {
+    UseMethod("harmonise")
 }
 
-# TODO - docs
-suit_up.default <- function(object, ...) {
+
+#' @rdname harmonise
+harmonise.default <- function(object, ...) {
     NULL
 }
 
-# TODO - docs
-#' @family as_stan_list
+
+#' Data Object -> `list`
+#'
+#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
+#' data object to convert to a `list`
+#' @param x (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
+#' data object to convert to a `list`
+#' @param subject_var (`character`) \cr the name of the variable
+#' containing the subject identifier.
+#'
+#' @description
+#' Coerces a data object into a `list` of data components required
+#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @export
 as_stan_list <- function(object, ...) {
     UseMethod("as_stan_list")
 }
 
-# TODO - docs
+#' @rdname as_stan_list
 as_stan_list.default <- function(object, ...) {
     NULL
 }

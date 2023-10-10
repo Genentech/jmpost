@@ -485,14 +485,6 @@ test_that("subset(DataJoint) works as expected", {
 
 })
 
-
-
-
-
-
-
-
-##### TODO - rewrite for data Joint
 test_that("Error Handling", {
 
     x2 <- data.frame(

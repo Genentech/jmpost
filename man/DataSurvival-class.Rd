@@ -16,7 +16,8 @@ DataSurvival(data, formula)
 See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
 }
 \description{
-The \code{\link{DataSurvival}} class handles the processing of the survival data for fitting a Joint Model.
+The \code{\link{DataSurvival}} class handles the processing of the survival data
+for fitting a \code{\link{JointModel}}.
 }
 \section{Slots}{
 
@@ -29,11 +30,12 @@ The \code{\link{DataSurvival}} class handles the processing of the survival data
 \seealso{
 Other DataObjects: 
 \code{\link{DataJoint-class}},
-\code{\link{DataLongitudinal-class}}
+\code{\link{DataLongitudinal-class}},
+\code{\link{DataSubject-class}}
 
 Other DataSurvival: 
 \code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as_stan_list.DataSurvival}()},
+\code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 }
 \concept{DataObjects}

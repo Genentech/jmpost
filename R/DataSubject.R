@@ -1,5 +1,31 @@
 
-#TODO docs
+
+#' Re-used documentation for `DataSubject`
+#'
+#' @param object ([`DataSubject`]) \cr subject-level data.
+#' @param x ([`DataSubject`]) \cr subject-level data.
+#' @param ... Not Used.
+#'
+#' @name DataSubject-Shared
+#' @keywords internal
+NULL
+
+
+
+#' Subject Data Object and Constructor Function
+#'
+#' The [`DataSubject`] class handles the processing of the subject data for
+#' fitting a [`JointModel`].
+#'
+#' @slot data (`data.frame`)\cr the subject-level data.
+#' @slot subject (`character`)\cr the name of the variable containing the subject identifier.
+#' @slot arm (`character`)\cr the name of the variable containing the arm identifier.
+#' @slot study (`character`)\cr the name of the variable containing the study identifier.
+#'
+#' @family DataObjects
+#' @family DataSubject
+#' @exportClass DataSubject
+#' @export DataSubject
 .DataSubject <- setClass(
     Class = "DataSubject",
     representation = list(
@@ -9,7 +35,13 @@
         study = "character"
     )
 )
-#TODO docs
+
+
+#' @param data (`data.frame`)\cr the subject-level data.
+#' @param subject (`character`)\cr the name of the variable containing the subject identifier.
+#' @param arm (`character`)\cr the name of the variable containing the arm identifier.
+#' @param study (`character`)\cr the name of the variable containing the study identifier.
+#' @rdname DataSubject-class
 #' @export
 DataSubject <- function(data, subject, arm, study) {
     vars <- c(subject, arm, study)
@@ -44,7 +76,19 @@ setValidity(
     }
 )
 
-#TODO docs
+
+
+#' @inheritParams DataSubject-Shared
+#' @inherit extractVariableNames description title
+#'
+#' @returns
+#' A list with the following named elements:
+#' - `subject` (`character`)\cr the name of the variable containing the subject identifier.
+#' - `arm` (`character`)\cr the name of the variable containing the arm identifier.
+#' - `study` (`character`) \cr the name of the variable containing the study identifier.
+#' @family DataSubject
+#' @family extractVariableNames
+#' @keywords internal
 extractVariableNames.DataSubject <- function(object) {
     list(
         subject = object@subject,
@@ -53,11 +97,12 @@ extractVariableNames.DataSubject <- function(object) {
     )
 }
 
-#TODO docs
+
+#' @rdname as_stan_list
+#' @family DataSubject
 #' @export
-#' @family as_stan_list
 as_stan_list.DataSubject <- function(x) {
-    df <- as.data.frame(suit_up(x))
+    df <- as.data.frame(harmonise(x))
     vars <- extractVariableNames(x)
     list(
         Nind = nrow(df),
@@ -72,7 +117,21 @@ as_stan_list.DataSubject <- function(x) {
     )
 }
 
-# TODO - docs
+#' @rdname as_stan_list
+#' @export
+as.list.DataSubject <- function(x, ...) {
+    as_stan_list(x, ...)
+}
+
+
+#' `DataSubject` -> `data.frame`
+#'
+#' @inheritParams DataSubject-Shared
+#'
+#' @description
+#' Converts a [`DataSubject`] object into a `data.frame`.
+#' The subject variable is cast to factor.
+#' @family DataSubject
 #' @export
 as.data.frame.DataSubject <- function(x, ...) {
     x <- x@data
@@ -80,8 +139,10 @@ as.data.frame.DataSubject <- function(x, ...) {
     x
 }
 
-# TODO - docs
-suit_up.DataSubject <- function(object, ...) {
+
+
+#' @rdname harmonise
+harmonise.DataSubject <- function(object, ...) {
     data <- as.data.frame(object)
     vars <- extractVariableNames(object)
     assert_that(

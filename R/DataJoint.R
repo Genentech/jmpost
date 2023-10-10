@@ -49,18 +49,18 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 #' @rdname DataJoint-class
 DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
 
-    subject_suited <- suit_up(subject)
+    subject_suited <- harmonise(subject)
     vars <- extractVariableNames(subject)
     subject_var <- vars$subject
     subject_ord <- levels(as.data.frame(subject_suited)[[vars$subject]])
 
-    survival_suited <- suit_up(
+    survival_suited <- harmonise(
         survival,
         subject_var = subject_var,
         subject_ord = subject_ord
     )
 
-    longitudinal_suited <- suit_up(
+    longitudinal_suited <- harmonise(
         longitudinal,
         subject_var = subject_var,
         subject_ord = subject_ord
@@ -116,14 +116,8 @@ setValidity(
 
 # DataJoint-as.list ----
 
-#' `DataJoint` -> `list`
-#'
-#' @inheritParams DataJoint-Shared
-#' @description
-#' Coerces  [`DataJoint`] into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @rdname as_stan_list
 #' @family DataJoint
-#' @family as_stan_list
 #' @export
 as_stan_list.DataJoint <- function(object, ...) {
     vars <- extractVariableNames(object@subject)
@@ -136,8 +130,7 @@ as_stan_list.DataJoint <- function(object, ...) {
         ))
 }
 
-
-#' @rdname as_stan_list.DataJoint
+#' @rdname as_stan_list
 #' @export
 as.list.DataJoint <- function(x, ...) {
     as_stan_list(x, ...)

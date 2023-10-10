@@ -18,7 +18,7 @@ The subject variable is cast to factor.
 \seealso{
 Other DataSurvival: 
 \code{\link{DataSurvival-class}},
-\code{\link{as_stan_list.DataSurvival}()},
+\code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 }
 \concept{DataSurvival}

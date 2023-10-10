@@ -80,8 +80,8 @@ setValidity(
 
 
 
-# TODO - docs
-suit_up.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
+#' @rdname harmonise
+harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
     data <- as.data.frame(object)
     vars <- extractVariableNames(object)
     assert_string(subject_var, na.ok = FALSE)
@@ -158,13 +158,8 @@ extractVariableNames.DataLongitudinal <- function(object) {
 }
 
 
-#' `DataLongitudinal` -> `list`
-#' @inheritParams DataLongitudinal-Shared
-#' @description
-#' Coerces  [`DataLongitudinal`] into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @rdname as_stan_list
 #' @family DataLongitudinal
-#' @family as_stan_list
 #' @export
 as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
 
@@ -242,4 +237,10 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     )
 
     return(model_data)
+}
+
+#' @rdname as_stan_list
+#' @export
+as.list.DataLongitudinal <- function(x, ...) {
+    as_stan_list(x, ...)
 }
