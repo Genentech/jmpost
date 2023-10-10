@@ -14,6 +14,9 @@
 DataSubject <- function(data, subject, arm, study) {
     vars <- c(subject, arm, study)
     vars_frm_chr <- paste0("~ ", paste(vars, collapse = " + "))
+    
+    
+    
     .DataSubject(
         data = remove_missing_rows(data, as.formula(vars_frm_chr)),
         subject = subject,
@@ -72,8 +75,11 @@ as_stan_list.DataSubject <- function(x) {
 }
 
 # TODO - docs
+#' @export
 as.data.frame.DataSubject <- function(x, ...) {
-    x@data
+    x <- x@data
+    rownames(x) <- NULL
+    x
 }
 
 # TODO - docs
@@ -85,9 +91,15 @@ suit_up.DataSubject <- function(object, ...) {
         vars$arm %in% names(data),
         vars$study %in% names(data)
     )
+    assert_character(
+        as.character(data[[vars$subject]]),
+        any.missing = FALSE,
+        unique = TRUE
+    )
     data[[vars$subject]] <- factor(data[[vars$subject]])
     data[[vars$arm]] <- factor(data[[vars$arm]])
     data[[vars$study]] <- factor(data[[vars$study]])
+    data <- data[order(data[[vars$subject]]), ]
     DataSubject(
         data = data,
         subject = object@subject,

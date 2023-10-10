@@ -52,7 +52,7 @@ DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
     subject_suited <- suit_up(subject)
     vars <- extractVariableNames(subject)
     subject_var <- vars$subject
-    subject_ord <- as.character(as.data.frame(subject_suited)[[vars$subject]])
+    subject_ord <- levels(as.data.frame(subject_suited)[[vars$subject]])
 
     survival_suited <- suit_up(
         survival,
@@ -78,9 +78,41 @@ DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
 setValidity(
     Class = "DataJoint",
     method = function(object) {
-        # TODO
+        vars <- extractVariableNames(object@subject)
+        subject_var <- vars$subject
+        subject_ord <- as.character(as.data.frame(object@subject)[[vars$subject]])
+        if (!is.null(object@survival)) {
+            survival_df <- as.data.frame(object@survival)
+            if (!subject_var %in% names(survival_df)) {
+                return(sprintf("Unable to find `%s` in `survival`", sujbect_var))
+            }
+            if (!all(survival_df[[subject_var]] %in% subject_ord)) {
+                return("There are subjects in `survival` that are not in `subject`")
+            }
+            if (!nrow(survival_df) == length(unique(survival_df[[subject_var]]))) {
+                return("There are duplicate subjects in `survival`")
+            }
+        }
+        if (!is.null(object@longitudinal)) {
+            long_df <- as.data.frame(object@longitudinal)
+            if (!subject_var %in% names(long_df)) {
+                return(sprintf("Unable to find `%s` in `longitudinal`", sujbect_var))
+            }
+            if (!all(long_df[[subject_var]] %in% subject_ord)) {
+                return("There are subjects in `longitudinal` that are not in `subject`")
+            }
+        }
+        subject_df <- as.data.frame(object@subject)
+        if (!subject_var %in% names(subject_df)) {
+            return(sprintf("Unable to find `%s` in `subject`", sujbect_var))
+        }
+        if (!nrow(subject_df) == length(unique(subject_df[[subject_var]]))) {
+            return("There are duplicate subjects in `subject`")
+        }
+        return(TRUE)
     }
 )
+
 
 # DataJoint-as.list ----
 
@@ -94,7 +126,6 @@ setValidity(
 #' @family as_stan_list
 #' @export
 as_stan_list.DataJoint <- function(object, ...) {
-
     vars <- extractVariableNames(object@subject)
     subject_var <- vars$subject
     as_stan_list(object@subject) |>
@@ -105,7 +136,9 @@ as_stan_list.DataJoint <- function(object, ...) {
         ))
 }
 
+
 #' @rdname as_stan_list.DataJoint
+#' @export
 as.list.DataJoint <- function(x, ...) {
     as_stan_list(x, ...)
 }

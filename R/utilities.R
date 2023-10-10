@@ -47,7 +47,9 @@ remove_missing_rows <- function(data, formula, extra_vars = NULL) {
         "Note that %d observations were removed as one of more required variables contained missing values",
         length(missing_rows)
     ))
-    data[-missing_rows, ]
+    data_reduced <- data[-missing_rows, ]
+    rownames(data_reduced) <- NULL
+    data_reduced
 }
 
 #' Replicate Single Values in a List

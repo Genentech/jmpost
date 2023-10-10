@@ -103,7 +103,9 @@ extractVariableNames.DataSurvival <- function(object) {
 #' @family DataSurvival
 #' @export
 as.data.frame.DataSurvival <- function(x, ...) {
-    return(x@data)
+    x <- x@data
+    rownames(x) <- NULL
+    x
 }
 
 
@@ -123,6 +125,7 @@ as_stan_list.DataSurvival <- function(object, ...) {
     design_mat <- stats::model.matrix(vars$frm, data = df)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
     design_mat <- design_mat[, -remove_index, drop = FALSE]
+    rownames(design_mat) <- NULL
 
     # Parameters for efficient integration of hazard function -> survival function
     gh_parameters <- statmod::gauss.quad(n = 15, kind = "legendre")
@@ -150,7 +153,15 @@ suit_up.DataSurvival <- function(object, subject_var, subject_ord, ...) {
     assert_character(subject_ord, any.missing = FALSE)
     assert_that(
         subject_var %in% names(data),
-        all(data[[subject_var]] %in% subject_ord)
+        msg = sprintf("Subject variable `%s` not found in `survival`", subject_var)
+    )
+    assert_that(
+        all(data[[subject_var]] %in% subject_ord),
+        msg = "There are subjects `survival` that are not present in `subjects`"
+    )
+    assert_that(
+        all(subject_ord %in% data[[subject_var]]),
+        msg = "There are subjects `subjects` that are not present in `survival`"
     )
 
     data[[subject_var]] <- factor(

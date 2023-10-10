@@ -1,11 +1,15 @@
-test_that("DataJoint errors if subjects don't allign after", {
+test_that("DataJoint basic usage", {
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
     df_surv <- data.frame(
         vpt = c("A", "B", "C"),
         vtime = c(100, 200, 150),
         vevent = c(0, 1, 1),
-        vct = c(5, 2, 4),
-        varm = c("A1", "A1", "A2"),
-        vstudy = c("S1", "S1", "S2")
+        vct = c(5, 2, 4)
     )
 
     df_long <- data.frame(
@@ -14,73 +18,279 @@ test_that("DataJoint errors if subjects don't allign after", {
         vout = c(1, 2, 3, 4, 5, 6)
     )
 
-    do_surv <- DataSurvival(
-        data = df_surv,
-        formula = Surv(vtime, vevent) ~ vct,
-        subject = "vpt",
-        arm = "varm",
-        study = "vstudy"
-    )
-
-    do_long <- DataLongitudinal(
-        data = df_long,
-        formula = vout ~ vtime,
-        subject = "vpt"
-    )
-
     d_joint <- DataJoint(
-        survival = do_surv,
-        longitudinal = do_long
-    )
-
-    expect_equal(as.list(d_joint)$Nind, 3)
-    expect_equal(as.list(d_joint)$Nta_total, 6)
-
-    df_long2 <- df_long
-    df_long2$vpt[df_long2$vpt == "C"] <- NA_character_
-
-    df_surv2 <- df_surv
-    df_surv2$vpt[df_surv2$vpt == "C"] <- NA_character_
-
-    suppressMessages({
-        do_long2 <- DataLongitudinal(
-            data = df_long2,
-            formula = vout ~ vtime,
-            subject = "vpt"
-        )
-    })
-
-    suppressMessages({
-        do_surv2 <- DataSurvival(
-            data = df_surv2,
-            formula = Surv(vtime, vevent) ~ vct,
+        subject = DataSubject(
+            data = df_subj,
             subject = "vpt",
             arm = "varm",
             study = "vstudy"
+        ),
+        survival = DataSurvival(
+            data = df_surv,
+            formula = Surv(vtime, vevent) ~ vct
+        ),
+        longitudinal = DataLongitudinal(
+            data = df_long,
+            formula = vout ~ vtime
         )
-    })
+    )
 
-    expect_error(
-        {
-            d_joint <- DataJoint(
-                survival = do_surv,
-                longitudinal = do_long2
-            )
-        },
-        regexp = "subjects in the survival"
+    li <- as.list(d_joint)
+    expect_equal(li$Nind, 3)
+    expect_equal(li$Nta_total, 6)
+    expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3))
+    expect_equal(li$n_arms, 3)
+    expect_equal(li$n_studies, 2)
+})
+
+
+
+test_that("DataJoint errors if inconsistent subject IDs", {
+
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
+    df_surv <- data.frame(
+        vpt = c("A", NA_character_, "C"),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+
+    df_long <- data.frame(
+        vpt = c("A", "A", "B", "B", NA_character_, "B"),
+        vtime = c(10, 10, 20, 30, 40, 50),
+        vout = c(1, 2, 3, 4, 5, 6)
     )
 
     expect_error(
-        {
-            d_joint <- DataJoint(
-                survival = do_surv2,
-                longitudinal = do_long
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            survival = DataSurvival(
+                data = df_surv,
+                formula = Surv(vtime, vevent) ~ vct
             )
-        },
-        regexp = "subjects in the longitudinal"
+        ),
+        "`survival` that are not present"
+    )
+
+    expect_error(
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            longitudinal = DataLongitudinal(
+                data = df_long,
+                formula = vout ~ vtime
+            )
+        ),
+        "`longitudinal` that are not present"
+    )
+
+
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),
+        varm = c("A2", "A3", "A4", "A4"),
+        vstudy = c("S1", "S1", "S2", "S2")
+    )
+
+    df_surv <- data.frame(
+        vpt = c("A", "B", "C"),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+
+    df_long <- data.frame(
+        vpt = c("A", "A", "B", "B", "B", "B"),
+        vtime = c(10, 10, 20, 30, 40, 50),
+        vout = c(1, 2, 3, 4, 5, 6)
+    )
+
+    expect_error(
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            survival = DataSurvival(
+                data = df_surv,
+                formula = Surv(vtime, vevent) ~ vct
+            )
+        ),
+        "`subjects` that are not present in `survival`"
+    )
+
+    expect_error(
+        DataJoint(
+            subject = DataSubject(
+                data = df_subj,
+                subject = "vpt",
+                arm = "varm",
+                study = "vstudy"
+            ),
+            longitudinal = DataLongitudinal(
+                data = df_long,
+                formula = vout ~ vtime
+            )
+        ),
+        "`subjects` that are not present in `longitudinal"
+    )
+
+})
+
+
+
+
+
+
+test_that("DataJoint sorts handles pre-factored levels correctly", {
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
+    df_surv <- data.frame(
+        vpt = c("A", "B", "C"),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+
+    df_long <- data.frame(
+        vpt = c("A", "A", "B", "B", "C", "B"),
+        vtime = c(10, 10, 20, 30, 40, 50),
+        vout = c(1, 2, 3, 4, 5, 6)
+    )
+
+    d_joint <- DataJoint(
+        subject = DataSubject(
+            data = df_subj,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy"
+        ),
+        survival = DataSurvival(
+            data = df_surv,
+            formula = Surv(vtime, vevent) ~ vct
+        ),
+        longitudinal = DataLongitudinal(
+            data = df_long,
+            formula = vout ~ vtime
+        )
+    )
+
+    df_subj2 <- data.frame(
+        vpt = factor(c("C", "B", "A"), levels = c("C", "B", "A")),
+        varm = factor(c("A4", "A3", "A2"), levels = c("A2", "A3", "A4")),
+        vstudy = factor(c("S2", "S1", "S1"), levels = c("S1", "S2"))
+    )
+    expect_equal(
+        as.data.frame(d_joint@subject),
+        df_subj2
+    )
+
+    df_long2 <- df_long |>
+        dplyr::mutate(vpt = factor(vpt, levels = levels(df_subj$vpt))) |>
+        dplyr::arrange(vpt, vtime, vout)
+    expect_equal(
+        as.data.frame(d_joint@longitudinal),
+        df_long2
+    )
+
+    df_surv2 <- data.frame(
+        vpt = factor(c("C", "B", "A"), levels = levels(df_subj$vpt)),
+        vtime = c(150, 200, 100),
+        vevent = c(1, 1, 0),
+        vct = c(4, 2, 5)
+    )
+    expect_equal(
+        as.data.frame(d_joint@survival),
+        df_surv2
     )
 })
 
+
+test_that("DataJoint sorts handles character-to-factor levels correctly", {
+    df_subj <- data.frame(
+        vpt = c("B", "A", "C"),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
+    df_surv <- data.frame(
+        vpt = c("A", "B", "C"),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+
+    df_long <- data.frame(
+        vpt = c("A", "A", "B", "B", "C", "B"),
+        vtime = c(10, 10, 20, 30, 40, 50),
+        vout = c(1, 2, 3, 4, 5, 6)
+    )
+
+    d_joint <- DataJoint(
+        subject = DataSubject(
+            data = df_subj,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy"
+        ),
+        survival = DataSurvival(
+            data = df_surv,
+            formula = Surv(vtime, vevent) ~ vct
+        ),
+        longitudinal = DataLongitudinal(
+            data = df_long,
+            formula = vout ~ vtime
+        )
+    )
+
+    df_subj2 <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("A", "B", "C")),
+        varm = factor(c("A3", "A2", "A4"), levels = c("A2", "A3", "A4")),
+        vstudy = factor(c("S1", "S1", "S2"), levels = c("S1", "S2"))
+    )
+    expect_equal(
+        as.data.frame(d_joint@subject),
+        df_subj2
+    )
+
+    df_long2 <- df_long |>
+        dplyr::mutate(vpt = factor(vpt, levels = c("A", "B", "C"))) |>
+        dplyr::arrange(vpt, vtime, vout)
+    expect_equal(
+        as.data.frame(d_joint@longitudinal),
+        df_long2
+    )
+
+    df_surv2 <- data.frame(
+        vpt = factor(c("A", "B", "C")),
+        vtime = c(100, 200, 150),
+        vevent = c(0, 1, 1),
+        vct = c(5, 2, 4)
+    )
+    expect_equal(
+        as.data.frame(d_joint@survival),
+        df_surv2
+    )
+})
 
 
 
@@ -169,12 +379,12 @@ test_that("subset(DataJoint) works as expected", {
 
 
     df_surv <- data.frame(
-        vpt = c("A", "B", "C"),
-        vtime = c(100, 200, 150),
-        vevent = c(0, 1, 1),
-        vct = c(5, 2, 4),
-        varm = c("A1", "A1", "A2"),
-        vstudy = c("S1", "S1", "S2")
+        vpt = c("C", "B", "A"),
+        vtime = c(150, 200, 100),
+        vevent = c(1, 1, 0),
+        vct = c(4, 2, 5),
+        varm = c("A2", "A1", "A1"),
+        vstudy = c("S2", "S1", "S1")
     )
 
     df_long <- data.frame(
@@ -184,17 +394,19 @@ test_that("subset(DataJoint) works as expected", {
     )
 
     d_joint <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = df_surv,
-            formula = Surv(vtime, vevent) ~ vct,
             subject = "vpt",
             arm = "varm",
             study = "vstudy"
         ),
+        survival = DataSurvival(
+            data = df_surv,
+            formula = Surv(vtime, vevent) ~ vct
+        ),
         longitudinal = DataLongitudinal(
             data = df_long,
-            formula = vout ~ vtime,
-            subject = "vpt"
+            formula = vout ~ vtime
         )
     )
 
@@ -210,4 +422,31 @@ test_that("subset(DataJoint) works as expected", {
         expected
     )
 
+})
+
+
+
+
+
+
+
+
+##### TODO - rewrite for data Joint
+test_that("Error Handling", {
+
+    x2 <- data.frame(
+        vpt = c("b", "b", "c"),
+        vtime = c(10, 20, 30),
+        vevent = c(1, 1, 1)
+    )
+
+    expect_error(
+        {
+            DataSurvival(
+                data = x2,
+                formula = Surv(vtime, vevent) ~ 1
+            )
+        },
+        "Only 1 survival observation"
+    )
 })

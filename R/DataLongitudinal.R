@@ -62,8 +62,8 @@ setValidity(
         if (!length(object@formula[[3]]) == 1) {
             return("the RHS of `formula` should only have 1 value")
         }
-        if (!length(object@threshold) == 1) {
-            return("`threshold` must be of length 1")
+        if (!length(object@threshold) <= 1) {
+            return("`threshold` must be of length 1 or `NULL`")
         }
         vars <- extractVariableNames(object)
         vars$threshold <- NULL
@@ -88,7 +88,15 @@ suit_up.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
     assert_character(subject_ord, any.missing = FALSE)
     assert_that(
         subject_var %in% names(data),
-        all(data[[subject_var]] %in% subject_ord)
+        msg = sprintf("Subject variable `%s` not found in `longitudinal`", subject_var)
+    )
+    assert_that(
+        all(data[[subject_var]] %in% subject_ord),
+        msg = "There are subjects `longitudinal` that are not present in `subjects`"
+    )
+    assert_that(
+        all(subject_ord %in% data[[subject_var]]),
+        msg = "There are subjects `subjects` that are not present in `longitudinal`"
     )
     data[[subject_var]] <- factor(
         as.character(data[[subject_var]]),
@@ -119,7 +127,9 @@ suit_up.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
 #' @family DataLongitudinal
 #' @export
 as.data.frame.DataLongitudinal <- function(x, ...) {
-    x@data
+    x <- x@data
+    rownames(x) <- NULL
+    x
 }
 
 
@@ -161,6 +171,8 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     df <- as.data.frame(object)
     vars <- extractVariableNames(object)
 
+    assert_factor(df[[subject_var]])
+
     mat_sld_index <- stats::model.matrix(
         stats::as.formula(paste("~", subject_var)),
         data = df
@@ -182,9 +194,6 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
 
     model_data <- list(
         Nta_total = nrow(df),
-        Yobs = df[[vars$outcome]],
-        Tobs = df[[vars$time]],
-        Ythreshold = adj_threshold,
 
         # Number of individuals and tumor assessments.
         Nta_obs_y = length(index_obs),
@@ -194,6 +203,10 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
         ind_index = as.numeric(df[[subject_var]]),
         obs_y_index = index_obs,
         cens_y_index = index_cen,
+
+        Yobs = df[[vars$outcome]],
+        Tobs = df[[vars$time]],
+        Ythreshold = adj_threshold,
 
         # Sparse matrix parameters
         # Matrix of individuals x observed tumor assessments.
