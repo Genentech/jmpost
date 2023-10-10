@@ -123,7 +123,7 @@ test_that("simulate_joint_data leads to valid DataJoint with almost only default
     long_data <- sim_data$lm |>
         dplyr::arrange(time, pt)
 
-    jdat <- DataJoint(
+    joint_data <- DataJoint(
         subject = DataSubject(
             data = os_data,
             subject = "pt",

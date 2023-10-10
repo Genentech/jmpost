@@ -496,6 +496,8 @@ test_that("subset(DataJoint) works as expected", {
 test_that("Error Handling", {
 
     x2 <- data.frame(
+        varm = c("A", "A", "A"),
+        vstudy = c("A", "A", "A"),
         vpt = c("b", "b", "c"),
         vtime = c(10, 20, 30),
         vevent = c(1, 1, 1)
@@ -503,11 +505,14 @@ test_that("Error Handling", {
 
     expect_error(
         {
-            DataSurvival(
-                data = x2,
-                formula = Surv(vtime, vevent) ~ 1
+            DataJoint(
+                survival = DataSurvival(
+                    data = x2,
+                    formula = Surv(vtime, vevent) ~ 1
+                ),
+                subject = DataSubject(x2, "vpt", "varm", "vstudy")
             )
         },
-        "Only 1 survival observation"
+        "Contains duplicated values"
     )
 })
