@@ -90,6 +90,7 @@ subset
 DataLongitudinal
 DataObjects
 DataSurvival
+DataSubject
 JointModel
 ParameterList
 StanModel
@@ -101,5 +102,6 @@ extractVariableNames
 modelling
 standardised
 LongitudinalQuantities
+harmonise
 
 
