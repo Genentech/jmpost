@@ -40,17 +40,19 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
     )
 
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )

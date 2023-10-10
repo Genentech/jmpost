@@ -25,18 +25,16 @@ jm <- JointModel(survival = SurvivalExponential())
 
 write_stan(jm, "local/debug.stan")
 
-jdat <- DataJoint(
-    survival = DataSurvival(
+jdat <- jdat <- DataJoint(
+    subject = DataSubject(
         data = dat_os,
-        formula = Surv(time, event) ~ 1,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
-    longitudinal = DataLongitudinal(
-        data = dat_lm,
-        formula = sld ~ time,
-        subject = "pt"
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
     )
 )
 

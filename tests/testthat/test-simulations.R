@@ -123,18 +123,20 @@ test_that("simulate_joint_data leads to valid DataJoint with almost only default
     long_data <- sim_data$lm |>
         dplyr::arrange(time, pt)
 
-    joint_data <- DataJoint(
-        survival = DataSurvival(
+    jdat <- DataJoint(
+        subject = DataSubject(
             data = os_data,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
+        survival = DataSurvival(
+            data = os_data,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
         longitudinal = DataLongitudinal(
             data = long_data,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )

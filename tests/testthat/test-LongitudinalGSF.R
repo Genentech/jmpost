@@ -20,18 +20,19 @@ test_that("LongitudinalGSF works as expected with a single study", {
         dplyr::filter(observed)
 
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
-            formula = sld ~ time,
-            subject = "pt",
-            threshold = 5
+            formula = sld ~ time
         )
     )
 

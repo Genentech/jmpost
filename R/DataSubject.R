@@ -14,9 +14,6 @@
 DataSubject <- function(data, subject, arm, study) {
     vars <- c(subject, arm, study)
     vars_frm_chr <- paste0("~ ", paste(vars, collapse = " + "))
-    
-    
-    
     .DataSubject(
         data = remove_missing_rows(data, as.formula(vars_frm_chr)),
         subject = subject,

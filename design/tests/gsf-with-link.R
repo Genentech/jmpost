@@ -100,17 +100,19 @@ write_stan(jm, "local/debug.stan")
 
 ## Prepare data for sampling
 jdat <- DataJoint(
-    survival = DataSurvival(
+    subject = DataSubject(
         data = dat_os,
-        formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
-        subject = "pt",
         threshold = 5
     )
 )

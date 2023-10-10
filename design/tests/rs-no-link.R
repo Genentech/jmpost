@@ -57,7 +57,7 @@ dat_lm <- jlist$lm |>
 
 
 ## Prepare data for sampling
-jdat <- DataJoint(
+jdat <- jdat <- DataJoint(
     subject = DataSubject(
         data = dat_os,
         subject = "pt",

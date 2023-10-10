@@ -32,9 +32,8 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
 
     ## Prepare data for sampling
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
@@ -42,7 +41,6 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )
