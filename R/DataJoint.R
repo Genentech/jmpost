@@ -27,9 +27,9 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 #' The `DataJoint` class handles combining data from a [`DataSurvival`] object and a
 #' [`DataLongitudinal`] object.
 #'
+#' @slot subject (`DataSubject`)\cr See Argument for details.
 #' @slot survival (`DataSurvival`)\cr See Argument for details.
 #' @slot longitudinal (`DataLongitudinal`)\cr See Argument for details.
-#'
 #'
 #' @family DataObjects
 #' @family DataJoint
@@ -44,6 +44,7 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
     )
 )
 
+#' @param subject (`DataSubject`)\cr object created by [DataSubject()].
 #' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class

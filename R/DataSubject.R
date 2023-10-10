@@ -47,7 +47,7 @@ DataSubject <- function(data, subject, arm, study) {
     vars <- c(subject, arm, study)
     vars_frm_chr <- paste0("~ ", paste(vars, collapse = " + "))
     .DataSubject(
-        data = remove_missing_rows(data, as.formula(vars_frm_chr)),
+        data = remove_missing_rows(data, stats::as.formula(vars_frm_chr)),
         subject = subject,
         arm = arm,
         study = study
@@ -101,9 +101,9 @@ extractVariableNames.DataSubject <- function(object) {
 #' @rdname as_stan_list
 #' @family DataSubject
 #' @export
-as_stan_list.DataSubject <- function(x) {
-    df <- as.data.frame(harmonise(x))
-    vars <- extractVariableNames(x)
+as_stan_list.DataSubject <- function(object, ...) {
+    df <- as.data.frame(harmonise(object))
+    vars <- extractVariableNames(object)
     list(
         Nind = nrow(df),
         n_studies = length(unique(df[[vars$study]])),

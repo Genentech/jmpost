@@ -29,6 +29,9 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 
 #' Joint Model Object and Constructor Function
 #'
+#' @slot longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
+#' @slot survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
+#' @slot link (`Link`)\cr the link.
 #' @slot stan (`StanModule`)\cr code containing the joint model specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
@@ -46,8 +49,8 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
     )
 )
 
-#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
-#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
+#' @param survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
 #' @param link (`Link`)\cr the link.
 #' @rdname JointModel-class
 JointModel <- function(

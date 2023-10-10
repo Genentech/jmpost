@@ -228,6 +228,7 @@ harmonise.default <- function(object, ...) {
 #' data object to convert to a `list`
 #' @param subject_var (`character`) \cr the name of the variable
 #' containing the subject identifier.
+#' @param ... not used.
 #'
 #' @description
 #' Coerces a data object into a `list` of data components required

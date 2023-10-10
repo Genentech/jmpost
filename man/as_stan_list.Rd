@@ -14,7 +14,7 @@
 \alias{as.list.DataJoint}
 \title{Data Object -> \code{list}}
 \usage{
-\method{as_stan_list}{DataSubject}(x)
+\method{as_stan_list}{DataSubject}(object, ...)
 
 \method{as.list}{DataSubject}(x, ...)
 
@@ -35,10 +35,12 @@ as_stan_list(object, ...)
 \method{as.list}{DataJoint}(x, ...)
 }
 \arguments{
-\item{x}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
+\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
 data object to convert to a \code{list}}
 
-\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
+\item{...}{not used.}
+
+\item{x}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
 data object to convert to a \code{list}}
 
 \item{subject_var}{(\code{character}) \cr the name of the variable
