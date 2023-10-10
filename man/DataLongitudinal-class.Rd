@@ -7,14 +7,12 @@
 \alias{DataLongitudinal}
 \title{Longitudinal Data Object and Constructor Function}
 \usage{
-DataLongitudinal(data, formula, subject, threshold = NULL)
+DataLongitudinal(data, formula, threshold = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr containing the observed longitudinal data.}
 
 \item{formula}{(\code{formula})\cr of the form \code{outcome ~ time}, and cannot contain any additional covariates.}
-
-\item{subject}{(\code{character})\cr the name of the subject identifier variable.}
 
 \item{threshold}{(\code{numeric})\cr cut-off value to be used to declare an observation as censored
 (below detection limit).}
@@ -30,8 +28,6 @@ observations that contain missing values in the required variables are removed.}
 
 \item{\code{formula}}{(\code{formula})\cr See Arguments for details}
 
-\item{\code{subject}}{(\code{character})\cr See Arguments for details}
-
 \item{\code{threshold}}{(\code{numeric})\cr See Arguments for details}
 }}
 
@@ -42,7 +38,7 @@ Other DataObjects:
 
 Other DataLongitudinal: 
 \code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as.list.DataLongitudinal}()},
+\code{\link{as_stan_list.DataLongitudinal}()},
 \code{\link{extractVariableNames.DataLongitudinal}()}
 }
 \concept{DataLongitudinal}

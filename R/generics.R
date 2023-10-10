@@ -184,3 +184,25 @@ size <- function(object) {
 generateQuantities <- function(object, ...) {
     UseMethod("generateQuantities")
 }
+
+
+# TODO - docs
+suit_up <- function(object, ...) {
+    UseMethod("suit_up")
+}
+
+# TODO - docs
+suit_up.default <- function(object, ...) {
+    NULL
+}
+
+# TODO - docs
+#' @family as_stan_list
+as_stan_list <- function(object, ...) {
+    UseMethod("as_stan_list")
+}
+
+# TODO - docs
+as_stan_list.default <- function(object, ...) {
+    NULL
+}

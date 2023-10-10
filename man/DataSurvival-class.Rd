@@ -7,19 +7,13 @@
 \alias{DataSurvival}
 \title{Survival Data Object and Constructor Function}
 \usage{
-DataSurvival(data, formula, subject, arm, study)
+DataSurvival(data, formula)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr the observed time-to-event data.}
 
 \item{formula}{(\code{formula})\cr of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
 See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
-
-\item{subject}{(\code{character})\cr the name of the subject identifier variable.}
-
-\item{arm}{(\code{character})\cr the name of the treatment arm variable.}
-
-\item{study}{(\code{character})\cr the name of the study variable.}
 }
 \description{
 The \code{\link{DataSurvival}} class handles the processing of the survival data for fitting a Joint Model.
@@ -30,12 +24,6 @@ The \code{\link{DataSurvival}} class handles the processing of the survival data
 \item{\code{data}}{(\code{data.frame})\cr See Arguments for details.}
 
 \item{\code{formula}}{(\code{formula})\cr See Arguments for details.}
-
-\item{\code{subject}}{(\code{character})\cr See Arguments for details.}
-
-\item{\code{arm}}{(\code{character})\cr See Arguments for details.}
-
-\item{\code{study}}{(\code{character})\cr See Arguments for details.}
 }}
 
 \seealso{
@@ -45,7 +33,7 @@ Other DataObjects:
 
 Other DataSurvival: 
 \code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as.list.DataSurvival}()},
+\code{\link{as_stan_list.DataSurvival}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 }
 \concept{DataObjects}

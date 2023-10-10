@@ -28,7 +28,7 @@ Extract a \code{list} that maps the variable names in a user-defined
 Other DataLongitudinal: 
 \code{\link{DataLongitudinal-class}},
 \code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as.list.DataLongitudinal}()}
+\code{\link{as_stan_list.DataLongitudinal}()}
 
 Other extractVariableNames: 
 \code{\link{extractVariableNames.DataSurvival}()},

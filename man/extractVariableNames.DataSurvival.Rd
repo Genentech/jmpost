@@ -12,9 +12,6 @@
 \value{
 A list with the following named elements:
 \itemize{
-\item \code{arm} (\code{character})\cr The name of the variable containing the treatment arm
-\item \code{study} (\code{character})\cr The name of the variable containing the study identifier
-\item \code{pt} (\code{character})\cr The name of the variable containing the subject identifier
 \item \code{frm} (\code{formula})\cr a symbolic description of the survival model to be fitted
 \item \code{time} (\code{character})\cr  The name of the variable containing the event time
 \item \code{event} (\code{character}) \cr  The name of the variable containing the event status
@@ -28,7 +25,7 @@ Extract a \code{list} that maps the variable names in a user-defined
 Other DataSurvival: 
 \code{\link{DataSurvival-class}},
 \code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as.list.DataSurvival}()}
+\code{\link{as_stan_list.DataSurvival}()}
 
 Other extractVariableNames: 
 \code{\link{extractVariableNames.DataLongitudinal}()},

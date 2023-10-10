@@ -5,6 +5,8 @@ library(bayesplot)
 
 options("jmpost.cache.dir" = file.path("local", "models"))
 
+set.seed(6042)
+
 jlist <- simulate_joint_data(
     n_arm = c(1000, 1000),
     times = 1:2000,
@@ -40,18 +42,15 @@ jm <- JointModel(
 write_stan(jm, "local/debug.stan")
 
 jdat <- DataJoint(
-    survival = DataSurvival(
+    subject = DataSubject(
         data = dat_os,
-        formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
-    longitudinal = DataLongitudinal(
-        data = dat_lm,
-        formula = sld ~ time,
-        subject = "pt",
-        threshold = 5
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
     )
 )
 

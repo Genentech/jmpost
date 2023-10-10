@@ -7,7 +7,7 @@
 \alias{DataJoint}
 \title{Joint Data Object and Constructor Function}
 \usage{
-DataJoint(survival, longitudinal)
+DataJoint(subject, survival = NULL, longitudinal = NULL)
 }
 \arguments{
 \item{survival}{(\code{DataSurvival})\cr object created by \code{\link[=DataSurvival]{DataSurvival()}}.}
@@ -32,7 +32,7 @@ Other DataObjects:
 \code{\link{DataSurvival-class}}
 
 Other DataJoint: 
-\code{\link{as.list.DataJoint}()},
+\code{\link{as_stan_list.DataJoint}()},
 \code{\link{subset.DataJoint}()}
 }
 \concept{DataJoint}

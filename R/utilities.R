@@ -31,12 +31,14 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 #'   still contain missing values.
 #'
 #' @keywords internal
-remove_missing_rows <- function(data, formula, extra_vars) {
-    extra_vars <- paste(extra_vars, collapse = " + ")
-    formula_update_string <- paste0(". ~ . + ", extra_vars)
-    formula_update <- stats::update(formula, formula_update_string)
+remove_missing_rows <- function(data, formula, extra_vars = NULL) {
+    if (!is.null(extra_vars)) {
+        extra_vars <- paste(extra_vars, collapse = " + ")
+        formula_update_string <- paste0(". ~ . + ", extra_vars)
+        formula <- stats::update(formula, formula_update_string)
+    }
 
-    missing_rows <- get_missing_rownumbers(data, formula_update)
+    missing_rows <- get_missing_rownumbers(data, formula)
 
     if (length(missing_rows) == 0) {
         return(data)
@@ -176,25 +178,6 @@ samples_median_ci <- function(samples, level = 0.95) {
         median = samples_median,
         samples_ci
     ))
-}
-
-#' `pt_2_factor`
-#'
-#' Converts subject identifiers to factors.
-#' If `pt` is already a factor it will re-level it to ensure the levels are in alphabetical order.
-#' This is to ensure that [`DataLongitudinal`] and [`DataSurvival`] use identical index numbers
-#' for the subjects to ensure data alignment in the joint model.
-#'
-#' @param pt (`character` or `factor`)\cr subject identifiers.
-#'
-#' @returns A `factor` with the levels in alphabetical order.
-#'
-#' @keywords internal
-pt_2_factor <- function(pt) {
-    pt_char <- as.character(pt)
-    pt_uniq <- unique(pt_char)
-    pt_uniq_ord <- pt_uniq[order(pt_uniq)]
-    factor(pt_char, levels = pt_uniq_ord)
 }
 
 

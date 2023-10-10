@@ -1,5 +1,6 @@
 #' @include DataSurvival.R
 #' @include DataLongitudinal.R
+#' @include DataSubject.R
 NULL
 
 
@@ -13,6 +14,8 @@ NULL
 #' @keywords internal
 NULL
 
+setClassUnion("DataLongitudinal_or_NULL", c("DataLongitudinal", "NULL"))
+setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 
 
 # DataJoint-class ----
@@ -35,35 +38,47 @@ NULL
 .DataJoint <- setClass(
     Class = "DataJoint",
     representation = list(
-        survival = "DataSurvival",
-        longitudinal = "DataLongitudinal"
+        subject = "DataSubject",
+        survival = "DataSurvival_or_NULL",
+        longitudinal = "DataLongitudinal_or_NULL"
     )
 )
 
 #' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
-DataJoint <- function(survival, longitudinal) {
+DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
+
+    subject_suited <- suit_up(subject)
+    vars <- extractVariableNames(subject)
+    subject_var <- vars$subject
+    subject_ord <- as.character(as.data.frame(subject_suited)[[vars$subject]])
+
+    survival_suited <- suit_up(
+        survival,
+        subject_var = subject_var,
+        subject_ord = subject_ord
+    )
+
+    longitudinal_suited <- suit_up(
+        longitudinal,
+        subject_var = subject_var,
+        subject_ord = subject_ord
+    )
+
     .DataJoint(
-        survival = survival,
-        longitudinal = longitudinal
+        subject = subject_suited,
+        survival = survival_suited,
+        longitudinal = longitudinal_suited
     )
 }
+
+
 
 setValidity(
     Class = "DataJoint",
     method = function(object) {
-        lm <- as.data.frame(object@longitudinal)
-        lvars <- extractVariableNames(object@longitudinal)
-        os <- as.data.frame(object@survival)
-        ovars <- extractVariableNames(object@survival)
-
-        if (!all(as.character(lm[[lvars$pt]]) %in% as.character(os[[ovars$pt]]))) {
-            return("There are subjects in the longitudinal data that do not exist in the survival data")
-        }
-        if (!all(as.character(os[[ovars$pt]]) %in% as.character(lm[[lvars$pt]]))) {
-            return("There are subjects in the survival data that do not exist in the longitudinal data")
-        }
+        # TODO
     }
 )
 
@@ -76,13 +91,23 @@ setValidity(
 #' Coerces  [`DataJoint`] into a `list` of data components required
 #' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
 #' @family DataJoint
-#' @seealso [as.list.DataSurvival()], [as.list.DataLongitudinal()]
+#' @family as_stan_list
 #' @export
+as_stan_list.DataJoint <- function(object, ...) {
+
+    vars <- extractVariableNames(object@subject)
+    subject_var <- vars$subject
+    as_stan_list(object@subject) |>
+        append(as_stan_list(object@survival)) |>
+        append(as_stan_list(
+            object@longitudinal,
+            subject_var = subject_var
+        ))
+}
+
+#' @rdname as_stan_list.DataJoint
 as.list.DataJoint <- function(x, ...) {
-    append(
-        as.list(x@survival),
-        as.list(x@longitudinal)
-    )
+    as_stan_list(x, ...)
 }
 
 
