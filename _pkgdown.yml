@@ -31,6 +31,7 @@ reference:
   - title: Data Specification
     contents:
       - DataJoint
+      - DataSubject
       - DataLongitudinal
       - DataSurvival
   
@@ -122,6 +123,7 @@ reference:
       - as.character.ParameterList
       - as.character.Prior
       - as.character.StanModule
+      - as.data.frame.DataSubject
       - as.data.frame.DataLongitudinal
       - as.data.frame.DataSurvival
       - as.data.frame.LongitudinalQuantities
