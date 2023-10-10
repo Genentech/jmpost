@@ -209,17 +209,17 @@ names and then apply the mapping here.
 ```{r data_joint}
 joint_data <- DataJoint(
     subject = DataSubject(
-        data = dat_os,
+        data = os_data,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
     survival = DataSurvival(
-        data = dat_os,
+        data = os_data,
         formula = Surv(time, event) ~ cov_cat + cov_cont
     ),
     longitudinal = DataLongitudinal(
-        data = dat_lm,
+        data = long_data,
         formula = sld ~ time,
         threshold = 5
     )
