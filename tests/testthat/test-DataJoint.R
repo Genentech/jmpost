@@ -355,7 +355,7 @@ test_that("DataJoint sorts handles character-to-factor levels correctly", {
 
 
 
-
+# nolint start
 test_that("subset(DataJoint) works as expected", {
 
     dat <- dplyr::tribble(
@@ -484,6 +484,7 @@ test_that("subset(DataJoint) works as expected", {
     )
 
 })
+# nolint end
 
 test_that("Error Handling", {
 
