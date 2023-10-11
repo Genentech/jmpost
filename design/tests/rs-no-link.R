@@ -56,12 +56,10 @@ dat_lm <- jlist$lm |>
     dplyr::arrange(time, pt)
 
 
-
 ## Prepare data for sampling
-jdat <- DataJoint(
-    survival = DataSurvival(
+jdat <- jdat <- DataJoint(
+    subject = DataSubject(
         data = dat_os,
-        formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
         study = "study"
@@ -69,7 +67,6 @@ jdat <- DataJoint(
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
-        subject = "pt",
         threshold = 5
     )
 )
@@ -150,9 +147,16 @@ c(
 
 
 
+##############################
+#
+# Test generated quantities work as expected
+#
 
 
-
-
+pts <- sample(dat_os$pt, 4)
+samps <- LongitudinalQuantities(mp, groups = pts)
+summary(samps)
+as.data.frame(samps) |> tibble()
+autoplot(samps)
 
 

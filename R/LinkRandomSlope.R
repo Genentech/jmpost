@@ -23,7 +23,7 @@ NULL
 #'
 #' @export
 LinkRandomSlope <- function(
-        link_lm_phi = prior_normal(0.2, 0.5, init = 0.02)
+    link_lm_phi = prior_normal(0.2, 0.5, init = 0.02)
 ) {
     .LinkRandomSlope(
         Link(

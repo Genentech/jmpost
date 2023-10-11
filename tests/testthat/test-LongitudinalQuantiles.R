@@ -35,17 +35,19 @@ test_that("Test that LongitudinalQuantities works as expected", {
     )
 
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )
@@ -169,17 +171,19 @@ test_that("LongitudinalQuantities can recover known results", {
     )
 
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )

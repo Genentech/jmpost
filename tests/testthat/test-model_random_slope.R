@@ -36,9 +36,8 @@ test_that("Random Slope Model can recover known parameter values", {
 
 
     jdat <- DataJoint(
-        survival = DataSurvival(
+        subject = DataSubject(
             data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont,
             subject = "pt",
             arm = "arm",
             study = "study"
@@ -46,7 +45,6 @@ test_that("Random Slope Model can recover known parameter values", {
         longitudinal = DataLongitudinal(
             data = dat_lm,
             formula = sld ~ time,
-            subject = "pt",
             threshold = 5
         )
     )

@@ -1,5 +1,6 @@
 #' @include DataSurvival.R
 #' @include DataLongitudinal.R
+#' @include DataSubject.R
 NULL
 
 
@@ -13,6 +14,8 @@ NULL
 #' @keywords internal
 NULL
 
+setClassUnion("DataLongitudinal_or_NULL", c("DataLongitudinal", "NULL"))
+setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 
 
 # DataJoint-class ----
@@ -24,9 +27,9 @@ NULL
 #' The `DataJoint` class handles combining data from a [`DataSurvival`] object and a
 #' [`DataLongitudinal`] object.
 #'
+#' @slot subject (`DataSubject`)\cr See Argument for details.
 #' @slot survival (`DataSurvival`)\cr See Argument for details.
 #' @slot longitudinal (`DataLongitudinal`)\cr See Argument for details.
-#'
 #'
 #' @family DataObjects
 #' @family DataJoint
@@ -35,54 +38,103 @@ NULL
 .DataJoint <- setClass(
     Class = "DataJoint",
     representation = list(
-        survival = "DataSurvival",
-        longitudinal = "DataLongitudinal"
+        subject = "DataSubject",
+        survival = "DataSurvival_or_NULL",
+        longitudinal = "DataLongitudinal_or_NULL"
     )
 )
 
+#' @param subject (`DataSubject`)\cr object created by [DataSubject()].
 #' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
 #' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
-DataJoint <- function(survival, longitudinal) {
+DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
+
+    subject_suited <- harmonise(subject)
+    vars <- extractVariableNames(subject)
+    subject_var <- vars$subject
+    subject_ord <- levels(as.data.frame(subject_suited)[[vars$subject]])
+
+    survival_suited <- harmonise(
+        survival,
+        subject_var = subject_var,
+        subject_ord = subject_ord
+    )
+
+    longitudinal_suited <- harmonise(
+        longitudinal,
+        subject_var = subject_var,
+        subject_ord = subject_ord
+    )
+
     .DataJoint(
-        survival = survival,
-        longitudinal = longitudinal
+        subject = subject_suited,
+        survival = survival_suited,
+        longitudinal = longitudinal_suited
     )
 }
+
+
 
 setValidity(
     Class = "DataJoint",
     method = function(object) {
-        lm <- as.data.frame(object@longitudinal)
-        lvars <- extractVariableNames(object@longitudinal)
-        os <- as.data.frame(object@survival)
-        ovars <- extractVariableNames(object@survival)
-
-        if (!all(as.character(lm[[lvars$pt]]) %in% as.character(os[[ovars$pt]]))) {
-            return("There are subjects in the longitudinal data that do not exist in the survival data")
+        vars <- extractVariableNames(object@subject)
+        subject_var <- vars$subject
+        subject_ord <- as.character(as.data.frame(object@subject)[[vars$subject]])
+        if (!is.null(object@survival)) {
+            survival_df <- as.data.frame(object@survival)
+            if (!subject_var %in% names(survival_df)) {
+                return(sprintf("Unable to find `%s` in `survival`", sujbect_var))
+            }
+            if (!all(survival_df[[subject_var]] %in% subject_ord)) {
+                return("There are subjects in `survival` that are not in `subject`")
+            }
+            if (!nrow(survival_df) == length(unique(survival_df[[subject_var]]))) {
+                return("There are duplicate subjects in `survival`")
+            }
         }
-        if (!all(as.character(os[[ovars$pt]]) %in% as.character(lm[[lvars$pt]]))) {
-            return("There are subjects in the survival data that do not exist in the longitudinal data")
+        if (!is.null(object@longitudinal)) {
+            long_df <- as.data.frame(object@longitudinal)
+            if (!subject_var %in% names(long_df)) {
+                return(sprintf("Unable to find `%s` in `longitudinal`", sujbect_var))
+            }
+            if (!all(long_df[[subject_var]] %in% subject_ord)) {
+                return("There are subjects in `longitudinal` that are not in `subject`")
+            }
         }
+        subject_df <- as.data.frame(object@subject)
+        if (!subject_var %in% names(subject_df)) {
+            return(sprintf("Unable to find `%s` in `subject`", sujbect_var))
+        }
+        if (!nrow(subject_df) == length(unique(subject_df[[subject_var]]))) {
+            return("There are duplicate subjects in `subject`")
+        }
+        return(TRUE)
     }
 )
 
+
 # DataJoint-as.list ----
 
-#' `DataJoint` -> `list`
-#'
-#' @inheritParams DataJoint-Shared
-#' @description
-#' Coerces  [`DataJoint`] into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @rdname as_stan_list
 #' @family DataJoint
-#' @seealso [as.list.DataSurvival()], [as.list.DataLongitudinal()]
+#' @export
+as_stan_list.DataJoint <- function(object, ...) {
+    vars <- extractVariableNames(object@subject)
+    subject_var <- vars$subject
+    as_stan_list(object@subject) |>
+        append(as_stan_list(object@survival)) |>
+        append(as_stan_list(
+            object@longitudinal,
+            subject_var = subject_var
+        ))
+}
+
+#' @rdname as_stan_list
 #' @export
 as.list.DataJoint <- function(x, ...) {
-    append(
-        as.list(x@survival),
-        as.list(x@longitudinal)
-    )
+    as_stan_list(x, ...)
 }
 
 

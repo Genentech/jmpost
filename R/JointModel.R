@@ -2,6 +2,12 @@
 #' @include StanModule.R
 #' @include generics.R
 #' @include ParameterList.R
+#' @include DataJoint.R
+#' @include DataSurvival.R
+#' @include DataLongitudinal.R
+#' @include LongitudinalModel.R
+#' @include SurvivalModel.R
+#' @include Link.R
 NULL
 
 
@@ -15,11 +21,17 @@ NULL
 #' @keywords internal
 NULL
 
+setClassUnion("LongitudinalModel_OR_NULL", c("LongitudinalModel", "NULL"))
+setClassUnion("Link_OR_NULL", c("Link", "NULL"))
+setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 
 # JointModel-class ----
 
 #' Joint Model Object and Constructor Function
 #'
+#' @slot longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
+#' @slot survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
+#' @slot link (`Link`)\cr the link.
 #' @slot stan (`StanModule`)\cr code containing the joint model specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
@@ -29,19 +41,23 @@ NULL
 .JointModel <- setClass(
     Class = "JointModel",
     slots = list(
+        longitudinal = "LongitudinalModel_OR_NULL",
+        survival = "SurvivalModel_OR_NULL",
+        link = "Link_OR_NULL",
         stan = "StanModule",
         parameters = "ParameterList"
     )
 )
 
-#' @param longitudinal (`LongitudinalModel` or `NULL`)\cr the longitudinal model.
-#' @param survival (`SurvivalModel` or `NULL`)\cr the survival model.
+#' @param longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
+#' @param survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
 #' @param link (`Link`)\cr the link.
 #' @rdname JointModel-class
-JointModel <- function(longitudinal = NULL,
-                       survival = NULL,
-                       link = NULL) {
-
+JointModel <- function(
+    longitudinal = NULL,
+    survival = NULL,
+    link = NULL
+) {
     longitudinal_linked <- addLink(longitudinal, link)
 
     parameters <- merge(
@@ -62,16 +78,20 @@ JointModel <- function(longitudinal = NULL,
     # that haven't yet been rendered
     stan_full <- decorated_render(.x = stan_full)
 
-    full_plus_funs <- merge(
+    stan_complete <- merge(
         StanModule("base/functions.stan"),
         StanModule(stan_full)
     )
 
     .JointModel(
-        stan = full_plus_funs,
+        longitudinal = longitudinal,
+        survival = survival,
+        link = link,
+        stan = stan_complete,
         parameters = parameters
     )
 }
+
 
 #' `JointModel` -> `character`
 #'
@@ -113,6 +133,19 @@ compileStanModel.JointModel <- function(object) {
 #' @param data (`DataJoint` or `list`)\cr input data.
 #' @export
 sampleStanModel.JointModel <- function(object, data, ...) {
+
+    if (!is.null(object@survival)) {
+        assert_that(
+            !is.null(data@survival),
+            msg = "`DataSurvival` can't be missing if a `SurvivalModel` has been specified"
+        )
+    }
+    if (!is.null(object@longitudinal)) {
+        assert_that(
+            !is.null(data@longitudinal),
+            msg = "`DataLongitudinal` can't be missing if a `LongitudinalModel` has been specified"
+        )
+    }
 
     args <- list(...)
     args[["data"]] <- as.list(data)

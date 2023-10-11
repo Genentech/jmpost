@@ -24,7 +24,6 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 #' @slot data (`data.frame`)\cr See Arguments for details; Note that
 #'   observations that contain missing values in the required variables are removed.
 #' @slot formula (`formula`)\cr See Arguments for details
-#' @slot subject (`character`)\cr See Arguments for details
 #' @slot threshold (`numeric`)\cr See Arguments for details
 #'
 #' @family DataObjects
@@ -36,7 +35,6 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
     representation = list(
         data = "data.frame",
         formula = "formula",
-        subject = "character",
         threshold = "numeric_or_NULL"
     )
 )
@@ -44,37 +42,36 @@ setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 
 #' @param data (`data.frame`)\cr containing the observed longitudinal data.
 #' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
-#' @param subject (`character`)\cr the name of the subject identifier variable.
 #' @param threshold (`numeric`)\cr cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
 #' @rdname DataLongitudinal-class
-DataLongitudinal <- function(data, formula, subject, threshold = NULL) {
+DataLongitudinal <- function(data, formula, threshold = NULL) {
     .DataLongitudinal(
-        data = remove_missing_rows(data, formula, c(subject)),
+        data = remove_missing_rows(data, formula),
         formula = formula,
-        subject = subject,
         threshold = threshold
     )
 }
 
 setValidity(
     "DataLongitudinal",
-    function(object) { #nolint
-        if (length(object@subject) > 1) {
-            return("`subject` should be a length 1 character vector or NULL")
-        }
+    function(object) {
         if (!length(object@formula) == 3) {
             return("`formula` should be a 2 sided formula")
         }
         if (!length(object@formula[[3]]) == 1) {
             return("the RHS of `formula` should only have 1 value")
         }
-        if (! object@subject %in% names(object@data)) {
-            return("`subject` does not exist in `data`")
+        if (!length(object@threshold) <= 1) {
+            return("`threshold` must be of length 1 or `NULL`")
         }
-        pt <- object@data[[object@subject]]
-        if (!(is(pt, "character") | is(pt, "factor"))) {
-            return("`data[[subject]]` should be of type character or factor")
+        vars <- extractVariableNames(object)
+        vars$threshold <- NULL
+        vars$frm <- NULL
+        for (i in unlist(vars)) {
+            if (! i %in% names(object@data)) {
+                return(sprintf("Variable `%s` is not in data", i))
+            }
         }
         return(TRUE)
     }
@@ -83,6 +80,40 @@ setValidity(
 
 
 
+#' @rdname harmonise
+harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
+    data <- as.data.frame(object)
+    vars <- extractVariableNames(object)
+    assert_string(subject_var, na.ok = FALSE)
+    assert_character(subject_ord, any.missing = FALSE)
+    assert_that(
+        subject_var %in% names(data),
+        msg = sprintf("Subject variable `%s` not found in `longitudinal`", subject_var)
+    )
+    assert_that(
+        all(data[[subject_var]] %in% subject_ord),
+        msg = "There are subjects `longitudinal` that are not present in `subjects`"
+    )
+    assert_that(
+        all(subject_ord %in% data[[subject_var]]),
+        msg = "There are subjects `subjects` that are not present in `longitudinal`"
+    )
+    data[[subject_var]] <- factor(
+        as.character(data[[subject_var]]),
+        levels = subject_ord
+    )
+    data_re_ord <- order(
+        data[[subject_var]],
+        data[[vars$time]],
+        data[[vars$outcome]]
+    )
+    data_ord <- data[data_re_ord, ]
+    DataLongitudinal(
+        data = data_ord,
+        formula = object@formula,
+        threshold = object@threshold
+    )
+}
 
 
 
@@ -96,10 +127,9 @@ setValidity(
 #' @family DataLongitudinal
 #' @export
 as.data.frame.DataLongitudinal <- function(x, ...) {
-    df_fct <- x@data
-    vars <- extractVariableNames(x)
-    df_fct[[vars$pt]] <- pt_2_factor(df_fct[[vars$pt]])
-    return(df_fct)
+    x <- x@data
+    rownames(x) <- NULL
+    x
 }
 
 
@@ -120,7 +150,6 @@ as.data.frame.DataLongitudinal <- function(x, ...) {
 #' @family extractVariableNames
 extractVariableNames.DataLongitudinal <- function(object) {
     list(
-        pt = object@subject,
         frm = object@formula,
         time = as.character(object@formula[[3]]),
         outcome = as.character(object@formula[[2]]),
@@ -129,20 +158,18 @@ extractVariableNames.DataLongitudinal <- function(object) {
 }
 
 
-#' `DataLongitudinal` -> `list`
-#' @inheritParams DataLongitudinal-Shared
-#' @description
-#' Coerces  [`DataLongitudinal`] into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' @rdname as_stan_list
 #' @family DataLongitudinal
 #' @export
-as.list.DataLongitudinal <- function(x, ...) {
+as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
 
-    df <- as.data.frame(x)
-    vars <- extractVariableNames(x)
+    df <- as.data.frame(object)
+    vars <- extractVariableNames(object)
+
+    assert_factor(df[[subject_var]])
 
     mat_sld_index <- stats::model.matrix(
-        stats::as.formula(paste("~", vars$pt)),
+        stats::as.formula(paste("~", subject_var)),
         data = df
     ) |>
         t()
@@ -162,19 +189,19 @@ as.list.DataLongitudinal <- function(x, ...) {
 
     model_data <- list(
         Nta_total = nrow(df),
-        Yobs = df[[vars$outcome]],
-        Tobs = df[[vars$time]],
-        Ythreshold = adj_threshold,
 
         # Number of individuals and tumor assessments.
         Nta_obs_y = length(index_obs),
         Nta_cens_y = length(index_cen),
 
         # Index vectors
-        ind_index = as.numeric(df[[vars$pt]]),
-        pt_to_ind = stats::setNames(seq_len(nlevels(df[[vars$pt]])), levels(df[[vars$pt]])),
+        ind_index = as.numeric(df[[subject_var]]),
         obs_y_index = index_obs,
         cens_y_index = index_cen,
+
+        Yobs = df[[vars$outcome]],
+        Tobs = df[[vars$time]],
+        Ythreshold = adj_threshold,
 
         # Sparse matrix parameters
         # Matrix of individuals x observed tumor assessments.
@@ -210,4 +237,10 @@ as.list.DataLongitudinal <- function(x, ...) {
     )
 
     return(model_data)
+}
+
+#' @rdname as_stan_list
+#' @export
+as.list.DataLongitudinal <- function(x, ...) {
+    as_stan_list(x, ...)
 }

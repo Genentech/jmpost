@@ -10,9 +10,9 @@
 JointModel(longitudinal = NULL, survival = NULL, link = NULL)
 }
 \arguments{
-\item{longitudinal}{(\code{LongitudinalModel} or \code{NULL})\cr the longitudinal model.}
+\item{longitudinal}{(\code{\link{LongitudinalModel}} or \code{NULL})\cr the longitudinal model.}
 
-\item{survival}{(\code{SurvivalModel} or \code{NULL})\cr the survival model.}
+\item{survival}{(\code{\link{SurvivalModel}} or \code{NULL})\cr the survival model.}
 
 \item{link}{(\code{Link})\cr the link.}
 }
@@ -22,6 +22,12 @@ Joint Model Object and Constructor Function
 \section{Slots}{
 
 \describe{
+\item{\code{longitudinal}}{(\code{\link{LongitudinalModel}} or \code{NULL})\cr the longitudinal model.}
+
+\item{\code{survival}}{(\code{\link{SurvivalModel}} or \code{NULL})\cr the survival model.}
+
+\item{\code{link}}{(\code{Link})\cr the link.}
+
 \item{\code{stan}}{(\code{StanModule})\cr code containing the joint model specification.}
 
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}

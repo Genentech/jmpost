@@ -36,19 +36,20 @@ k_stan_data <- as_stan_data(k_data_os, k_data_lm, ~ 1)
 
 
 
-
 jdat <- DataJoint(
-    survival = DataSurvival(
+    subject = DataSubject(
         data = k_data_os,
-        formula = Surv(time, event) ~ 1,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
+    survival = DataSurvival(
+        data = k_data_os,
+        formula = Surv(time, event) ~ 1
+    ),
     longitudinal = DataLongitudinal(
         data = k_data_lm,
         formula = sld ~ time,
-        subject = "pt",
         threshold = 1
     )
 )

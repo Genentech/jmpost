@@ -16,6 +16,7 @@ Extract a \code{list} that maps the variable names in a user-defined
 \seealso{
 Other extractVariableNames: 
 \code{\link{extractVariableNames.DataLongitudinal}()},
+\code{\link{extractVariableNames.DataSubject}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 }
 \concept{extractVariableNames}

@@ -4,7 +4,7 @@
 \alias{remove_missing_rows}
 \title{Remove Rows with Missing Variables}
 \usage{
-remove_missing_rows(data, formula, extra_vars)
+remove_missing_rows(data, formula, extra_vars = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr input data.}
