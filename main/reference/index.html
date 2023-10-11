@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -94,6 +88,11 @@
           <code><a href="DataJoint-class.html">DataJoint()</a></code> 
         </dt>
         <dd>Joint Data Object and Constructor Function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSubject-class.html">DataSubject()</a></code> 
+        </dt>
+        <dd>Subject Data Object and Constructor Function</dd>
       </dl><dl><dt>
           
           <code><a href="DataLongitudinal-class.html">DataLongitudinal()</a></code> 
@@ -506,6 +505,11 @@
         <dd><code>StanModule</code> -&gt; <code>character</code></dd>
       </dl><dl><dt>
           
+          <code><a href="as.data.frame.DataSubject.html">as.data.frame(<i>&lt;DataSubject&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>DataSubject</code> -&gt; <code>data.frame</code></dd>
+      </dl><dl><dt>
+          
           <code><a href="as.data.frame.DataLongitudinal.html">as.data.frame(<i>&lt;DataLongitudinal&gt;</i>)</a></code> 
         </dt>
         <dd><code>DataLongitudinal</code> -&gt; <code>data.frame</code></dd>
@@ -526,19 +530,9 @@
         <dd><code>SurvivalQuantities</code> -&gt; <code>data.frame</code></dd>
       </dl><dl><dt>
           
-          <code><a href="as.list.DataJoint.html">as.list(<i>&lt;DataJoint&gt;</i>)</a></code> 
+          <code><a href="as_stan_list.html">as.list(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="as_stan_list.html">as_stan_list()</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataJoint&gt;</i>)</a></code> 
         </dt>
-        <dd><code>DataJoint</code> -&gt; <code>list</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="as.list.DataLongitudinal.html">as.list(<i>&lt;DataLongitudinal&gt;</i>)</a></code> 
-        </dt>
-        <dd><code>DataLongitudinal</code> -&gt; <code>list</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="as.list.DataSurvival.html">as.list(<i>&lt;DataSurvival&gt;</i>)</a></code> 
-        </dt>
-        <dd><code>DataSurvival</code> -&gt; <code>list</code></dd>
+        <dd>Data Object -&gt; <code>list</code></dd>
       </dl><dl><dt>
           
           <code><a href="as.list.ParameterList.html">as.list(<i>&lt;ParameterList&gt;</i>)</a></code> 

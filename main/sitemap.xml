@@ -34,6 +34,12 @@
     <loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/DataSubject-Shared.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/DataSubject-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/DataSurvival-Shared.html</loc>
   </url>
   <url>
@@ -157,6 +163,9 @@
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataLongitudinal.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSubject.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.html</loc>
   </url>
   <url>
@@ -167,15 +176,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.DataJoint.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.DataLongitudinal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.DataSurvival.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.list.ParameterList.html</loc>
@@ -191,6 +191,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.html</loc>
@@ -229,6 +232,9 @@
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSubject.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSurvival.html</loc>
   </url>
   <url>
@@ -254,6 +260,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/harmonise.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/index.html</loc>
@@ -305,9 +314,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_std_normal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/pt_2_factor.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc>

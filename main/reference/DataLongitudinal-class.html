@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -70,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DataLongitudinal</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, <span class="va">subject</span>, threshold <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DataLongitudinal</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, threshold <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,10 +75,6 @@
 
 <dt>formula</dt>
 <dd><p>(<code>formula</code>)<br> of the form <code>outcome ~ time</code>, and cannot contain any additional covariates.</p></dd>
-
-
-<dt>subject</dt>
-<dd><p>(<code>character</code>)<br> the name of the subject identifier variable.</p></dd>
 
 
 <dt>threshold</dt>
@@ -105,10 +95,6 @@ observations that contain missing values in the required variables are removed.<
 <dd><p>(<code>formula</code>)<br> See Arguments for details</p></dd>
 
 
-<dt><code>subject</code></dt>
-<dd><p>(<code>character</code>)<br> See Arguments for details</p></dd>
-
-
 <dt><code>threshold</code></dt>
 <dd><p>(<code>numeric</code>)<br> See Arguments for details</p></dd>
 
@@ -118,10 +104,11 @@ observations that contain missing values in the required variables are removed.<
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other DataObjects: 
 <code><a href="DataJoint-class.html">DataJoint-class</a></code>,
+<code><a href="DataSubject-class.html">DataSubject-class</a></code>,
 <code><a href="DataSurvival-class.html">DataSurvival-class</a></code></p>
 <p>Other DataLongitudinal: 
 <code><a href="as.data.frame.DataLongitudinal.html">as.data.frame.DataLongitudinal</a>()</code>,
-<code><a href="as.list.DataLongitudinal.html">as.list.DataLongitudinal</a>()</code>,
+<code><a href="as_stan_list.html">as_stan_list.DataSubject</a>()</code>,
 <code><a href="extractVariableNames.DataLongitudinal.html">extractVariableNames.DataLongitudinal</a>()</code></p></div>
     </div>
 

@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -76,11 +70,11 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>longitudinal</dt>
-<dd><p>(<code>LongitudinalModel</code> or <code>NULL</code>)<br> the longitudinal model.</p></dd>
+<dd><p>(<code><a href="LongitudinalModel-class.html">LongitudinalModel</a></code> or <code>NULL</code>)<br> the longitudinal model.</p></dd>
 
 
 <dt>survival</dt>
-<dd><p>(<code>SurvivalModel</code> or <code>NULL</code>)<br> the survival model.</p></dd>
+<dd><p>(<code><a href="SurvivalModel-class.html">SurvivalModel</a></code> or <code>NULL</code>)<br> the survival model.</p></dd>
 
 
 <dt>link</dt>
@@ -91,7 +85,19 @@
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
-<dl><dt><code>stan</code></dt>
+<dl><dt><code>longitudinal</code></dt>
+<dd><p>(<code><a href="LongitudinalModel-class.html">LongitudinalModel</a></code> or <code>NULL</code>)<br> the longitudinal model.</p></dd>
+
+
+<dt><code>survival</code></dt>
+<dd><p>(<code><a href="SurvivalModel-class.html">SurvivalModel</a></code> or <code>NULL</code>)<br> the survival model.</p></dd>
+
+
+<dt><code>link</code></dt>
+<dd><p>(<code>Link</code>)<br> the link.</p></dd>
+
+
+<dt><code>stan</code></dt>
 <dd><p>(<code>StanModule</code>)<br> code containing the joint model specification.</p></dd>
 
 
