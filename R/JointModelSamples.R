@@ -37,7 +37,10 @@ setOldClass("CmdStanMCMC")
 #'   201 values from 0 to the maximum observed event time.
 #' @export
 generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm, time_grid_sm, ...) {
-    data <- as.list(object@data)
+    data <- append(
+        as_stan_list(object@data),
+        as_stan_list(object@model@parameters)
+    )
     data[["n_lm_time_grid"]] <- length(time_grid_lm)
     data[["lm_time_grid"]] <- time_grid_lm
     data[["n_sm_time_grid"]] <- length(time_grid_sm)
