@@ -1,11 +1,50 @@
 test_that("Priors work as expected", {
+
     x <- prior_normal(4, 10)
     expect_equal(initialValues(x), 4)
-    expect_equal(as.character(x), "normal(4, 10);")
+    expect_equal(
+        as.StanModule(x, name = "bob"),
+        StanModule(test_path("models", "Prior_1.stan"))
+    )
+    expect_equal(
+        as_stan_list(x, name = "bob"),
+        list(prior_mu_bob = 4, prior_sigma_bob = 10)
+    )
 
     x <- prior_normal(4, 10, 20)
     expect_equal(initialValues(x), 20)
-    expect_equal(as.character(x), "normal(4, 10);")
+    expect_equal(
+        as.StanModule(x, name = "bob"),
+        StanModule(test_path("models", "Prior_1.stan"))
+    )
+    expect_equal(
+        as_stan_list(x, name = "bob"),
+        list(prior_mu_bob = 4, prior_sigma_bob = 10)
+    )
+
+
+    x <- prior_lognormal(log(4), 2)
+    expect_equal(initialValues(x), exp(log(4) + 2))
+    expect_equal(
+        as.StanModule(x, name = "tim"),
+        StanModule(test_path("models", "Prior_2.stan"))
+    )
+    expect_equal(
+        as_stan_list(x, name = "tim"),
+        list(prior_mu_tim = log(4), prior_sigma_tim = 2)
+    )
+
+    x <- prior_lognormal(log(4), 2, 20)
+    expect_equal(initialValues(x), 20)
+    expect_equal(
+        as.StanModule(x, name = "tim"),
+        StanModule(test_path("models", "Prior_2.stan"))
+    )
+    expect_equal(
+        as_stan_list(x, name = "tim"),
+        list(prior_mu_tim = log(4), prior_sigma_tim = 2)
+    )
+
 })
 
 

@@ -143,7 +143,7 @@ initialValues.Prior <- function(object) object@init
 prior_normal <- function(mu, sigma, init = mu) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
-        repr_model = "{name} ~ normal( prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name});",
         repr_data = c(
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
