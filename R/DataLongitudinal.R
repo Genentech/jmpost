@@ -158,7 +158,7 @@ extractVariableNames.DataLongitudinal <- function(object) {
 }
 
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @family DataLongitudinal
 #' @export
 as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
@@ -239,7 +239,7 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     return(model_data)
 }
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @export
 as.list.DataLongitudinal <- function(x, ...) {
     as_stan_list(x, ...)

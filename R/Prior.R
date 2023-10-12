@@ -8,9 +8,9 @@ NULL
 #' constructors.
 #'
 #' @param init (`number`)\cr initial value.
-#' @param x ([`Prior`])\cr A Prior Distribution
-#' @param object ([`Prior`])\cr A Prior Distribution
-#' @param name TODO
+#' @param x ([`Prior`])\cr a prior Distribution
+#' @param object ([`Prior`])\cr a prior Distribution
+#' @param name (`character`)\cr the name of the parameter the prior distribution is for
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -29,7 +29,7 @@ NULL
 #' @slot init (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #'
-#' @family Prior
+#' @family Prior-internal
 #' @export Prior
 #' @exportClass Prior
 .Prior <- setClass(
@@ -43,9 +43,10 @@ NULL
     )
 )
 
-# TODO - docs (new parameters)
+
 #' @param parameters (`list`)\cr the prior distribution parameters.
-#' @param repr (`string`)\cr the Stan code regular expression encoding the distribution.
+#' @param repr_model (`string`)\cr the Stan code representation for the model block.
+#' @param repr_data (`string`)\cr the Stan code representation for the data block.
 #' @param init (`numeric`)\cr the initial value.
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
@@ -82,11 +83,15 @@ setValidity(
 )
 
 
-# TODO - docs
+
 #' `Prior` -> `StanModule`
-#' @description asdaw
+#'
+#' Converts a [`Prior`] object to a [`StanModule`] object
+#'
 #' @inheritParams Prior-Shared
-#' @family Prior
+#'
+#' @family Prior-internal
+#' @family as.StanModule
 #' @export
 as.StanModule.Prior <- function(object, name, ...) {
     string <- paste(
@@ -101,7 +106,16 @@ as.StanModule.Prior <- function(object, name, ...) {
     StanModule(glue::glue(string, name = name))
 }
 
-# TODO - docs
+
+#' `Prior` -> `list`
+#'
+#' Converts a Prior object to a list of parameter data values
+#' for a Stan model.
+#'
+#' @inheritParams Prior-Shared
+#'
+#' @family as_stan_list
+#' @family Prior-internal
 #' @export
 as_stan_list.Prior <- function(object, name, ...) {
     vals <- object@parameters
@@ -118,7 +132,7 @@ as_stan_list.Prior <- function(object, name, ...) {
 #' @description
 #' Getter functions for the slots of a [`Prior`] object
 #' @inheritParams Prior-Shared
-#' @family Prior
+#' @family Prior-internal
 #' @name Prior-Getter-Methods
 NULL
 

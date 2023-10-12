@@ -2,6 +2,21 @@
 #' @include Prior.R
 NULL
 
+
+#' `Parameter` Function Arguments
+#'
+#' The documentation lists all the conventional arguments for [`Parameter`]
+#' constructors.
+#'
+#' @param x ([`Parameter`])\cr a prior Distribution
+#' @param object ([`Parameter`])\cr a prior Distribution
+#' @param ... Not Used.
+#'
+#' @name Parameter-Shared
+#' @keywords internal
+NULL
+
+
 setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 
 # Parameter-class ----
@@ -52,22 +67,29 @@ setValidity(
 )
 
 
-# TODO - docs
-#' `Parameter` -> `character`
+#' `Parameter` -> `StanModule`
 #'
-#' @param x (`Paramater`) \cr A model parameter
-#' @param ... Not Used.
+#' Converts a [`Parameter`] object to a [`StanModule`] object
 #'
-#' @description
-#' Converts a parameter object into its corresponding Stan code representation
+#' @inheritParams Parameter-Shared
+#'
 #' @family Parameter
+#' @family as.StanModule
 #' @export
 as.StanModule.Parameter <- function(object, ...) {
     as.StanModule(object@prior, name = object@name)
 }
 
 
-# TODO - docs
+#' `Parameter` -> `list`
+#'
+#' Converts a Parameter object to a list of parameter data values
+#' for a Stan model.
+#'
+#' @inheritParams Parameter-Shared
+#'
+#' @family as_stan_list
+#' @family Parameter
 #' @export
 as_stan_list.Parameter <- function(object, ...) {
     as_stan_list(object@prior, name = object@name)

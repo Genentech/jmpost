@@ -12,12 +12,14 @@ Prior(parameters, repr_model, repr_data, init, validation)
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
 
+\item{repr_model}{(\code{string})\cr the Stan code representation for the model block.}
+
+\item{repr_data}{(\code{string})\cr the Stan code representation for the data block.}
+
 \item{init}{(\code{numeric})\cr the initial value.}
 
 \item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
-
-\item{repr}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -37,15 +39,9 @@ Specifies the prior distribution in a Stan Model
 }}
 
 \seealso{
-Other Prior: 
+Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},
 \code{\link{as.StanModule.Prior}()},
-\code{\link{prior_beta}()},
-\code{\link{prior_cauchy}()},
-\code{\link{prior_gamma}()},
-\code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
-\code{\link{prior_normal}()},
-\code{\link{prior_std_normal}()}
+\code{\link{as_stan_list.Prior}()}
 }
-\concept{Prior}
+\concept{Prior-internal}

@@ -56,10 +56,13 @@ setValidity(
 # as.StanModule-ParameterList ----
 
 #' `ParameterList` -> `StanModule`
-#' @description
-#' Returns a [`StanModule`] object of the model parameters.
+#'
+#' Converts a [`ParameterList`] object to a [`StanModule`] object
+#'
 #' @inheritParams ParameterList-Shared
+#'
 #' @family ParameterList
+#' @family as.StanModule
 #' @export
 as.StanModule.ParameterList <- function(object) {
     stan_modules <- lapply(
@@ -74,7 +77,15 @@ as.StanModule.ParameterList <- function(object) {
 
 
 
-# TODO - docs
+#' `ParameterList` -> `list`
+#'
+#' Converts a ParameterList object to a list of parameter data values
+#' for a Stan model.
+#'
+#' @inheritParams ParameterList-Shared
+#'
+#' @family as_stan_list
+#' @family ParameterList
 #' @export
 as_stan_list.ParameterList <- function(object, ...) {
     stan_lists <- lapply(

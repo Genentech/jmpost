@@ -15,6 +15,13 @@ as.StanModule(object, ...)
 \item{...}{additional options.}
 }
 \description{
-Convert a \code{\link{Link}} or \code{\link{ParameterList}} into a \code{\link{StanModule}}.
+Converts an object into a \code{\link{StanModule}}.
 }
+\seealso{
+Other as.StanModule: 
+\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as.StanModule.Prior}()}
+}
+\concept{as.StanModule}
 \keyword{internal}

@@ -18,9 +18,6 @@ Normal Prior Distribution
 }
 \seealso{
 Other Prior: 
-\code{\link{Prior-Getter-Methods}},
-\code{\link{Prior-class}},
-\code{\link{as.StanModule.Prior}()},
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},

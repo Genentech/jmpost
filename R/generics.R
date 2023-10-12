@@ -102,11 +102,11 @@ sampleStanModel <- function(object, ...) {
 
 #' `as.StanModule`
 #'
-#' Convert a [`Link`] or [`ParameterList`] into a [`StanModule`].
+#' Converts an object into a [`StanModule`].
 #'
 #' @param object what to convert.
 #' @param ... additional options.
-#'
+#' @family as.StanModule
 #' @keywords internal
 as.StanModule <- function(object, ...) {
     UseMethod("as.StanModule")
@@ -221,25 +221,23 @@ harmonise.default <- function(object, ...) {
 }
 
 
-#' Data Object -> `list`
-#'
-#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
-#' data object to convert to a `list`
-#' @param x (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
-#' data object to convert to a `list`
-#' @param subject_var (`character`) \cr the name of the variable
-#' containing the subject identifier.
-#' @param ... not used.
+#' `as_stan_list`
 #'
 #' @description
-#' Coerces a data object into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' Extracts a list of data elements from an object to be used as input
+#' to a Stan Model
+#'
+#' @param object to be converted
+#' @param ... additional options.
+#'
+#' @family as_stan_list
 #' @export
 as_stan_list <- function(object, ...) {
     UseMethod("as_stan_list")
 }
 
 #' @rdname as_stan_list
+#' @export
 as_stan_list.default <- function(object, ...) {
     NULL
 }

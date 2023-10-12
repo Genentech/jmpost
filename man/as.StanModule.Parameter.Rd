@@ -2,21 +2,28 @@
 % Please edit documentation in R/Parameter.R
 \name{as.StanModule.Parameter}
 \alias{as.StanModule.Parameter}
-\title{\code{Parameter} -> \code{character}}
+\title{\code{Parameter} -> \code{StanModule}}
 \usage{
 \method{as.StanModule}{Parameter}(object, ...)
 }
 \arguments{
-\item{...}{Not Used.}
+\item{object}{(\code{\link{Parameter}})\cr a prior Distribution}
 
-\item{x}{(\code{Paramater}) \cr A model parameter}
+\item{...}{Not Used.}
 }
 \description{
-Converts a parameter object into its corresponding Stan code representation
+Converts a \code{\link{Parameter}} object to a \code{\link{StanModule}} object
 }
 \seealso{
 Other Parameter: 
 \code{\link{Parameter-Getter-Methods}},
-\code{\link{Parameter-class}}
+\code{\link{Parameter-class}},
+\code{\link{as_stan_list.Parameter}()}
+
+Other as.StanModule: 
+\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.StanModule.Prior}()},
+\code{\link{as.StanModule}()}
 }
 \concept{Parameter}
+\concept{as.StanModule}

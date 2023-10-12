@@ -7,25 +7,25 @@
 \method{as.StanModule}{Prior}(object, name, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Prior}})\cr A Prior Distribution}
+\item{object}{(\code{\link{Prior}})\cr a prior Distribution}
 
-\item{name}{TODO}
+\item{name}{(\code{character})\cr the name of the parameter the prior distribution is for}
 
 \item{...}{Not Used.}
 }
 \description{
-asdaw
+Converts a \code{\link{Prior}} object to a \code{\link{StanModule}} object
 }
 \seealso{
-Other Prior: 
+Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
-\code{\link{prior_beta}()},
-\code{\link{prior_cauchy}()},
-\code{\link{prior_gamma}()},
-\code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
-\code{\link{prior_normal}()},
-\code{\link{prior_std_normal}()}
+\code{\link{as_stan_list.Prior}()}
+
+Other as.StanModule: 
+\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as.StanModule}()}
 }
-\concept{Prior}
+\concept{Prior-internal}
+\concept{as.StanModule}

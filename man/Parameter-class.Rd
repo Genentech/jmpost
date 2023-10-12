@@ -32,6 +32,7 @@ Stores the name, the prior distribution and the size of a parameter.
 \seealso{
 Other Parameter: 
 \code{\link{Parameter-Getter-Methods}},
-\code{\link{as.StanModule.Parameter}()}
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as_stan_list.Parameter}()}
 }
 \concept{Parameter}

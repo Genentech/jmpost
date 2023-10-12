@@ -26,6 +26,7 @@ specifications.
 Other ParameterList: 
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.list.ParameterList}()}
+\code{\link{as.list.ParameterList}()},
+\code{\link{as_stan_list.ParameterList}()}
 }
 \concept{ParameterList}
