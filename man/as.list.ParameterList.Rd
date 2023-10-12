@@ -19,7 +19,6 @@ to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 Other ParameterList: 
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
-\code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.character.ParameterList}()}
+\code{\link{as.StanModule.ParameterList}()}
 }
 \concept{ParameterList}

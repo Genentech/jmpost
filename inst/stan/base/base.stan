@@ -31,6 +31,11 @@ data{
 {{ survival.data }}
 {{ longitudinal.data }}
 
+    //
+    // Dynamically derived priors
+    //
+{{ priors.data }}
+
 }
 
 
@@ -78,6 +83,10 @@ transformed parameters{
 model{
 {{ longitudinal.model }}
 {{ survival.model }}
+
+    //
+    // Dynamically derived priors
+    //
 {{ priors.model }}
 
     //

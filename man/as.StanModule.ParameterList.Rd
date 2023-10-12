@@ -16,7 +16,6 @@ Returns a \code{\link{StanModule}} object of the model parameters.
 Other ParameterList: 
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
-\code{\link{as.character.ParameterList}()},
 \code{\link{as.list.ParameterList}()}
 }
 \concept{ParameterList}

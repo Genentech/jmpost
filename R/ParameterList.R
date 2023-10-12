@@ -52,24 +52,6 @@ setValidity(
 )
 
 
-#' `ParameterList` -> `character`
-#' @description
-#' Converts a [`ParameterList`] to a Stan model-block indented by 4 spaces
-#' @inheritParams ParameterList-Shared
-#' @family ParameterList
-#' @export
-as.character.ParameterList <- function(x, ...) {
-    strings <- vapply(
-        x@parameters,
-        as.character,
-        character(1)
-    )
-    indentation <- paste0(rep(" ", 4), collapse = "")
-    strings_indented <- paste0(indentation, strings)
-    paste(strings_indented, collapse = "\n")
-}
-
-
 
 # as.StanModule-ParameterList ----
 
@@ -80,13 +62,29 @@ as.character.ParameterList <- function(x, ...) {
 #' @family ParameterList
 #' @export
 as.StanModule.ParameterList <- function(object) {
-    x <- paste(
-        "model {",
-        as.character(object),
-        "}",
-        sep = "\n"
+    stan_modules <- lapply(
+        object@parameters,
+        as.StanModule
     )
-    StanModule(x = x)
+    assert_that(
+        all(vapply(stan_modules, inherits, logical(1), "StanModule"))
+    )
+    Reduce(merge, stan_modules)
+}
+
+
+
+# TODO - docs
+#' @export
+as_stan_list.ParameterList <- function(object, ...) {
+    stan_lists <- lapply(
+        object@parameters,
+        as_stan_list
+    )
+    assert_that(
+        all(vapply(stan_lists, is.list, logical(1)))
+    )
+    Reduce(append, stan_lists)
 }
 
 

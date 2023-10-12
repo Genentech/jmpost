@@ -52,6 +52,7 @@ setValidity(
 )
 
 
+# TODO - docs
 #' `Parameter` -> `character`
 #'
 #' @param x (`Paramater`) \cr A model parameter
@@ -61,11 +62,15 @@ setValidity(
 #' Converts a parameter object into its corresponding Stan code representation
 #' @family Parameter
 #' @export
-as.character.Parameter <- function(x, ...) {
-    if (as.character(x@prior) == "") {
-        return("")
-    }
-    glue::glue("{name} ~ {dist}", name = x@name, dist = as.character(x@prior))
+as.StanModule.Parameter <- function(object, ...) {
+    as.StanModule(object@prior, name = object@name)
+}
+
+
+# TODO - docs
+#' @export
+as_stan_list.Parameter <- function(object, ...) {
+    as_stan_list(object@prior, name = object@name)
 }
 
 

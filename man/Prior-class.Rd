@@ -7,17 +7,17 @@
 \alias{Prior}
 \title{Prior Object and Constructor Function}
 \usage{
-Prior(parameters, repr, init, validation)
+Prior(parameters, repr_model, repr_data, init, validation)
 }
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
-
-\item{repr}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
 
 \item{init}{(\code{numeric})\cr the initial value.}
 
 \item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
+
+\item{repr}{(\code{string})\cr the Stan code regular expression encoding the distribution.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -27,7 +27,9 @@ Specifies the prior distribution in a Stan Model
 \describe{
 \item{\code{parameters}}{(\code{list})\cr See arguments.}
 
-\item{\code{repr}}{(\code{string})\cr See arguments.}
+\item{\code{repr_model}}{(\code{string})\cr See arguments.}
+
+\item{\code{repr_data}}{(\code{string})\cr See arguments.}
 
 \item{\code{init}}{(\code{numeric})\cr See arguments.}
 
@@ -37,7 +39,7 @@ Specifies the prior distribution in a Stan Model
 \seealso{
 Other Prior: 
 \code{\link{Prior-Getter-Methods}},
-\code{\link{as.character.Prior}()},
+\code{\link{as.StanModule.Prior}()},
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},

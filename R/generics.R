@@ -105,9 +105,10 @@ sampleStanModel <- function(object, ...) {
 #' Convert a [`Link`] or [`ParameterList`] into a [`StanModule`].
 #'
 #' @param object what to convert.
+#' @param ... additional options.
 #'
 #' @keywords internal
-as.StanModule <- function(object) {
+as.StanModule <- function(object, ...) {
     UseMethod("as.StanModule")
 }
 

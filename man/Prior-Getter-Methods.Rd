@@ -21,7 +21,7 @@ Getter functions for the slots of a \code{\link{Prior}} object
 \seealso{
 Other Prior: 
 \code{\link{Prior-class}},
-\code{\link{as.character.Prior}()},
+\code{\link{as.StanModule.Prior}()},
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},

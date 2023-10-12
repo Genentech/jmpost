@@ -10,6 +10,8 @@
 
 \item{object}{(\code{\link{Prior}})\cr A Prior Distribution}
 
+\item{name}{TODO}
+
 \item{...}{Not Used.}
 }
 \description{
