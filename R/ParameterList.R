@@ -64,7 +64,7 @@ setValidity(
 #' @family ParameterList
 #' @family as.StanModule
 #' @export
-as.StanModule.ParameterList <- function(object) {
+as.StanModule.ParameterList <- function(object, ...) {
     stan_modules <- lapply(
         object@parameters,
         as.StanModule

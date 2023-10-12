@@ -4,10 +4,12 @@
 \alias{as.StanModule.ParameterList}
 \title{\code{ParameterList} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{ParameterList}(object)
+\method{as.StanModule}{ParameterList}(object, ...)
 }
 \arguments{
 \item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+
+\item{...}{Not Used.}
 }
 \description{
 Converts a \code{\link{ParameterList}} object to a \code{\link{StanModule}} object

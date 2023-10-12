@@ -120,7 +120,7 @@ as.StanModule.Prior <- function(object, name, ...) {
 as_stan_list.Prior <- function(object, name, ...) {
     vals <- object@parameters
     vals_names <- names(vals)
-    if (length(vals_names) >= 1 ) {
+    if (length(vals_names) >= 1) {
         names(vals) <- paste0("prior_", vals_names, "_", name)
     }
     return(vals)
