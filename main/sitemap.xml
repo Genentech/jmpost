@@ -82,6 +82,9 @@
     <loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/Parameter-Shared.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/Parameter-class.html</loc>
   </url>
   <url>
@@ -139,22 +142,19 @@
     <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Prior.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.character.JointModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.Parameter.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.ParameterList.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.Prior.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.character.StanModule.html</loc>
@@ -191,6 +191,18 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.Parameter.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.ParameterList.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.Prior.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_stan_list.html</loc>

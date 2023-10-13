@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -471,7 +465,7 @@
 
       <dl><dt>
           
-          <code><a href="merge.html">merge</a></code> <code><a href="merge.html">merge,ParameterList,ParameterList-method</a></code> <code><a href="merge.html">merge,StanModule,StanModule-method</a></code> <code><a href="merge.html">merge,StanModel,NULL-method</a></code> <code><a href="merge.html">merge,NULL,StanModel-method</a></code> <code><a href="merge.html">merge,StanModule,NULL-method</a></code> <code><a href="merge.html">merge,NULL,StanModule-method</a></code> <code><a href="merge.html">merge,ParameterList,NULL-method</a></code> <code><a href="merge.html">merge,NULL,ParameterList-method</a></code> <code><a href="merge.html">merge,NULL,NULL-method</a></code> 
+          <code><a href="merge.html">merge</a></code> <code><a href="merge.html">merge,StanModule,StanModule-method</a></code> <code><a href="merge.html">merge,ParameterList,ParameterList-method</a></code> <code><a href="merge.html">merge,StanModel,NULL-method</a></code> <code><a href="merge.html">merge,NULL,StanModel-method</a></code> <code><a href="merge.html">merge,StanModule,NULL-method</a></code> <code><a href="merge.html">merge,NULL,StanModule-method</a></code> <code><a href="merge.html">merge,ParameterList,NULL-method</a></code> <code><a href="merge.html">merge,NULL,ParameterList-method</a></code> <code><a href="merge.html">merge,NULL,NULL-method</a></code> 
         </dt>
         <dd><code>merge</code></dd>
       </dl><dl><dt>
@@ -481,9 +475,9 @@
         <dd>Printing of Different Classes</dd>
       </dl><dl><dt>
           
-          <code><a href="as.StanModule.ParameterList.html">as.StanModule(<i>&lt;ParameterList&gt;</i>)</a></code> 
+          <code><a href="as_stan_list.html">as_stan_list()</a></code> 
         </dt>
-        <dd><code>ParameterList</code> -&gt; <code>StanModule</code></dd>
+        <dd><code>as_stan_list</code></dd>
       </dl><dl><dt>
           
           <code><a href="as.character.JointModel.html">as.character(<i>&lt;JointModel&gt;</i>)</a></code> 
@@ -491,19 +485,34 @@
         <dd><code>JointModel</code> -&gt; <code>character</code></dd>
       </dl><dl><dt>
           
-          <code><a href="as.character.Parameter.html">as.character(<i>&lt;Parameter&gt;</i>)</a></code> 
+          <code><a href="as.StanModule.Parameter.html">as.StanModule(<i>&lt;Parameter&gt;</i>)</a></code> 
         </dt>
-        <dd><code>Parameter</code> -&gt; <code>character</code></dd>
+        <dd><code>Parameter</code> -&gt; <code>StanModule</code></dd>
       </dl><dl><dt>
           
-          <code><a href="as.character.ParameterList.html">as.character(<i>&lt;ParameterList&gt;</i>)</a></code> 
+          <code><a href="as.StanModule.ParameterList.html">as.StanModule(<i>&lt;ParameterList&gt;</i>)</a></code> 
         </dt>
-        <dd><code>ParameterList</code> -&gt; <code>character</code></dd>
+        <dd><code>ParameterList</code> -&gt; <code>StanModule</code></dd>
       </dl><dl><dt>
           
-          <code><a href="as.character.Prior.html">as.character(<i>&lt;Prior&gt;</i>)</a></code> 
+          <code><a href="as.StanModule.Prior.html">as.StanModule(<i>&lt;Prior&gt;</i>)</a></code> 
         </dt>
-        <dd><code>Prior</code> -&gt; <code>character</code></dd>
+        <dd><code>Prior</code> -&gt; <code>StanModule</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_stan_list.Parameter.html">as_stan_list(<i>&lt;Parameter&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>Parameter</code> -&gt; <code>list</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_stan_list.ParameterList.html">as_stan_list(<i>&lt;ParameterList&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>ParameterList</code> -&gt; <code>list</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_stan_list.Prior.html">as_stan_list(<i>&lt;Prior&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>Prior</code> -&gt; <code>list</code></dd>
       </dl><dl><dt>
           
           <code><a href="as.character.StanModule.html">as.character(<i>&lt;StanModule&gt;</i>)</a></code> 
@@ -536,7 +545,7 @@
         <dd><code>SurvivalQuantities</code> -&gt; <code>data.frame</code></dd>
       </dl><dl><dt>
           
-          <code><a href="as_stan_list.html">as.list(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="as_stan_list.html">as_stan_list()</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="as_stan_list.html">as.list(<i>&lt;DataJoint&gt;</i>)</a></code> 
+          <code><a href="as_stan_list.DataObject.html">as_stan_list(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as.list(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as_stan_list(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as.list(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as_stan_list(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as.list(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as_stan_list(<i>&lt;DataJoint&gt;</i>)</a></code> <code><a href="as_stan_list.DataObject.html">as.list(<i>&lt;DataJoint&gt;</i>)</a></code> 
         </dt>
         <dd>Data Object -&gt; <code>list</code></dd>
       </dl><dl><dt>

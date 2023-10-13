@@ -30,12 +30,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -70,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Prior</span><span class="op">(</span><span class="va">parameters</span>, <span class="va">repr</span>, <span class="va">init</span>, <span class="va">validation</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Prior</span><span class="op">(</span><span class="va">parameters</span>, <span class="va">repr_model</span>, <span class="va">repr_data</span>, <span class="va">init</span>, <span class="va">validation</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,8 +73,12 @@
 <dd><p>(<code>list</code>)<br> the prior distribution parameters.</p></dd>
 
 
-<dt>repr</dt>
-<dd><p>(<code>string</code>)<br> the Stan code regular expression encoding the distribution.</p></dd>
+<dt>repr_model</dt>
+<dd><p>(<code>string</code>)<br> the Stan code representation for the model block.</p></dd>
+
+
+<dt>repr_data</dt>
+<dd><p>(<code>string</code>)<br> the Stan code representation for the data block.</p></dd>
 
 
 <dt>init</dt>
@@ -100,7 +98,11 @@ the same names as the <code>paramaters</code> slot.</p></dd>
 <dd><p>(<code>list</code>)<br> See arguments.</p></dd>
 
 
-<dt><code>repr</code></dt>
+<dt><code>repr_model</code></dt>
+<dd><p>(<code>string</code>)<br> See arguments.</p></dd>
+
+
+<dt><code>repr_data</code></dt>
 <dd><p>(<code>string</code>)<br> See arguments.</p></dd>
 
 
@@ -115,16 +117,10 @@ the same names as the <code>paramaters</code> slot.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other Prior: 
+    <div class="dont-index"><p>Other Prior-internal: 
 <code><a href="Prior-Getter-Methods.html">Prior-Getter-Methods</a></code>,
-<code><a href="as.character.Prior.html">as.character.Prior</a>()</code>,
-<code><a href="prior_beta.html">prior_beta</a>()</code>,
-<code><a href="prior_cauchy.html">prior_cauchy</a>()</code>,
-<code><a href="prior_gamma.html">prior_gamma</a>()</code>,
-<code><a href="prior_lognormal.html">prior_lognormal</a>()</code>,
-<code><a href="prior_none.html">prior_none</a>()</code>,
-<code><a href="prior_normal.html">prior_normal</a>()</code>,
-<code><a href="prior_std_normal.html">prior_std_normal</a>()</code></p></div>
+<code><a href="as.StanModule.Prior.html">as.StanModule.Prior</a>()</code>,
+<code><a href="as_stan_list.Prior.html">as_stan_list.Prior</a>()</code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
