@@ -15,7 +15,7 @@
 			],
 			"group": {
 				"kind": "test",
-				"isDefault": false
+				"isDefault": true
 			},
 			"presentation": {
 				"echo": true,
