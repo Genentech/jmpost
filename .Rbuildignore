@@ -10,6 +10,7 @@
 ^.git$
 ^_pkgdown\.yml$
 ^docs$
+^doc$
 ^pkgdown$
 ^data-raw$
 ^.DS_Store$

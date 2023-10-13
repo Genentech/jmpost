@@ -98,7 +98,7 @@ extractVariableNames.DataSubject <- function(object) {
 }
 
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @family DataSubject
 #' @export
 as_stan_list.DataSubject <- function(object, ...) {
@@ -117,7 +117,7 @@ as_stan_list.DataSubject <- function(object, ...) {
     )
 }
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @export
 as.list.DataSubject <- function(x, ...) {
     as_stan_list(x, ...)

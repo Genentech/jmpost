@@ -8,7 +8,7 @@
 \method{initialValues}{Prior}(object)
 }
 \arguments{
-\item{object}{(\code{\link{Prior}})\cr A Prior Distribution}
+\item{object}{(\code{\link{Prior}})\cr a prior Distribution}
 }
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object
@@ -19,15 +19,9 @@ Getter functions for the slots of a \code{\link{Prior}} object
 
 }}
 \seealso{
-Other Prior: 
+Other Prior-internal: 
 \code{\link{Prior-class}},
-\code{\link{as.character.Prior}()},
-\code{\link{prior_beta}()},
-\code{\link{prior_cauchy}()},
-\code{\link{prior_gamma}()},
-\code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
-\code{\link{prior_normal}()},
-\code{\link{prior_std_normal}()}
+\code{\link{as.StanModule.Prior}()},
+\code{\link{as_stan_list.Prior}()}
 }
-\concept{Prior}
+\concept{Prior-internal}

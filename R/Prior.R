@@ -1,4 +1,5 @@
 #' @include generics.R
+#' @include StanModule.R
 NULL
 
 #' `Prior` Function Arguments
@@ -7,8 +8,9 @@ NULL
 #' constructors.
 #'
 #' @param init (`number`)\cr initial value.
-#' @param x ([`Prior`])\cr A Prior Distribution
-#' @param object ([`Prior`])\cr A Prior Distribution
+#' @param x ([`Prior`])\cr a prior Distribution
+#' @param object ([`Prior`])\cr a prior Distribution
+#' @param name (`character`)\cr the name of the parameter the prior distribution is for
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -22,33 +24,38 @@ NULL
 #' Specifies the prior distribution in a Stan Model
 #'
 #' @slot parameters (`list`)\cr See arguments.
-#' @slot repr (`string`)\cr See arguments.
+#' @slot repr_model (`string`)\cr See arguments.
+#' @slot repr_data (`string`)\cr See arguments.
 #' @slot init (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #'
-#' @family Prior
+#' @family Prior-internal
 #' @export Prior
 #' @exportClass Prior
 .Prior <- setClass(
     Class = "Prior",
     slots = c(
         "parameters" = "list",
-        "repr" = "character",
+        "repr_model" = "character",
+        "repr_data" = "character",
         "init" = "numeric",
         "validation" = "list"
     )
 )
 
+
 #' @param parameters (`list`)\cr the prior distribution parameters.
-#' @param repr (`string`)\cr the Stan code regular expression encoding the distribution.
+#' @param repr_model (`string`)\cr the Stan code representation for the model block.
+#' @param repr_data (`string`)\cr the Stan code representation for the data block.
 #' @param init (`numeric`)\cr the initial value.
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
 #' @rdname Prior-class
-Prior <- function(parameters, repr, init, validation) {
+Prior <- function(parameters, repr_model, repr_data, init, validation) {
     .Prior(
         parameters = parameters,
-        repr = repr,
+        repr_model = repr_model,
+        repr_data = repr_data,
         init = init,
         validation = validation
     )
@@ -77,25 +84,55 @@ setValidity(
 
 
 
-
-# coerce-Prior,character ----
-
-#' `Prior` -> `character`
-#' @description
-#' Returns the character representation of the distribution by inserting the
-#' distribution parameters into the `x@repr` string
+#' `Prior` -> `StanModule`
+#'
+#' Converts a [`Prior`] object to a [`StanModule`] object
+#'
 #' @inheritParams Prior-Shared
-#' @family Prior
+#'
+#' @family Prior-internal
+#' @family as.StanModule
 #' @export
-as.character.Prior <- function(x, ...) {
-    glue::glue(x@repr, .envir = list2env(x@parameters))
+as.StanModule.Prior <- function(object, name, ...) {
+    string <- paste(
+        "data {{",
+        paste0("    ", object@repr_data, collapse = "\n"),
+        "}}",
+        "model {{",
+        paste0("    ", object@repr_model, collapse = "\n"),
+        "}}",
+        sep = "\n"
+    )
+    StanModule(glue::glue(string, name = name))
 }
+
+
+#' `Prior` -> `list`
+#'
+#' Converts a Prior object to a list of parameter data values
+#' for a Stan model.
+#'
+#' @inheritParams Prior-Shared
+#'
+#' @family as_stan_list
+#' @family Prior-internal
+#' @export
+as_stan_list.Prior <- function(object, name, ...) {
+    vals <- object@parameters
+    vals_names <- names(vals)
+    if (length(vals_names) >= 1) {
+        names(vals) <- paste0("prior_", vals_names, "_", name)
+    }
+    return(vals)
+}
+
+
 
 #' Prior Getter Functions
 #' @description
 #' Getter functions for the slots of a [`Prior`] object
 #' @inheritParams Prior-Shared
-#' @family Prior
+#' @family Prior-internal
 #' @name Prior-Getter-Methods
 NULL
 
@@ -120,7 +157,11 @@ initialValues.Prior <- function(object) object@init
 prior_normal <- function(mu, sigma, init = mu) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
-        repr = "normal({mu}, {sigma});",
+        repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
         init = init,
         validation = list(
             mu = is.numeric,
@@ -128,6 +169,7 @@ prior_normal <- function(mu, sigma, init = mu) {
         )
     )
 }
+
 
 #' Standard Normal Prior Distribution
 #'
@@ -138,7 +180,8 @@ prior_normal <- function(mu, sigma, init = mu) {
 prior_std_normal <- function(init = 0) {
     .Prior(
         parameters = list(),
-        repr = "std_normal();",
+        repr_model = "{name} ~ std_normal();",
+        repr_data = "",
         init = init
     )
 }
@@ -154,7 +197,11 @@ prior_std_normal <- function(init = 0) {
 prior_cauchy <- function(mu, sigma, init = mu) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
-        repr = "cauchy({mu}, {sigma});",
+        repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
         init = init,
         validation = list(
             mu = is.numeric,
@@ -174,7 +221,11 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 prior_gamma <- function(alpha, beta, init = alpha / beta) {
     .Prior(
         parameters = list(alpha = alpha, beta = beta),
-        repr = "gamma({alpha}, {beta});",
+        repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real<lower=0> prior_alpha_{name};",
+            "real<lower=0> prior_beta_{name};"
+        ),
         init = init,
         validation = list(
             alpha = \(x) x > 0,
@@ -194,7 +245,11 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
 prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
     .Prior(
         parameters = list(mu = mu, sigma = sigma),
-        repr = "lognormal({mu}, {sigma});",
+        repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
         init = init,
         validation = list(
             mu = is.numeric,
@@ -214,7 +269,11 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
 prior_beta <- function(a, b, init = a / (a + b)) {
     .Prior(
         parameters = list(a = a, b = b),
-        repr = "beta({a}, {b});",
+        repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name});",
+        repr_data = c(
+            "real<lower=0> prior_a_{name};",
+            "real<lower=0> prior_b_{name};"
+        ),
         init = init,
         validation = list(
             a = \(x) x > 0,
@@ -232,7 +291,8 @@ prior_beta <- function(a, b, init = a / (a + b)) {
 prior_none <- function(init = 0.00001) {
     .Prior(
         parameters = list(),
-        repr = "",
+        repr_model = "",
+        repr_data = "",
         init = init
     )
 }

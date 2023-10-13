@@ -33,6 +33,7 @@ Getter functions for the slots of a \code{\link{Parameter}} object
 \seealso{
 Other Parameter: 
 \code{\link{Parameter-class}},
-\code{\link{as.character.Parameter}()}
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as_stan_list.Parameter}()}
 }
 \concept{Parameter}

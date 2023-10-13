@@ -20,11 +20,16 @@ test_that("ParameterList smoke tests", {
     expect_equal(actual, expected)
 
     # Can render to character
-    actual <- c(
-        "    inter ~ gamma(1, 2);",
-        "    myp ~ normal(1, 4);"
-    ) |>
-        paste(collapse = "\n")
+    expect_equal(
+        as.StanModule(pl),
+        StanModule(test_path("models", "ParameterList.stan"))
+    )
 
-    expect_equal(actual, as.character(pl))
+    expected <- list(
+        "prior_alpha_inter" = 1,
+        "prior_beta_inter" = 2,
+        "prior_mu_myp" = 1,
+        "prior_sigma_myp" = 4
+    )
+    expect_equal(as_stan_list(pl), expected)
 })

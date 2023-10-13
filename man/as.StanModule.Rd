@@ -5,14 +5,23 @@
 \alias{as.StanModule.Link}
 \title{\code{as.StanModule}}
 \usage{
-as.StanModule(object)
+as.StanModule(object, ...)
 
 \method{as.StanModule}{Link}(object)
 }
 \arguments{
 \item{object}{what to convert.}
+
+\item{...}{additional options.}
 }
 \description{
-Convert a \code{\link{Link}} or \code{\link{ParameterList}} into a \code{\link{StanModule}}.
+Converts an object into a \code{\link{StanModule}}.
 }
+\seealso{
+Other as.StanModule: 
+\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as.StanModule.Prior}()}
+}
+\concept{as.StanModule}
 \keyword{internal}

@@ -117,7 +117,25 @@ setValidity(
 
 # DataJoint-as.list ----
 
-#' @rdname as_stan_list
+
+
+
+#' Data Object -> `list`
+#'
+#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
+#' data object to convert to a `list`.
+#' @param x (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
+#' data object to convert to a `list`.
+#' @param subject_var (`character`) \cr the name of the variable
+#' containing the subject identifier.
+#' @param ... not used.
+#'
+#' @description
+#' Coerces a data object into a `list` of data components required
+#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#'
+#' @name as_stan_list.DataObject
+#' @family as_stan_list
 #' @family DataJoint
 #' @export
 as_stan_list.DataJoint <- function(object, ...) {
@@ -131,7 +149,7 @@ as_stan_list.DataJoint <- function(object, ...) {
         ))
 }
 
-#' @rdname as_stan_list
+#' @name as_stan_list.DataObject
 #' @export
 as.list.DataJoint <- function(x, ...) {
     as_stan_list(x, ...)

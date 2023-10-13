@@ -111,7 +111,7 @@ as.data.frame.DataSurvival <- function(x, ...) {
 
 
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @family DataSurvival
 #' @export
 as_stan_list.DataSurvival <- function(object, ...) {
@@ -139,7 +139,7 @@ as_stan_list.DataSurvival <- function(object, ...) {
     return(model_data)
 }
 
-#' @rdname as_stan_list
+#' @rdname as_stan_list.DataObject
 #' @export
 as.list.DataSurvival <- function(x, ...) {
     as_stan_list(x, ...)

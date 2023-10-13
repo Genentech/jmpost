@@ -39,9 +39,12 @@ LongitudinalRandomSlope <- function(
         x = "lm-random-slope/model.stan"
     )
 
-    if (!as.character(random_slope) == "") {
-        stop("`random_slope` must be a `prior_none()`")
-    }
+    assert_that(
+        inherits(random_slope, "Prior"),
+        random_slope@repr_data == "",
+        random_slope@repr_model == "",
+        msg = "`random_slope` must be a `prior_none()`"
+    )
 
     .LongitudinalRandomSlope(
         LongitudinalModel(

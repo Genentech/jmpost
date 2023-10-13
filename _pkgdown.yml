@@ -117,11 +117,14 @@ reference:
     contents:
       - merge
       - show
-      - as.StanModule.ParameterList
+      - as_stan_list
       - as.character.JointModel
-      - as.character.Parameter
-      - as.character.ParameterList
-      - as.character.Prior
+      - as.StanModule.Parameter
+      - as.StanModule.ParameterList
+      - as.StanModule.Prior
+      - as_stan_list.Parameter
+      - as_stan_list.ParameterList
+      - as_stan_list.Prior
       - as.character.StanModule
       - as.data.frame.DataSubject
       - as.data.frame.DataLongitudinal

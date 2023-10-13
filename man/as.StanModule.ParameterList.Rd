@@ -4,19 +4,27 @@
 \alias{as.StanModule.ParameterList}
 \title{\code{ParameterList} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{ParameterList}(object)
+\method{as.StanModule}{ParameterList}(object, ...)
 }
 \arguments{
 \item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+
+\item{...}{Not Used.}
 }
 \description{
-Returns a \code{\link{StanModule}} object of the model parameters.
+Converts a \code{\link{ParameterList}} object to a \code{\link{StanModule}} object
 }
 \seealso{
 Other ParameterList: 
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
-\code{\link{as.character.ParameterList}()},
-\code{\link{as.list.ParameterList}()}
+\code{\link{as.list.ParameterList}()},
+\code{\link{as_stan_list.ParameterList}()}
+
+Other as.StanModule: 
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as.StanModule.Prior}()},
+\code{\link{as.StanModule}()}
 }
 \concept{ParameterList}
+\concept{as.StanModule}
