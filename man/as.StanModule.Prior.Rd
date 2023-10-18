@@ -20,6 +20,7 @@ Converts a \code{\link{Prior}} object to a \code{\link{StanModule}} object
 Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
+\code{\link{as.character.Prior}()},
 \code{\link{as_stan_list.Prior}()}
 
 Other as.StanModule: 

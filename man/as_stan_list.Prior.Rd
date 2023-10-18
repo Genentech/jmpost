@@ -27,7 +27,8 @@ Other as_stan_list:
 Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
-\code{\link{as.StanModule.Prior}()}
+\code{\link{as.StanModule.Prior}()},
+\code{\link{as.character.Prior}()}
 }
 \concept{Prior-internal}
 \concept{as_stan_list}

@@ -18,6 +18,8 @@ Parameter(prior, name, size = 1)
 }
 \description{
 Stores the name, the prior distribution and the size of a parameter.
+If \code{size} is a string then this indicates the name of the variable
+within the stan data object that specifies the size of this parameter.
 }
 \section{Slots}{
 
@@ -33,6 +35,7 @@ Stores the name, the prior distribution and the size of a parameter.
 Other Parameter: 
 \code{\link{Parameter-Getter-Methods}},
 \code{\link{as.StanModule.Parameter}()},
+\code{\link{as.character.Parameter}()},
 \code{\link{as_stan_list.Parameter}()}
 }
 \concept{Parameter}

@@ -18,6 +18,7 @@ Converts a \code{\link{Parameter}} object to a \code{\link{StanModule}} object
 Other Parameter: 
 \code{\link{Parameter-Getter-Methods}},
 \code{\link{Parameter-class}},
+\code{\link{as.character.Parameter}()},
 \code{\link{as_stan_list.Parameter}()}
 
 Other as.StanModule: 

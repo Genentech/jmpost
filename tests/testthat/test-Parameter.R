@@ -6,3 +6,14 @@ test_that("Parameters smoke tests", {
     expect_equal(initialValues(p), 9)
     expect_equal(names(p), "myp")
 })
+
+test_that("show() works for Paramneter objects", {
+    x <- Parameter(prior_normal(1, 3, 4), "bob", "ben")
+    expect_snapshot_output(print(x))
+
+    x <- Parameter(prior_beta(0.5, 0.2), "var1", "var2")
+    expect_snapshot_output(print(x))
+
+    x <- Parameter(prior_none(4), "x", "y")
+    expect_snapshot_output(print(x))
+})

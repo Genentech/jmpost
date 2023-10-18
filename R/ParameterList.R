@@ -160,3 +160,17 @@ size.ParameterList <- function(object) {
     names(x) <- names(object)
     return(x)
 }
+
+
+#' @export
+setMethod(
+    f = "show",
+    signature = "ParameterList",
+    definition = function(object) {
+        chrs <- vapply(object@parameters, as.character, character(1))
+        string <- paste("   ", chrs) |> paste(collapse = "\n")
+        x <- sprintf("\nParameterList Object:\n%s\n\n", string)
+        cat(x)
+        return(object)
+    }
+)

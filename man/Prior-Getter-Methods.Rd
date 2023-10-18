@@ -22,6 +22,7 @@ Getter functions for the slots of a \code{\link{Prior}} object
 Other Prior-internal: 
 \code{\link{Prior-class}},
 \code{\link{as.StanModule.Prior}()},
+\code{\link{as.character.Prior}()},
 \code{\link{as_stan_list.Prior}()}
 }
 \concept{Prior-internal}

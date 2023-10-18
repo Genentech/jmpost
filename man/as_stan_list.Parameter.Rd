@@ -25,7 +25,8 @@ Other as_stan_list:
 Other Parameter: 
 \code{\link{Parameter-Getter-Methods}},
 \code{\link{Parameter-class}},
-\code{\link{as.StanModule.Parameter}()}
+\code{\link{as.StanModule.Parameter}()},
+\code{\link{as.character.Parameter}()}
 }
 \concept{Parameter}
 \concept{as_stan_list}

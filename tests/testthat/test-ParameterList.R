@@ -33,3 +33,16 @@ test_that("ParameterList smoke tests", {
     )
     expect_equal(as_stan_list(pl), expected)
 })
+
+
+test_that("show() works for ParameterList objects", {
+
+    x <- ParameterList(
+        Parameter(name = "bob", prior = prior_normal(1, 4)),
+        Parameter(name = "sam", prior = prior_beta(3, 1)),
+        Parameter(name = "dave", prior = prior_lognormal(3, 2, init = 3), size = 4),
+        Parameter(name = "steve", prior = prior_none())
+    )
+
+    expect_snapshot_output(print(x))
+})
