@@ -124,6 +124,7 @@ reference:
       - as.StanModule.Prior
       - as.character.Parameter
       - as.character.Prior
+      - show-object
       - as_stan_list.Parameter
       - as_stan_list.ParameterList
       - as_stan_list.Prior

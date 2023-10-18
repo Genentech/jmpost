@@ -23,7 +23,7 @@ NULL
 #' @export
 LinkNone <- function() {
     stan <- StanModule()
-    .LinkNone(Link(stan = stan))
+    .LinkNone(Link(stan = stan, name = "None"))
 }
 
 # addLink-LongitudinalModel,LinkNone ----
@@ -36,3 +36,19 @@ setMethod(
         x
     }
 )
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "LinkNone",
+    definition = function(object) {
+        cat(as_print_string(object))
+    }
+)
+
+#' @export
+as_print_string.LinkNone <- function(object, ...) {
+    return("No Link\n\n")
+}

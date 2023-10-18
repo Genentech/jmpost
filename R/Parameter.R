@@ -132,6 +132,8 @@ as.character.Parameter <- function(x, ...) {
     paste0(x@name, " ~ ", as.character(x@prior))
 }
 
+
+#' @rdname show-object
 #' @export
 setMethod(
     f = "show",

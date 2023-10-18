@@ -7,12 +7,19 @@
 \alias{Link}
 \title{\code{Link}}
 \usage{
-Link(stan = StanModule(), parameters = ParameterList(), ...)
+Link(
+  stan = StanModule(),
+  parameters = ParameterList(),
+  name = "<Unnamed>",
+  ...
+)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
+
+\item{name}{(\code{character})\cr display name for the model object.}
 
 \item{...}{additional arguments passed to the constructor.}
 }
@@ -25,5 +32,7 @@ Link(stan = StanModule(), parameters = ParameterList(), ...)
 \item{\code{stan}}{(\code{StanModule})\cr code containing the link specification.}
 
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
+
+\item{\code{name}}{(\code{character})\cr display name for the link object.}
 }}
 

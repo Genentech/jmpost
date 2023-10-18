@@ -55,3 +55,19 @@ test_that("LongitudinalGSF works as expected with a single study", {
     expect_s4_class(mp, "JointModelSamples")
     expect_true(mp@results$summary("lm_gsf_mu_bsld")$ess_tail > 5)
 })
+
+test_that("Print method for LongitudinalGSF works as expected", {
+
+    expect_snapshot({
+        x <- LongitudinalGSF()
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- LongitudinalGSF(
+            sigma = prior_normal(0, 1),
+            mu_phi = prior_gamma(2, 1)
+        )
+        print(x)
+    })
+})

@@ -53,3 +53,20 @@ test_that("LinkGSF returns correct defaults when no arguments are supplied", {
     par_names <- get_par_names(link)
     expect_equal(par_names, c("lm_gsf_tau"))
 })
+
+
+test_that("Print method for LinkGSF works as expected", {
+
+    expect_snapshot({
+        x <- LinkGSF()
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- LinkGSF(
+            link_gsf_identity(tau = prior_cauchy(1, 2)),
+            link_gsf_dsld(beta = prior_gamma(2, 2))
+        )
+        print(x)
+    })
+})

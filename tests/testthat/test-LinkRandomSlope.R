@@ -14,3 +14,16 @@ test_that("LinkRandomSlope smoke tests", {
         "unused argument \\(lm_rs_pp"
     )
 })
+
+test_that("Print method for LinkRandomSlope works as expected", {
+
+    expect_snapshot({
+        x <- LinkRandomSlope()
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- LinkRandomSlope(link_lm_phi = prior_normal(0, 1))
+        print(x)
+    })
+})

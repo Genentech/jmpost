@@ -43,11 +43,11 @@ LongitudinalModel <- function(
 }
 
 #' @export
-as_print_string.LongitudinalModel <- function(x, ...) {
+as_print_string.LongitudinalModel <- function(object, ...) {
     string <- sprintf(
-        "\n%s Longitudinal Model Object with parameters:\n%s\n\n",
-        x@name,
-        paste("   ", as_print_string(x@parameters)) |> paste(collapse = "\n")
+        "\n%s Longitudinal Model with parameters:\n%s\n\n",
+        object@name,
+        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
     )
     return(string)
 }

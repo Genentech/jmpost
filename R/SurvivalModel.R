@@ -25,7 +25,8 @@ SurvivalModel <- function(
     stan = StanModule(),
     parameters = ParameterList(),
     name = "<Unnamed>",
-    ...) {
+    ...
+) {
     base_stan <- paste0(read_stan("base/survival.stan"), collapse = "\n")
     stan_full <- decorated_render(
         .x = base_stan,
@@ -42,11 +43,11 @@ SurvivalModel <- function(
 }
 
 #' @export
-as_print_string.SurvivalModel <- function(x, ...) {
+as_print_string.SurvivalModel <- function(object, ...) {
     string <- sprintf(
-        "\n%s Survival Model Object with parameters:\n%s\n\n",
-        x@name,
-        paste("   ", as_print_string(x@parameters)) |> paste(collapse = "\n")
+        "\n%s Survival Model with parameters:\n%s\n\n",
+        object@name,
+        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
     )
     return(string)
 }

@@ -110,3 +110,16 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
 })
+
+
+test_that("Print method for SurvivalExponential works as expected", {
+    expect_snapshot({
+        x <- SurvivalExponential()
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- SurvivalExponential(beta = prior_gamma(3, 4, init = 10))
+        print(x)
+    })
+})

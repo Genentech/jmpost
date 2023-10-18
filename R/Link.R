@@ -9,11 +9,13 @@ NULL
 #'
 #' @slot stan (`StanModule`)\cr code containing the link specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
+#' @slot name (`character`)\cr display name for the link object.
 #'
 #' @exportClass Link
 .Link <- setClass(
     Class = "Link",
     slots = list(
+        "name" = "character",
         "stan" = "StanModule",
         "parameters" = "ParameterList"
     )
@@ -27,10 +29,18 @@ NULL
 #' @param ... additional arguments passed to the constructor.
 #'
 #' @export
-Link <- function(stan = StanModule(),
-                 parameters = ParameterList(),
-                 ...) {
-    .Link(stan = stan, parameters = parameters, ...)
+Link <- function(
+    stan = StanModule(),
+    parameters = ParameterList(),
+    name = "<Unnamed>",
+    ...
+) {
+    .Link(
+        name = name,
+        stan = stan,
+        parameters = parameters,
+        ...
+    )
 }
 
 # addLink-LongitudinalModel,Link ----
@@ -60,3 +70,24 @@ initialValues.Link <- function(object) {
 as.StanModule.Link <- function(object) {
     object@stan
 }
+
+#' @export
+as_print_string.Link <- function(object, ...) {
+    string <- sprintf(
+        "\n%s Link with parameters:\n%s\n\n",
+        object@name,
+        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
+    )
+    return(string)
+}
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "Link",
+    definition = function(object) {
+        cat(as_print_string(object))
+    }
+)

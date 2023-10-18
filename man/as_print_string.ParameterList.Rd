@@ -23,3 +23,4 @@ Other ParameterList:
 \code{\link{as_stan_list.ParameterList}()}
 }
 \concept{ParameterList}
+\keyword{internal}

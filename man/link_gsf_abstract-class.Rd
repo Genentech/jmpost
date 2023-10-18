@@ -7,7 +7,7 @@
 \alias{link_gsf_abstract}
 \title{\code{link_gsf_abstract}}
 \usage{
-link_gsf_abstract(stan, parameter, parameter_name, contribution_fname)
+link_gsf_abstract(stan, parameter, parameter_name, contribution_fname, name)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
@@ -17,6 +17,8 @@ link_gsf_abstract(stan, parameter, parameter_name, contribution_fname)
 \item{parameter_name}{(\code{character})\cr the name of the parameter.}
 
 \item{contribution_fname}{(\code{character})\cr the function name of the contribution.}
+
+\item{name}{(\code{character})\cr display name for the model object.}
 }
 \description{
 Class to specify the contents for \code{\link{LinkGSF}}.
@@ -25,6 +27,8 @@ Class to specify the contents for \code{\link{LinkGSF}}.
 
 \describe{
 \item{\code{stan}}{(\code{StanModule})\cr the Stan code.}
+
+\item{\code{name}}{(\code{character})\cr the link name to be displayed.}
 
 \item{\code{parameter}}{(\code{ParameterList})\cr the parameter specification.}
 

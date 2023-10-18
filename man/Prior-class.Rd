@@ -7,10 +7,12 @@
 \alias{Prior}
 \title{Prior Object and Constructor Function}
 \usage{
-Prior(parameters, distribution, repr_model, repr_data, init, validation)
+Prior(parameters, display, repr_model, repr_data, init, validation)
 }
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
+
+\item{display}{(\code{string})\cr the string to display when object is printed.}
 
 \item{repr_model}{(\code{string})\cr the Stan code representation for the model block.}
 
@@ -20,8 +22,6 @@ Prior(parameters, distribution, repr_model, repr_data, init, validation)
 
 \item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
-
-\item{display}{(\code{string})\cr the string to display when object is printed.}
 }
 \description{
 Specifies the prior distribution in a Stan Model

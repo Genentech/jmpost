@@ -13,6 +13,8 @@ StanModel(stan, parameters, name = "<Unnamed>")
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
+
+\item{name}{(\code{character})\cr display name for the model object.}
 }
 \description{
 Stan Model Object and Constructor Function
@@ -23,6 +25,8 @@ Stan Model Object and Constructor Function
 \item{\code{stan}}{(\code{StanModule})\cr See Arguments.}
 
 \item{\code{parameters}}{(\code{ParameterList})\cr See Arguments.}
+
+\item{\code{name}}{(\code{character})\cr display name for the model object.}
 }}
 
 \seealso{

@@ -206,7 +206,8 @@ compileStanModel.StanModule <- function(object) {
 
 # show-StanModule ----
 
-#' @rdname show
+#' @rdname show-object
+#' @export
 setMethod(
     f = "show",
     signature = "StanModule",

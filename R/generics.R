@@ -257,3 +257,12 @@ as_stan_list.default <- function(object, ...) {
 as_print_string <- function(object, ...) {
     UseMethod("as_print_string")
 }
+
+#' Show an Object
+#'
+#' Prints an object to the console.
+#'
+#' @param object Object to be printed
+#'
+#' @name show-object
+NULL
