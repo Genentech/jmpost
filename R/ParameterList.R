@@ -162,12 +162,23 @@ size.ParameterList <- function(object) {
 }
 
 
+#' `ParameterList` -> Printable `Character`
+#'
+#' Converts [`ParameterList`] object into a printable string.
+#' @inheritParams ParameterList-Shared
+#' @family ParameterList
+#' @export
+as_print_string.ParameterList <- function(object, ...) {
+    vapply(object@parameters, as.character, character(1))
+}
+
+
 #' @export
 setMethod(
     f = "show",
     signature = "ParameterList",
     definition = function(object) {
-        chrs <- vapply(object@parameters, as.character, character(1))
+        chrs <- as_print_string(object)
         string <- paste("   ", chrs) |> paste(collapse = "\n")
         x <- sprintf("\nParameterList Object:\n%s\n\n", string)
         cat(x)

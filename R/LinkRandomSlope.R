@@ -27,6 +27,7 @@ LinkRandomSlope <- function(
 ) {
     .LinkRandomSlope(
         Link(
+            name = "Random Slope",
             stan = StanModule(
                 x = "lm-random-slope/links.stan"
             ),

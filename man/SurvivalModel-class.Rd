@@ -7,7 +7,12 @@
 \alias{SurvivalModel}
 \title{\code{SurvivalModel}}
 \usage{
-SurvivalModel(stan = StanModule(), parameters = ParameterList(), ...)
+SurvivalModel(
+  stan = StanModule(),
+  parameters = ParameterList(),
+  name = "<Unnamed>",
+  ...
+)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}

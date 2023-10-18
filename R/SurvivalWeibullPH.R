@@ -30,6 +30,7 @@ SurvivalWeibullPH <- function(
 ) {
     .SurvivalWeibullPH(
         SurvivalModel(
+            name = "Weibull-PH",
             stan = StanModule(x = "sm-weibull-ph/model.stan"),
             parameters = ParameterList(
                 Parameter(name = "sm_weibull_ph_lambda", prior = lambda, size = 1),

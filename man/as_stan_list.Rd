@@ -10,7 +10,7 @@ as_stan_list(object, ...)
 \method{as_stan_list}{default}(object, ...)
 }
 \arguments{
-\item{object}{to be converted}
+\item{object}{to be converted.}
 
 \item{...}{additional options.}
 }

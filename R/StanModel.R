@@ -1,5 +1,6 @@
 #' @include StanModule.R
 #' @include ParameterList.R
+#' @include generics.R
 NULL
 
 #' `StanModel` Function Arguments
@@ -31,7 +32,8 @@ NULL
     Class = "StanModel",
     slots = list(
         "stan" = "StanModule",
-        "parameters" = "ParameterList"
+        "parameters" = "ParameterList",
+        "name" = "character"
     )
 )
 
@@ -40,10 +42,11 @@ NULL
 #' @param stan (`StanModule`)\cr code containing the Stan code specification.
 #' @param parameters (`ParameterList`)\cr the parameter specification.
 #' @rdname StanModel-class
-StanModel <- function(stan, parameters) {
+StanModel <- function(stan, parameters, name = "<Unnamed>") {
     .StanModel(
         stan = stan,
-        parameters = parameters
+        parameters = parameters,
+        name = name
     )
 }
 
@@ -65,3 +68,23 @@ as.list.StanModel <- function(x, ...) {
 
 #' @rdname getParameters
 getParameters.StanModel <- function(object) object@parameters
+
+
+#' @export
+as_print_string.StanModel <- function(x, ...) {
+    string <- sprintf(
+        "\n%s Model Object with parameters:\n%s\n\n",
+        x@name,
+        paste("   ", as_print_string(x@parameters)) |> paste(collapse = "\n")
+    )
+    return(string)
+}
+
+#' @export
+setMethod(
+    f = "show",
+    signature = "StanModel",
+    definition = function(object) {
+        cat(as_print_string(object))
+    }
+)

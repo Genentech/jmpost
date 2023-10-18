@@ -227,7 +227,7 @@ harmonise.default <- function(object, ...) {
 #' Extracts a list of data elements from an object to be used as input
 #' to a Stan Model
 #'
-#' @param object to be converted
+#' @param object to be converted.
 #' @param ... additional options.
 #'
 #' @family as_stan_list
@@ -240,4 +240,20 @@ as_stan_list <- function(object, ...) {
 #' @export
 as_stan_list.default <- function(object, ...) {
     NULL
+}
+
+
+#' `as_print_string`
+#'
+#' @description
+#' Returns the character representation of an object which is suitable
+#' for printing to the console
+#'
+#' @param object to be converted to string.
+#' @param ... additional options.
+#'
+#' @family as_print_string
+#' @keywords internal
+as_print_string <- function(object, ...) {
+    UseMethod("as_print_string")
 }
