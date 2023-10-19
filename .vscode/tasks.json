@@ -1,53 +1,135 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "R: Test (with cache)",
-			"type": "R",
-			"code": [
-				"devtools::test()"
-			],
-			"env": {
-				"JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache"
-			},
-			"problemMatcher": [
-				"$testthat"
-			],
-			"group": {
-				"kind": "test",
-				"isDefault": true
-			},
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": false,
-				"clear": true
-			}
-		},
-		{
-			"label": "R: Build pkgdown site",
-			"type": "R",
-			"code": [
-				"devtools::install()",
-				"di <- tempfile()",
-				"dir.create(di)",
-				"pkgdown::build_site(devel = TRUE, override = list(destination = di))"
-			],
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": false,
-				"clear": true
-			}
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        
+        {
+            "label": "JMP: Test (with cache)",
+            "type": "R",
+            "code": [
+                "devtools::test()"
+            ],
+            "env": {
+                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache"
+            },
+            "problemMatcher": [
+                "$testthat"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        
+        
+        
+        
+        {
+            "label": "JMP: Test Pkgdown",
+            "type": "R",
+            "code": [
+                "devtools::install()",
+                "di <- tempfile()",
+                "dir.create(di)",
+                "pkgdown::build_site(devel = TRUE, override = list(destination = di))"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        
+        
+        
+        {
+            "label": "JMP: CMD Check (no vig)",
+            "type": "shell",
+            "group": "test",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "command": "eval",
+            "args": [
+                "TEMPDIR=$(mktemp -d) ;", 
+                "cd $TEMPDIR ;",
+                "echo \"\n\n Result can be found in: \n     $(pwd) \n\n\" ;",
+                "R CMD build --no-build-vignettes ${workspaceFolder} ;",
+                "R CMD check --no-tests --no-build-vignettes --as-cran --output=$TEMPDIR $TEMPDIR/*.tar.gz ;"
+            ],
+            "problemMatcher": []
+        },
+        
+        
+        {
+            "label": "JMP: Run Vignettes",
+            "type": "shell",
+            "group": "test",
+            "options": {
+                "shell": {
+                    "executable": "bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "command": "eval",
+            "args": [
+                "TEMPDIR=$(mktemp -d) ;", 
+                "cd $TEMPDIR ;",
+                "echo \"\n\n Result can be found in: \n     $(pwd) \n\n\" ;",
+                "R CMD build ${workspaceFolder} ;",
+            ],
+            "problemMatcher": []
+        },
+
+        {
+            "label": "jmpost - all tests",
+            "dependsOn": [
+                "JMP: Run Vignettes",
+                "JMP: CMD Check (no vig)",
+                "JMP: Test Pkgdown",
+                "JMP: Test (with cache)"
+            ],
+            "problemMatcher": []
+        },
+        
+        
+    ]
 }
