@@ -34,3 +34,22 @@ test_that("DataSubject works as expected", {
     expect_equal(li$pt_arm_index, c(3, 2, 1, 3))
     expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3, "D" = 4))
 })
+
+test_that("DataSubject print method works as expected", {
+
+    expect_snapshot({
+        df_subj <- data.frame(
+            vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),
+            varm = c("A2", "A3", "A4", "A4"),
+            vstudy = c("S1", "S1", "S2", "S2")
+        )
+
+        obj <- DataSubject(
+            data = df_subj,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy"
+        )
+        print(obj)
+    })
+})

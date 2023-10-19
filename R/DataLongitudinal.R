@@ -244,3 +244,42 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
 as.list.DataLongitudinal <- function(x, ...) {
     as_stan_list(x, ...)
 }
+
+
+#' `DataLongitudinal` -> Printable `Character`
+#'
+#' Converts [`DataLongitudinal`] object into a printable string.
+#' @inheritParams DataLongitudinal-Shared
+#' @family DataLongitudinal
+#' @keywords internal
+#' @export
+as_print_string.DataLongitudinal <- function(object, indent = 1, ...) {
+    template <- c(
+        "Longitudinal-Data Object:",
+        "    # of Rows     = %d",
+        "    # of Columns  = %d",
+        "    # of Cen-Obvs = %d",
+        "    Formula       = %s"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    vars <- extractVariableNames(object)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        nrow(object@data),
+        ncol(object@data),
+        sum(object@data[[vars$outcome]] < vars$threshold),
+        Reduce(paste, deparse(vars$frm))
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "DataLongitudinal",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

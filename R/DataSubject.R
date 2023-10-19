@@ -166,3 +166,39 @@ harmonise.DataSubject <- function(object, ...) {
         study = object@study
     )
 }
+
+#' `DataSubject` -> Printable `Character`
+#'
+#' Converts [`DataSubject`] object into a printable string.
+#' @inheritParams DataSubject-Shared
+#' @family DataSubject
+#' @keywords internal
+#' @export
+as_print_string.DataSubject <- function(object, indent = 1, ...) {
+    template <- c(
+        "Subject-Data Object:",
+        "    # of Subjects = %d",
+        "    # of Studies  = %d",
+        "    # of Arms     = %d"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    vars <- extractVariableNames(object)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        nrow(object@data),
+        length(unique(object@data[[vars$study]])),
+        length(unique(object@data[[vars$arm]]))
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "DataSubject",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

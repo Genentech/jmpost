@@ -36,3 +36,37 @@ test_that("DataLongitudinal being rendered to list is as expected for simple inp
     expect_equal(li$Tobs, x$vtime)
     expect_equal(li$Ythreshold, 3)
 })
+
+
+test_that("DataSurvival print method works as expected", {
+
+    expect_snapshot({
+        x <- data.frame(
+            vpt = factor(c("b", "a", "a", "b", "c", "a"), levels = c("b", "c", "a")),
+            vtime = c(10, 20, 15, 5, 25, 35),
+            voutcome = c(2, 1, 4, 5, 6, 2)
+        )
+
+        dl <- DataLongitudinal(
+            data = x,
+            formula = voutcome ~ vtime,
+            threshold = 3
+        )
+        print(dl)
+    })
+
+    expect_snapshot({
+        x <- data.frame(
+            vpt = factor(c("b", "a", "a", "b", "c", "a"), levels = c("b", "c", "a")),
+            vtime = c(10, 20, 15, 5, 25, 35),
+            voutcome = c(2, 1, 4, 5, 6, 2)
+        )
+
+        dl <- DataLongitudinal(
+            data = x,
+            formula = voutcome ~ vtime
+        )
+        print(dl)
+    })
+
+})
