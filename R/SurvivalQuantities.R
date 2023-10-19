@@ -326,7 +326,7 @@ survival_plot <- function(
 #' Converts [`SurvivalQuantities`] object into a printable string.
 #' @inheritParams SurvivalQuantities-Shared
 #' @family SurvivalQuantities
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.SurvivalQuantities <- function(object, indent = 1, ...) {

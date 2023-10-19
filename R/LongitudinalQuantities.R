@@ -226,7 +226,7 @@ autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
 #' Converts [`LongitudinalQuantities`] object into a printable string.
 #' @inheritParams LongitudinalQuantities-Shared
 #' @family LongitudinalQuantities
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.LongitudinalQuantities <- function(object, indent = 1, ...) {

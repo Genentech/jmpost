@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
 
-\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with}
+\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
 
 \item{...}{not used.}
 }

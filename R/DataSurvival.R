@@ -185,7 +185,7 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
 #' Converts [`DataSurvival`] object into a printable string.
 #' @inheritParams DataSurvival-Shared
 #' @family DataSurvival
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.DataSurvival <- function(object, indent = 1, ...) {

@@ -384,7 +384,7 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' Converts [`StanModule`] object into a printable string.
 #' @param object ([`StanModule`])\cr A stan program
 #' @family StanModule
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.StanModule <- function(object, indent = 1, ...) {

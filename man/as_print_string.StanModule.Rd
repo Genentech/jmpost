@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{StanModule}})\cr A stan program}
 
-\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with}
+\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
 }
 \description{
 Converts \code{\link{StanModule}} object into a printable string.

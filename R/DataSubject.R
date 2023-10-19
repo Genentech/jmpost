@@ -173,7 +173,7 @@ harmonise.DataSubject <- function(object, ...) {
 #' @inheritParams DataSubject-Shared
 #' @family DataSubject
 #' @keywords internal
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @export
 as_print_string.DataSubject <- function(object, indent = 1, ...) {
     template <- c(

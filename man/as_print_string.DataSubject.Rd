@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{DataSubject}}) \cr subject-level data.}
 
-\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with}
+\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
 
 \item{...}{Not Used.}
 }

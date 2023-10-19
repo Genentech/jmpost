@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}})\cr samples as drawn from a \code{\link{JointModel}}.}
 
-\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with}
+\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
 }
 \description{
 Converts \code{\link{JointModelSamples}} object into a printable string.

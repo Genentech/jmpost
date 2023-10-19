@@ -69,7 +69,7 @@ generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm,
 #' Converts [`JointModelSamples`] object into a printable string.
 #' @param object ([`JointModelSamples`])\cr samples as drawn from a [`JointModel`].
 #' @family JointModelSamples
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
