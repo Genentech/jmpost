@@ -17,6 +17,7 @@
 \seealso{
 Other LongitudinalQuantities: 
 \code{\link{LongitudinalQuantities-class}},
+\code{\link{as_print_string.LongitudinalQuantities}()},
 \code{\link{autoplot.LongitudinalQuantities}()},
 \code{\link{summary.LongitudinalQuantities}()}
 }

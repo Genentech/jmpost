@@ -163,7 +163,11 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
     expect_true(inherits(p$layers[[3]]$geom, "GeomKmTicks"))
 
 
-    ## test-that SurvivalQuantities print method works as expected
+    #########################
+    #
+    #     test that SurvivalQuantities print method works as expected
+    #
+    #
     expect_snapshot({
         ptgroups <- list(
             gtpt1 = sample(dat_os$pt, 20),
@@ -172,6 +176,11 @@ test_that("smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuant
         )
         times <- seq(0, 100, by = 10)
         samps <- SurvivalQuantities(mp, ptgroups, times, type = "surv")
+        print(samps)
+    })
+    expect_snapshot({
+        times <- seq(0, 100, by = 10)
+        samps <- SurvivalQuantities(mp, time_grid = times, type = "loghaz")
         print(samps)
     })
 })

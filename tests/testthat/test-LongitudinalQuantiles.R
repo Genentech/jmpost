@@ -128,6 +128,26 @@ test_that("Test that LongitudinalQuantities works as expected", {
     expect_true(inherits(p$layers[[3]]$geom, "GeomPoint"))
     expect_true(inherits(p$layers[[2]]$geom, "GeomRibbon"))
     expect_equal(ggplot_build(p)$layout$layout |> nrow(), 4)
+
+
+
+    #########################
+    #
+    #     test that LongitudinalQuantities print method works as expected
+    #
+    #
+    expect_snapshot({
+        ptgroups <- c("pt_00011", "pt_00061", "pt_00001", "pt_00002")
+        times <- seq(0, 100, by = 10)
+        samps <- LongitudinalQuantities(mp, ptgroups, times)
+        print(samps)
+    })
+    expect_snapshot({
+        ptgroups <- c("pt_00011", "pt_00061")
+        samps <- LongitudinalQuantities(mp, ptgroups)
+        print(samps)
+    })
+
 })
 
 

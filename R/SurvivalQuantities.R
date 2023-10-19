@@ -8,6 +8,7 @@ NULL
 #' Re-used documentation for `SurvivalQuantities`
 #'
 #' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
 #' @param ... not used.
 #'
 #' @keywords internal
@@ -140,9 +141,8 @@ setValidity(
 #' @description
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #'
-#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @inheritParams SurvivalQuantities-Shared
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... not used.
 #'
 #' @family SurvivalQuantities
 #' @family summary

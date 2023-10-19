@@ -2,7 +2,8 @@
 % Please edit documentation in R/DataSubject.R, R/generics.R,
 %   R/DataLongitudinal.R, R/DataSurvival.R, R/DataJoint.R, R/StanModule.R,
 %   R/Prior.R, R/Parameter.R, R/ParameterList.R, R/StanModel.R, R/Link.R,
-%   R/JointModel.R, R/Quantities.R, R/SurvivalQuantities.R, R/LinkNone.R
+%   R/JointModel.R, R/Quantities.R, R/SurvivalQuantities.R, R/LinkNone.R,
+%   R/LongitudinalQuantities.R
 \name{show,DataSubject-method}
 \alias{show,DataSubject-method}
 \alias{show-object}
@@ -19,6 +20,7 @@
 \alias{show,Quantities-method}
 \alias{show,SurvivalQuantities-method}
 \alias{show,LinkNone-method}
+\alias{show,LongitudinalQuantities-method}
 \title{Show an Object}
 \usage{
 \S4method{show}{DataSubject}(object)
@@ -48,6 +50,8 @@
 \S4method{show}{SurvivalQuantities}(object)
 
 \S4method{show}{LinkNone}(object)
+
+\S4method{show}{LongitudinalQuantities}(object)
 }
 \arguments{
 \item{object}{Object to be printed}

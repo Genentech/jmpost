@@ -6,6 +6,8 @@
 \arguments{
 \item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
 
+\item{x}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+
 \item{...}{not used.}
 }
 \description{
