@@ -157,6 +157,12 @@
     <loc>https://genentech.github.io/jmpost/reference/as.character.JointModel.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.character.Parameter.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.character.Prior.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as.character.StanModule.html</loc>
   </url>
   <url>
@@ -185,6 +191,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.list.StanModule.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_print_string.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_stan_file.html</loc>
@@ -341,6 +353,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/show-object.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/show.html</loc>
