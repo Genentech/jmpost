@@ -20,6 +20,7 @@ to specific formatting rules
 \seealso{
 Other Quantities: 
 \code{\link{as.data.frame.Quantities}()},
+\code{\link{as_print_string.Quantities}()},
 \code{\link{summary.Quantities}()}
 }
 \concept{Quantities}

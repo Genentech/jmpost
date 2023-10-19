@@ -10,13 +10,12 @@
 \item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
 
 \item{time_grid}{(\code{numeric})\cr sets the \code{time} variable.
-Must be equal in length to \code{ncol(object)}.}
+Must be equal in length to \code{ncol(x)}.}
 
 \item{type}{(\code{character})\cr sets the \code{type} variable.}
 
-\item{groups}{(\code{list})\cr named \code{list}. The element names are used to set the \code{group} variable.}
-
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{groups}{(\code{list})\cr named \code{list}.
+The element names are used to set the \code{group} variable.}
 
 \item{...}{not used.}
 }
@@ -39,7 +38,8 @@ is just an internal utility method in order to share common code between
 \seealso{
 Other Quantities: 
 \code{\link{Quantities-class}},
-\code{\link{as.data.frame.Quantities}()}
+\code{\link{as.data.frame.Quantities}()},
+\code{\link{as_print_string.Quantities}()}
 }
 \concept{Quantities}
 \keyword{internal}

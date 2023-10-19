@@ -2,7 +2,7 @@
 % Please edit documentation in R/DataSubject.R, R/generics.R,
 %   R/DataLongitudinal.R, R/DataSurvival.R, R/DataJoint.R, R/StanModule.R,
 %   R/Prior.R, R/Parameter.R, R/ParameterList.R, R/StanModel.R, R/Link.R,
-%   R/JointModel.R, R/LinkNone.R
+%   R/JointModel.R, R/Quantities.R, R/LinkNone.R
 \name{show,DataSubject-method}
 \alias{show,DataSubject-method}
 \alias{show-object}
@@ -16,6 +16,7 @@
 \alias{show,StanModel-method}
 \alias{show,Link-method}
 \alias{show,JointModel-method}
+\alias{show,Quantities-method}
 \alias{show,LinkNone-method}
 \title{Show an Object}
 \usage{
@@ -40,6 +41,8 @@
 \S4method{show}{Link}(object)
 
 \S4method{show}{JointModel}(object)
+
+\S4method{show}{Quantities}(object)
 
 \S4method{show}{LinkNone}(object)
 }
