@@ -20,6 +20,7 @@ to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 \seealso{
 Other StanModule: 
 \code{\link{StanModule-class}},
-\code{\link{as.character.StanModule}()}
+\code{\link{as.character.StanModule}()},
+\code{\link{as_print_string.StanModule}()}
 }
 \concept{StanModule}

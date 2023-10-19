@@ -139,13 +139,13 @@ test_that("Test that LongitudinalQuantities works as expected", {
     expect_snapshot({
         ptgroups <- c("pt_00011", "pt_00061", "pt_00001", "pt_00002")
         times <- seq(0, 100, by = 10)
-        samps <- LongitudinalQuantities(mp, ptgroups, times)
-        print(samps)
+        samps_p1 <- LongitudinalQuantities(mp, ptgroups, times)
+        print(samps_p1)
     })
     expect_snapshot({
         ptgroups <- c("pt_00011", "pt_00061")
-        samps <- LongitudinalQuantities(mp, ptgroups)
-        print(samps)
+        samps_p2 <- LongitudinalQuantities(mp, ptgroups)
+        print(samps_p2)
     })
 
 })

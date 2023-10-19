@@ -44,5 +44,5 @@ test_that("show() works for ParameterList objects", {
         Parameter(name = "steve", prior = prior_none())
     )
 
-    expect_snapshot_output(print(x))
+    expect_snapshot(print(x))
 })

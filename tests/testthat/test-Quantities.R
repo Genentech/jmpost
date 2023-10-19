@@ -168,7 +168,7 @@ test_that("Quantities print method works as expected", {
     expect_snapshot({
         raw_x1 <- matrix(1:12, ncol = 3)
         raw_x2 <- matrix(21:32, ncol = 3)
-        x <- Quantities(list(raw_x1, raw_x2))
-        print(x)
+        pobj <- Quantities(list(raw_x1, raw_x2))
+        print(pobj)
     })
 })

@@ -9,11 +9,11 @@ test_that("Parameters smoke tests", {
 
 test_that("show() works for Paramneter objects", {
     x <- Parameter(prior_normal(1, 3, 4), "bob", "ben")
-    expect_snapshot_output(print(x))
+    expect_snapshot(print(x))
 
     x <- Parameter(prior_beta(0.5, 0.2), "var1", "var2")
-    expect_snapshot_output(print(x))
+    expect_snapshot(print(x))
 
     x <- Parameter(prior_none(4), "x", "y")
-    expect_snapshot_output(print(x))
+    expect_snapshot(print(x))
 })

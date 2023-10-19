@@ -63,3 +63,54 @@ generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm,
     )
     return(results)
 }
+
+#' `JointModelSamples` -> Printable `Character`
+#'
+#' Converts [`JointModelSamples`] object into a printable string.
+#' @param object ([`JointModelSamples`])\cr samples as drawn from a [`JointModel`].
+#' @family JointModelSamples
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with
+#' @keywords internal
+#' @export
+as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
+    sizes <- vapply(
+        object@results$metadata()[["stan_variable_sizes"]],
+        \(x) {
+            if (length(x) == 1 & x == 1) return("")
+            paste0("[", paste(x, collapse = ", "), "]")
+        },
+        character(1)
+    )
+    variable_string <- paste0(
+        "        ",
+        object@results$metadata()[["stan_variables"]],
+        sizes
+    )
+    template <- c(
+        "JointModelSamples Object with:",
+        "",
+        "    # of samples per chain = %d",
+        "    # of chains            = %d",
+        "",
+        "    Variables:",
+        variable_string[order(variable_string)]
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        object@results$metadata()$iter_sampling,
+        object@results$metadata()$num_chains
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "JointModelSamples",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

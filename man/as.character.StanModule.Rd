@@ -18,6 +18,7 @@ line of the returned \code{character} vector represents a line of the program
 \seealso{
 Other StanModule: 
 \code{\link{StanModule-class}},
-\code{\link{as.list.StanModule}()}
+\code{\link{as.list.StanModule}()},
+\code{\link{as_print_string.StanModule}()}
 }
 \concept{StanModule}
