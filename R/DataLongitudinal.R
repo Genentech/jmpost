@@ -251,6 +251,7 @@ as.list.DataLongitudinal <- function(x, ...) {
 #' Converts [`DataLongitudinal`] object into a printable string.
 #' @inheritParams DataLongitudinal-Shared
 #' @family DataLongitudinal
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with
 #' @keywords internal
 #' @export
 as_print_string.DataLongitudinal <- function(object, indent = 1, ...) {

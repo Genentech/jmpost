@@ -20,6 +20,7 @@ This method returns a \code{data.frame} of key quantities (survival / log-hazard
 Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
+\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()}
 
 Other summary: 
