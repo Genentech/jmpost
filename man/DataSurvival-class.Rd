@@ -35,6 +35,7 @@ Other DataObjects:
 
 Other DataSurvival: 
 \code{\link{as.data.frame.DataSurvival}()},
+\code{\link{as_print_string.DataSurvival}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 }

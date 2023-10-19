@@ -39,6 +39,7 @@ Other DataObjects:
 
 Other DataLongitudinal: 
 \code{\link{as.data.frame.DataLongitudinal}()},
+\code{\link{as_print_string.DataLongitudinal}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataLongitudinal}()}
 }

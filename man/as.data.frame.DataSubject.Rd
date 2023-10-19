@@ -18,6 +18,7 @@ The subject variable is cast to factor.
 \seealso{
 Other DataSubject: 
 \code{\link{DataSubject-class}},
+\code{\link{as_print_string.DataSubject}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataSubject}()}
 }

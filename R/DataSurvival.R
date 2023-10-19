@@ -177,3 +177,43 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
         formula = object@formula
     )
 }
+
+
+
+#' `DataSurvival` -> Printable `Character`
+#'
+#' Converts [`DataSurvival`] object into a printable string.
+#' @inheritParams DataSurvival-Shared
+#' @family DataSurvival
+#' @keywords internal
+#' @export
+as_print_string.DataSurvival <- function(object, indent = 1, ...) {
+    template <- c(
+        "Survival-Data Object:",
+        "    # of Rows     = %d",
+        "    # of Columns  = %d",
+        "    # of Events   = %d",
+        "    Formula       = %s"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    vars <- extractVariableNames(object)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        nrow(object@data),
+        ncol(object@data),
+        sum(object@data[[vars$event]]),
+        Reduce(paste, deparse(vars$frm))
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "DataSurvival",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

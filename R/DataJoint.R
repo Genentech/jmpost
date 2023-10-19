@@ -253,3 +253,34 @@ extract_observed_values <- function(object) {
     row.names(x) <- NULL
     x
 }
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "DataJoint",
+    definition = function(object) {
+        string_survival <- if (is.null(object@survival)) {
+            "      Survival-Data Object:\n          Not Specified"
+        } else {
+            as_print_string(object@survival, indent = 5)
+        }
+
+        string_longitudinal <- if (is.null(object@longitudinal)) {
+            "      Longitudinal-Data Object:\n          Not Specified"
+        } else {
+            as_print_string(object@longitudinal, indent = 5)
+        }
+
+        template <- c(
+            "Joint-Data Object Containing:",
+            "",
+            as_print_string(object@subject, indent = 5),
+            "",
+            string_survival,
+            "",
+            string_longitudinal
+        )
+        cat("\n", paste(template, collapse = "\n"), "\n\n")
+    }
+)

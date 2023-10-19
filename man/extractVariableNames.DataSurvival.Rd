@@ -25,6 +25,7 @@ Extract a \code{list} that maps the variable names in a user-defined
 Other DataSurvival: 
 \code{\link{DataSurvival-class}},
 \code{\link{as.data.frame.DataSurvival}()},
+\code{\link{as_print_string.DataSurvival}()},
 \code{\link{as_stan_list.DataSubject}()}
 
 Other extractVariableNames: 

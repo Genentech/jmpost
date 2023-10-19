@@ -18,6 +18,7 @@ The subject variable is cast to factor.
 \seealso{
 Other DataLongitudinal: 
 \code{\link{DataLongitudinal-class}},
+\code{\link{as_print_string.DataLongitudinal}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataLongitudinal}()}
 }

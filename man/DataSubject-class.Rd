@@ -42,6 +42,7 @@ Other DataObjects:
 
 Other DataSubject: 
 \code{\link{as.data.frame.DataSubject}()},
+\code{\link{as_print_string.DataSubject}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{extractVariableNames.DataSubject}()}
 }

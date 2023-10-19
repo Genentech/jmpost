@@ -49,16 +49,19 @@ for fitting a \code{\link{JointModel}}. See the vignette (TODO) for more details
 Other DataSubject: 
 \code{\link{DataSubject-class}},
 \code{\link{as.data.frame.DataSubject}()},
+\code{\link{as_print_string.DataSubject}()},
 \code{\link{extractVariableNames.DataSubject}()}
 
 Other DataLongitudinal: 
 \code{\link{DataLongitudinal-class}},
 \code{\link{as.data.frame.DataLongitudinal}()},
+\code{\link{as_print_string.DataLongitudinal}()},
 \code{\link{extractVariableNames.DataLongitudinal}()}
 
 Other DataSurvival: 
 \code{\link{DataSurvival-class}},
 \code{\link{as.data.frame.DataSurvival}()},
+\code{\link{as_print_string.DataSurvival}()},
 \code{\link{extractVariableNames.DataSurvival}()}
 
 Other as_stan_list: 

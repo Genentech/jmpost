@@ -25,6 +25,7 @@ Extract a \code{list} that maps the variable names in a user-defined
 Other DataSubject: 
 \code{\link{DataSubject-class}},
 \code{\link{as.data.frame.DataSubject}()},
+\code{\link{as_print_string.DataSubject}()},
 \code{\link{as_stan_list.DataSubject}()}
 
 Other extractVariableNames: 

@@ -83,7 +83,7 @@
                 "cd $TEMPDIR ;",
                 "echo \"\n\n Result can be found in: \n     $(pwd) \n\n\" ;",
                 "R CMD build --no-build-vignettes ${workspaceFolder} ;",
-                "R CMD check --no-tests --no-build-vignettes --as-cran --output=$TEMPDIR $TEMPDIR/*.tar.gz ;"
+                "R CMD check --no-tests --ignore-vignettes --as-cran --output=$TEMPDIR $TEMPDIR/*.tar.gz ;"
             ],
             "problemMatcher": []
         },

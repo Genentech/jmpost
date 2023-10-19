@@ -72,3 +72,25 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
     expect_equal(res$dead_ind_index, c(1, 2))
     expect_equal(res$Times, c(10, 20, 30, 15))
 })
+
+
+test_that("DataSurvival print method works as expected", {
+
+    expect_snapshot({
+        x <- data.frame(
+            vpt = c("b", "a", "c", "d", "e"),
+            vtime = c(10, 20, 30, 25, 15),
+            vevent = c(1, 1, 0, 1, 0),
+            vcov1 = c("A", "A", "B", "B", "A"),
+            vcov2 = rnorm(5),
+            vcov3 = rnorm(5)
+        )
+
+        df <- DataSurvival(
+            data = x,
+            formula = Surv(vtime, vevent) ~ vcov1 * vcov2 + vcov1:vcov2 + vcov1^2 + vcov2^2
+        )
+        print(df)
+    })
+
+})
