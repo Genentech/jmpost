@@ -193,6 +193,15 @@
     <loc>https://genentech.github.io/jmpost/reference/as.list.StanModule.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataLongitudinal.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSubject.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSurvival.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc>
   </url>
   <url>
