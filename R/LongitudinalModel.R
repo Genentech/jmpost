@@ -21,9 +21,12 @@ NULL
 #' @inheritParams stanmodel_arguments
 #'
 #' @export
-LongitudinalModel <- function(stan = StanModule(),
-                              parameters = ParameterList(),
-                              ...) {
+LongitudinalModel <- function(
+    stan = StanModule(),
+    parameters = ParameterList(),
+    name = "<Unnamed>",
+    ...
+) {
 
     base_long <- StanModule(
         x = "base/longitudinal.stan"
@@ -33,7 +36,18 @@ LongitudinalModel <- function(stan = StanModule(),
         StanModel(
             stan = merge(base_long, stan),
             parameters = parameters,
+            name = name,
             ...
         )
     )
+}
+
+#' @export
+as_print_string.LongitudinalModel <- function(object, ...) {
+    string <- sprintf(
+        "\n%s Longitudinal Model with parameters:\n%s\n\n",
+        object@name,
+        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
+    )
+    return(string)
 }

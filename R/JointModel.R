@@ -181,3 +181,49 @@ sampleStanModel.JointModel <- function(object, data, ...) {
 initialValues.JointModel <- function(object) {
     initialValues(object@parameters)
 }
+
+
+pad_with_white_space <- function(x, pad = 4) {
+    padding <- paste0(rep(" ", each = pad), collapse = "")
+    x_sep <- x |>
+        strsplit(split = "\n") |>
+        unlist()
+    x_padded <- paste(padding, x_sep) |>
+        paste(collapse = "\n")
+    return(x_padded)
+}
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "JointModel",
+    definition = function(object) {
+        survival_string <- if (is.null(object@survival)) {
+            "\n     Not Specified\n"
+        } else {
+            as_print_string(object@survival) |> pad_with_white_space()
+        }
+
+        longitudinal_string <- if (is.null(object@longitudinal)) {
+            "\n     Not Specified\n"
+        } else {
+            as_print_string(object@longitudinal) |> pad_with_white_space()
+        }
+
+        link_string <- if (is.null(object@link) || inherits(object@link, "LinkNone")) {
+            "\n     No Link\n"
+        } else {
+            as_print_string(object@link) |> pad_with_white_space()
+        }
+
+        string <- "\nA Joint Model with:\n\n  Survival:%s\n  Longitudinal:%s\n  Link:%s\n"
+        cat(sprintf(
+            string,
+            survival_string,
+            longitudinal_string,
+            link_string
+        ))
+    }
+)

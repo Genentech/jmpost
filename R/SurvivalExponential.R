@@ -28,6 +28,7 @@ SurvivalExponential <- function(
 ) {
     .SurvivalExponential(
         SurvivalModel(
+            name = "Exponential",
             stan = StanModule("sm-exponential/model.stan"),
             parameters = ParameterList(
                 Parameter(name = "sm_exp_lambda", prior = lambda, size = 1),

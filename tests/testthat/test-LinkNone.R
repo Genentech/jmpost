@@ -10,3 +10,11 @@ test_that("LinkNone object is generated without unexpected input", {
     expect_false(is(link, "LongitudinalModel"))
     expect_false(is(link, "link_gsf_abstract"))
 })
+
+
+test_that("Print method for LinkNone works as expected", {
+    expect_snapshot({
+        x <- LinkNone()
+        print(x)
+    })
+})

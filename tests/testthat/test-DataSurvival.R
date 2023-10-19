@@ -43,7 +43,7 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
         vcov1 = c("A", "A", "B", NA, "A"),
         vcov2 = rnorm(5)
     )
-    testthat::expect_message(
+    expect_message(
         obj <- DataSurvival(
             data = x,
             formula = Surv(vtime, vevent) ~ vcov1 * vcov2

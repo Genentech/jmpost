@@ -24,6 +24,8 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 #' `Parameter`
 #'
 #' Stores the name, the prior distribution and the size of a parameter.
+#' If `size` is a string then this indicates the name of the variable
+#' within the stan data object that specifies the size of this parameter.
 #'
 #' @slot name (`string`)\cr of the parameter.
 #' @slot prior (`Prior`)\cr for the parameter.
@@ -118,3 +120,27 @@ initialValues.Parameter <- function(object) initialValues(object@prior)
 #' @describeIn Parameter-Getter-Methods The parameter's dimensionality
 #' @export
 size.Parameter <- function(object) object@size
+
+
+#' `Parameter` -> `Character`
+#'
+#' Converts a [`Parameter`] object to a character vector
+#' @inheritParams Parameter-Shared
+#' @family Parameter
+#' @export
+as.character.Parameter <- function(x, ...) {
+    paste0(x@name, " ~ ", as.character(x@prior))
+}
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "Parameter",
+    definition = function(object) {
+        x <- sprintf("\nParameter Object:\n   %s\n\n", as.character(object))
+        cat(x)
+        return(object)
+    }
+)

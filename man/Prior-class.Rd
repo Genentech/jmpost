@@ -7,10 +7,12 @@
 \alias{Prior}
 \title{Prior Object and Constructor Function}
 \usage{
-Prior(parameters, repr_model, repr_data, init, validation)
+Prior(parameters, display, repr_model, repr_data, init, validation)
 }
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
+
+\item{display}{(\code{string})\cr the string to display when object is printed.}
 
 \item{repr_model}{(\code{string})\cr the Stan code representation for the model block.}
 
@@ -36,12 +38,15 @@ Specifies the prior distribution in a Stan Model
 \item{\code{init}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{validation}}{(\code{list})\cr See arguments.}
+
+\item{\code{display}}{(\code{string})\cr See arguments.}
 }}
 
 \seealso{
 Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},
 \code{\link{as.StanModule.Prior}()},
+\code{\link{as.character.Prior}()},
 \code{\link{as_stan_list.Prior}()}
 }
 \concept{Prior-internal}

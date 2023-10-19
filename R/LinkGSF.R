@@ -24,7 +24,6 @@ NULL
 #'
 #' @export
 LinkGSF <- function(...) {
-
     components <- list(...)
     if (!length(components)) {
         components <- list(
@@ -60,7 +59,10 @@ LinkGSF <- function(...) {
         StanModule(rendered_link)
     )
 
+    names <- vapply(components, \(x) x@name, character(1))
+
     x <- Link(
+        name = sprintf("GSF (%s)", paste0(names, collapse = " + ")),
         stan = stan_full,
         parameters = parameters
     )
@@ -75,6 +77,7 @@ LinkGSF <- function(...) {
 #' Class to specify the contents for [`LinkGSF`].
 #'
 #' @slot stan (`StanModule`)\cr the Stan code.
+#' @slot name (`character`)\cr the link name to be displayed.
 #' @slot parameter (`ParameterList`)\cr the parameter specification.
 #' @slot parameter_name (`character`)\cr the name of the parameter.
 #' @slot contribution_fname (`character`)\cr the function name of the contribution.
@@ -85,6 +88,7 @@ LinkGSF <- function(...) {
     Class = "link_gsf_abstract",
     slots = list(
         "stan" = "StanModule",
+        "name" = "character",
         "parameter" = "ParameterList",
         "parameter_name" = "character",
         "contribution_fname" = "character"
@@ -102,14 +106,18 @@ LinkGSF <- function(...) {
 #' @note Only the `functions` part of `stan` will be used.
 #'
 #' @export
-link_gsf_abstract <- function(stan,
-                              parameter,
-                              parameter_name,
-                              contribution_fname) {
+link_gsf_abstract <- function(
+    stan,
+    parameter,
+    parameter_name,
+    contribution_fname,
+    name
+) {
     .link_gsf_abstract(
         parameter = parameter,
         parameter_name = parameter_name,
         contribution_fname = contribution_fname,
+        name = name,
         stan = StanModule(
             paste0(
                 "functions {\n",
@@ -144,6 +152,7 @@ link_gsf_ttg <- function(
     gamma = prior_normal(0, 5, init = 0)
 ) {
     .link_gsf_ttg(
+        name = "TTG",
         stan = StanModule("lm-gsf/link_ttg.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_gamma", prior = gamma, size = 1)),
         parameter_name = "lm_gsf_gamma",
@@ -176,6 +185,7 @@ link_gsf_dsld <- function(
     beta = prior_normal(0, 5, init = 0)
 ) {
     .link_gsf_dsld(
+        name = "dSLD",
         stan = StanModule("lm-gsf/link_dsld.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_beta", prior = beta, size = 1)),
         parameter_name = "lm_gsf_beta",
@@ -207,6 +217,7 @@ link_gsf_dsld <- function(
 #' @export
 link_gsf_identity <- function(tau = prior_normal(0, 5, init = 0)) {
     .link_gsf_identity(
+        name = "Identity",
         stan = StanModule("lm-gsf/link_identity.stan"),
         parameter = ParameterList(Parameter(name = "lm_gsf_tau", prior = tau, size = 1)),
         parameter_name = "lm_gsf_tau",

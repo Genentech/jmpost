@@ -7,12 +7,19 @@
 \alias{LongitudinalModel}
 \title{\code{LongitudinalModel}}
 \usage{
-LongitudinalModel(stan = StanModule(), parameters = ParameterList(), ...)
+LongitudinalModel(
+  stan = StanModule(),
+  parameters = ParameterList(),
+  name = "<Unnamed>",
+  ...
+)
 }
 \arguments{
 \item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
 
 \item{parameters}{(\code{ParameterList})\cr the parameter specification.}
+
+\item{name}{(\code{character})\cr display name for the model object.}
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }

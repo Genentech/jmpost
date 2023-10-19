@@ -47,6 +47,7 @@ LongitudinalGSF <- function(
 ) {
     eta_prior <- prior_std_normal()
     x <- LongitudinalModel(
+        name = "Generalized Stein-Fojo",
         stan = merge(
             StanModule("lm-gsf/model.stan"),
             StanModule("lm-gsf/functions.stan")

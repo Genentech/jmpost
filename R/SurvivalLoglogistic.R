@@ -30,6 +30,7 @@ SurvivalLogLogistic <- function(
 ) {
     .SurvivalLogLogistic(
         SurvivalModel(
+            name = "Log-Logistic",
             stan = StanModule("sm-loglogistic/model.stan"),
             parameters = ParameterList(
                 Parameter(name = "sm_logl_lambda", prior = lambda, size = 1),

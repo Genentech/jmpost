@@ -28,6 +28,7 @@ NULL
 #' @slot repr_data (`string`)\cr See arguments.
 #' @slot init (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
+#' @slot display (`string`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior
@@ -36,6 +37,7 @@ NULL
     Class = "Prior",
     slots = c(
         "parameters" = "list",
+        "display" = "character",
         "repr_model" = "character",
         "repr_data" = "character",
         "init" = "numeric",
@@ -47,16 +49,18 @@ NULL
 #' @param parameters (`list`)\cr the prior distribution parameters.
 #' @param repr_model (`string`)\cr the Stan code representation for the model block.
 #' @param repr_data (`string`)\cr the Stan code representation for the data block.
+#' @param display (`string`)\cr the string to display when object is printed.
 #' @param init (`numeric`)\cr the initial value.
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
 #' @rdname Prior-class
-Prior <- function(parameters, repr_model, repr_data, init, validation) {
+Prior <- function(parameters, display, repr_model, repr_data, init, validation) {
     .Prior(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
         init = init,
+        display = display,
         validation = validation
     )
 }
@@ -82,6 +86,32 @@ setValidity(
     }
 )
 
+
+#' `Prior` -> `Character`
+#'
+#' Converts a [`Prior`] object to a character vector
+#' @inheritParams Prior-Shared
+#' @family Prior-internal
+#' @export
+as.character.Prior <- function(x, ...) {
+    do.call(
+        glue::glue,
+        append(x@display, x@parameters)
+    )
+}
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "Prior",
+    definition = function(object) {
+        x <- sprintf("\nPrior Object:\n   %s\n\n", as.character(object))
+        cat(x)
+        return(object)
+    }
+)
 
 
 #' `Prior` -> `StanModule`
@@ -155,8 +185,9 @@ initialValues.Prior <- function(object) object@init
 #' @family Prior
 #' @export
 prior_normal <- function(mu, sigma, init = mu) {
-    .Prior(
+    Prior(
         parameters = list(mu = mu, sigma = sigma),
+        display = "normal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name});",
         repr_data = c(
             "real prior_mu_{name};",
@@ -178,11 +209,13 @@ prior_normal <- function(mu, sigma, init = mu) {
 #' @family Prior
 #' @export
 prior_std_normal <- function(init = 0) {
-    .Prior(
+    Prior(
         parameters = list(),
+        display = "std_normal()",
         repr_model = "{name} ~ std_normal();",
         repr_data = "",
-        init = init
+        init = init,
+        validation = list()
     )
 }
 
@@ -195,8 +228,9 @@ prior_std_normal <- function(init = 0) {
 #'
 #' @export
 prior_cauchy <- function(mu, sigma, init = mu) {
-    .Prior(
+    Prior(
         parameters = list(mu = mu, sigma = sigma),
+        display = "cauchy(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name});",
         repr_data = c(
             "real prior_mu_{name};",
@@ -219,9 +253,10 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 #'
 #' @export
 prior_gamma <- function(alpha, beta, init = alpha / beta) {
-    .Prior(
+    Prior(
         parameters = list(alpha = alpha, beta = beta),
         repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name});",
+        display = "gamma(alpha = {alpha}, beta = {beta})",
         repr_data = c(
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
@@ -243,8 +278,9 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
 #'
 #' @export
 prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
-    .Prior(
+    Prior(
         parameters = list(mu = mu, sigma = sigma),
+        display = "lognormal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name});",
         repr_data = c(
             "real prior_mu_{name};",
@@ -267,8 +303,9 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
 #'
 #' @export
 prior_beta <- function(a, b, init = a / (a + b)) {
-    .Prior(
+    Prior(
         parameters = list(a = a, b = b),
+        display = "beta(a = {a}, b = {b})",
         repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name});",
         repr_data = c(
             "real<lower=0> prior_a_{name};",
@@ -289,10 +326,12 @@ prior_beta <- function(a, b, init = a / (a + b)) {
 #'
 #' @export
 prior_none <- function(init = 0.00001) {
-    .Prior(
+    Prior(
         parameters = list(),
+        display = "<None>",
         repr_model = "",
         repr_data = "",
-        init = init
+        init = init,
+        validation = list()
     )
 }

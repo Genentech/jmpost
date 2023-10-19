@@ -19,6 +19,7 @@ Other ParameterList:
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
 \code{\link{as.list.ParameterList}()},
+\code{\link{as_print_string.ParameterList}()},
 \code{\link{as_stan_list.ParameterList}()}
 
 Other as.StanModule: 
