@@ -8,6 +8,7 @@
 #' @param type (`character`)\cr sets the `type` variable.
 #' @param groups (`list`)\cr named `list`.
 #' The element names are used to set the `group` variable.
+#' @param conf.level (`numeric`) \cr confidence level of the interval.
 #' @param ... not used.
 #'
 #' @keywords internal

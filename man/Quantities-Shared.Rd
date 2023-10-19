@@ -16,6 +16,8 @@ Must be equal in length to \code{ncol(x)}.}
 \item{groups}{(\code{list})\cr named \code{list}.
 The element names are used to set the \code{group} variable.}
 
+\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+
 \item{...}{not used.}
 }
 \description{
