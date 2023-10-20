@@ -1,9 +1,9 @@
-# Test that LongitudinalQuantities works as expected
+# LongitudinalQuantities print method works as expected
 
     Code
       ptgroups <- c("pt_00011", "pt_00061", "pt_00001", "pt_00002")
       times <- seq(0, 100, by = 10)
-      samps_p1 <- LongitudinalQuantities(mp, ptgroups, times)
+      samps_p1 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups, times)
       print(samps_p1)
     Output
       
@@ -16,7 +16,7 @@
 
     Code
       ptgroups <- c("pt_00011", "pt_00061")
-      samps_p2 <- LongitudinalQuantities(mp, ptgroups)
+      samps_p2 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups)
       print(samps_p2)
     Output
       

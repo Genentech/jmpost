@@ -1,10 +1,11 @@
-# smoke test for summary(SurvivalQuantities) and autoplot(SurvivalQuantities)
+# SurvivalQuantities print method works as expected
 
     Code
-      ptgroups <- list(gtpt1 = sample(dat_os$pt, 20), gtpt2 = sample(dat_os$pt, 20),
-      gtpt3 = sample(dat_os$pt, 20))
+      set.seed(3219)
+      ptgroups <- list(gtpt1 = sample(test_data_1$dat_os$pt, 20), gtpt2 = sample(
+        test_data_1$dat_os$pt, 20), gtpt3 = sample(test_data_1$dat_os$pt, 20))
       times <- seq(0, 100, by = 10)
-      samps_p1 <- SurvivalQuantities(mp, ptgroups, times, type = "surv")
+      samps_p1 <- SurvivalQuantities(test_data_1$jsamples, ptgroups, times, type = "surv")
       print(samps_p1)
     Output
       
@@ -18,7 +19,7 @@
 
     Code
       times <- seq(0, 100, by = 10)
-      samps_p2 <- SurvivalQuantities(mp, time_grid = times, type = "loghaz")
+      samps_p2 <- SurvivalQuantities(test_data_1$jsamples, time_grid = times, type = "loghaz")
       print(samps_p2)
     Output
       
