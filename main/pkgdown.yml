@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   model_fitting: model_fitting.html
-last_built: 2023-10-19T13:20Z
+last_built: 2023-10-20T10:03Z
 urls:
   reference: https://genentech.github.io/jmpost/reference
   article: https://genentech.github.io/jmpost/articles
