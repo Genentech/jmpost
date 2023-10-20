@@ -82,10 +82,10 @@ test_that("Invalid prior parameters are rejected", {
 
 
 test_that("show() works for Prior objects", {
-    expect_snapshot_output(print(prior_cauchy(0, 0.8, init = 4)))
-    expect_snapshot_output(print(prior_normal(0, 0.8)))
-    expect_snapshot_output(print(prior_std_normal()))
-    expect_snapshot_output(print(prior_beta(5, 1)))
-    expect_snapshot_output(print(prior_gamma(2.56, 12)))
-    expect_snapshot_output(print(prior_none()))
+    expect_snapshot(print(prior_cauchy(0, 0.8, init = 4)))
+    expect_snapshot(print(prior_normal(0, 0.8)))
+    expect_snapshot(print(prior_std_normal()))
+    expect_snapshot(print(prior_beta(5, 1)))
+    expect_snapshot(print(prior_gamma(2.56, 12)))
+    expect_snapshot(print(prior_none()))
 })

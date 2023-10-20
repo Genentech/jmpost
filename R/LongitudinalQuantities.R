@@ -4,6 +4,17 @@
 NULL
 
 
+#' Re-used documentation for `LongitudinalQuantities`
+#'
+#' @param x ([`LongitudinalQuantities`]) \cr longitudinal quantities.
+#' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
+#' @param ... not used.
+#'
+#' @keywords internal
+#' @name LongitudinalQuantities-Shared
+NULL
+
+
 #' `LongitudinalQuantities` Object & Constructor Function
 #'
 #' Constructor function to generate a `LongitudinalQuantities` object.
@@ -100,13 +111,11 @@ as.data.frame.LongitudinalQuantities <- function(x, ...) {
 
 #' summary
 #'
-#'
 #' @description
 #' This method returns a `data.frame` of the longitudinal quantities.
 #'
-#' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... Not used.
+#' @inheritParams LongitudinalQuantities-Shared
 #'
 #' @family LongitudinalQuantities
 #' @family summary
@@ -185,10 +194,9 @@ longitudinal_plot <- function(
 
 #' Automatic Plotting for `LongitudinalQuantities`
 #'
-#' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
 #' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
 #' `NULL` or `0` are provided then confidence regions will not be added to the plot.
-#' @param ... not used.
+#' @inheritParams LongitudinalQuantities-Shared
 #'
 #' @family LongitudinalQuantities
 #' @family autoplot
@@ -212,3 +220,37 @@ autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
         add_ci = include_ci
     )
 }
+
+#' `LongitudinalQuantities` -> Printable `Character`
+#'
+#' Converts [`LongitudinalQuantities`] object into a printable string.
+#' @inheritParams LongitudinalQuantities-Shared
+#' @family LongitudinalQuantities
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @keywords internal
+#' @export
+as_print_string.LongitudinalQuantities <- function(object, indent = 1, ...) {
+    template <- c(
+        "LongitudinalQuantities Object:",
+        "    # of Subjects     = %d",
+        "    # of Time Points  = %d"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        length(object@groups),
+        length(object@time_grid)
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "LongitudinalQuantities",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

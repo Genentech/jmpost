@@ -9,6 +9,8 @@
 \arguments{
 \item{object}{(\code{\link{DataSurvival}}) \cr Survival Data.}
 
+\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
+
 \item{...}{Not Used.}
 }
 \description{

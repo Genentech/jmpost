@@ -1,70 +1,12 @@
 
+ensure_test_data_1()
+
 test_that("Test that LongitudinalQuantities works as expected", {
-    set.seed(739)
-    jlist <- simulate_joint_data(
-        n = c(250, 150),
-        times = 1:2000,
-        lambda_cen = 1 / 9000,
-        lm_fun = sim_lm_random_slope(
-            intercept = 30,
-            sigma = 3,
-            slope_mu = c(1, 3),
-            slope_sigma = 0.2,
-            phi = 0
-        ),
-        os_fun = sim_os_exponential(1 / 100),
-        .debug = TRUE,
-        .silent = TRUE
-    )
-
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(0, 1, 100, 200, 250, 300, 350)) |>
-        dplyr::arrange(pt, time)
-
-
-    jm <- JointModel(
-        longitudinal = LongitudinalRandomSlope(
-            intercept = prior_normal(30, 2),
-            slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
-            sigma = prior_lognormal(log(3), sigma = 0.5)
-        ),
-        survival = SurvivalExponential(
-            lambda = prior_lognormal(log(1 / 100), 1 / 100)
-        )
-    )
-
-    jdat <- DataJoint(
-        subject = DataSubject(
-            data = dat_os,
-            subject = "pt",
-            arm = "arm",
-            study = "study"
-        ),
-        survival = DataSurvival(
-            data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont
-        ),
-        longitudinal = DataLongitudinal(
-            data = dat_lm,
-            formula = sld ~ time,
-            threshold = 5
-        )
-    )
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 100,
-        iter_warmup = 150,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
 
     expected_column_names <- c("median", "lower", "upper", "time", "group")
 
     longsamps <- LongitudinalQuantities(
-        mp,
+        test_data_1$jsamples,
         c("pt_00001", "pt_00002"),
         c(10, 20, 200, 300)
     )
@@ -75,30 +17,35 @@ test_that("Test that LongitudinalQuantities works as expected", {
     expect_equal(preds$type, NULL)
 
 
-    longsamps <- LongitudinalQuantities(mp, time_grid = c(10, 20, 200, 300))
+    longsamps <- LongitudinalQuantities(test_data_1$jsamples, time_grid = c(10, 20, 200, 300))
     preds <- summary(longsamps)
-    expect_equal(nrow(preds), 4 * nrow(dat_os)) # 4 timepoints for each subject in the OS dataset
+    expect_equal(nrow(preds), 4 * nrow(test_data_1$dat_os)) # 4 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
-    expect_equal(unique(preds$group), dat_os$pt)
+    expect_equal(unique(preds$group), test_data_1$dat_os$pt)
 
 
-    longsamps <- LongitudinalQuantities(mp, c("pt_00001", "pt_00003"))
+    longsamps <- LongitudinalQuantities(test_data_1$jsamples, c("pt_00001", "pt_00003"))
     preds <- preds <- summary(longsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
+})
 
 
-
-    ### LongitudinalQuantities does not support group aggregation
+test_that("LongitudinalQuantities does not support group aggregation", {
     expect_error(
-        LongitudinalQuantities(mp, groups = list("a" = c("pt_00011", "pt_00012"))),
+        LongitudinalQuantities(
+            test_data_1$jsamples,
+            groups = list("a" = c("pt_00011", "pt_00012"))
+        ),
         regexp = "not 'list'"
     )
+})
 
 
-    ##### Section for autoplot
 
-    samps <- LongitudinalQuantities(mp, c("pt_00011", "pt_00061"))
+test_that("autoplot.LongitudinalQuantities works as expected", {
+
+    samps <- LongitudinalQuantities(test_data_1$jsamples, c("pt_00011", "pt_00061"))
     p <- autoplot(
         samps,
         conf.level = FALSE
@@ -114,7 +61,7 @@ test_that("Test that LongitudinalQuantities works as expected", {
 
 
     samps <- LongitudinalQuantities(
-        mp,
+        test_data_1$jsamples,
         groups = c("pt_00011", "pt_00061", "pt_00001", "pt_00002"),
         time_grid = c(10, 20, 50, 200)
     )
@@ -133,79 +80,41 @@ test_that("Test that LongitudinalQuantities works as expected", {
 
 
 
+test_that("LongitudinalQuantities print method works as expected", {
+
+    expect_snapshot({
+        ptgroups <- c("pt_00011", "pt_00061", "pt_00001", "pt_00002")
+        times <- seq(0, 100, by = 10)
+        samps_p1 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups, times)
+        print(samps_p1)
+    })
+    expect_snapshot({
+        ptgroups <- c("pt_00011", "pt_00061")
+        samps_p2 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups)
+        print(samps_p2)
+    })
+})
+
+
+
+
 
 # The idea of this test is that we compare the medians of the generated quantities
 # against the true values in the dataset
 # As the model is perfect it should be an extremely high value meaning we are recovering
 # the correct quantities
 test_that("LongitudinalQuantities can recover known results", {
-    set.seed(73339)
-    jlist <- simulate_joint_data(
-        n = c(250, 150),
-        times = 1:2000,
-        lambda_cen = 1 / 9000,
-        lm_fun = sim_lm_random_slope(
-            intercept = 30,
-            sigma = 3,
-            slope_mu = c(1, 3),
-            slope_sigma = 0.2,
-            phi = 0
-        ),
-        os_fun = sim_os_exponential(1 / 100),
-        .debug = TRUE,
-        .silent = TRUE
-    )
 
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(0, 1, 100, 200, 250, 300, 350)) |>
-        dplyr::arrange(pt, time)
-
-
-    jm <- JointModel(
-        longitudinal = LongitudinalRandomSlope(
-            intercept = prior_normal(30, 2),
-            slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
-            sigma = prior_lognormal(log(3), sigma = 0.5)
-        )
-    )
-
-    jdat <- DataJoint(
-        subject = DataSubject(
-            data = dat_os,
-            subject = "pt",
-            arm = "arm",
-            study = "study"
-        ),
-        survival = DataSurvival(
-            data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont
-        ),
-        longitudinal = DataLongitudinal(
-            data = dat_lm,
-            formula = sld ~ time,
-            threshold = 5
-        )
-    )
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 100,
-        iter_warmup = 150,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
-
+    set.seed(101)
     longsamps <- LongitudinalQuantities(
-        mp,
+        test_data_1$jsamples,
         time_grid = c(1, 100, 200, 250, 300, 350)
     )
 
     dat_sum <- dplyr::tibble(summary(longsamps)) |>
         dplyr::rename(pt = group)
 
-    dat_all <- dat_lm |>
+    dat_all <- test_data_1$dat_lm |>
         dplyr::left_join(dat_sum, by = c("pt", "time")) |>
         dplyr::select(pt, time, sld, median) |>
         dplyr::group_by(pt) |>

@@ -42,6 +42,7 @@ the samples/quantities}
 \seealso{
 Other LongitudinalQuantities: 
 \code{\link{as.data.frame.LongitudinalQuantities}()},
+\code{\link{as_print_string.LongitudinalQuantities}()},
 \code{\link{autoplot.LongitudinalQuantities}()},
 \code{\link{summary.LongitudinalQuantities}()}
 }

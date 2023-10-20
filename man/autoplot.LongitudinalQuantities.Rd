@@ -21,6 +21,7 @@ Automatic Plotting for \code{LongitudinalQuantities}
 Other LongitudinalQuantities: 
 \code{\link{LongitudinalQuantities-class}},
 \code{\link{as.data.frame.LongitudinalQuantities}()},
+\code{\link{as_print_string.LongitudinalQuantities}()},
 \code{\link{summary.LongitudinalQuantities}()}
 
 Other autoplot: 

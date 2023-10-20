@@ -4,6 +4,19 @@
 NULL
 
 
+
+#' Re-used documentation for `SurvivalQuantities`
+#'
+#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
+#' @param ... not used.
+#'
+#' @keywords internal
+#' @name SurvivalQuantities-Shared
+NULL
+
+
+
 #' `SurvivalQuantities` Object & Constructor Function
 #'
 #' Constructor function to generate a `SurvivalQuantities` object.
@@ -128,9 +141,8 @@ setValidity(
 #' @description
 #' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
 #'
-#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @inheritParams SurvivalQuantities-Shared
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... not used.
 #'
 #' @family SurvivalQuantities
 #' @family summary
@@ -169,7 +181,7 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 
 #' Automatic Plotting for `SurvivalQuantities``
 #'
-#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
+#' @inheritParams SurvivalQuantities-Shared
 #' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
 #' each group/patient.
 #' @param add_wrap (`logical`) \cr if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
@@ -307,3 +319,40 @@ survival_plot <- function(
     }
     p
 }
+
+
+#' `SurvivalQuantities` -> Printable `Character`
+#'
+#' Converts [`SurvivalQuantities`] object into a printable string.
+#' @inheritParams SurvivalQuantities-Shared
+#' @family SurvivalQuantities
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @keywords internal
+#' @export
+as_print_string.SurvivalQuantities <- function(object, indent = 1, ...) {
+    template <- c(
+        "SurvivalQuantities Object:",
+        "    Type              = %s",
+        "    # of Groups       = %d",
+        "    # of Time Points  = %d"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        object@type,
+        length(object@groups),
+        length(object@time_grid)
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "SurvivalQuantities",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

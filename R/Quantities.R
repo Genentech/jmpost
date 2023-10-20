@@ -1,4 +1,20 @@
 
+#' Re-used documentation for `Quantities`
+#'
+#' @param x ([`Quantities`]) \cr generated quantities.
+#' @param object ([`Quantities`]) \cr generated quantities.
+#' @param time_grid (`numeric`)\cr sets the `time` variable.
+#' Must be equal in length to `ncol(x)`.
+#' @param type (`character`)\cr sets the `type` variable.
+#' @param groups (`list`)\cr named `list`.
+#' The element names are used to set the `group` variable.
+#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @param ... not used.
+#'
+#' @keywords internal
+#' @name Quantities-Shared
+NULL
+
 
 #' Generated Quantities Container
 #'
@@ -46,13 +62,12 @@ setValidity(
 
 #' Dimensions of `Quantitites`
 #'
-#' @param x ([`Quantities`]) \cr generated quantities.
-#'
 #' Returns the number of rows and columns within any given
 #' element of the [Quantities] object. As each element is of the same
 #' dimensionality this just returns a single number for the rows and columns
 #' of all elements of the [Quantities]
 #'
+#' @inheritParams Quantities-Shared
 #' @keywords internal
 #' @export
 dim.Quantities <- function(x) {
@@ -68,11 +83,7 @@ dim.Quantities <- function(x) {
 
 #' `Quantities` -> `data.frame`
 #'
-#' @param x ([`Quantities`]) \cr generated quantities.
-#' @param time_grid (`numeric`)\cr sets the `time` variable. Must be equal in length to `ncol(x)`.
-#' @param type (`character`)\cr sets the `type` variable.
-#' @param groups (`list`)\cr named `list`. The element names are used to set the `group` variable.
-#' @param ... not used.
+#' @inheritParams Quantities-Shared
 #'
 #' @keywords internal
 #' @family Quantities
@@ -113,13 +124,7 @@ as.data.frame.Quantities <- function(x, ..., time_grid, type, groups) {
 #' is just an internal utility method in order to share common code between
 #' [LongitudinalQuantities] and [SurvivalQuantities]
 #'
-#' @param object ([`Quantities`]) \cr generated quantities.
-#' @param time_grid (`numeric`)\cr sets the `time` variable.
-#' Must be equal in length to `ncol(object)`.
-#' @param type (`character`)\cr sets the `type` variable.
-#' @param groups (`list`)\cr named `list`. The element names are used to set the `group` variable.
-#' @param conf.level (`numeric`) \cr confidence level of the interval.
-#' @param ... not used.
+#' @inheritParams Quantities-Shared
 #'
 #' @returns
 #' A `data.frame` with the following variables:
@@ -247,3 +252,40 @@ extract_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz", "
     colnames(result_transformed) <- gsub(meta[[1]], "quantity", cnames)
     result_transformed
 }
+
+
+#' `Quantities` -> Printable `Character`
+#'
+#' Converts [`Quantities`] object into a printable string.
+#' @inheritParams Quantities-Shared
+#' @family Quantities
+#' @keywords internal
+#' @export
+as_print_string.Quantities <- function(object, indent = 1, ...) {
+    template <- c(
+        "Quantities Object:",
+        "    # of Elements  = %d",
+        "    # of Rows      = %d",
+        "    # of Columns   = %d"
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    sprintf(
+        paste(template_padded, collapse = "\n"),
+        length(object),
+        nrow(object),
+        ncol(object)
+    )
+}
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "Quantities",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)

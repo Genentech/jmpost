@@ -7,14 +7,12 @@
 \method{dim}{Quantities}(x)
 }
 \arguments{
-\item{x}{(\code{\link{Quantities}}) \cr generated quantities.
-
+\item{x}{(\code{\link{Quantities}}) \cr generated quantities.}
+}
+\description{
 Returns the number of rows and columns within any given
 element of the \link{Quantities} object. As each element is of the same
 dimensionality this just returns a single number for the rows and columns
-of all elements of the \link{Quantities}}
-}
-\description{
-Dimensions of \code{Quantitites}
+of all elements of the \link{Quantities}
 }
 \keyword{internal}

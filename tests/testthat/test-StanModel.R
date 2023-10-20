@@ -8,5 +8,5 @@ test_that("StanModel print function works as expected", {
         ),
         name = "MyModel"
     )
-    expect_snapshot_output(print(x))
+    expect_snapshot(print(x))
 })

@@ -204,18 +204,6 @@ compileStanModel.StanModule <- function(object) {
 
 
 
-# show-StanModule ----
-
-#' @rdname show-object
-#' @export
-setMethod(
-    f = "show",
-    signature = "StanModule",
-    definition = function(object) {
-        print("StanModule Object")
-    }
-)
-
 # as.list-StanModule ----
 
 #' `StanModule` -> `list`
@@ -390,3 +378,37 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
     }
     results
 }
+
+#' `StanModule` -> Printable `Character`
+#'
+#' Converts [`StanModule`] object into a printable string.
+#' @param object ([`StanModule`])\cr A stan program
+#' @family StanModule
+#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @keywords internal
+#' @export
+as_print_string.StanModule <- function(object, indent = 1, ...) {
+    slots <- getSlots("StanModule")
+    slots <- slots[!slots %in% c("priors", "inits")]
+    components <- Filter(\(block) slot(object, block) != "", names(slots))
+    template <- c(
+        "StanModule Object with components:",
+        paste("    ", components)
+    )
+    pad <- rep(" ", indent) |> paste(collapse = "")
+    template_padded <- paste(pad, template)
+    sprintf(
+        paste(template_padded, collapse = "\n")
+    )
+}
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "StanModule",
+    definition = function(object) {
+        string <- as_print_string(object)
+        cat("\n", string, "\n\n")
+    }
+)
