@@ -80,7 +80,7 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 
 
 
-test_that("LongitudinalQuantities print method works as expected",{
+test_that("LongitudinalQuantities print method works as expected", {
 
     expect_snapshot({
         ptgroups <- c("pt_00011", "pt_00061", "pt_00001", "pt_00002")
