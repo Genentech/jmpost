@@ -83,6 +83,7 @@ Collate:
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
+    'brier_score.R'
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'

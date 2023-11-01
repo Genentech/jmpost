@@ -82,6 +82,7 @@ setValidity(
 #' - `frm` (`formula`)\cr a symbolic description of the survival model to be fitted
 #' - `time` (`character`)\cr  The name of the variable containing the event time
 #' - `event` (`character`) \cr  The name of the variable containing the event status
+#' @export
 #' @family DataSurvival
 #' @family extractVariableNames
 #' @keywords internal

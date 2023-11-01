@@ -266,3 +266,19 @@ as_print_string <- function(object, ...) {
 #'
 #' @name show-object
 NULL
+
+
+
+#' `brierScore`
+#'
+#' @description
+#' Returns the Brier Score for a given model
+#'
+#' @param object to calculate Brier Score for.
+#' @param ... additional options.
+#'
+#' @family brierScore
+#' @export
+brierScore <- function(object, ...) {
+    UseMethod("brierScore")
+}

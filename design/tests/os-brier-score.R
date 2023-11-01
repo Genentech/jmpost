@@ -55,16 +55,36 @@ mp <- sampleStanModel(
     parallel_chains = 1
 )
 
-vars <- c(
-    "sm_exp_lambda",    #  0.01
-    "beta_os_cov[1]",   # -0.3
-    "beta_os_cov[2]",   #  0.5
-    "beta_os_cov[3]"    #  0.2
+
+t_grid <- c(1, 50, 100, 400, 800)
+sq <- SurvivalQuantities(
+    mp,
+    time_grid = t_grid,
+    type = "surv"
+)
+brierScore(sq)
+
+
+
+mod <- survival::survreg(
+    survival::Surv(time, event) ~ cov_cont + cov_cat ,
+    data = dat_os,
+    dist = "exponential"
+)
+lambda <- exp(-predict(mod, type = "lp"))
+
+p_times <- rep(t_grid, each = length(lambda))
+p_lambda <- rep(lambda, times.out = length(t_grid))
+
+pred_mat <- matrix(
+    nrow = length(lambda),
+    ncol = length(t_grid),
+    pexp(p_times, rate = p_lambda)
 )
 
-mp@results$summary(vars)
-
-
-
-mcmc_trace(mp$draws("sm_exp_lambda"))
-
+brier_score(
+    t = t_grid,
+    times = dat_os$time,
+    events = dat_os$event,
+    pred_mat = pred_mat
+)
