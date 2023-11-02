@@ -21,6 +21,7 @@ Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
+\code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
 }
 \concept{SurvivalQuantities}

@@ -362,14 +362,14 @@ setMethod(
 #' `brierScore`
 #'
 #' @description
-#' TODO
+#' Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
+#' for the Survival estimates as deatailed in Blanche et. al. (2015).
 #'
-#' @param object to calculate Brier Score for.
-#' @param times TODO
-# @inheritParams TODO
-#' @param ... not used.
+#' @inheritParams SurvivalQuantities-Shared
+#' @inheritParams Brier-Score-Shared
 #'
 #' @family brierScore
+#' @family SurvivalQuantities
 #' @export
 brierScore.SurvivalQuantities <- function(
     object,

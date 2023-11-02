@@ -19,6 +19,7 @@ Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
+\code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
 }
 \concept{SurvivalQuantities}

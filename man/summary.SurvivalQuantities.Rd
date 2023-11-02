@@ -21,7 +21,8 @@ Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
 \code{\link{as_print_string.SurvivalQuantities}()},
-\code{\link{autoplot.SurvivalQuantities}()}
+\code{\link{autoplot.SurvivalQuantities}()},
+\code{\link{brierScore.SurvivalQuantities}()}
 
 Other summary: 
 \code{\link{summary.LongitudinalQuantities}()}

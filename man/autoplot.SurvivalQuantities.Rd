@@ -28,6 +28,7 @@ Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
 \code{\link{as_print_string.SurvivalQuantities}()},
+\code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
 
 Other autoplot: 

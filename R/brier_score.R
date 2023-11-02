@@ -1,7 +1,52 @@
 
 
-# TODO - docs
-# TODO - tests
+#' Re-used documentation for Brier Score components
+#'
+#' @param t (`numeric`)\cr timepoints to calculate the desired quantitiy at.
+#' @param times (`numeric`)\cr observed times.
+#' @param events (`numeric`)\cr event indicator for `times`. Either 1 for an event or 0 for censor.
+#' @param event_offset (`logical`)\cr If `TRUE` then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
+#' Setting this as `TRUE` mirrors the implementation of the `{pec}` package.
+#' @param maintain_cen_order (`logical`)\cr If `TRUE` then, in the case of ties,
+#' censor times are always considered
+#' to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
+#' ICPW estimates. Setting this to `TRUE` mirrors the implementation of the `{prodlim}`
+#' package.
+#' @param ... not used.
+#'
+#' @name Brier-Score-Shared
+#' @keywords internal
+NULL
+
+
+
+
+#' Reverse Kaplan-Meier
+#'
+#' @inheritParams Brier-Score-Shared
+#' @description
+#' Calculates the survival estimates of the censoring distribution
+#' using the Kaplan-Meier estimate.
+#' This is primarily used in the calculation of the IPCW estimates.
+#'
+#' @details
+#' With regards to ties between censor and event times; the standard
+#' approach is to regard events as occuring before censors. However,
+#' when modelling the censoring distribution we are regarding the
+#' censors as "events" so which should come first in the case of ties?
+#'
+#' The `reverse_km_event_first()` function maintains the rule
+#' that events always come first even if we are regarding the censors
+#' as "events". This matches the implementation of
+#' `prodlim::prodlim(..., reverse = TRUE)`.
+#'
+#' The `reverse_km_cen_first()` function provides the alternative
+#' implementation assuming that in the case of ties the censor "events"
+#' come before the event "censors". This is essentially a thin wrapper
+#' around `survival::survfit(Surv(time, 1 - event), ...)`
+#'
+#' @name reverse_km
+#' @keywords internal
 reverse_km_event_first <- function(t, times, events) {
     assert_numeric(t, any.missing = FALSE, finite = TRUE)
     assert_numeric(times, any.missing = FALSE, finite = TRUE)
@@ -42,8 +87,7 @@ reverse_km_event_first <- function(t, times, events) {
 }
 
 
-# TODO - docs
-# TODO - tests
+#' @rdname reverse_km
 reverse_km_cen_first <- function(t, times, events) {
     assert_numeric(t, any.missing = FALSE, finite = TRUE)
     assert_numeric(times, any.missing = FALSE, finite = TRUE)
@@ -74,8 +118,19 @@ reverse_km_cen_first <- function(t, times, events) {
 
 
 
-# TODO - docs
-# TODO - tests
+#' Brier Score
+#'
+#' @inheritParams Brier-Score-Shared
+#'
+#' @description
+#' Implements the Brier Score as detailed in Blanche et. al. (2015)
+#'
+#' @details
+#' - `bs_get_squared_dist()` - implements the squared distance part
+#' of the formula.
+#' - `bs_get_weights()` - implements the IPCW weighting
+#'
+#' @keywords internal
 brier_score <- function(
     t,
     times,
@@ -109,8 +164,7 @@ brier_score <- function(
 }
 
 
-# TODO - docs
-# TODO - tests
+#' @rdname brier_score
 bs_get_squared_dist <- function(t, times, events, pred_mat) {
 
     expected_mat <- mapply(
@@ -131,8 +185,7 @@ bs_get_squared_dist <- function(t, times, events, pred_mat) {
 }
 
 
-# TODO - docs
-# TODO - tests
+#' @rdname brier_score
 bs_get_weights <- function(
     t,
     times,

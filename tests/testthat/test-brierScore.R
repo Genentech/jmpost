@@ -27,8 +27,6 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
         survival = SurvivalExponential()
     )
 
-    write_stan(jm, "local/debug.stan")
-
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,

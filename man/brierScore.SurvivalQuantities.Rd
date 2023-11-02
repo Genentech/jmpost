@@ -7,17 +7,33 @@
 \method{brierScore}{SurvivalQuantities}(object, maintain_cen_order = TRUE, event_offset = TRUE, ...)
 }
 \arguments{
-\item{object}{to calculate Brier Score for.}
+\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+
+\item{maintain_cen_order}{(\code{logical})\cr If \code{TRUE} then, in the case of ties,
+censor times are always considered
+to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
+ICPW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
+package.}
+
+\item{event_offset}{(\code{logical})\cr If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
+Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} package.}
 
 \item{...}{not used.}
-
-\item{times}{TODO}
 }
 \description{
-TODO
+Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
+for the Survival estimates as deatailed in Blanche et. al. (2015).
 }
 \seealso{
 Other brierScore: 
 \code{\link{brierScore}()}
+
+Other SurvivalQuantities: 
+\code{\link{SurvivalQuantities-class}},
+\code{\link{as.data.frame.SurvivalQuantities}()},
+\code{\link{as_print_string.SurvivalQuantities}()},
+\code{\link{autoplot.SurvivalQuantities}()},
+\code{\link{summary.SurvivalQuantities}()}
 }
+\concept{SurvivalQuantities}
 \concept{brierScore}
