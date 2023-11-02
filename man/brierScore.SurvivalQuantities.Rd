@@ -12,7 +12,7 @@
 \item{maintain_cen_order}{(\code{logical})\cr If \code{TRUE} then, in the case of ties,
 censor times are always considered
 to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
-ICPW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
+IPCW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
 package.}
 
 \item{event_offset}{(\code{logical})\cr If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
@@ -22,7 +22,7 @@ Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} packa
 }
 \description{
 Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
-for the Survival estimates as deatailed in Blanche et. al. (2015).
+for the Survival estimates as detailed in Blanche et. al. (2015).
 }
 \seealso{
 Other brierScore: 

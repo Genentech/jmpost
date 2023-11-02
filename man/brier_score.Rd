@@ -26,7 +26,7 @@ bs_get_weights(
 )
 }
 \arguments{
-\item{t}{(\code{numeric})\cr timepoints to calculate the desired quantitiy at.}
+\item{t}{(\code{numeric})\cr timepoints to calculate the desired quantity at.}
 
 \item{times}{(\code{numeric})\cr observed times.}
 
@@ -35,7 +35,7 @@ bs_get_weights(
 \item{maintain_cen_order}{(\code{logical})\cr If \code{TRUE} then, in the case of ties,
 censor times are always considered
 to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
-ICPW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
+IPCW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
 package.}
 
 \item{event_offset}{(\code{logical})\cr If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.

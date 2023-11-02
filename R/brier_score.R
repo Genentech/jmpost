@@ -2,7 +2,7 @@
 
 #' Re-used documentation for Brier Score components
 #'
-#' @param t (`numeric`)\cr timepoints to calculate the desired quantitiy at.
+#' @param t (`numeric`)\cr timepoints to calculate the desired quantity at.
 #' @param times (`numeric`)\cr observed times.
 #' @param events (`numeric`)\cr event indicator for `times`. Either 1 for an event or 0 for censor.
 #' @param event_offset (`logical`)\cr If `TRUE` then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
@@ -10,7 +10,7 @@
 #' @param maintain_cen_order (`logical`)\cr If `TRUE` then, in the case of ties,
 #' censor times are always considered
 #' to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
-#' ICPW estimates. Setting this to `TRUE` mirrors the implementation of the `{prodlim}`
+#' IPCW estimates. Setting this to `TRUE` mirrors the implementation of the `{prodlim}`
 #' package.
 #' @param ... not used.
 #'
@@ -31,7 +31,7 @@ NULL
 #'
 #' @details
 #' With regards to ties between censor and event times; the standard
-#' approach is to regard events as occuring before censors. However,
+#' approach is to regard events as occurring before censors. However,
 #' when modelling the censoring distribution we are regarding the
 #' censors as "events" so which should come first in the case of ties?
 #'

@@ -11,7 +11,7 @@ reverse_km_event_first(t, times, events)
 reverse_km_cen_first(t, times, events)
 }
 \arguments{
-\item{t}{(\code{numeric})\cr timepoints to calculate the desired quantitiy at.}
+\item{t}{(\code{numeric})\cr timepoints to calculate the desired quantity at.}
 
 \item{times}{(\code{numeric})\cr observed times.}
 
@@ -24,7 +24,7 @@ This is primarily used in the calculation of the IPCW estimates.
 }
 \details{
 With regards to ties between censor and event times; the standard
-approach is to regard events as occuring before censors. However,
+approach is to regard events as occurring before censors. However,
 when modelling the censoring distribution we are regarding the
 censors as "events" so which should come first in the case of ties?
 

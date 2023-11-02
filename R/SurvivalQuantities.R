@@ -363,7 +363,7 @@ setMethod(
 #'
 #' @description
 #' Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
-#' for the Survival estimates as deatailed in Blanche et. al. (2015).
+#' for the Survival estimates as detailed in Blanche et. al. (2015).
 #'
 #' @inheritParams SurvivalQuantities-Shared
 #' @inheritParams Brier-Score-Shared
