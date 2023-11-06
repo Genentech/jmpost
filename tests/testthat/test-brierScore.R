@@ -1,6 +1,18 @@
 
 test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
-    ### Setup Data
+
+    #
+    # As we are using a survival-only model with weakly informative priors
+    # the point estimates model should be very similar to that of the frequentist
+    # model implemented by `survref`.
+    # As a result the Brier Scores generated for the 2 models should be near
+    # identical.
+    # In all this acts as an integration test to show that all of our functions
+    # related to extracting the predicted values & the time & event data are working
+    # as expected.
+    #
+
+
     set.seed(11023)
     jlist <- simulate_joint_data(
         n_arm = c(100, 150),
@@ -93,6 +105,8 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
 
 test_that("brier score weight matrix is correctly calculated", {
     # nolint start
+    # Manual by-hand calculations to show what the expected values are
+    # and then comparing them to the actual values our code generates
     # For:
     #     t = 4
     #     ti = 1, 5, 10, 20
@@ -115,6 +129,11 @@ test_that("brier score weight matrix is correctly calculated", {
     #      F   |    T        |  1 / G(ti)
     #      T   |    F        |  1 / G(t)
 
+    # Set arbitrary mock values for G(t) and G(ti) so that we
+    # can isolate any issues to the bs_get_weights() function
+    # rather than the reverse_km() functions. 
+    mock_g_t <- c(2, 3)
+    mock_g_ti <- c(4, 5, 6, 7)
     expected <- matrix(c(
         4, 4,
         2, 0,
@@ -124,10 +143,10 @@ test_that("brier score weight matrix is correctly calculated", {
 
 
     replacefun <- function(t, ...) {
-        x <- if (length(t) == 2) {
-            list(surv = 1 / c(2, 3)) # G(t)
-        } else if (length(t) == 4) {
-            list(surv = 1 / c(4, 5, 6, 7)) # G(ti)
+        x <- if (length(t) == length(mock_g_t)) {
+            list(surv = 1 / mock_g_t) # G(t)
+        } else if (length(t) == length(mock_g_ti)) {
+            list(surv = 1 / mock_g_ti) # G(ti)
         } else {
             stop("something went wrong")
         }

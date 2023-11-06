@@ -160,12 +160,40 @@ brier_score <- function(
     # matrix multiplication
     x <- colSums(weight_mat * square_diff_mat)
     names(x) <- t
-    return(x / length(times))
+    x / length(times)
 }
 
 
 #' @rdname brier_score
 bs_get_squared_dist <- function(t, times, events, pred_mat) {
+
+    assert_numeric(
+        times,
+        finite = TRUE,
+        any.missing = FALSE
+    )
+    assert_numeric(
+        t,
+        finite = TRUE,
+        any.missing = FALSE
+    )
+    assert_numeric(
+        events,
+        finite = TRUE,
+        any.missing = FALSE,
+        lower = 0,
+        upper = 1
+    )
+    assert_matrix(
+        pred_mat,
+        any.missing = FALSE,
+        nrows = length(times),
+        ncols = length(t)
+    )
+    assert_that(
+        length(events) == length(times)
+    )
+
 
     expected_mat <- mapply(
         \(ti, event) (ti <= t) * event * 1,
@@ -193,7 +221,25 @@ bs_get_weights <- function(
     event_offset = TRUE,
     maintain_cen_order = TRUE
 ) {
-
+    assert_numeric(
+        times,
+        finite = TRUE,
+        any.missing = FALSE
+    )
+    assert_numeric(
+        t,
+        finite = TRUE,
+        any.missing = FALSE
+    )
+    assert_numeric(
+        events,
+        finite = TRUE,
+        any.missing = FALSE,
+        lower = 0,
+        upper = 1
+    )
+    assert_flag(event_offset, na.ok = FALSE, null.ok = FALSE)
+    assert_flag(maintain_cen_order, na.ok = FALSE, null.ok = FALSE)
     n_col <- length(t)
     n_row <- length(times)
 
