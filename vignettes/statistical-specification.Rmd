@@ -1,0 +1,69 @@
+---
+title: "Statistical Specifications"
+package: jmpost
+bibliography: '`r system.file("references.bib", package = "jmpost")`'
+csl: '`r system.file("jss.csl", package = "jmpost")`'
+output:
+  rmarkdown::html_vignette:
+          toc: true
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Statistical Specifications}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+library(jmpost)
+```
+
+
+# IMPORTANT
+
+Please note that this document is currently a work-in-progress and does not
+contain complete information for this package yet. 
+
+
+## Brier Score
+
+The Brier Score is used to measure a models predictive performance. In the case of Survival Models
+it is the weighted squared difference between whether a subject died within a given time interval
+and the models estimated probability of them dying within said interval. Within `jmpost` the
+following formula (as described in @blanche2015) has been implemented:
+
+$$
+\hat{BS}(t) =  \frac{1}{n}\sum_{i=1}^{n} \hat{W}_i(t) \Big(D_i(t) - \pi_i(t)  \Big)^2
+$$
+
+$$
+\hat{W}_i(t) = 
+    \frac{\mathbb{1}_{(T_i \gt t)}}{\hat{G}(t)} + 
+    \frac{\mathbb{1}_{(T_i \le t)} \cdot \Delta_i}{\hat{G}(T_i)}
+$$
+
+Where:
+
+- $T_i$ is the observed event/censor time for subject $i$
+- $\Delta_i$ is the event indicator which is 1 if $T_i$ is an event and 0 if $T_i$ is censored
+- $\mathbb{1}_{(.)}$ is the indicator which is 1 if ${(.)}$ is true else 0
+- $D_i(t)$ is the event indicator function for subject $i$ e.g. $D_i(t) = \mathbb{1}_{(T_i \lt t,\ \delta_i = 1)}$
+- $\pi_i(t)$ is a model predicted probability of subject $i$ dying before time $t$
+- $\hat{G}(u)$ is the Kaplan-Meier estimator of survival function of the censoring time at $u$
+
+
+Note that by default $\hat{G}(T_i)$ is estimated by $\hat{G}(T_i-)$ and that in the case of ties
+event times are always considered to have occurred before censored times (this is in contrast to
+`survival::survfit` which regards censored times as coming before event times when estimating
+the censoring distribution). Both of these default options can be changed if required.
+
+
+
+# References
+

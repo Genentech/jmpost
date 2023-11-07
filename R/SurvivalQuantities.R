@@ -356,3 +356,60 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
+
+
+
+#' `brierScore`
+#'
+#' @description
+#' Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
+#' for the Survival estimates as detailed in Blanche et. al. (2015).
+#'
+#' @inheritParams SurvivalQuantities-Shared
+#' @inheritParams Brier-Score-Shared
+#'
+#' @family brierScore
+#' @family SurvivalQuantities
+#' @export
+brierScore.SurvivalQuantities <- function(
+    object,
+    maintain_cen_order = TRUE,
+    event_offset = TRUE,
+    ...
+) {
+    assert_that(
+        object@type == "surv",
+        msg = "Brier Score can only be calculated for survival quantities"
+    )
+    sdat <- summary(object)
+    times <- object@time_grid
+    assert_that(
+        nrow(sdat) == length(times) * length(unique(sdat$group))
+    )
+
+    subject_col <- extractVariableNames(object@data@subject)$subject
+    time_col <- extractVariableNames(object@data@survival)$time
+    event_col <- extractVariableNames(object@data@survival)$event
+    groups <- as.character(object@data@survival@data[[subject_col]])
+    orig_times <- object@data@survival@data[[time_col]]
+    events <- object@data@survival@data[[event_col]]
+
+    pred_mat <- matrix(
+        ncol = length(times),
+        nrow = length(unique(sdat$group))
+    )
+    for (i in seq_along(times)) {
+        pred_mat[, i] <- sdat[sdat["time"] == times[i], "median"]
+        assert_that(
+            all(groups == sdat[sdat["time"] == times[i], "group"])
+        )
+    }
+    brier_score(
+        t = times,
+        times = orig_times,
+        events = events,
+        pred_mat = 1 - pred_mat,
+        maintain_cen_order = maintain_cen_order,
+        event_offset = event_offset
+    )
+}

@@ -53,7 +53,8 @@ Suggests:
     testthat (>= 3.0.0),
     scales,
     lme4,
-    vdiffr
+    vdiffr,
+    prodlim
 Config/testthat/edition: 3
 Collate:
     'DataSubject.R'
@@ -83,6 +84,7 @@ Collate:
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
+    'brier_score.R'
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'

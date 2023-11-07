@@ -88,6 +88,7 @@ setValidity(
 #' - `study` (`character`) \cr the name of the variable containing the study identifier.
 #' @family DataSubject
 #' @family extractVariableNames
+#' @export
 #' @keywords internal
 extractVariableNames.DataSubject <- function(object) {
     list(

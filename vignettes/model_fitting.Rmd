@@ -359,3 +359,17 @@ autoplot(surv_quantities, add_km = TRUE)
 
 
 
+## Brier Score
+
+The `brierScore()` method can be used to extract the Brier Scores (predictive performance measure)
+from our `SurvivalQuantities` object.
+
+```{R}
+prediction_times <- c(1, 50, 100, 400, 800)
+sq <- SurvivalQuantities(
+    mcmc_results,
+    time_grid = prediction_times,
+    type = "surv"
+)
+brierScore(sq)
+```
