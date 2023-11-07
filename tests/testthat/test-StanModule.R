@@ -15,4 +15,23 @@ test_that("StanModule print method works as expected", {
         x <- StanModule(code)
         print(x)
     })
+
+    expect_snapshot({
+        code <- paste(c(
+            "data {\n    int x;\n}",
+            "parameters {\n    real sigma;\n    real mu;  real par;\n}"
+        ), collapse = "\n")
+        x <- StanModule(code)
+        print(x)
+    })
+
+    expect_snapshot({
+        code <- paste(c(
+            "data {\n    int x;\n}",
+            "model {\n    real sigma;\n    real mu; \n}",
+            "generated quantities {\n    //something \n}"
+        ), collapse = "\n")
+        x <- StanModule(code)
+        print(x)
+    })
 })

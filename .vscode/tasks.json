@@ -29,7 +29,33 @@
         },
         
         
-        
+        {
+            "label": "JMP: Test Current File (with cache)",
+            "type": "R",
+            "code": [
+                "devtools::load_all();",
+                "testthat::test_file(\"${file}\")"
+            ],
+            "env": {
+                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
+                "NOT_CRAN": "TRUE"
+            },
+            "problemMatcher": [
+                "$testthat"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
         
         {
             "label": "JMP: Test Pkgdown",
