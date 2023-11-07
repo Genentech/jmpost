@@ -51,7 +51,7 @@ You can install the current development version from GitHub with:
 
 ``` r
 if (!require("remotes")) {
-  install.packages("remotes")
+    install.packages("remotes")
 }
 remotes::install_github("genentech/jmpost")
 ```
@@ -75,6 +75,9 @@ right format.
 
 ``` r
 library(jmpost)
+#> Registered S3 method overwritten by 'GGally':
+#>   method from   
+#>   +.gg   ggplot2
 set.seed(321)
 sim_data <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(),
@@ -85,17 +88,19 @@ long_data <- sim_data$lm |>
     dplyr::arrange(time, pt)
 
 joint_data <- DataJoint(
-    survival = DataSurvival(
+    subject = DataSubject(
         data = os_data,
-        formula = Surv(time, event) ~ cov_cat + cov_cont,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
     longitudinal = DataLongitudinal(
         data = long_data,
         formula = sld ~ time,
-        subject = "pt",
         threshold = 5
     )
 )

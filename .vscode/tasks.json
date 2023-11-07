@@ -90,6 +90,28 @@
         
         
         {
+            "label": "JMP: Build README",
+            "type": "R",
+            "code": [
+                "devtools::build_readme()"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        
+        
+        {
             "label": "JMP: Run Vignettes",
             "type": "shell",
             "group": "test",
@@ -125,7 +147,8 @@
                 "JMP: Run Vignettes",
                 "JMP: CMD Check (no vig)",
                 "JMP: Test Pkgdown",
-                "JMP: Test (with cache)"
+                "JMP: Test (with cache)",
+                "JMP: Build README"
             ],
             "problemMatcher": []
         },
