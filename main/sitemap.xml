@@ -13,6 +13,9 @@
     <loc>https://genentech.github.io/jmpost/articles/model_fitting.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/articles/statistical-specification.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/authors.html</loc>
   </url>
   <url>
@@ -20,6 +23,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/Brier-Score-Shared.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/DataJoint-Shared.html</loc>
@@ -265,6 +271,15 @@
     <loc>https://genentech.github.io/jmpost/reference/average_samples_by_index.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/brierScore.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
   </url>
   <url>
@@ -380,6 +395,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/reverse_km.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/sampleStanModel.html</loc>
