@@ -348,7 +348,7 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
     )
 
     # Check to see if any block openings exist that have code on the same line
-    # e.g.  `data { int i;}`. We raise this as a formatting error
+    # e.g.  `data { int i;}`. This is unsupported so we throw an error
     for (block in stan_blocks) {
         regex <- sprintf("^\\s*%s\\s*\\{\\s*[^\\s-]+", block)
         if (any(grepl(regex, code, perl = TRUE))) {
@@ -389,7 +389,7 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
         # Walk backwards to find the closing `}` that corresponds to the `<block> {`
         for (index in rev(seq_len(block_length))) {
             line <- results[[block]][[index]]
-            # This code exits the for loop as soon as it its the closing `}`
+            # This code will exit the for loop as soon as it hits the closing `}`
             # thus if we ever see a line that ends in text/numbers it means
             # somethings gone wrong
             if (stringr::str_detect(line, "[\\w\\d]+\\s*$")) {
@@ -399,6 +399,9 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
                 new_line <- stringr::str_replace(line, "\\s*\\}\\s*$", "")
                 # If the line is now blank after removing the closing `}` then drop the line
                 keep_offset <- if (nchar(new_line) == 0) -1 else 0
+                # Only keep lines from the start of the block to the closing `}`
+                # this is to ensure we drop blank lines that were between the end
+                # of the block and the start of the next
                 keep_range <- seq_len(index + keep_offset)
                 results[[block]][[index]] <- new_line
                 results[[block]] <- results[[block]][keep_range]
