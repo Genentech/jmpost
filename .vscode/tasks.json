@@ -84,7 +84,7 @@
         
         
         {
-            "label": "JMP: CMD Check (no vig)",
+            "label": "JMP: CMD Check (no vig, no tests)",
             "type": "shell",
             "group": "test",
             "options": {
@@ -93,6 +93,9 @@
                     "args": [
                         "-c"
                     ]
+                },
+                "env": {
+                    "_R_CHECK_CRAN_INCOMING_": "0"
                 }
             },
             "presentation": {
@@ -168,10 +171,10 @@
         },
 
         {
-            "label": "jmpost - all tests",
+            "label": "JMP: Run All Tasks",
             "dependsOn": [
                 "JMP: Run Vignettes",
-                "JMP: CMD Check (no vig)",
+                "JMP: CMD Check (no vig, no tests)",
                 "JMP: Test Pkgdown",
                 "JMP: Test (with cache)",
                 "JMP: Build README"
