@@ -342,7 +342,7 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
     code <- unlist(stringr::str_split(x, "\n"))
 
     errmsg <- paste(
-        "There were problems passing the `%s` block.",
+        "There were problems parsing the `%s` block.",
         "Please consult the `Formatting Stan Files` section of the",
         "`Extending jmpost` vignette"
     )
