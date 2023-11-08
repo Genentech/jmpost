@@ -340,11 +340,30 @@ as_stan_file <- function(
 #' @keywords internal
 as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
     code <- unlist(stringr::str_split(x, "\n"))
+
+    errmsg <- paste(
+        "There were problems passing the `%s` block.",
+        "Please consult the `Formatting Stan Files` section of the",
+        "`Extending jmpost` vignette"
+    )
+
+    # Check to see if any block openings exist that have code on the same line
+    # e.g.  `data { int i;}`. We raise this as a formatting error
+    for (block in stan_blocks) {
+        regex <- sprintf("^\\s*%s\\s*\\{\\s*[^\\s-]+", block)
+        if (any(grepl(regex, code, perl = TRUE))) {
+            stop(sprintf(errmsg, block))
+        }
+    }
+
+    # We first look to identify the opening of a block e.g.  `data {`
+    # We then regard all lines that follow as belonging to that block
+    # until we see another block being opened e.g. `model{`
     results <- list()
     target <- NULL
     for (line in code) {
         for (block in names(stan_blocks)) {
-            regex <- sprintf("^%s *\\{ *$", stan_blocks[[block]])
+            regex <- sprintf("^\\s*%s\\s*\\{\\s*$", stan_blocks[[block]])
             if (stringr::str_detect(line, regex)) {
                 target <- block
                 line <- NULL
@@ -352,25 +371,48 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
             }
         }
         if (!is.null(target)) {
+            # This is memory inefficient but given the relatively small size of
+            # stan files its regarded as a acceptable simplification to ease the
+            # code burden
             results[[target]] <- c(results[[target]], line)
         }
     }
 
-    # Remove trailing "}".
+    # Loop over each block to remove trailing "}".
     for (block in names(results)) {
         block_length <- length(results[[block]])
-        entry <- block_length
-        while (entry >= 0) {
-            line <- results[[block]][[entry]]
-            if (stringr::str_detect(line, "^ *\\} *$")) {
+        # The following processing is only required if the block actually has content
+        if (block_length == 1 && results[[block]] == "") {
+            next
+        }
+        has_removed_char <- FALSE
+        # Walk backwards to find the closing `}` that corresponds to the `<block> {`
+        for (index in rev(seq_len(block_length))) {
+            line <- results[[block]][[index]]
+            # This code exits the for loop as soon as it its the closing `}`
+            # thus if we ever see a line that ends in text/numbers it means
+            # somethings gone wrong
+            if (stringr::str_detect(line, "[\\w\\d]+\\s*$")) {
+                stop(sprintf(errmsg, block))
+            }
+            if (stringr::str_detect(line, "\\}\\s*$")) {
+                new_line <- stringr::str_replace(line, "\\s*\\}\\s*$", "")
+                # If the line is now blank after removing the closing `}` then drop the line
+                keep_offset <- if (nchar(new_line) == 0) -1 else 0
+                keep_range <- seq_len(index + keep_offset)
+                results[[block]][[index]] <- new_line
+                results[[block]] <- results[[block]][keep_range]
+                has_removed_char <- TRUE
                 break
             }
-            entry <- entry - 1
         }
-        results[[block]] <- results[[block]][-seq(entry, block_length)]
+        # If we haven't actually removed a closing `}` then something has gone wrong...
+        if (!has_removed_char) {
+            stop(sprintf(errmsg, block))
+        }
     }
 
-    # Add missings.
+    # Add any missing blocks back in
     for (block in names(stan_blocks)) {
         if (is.null(results[[block]])) {
             results[[block]] <- ""

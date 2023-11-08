@@ -1,0 +1,71 @@
+---
+title: "Extending jmpost"
+package: jmpost
+output:
+  rmarkdown::html_vignette:
+          toc: true
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Extending jmpost}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+library(jmpost)
+```
+
+
+# IMPORTANT
+
+Please note that this document is currently a work-in-progress and does not
+contain complete information for this package yet. 
+
+## Formatting Stan Files
+
+Under the hood this library works by merging multiple Stan programs together into a single
+program. It does this by parsing the program to extract out each block independently.
+Unfortunately, the formal Stan parser (`stanc`) provided by the Stan team
+only works with complete programs whereas most of the programs within jmpost are
+incomplete fragments. This package has therefore implemented its own
+simple parser; as a result, in order to not have to traverse the full AST,
+a few addition constraints are made on how Stan programs can be formatted.
+
+These additional constraints are:
+
+- The opening to each block must start on a newline and can't have any non-whitespace character proceeding it.
+- The opening to each block cannot have any non-whitespace characters after the opening `{` character.
+- The closing `}` character after each block cannot have any non-whitespace characters after it
+
+Valid:
+```stan
+data {
+  int n; array[n] real x;
+}       
+parameters{      
+  real mu; 
+  real sigma;}
+
+    model {    
+x ~ normal(mu, sigma);
+    }    
+``
+
+Invalid:
+```stan
+// non-whitespace after opening `{`
+data { int n; array[n] real x; } 
+
+parameter { real mu;      // non-whitespace after opening `{`
+  real sigma;
+} model {                 // non-whitespace before block name
+  x ~ normal(mu, sigma);
+} // some comment         // non-whitespace after closing `}`
+```
