@@ -39,9 +39,12 @@ jlist <- simulate_joint_data(
         omega_phi = 0.2
     ),
     os_fun = sim_os_exponential(
-        lambda = 1 / 400
+        lambda = 1 / (730 / 365)
     )
 )
+
+
+
 
 
 
@@ -78,7 +81,7 @@ jlist <- simulate_joint_data(
 ## Extract data to individual datasets
 dat_os <- jlist$os
 
-select_times <- seq(1, 600, by = 50)
+select_times <- sample(dat_os$time, 30)
 # select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
