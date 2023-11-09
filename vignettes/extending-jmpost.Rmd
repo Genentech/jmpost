@@ -35,7 +35,7 @@ program. It does this by parsing the program to extract out each block independe
 Unfortunately, the formal Stan parser (`stanc`) provided by the Stan team
 only works with complete programs whereas most of the programs within jmpost are
 incomplete fragments. This package has therefore implemented its own
-simple parser; as a result, in order to not have to traverse the full AST,
+simple parser; as a result, in order to not have to traverse the full abstract syntax tree (AST),
 a few addition constraints are made on how Stan programs can be formatted.
 
 These additional constraints are:
@@ -56,7 +56,7 @@ parameters{
     model {    
 x ~ normal(mu, sigma);
     }    
-``
+```
 
 Invalid:
 ```stan
