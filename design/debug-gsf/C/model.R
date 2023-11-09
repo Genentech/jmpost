@@ -1,6 +1,6 @@
 
-set.seed(3130)
 
+set.seed(3130)
 library(dplyr)
 library(tibble)
 library(tidyr)
@@ -25,7 +25,7 @@ baseline <- tibble(
     bsld = rnorm(n, 60, 10),
     g = 0.2,
     s = 0.4,
-    phi = 0.6,
+    phi = 0.5,
     sigma = 0.02
 )
 
@@ -41,8 +41,7 @@ dat_lm <- grid_df |>
     mutate(sld = rnorm(nrow(grid_df), msld, msld * sigma))
 
 
-
-selected_pts <- sample(baseline$pt, 8)
+selected_pts <- sample(baseline$pt, 10)
 ggplot(
     data = dat_lm |> filter(pt %in% selected_pts),
     aes(x = time, y = sld, group = pt, color = pt)
@@ -70,27 +69,25 @@ stan_data <- list(
 init_vals <- list(
     ks = 0.4,
     kg = 0.2,
-    phi = 0.6,
     sigma = 0.01
 )
 
 
 mod <- cmdstan_model(
-    stan_file = file.path(here("design", "debug-gsf", "A", "model.stan")),
-    exe_file = file.path(here("local", "models", "model_A"))
+    stan_file = file.path(here("design", "debug-gsf", "C", "model.stan")),
+    exe_file = file.path(here("local", "models", "model_C"))
 )
 nchains <- 3
 fit <- mod$sample(
     data = stan_data,
-    chains = nchains,
+    init = lapply(1:nchains, \(...) init_vals),
     parallel_chains = nchains,
+    chains = nchains,
     refresh = 200,
     iter_warmup = 500,
-    iter_sampling = 500,
-    init = lapply(1:nchains, \(...) init_vals)
+    iter_sampling = 500
 )
-
-pars <- c("ks", "kg", "phi", "sigma")
+pars <- c("ks", "kg", "sigma")
 
 fit$summary(pars)
 
