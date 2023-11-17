@@ -14,6 +14,28 @@ gsf_sld <- function(time, b, s, g, phi) {
     b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
 }
 
+
+#################################
+#
+#  Check Prior densitys
+#
+
+
+x <- rlnorm(1000, log(60), 0.05)
+plot(density(x))
+
+
+x <- rlnorm(500, log(0.4), 0.6)
+plot(density(x))
+
+
+x <- rbeta(500, 3, 3)
+plot(density(x))
+
+
+
+
+
 #################################
 #
 #  Setup test data
@@ -27,14 +49,14 @@ baseline <- tibble(
     pt = factor(sprintf("pt_%04i", 1:n)),
 
     mu_b = 60,
-    mu_s = 0.5,
+    mu_s = 0.6,
     mu_g = 0.2,
     mu_phi = 0.5,
 
-    eta_b = rnorm(n, 0, 1),
+    eta_b = rnorm(n, 0, 0.5),
     eta_s = rnorm(n, 0, 0.3),
     eta_g = rnorm(n, 0, 0.3),
-    eta_phi = rnorm(n, 0, 2),
+    eta_phi = rnorm(n, 0, 0.4),
 
     b = exp(log(mu_b) + eta_b),
     g = exp(log(mu_g) + eta_g),
@@ -43,6 +65,17 @@ baseline <- tibble(
 
     sigma = 0.05
 )
+
+pdat <- baseline |>
+    select(b, g, s, phi) |>
+    gather("key", "var")
+
+ggplot(data = pdat, aes(x = var)) +
+    geom_density() +
+    theme_bw() +
+    facet_wrap(~key, scales = "free")
+
+
 
 grid_df <- tidyr::expand_grid(
     pt = baseline$pt,
@@ -66,6 +99,7 @@ ggplot(
     theme_bw()
 
 
+baseline |> summarise(across(c("b", "g", "s", "phi", "sigma"), mean))
 
 
 #################################
@@ -81,12 +115,12 @@ stan_data <- list(
     Tobs = dat_lm$time
 )
 init_vals <- list(
-    eta_b = rep(0.2, n),
-    eta_s = rep(0.2, n),
-    eta_g = rep(0.2, n),
-    eta_phi = rep(0.2, n),
-    mu_b = 80,
-    mu_s = 0.5,
+    eta_b = rep(0, n),
+    eta_s = rep(0, n),
+    eta_g = rep(0, n),
+    eta_phi = rep(0, n),
+    mu_b = 60,
+    mu_s = 0.6,
     mu_g = 0.2,
     mu_phi = 0.5,
     sigma = 0.05
@@ -104,14 +138,12 @@ fit <- mod$sample(
     parallel_chains = nchains,
     init = lapply(1:nchains, \(...) init_vals),
     refresh = 200,
-    iter_warmup = 1500,
-    iter_sampling = 1500
+    iter_warmup = 300,
+    iter_sampling = 500
 )
 baseline |> summarise(across(c("b", "g", "s", "phi", "sigma"), mean))
 pars <- c(
-    "mu_b", "mu_s", "mu_g", "mu_phi",
-    "sigma",
-    "eta_b_mean", "eta_s_mean", "eta_g_mean", "eta_phi_mean"
+    "mu_b", "mu_s", "mu_g", "mu_phi", "sigma"
 )
 fit$summary(variables = pars)
 
@@ -124,8 +156,7 @@ fit$summary(variables = pars)
 #
 
 pars <- c(
-    "mu_b", "mu_s", "mu_g", "mu_phi",
-    "eta_b_mean"
+    "mu_b", "mu_s", "mu_g", "mu_phi"
 )
 
 
@@ -139,22 +170,6 @@ mcmc_trace(samps, pars = pars)
 
 
 
-#################################
-#
-#  Check Prior densitys
-#
-
-
-x <- rlnorm(500, log(60), 1)
-plot(density(x))
-
-
-x <- rlnorm(500, log(0.4), 0.6)
-plot(density(x))
-
-
-x <- rbeta(500, 3, 3)
-plot(density(x))
 
 
 
@@ -162,94 +177,3 @@ plot(density(x))
 
 
 
-
-
-
-
-#######################################
-#
-#
-#   JMPOST
-#
-#
-    ks ~ lognormal(log(0.6), 0.3);
-    kg ~ lognormal(log(0.2), 0.3);
-    kb ~ lognormal(log(60), 1);
-    phi ~ beta(2, 2);
-
-
-devtools::load_all()
-
-jm <- JointModel(
-    longitudinal = LongitudinalGSF(
-
-        mu_bsld = prior_lognormal(log(60), 1),
-        mu_ks = prior_lognormal(log(0.6), 0.3),
-        mu_kg = prior_lognormal(log(0.6), 0.3),
-        mu_phi = prior_beta(2, 2),
-
-        omega_bsld = prior_lognormal(log(0.5), 0.6),
-        omega_ks = prior_lognormal(log(0.5), 0.6),
-        omega_kg = prior_lognormal(log(0.5), 0.6),
-        omega_phi = prior_lognormal(log(0.5), 0.6),
-
-        sigma = prior_lognormal(log(0.03), 0.6)
-    )
-)
-
-# Create local file with stan code for debugging purposes ONLY
-write_stan(jm, "local/debug.stan")
-
-
-dat_os <- baseline |>
-    mutate(arm = "A", study = "A")
-
-
-
-## Prepare data for sampling
-jdat <- DataJoint(
-    subject = DataSubject(
-        data = dat_os,
-        subject = "pt",
-        arm = "arm",
-        study = "study"
-    ),
-    longitudinal = DataLongitudinal(
-        data = dat_lm,
-        formula = sld ~ time,
-        threshold = 5
-    )
-)
-
-## Sample from JointModel
-
-mp <- sampleStanModel(
-    jm,
-    data = jdat,
-    iter_sampling = 500,
-    iter_warmup = 1000,
-    chains = 1,
-    parallel_chains = 1
-)
-
-
-baseline |> summarise(across(c("b", "g", "s", "phi"), mean))
-vars <- c(
-    "lm_gsf_mu_bsld",     #
-    "lm_gsf_mu_phi",      #
-    "lm_gsf_mu_kg",       #
-    "lm_gsf_mu_ks",       #
-    "lm_gsf_sigma",       #
-    "lm_gsf_omega_bsld",  #
-    "lm_gsf_omega_kg",    #
-    "lm_gsf_omega_phi",   #
-    "lm_gsf_omega_ks"     #
-)
-mp@results$summary(vars)
-
-
-
-
-
-binomial()$linkfun(0.5)
-binomial()$linkinv(4)

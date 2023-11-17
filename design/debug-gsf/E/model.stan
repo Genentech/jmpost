@@ -78,18 +78,17 @@ model {
     vector[N] Ypred;
     
     
-    mu_b ~ lognormal(log(60), 1);
-    //mu_b ~ normal(60, 0.0001);
-    mu_s ~ lognormal(log(0.5), 0.3);
-    mu_g ~ lognormal(log(0.2), 0.3);
-    mu_phi ~ beta(3, 3);
+    mu_b ~ lognormal(log(60), 0.05);
+    mu_s ~ lognormal(log(0.6), 0.05);
+    mu_g ~ lognormal(log(0.2), 0.05);
+    mu_phi ~ beta(1, 1);
     
-    eta_b ~ normal(0, 1);
+    eta_b ~ normal(0, 0.5);
     eta_s ~ normal(0, 0.3);
     eta_g ~ normal(0, 0.3);
-    eta_phi ~ normal(0, 2);
-    
-    sigma ~ lognormal(log(0.3), 0.2);
+    eta_phi ~ normal(0, 0.4);
+
+    sigma ~ lognormal(log(0.05), 0.05);
 
     Ypred = sld(
         Tobs,
@@ -100,13 +99,4 @@ model {
     );
     
     Yobs ~ normal(Ypred, Ypred .* sigma);
-}
-
-
-
-generated quantities {
-   real eta_b_mean = mean(eta_b);
-   real eta_s_mean = mean(eta_s);
-   real eta_g_mean = mean(eta_g);
-   real eta_phi_mean = mean(eta_phi);
 }
