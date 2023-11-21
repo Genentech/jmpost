@@ -120,15 +120,15 @@ init_vals <- list(
     LS = rep(log(0.6), n),
     LG = rep(log(0.2), n),
 
-    mu_b = 60,
-    mu_s = 0.6,
-    mu_g = 0.2,
+    mu_b = log(60),
+    mu_s = log(0.6),
+    mu_g = log(0.2),
 
     sigma_b = 0.3,
     sigma_s = 0.3,
     sigma_g = 0.3,
 
-    sigma = 0.05
+    sigma = 5
 )
 
 

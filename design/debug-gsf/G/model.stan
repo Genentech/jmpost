@@ -23,9 +23,9 @@ data {
 }
 
 parameters {
-    real<lower=0.00000000001> mu_b;
-    real<lower=0.00000000001> mu_s;
-    real<lower=0.00000000001> mu_g;
+    real mu_b;
+    real mu_s;
+    real mu_g;
 
     real<lower=0.00000000001> sigma_b;
     real<lower=0.00000000001> sigma_s;
@@ -53,15 +53,15 @@ transformed parameters {
 model {
     vector[N] Ypred;
 
-    mu_b ~ lognormal(log(60), 0.5);
-    mu_s ~ lognormal(log(0.6), 0.3);
-    mu_g ~ lognormal(log(0.2), 0.3);
+    mu_b ~ normal(log(60), 2);
+    mu_s ~ normal(log(0.6), 1);
+    mu_g ~ normal(log(0.2), 1);
 
-    sigma_b ~ lognormal(log(0.3), 0.2);
-    sigma_s ~ lognormal(log(0.3), 0.2);
-    sigma_g ~ lognormal(log(0.3), 0.2);
+    sigma_b ~ lognormal(log(0.3), 0.5);
+    sigma_s ~ lognormal(log(0.3), 0.5);
+    sigma_g ~ lognormal(log(0.3), 0.5);
     
-    sigma ~ lognormal(log(0.05), 0.05);
+    sigma ~ lognormal(log(5), 0.5);
     
     LB ~ normal(mu_b, sigma_b);
     LS ~ normal(mu_s, sigma_s);
