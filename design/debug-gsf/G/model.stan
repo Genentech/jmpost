@@ -53,9 +53,9 @@ transformed parameters {
 model {
     vector[N] Ypred;
 
-    mu_b ~ lognormal(log(60), 0.2);
-    mu_s ~ lognormal(log(0.6), 0.2);
-    mu_g ~ lognormal(log(0.2), 0.2);
+    mu_b ~ lognormal(log(60), 0.5);
+    mu_s ~ lognormal(log(0.6), 0.3);
+    mu_g ~ lognormal(log(0.2), 0.3);
 
     sigma_b ~ lognormal(log(0.3), 0.2);
     sigma_s ~ lognormal(log(0.3), 0.2);
@@ -78,10 +78,7 @@ model {
 }
 
 generated quantities {
-    real exp_mu_b;
-    real exp_mu_s;
-    real exp_mu_g;
-    exp_mu_b = exp(mu_b);
-    exp_mu_s = exp(mu_s);
-    exp_mu_g = exp(mu_g);
+   real b_mean = exp(mu_b + (sigma_b^2)/2);
+   real s_mean = exp(mu_s + (sigma_s^2)/2);
+   real g_mean = exp(mu_g + (sigma_g^2)/2);
 }

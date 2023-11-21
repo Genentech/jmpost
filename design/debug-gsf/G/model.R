@@ -10,7 +10,7 @@ library(ggplot2)
 library(here)
 
 
-gsf_sld <- function(time, b, s, g, phi) {
+gsf_sld <- function(time, b, s, g) {
     b * (exp(-s * time) +  exp(g * time) - 1)
 }
 
@@ -41,8 +41,6 @@ plot(density(x))
 #  Setup test data
 #
 
-logit <- binomial()$linkfun
-inv_logit <- binomial()$linkinv
 
 n <- 200
 baseline <- tibble(
@@ -51,7 +49,6 @@ baseline <- tibble(
     mu_b = log(60),
     mu_s = log(0.6),
     mu_g = log(0.2),
-    mu_phi = log(0.5),
 
     sigma_b = 0.3,
     sigma_s = 0.3,
@@ -102,7 +99,7 @@ ggplot(
     theme_bw()
 
 
-baseline |> summarise(across(c("b", "g", "s", "phi", "sigma"), mean))
+baseline |> summarise(across(c("b", "g", "s", "sigma"), mean))
 
 
 #################################
@@ -146,12 +143,14 @@ fit <- mod$sample(
     parallel_chains = nchains,
     init = lapply(1:nchains, \(...) init_vals),
     refresh = 200,
-    iter_warmup = 300,
-    iter_sampling = 500
+    iter_warmup = 400,
+    iter_sampling = 600
 )
 baseline |> summarise(across(c("b", "g", "s",  "sigma"), mean))
 pars <- c(
-    "exp_mu_b", "exp_mu_s", "exp_mu_g", "sigma"
+    "mu_b", "mu_s", "mu_g",
+    "sigma_b", "sigma_s", "sigma_g", "sigma",
+    "b_mean", "s_mean", "g_mean"
 )
 fit$summary(variables = pars)
 
@@ -164,7 +163,9 @@ fit$summary(variables = pars)
 #
 
 pars <- c(
-    "exp_mu_b", "exp_mu_s", "exp_mu_g", "sigma"
+    "mu_b", "mu_s", "mu_g",
+    "sigma_b", "sigma_s", "sigma_g", "sigma",
+    "b_mean", "s_mean", "g_mean"
 )
 
 
