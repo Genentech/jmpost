@@ -6,14 +6,14 @@
 \usage{
 sim_lm_gsf(
   sigma = 0.01,
-  mu_s = c(3, 4),
-  mu_g = c(0.2, 0.3),
-  mu_phi = c(0.1, 0.2),
-  mu_b = 50,
-  omega_b = 0.135,
-  omega_s = 0.15,
-  omega_g = 0.225,
-  omega_phi = 0.75,
+  mu_s = c(0.6, 0.4),
+  mu_g = c(0.25, 0.35),
+  mu_b = 60,
+  a_phi = c(4, 6),
+  b_phi = c(4, 6),
+  omega_b = 0.2,
+  omega_s = 0.2,
+  omega_g = 0.2,
   link_dsld = 0,
   link_ttg = 0,
   link_identity = 0
@@ -26,17 +26,17 @@ sim_lm_gsf(
 
 \item{mu_g}{(\code{numeric})\cr the mean growth rates for the two treatment arms.}
 
-\item{mu_phi}{(\code{numeric})\cr the mean shrinkage proportions for the two treatment arms.}
-
 \item{mu_b}{(\code{numeric})\cr the mean baseline values for the two treatment arms.}
+
+\item{a_phi}{(\code{number})\cr the alpha parameter for the fraction of cells that respond to treatment.}
+
+\item{b_phi}{(\code{number})\cr the beta parameter for the fraction of cells that respond to treatment.}
 
 \item{omega_b}{(\code{number})\cr the baseline value standard deviation.}
 
 \item{omega_s}{(\code{number})\cr the shrinkage rate standard deviation.}
 
 \item{omega_g}{(\code{number})\cr the growth rate standard deviation.}
-
-\item{omega_phi}{(\code{number})\cr the shrinkage proportion standard deviation.}
 
 \item{link_dsld}{(\code{number})\cr the link coefficient for the derivative contribution.}
 

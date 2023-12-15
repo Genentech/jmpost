@@ -31,6 +31,55 @@ Please note that this document is currently a work-in-progress and does not
 contain complete information for this package yet. 
 
 
+
+
+
+
+
+# Longitudinal Model Specification
+
+
+## Generalized Stein-Fojo (GSF) Model
+
+$$
+\begin{align*}
+y_{ij} &\sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &=b_{i}
+\left[
+    \phi_i e^{-s_{i}t_{ij}}+
+    (1-\phi_{i}) e^ {g_{i}t_{ij}}
+\right] \\ \\
+b_i &\sim \text{LogNormal}(\mu_{bl}, \omega_b) \\
+s_i &\sim \text{LogNormal}(\mu_{sk}, \omega_s) \\
+g_i &\sim \text{LogNormal}(\mu_{gk}, \omega_g) \\
+\phi &\sim \text{Beta}(a_{\phi k}, b_{\phi k})
+\end{align*}
+$$
+
+Where:
+
+* $i$ is the subject index
+* $j$ is the visit index
+* $y_{ij}$ is the observed tumour measurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+* $t_{ij}$ is the time since first treatment for subject $i$ at visit $j$
+* $b_i$ is the subject baseline SLD measurement
+* $s_i$ is the subject kinetics shrinkage parameter
+* $g_i$ is the subject kinetics tumour growth parameter
+* $\phi_i$ is the subject proportion of cells affected by the treatment
+* $k$ is the treatment arm index for subject $i$
+* $l$ is the study index for subject $i$
+* $\mu_{xk}$ is the population mean for parameter $x$ in group $k$
+* $\omega_{x}$ is the population parameter for parameter $x$.
+* $\eta_{xi}$ is a random effects offset on parameter $x$ for subject $i$
+
+
+
+
+
+# Post-Processing
+
+
 ## Brier Score
 
 The Brier Score is used to measure a models predictive performance. In the case of Survival Models
@@ -62,6 +111,10 @@ Note that by default $\hat{G}(T_i)$ is estimated by $\hat{G}(T_i-)$ and that in 
 event times are always considered to have occurred before censored times (this is in contrast to
 `survival::survfit` which regards censored times as coming before event times when estimating
 the censoring distribution). Both of these default options can be changed if required.
+
+
+
+
 
 
 

@@ -121,7 +121,9 @@ write_stan.JointModel <- function(object, file_path) {
 #' @rdname compileStanModel
 #' @export
 compileStanModel.JointModel <- function(object) {
-    x <- compileStanModel(object@stan)
+    stanObject <- object@stan
+    stanObject@generated_quantities <- ""
+    x <- compileStanModel(stanObject)
     invisible(x)
 }
 
@@ -161,9 +163,7 @@ sampleStanModel.JointModel <- function(object, data, ...) {
         args[["init"]] <- function() values_initial_expanded
     }
 
-    stanObject <- object@stan
-    stanObject@generated_quantities <- ""
-    model <- compileStanModel(stanObject)
+    model <- compileStanModel(object@stan)
     results <- do.call(model$sample, args)
 
     .JointModelSamples(

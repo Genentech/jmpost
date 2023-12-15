@@ -159,11 +159,11 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
     )
     assert_that(
         all(data[[subject_var]] %in% subject_ord),
-        msg = "There are subjects `survival` that are not present in `subjects`"
+        msg = "There are subjects in `survival` that are not present in `subjects`"
     )
     assert_that(
         all(subject_ord %in% data[[subject_var]]),
-        msg = "There are subjects `subjects` that are not present in `survival`"
+        msg = "There are subjects in `subjects` that are not present in `survival`"
     )
 
     data[[subject_var]] <- factor(

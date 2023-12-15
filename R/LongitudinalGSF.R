@@ -23,50 +23,97 @@ NULL
 
 #' @rdname LongitudinalGSF-class
 #'
-#' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
-#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
-#' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
-#' @param mu_phi (`Prior`)\cr for the mean shrinkage proportion `mu_phi`.
+#' @param mu_bsld (`Prior`)\cr for the mean baseline value `m_bsld`.
+#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `m_ks`.
+#' @param mu_kg (`Prior`)\cr for the mean growth rate `m_kg`.
+#'
 #' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
 #' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
 #' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
-#' @param omega_phi (`Prior`)\cr for the shrinkage proportion standard deviation `omega_phi`.
+#'
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
+#'
+#' @param a_phi (`Prior`)\cr for the alpha parameter for the fraction of cells that respond to treatment.
+#' @param b_phi (`Prior`)\cr for the beta parameter for the fraction of cells that respond to treatment.
+#'
+#' @param psi_bsld (`Prior`)\cr for the baseline value random effect `psi_bsld`. Only used in the
+#'  centered parameterization to set the initial value.
+#' @param psi_ks (`Prior`)\cr for the shrinkage rate random effect `psi_ks`. Only used in the
+#' centered parameterization to set the initial value.
+#' @param psi_kg (`Prior`)\cr for the growth rate random effect `psi_kg`. Only used in the
+#' centered parameterization to set the initial value.
+#' @param psi_phi (`Prior`)\cr for the shrinkage proportion random effect `psi_phi`. Only used in the
+#' centered parameterization to set the initial value.
+#'
+#' @param centered (`logical`)\cr whether to use the centered parameterization.
 #'
 #' @export
 LongitudinalGSF <- function(
-    mu_bsld = prior_lognormal(log(55), 5, init = 55),
-    mu_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
-    mu_kg = prior_lognormal(log(0.1), 1, init = 0.1),
-    mu_phi = prior_beta(2, 8, init = 0.2),
-    omega_bsld = prior_lognormal(log(0.1), 1, init = 0.1),
-    omega_ks = prior_lognormal(log(0.1), 1, init = 0.1),
-    omega_kg = prior_lognormal(log(0.1), 1, init = 0.1),
-    omega_phi = prior_lognormal(log(0.1), 1, init = 0.1),
-    sigma = prior_lognormal(log(0.1), 0.8, init = 0.1)
+
+    mu_bsld = prior_normal(log(60), 1, init = 60),
+    mu_ks = prior_normal(log(0.5), 1, init = 0.5),
+    mu_kg = prior_normal(log(0.3), 1, init = 0.3),
+
+    omega_bsld = prior_lognormal(log(0.2), 1, init = 0.2),
+    omega_ks = prior_lognormal(log(0.2), 1, init = 0.2),
+    omega_kg = prior_lognormal(log(0.2), 1, init = 0.2),
+
+    a_phi = prior_lognormal(log(5), 1, init = 5),
+    b_phi = prior_lognormal(log(5), 1, init = 5),
+
+    sigma = prior_lognormal(log(0.1), 1, init = 0.1),
+
+    psi_bsld = prior_none(init = 60),
+    psi_ks = prior_none(init = 0.5),
+    psi_kg = prior_none(init = 0.5),
+    psi_phi = prior_none(init = 0.5),
+
+    centered = FALSE
 ) {
-    eta_prior <- prior_std_normal()
+
+    gsf_model <- StanModule(decorated_render(
+        .x = paste0(read_stan("lm-gsf/model.stan"), collapse = "\n"),
+        centered = centered
+    ))
+
+    parameters <- list(
+        Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
+        Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
+        Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
+
+        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
+        Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
+        Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
+
+        Parameter(name = "lm_gsf_a_phi", prior = a_phi, size = "n_arms"),
+        Parameter(name = "lm_gsf_b_phi", prior = b_phi, size = "n_arms"),
+        Parameter(name = "lm_gsf_psi_phi", prior = psi_phi, size = "Nind"),
+
+        Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
+    )
+
+    if (centered) {
+        parameters_extra <- list(
+            Parameter(name = "lm_gsf_psi_bsld", prior = psi_bsld, size = "Nind"),
+            Parameter(name = "lm_gsf_psi_ks", prior = psi_ks, size = "Nind"),
+            Parameter(name = "lm_gsf_psi_kg", prior = psi_kg, size = "Nind")
+        )
+    } else {
+        parameters_extra <- list(
+            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "Nind"),
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "Nind")
+        )
+    }
+    parameters <- append(parameters, parameters_extra)
+
     x <- LongitudinalModel(
         name = "Generalized Stein-Fojo",
         stan = merge(
-            StanModule("lm-gsf/model.stan"),
+            gsf_model,
             StanModule("lm-gsf/functions.stan")
         ),
-        parameters = ParameterList(
-            Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
-            Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
-            Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
-            Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
-            Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
-            Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
-            Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
-            Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
-            Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1),
-            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = eta_prior, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_ks", prior = eta_prior, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = eta_prior, size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_phi", prior = eta_prior, size = "Nind")
-        )
+        parameters = do.call(ParameterList, parameters)
     )
     .LongitudinalGSF(x)
 }

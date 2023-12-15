@@ -282,7 +282,7 @@ mcmc_trace(samps, pars = pars)
 
 devtools::load_all(export = FALSE, path = "../../..")
 
-set.seed(313)
+set.seed(4513)
 jlist <- simulate_joint_data(
     .debug = TRUE,
     n_arm = c(50),
@@ -311,13 +311,17 @@ jlist <- simulate_joint_data(
 )
 
 set.seed(333)
-select_times <- sample(jlist$os$time, 4)
+select_times <- sample(jlist$os$time, 5)
 # select_times <- seq(1, 2000, by = 30)
 
 dlm <- jlist$lm |>
     dplyr::filter(time %in% select_times) |>
     dplyr::arrange(time, pt) |>
     dplyr::mutate(time = time)
+
+
+dlm |>
+    summarise(across(c("psi_b", "psi_g", "psi_s", "psi_phi"), mean))
 
 
 mod_dcent_nl <- cmdstan_model(

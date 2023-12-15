@@ -8,25 +8,28 @@
 \title{\code{LongitudinalGSF}}
 \usage{
 LongitudinalGSF(
-  mu_bsld = prior_lognormal(log(55), 5, init = 55),
-  mu_ks = prior_lognormal(log(0.1), 0.5, init = 0.1),
-  mu_kg = prior_lognormal(log(0.1), 1, init = 0.1),
-  mu_phi = prior_beta(2, 8, init = 0.2),
-  omega_bsld = prior_lognormal(log(0.1), 1, init = 0.1),
-  omega_ks = prior_lognormal(log(0.1), 1, init = 0.1),
-  omega_kg = prior_lognormal(log(0.1), 1, init = 0.1),
-  omega_phi = prior_lognormal(log(0.1), 1, init = 0.1),
-  sigma = prior_lognormal(log(0.1), 0.8, init = 0.1)
+  mu_bsld = prior_normal(log(60), 1, init = 60),
+  mu_ks = prior_normal(log(0.5), 1, init = 0.5),
+  mu_kg = prior_normal(log(0.3), 1, init = 0.3),
+  omega_bsld = prior_lognormal(log(0.2), 1, init = 0.2),
+  omega_ks = prior_lognormal(log(0.2), 1, init = 0.2),
+  omega_kg = prior_lognormal(log(0.2), 1, init = 0.2),
+  a_phi = prior_lognormal(log(5), 1, init = 5),
+  b_phi = prior_lognormal(log(5), 1, init = 5),
+  sigma = prior_lognormal(log(0.1), 1, init = 0.1),
+  psi_bsld = prior_none(init = 60),
+  psi_ks = prior_none(init = 0.5),
+  psi_kg = prior_none(init = 0.5),
+  psi_phi = prior_none(init = 0.5),
+  centered = FALSE
 )
 }
 \arguments{
-\item{mu_bsld}{(\code{Prior})\cr for the mean baseline value \code{mu_bsld}.}
+\item{mu_bsld}{(\code{Prior})\cr for the mean baseline value \code{m_bsld}.}
 
-\item{mu_ks}{(\code{Prior})\cr for the mean shrinkage rate \code{mu_ks}.}
+\item{mu_ks}{(\code{Prior})\cr for the mean shrinkage rate \code{m_ks}.}
 
-\item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{mu_kg}.}
-
-\item{mu_phi}{(\code{Prior})\cr for the mean shrinkage proportion \code{mu_phi}.}
+\item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{m_kg}.}
 
 \item{omega_bsld}{(\code{Prior})\cr for the baseline value standard deviation \code{omega_bsld}.}
 
@@ -34,9 +37,25 @@ LongitudinalGSF(
 
 \item{omega_kg}{(\code{Prior})\cr for the growth rate standard deviation \code{omega_kg}.}
 
-\item{omega_phi}{(\code{Prior})\cr for the shrinkage proportion standard deviation \code{omega_phi}.}
+\item{a_phi}{(\code{Prior})\cr for the alpha parameter for the fraction of cells that respond to treatment.}
+
+\item{b_phi}{(\code{Prior})\cr for the beta parameter for the fraction of cells that respond to treatment.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
+
+\item{psi_bsld}{(\code{Prior})\cr for the baseline value random effect \code{psi_bsld}. Only used in the
+centered parameterization to set the initial value.}
+
+\item{psi_ks}{(\code{Prior})\cr for the shrinkage rate random effect \code{psi_ks}. Only used in the
+centered parameterization to set the initial value.}
+
+\item{psi_kg}{(\code{Prior})\cr for the growth rate random effect \code{psi_kg}. Only used in the
+centered parameterization to set the initial value.}
+
+\item{psi_phi}{(\code{Prior})\cr for the shrinkage proportion random effect \code{psi_phi}. Only used in the
+centered parameterization to set the initial value.}
+
+\item{centered}{(\code{logical})\cr whether to use the centered parameterization.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

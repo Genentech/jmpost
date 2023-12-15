@@ -111,7 +111,7 @@ model {
         ind_phi[ind_index]
     );
     
-    Yobs ~ normal(Ypred, Ypred .* sigma);
+    target += normal_lpdf(Yobs | Ypred, Ypred .* sigma);
 }
 
 generated quantities {
