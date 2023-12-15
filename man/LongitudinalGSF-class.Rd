@@ -25,11 +25,11 @@ LongitudinalGSF(
 )
 }
 \arguments{
-\item{mu_bsld}{(\code{Prior})\cr for the mean baseline value \code{m_bsld}.}
+\item{mu_bsld}{(\code{Prior})\cr for the mean baseline value \code{mu_bsld}.}
 
-\item{mu_ks}{(\code{Prior})\cr for the mean shrinkage rate \code{m_ks}.}
+\item{mu_ks}{(\code{Prior})\cr for the mean shrinkage rate \code{mu_ks}.}
 
-\item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{m_kg}.}
+\item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{mu_kg}.}
 
 \item{omega_bsld}{(\code{Prior})\cr for the baseline value standard deviation \code{omega_bsld}.}
 

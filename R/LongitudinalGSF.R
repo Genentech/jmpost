@@ -23,9 +23,9 @@ NULL
 
 #' @rdname LongitudinalGSF-class
 #'
-#' @param mu_bsld (`Prior`)\cr for the mean baseline value `m_bsld`.
-#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `m_ks`.
-#' @param mu_kg (`Prior`)\cr for the mean growth rate `m_kg`.
+#' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
+#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
+#' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
 #'
 #' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
 #' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
