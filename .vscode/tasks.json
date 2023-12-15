@@ -29,7 +29,33 @@
         },
         
         
-        
+        {
+            "label": "JMP: Test Current File (with cache)",
+            "type": "R",
+            "code": [
+                "devtools::load_all();",
+                "testthat::test_file(\"${file}\")"
+            ],
+            "env": {
+                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
+                "NOT_CRAN": "TRUE"
+            },
+            "problemMatcher": [
+                "$testthat"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
         
         {
             "label": "JMP: Test Pkgdown",
@@ -58,7 +84,7 @@
         
         
         {
-            "label": "JMP: CMD Check (no vig)",
+            "label": "JMP: CMD Check (no vig, no tests)",
             "type": "shell",
             "group": "test",
             "options": {
@@ -67,6 +93,9 @@
                     "args": [
                         "-c"
                     ]
+                },
+                "env": {
+                    "_R_CHECK_CRAN_INCOMING_": "0"
                 }
             },
             "presentation": {
@@ -142,10 +171,10 @@
         },
 
         {
-            "label": "jmpost - all tests",
+            "label": "JMP: Run All Tasks",
             "dependsOn": [
                 "JMP: Run Vignettes",
-                "JMP: CMD Check (no vig)",
+                "JMP: CMD Check (no vig, no tests)",
                 "JMP: Test Pkgdown",
                 "JMP: Test (with cache)",
                 "JMP: Build README"
