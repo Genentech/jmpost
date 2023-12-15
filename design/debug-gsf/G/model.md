@@ -46,9 +46,9 @@ $$
 \mu_s &\sim \text{LogNormal}\big(\log(0.6),\ 0.3\big) \\
 \mu_g &\sim \text{LogNormal}\big(\log(0.2),\ 0.3\big) \\
  \\
-\sigma_{b} & \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
-\sigma_{s} & \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
-\sigma_{g} & \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
+\sigma_{b} &\sim \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
+\sigma_{s} &\sim \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
+\sigma_{g} &\sim \text{LogNormal}\big(\log(0.3),\ 0.2\big) \\
 \\
 \sigma &\sim \text{LogNormal}\big(\log(0.3),\ 0.2\big)
 \end{align*}

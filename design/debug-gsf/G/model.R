@@ -42,7 +42,7 @@ plot(density(x))
 #
 
 
-n <- 200
+n <- 80
 baseline <- tibble(
     pt = factor(sprintf("pt_%04i", 1:n)),
 
@@ -70,7 +70,7 @@ pdat <- baseline |>
     gather("key", "var")
 
 ggplot(data = pdat, aes(x = var)) +
-    geom_density() +
+    geom_density(fill = "#828282") +
     theme_bw() +
     facet_wrap(~key, scales = "free")
 
@@ -78,7 +78,7 @@ ggplot(data = pdat, aes(x = var)) +
 
 grid_df <- tidyr::expand_grid(
     pt = baseline$pt,
-    time = seq(0, 7, by = 0.3)
+    time = seq(0, 6, length.out = 5)
 ) |>
     filter(time != 0)
 

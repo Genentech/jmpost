@@ -166,14 +166,3 @@ np_cp <- nuts_params(fit)
 samps <- fit$draws()
 mcmc_pairs(samps, np = np_cp, pars = pars)
 mcmc_trace(samps, pars = pars)
-
-
-
-
-
-
-
-
-
-
-
