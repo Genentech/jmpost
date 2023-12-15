@@ -388,9 +388,9 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' @keywords internal
 #' @export
 as_print_string.StanModule <- function(object, indent = 1, ...) {
-    slots <- getSlots("StanModule")
+    slots <- names(getSlots("StanModule"))
     slots <- slots[!slots %in% c("priors", "inits")]
-    components <- Filter(\(block) slot(object, block) != "", names(slots))
+    components <- Filter(\(block) paste(slot(object, block), collapse = "") != "", slots)
     template <- c(
         "StanModule Object with components:",
         paste("    ", components)

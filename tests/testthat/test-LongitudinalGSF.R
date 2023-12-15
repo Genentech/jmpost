@@ -177,7 +177,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         c("lm_gsf_beta", "lm_gsf_gamma", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
     )
 
-    true_values <- c(0.1, 0.2, 4, 8, 4, 8, 1/ (1 / (400 / 365)))
+    true_values <- c(0.1, 0.2, 4, 8, 4, 8, 1 / (1 / (400 / 365)))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))

@@ -163,7 +163,7 @@ sampleStanModel.JointModel <- function(object, data, ...) {
         args[["init"]] <- function() values_initial_expanded
     }
 
-    model <- compileStanModel(object@stan)
+    model <- compileStanModel(object)
     results <- do.call(model$sample, args)
 
     .JointModelSamples(
