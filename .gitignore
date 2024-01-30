@@ -75,10 +75,15 @@ local/
 
 # Compiled stan model
 inst/stanmodels/stan_model
+**/models/*
+
+
+
+# Log files
+*.log
+
 
 
 # Include all gitkeep files
 !.gitkeep
-
-# Log files
-*.log
+!**/.gitkeep
