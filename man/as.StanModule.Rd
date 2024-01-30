@@ -19,8 +19,8 @@ Converts an object into a \code{\link{StanModule}}.
 }
 \seealso{
 Other as.StanModule: 
-\code{\link{as.StanModule.ParameterList}()},
 \code{\link{as.StanModule.Parameter}()},
+\code{\link{as.StanModule.ParameterList}()},
 \code{\link{as.StanModule.Prior}()}
 }
 \concept{as.StanModule}

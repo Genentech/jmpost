@@ -23,9 +23,9 @@ Other ParameterList:
 \code{\link{as_stan_list.ParameterList}()}
 
 Other as.StanModule: 
+\code{\link{as.StanModule}()},
 \code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule.Prior}()},
-\code{\link{as.StanModule}()}
+\code{\link{as.StanModule.Prior}()}
 }
 \concept{ParameterList}
 \concept{as.StanModule}

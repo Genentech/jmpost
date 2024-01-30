@@ -24,9 +24,9 @@ Other Prior-internal:
 \code{\link{as_stan_list.Prior}()}
 
 Other as.StanModule: 
-\code{\link{as.StanModule.ParameterList}()},
+\code{\link{as.StanModule}()},
 \code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule}()}
+\code{\link{as.StanModule.ParameterList}()}
 }
 \concept{Prior-internal}
 \concept{as.StanModule}
