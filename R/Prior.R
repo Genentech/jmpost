@@ -396,3 +396,33 @@ prior_student_t <- function(nu, mu, sigma, init = mu) {
         )
     )
 }
+
+
+#' Logistic Prior Distribution
+#'
+#' @param mu (`number`)\cr Location parameter.
+#' @param sigma (`number`)\cr Scale Parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_logistic <- function(mu, sigma, init = mu) {
+    Prior(
+        parameters = list(
+            mu = mu,
+            sigma = sigma
+        ),
+        display = "logistic(mu = {mu}, sigma = {sigma})",
+        repr_model = "{name} ~ logistic(prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
+    )
+}
+
