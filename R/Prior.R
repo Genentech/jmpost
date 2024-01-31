@@ -369,7 +369,7 @@ prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
 #'
 #' @param nu (`number`)\cr Degrees of freedom parameter.
 #' @param mu (`number`)\cr Location parameter.
-#' @param sigma (`number`)\cr Scale Parameter.
+#' @param sigma (`number`)\cr Scale parameter.
 #' @inheritParams Prior-Shared
 #' @family Prior
 #'
@@ -401,7 +401,7 @@ prior_student_t <- function(nu, mu, sigma, init = mu) {
 #' Logistic Prior Distribution
 #'
 #' @param mu (`number`)\cr Location parameter.
-#' @param sigma (`number`)\cr Scale Parameter.
+#' @param sigma (`number`)\cr Scale parameter.
 #' @inheritParams Prior-Shared
 #' @family Prior
 #'
@@ -426,3 +426,60 @@ prior_logistic <- function(mu, sigma, init = mu) {
     )
 }
 
+
+#' Log-Logistic Prior Distribution
+#'
+#' @param alpha (`number`)\cr Scale parameter.
+#' @param beta (`number`)\cr Shape parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_loglogistic <- function(alpha, beta, init = alpha * pi / (beta * sin(pi / beta))) {
+    Prior(
+        parameters = list(
+            alpha = alpha,
+            beta = beta
+        ),
+        display = "loglogistic(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ loglogistic(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real<lower=0> prior_alpha_{name};",
+            "real<lower=0> prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = \(x) x > 0,
+            beta = \(x) x > 0
+        )
+    )
+}
+
+
+#' Inverse-Gamma Prior Distribution
+#'
+#' @param alpha (`number`)\cr Shape parameter.
+#' @param beta (`number`)\cr Scale parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_invgamma <- function(alpha, beta, init = beta / (alpha - 1)) {
+    Prior(
+        parameters = list(
+            alpha = alpha,
+            beta = beta
+        ),
+        display = "inv_gamma(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ inv_gamma(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real<lower=0> prior_alpha_{name};",
+            "real<lower=0> prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = \(x) x > 0,
+            beta = \(x) x > 0
+        )
+    )
+}
