@@ -335,3 +335,31 @@ prior_none <- function(init = 0.00001) {
         validation = list()
     )
 }
+
+
+
+
+#' Uniform Prior Distribution
+#'
+#' @param alpha (`number`)\cr minimum value parameter.
+#' @param beta (`number`)\cr maximum value parameter
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_uniform <- function(alpha, beta, init = 0.5 * (a + b)) {
+    Prior(
+        parameters = list(alpha = alpha, beta = beta),
+        display = "uniform(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real prior_alpha_{name};",
+            "real prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = is.numeric,
+            beta = is.numeric
+        )
+    )
+}
