@@ -45,6 +45,41 @@ test_that("Priors work as expected", {
         list(prior_mu_tim = log(4), prior_sigma_tim = 2)
     )
 
+
+
+    tom <- prior_logistic(1, 2)
+    dave <- prior_loglogistic(3, 4)
+    jim <- prior_invgamma(5, 6)
+    ben <- prior_student_t(7, 8, 9)
+    kim <- prior_uniform(10, 11)
+
+    header <- StanModule("parameters {
+    real tom;
+    real dave;
+    real jim;
+    real ben;
+    real kim;
+}")
+    tom_sm <- as.StanModule(tom, name = "tom")
+    dave_sm <- as.StanModule(dave, name = "dave")
+    jim_sm <- as.StanModule(jim, name = "jim")
+    ben_sm <- as.StanModule(ben, name = "ben")
+    kim_sm <- as.StanModule(kim, name = "kim")
+
+    full_sm <- list(header, tom_sm, dave_sm, jim_sm, ben_sm, kim_sm) %>%
+        Reduce(merge, .)
+    expect_equal(
+        full_sm,
+        StanModule(test_path("models", "Prior_3.stan"))
+    )
+
+    ## Check that the model syntax is correct (e.g. that we have
+    ## correctly specified the stan prior distribution function names)
+    model_obj <- cmdstanr::cmdstan_model(
+        test_path("models", "Prior_3.stan"),
+        compile = FALSE
+    )
+    expect_true(model_obj$check_syntax(quiet = TRUE))
 })
 
 
@@ -74,6 +109,40 @@ test_that("Invalid prior parameters are rejected", {
         regexp = "Invalid.*`sigma`"
     )
 
+    expect_error(
+        prior_logistic(5, -1),
+        regexp = "Invalid.*`sigma`"
+    )
+
+    expect_error(
+        prior_loglogistic(5, -1),
+        regexp = "Invalid.*`beta`"
+    )
+
+    expect_error(
+        prior_loglogistic(-1, 6),
+        regexp = "Invalid.*`alpha`"
+    )
+
+    expect_error(
+        prior_student_t(-1, 6, 2),
+        regexp = "Invalid.*`nu`"
+    )
+    expect_error(
+        prior_student_t(1, 6, -2),
+        regexp = "Invalid.*`sigma`"
+    )
+
+    expect_error(
+        prior_invgamma(alpha = -1, beta = 2),
+        regexp = "Invalid.*`alpha`"
+    )
+    expect_error(
+        prior_invgamma(alpha = 1, beta = -2),
+        regexp = "Invalid.*`beta`"
+    )
+
+
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
     expect_s4_class(prior_none(), "Prior")
     expect_s4_class(prior_std_normal(), "Prior")
@@ -88,4 +157,9 @@ test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_beta(5, 1)))
     expect_snapshot(print(prior_gamma(2.56, 12)))
     expect_snapshot(print(prior_none()))
+    expect_snapshot(print(prior_uniform(8, 10)))
+    expect_snapshot(print(prior_student_t(3, 10, 4)))
+    expect_snapshot(print(prior_logistic(sigma = 2, init = 1, 10)))
+    expect_snapshot(print(prior_loglogistic(1, 2)))
+    expect_snapshot(print(prior_invgamma(alpha = 1, beta = 2)))
 })

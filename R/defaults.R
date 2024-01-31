@@ -37,7 +37,7 @@ setMethod(
 )
 
 # getParameters ----
-
+#' @export
 getParameters.default <- function(object) {
     if (missing(object) || is.null(object)) {
         return(NULL)
