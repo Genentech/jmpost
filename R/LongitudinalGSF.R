@@ -92,14 +92,15 @@ LongitudinalGSF <- function(
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
 
-    if (centered) {
-        parameters_extra <- list(
+    assert_flag(centered)
+    parameters_extra <- if (centered) {
+        list(
             Parameter(name = "lm_gsf_psi_bsld", prior = psi_bsld, size = "Nind"),
             Parameter(name = "lm_gsf_psi_ks", prior = psi_ks, size = "Nind"),
             Parameter(name = "lm_gsf_psi_kg", prior = psi_kg, size = "Nind")
         )
     } else {
-        parameters_extra <- list(
+        list(
             Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "Nind"),
             Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "Nind"),
             Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "Nind")
