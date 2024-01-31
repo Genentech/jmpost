@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.962790697674418" branch-rate="0" lines-covered="1863" lines-valid="1935" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2023-12-15 22:27:14.265579">
+<coverage line-rate="0.962848297213622" branch-rate="0" lines-covered="1866" lines-valid="1938" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-01-31 14:50:59.925206">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
   <packages>
-    <package name="jmpost" line-rate="0.962790697674418" branch-rate="0" complexity="0">
+    <package name="jmpost" line-rate="0.962848297213622" branch-rate="0" complexity="0">
       <classes>
         <class name="brier_score.R" filename="R/brier_score.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -1996,18 +1996,20 @@
                 <line number="92" hits="4" branch="false"/>
                 <line number="93" hits="4" branch="false"/>
                 <line number="95" hits="4" branch="false"/>
-                <line number="96" hits="1" branch="false"/>
+                <line number="96" hits="4" branch="false"/>
                 <line number="97" hits="1" branch="false"/>
                 <line number="98" hits="1" branch="false"/>
                 <line number="99" hits="1" branch="false"/>
                 <line number="100" hits="1" branch="false"/>
-                <line number="102" hits="3" branch="false"/>
+                <line number="101" hits="1" branch="false"/>
+                <line number="102" hits="4" branch="false"/>
                 <line number="103" hits="3" branch="false"/>
                 <line number="104" hits="3" branch="false"/>
                 <line number="105" hits="3" branch="false"/>
                 <line number="106" hits="3" branch="false"/>
+                <line number="107" hits="3" branch="false"/>
                 <line number="108" hits="4" branch="false"/>
-                <line number="110" hits="4" branch="false"/>
+                <line number="109" hits="4" branch="false"/>
                 <line number="111" hits="4" branch="false"/>
                 <line number="112" hits="4" branch="false"/>
                 <line number="113" hits="4" branch="false"/>
@@ -2016,6 +2018,7 @@
                 <line number="116" hits="4" branch="false"/>
                 <line number="117" hits="4" branch="false"/>
                 <line number="118" hits="4" branch="false"/>
+                <line number="119" hits="4" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2037,18 +2040,20 @@
             <line number="92" hits="4" branch="false"/>
             <line number="93" hits="4" branch="false"/>
             <line number="95" hits="4" branch="false"/>
-            <line number="96" hits="1" branch="false"/>
+            <line number="96" hits="4" branch="false"/>
             <line number="97" hits="1" branch="false"/>
             <line number="98" hits="1" branch="false"/>
             <line number="99" hits="1" branch="false"/>
             <line number="100" hits="1" branch="false"/>
-            <line number="102" hits="3" branch="false"/>
+            <line number="101" hits="1" branch="false"/>
+            <line number="102" hits="4" branch="false"/>
             <line number="103" hits="3" branch="false"/>
             <line number="104" hits="3" branch="false"/>
             <line number="105" hits="3" branch="false"/>
             <line number="106" hits="3" branch="false"/>
+            <line number="107" hits="3" branch="false"/>
             <line number="108" hits="4" branch="false"/>
-            <line number="110" hits="4" branch="false"/>
+            <line number="109" hits="4" branch="false"/>
             <line number="111" hits="4" branch="false"/>
             <line number="112" hits="4" branch="false"/>
             <line number="113" hits="4" branch="false"/>
@@ -2057,6 +2062,7 @@
             <line number="116" hits="4" branch="false"/>
             <line number="117" hits="4" branch="false"/>
             <line number="118" hits="4" branch="false"/>
+            <line number="119" hits="4" branch="false"/>
           </lines>
         </class>
         <class name="LongitudinalModel.R" filename="R/LongitudinalModel.R" line-rate="1" branch-rate="0" complexity="0">
