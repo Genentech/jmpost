@@ -342,12 +342,12 @@ prior_none <- function(init = 0.00001) {
 #' Uniform Prior Distribution
 #'
 #' @param alpha (`number`)\cr minimum value parameter.
-#' @param beta (`number`)\cr maximum value parameter
+#' @param beta (`number`)\cr maximum value parameter.
 #' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_uniform <- function(alpha, beta, init = 0.5 * (a + b)) {
+prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
@@ -360,6 +360,39 @@ prior_uniform <- function(alpha, beta, init = 0.5 * (a + b)) {
         validation = list(
             alpha = is.numeric,
             beta = is.numeric
+        )
+    )
+}
+
+
+#' Student-t Prior Distribution
+#'
+#' @param nu (`number`)\cr Degrees of freedom parameter.
+#' @param mu (`number`)\cr Location parameter.
+#' @param sigma (`number`)\cr Scale Parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_student_t <- function(nu, mu, sigma, init = mu) {
+    Prior(
+        parameters = list(
+            nu = nu,
+            mu = mu,
+            sigma = sigma
+        ),
+        display = "student_t(nu = {nu}, mu = {mu}, sigma = {sigma})",
+        repr_model = "{name} ~ student_t(prior_nu_{name}, prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real<lower=0> prior_nu_{name};",
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
+        init = init,
+        validation = list(
+            nu = \(x) x > 0,
+            mu = is.numeric,
+            sigma = \(x) x > 0
         )
     )
 }
