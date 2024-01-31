@@ -16,11 +16,11 @@ addLink(x, y, ...)
 
 \S4method{addLink}{LongitudinalModel,LinkNone}(x, y, ...)
 
-\S4method{addLink}{LongitudinalModel,`NULL`}(x, y, ...)
+\S4method{addLink}{LongitudinalModel,NULL}(x, y, ...)
 
-\S4method{addLink}{`NULL`,Link}(x, y, ...)
+\S4method{addLink}{NULL,Link}(x, y, ...)
 
-\S4method{addLink}{`NULL`,`NULL`}(x, y, ...)
+\S4method{addLink}{NULL,NULL}(x, y, ...)
 }
 \arguments{
 \item{x}{the longitudinal model.}

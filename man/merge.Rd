@@ -20,19 +20,19 @@ merge(x, y, ...)
 
 \S4method{merge}{ParameterList,ParameterList}(x, y)
 
-\S4method{merge}{StanModel,`NULL`}(x, y, ...)
+\S4method{merge}{StanModel,NULL}(x, y, ...)
 
-\S4method{merge}{`NULL`,StanModel}(x, y, ...)
+\S4method{merge}{NULL,StanModel}(x, y, ...)
 
-\S4method{merge}{StanModule,`NULL`}(x, y, ...)
+\S4method{merge}{StanModule,NULL}(x, y, ...)
 
-\S4method{merge}{`NULL`,StanModule}(x, y, ...)
+\S4method{merge}{NULL,StanModule}(x, y, ...)
 
-\S4method{merge}{ParameterList,`NULL`}(x, y, ...)
+\S4method{merge}{ParameterList,NULL}(x, y, ...)
 
-\S4method{merge}{`NULL`,ParameterList}(x, y, ...)
+\S4method{merge}{NULL,ParameterList}(x, y, ...)
 
-\S4method{merge}{`NULL`,`NULL`}(x, y, ...)
+\S4method{merge}{NULL,NULL}(x, y, ...)
 }
 \arguments{
 \item{x}{first module.}

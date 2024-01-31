@@ -25,8 +25,8 @@ Other LongitudinalQuantities:
 \code{\link{summary.LongitudinalQuantities}()}
 
 Other autoplot: 
-\code{\link{autoplot.SurvivalQuantities}()},
-\code{\link{autoplot}()}
+\code{\link{autoplot}()},
+\code{\link{autoplot.SurvivalQuantities}()}
 }
 \concept{LongitudinalQuantities}
 \concept{autoplot}

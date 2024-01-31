@@ -19,10 +19,10 @@ for a Stan model.
 }
 \seealso{
 Other as_stan_list: 
+\code{\link{as_stan_list}()},
 \code{\link{as_stan_list.DataSubject}()},
-\code{\link{as_stan_list.ParameterList}()},
 \code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list}()}
+\code{\link{as_stan_list.ParameterList}()}
 
 Other Prior-internal: 
 \code{\link{Prior-Getter-Methods}},

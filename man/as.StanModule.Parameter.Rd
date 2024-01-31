@@ -22,9 +22,9 @@ Other Parameter:
 \code{\link{as_stan_list.Parameter}()}
 
 Other as.StanModule: 
+\code{\link{as.StanModule}()},
 \code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.StanModule.Prior}()},
-\code{\link{as.StanModule}()}
+\code{\link{as.StanModule.Prior}()}
 }
 \concept{Parameter}
 \concept{as.StanModule}

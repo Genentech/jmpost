@@ -29,9 +29,9 @@ Other DataSurvival:
 \code{\link{as_stan_list.DataSubject}()}
 
 Other extractVariableNames: 
+\code{\link{extractVariableNames}()},
 \code{\link{extractVariableNames.DataLongitudinal}()},
-\code{\link{extractVariableNames.DataSubject}()},
-\code{\link{extractVariableNames}()}
+\code{\link{extractVariableNames.DataSubject}()}
 }
 \concept{DataSurvival}
 \concept{extractVariableNames}

@@ -17,10 +17,10 @@ for a Stan model.
 }
 \seealso{
 Other as_stan_list: 
+\code{\link{as_stan_list}()},
 \code{\link{as_stan_list.DataSubject}()},
 \code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list.Prior}()},
-\code{\link{as_stan_list}()}
+\code{\link{as_stan_list.Prior}()}
 
 Other ParameterList: 
 \code{\link{ParameterList-Getter-Methods}},
