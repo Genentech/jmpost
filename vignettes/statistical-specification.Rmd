@@ -33,9 +33,6 @@ contain complete information for this package yet.
 
 
 
-
-
-
 # Longitudinal Model Specification
 
 
@@ -49,10 +46,10 @@ SLD_{ij} &=b_{i}
     \phi_i e^{-s_{i}t_{ij}}+
     (1-\phi_{i}) e^ {g_{i}t_{ij}}
 \right] \\ \\
-b_i &\sim \text{LogNormal}(\mu_{bl}, \omega_b) \\
-s_i &\sim \text{LogNormal}(\mu_{sk}, \omega_s) \\
-g_i &\sim \text{LogNormal}(\mu_{gk}, \omega_g) \\
-\phi &\sim \text{Beta}(a_{\phi k}, b_{\phi k})
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+\phi &\sim \text{Beta}(a_{\phi k(i)}, b_{\phi k(i)})
 \end{align*}
 $$
 
@@ -67,11 +64,11 @@ Where:
 * $s_i$ is the subject kinetics shrinkage parameter
 * $g_i$ is the subject kinetics tumour growth parameter
 * $\phi_i$ is the subject proportion of cells affected by the treatment
-* $k$ is the treatment arm index for subject $i$
-* $l$ is the study index for subject $i$
-* $\mu_{xk}$ is the population mean for parameter $x$ in group $k$
-* $\omega_{x}$ is the population parameter for parameter $x$.
-* $\eta_{xi}$ is a random effects offset on parameter $x$ for subject $i$
+* $k(i)$ is the treatment arm index for subject $i$
+* $l(i)$ is the study index for subject $i$
+* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta}$ is the population parameter for parameter $\theta$.
+* $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
 
 
 
