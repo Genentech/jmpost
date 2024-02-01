@@ -58,3 +58,53 @@
          <None>
       
 
+---
+
+    Code
+      print(prior_uniform(8, 10))
+    Output
+      
+      Prior Object:
+         uniform(alpha = 8, beta = 10)
+      
+
+---
+
+    Code
+      print(prior_student_t(3, 10, 4))
+    Output
+      
+      Prior Object:
+         student_t(nu = 3, mu = 10, sigma = 4)
+      
+
+---
+
+    Code
+      print(prior_logistic(sigma = 2, init = 1, 10))
+    Output
+      
+      Prior Object:
+         logistic(mu = 10, sigma = 2)
+      
+
+---
+
+    Code
+      print(prior_loglogistic(1, 2))
+    Output
+      
+      Prior Object:
+         loglogistic(alpha = 1, beta = 2)
+      
+
+---
+
+    Code
+      print(prior_invgamma(alpha = 1, beta = 2))
+    Output
+      
+      Prior Object:
+         inv_gamma(alpha = 1, beta = 2)
+      
+

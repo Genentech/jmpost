@@ -50,10 +50,15 @@ reference:
       - prior_beta
       - prior_cauchy
       - prior_gamma
+      - prior_invgamma
+      - prior_logistic
+      - prior_loglogistic
       - prior_lognormal
       - prior_none
       - prior_normal
+      - prior_uniform
       - prior_std_normal
+      - prior_student_t
   
   - title: Longitudinal Model Specification
     contents:

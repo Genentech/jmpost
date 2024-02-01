@@ -338,3 +338,151 @@ prior_none <- function(init = 0.00001) {
         validation = list()
     )
 }
+
+
+
+
+#' Uniform Prior Distribution
+#'
+#' @param alpha (`number`)\cr minimum value parameter.
+#' @param beta (`number`)\cr maximum value parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
+    Prior(
+        parameters = list(alpha = alpha, beta = beta),
+        display = "uniform(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real prior_alpha_{name};",
+            "real prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = is.numeric,
+            beta = is.numeric
+        )
+    )
+}
+
+
+#' Student-t Prior Distribution
+#'
+#' @param nu (`number`)\cr Degrees of freedom parameter.
+#' @param mu (`number`)\cr Location parameter.
+#' @param sigma (`number`)\cr Scale parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_student_t <- function(nu, mu, sigma, init = mu) {
+    Prior(
+        parameters = list(
+            nu = nu,
+            mu = mu,
+            sigma = sigma
+        ),
+        display = "student_t(nu = {nu}, mu = {mu}, sigma = {sigma})",
+        repr_model = "{name} ~ student_t(prior_nu_{name}, prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real<lower=0> prior_nu_{name};",
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
+        init = init,
+        validation = list(
+            nu = \(x) x > 0,
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
+    )
+}
+
+
+#' Logistic Prior Distribution
+#'
+#' @param mu (`number`)\cr Location parameter.
+#' @param sigma (`number`)\cr Scale parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_logistic <- function(mu, sigma, init = mu) {
+    Prior(
+        parameters = list(
+            mu = mu,
+            sigma = sigma
+        ),
+        display = "logistic(mu = {mu}, sigma = {sigma})",
+        repr_model = "{name} ~ logistic(prior_mu_{name}, prior_sigma_{name});",
+        repr_data = c(
+            "real prior_mu_{name};",
+            "real<lower=0> prior_sigma_{name};"
+        ),
+        init = init,
+        validation = list(
+            mu = is.numeric,
+            sigma = \(x) x > 0
+        )
+    )
+}
+
+
+#' Log-Logistic Prior Distribution
+#'
+#' @param alpha (`number`)\cr Scale parameter.
+#' @param beta (`number`)\cr Shape parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_loglogistic <- function(alpha, beta, init = alpha * pi / (beta * sin(pi / beta))) {
+    Prior(
+        parameters = list(
+            alpha = alpha,
+            beta = beta
+        ),
+        display = "loglogistic(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ loglogistic(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real<lower=0> prior_alpha_{name};",
+            "real<lower=0> prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = \(x) x > 0,
+            beta = \(x) x > 0
+        )
+    )
+}
+
+
+#' Inverse-Gamma Prior Distribution
+#'
+#' @param alpha (`number`)\cr Shape parameter.
+#' @param beta (`number`)\cr Scale parameter.
+#' @inheritParams Prior-Shared
+#' @family Prior
+#'
+#' @export
+prior_invgamma <- function(alpha, beta, init = beta / (alpha - 1)) {
+    Prior(
+        parameters = list(
+            alpha = alpha,
+            beta = beta
+        ),
+        display = "inv_gamma(alpha = {alpha}, beta = {beta})",
+        repr_model = "{name} ~ inv_gamma(prior_alpha_{name}, prior_beta_{name});",
+        repr_data = c(
+            "real<lower=0> prior_alpha_{name};",
+            "real<lower=0> prior_beta_{name};"
+        ),
+        init = init,
+        validation = list(
+            alpha = \(x) x > 0,
+            beta = \(x) x > 0
+        )
+    )
+}

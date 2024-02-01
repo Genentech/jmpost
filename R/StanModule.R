@@ -144,11 +144,13 @@ setMethod(
         stan_fragments <- lapply(
             names(stan_blocks),
             \(par) {
-                new_string <- c(slot(x, par), slot(y, par))
-                if (all(new_string == "")) {
-                    return("")
+                if (all(slot(y, par) == "")) {
+                    return(slot(x, par))
                 }
-                return(new_string)
+                if (all(slot(x, par) == "")) {
+                    return(slot(y, par))
+                }
+                return(c(slot(x, par), slot(y, par)))
             }
         )
         names(stan_fragments) <- names(stan_blocks)
