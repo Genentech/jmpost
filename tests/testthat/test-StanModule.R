@@ -156,7 +156,7 @@ x ~ normal(mu, sigma);
 })
 
 
-testthat("StanModule.merge works as expected", {
+test_that("StanModule.merge works as expected", {
     x <- merge(
         StanModule(),
         StanModule()
