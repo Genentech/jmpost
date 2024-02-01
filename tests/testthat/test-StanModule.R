@@ -154,3 +154,44 @@ x ~ normal(mu, sigma);
     expect_equal(x@parameters, c("  real mu; ", "  real sigma;"))
     expect_equal(x@model, "x ~ normal(mu, sigma);")
 })
+
+
+testthat("StanModule.merge works as expected",{
+    x <- merge(
+        StanModule(),
+        StanModule()
+    )
+    expect_equal(x@data, "")
+    expect_equal(x@transformed_data, "")
+    expect_equal(x@parameters, "")
+    expect_equal(x@transformed_parameters, "")
+    expect_equal(x@model, "")
+    expect_equal(x@generated_quantities, "")
+    expect_equal(x@functions, "")
+
+
+    x <- merge(
+        StanModule("model {\n    int x;\n}"),
+        StanModule("data {\n    int x;\n}")
+    )
+    expect_equal(x@data, "    int x;")
+    expect_equal(x@transformed_data, "")
+    expect_equal(x@parameters, "")
+    expect_equal(x@transformed_parameters, "")
+    expect_equal(x@model, "    int x;")
+    expect_equal(x@generated_quantities, "")
+    expect_equal(x@functions, "")
+
+
+    x <- merge(
+        StanModule("parameters {\n    int x;\n}\n generated quantities {\n    int w;\n}"),
+        StanModule("generated quantities {\n    int z;\n}\n parameters {\n    int y;\n}")
+    )
+    expect_equal(x@data, "")
+    expect_equal(x@transformed_data, "")
+    expect_equal(x@parameters, c("    int x;", "    int y;"))
+    expect_equal(x@transformed_parameters, "")
+    expect_equal(x@model, "")
+    expect_equal(x@generated_quantities, c("    int w;", "    int z;"))
+    expect_equal(x@functions, "")
+})
