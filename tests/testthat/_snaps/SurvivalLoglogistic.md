@@ -6,7 +6,7 @@
     Output
       
       Log-Logistic Survival Model with parameters:
-          sm_logl_lambda ~ lognormal(mu = -2.30258509299405, sigma = 5)
+          sm_logl_lambda ~ lognormal(mu = -2.30259, sigma = 5)
           sm_logl_p ~ gamma(alpha = 2, beta = 5)
           beta_os_cov ~ normal(mu = 0, sigma = 5)
       
@@ -20,7 +20,7 @@
     Output
       
       Log-Logistic Survival Model with parameters:
-          sm_logl_lambda ~ lognormal(mu = -2.30258509299405, sigma = 5)
+          sm_logl_lambda ~ lognormal(mu = -2.30259, sigma = 5)
           sm_logl_p ~ cauchy(mu = 0, sigma = 1)
           beta_os_cov ~ gamma(alpha = 3, beta = 4)
       
