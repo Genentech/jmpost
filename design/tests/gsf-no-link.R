@@ -6,7 +6,7 @@ library(cmdstanr)
 
 # devtools::install_git("https://github.com/stan-dev/cmdstanr")
 
-devtools::document()
+# devtools::document()
 devtools::load_all(export_all = FALSE)
 
 options("jmpost.cache.dir" = file.path("local", "models"))
@@ -15,11 +15,41 @@ options("jmpost.cache.dir" = file.path("local", "models"))
 
 
 
+
 ## Generate Test data with known parameters
 ## (based on internal data, time in years)
+# set.seed(7143)
+# jlist <- simulate_joint_data(
+#     .debug = TRUE,
+#     n_arm = c(70, 90),
+#     times = seq(0, 3, by = (1/365)/2),
+#     lambda_cen = 1 / 9000,
+#     beta_cat = c(
+#         "A" = 0,
+#         "B" = -0.1,
+#         "C" = 0.5
+#     ),
+#     beta_cont = 0.3,
+#     lm_fun = sim_lm_gsf(
+#         sigma = 0.01,
+#         mu_s = c(0.6),
+#         mu_g = c(0.3),
+#         mu_b = 60,
+#         omega_b = 0.2,
+#         omega_s = 0.2,
+#         omega_g = 0.2,
+#         a_phi = 6,
+#         b_phi = 8
+#     ),
+#     os_fun = sim_os_exponential(
+#         lambda = 1 / (400 / 365)
+#     )
+# )
+set.seed(7143)
 jlist <- simulate_joint_data(
-    n_arm = c(80, 80),
-    times = seq(0, 4, by = (1/365)/2),
+    .debug = TRUE,
+    n_arm = c(85, 100),
+    times = seq(0, 3, by = (1/365)/2),
     lambda_cen = 1 / 9000,
     beta_cat = c(
         "A" = 0,
@@ -27,64 +57,30 @@ jlist <- simulate_joint_data(
         "C" = 0.5
     ),
     beta_cont = 0.3,
-    lm_fun = sim_lm_gsf(
-        sigma = 0.005,
-        mu_s = c(0.25, 0.35),
-        mu_g = c(0.15, 0.25),
-        mu_phi = c(0.4, 0.6),
-        mu_b = 60,
-        omega_b = 0.1,
-        omega_s = 0.1,
-        omega_g = 0.1,
-        omega_phi = 0.2
-    ),
-    os_fun = sim_os_exponential(
-        lambda = 1 / 400
-    )
+    lm_fun = sim_lm_gsf(link_dsld = 0.1, link_ttg = 0.2),
+    os_fun = sim_os_exponential(1 / (400 / 365))
 )
 
 
+set.seed(333)
+select_times <- sample(jlist$lm$time, 5)
 
-## Generate Test data with known parameters
-## (based on Kerioui  time in days)
-jlist <- simulate_joint_data(
-    n_arm = c(80),
-    times = seq(0, 900),
-    lambda_cen = 1 / 9000,
-    beta_cat = c(
-        "A" = 0,
-        "B" = -0.1,
-        "C" = 0.5
-    ),
-    beta_cont = 0.3,
-    lm_fun = sim_lm_gsf(
-        sigma = 0.025,
-        mu_s = c(0.007),
-        mu_g = c(0.001),
-        mu_phi = c(0.2),
-        mu_b = 60,
-        omega_b = 0.51,
-        omega_s = 0.51,
-        omega_g = 0.51,
-        omega_phi = 0.51
-    ),
-    os_fun = sim_os_exponential(
-        lambda = 1 / 400
-    )
-)
 
 
 
 ## Extract data to individual datasets
 dat_os <- jlist$os
 
-select_times <- seq(1, 600, by = 50)
-# select_times <- seq(1, 2000, by = 30)
 
 dat_lm <- jlist$lm |>
     dplyr::filter(time %in% select_times) |>
     dplyr::arrange(time, pt) |>
     dplyr::mutate(time = time)
+
+dat_lm |>
+    dplyr::group_by(arm) |>
+    dplyr::summarise(across(c("psi_b", "psi_g", "psi_s", "psi_phi"), mean))
+
 
 # mean(dat_os$time)
 # mean(dat_os$event)
@@ -97,23 +93,33 @@ ggplot(data = dat_lm |> dplyr::filter(pt %in% pnam)) +
     geom_line(aes(x = time, y = sld, col =pt, group =pt)) +
     theme_bw()
 
+param <- dat_lm |>
+    select(arm, psi_b, psi_s, psi_g, psi_phi) |>
+    gather("KEY", "VAR", -arm)
+
+ggplot(data = param, aes(x = VAR, group = arm, col = arm)) +
+    geom_density() +
+    theme_bw() +
+    facet_wrap(~KEY, scales = "free")
 
 
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
-
-        mu_bsld = prior_lognormal(log(60), 0.6),
-        mu_ks = prior_lognormal(log(0.007), 0.6),
-        mu_kg = prior_lognormal(log(0.001), 0.6),
-        mu_phi = prior_beta(7, 10),
-
-        omega_bsld = prior_lognormal(log(0.5), 0.6),
-        omega_ks = prior_lognormal(log(0.5), 0.6),
-        omega_kg = prior_lognormal(log(0.5), 0.6),
-        omega_phi = prior_lognormal(log(0.5), 0.6),
-
-        sigma = prior_lognormal(log(0.03), 0.6)
-    )
+        mu_bsld = prior_normal(log(60), 1),
+        mu_ks = prior_normal(log(0.6), 1),
+        mu_kg = prior_normal(log(0.3), 1),
+        omega_bsld = prior_lognormal(log(0.2), 1),
+        omega_ks = prior_lognormal(log(0.2), 1),
+        omega_kg = prior_lognormal(log(0.2), 1),
+        a_phi = prior_lognormal(log(6), 1),
+        b_phi = prior_lognormal(log(8), 1),
+        sigma = prior_lognormal(log(0.01), 1),
+        centered = FALSE
+    ),
+    survival = SurvivalExponential(
+        lambda = prior_lognormal(log(1 / (400 / 365)), 1)
+    ),
+    link = LinkGSF()
 )
 
 
@@ -133,41 +139,55 @@ jdat <- DataJoint(
         arm = "arm",
         study = "study"
     ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
     longitudinal = DataLongitudinal(
         data = dat_lm,
         formula = sld ~ time,
-        threshold = 5
+        threshold = -999
     )
 )
+
+
+# jmpost:::initialValues(jm)
+
 
 ## Sample from JointModel
 
 mp <- sampleStanModel(
     jm,
     data = jdat,
-    iter_sampling = 500,
-    iter_warmup = 1000,
-    chains = 1,
-    parallel_chains = 1
+    iter_warmup = 600,
+    iter_sampling = 1000,
+    refresh = 200,
+    chains = 3,
+    parallel_chains = 3
 )
 
 
+summary_post <- function(model, vars, exp = FALSE) {
+    dat <- model$summary(
+        vars,
+        mean = mean,
+        q01 = \(x) purrr::set_names(quantile(x, 0.01), ""),
+        q99 = \(x) purrr::set_names(quantile(x, 0.99), ""),
+        rhat = posterior::rhat,
+        ess_bulk = posterior::ess_bulk,
+        ess_tail = posterior::ess_tail
+    )
+    if (exp) {
+        dat$q01 <- dat$q01 |> exp()
+        dat$q99 <- dat$q99 |> exp()
+        dat$mean <- dat$mean |> exp()
+    }
+    dat
+}
 
-vars <- c(
-    "lm_gsf_mu_bsld",     # 60
-    "lm_gsf_mu_phi",      # 0.4    0.6
-    "lm_gsf_mu_kg",       # 0.15   0.2
-    "lm_gsf_mu_ks",       # 0.2    0.25
-    "lm_gsf_sigma",       # 0.003
-    "lm_gsf_omega_bsld",  # 0.1
-    "lm_gsf_omega_kg",    # 0.1
-    "lm_gsf_omega_phi",   # 0.1
-    "lm_gsf_omega_ks"     # 0.1
-)
+summary_post(mp@results, c("lm_gsf_mu_bsld", "lm_gsf_mu_kg", "lm_gsf_mu_ks"), TRUE)
+summary_post(mp@results, c("lm_gsf_beta", "lm_gsf_gamma", "lm_gsf_a_phi", "lm_gsf_b_phi"))
 
-
-
-mp@results$summary(vars)
 
 
 

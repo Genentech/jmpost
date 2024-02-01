@@ -76,7 +76,7 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sizes <- vapply(
         object@results$metadata()[["stan_variable_sizes"]],
         \(x) {
-            if (length(x) == 1 & x == 1) return("")
+            if (length(x) == 1 && x == 1) return("")
             paste0("[", paste(x, collapse = ", "), "]")
         },
         character(1)

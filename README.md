@@ -78,6 +78,10 @@ library(jmpost)
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
 #>   +.gg   ggplot2
+#> Registered S3 methods overwritten by 'ggpp':
+#>   method                  from   
+#>   heightDetails.titleGrob ggplot2
+#>   widthDetails.titleGrob  ggplot2
 set.seed(321)
 sim_data <- simulate_joint_data(
     lm_fun = sim_lm_random_slope(),

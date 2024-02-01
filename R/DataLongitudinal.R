@@ -92,11 +92,11 @@ harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
     )
     assert_that(
         all(data[[subject_var]] %in% subject_ord),
-        msg = "There are subjects `longitudinal` that are not present in `subjects`"
+        msg = "There are subjects in `longitudinal` that are not present in `subjects`"
     )
     assert_that(
         all(subject_ord %in% data[[subject_var]]),
-        msg = "There are subjects `subjects` that are not present in `longitudinal`"
+        msg = "There are subjects in `subjects` that are not present in `longitudinal`"
     )
     data[[subject_var]] <- factor(
         as.character(data[[subject_var]]),
@@ -169,7 +169,7 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     assert_factor(df[[subject_var]])
 
     mat_sld_index <- stats::model.matrix(
-        stats::as.formula(paste("~", subject_var)),
+        stats::as.formula(paste("~ -1 + ", subject_var)),
         data = df
     ) |>
         t()

@@ -94,9 +94,12 @@ setValidity(
 #' @family Prior-internal
 #' @export
 as.character.Prior <- function(x, ...) {
+
+    parameters_rounded <- lapply(x@parameters, round, 5)
+
     do.call(
         glue::glue,
-        append(x@display, x@parameters)
+        append(x@display, parameters_rounded)
     )
 }
 

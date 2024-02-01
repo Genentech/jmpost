@@ -49,12 +49,12 @@ gsf_dsld <- function(time, b, s, g, phi) {
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param mu_s (`numeric`)\cr the mean shrinkage rates for the two treatment arms.
 #' @param mu_g (`numeric`)\cr the mean growth rates for the two treatment arms.
-#' @param mu_phi (`numeric`)\cr the mean shrinkage proportions for the two treatment arms.
 #' @param mu_b (`numeric`)\cr the mean baseline values for the two treatment arms.
 #' @param omega_b (`number`)\cr the baseline value standard deviation.
 #' @param omega_s (`number`)\cr the shrinkage rate standard deviation.
 #' @param omega_g (`number`)\cr the growth rate standard deviation.
-#' @param omega_phi (`number`)\cr the shrinkage proportion standard deviation.
+#' @param a_phi (`number`)\cr the alpha parameter for the fraction of cells that respond to treatment.
+#' @param b_phi (`number`)\cr the beta parameter for the fraction of cells that respond to treatment.
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
@@ -65,14 +65,14 @@ gsf_dsld <- function(time, b, s, g, phi) {
 #' @export
 sim_lm_gsf <- function(
     sigma = 0.01,
-    mu_s = c(3, 4),
-    mu_g = c(0.2, 0.3),
-    mu_phi = c(0.1, 0.2),
-    mu_b = 50,
-    omega_b = 0.135,
-    omega_s = 0.15,
-    omega_g = 0.225,
-    omega_phi = 0.75,
+    mu_s = c(0.6, 0.4),
+    mu_g = c(0.25, 0.35),
+    mu_b = 60,
+    a_phi = c(4, 6),
+    b_phi = c(4, 6),
+    omega_b = 0.2,
+    omega_s = 0.2,
+    omega_g = 0.2,
     link_dsld = 0,
     link_ttg = 0,
     link_identity = 0
@@ -80,26 +80,24 @@ sim_lm_gsf <- function(
     function(lm_base) {
 
         assert_that(
-            length(unique(lm_base$study)) == 1,
+            length(unique(lm_base$study)) == length(mu_b),
             length(mu_b) == 1,
             length(sigma) == 1,
             length(mu_s) == length(unique(lm_base$arm)),
             length(mu_s) == length(mu_g),
-            length(mu_s) == length(mu_phi),
-            length(c(omega_b, omega_s, omega_g, omega_phi)) == 4
+            length(mu_s) == length(a_phi),
+            length(mu_s) == length(b_phi),
+            length(c(omega_b, omega_s, omega_g)) == 3
         )
 
         baseline_covs <- lm_base |>
             dplyr::distinct(.data$pt, .data$arm, .data$study) |>
-            dplyr::mutate(arm_n = as.numeric(factor(as.character(.data$arm)))) |>
-            dplyr::mutate(eta_b = stats::rnorm(dplyr::n(), 0, 1)) |>
-            dplyr::mutate(eta_s = stats::rnorm(dplyr::n(), 0, 1)) |>
-            dplyr::mutate(eta_g = stats::rnorm(dplyr::n(), 0, 1)) |>
-            dplyr::mutate(eta_phi = stats::rnorm(dplyr::n(), 0, 1)) |>
-            dplyr::mutate(psi_b = exp(log(mu_b) + .data$eta_b * omega_b)) |>
-            dplyr::mutate(psi_s = exp(log(mu_s[.data$arm_n]) + .data$eta_s * omega_s)) |>
-            dplyr::mutate(psi_g = exp(log(mu_g[.data$arm_n]) + .data$eta_g * omega_g)) |>
-            dplyr::mutate(psi_phi = stats::plogis(stats::qlogis(mu_phi[.data$arm_n]) + .data$eta_phi * omega_phi))
+            dplyr::mutate(study_idx = as.numeric(factor(as.character(.data$study)))) |>
+            dplyr::mutate(arm_idx = as.numeric(factor(as.character(.data$arm)))) |>
+            dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(mu_b[.data$study_idx]), omega_b)) |>
+            dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(mu_s[.data$arm_idx]), omega_s)) |>
+            dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(mu_g[.data$arm_idx]), omega_g)) |>
+            dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), a_phi[.data$arm_idx], b_phi[.data$arm_idx]))
 
         lm_dat <- lm_base |>
             dplyr::select(!dplyr::all_of(c("study", "arm"))) |>

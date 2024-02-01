@@ -7,25 +7,31 @@ parameters{
     // Source - lm-gsf/model.stan
     //
 
-    // Population parameters.
-    vector<lower={{ machine_double_eps }}>[n_studies] lm_gsf_mu_bsld;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_mu_ks;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_mu_kg;
-    vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[n_arms] lm_gsf_mu_phi;
+    vector[n_studies] lm_gsf_mu_bsld;
+    vector[n_arms] lm_gsf_mu_ks;
+    vector[n_arms] lm_gsf_mu_kg;
 
     real<lower={{ machine_double_eps }}> lm_gsf_omega_bsld;
     real<lower={{ machine_double_eps }}> lm_gsf_omega_ks;
     real<lower={{ machine_double_eps }}> lm_gsf_omega_kg;
-    real<lower={{ machine_double_eps }}> lm_gsf_omega_phi;
 
-    // Standard deviation for RUV.
-    real<lower={{ machine_double_eps }}> lm_gsf_sigma;
-
-    // Random effects.
+{% if centered -%}
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_bsld;
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_ks;
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_kg;
+{% else -%}
     vector[Nind] lm_gsf_eta_tilde_bsld;
     vector[Nind] lm_gsf_eta_tilde_ks;
     vector[Nind] lm_gsf_eta_tilde_kg;
-    vector[Nind] lm_gsf_eta_tilde_phi;
+{%- endif -%}
+
+    // Phi Parameters
+    vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[Nind] lm_gsf_psi_phi;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_a_phi;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_b_phi;
+
+    // Standard deviation of the error term
+    real<lower={{ machine_double_eps }}> lm_gsf_sigma;
 
 }
 
@@ -38,22 +44,17 @@ transformed parameters{
     // Source - lm-gsf/model.stan
     //
 
-    // Non-centered reparametrization for hierarchical models.
-    vector[Nind] lm_gsf_psi_bsld = exp(
-        log(lm_gsf_mu_bsld[pt_study_index]) + lm_gsf_eta_tilde_bsld * lm_gsf_omega_bsld
+{% if not centered -%}
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_bsld = exp(
+        lm_gsf_mu_bsld[pt_study_index] + (lm_gsf_eta_tilde_bsld * lm_gsf_omega_bsld)
     );
-
-    vector[Nind] lm_gsf_psi_ks = exp(
-        log(lm_gsf_mu_ks[pt_arm_index]) + lm_gsf_eta_tilde_ks * lm_gsf_omega_ks
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_ks = exp(
+        lm_gsf_mu_ks[pt_arm_index] + (lm_gsf_eta_tilde_ks * lm_gsf_omega_ks)
     );
-
-    vector[Nind] lm_gsf_psi_kg = exp(
-        log(lm_gsf_mu_kg[pt_arm_index]) + lm_gsf_eta_tilde_kg * lm_gsf_omega_kg
+    vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_kg = exp(
+        lm_gsf_mu_kg[pt_arm_index] + (lm_gsf_eta_tilde_kg * lm_gsf_omega_kg)
     );
-
-    vector[Nind] lm_gsf_psi_phi =  inv_logit(
-        logit(lm_gsf_mu_phi[pt_arm_index]) + lm_gsf_eta_tilde_phi * lm_gsf_omega_phi
-    );
+{%- endif -%}
 
     vector[Nta_total] Ypred;
 
@@ -65,8 +66,6 @@ transformed parameters{
         lm_gsf_psi_phi[ind_index]
     );
 
-
-    // Reverse implementation from Rstan helper function
     log_lik += csr_matrix_times_vector(
         Nind,
         Nta_obs_y,
@@ -94,6 +93,19 @@ transformed parameters{
             )
         );
     }
+}
+
+
+model {
+    //
+    // Source - lm-gsf/model.stan
+    //
+{% if centered %}
+    lm_gsf_psi_bsld ~ lognormal(lm_gsf_mu_bsld[pt_study_index], lm_gsf_omega_bsld);
+    lm_gsf_psi_ks ~ lognormal(lm_gsf_mu_ks[pt_arm_index], lm_gsf_omega_ks);
+    lm_gsf_psi_kg ~ lognormal(lm_gsf_mu_kg[pt_arm_index], lm_gsf_omega_kg);
+{%- endif -%}
+    lm_gsf_psi_phi ~ beta(lm_gsf_a_phi[pt_arm_index], lm_gsf_b_phi[pt_arm_index]);
 }
 
 
