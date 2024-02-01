@@ -379,6 +379,15 @@
     <loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_invgamma.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_logistic.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_loglogistic.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_lognormal.html</loc>
   </url>
   <url>
@@ -389,6 +398,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_std_normal.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_student_t.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_uniform.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc>
