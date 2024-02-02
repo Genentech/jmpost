@@ -102,6 +102,7 @@ as_stan_list.Parameter <- function(object, ...) {
 #'
 #' @param x (`Paramater`) \cr A model parameter
 #' @param object (`Paramater`) \cr A model parameter
+#' @param ... Not Used.
 #'
 #' @description
 #' Getter functions for the slots of a [`Parameter`] object

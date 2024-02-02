@@ -523,6 +523,8 @@ prior_invgamma <- function(alpha, beta) {
 #' @param nu (`number`)\cr Parameter for underlying distribution.
 #' @param ... Pass any additional arguments to the underlying distribution.
 #'
+#' @importFrom stats rbeta rcauchy rgamma rlnorm rlogis rnorm rt runif
+#'
 #' @name Local_Sample
 #' @keywords internal
 NULL

@@ -132,6 +132,7 @@ as.list.ParameterList <- function(x, ...) {
 #' Getter functions for the slots of a [`ParameterList`] object
 #' @inheritParams ParameterList-Shared
 #' @family ParameterList
+#' @param nchains (`integer`) \cr the number of chains.
 #' @name ParameterList-Getter-Methods
 NULL
 

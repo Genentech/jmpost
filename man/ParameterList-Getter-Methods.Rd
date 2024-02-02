@@ -18,6 +18,8 @@
 
 \item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
 
+\item{nchains}{(\code{integer}) \cr the number of chains.}
+
 \item{...}{Not Used.}
 }
 \description{
