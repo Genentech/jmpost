@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.960210930009588" branch-rate="0" lines-covered="2003" lines-valid="2086" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-02-02 17:12:16.415397">
+<coverage line-rate="0.960096153846154" branch-rate="0" lines-covered="1997" lines-valid="2080" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-02-02 17:28:32.929863">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
   <packages>
-    <package name="jmpost" line-rate="0.960210930009588" branch-rate="0" complexity="0">
+    <package name="jmpost" line-rate="0.960096153846154" branch-rate="0" complexity="0">
       <classes>
         <class name="brier_score.R" filename="R/brier_score.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -2377,54 +2377,42 @@
           <methods>
             <method name="LongitudinalRandomSlope" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="36" hits="9" branch="false"/>
+                <line number="37" hits="9" branch="false"/>
                 <line number="38" hits="9" branch="false"/>
-                <line number="39" hits="9" branch="false"/>
                 <line number="40" hits="9" branch="false"/>
+                <line number="41" hits="9" branch="false"/>
                 <line number="42" hits="9" branch="false"/>
                 <line number="43" hits="9" branch="false"/>
                 <line number="44" hits="9" branch="false"/>
                 <line number="45" hits="9" branch="false"/>
                 <line number="46" hits="9" branch="false"/>
                 <line number="47" hits="9" branch="false"/>
+                <line number="48" hits="9" branch="false"/>
                 <line number="49" hits="9" branch="false"/>
                 <line number="50" hits="9" branch="false"/>
                 <line number="51" hits="9" branch="false"/>
                 <line number="52" hits="9" branch="false"/>
-                <line number="53" hits="9" branch="false"/>
-                <line number="54" hits="9" branch="false"/>
-                <line number="55" hits="9" branch="false"/>
-                <line number="56" hits="9" branch="false"/>
-                <line number="57" hits="9" branch="false"/>
-                <line number="58" hits="9" branch="false"/>
-                <line number="59" hits="9" branch="false"/>
-                <line number="60" hits="9" branch="false"/>
-                <line number="61" hits="9" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
+            <line number="36" hits="9" branch="false"/>
+            <line number="37" hits="9" branch="false"/>
             <line number="38" hits="9" branch="false"/>
-            <line number="39" hits="9" branch="false"/>
             <line number="40" hits="9" branch="false"/>
+            <line number="41" hits="9" branch="false"/>
             <line number="42" hits="9" branch="false"/>
             <line number="43" hits="9" branch="false"/>
             <line number="44" hits="9" branch="false"/>
             <line number="45" hits="9" branch="false"/>
             <line number="46" hits="9" branch="false"/>
             <line number="47" hits="9" branch="false"/>
+            <line number="48" hits="9" branch="false"/>
             <line number="49" hits="9" branch="false"/>
             <line number="50" hits="9" branch="false"/>
             <line number="51" hits="9" branch="false"/>
             <line number="52" hits="9" branch="false"/>
-            <line number="53" hits="9" branch="false"/>
-            <line number="54" hits="9" branch="false"/>
-            <line number="55" hits="9" branch="false"/>
-            <line number="56" hits="9" branch="false"/>
-            <line number="57" hits="9" branch="false"/>
-            <line number="58" hits="9" branch="false"/>
-            <line number="59" hits="9" branch="false"/>
-            <line number="60" hits="9" branch="false"/>
-            <line number="61" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="Parameter.R" filename="R/Parameter.R" line-rate="1" branch-rate="0" complexity="0">
