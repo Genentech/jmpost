@@ -14,8 +14,7 @@
 ---
 
     Code
-      x <- SurvivalLogLogistic(beta = prior_gamma(3, 4, init = 10), p = prior_cauchy(
-        0, 1))
+      x <- SurvivalLogLogistic(beta = prior_gamma(3, 4), p = prior_cauchy(0, 1))
       print(x)
     Output
       

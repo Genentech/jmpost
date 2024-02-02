@@ -18,8 +18,8 @@
            Random Slope Longitudinal Model with parameters:
                lm_rs_intercept ~ normal(mu = 30, sigma = 10)
                lm_rs_slope_mu ~ normal(mu = 0, sigma = 15)
-               lm_rs_slope_sigma ~ lognormal(mu = 1, sigma = 5)
-               lm_rs_sigma ~ lognormal(mu = 1, sigma = 5)
+               lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5)
+               lm_rs_sigma ~ lognormal(mu = 0, sigma = 1.5)
                lm_rs_ind_rnd_slope ~ <None>
            
         Link:     
@@ -101,8 +101,8 @@
            Random Slope Longitudinal Model with parameters:
                lm_rs_intercept ~ normal(mu = 30, sigma = 10)
                lm_rs_slope_mu ~ normal(mu = 0, sigma = 15)
-               lm_rs_slope_sigma ~ lognormal(mu = 1, sigma = 5)
-               lm_rs_sigma ~ lognormal(mu = 1, sigma = 5)
+               lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5)
+               lm_rs_sigma ~ lognormal(mu = 0, sigma = 1.5)
                lm_rs_ind_rnd_slope ~ <None>
            
         Link:

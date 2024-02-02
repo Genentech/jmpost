@@ -29,6 +29,7 @@ NULL
 #' @slot init (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #' @slot display (`string`)\cr See arguments.
+#' @slot sample (`function`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior
@@ -41,7 +42,8 @@ NULL
         "repr_model" = "character",
         "repr_data" = "character",
         "init" = "numeric",
-        "validation" = "list"
+        "validation" = "list",
+        "sample" = "function"
     )
 )
 
@@ -53,15 +55,25 @@ NULL
 #' @param init (`numeric`)\cr the initial value.
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
+#' @param sample (`function`)\cr a function to sample from the prior distribution.
 #' @rdname Prior-class
-Prior <- function(parameters, display, repr_model, repr_data, init, validation) {
+Prior <- function(
+    parameters,
+    display,
+    repr_model,
+    repr_data,
+    init,
+    validation,
+    sample
+) {
     .Prior(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
         init = init,
         display = display,
-        validation = validation
+        validation = validation,
+        sample = sample
     )
 }
 
@@ -175,7 +187,9 @@ NULL
 
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
-initialValues.Prior <- function(object) object@init
+initialValues.Prior <- function(object, ...) {
+    0.5 * object@init + 0.5 * object@sample(1)
+}
 
 
 # Prior-constructors ----
@@ -184,10 +198,9 @@ initialValues.Prior <- function(object) object@init
 #'
 #' @param mu (`number`)\cr mean.
 #' @param sigma (`number`)\cr standard deviation.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #' @export
-prior_normal <- function(mu, sigma, init = mu) {
+prior_normal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "normal(mu = {mu}, sigma = {sigma})",
@@ -196,7 +209,8 @@ prior_normal <- function(mu, sigma, init = mu) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = init,
+        init = mu,
+        sample = \(n) local_rnorm(n, mu, sigma),
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
@@ -207,17 +221,17 @@ prior_normal <- function(mu, sigma, init = mu) {
 
 #' Standard Normal Prior Distribution
 #'
-#' @inheritParams Prior-Shared
 #'
 #' @family Prior
 #' @export
-prior_std_normal <- function(init = 0) {
+prior_std_normal <- function() {
     Prior(
         parameters = list(),
         display = "std_normal()",
         repr_model = "{name} ~ std_normal();",
         repr_data = "",
-        init = init,
+        init = 0,
+        sample = \(n) local_rnorm(n),
         validation = list()
     )
 }
@@ -226,11 +240,10 @@ prior_std_normal <- function(init = 0) {
 #'
 #' @param mu (`number`)\cr mean.
 #' @param sigma (`number`)\cr scale.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_cauchy <- function(mu, sigma, init = mu) {
+prior_cauchy <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "cauchy(mu = {mu}, sigma = {sigma})",
@@ -239,7 +252,8 @@ prior_cauchy <- function(mu, sigma, init = mu) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = init,
+        init = mu,
+        sample = \(n) local_rcauchy(n, mu, sigma),
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
@@ -251,11 +265,10 @@ prior_cauchy <- function(mu, sigma, init = mu) {
 #'
 #' @param alpha (`number`)\cr shape.
 #' @param beta (`number`)\cr inverse scale.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_gamma <- function(alpha, beta, init = alpha / beta) {
+prior_gamma <- function(alpha, beta) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
         repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name});",
@@ -264,7 +277,8 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = init,
+        init = alpha / beta,
+        sample = \(n) local_rgamma(n, shape = alpha, rate = beta),
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
@@ -276,11 +290,10 @@ prior_gamma <- function(alpha, beta, init = alpha / beta) {
 #'
 #' @param mu (`number`)\cr mean of the logarithm.
 #' @param sigma (`number`)\cr standard deviation of the logarithm.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
+prior_lognormal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "lognormal(mu = {mu}, sigma = {sigma})",
@@ -289,7 +302,8 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = init,
+        init = exp(mu + (sigma^2) / 2),
+        sample = \(n) local_rlnorm(n, mu, sigma),
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
@@ -301,11 +315,10 @@ prior_lognormal <- function(mu, sigma, init = exp(mu + (sigma^2) / 2)) {
 #'
 #' @param a (`number`)\cr first parameter.
 #' @param b (`number`)\cr second parameter
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_beta <- function(a, b, init = a / (a + b)) {
+prior_beta <- function(a, b) {
     Prior(
         parameters = list(a = a, b = b),
         display = "beta(a = {a}, b = {b})",
@@ -314,7 +327,8 @@ prior_beta <- function(a, b, init = a / (a + b)) {
             "real<lower=0> prior_a_{name};",
             "real<lower=0> prior_b_{name};"
         ),
-        init = init,
+        init = a / (a + b),
+        sample = \(n) local_rbeta(n, a, b),
         validation = list(
             a = \(x) x > 0,
             b = \(x) x > 0
@@ -324,17 +338,17 @@ prior_beta <- function(a, b, init = a / (a + b)) {
 
 #' Only Initial Values Specification
 #'
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_none <- function(init = 0.00001) {
+prior_none <- function() {
     Prior(
         parameters = list(),
         display = "<None>",
         repr_model = "",
         repr_data = "",
-        init = init,
+        sample = \(n) local_runif(n, -4, 4),
+        init = 0,
         validation = list()
     )
 }
@@ -346,11 +360,10 @@ prior_none <- function(init = 0.00001) {
 #'
 #' @param alpha (`number`)\cr minimum value parameter.
 #' @param beta (`number`)\cr maximum value parameter.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
+prior_uniform <- function(alpha, beta) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
@@ -359,7 +372,8 @@ prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
             "real prior_alpha_{name};",
             "real prior_beta_{name};"
         ),
-        init = init,
+        init = 0.5 * (alpha + beta),
+        sample = \(n) local_runif(n, alpha, beta),
         validation = list(
             alpha = is.numeric,
             beta = is.numeric
@@ -373,11 +387,10 @@ prior_uniform <- function(alpha, beta, init = 0.5 * (alpha + beta)) {
 #' @param nu (`number`)\cr Degrees of freedom parameter.
 #' @param mu (`number`)\cr Location parameter.
 #' @param sigma (`number`)\cr Scale parameter.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_student_t <- function(nu, mu, sigma, init = mu) {
+prior_student_t <- function(nu, mu, sigma) {
     Prior(
         parameters = list(
             nu = nu,
@@ -391,7 +404,8 @@ prior_student_t <- function(nu, mu, sigma, init = mu) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = init,
+        init = mu,
+        sample = \(n) local_rt(n, nu, mu, sigma),
         validation = list(
             nu = \(x) x > 0,
             mu = is.numeric,
@@ -401,15 +415,15 @@ prior_student_t <- function(nu, mu, sigma, init = mu) {
 }
 
 
+
 #' Logistic Prior Distribution
 #'
 #' @param mu (`number`)\cr Location parameter.
 #' @param sigma (`number`)\cr Scale parameter.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_logistic <- function(mu, sigma, init = mu) {
+prior_logistic <- function(mu, sigma) {
     Prior(
         parameters = list(
             mu = mu,
@@ -421,7 +435,8 @@ prior_logistic <- function(mu, sigma, init = mu) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = init,
+        init = mu,
+        sample = \(n) local_rlogis(n, mu, sigma),
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
@@ -434,11 +449,10 @@ prior_logistic <- function(mu, sigma, init = mu) {
 #'
 #' @param alpha (`number`)\cr Scale parameter.
 #' @param beta (`number`)\cr Shape parameter.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_loglogistic <- function(alpha, beta, init = alpha * pi / (beta * sin(pi / beta))) {
+prior_loglogistic <- function(alpha, beta) {
     Prior(
         parameters = list(
             alpha = alpha,
@@ -450,7 +464,10 @@ prior_loglogistic <- function(alpha, beta, init = alpha * pi / (beta * sin(pi / 
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = init,
+        init = alpha * pi / (beta * sin(pi / beta)),
+        sample = \(n) {
+            local_rloglogis(n, alpha, beta)
+        },
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
@@ -463,11 +480,10 @@ prior_loglogistic <- function(alpha, beta, init = alpha * pi / (beta * sin(pi / 
 #'
 #' @param alpha (`number`)\cr Shape parameter.
 #' @param beta (`number`)\cr Scale parameter.
-#' @inheritParams Prior-Shared
 #' @family Prior
 #'
 #' @export
-prior_invgamma <- function(alpha, beta, init = beta / (alpha - 1)) {
+prior_invgamma <- function(alpha, beta) {
     Prior(
         parameters = list(
             alpha = alpha,
@@ -479,10 +495,71 @@ prior_invgamma <- function(alpha, beta, init = beta / (alpha - 1)) {
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = init,
+        init = beta / (alpha - 1),
+        sample = \(n) local_rinvgamma(n, alpha, beta),
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
         )
     )
+}
+
+
+
+
+
+#' Stub functions for sampling from distributions
+#'
+#' @description
+#' These functions only exist so that they can be mocked during unit
+#' tests in order to provide deterministic values. In most cases
+#' these are just straight forward pass throughs for the underlying
+#' distributions.
+#'
+#' @param alpha (`number`)\cr Parameter for underlying distribution.
+#' @param beta (`number`)\cr Parameter for underlying distribution.
+#' @param mu (`number`)\cr Parameter for underlying distribution.
+#' @param sigma (`number`)\cr Parameter for underlying distribution.
+#' @param nu (`number`)\cr Parameter for underlying distribution.
+#' @param ... Pass any additional arguments to the underlying distribution.
+#'
+#' @name Local_Sample
+#' @keywords internal
+NULL
+
+#' @rdname Local_Sample
+local_rnorm <- \(...) rnorm(...)
+
+#' @rdname Local_Sample
+local_rcauchy <- \(...) rcauchy(...)
+
+#' @rdname Local_Sample
+local_rgamma <- \(...) rgamma(...)
+
+#' @rdname Local_Sample
+local_rlnorm <- \(...) rlnorm(...)
+
+#' @rdname Local_Sample
+local_rbeta <- \(...) rbeta(...)
+
+#' @rdname Local_Sample
+local_runif <- \(...) runif(...)
+
+#' @rdname Local_Sample
+local_rt <- \(n, nu, mu, sigma) {
+    rt(n, nu) * sigma + mu
+}
+
+#' @rdname Local_Sample
+local_rlogis <- \(...) rlogis(...)
+
+#' @rdname Local_Sample
+local_rloglogis <- \(n, alpha, beta) {
+    r <- runif(n)
+    ((r / (1 - r))^(1 / beta)) * alpha
+}
+
+#' @rdname Local_Sample
+local_rinvgamma <- \(n, alpha, beta) {
+    1 / rgamma(n, alpha, rate = beta)
 }

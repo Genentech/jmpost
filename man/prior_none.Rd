@@ -4,10 +4,7 @@
 \alias{prior_none}
 \title{Only Initial Values Specification}
 \usage{
-prior_none(init = 1e-05)
-}
-\arguments{
-\item{init}{(\code{number})\cr initial value.}
+prior_none()
 }
 \description{
 Only Initial Values Specification

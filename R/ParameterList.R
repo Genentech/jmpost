@@ -145,11 +145,17 @@ names.ParameterList <- function(x) {
 
 #' @describeIn ParameterList-Getter-Methods The parameter-list's parameter initial values
 #' @export
-initialValues.ParameterList <- function(object) {
-    vals <- lapply(object@parameters, initialValues)
-    name <- vapply(object@parameters, names, character(1))
-    names(vals) <- name
-    return(vals)
+initialValues.ParameterList <- function(object, nchains, ...) {
+    x <- lapply(
+        seq_len(nchains),
+        \(i) {
+            vals <- lapply(object@parameters, initialValues)
+            name <- vapply(object@parameters, names, character(1))
+            names(vals) <- name
+            vals
+        }
+    )
+    return(x)
 }
 
 

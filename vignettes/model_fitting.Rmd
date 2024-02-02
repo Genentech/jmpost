@@ -373,3 +373,45 @@ sq <- SurvivalQuantities(
 )
 brierScore(sq)
 ```
+
+
+## Initial Values
+
+By default `jmpost` will set the initial values for all parameters to be a random value
+drawn from the prior distribution that has been shrunk towards the
+mean of said distribution e.g. for a `prior_normal(4, 2)`
+the initial value for each chain will be: `(4 + rnorm(1, 4, 2)) * 0.5`.
+
+If you wish to manually specify the initial values you can do so via the `initialValues()` function.
+For example:
+
+```{r, eval=FALSE}
+joint_model <- JointModel(
+    LongitudinalRandomSlope(),
+    SurvivalExponential(),
+    LinkNone()
+)
+initial_values <- initialValues(joint_model, nchains = 2)
+
+initial_values[[1]]$lm_rs_intercept <- 0.2
+initial_values[[2]]$lm_rs_intercept <- 0.3
+
+mcmc_results <- sampleStanModel(
+    joint_model,
+    data = DataJoint(...),
+    init = initial_values,
+    chains = 2
+)
+```
+
+Note the following:
+-  `initialValues()` will return a list of lists where each sublist contains the initial
+values for the corresponding chain index.
+- `initialValues()` by default just returns 1 initial value for each parameter; the `sampleStanModel()`
+function will then broadcast this number as many times as required e.g. if you have 3 covariates
+in your survival model then the initial value for the Beta coeficient will be repeated 3 times. If
+however you want to specify individual initial values for each covariate you can do so by passing
+in a vector of the same length as the number of covariates.
+
+
+

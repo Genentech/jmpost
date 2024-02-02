@@ -4,14 +4,12 @@
 \alias{prior_normal}
 \title{Normal Prior Distribution}
 \usage{
-prior_normal(mu, sigma, init = mu)
+prior_normal(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr mean.}
 
 \item{sigma}{(\code{number})\cr standard deviation.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Normal Prior Distribution

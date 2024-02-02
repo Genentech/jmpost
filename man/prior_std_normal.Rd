@@ -4,10 +4,7 @@
 \alias{prior_std_normal}
 \title{Standard Normal Prior Distribution}
 \usage{
-prior_std_normal(init = 0)
-}
-\arguments{
-\item{init}{(\code{number})\cr initial value.}
+prior_std_normal()
 }
 \description{
 Standard Normal Prior Distribution

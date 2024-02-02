@@ -115,7 +115,7 @@ names.Parameter <- function(x) x@name
 
 #' @describeIn Parameter-Getter-Methods The parameter's initial values
 #' @export
-initialValues.Parameter <- function(object) initialValues(object@prior)
+initialValues.Parameter <- function(object, ...) initialValues(object@prior)
 
 #' @describeIn Parameter-Getter-Methods The parameter's dimensionality
 #' @export

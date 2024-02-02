@@ -14,8 +14,7 @@
 ---
 
     Code
-      x <- SurvivalWeibullPH(beta = prior_gamma(3, 4, init = 10), gamma = prior_cauchy(
-        0, 1))
+      x <- SurvivalWeibullPH(beta = prior_gamma(3, 4), gamma = prior_cauchy(0, 1))
       print(x)
     Output
       

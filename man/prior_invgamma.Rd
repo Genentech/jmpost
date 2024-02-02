@@ -4,14 +4,12 @@
 \alias{prior_invgamma}
 \title{Inverse-Gamma Prior Distribution}
 \usage{
-prior_invgamma(alpha, beta, init = beta/(alpha - 1))
+prior_invgamma(alpha, beta)
 }
 \arguments{
 \item{alpha}{(\code{number})\cr Shape parameter.}
 
 \item{beta}{(\code{number})\cr Scale parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Inverse-Gamma Prior Distribution

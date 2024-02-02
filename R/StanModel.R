@@ -90,3 +90,9 @@ setMethod(
         cat(as_print_string(object))
     }
 )
+
+#' @rdname initialValues
+#' @export
+initialValues.StanModel <- function(object, nchains, ...) {
+    initialValues(object@parameters, nchains)
+}

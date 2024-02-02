@@ -4,14 +4,12 @@
 \alias{prior_beta}
 \title{Beta Prior Distribution}
 \usage{
-prior_beta(a, b, init = a/(a + b))
+prior_beta(a, b)
 }
 \arguments{
 \item{a}{(\code{number})\cr first parameter.}
 
 \item{b}{(\code{number})\cr second parameter}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Beta Prior Distribution

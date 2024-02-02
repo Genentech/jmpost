@@ -4,14 +4,12 @@
 \alias{prior_gamma}
 \title{Gamma Prior Distribution}
 \usage{
-prior_gamma(alpha, beta, init = alpha/beta)
+prior_gamma(alpha, beta)
 }
 \arguments{
 \item{alpha}{(\code{number})\cr shape.}
 
 \item{beta}{(\code{number})\cr inverse scale.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Gamma Prior Distribution

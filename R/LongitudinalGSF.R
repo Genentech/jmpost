@@ -36,37 +36,23 @@ NULL
 #' @param a_phi (`Prior`)\cr for the alpha parameter for the fraction of cells that respond to treatment.
 #' @param b_phi (`Prior`)\cr for the beta parameter for the fraction of cells that respond to treatment.
 #'
-#' @param psi_bsld (`Prior`)\cr for the baseline value random effect `psi_bsld`. Only used in the
-#'  centered parameterization to set the initial value.
-#' @param psi_ks (`Prior`)\cr for the shrinkage rate random effect `psi_ks`. Only used in the
-#' centered parameterization to set the initial value.
-#' @param psi_kg (`Prior`)\cr for the growth rate random effect `psi_kg`. Only used in the
-#' centered parameterization to set the initial value.
-#' @param psi_phi (`Prior`)\cr for the shrinkage proportion random effect `psi_phi`. Only used in the
-#' centered parameterization to set the initial value.
-#'
 #' @param centered (`logical`)\cr whether to use the centered parameterization.
 #'
 #' @export
 LongitudinalGSF <- function(
 
-    mu_bsld = prior_normal(log(60), 1, init = 60),
-    mu_ks = prior_normal(log(0.5), 1, init = 0.5),
-    mu_kg = prior_normal(log(0.3), 1, init = 0.3),
+    mu_bsld = prior_normal(log(60), 1),
+    mu_ks = prior_normal(log(0.5), 1),
+    mu_kg = prior_normal(log(0.3), 1),
 
-    omega_bsld = prior_lognormal(log(0.2), 1, init = 0.2),
-    omega_ks = prior_lognormal(log(0.2), 1, init = 0.2),
-    omega_kg = prior_lognormal(log(0.2), 1, init = 0.2),
+    omega_bsld = prior_lognormal(log(0.2), 1),
+    omega_ks = prior_lognormal(log(0.2), 1),
+    omega_kg = prior_lognormal(log(0.2), 1),
 
-    a_phi = prior_lognormal(log(5), 1, init = 5),
-    b_phi = prior_lognormal(log(5), 1, init = 5),
+    a_phi = prior_lognormal(log(5), 1),
+    b_phi = prior_lognormal(log(5), 1),
 
-    sigma = prior_lognormal(log(0.1), 1, init = 0.1),
-
-    psi_bsld = prior_none(init = 60),
-    psi_ks = prior_none(init = 0.5),
-    psi_kg = prior_none(init = 0.5),
-    psi_phi = prior_none(init = 0.5),
+    sigma = prior_lognormal(log(0.1), 1),
 
     centered = FALSE
 ) {
@@ -87,7 +73,7 @@ LongitudinalGSF <- function(
 
         Parameter(name = "lm_gsf_a_phi", prior = a_phi, size = "n_arms"),
         Parameter(name = "lm_gsf_b_phi", prior = b_phi, size = "n_arms"),
-        Parameter(name = "lm_gsf_psi_phi", prior = psi_phi, size = "Nind"),
+        Parameter(name = "lm_gsf_psi_phi", prior = prior_none(), size = "Nind"),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
@@ -95,9 +81,9 @@ LongitudinalGSF <- function(
     assert_flag(centered)
     parameters_extra <- if (centered) {
         list(
-            Parameter(name = "lm_gsf_psi_bsld", prior = psi_bsld, size = "Nind"),
-            Parameter(name = "lm_gsf_psi_ks", prior = psi_ks, size = "Nind"),
-            Parameter(name = "lm_gsf_psi_kg", prior = psi_kg, size = "Nind")
+            Parameter(name = "lm_gsf_psi_bsld", prior = prior_none(), size = "Nind"),
+            Parameter(name = "lm_gsf_psi_ks", prior = prior_none(), size = "Nind"),
+            Parameter(name = "lm_gsf_psi_kg", prior = prior_none(), size = "Nind")
         )
     } else {
         list(

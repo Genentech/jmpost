@@ -136,6 +136,8 @@ compileStanModel.JointModel <- function(object) {
 #' @export
 sampleStanModel.JointModel <- function(object, data, ...) {
 
+    assert_class(data, "DataJoint")
+
     if (!is.null(object@survival)) {
         assert_that(
             !is.null(data@survival),
@@ -150,21 +152,36 @@ sampleStanModel.JointModel <- function(object, data, ...) {
     }
 
     args <- list(...)
+
     args[["data"]] <- append(
         as_stan_list(data),
         as_stan_list(object@parameters)
     )
 
-    if (!"init" %in% names(args)) {
-        values_initial <- initialValues(object)
-        values_sizes <- size(object@parameters)
-        values_sizes_complete <- replace_with_lookup(values_sizes, args[["data"]])
-        values_initial_expanded <- expand_initial_values(values_initial, values_sizes_complete)
-        args[["init"]] <- function() values_initial_expanded
+    args[["chains"]] <- if ("chains" %in% names(args)) {
+        args[["chains"]]
+    } else {
+        4
     }
 
+    initial_values <- if ("init" %in% names(args)) {
+        args[["init"]]
+    } else {
+        initialValues(object, nchains = args[["chains"]])
+    }
+
+    args[["init"]] <- ensure_initial_values(
+        initial_values,
+        args[["data"]],
+        object@parameters
+    )
+
     model <- compileStanModel(object)
-    results <- do.call(model$sample, args)
+
+    results <- do.call(
+        model$sample,
+        args
+    )
 
     .JointModelSamples(
         model = object,
@@ -174,12 +191,47 @@ sampleStanModel.JointModel <- function(object, data, ...) {
 }
 
 
-# initialValues-JointModel ----
+#' Ensure that initial values are correctly specified
+#'
+#' @param initial_values (`list`)\cr A list of lists containing the initial values
+#' must be 1 list per desired chain. All elements should have identical names
+#' @param data (`list`)\cr specifies the size to expand each of our initial values to be.
+#' That is elements of size 1 in `initial_values` will be expanded to be the same
+#' size as the corresponding element in `data` by broadcasting the value.
+#' @param parameters ([`ParameterList`])\cr the parameters object
+#'
+#' @details
+#' This function is mostly a thin wrapper around `expand_initial_values` to
+#' enable easier unit testing.
+#'
+#' @keywords internal
+ensure_initial_values <- function(initial_values, data, parameters) {
+    if (is.function(initial_values)) {
+        return(initial_values)
+    }
+
+    assert_class(data, "list")
+    assert_class(parameters, "ParameterList")
+    assert_class(initial_values, "list")
+
+    values_sizes <- size(parameters)
+    values_sizes_complete <- replace_with_lookup(
+        values_sizes,
+        data
+    )
+    lapply(
+        initial_values,
+        expand_initial_values,
+        sizes = values_sizes_complete
+    )
+}
+
+
 
 #' @rdname initialValues
 #' @export
-initialValues.JointModel <- function(object) {
-    initialValues(object@parameters)
+initialValues.JointModel <- function(object, nchains, ...) {
+    initialValues(object@parameters, nchains)
 }
 
 

@@ -119,7 +119,7 @@ test_that("Print method for SurvivalExponential works as expected", {
     })
 
     expect_snapshot({
-        x <- SurvivalExponential(beta = prior_gamma(3, 4, init = 10))
+        x <- SurvivalExponential(beta = prior_gamma(3, 4))
         print(x)
     })
 })

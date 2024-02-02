@@ -1,10 +1,17 @@
 test_that("LinkRandomSlope smoke tests", {
     linkobject <- LinkRandomSlope(
-        link_lm_phi = prior_normal(0, 5, init = 0.01)
+        link_lm_phi = prior_normal(0, 5)
+    )
+    iv <- with_mocked_bindings(
+        initialValues(linkobject, nchains = 2),
+        local_rnorm = \(...) 5
     )
     expect_equal(
-        initialValues(linkobject),
-        list("link_lm_phi" = 0.01)
+        iv,
+        list(
+            list("link_lm_phi" = 5 / 2),
+            list("link_lm_phi" = 5 / 2)
+        )
     )
     expect_true(
         is(as.StanModule(linkobject), "StanModule")

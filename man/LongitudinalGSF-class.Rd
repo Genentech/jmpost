@@ -8,19 +8,15 @@
 \title{\code{LongitudinalGSF}}
 \usage{
 LongitudinalGSF(
-  mu_bsld = prior_normal(log(60), 1, init = 60),
-  mu_ks = prior_normal(log(0.5), 1, init = 0.5),
-  mu_kg = prior_normal(log(0.3), 1, init = 0.3),
-  omega_bsld = prior_lognormal(log(0.2), 1, init = 0.2),
-  omega_ks = prior_lognormal(log(0.2), 1, init = 0.2),
-  omega_kg = prior_lognormal(log(0.2), 1, init = 0.2),
-  a_phi = prior_lognormal(log(5), 1, init = 5),
-  b_phi = prior_lognormal(log(5), 1, init = 5),
-  sigma = prior_lognormal(log(0.1), 1, init = 0.1),
-  psi_bsld = prior_none(init = 60),
-  psi_ks = prior_none(init = 0.5),
-  psi_kg = prior_none(init = 0.5),
-  psi_phi = prior_none(init = 0.5),
+  mu_bsld = prior_normal(log(60), 1),
+  mu_ks = prior_normal(log(0.5), 1),
+  mu_kg = prior_normal(log(0.3), 1),
+  omega_bsld = prior_lognormal(log(0.2), 1),
+  omega_ks = prior_lognormal(log(0.2), 1),
+  omega_kg = prior_lognormal(log(0.2), 1),
+  a_phi = prior_lognormal(log(5), 1),
+  b_phi = prior_lognormal(log(5), 1),
+  sigma = prior_lognormal(log(0.1), 1),
   centered = FALSE
 )
 }
@@ -42,18 +38,6 @@ LongitudinalGSF(
 \item{b_phi}{(\code{Prior})\cr for the beta parameter for the fraction of cells that respond to treatment.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
-
-\item{psi_bsld}{(\code{Prior})\cr for the baseline value random effect \code{psi_bsld}. Only used in the
-centered parameterization to set the initial value.}
-
-\item{psi_ks}{(\code{Prior})\cr for the shrinkage rate random effect \code{psi_ks}. Only used in the
-centered parameterization to set the initial value.}
-
-\item{psi_kg}{(\code{Prior})\cr for the growth rate random effect \code{psi_kg}. Only used in the
-centered parameterization to set the initial value.}
-
-\item{psi_phi}{(\code{Prior})\cr for the shrinkage proportion random effect \code{psi_phi}. Only used in the
-centered parameterization to set the initial value.}
 
 \item{centered}{(\code{logical})\cr whether to use the centered parameterization.}
 }

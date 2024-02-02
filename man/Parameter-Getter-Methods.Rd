@@ -9,7 +9,7 @@
 \usage{
 \method{names}{Parameter}(x)
 
-\method{initialValues}{Parameter}(object)
+\method{initialValues}{Parameter}(object, ...)
 
 \method{size}{Parameter}(object)
 }

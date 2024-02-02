@@ -4,14 +4,12 @@
 \alias{prior_uniform}
 \title{Uniform Prior Distribution}
 \usage{
-prior_uniform(alpha, beta, init = 0.5 * (alpha + beta))
+prior_uniform(alpha, beta)
 }
 \arguments{
 \item{alpha}{(\code{number})\cr minimum value parameter.}
 
 \item{beta}{(\code{number})\cr maximum value parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Uniform Prior Distribution

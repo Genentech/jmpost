@@ -5,19 +5,25 @@
 test_that("ParameterList smoke tests", {
     pl <- ParameterList(
         Parameter(name = "inter", prior = prior_gamma(1, 2)),
-        Parameter(name = "myp", prior = prior_normal(1, 4, init = 8))
+        Parameter(name = "myp", prior = prior_normal(1, 4))
     )
 
     # Can extract parameter names
     expect_equal(names(pl), c("inter", "myp"))
 
     # Can extract initial values
-    actual <- initialValues(pl)
-    expected <- list(
-        "inter" = 1 / 2,
-        "myp" = 8
+    with_mocked_bindings(
+        {
+            actual <- initialValues(pl, nchains = 1)
+            expected <- list(list(
+                "inter" = (1 / 2) * 0.5,
+                "myp" = 1 * 0.5
+            ))
+            expect_equal(actual, expected)
+        },
+        local_rgamma = \(...) 0,
+        local_rnorm = \(...) 0
     )
-    expect_equal(actual, expected)
 
     # Can render to character
     expect_equal(
@@ -40,7 +46,7 @@ test_that("show() works for ParameterList objects", {
     x <- ParameterList(
         Parameter(name = "bob", prior = prior_normal(1, 4)),
         Parameter(name = "sam", prior = prior_beta(3, 1)),
-        Parameter(name = "dave", prior = prior_lognormal(3, 2, init = 3), size = 4),
+        Parameter(name = "dave", prior = prior_lognormal(3, 2), size = 4),
         Parameter(name = "steve", prior = prior_none())
     )
 

@@ -7,7 +7,7 @@
 \alias{Prior}
 \title{Prior Object and Constructor Function}
 \usage{
-Prior(parameters, display, repr_model, repr_data, init, validation)
+Prior(parameters, display, repr_model, repr_data, init, validation, sample)
 }
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
@@ -22,6 +22,8 @@ Prior(parameters, display, repr_model, repr_data, init, validation)
 
 \item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
+
+\item{sample}{(\code{function})\cr a function to sample from the prior distribution.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -40,6 +42,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{validation}}{(\code{list})\cr See arguments.}
 
 \item{\code{display}}{(\code{string})\cr See arguments.}
+
+\item{\code{sample}}{(\code{function})\cr See arguments.}
 }}
 
 \seealso{

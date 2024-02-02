@@ -4,14 +4,12 @@
 \alias{prior_cauchy}
 \title{Cauchy Prior Distribution}
 \usage{
-prior_cauchy(mu, sigma, init = mu)
+prior_cauchy(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr mean.}
 
 \item{sigma}{(\code{number})\cr scale.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Cauchy Prior Distribution

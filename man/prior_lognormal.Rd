@@ -4,14 +4,12 @@
 \alias{prior_lognormal}
 \title{Log-Normal Prior Distribution}
 \usage{
-prior_lognormal(mu, sigma, init = exp(mu + (sigma^2)/2))
+prior_lognormal(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr mean of the logarithm.}
 
 \item{sigma}{(\code{number})\cr standard deviation of the logarithm.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Log-Normal Prior Distribution

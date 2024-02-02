@@ -4,14 +4,12 @@
 \alias{prior_loglogistic}
 \title{Log-Logistic Prior Distribution}
 \usage{
-prior_loglogistic(alpha, beta, init = alpha * pi/(beta * sin(pi/beta)))
+prior_loglogistic(alpha, beta)
 }
 \arguments{
 \item{alpha}{(\code{number})\cr Scale parameter.}
 
 \item{beta}{(\code{number})\cr Shape parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Log-Logistic Prior Distribution

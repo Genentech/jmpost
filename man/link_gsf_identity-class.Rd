@@ -7,7 +7,7 @@
 \alias{link_gsf_identity}
 \title{\code{link_gsf_identity}}
 \usage{
-link_gsf_identity(tau = prior_normal(0, 5, init = 0))
+link_gsf_identity(tau = prior_normal(0, 5))
 }
 \arguments{
 \item{tau}{(\code{Prior})\cr prior for the link coefficient \code{tau}.}

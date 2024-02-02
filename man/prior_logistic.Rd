@@ -4,14 +4,12 @@
 \alias{prior_logistic}
 \title{Logistic Prior Distribution}
 \usage{
-prior_logistic(mu, sigma, init = mu)
+prior_logistic(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr Location parameter.}
 
 \item{sigma}{(\code{number})\cr Scale parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Logistic Prior Distribution

@@ -9,7 +9,7 @@
 \usage{
 \method{names}{ParameterList}(x)
 
-\method{initialValues}{ParameterList}(object)
+\method{initialValues}{ParameterList}(object, nchains, ...)
 
 \method{size}{ParameterList}(object)
 }
@@ -17,6 +17,8 @@
 \item{x}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
 
 \item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+
+\item{...}{Not Used.}
 }
 \description{
 Getter functions for the slots of a \code{\link{ParameterList}} object

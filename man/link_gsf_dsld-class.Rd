@@ -7,7 +7,7 @@
 \alias{link_gsf_dsld}
 \title{\code{link_gsf_dsld}}
 \usage{
-link_gsf_dsld(beta = prior_normal(0, 5, init = 0))
+link_gsf_dsld(beta = prior_normal(0, 5))
 }
 \arguments{
 \item{beta}{(\code{Prior})\cr prior for the link coefficient \code{beta}.}
