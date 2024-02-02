@@ -156,7 +156,7 @@ extractVariableNames <- function(object) {
 #'
 #' @details
 #' There are multiple ways of specifying initial values to Stan, see the `init` argument
-#' in [cmdstanr::model-method-sample] for full details. Within this package we supply 
+#' in [cmdstanr::model-method-sample] for full details. Within this package we supply
 #' initial values via a list of lists where each inner list contains the initial values
 #' for a single chain. As such the `nchains` argument specifies the number of inner lists
 #' to generate.
