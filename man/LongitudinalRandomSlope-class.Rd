@@ -11,8 +11,7 @@ LongitudinalRandomSlope(
   intercept = prior_normal(30, 10),
   slope_mu = prior_normal(0, 15),
   slope_sigma = prior_lognormal(0, 1.5),
-  sigma = prior_lognormal(0, 1.5),
-  random_slope = prior_none()
+  sigma = prior_lognormal(0, 1.5)
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ LongitudinalRandomSlope(
 \item{slope_sigma}{(\code{Prior})\cr for the random slope standard deviation \code{slope_sigma}.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
-
-\item{random_slope}{(\code{Prior})\cr must be \code{prior_none()}, just used to specify initial values.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

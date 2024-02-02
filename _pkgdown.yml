@@ -122,6 +122,7 @@ reference:
   
   - title: Convenience Functions
     contents:
+      - initialValues
       - merge
       - show
       - as_stan_list
