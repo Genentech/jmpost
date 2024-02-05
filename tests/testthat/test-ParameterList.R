@@ -14,7 +14,7 @@ test_that("ParameterList smoke tests", {
     # Can extract initial values
     with_mocked_bindings(
         {
-            actual <- initialValues(pl, nchains = 1)
+            actual <- initialValues(pl, n_chains = 1)
             expected <- list(list(
                 "inter" = (1 / 2) * 0.5,
                 "myp" = 1 * 0.5

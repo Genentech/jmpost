@@ -132,7 +132,7 @@ as.list.ParameterList <- function(x, ...) {
 #' Getter functions for the slots of a [`ParameterList`] object
 #' @inheritParams ParameterList-Shared
 #' @family ParameterList
-#' @param nchains (`integer`) \cr the number of chains.
+#' @param n_chains (`integer`) \cr the number of chains.
 #' @name ParameterList-Getter-Methods
 NULL
 
@@ -146,9 +146,9 @@ names.ParameterList <- function(x) {
 
 #' @describeIn ParameterList-Getter-Methods The parameter-list's parameter initial values
 #' @export
-initialValues.ParameterList <- function(object, nchains, ...) {
+initialValues.ParameterList <- function(object, n_chains, ...) {
     x <- lapply(
-        seq_len(nchains),
+        seq_len(n_chains),
         \(i) {
             vals <- lapply(object@parameters, initialValues)
             name <- vapply(object@parameters, names, character(1))

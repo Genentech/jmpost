@@ -3,7 +3,7 @@ test_that("LinkRandomSlope smoke tests", {
         link_lm_phi = prior_normal(0, 5)
     )
     iv <- with_mocked_bindings(
-        initialValues(linkobject, nchains = 2),
+        initialValues(linkobject, n_chains = 2),
         local_rnorm = \(...) 5
     )
     expect_equal(

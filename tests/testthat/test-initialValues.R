@@ -8,7 +8,7 @@ test_that("initialValues() works as expected", {
     )
 
     set.seed(341)
-    initial_values <- initialValues(jm, nchains = 2)
+    initial_values <- initialValues(jm, n_chains = 2)
 
     # Ensure that we actually got 2 chains worth of initial values
     expect_length(initial_values, 2)
@@ -37,7 +37,7 @@ test_that("initialValues() works as expected", {
 
     # show that if we mock the random number generator, we get the same initial values
     ivs <- testthat::with_mocked_bindings(
-        initialValues(jm, nchains = 2),
+        initialValues(jm, n_chains = 2),
         local_rnorm = \(...) 0,
         local_rbeta = \(...) 0,
         local_rlnorm = \(...) 0,
@@ -57,7 +57,7 @@ test_that("ensure_initial_values() works as expected", {
         Parameter(name = "p3", prior = prior_lognormal(0, 1), size = 3)
     )
 
-    ivs <- initialValues(pars, nchains = 2)
+    ivs <- initialValues(pars, n_chains = 2)
     ivs[[1]]$p1 <- c(1)
     ivs[[1]]$p2 <- c(2, 3)
     ivs[[1]]$p3 <- c(4, 5, 6)

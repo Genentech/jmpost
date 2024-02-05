@@ -9,7 +9,7 @@
 \usage{
 \method{names}{ParameterList}(x)
 
-\method{initialValues}{ParameterList}(object, nchains, ...)
+\method{initialValues}{ParameterList}(object, n_chains, ...)
 
 \method{size}{ParameterList}(object)
 }
@@ -18,7 +18,7 @@
 
 \item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
 
-\item{nchains}{(\code{integer}) \cr the number of chains.}
+\item{n_chains}{(\code{integer}) \cr the number of chains.}
 
 \item{...}{Not Used.}
 }

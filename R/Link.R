@@ -60,8 +60,8 @@ setMethod(
 
 #' @rdname initialValues
 #' @export
-initialValues.Link <- function(object, nchains, ...) {
-    initialValues(object@parameters, nchains)
+initialValues.Link <- function(object, n_chains, ...) {
+    initialValues(object@parameters, n_chains)
 }
 
 

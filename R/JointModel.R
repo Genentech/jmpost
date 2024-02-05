@@ -167,7 +167,7 @@ sampleStanModel.JointModel <- function(object, data, ...) {
     initial_values <- if ("init" %in% names(args)) {
         args[["init"]]
     } else {
-        initialValues(object, nchains = args[["chains"]])
+        initialValues(object, n_chains = args[["chains"]])
     }
 
     args[["init"]] <- ensure_initial_values(
@@ -230,8 +230,8 @@ ensure_initial_values <- function(initial_values, data, parameters) {
 
 #' @rdname initialValues
 #' @export
-initialValues.JointModel <- function(object, nchains, ...) {
-    initialValues(object@parameters, nchains)
+initialValues.JointModel <- function(object, n_chains, ...) {
+    initialValues(object@parameters, n_chains)
 }
 
 

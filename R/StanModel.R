@@ -93,6 +93,6 @@ setMethod(
 
 #' @rdname initialValues
 #' @export
-initialValues.StanModel <- function(object, nchains, ...) {
-    initialValues(object@parameters, nchains)
+initialValues.StanModel <- function(object, n_chains, ...) {
+    initialValues(object@parameters, n_chains)
 }
