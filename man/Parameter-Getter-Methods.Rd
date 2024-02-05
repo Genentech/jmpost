@@ -18,7 +18,7 @@
 
 \item{object}{(\code{Paramater}) \cr A model parameter}
 
-\item{...}{Not Used.}
+\item{...}{Not used.}
 }
 \description{
 Getter functions for the slots of a \code{\link{Parameter}} object
