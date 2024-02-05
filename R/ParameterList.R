@@ -147,15 +147,17 @@ names.ParameterList <- function(x) {
 #' @describeIn ParameterList-Getter-Methods The parameter-list's parameter initial values
 #' @export
 initialValues.ParameterList <- function(object, n_chains, ...) {
-    vapply(
+    # Generate initial values as a list of lists. This is to ensure it is in the required
+    # format as specified by cmdstanr see the `init` argument of
+    # `help("model-method-sample", "cmdstanr")` for more details
+    lapply(
         seq_len(n_chains),
         \(i) {
             vals <- lapply(object@parameters, initialValues)
             name <- vapply(object@parameters, names, character(1))
             names(vals) <- name
             vals
-        },
-        FUN.VALUE = list()
+        }
     )
 }
 
