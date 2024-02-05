@@ -21,7 +21,7 @@
 #' initial_value = prior_sample * prior_shrinkage + (1 - prior_shrinkage) * prior_mean
 #' ```
 #' This setting controls the shrinkage factor. A value of 0 means no shrinkage (i.e.
-#' pure random draw) whilst a value of 1 means the intial value is just the mean.
+#' pure random draw) whilst a value of 1 means the initial value is just the mean.
 #'
 #' @examples
 #' \dontrun{
