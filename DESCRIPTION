@@ -63,6 +63,7 @@ Collate:
     'DataLongitudinal.R'
     'DataSurvival.R'
     'DataJoint.R'
+    'constants.R'
     'StanModule.R'
     'Prior.R'
     'Parameter.R'

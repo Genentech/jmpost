@@ -8,6 +8,7 @@
 #' @include LongitudinalModel.R
 #' @include SurvivalModel.R
 #' @include Link.R
+#' @include constants.R
 NULL
 
 
@@ -161,7 +162,8 @@ sampleStanModel.JointModel <- function(object, data, ...) {
     args[["chains"]] <- if ("chains" %in% names(args)) {
         args[["chains"]]
     } else {
-        4
+        # Magic constant from R/constants.R
+        CMDSTAN_DEFAULT_CHAINS
     }
 
     initial_values <- if ("init" %in% names(args)) {
