@@ -3,7 +3,7 @@ devtools::document()
 devtools::load_all()
 library(bayesplot)
 
-options("jmpost.cache.dir" = file.path("local", "models"))
+options("jmpost.cache_dir" = file.path("local", "models"))
 
 set.seed(6042)
 

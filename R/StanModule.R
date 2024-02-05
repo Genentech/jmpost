@@ -167,7 +167,7 @@ setMethod(
 
 #' @rdname compileStanModel
 compileStanModel.StanModule <- function(object) {
-    exe_dir <- getOption("jmpost.cache.dir")
+    exe_dir <- getOption("jmpost.cache_dir")
     if (!dir.exists(exe_dir)) {
         dir.create(exe_dir, recursive = TRUE)
     }

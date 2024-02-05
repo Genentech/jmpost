@@ -322,7 +322,7 @@ long_quantities <- LongitudinalQuantities(
     mcmc_results,
     groups = selected_patients
 )
-as.data.frame(long_quantities)
+as.data.frame(long_quantities) |> head()
 summary(long_quantities)
 autoplot(long_quantities)
 ```
@@ -392,13 +392,13 @@ options("jmpost.prior_shrinkage" = 0.7)
 If you wish to manually specify the initial values you can do so via the `initialValues()` function.
 For example:
 
-```{r, eval=FALSE}
+```r
 joint_model <- JointModel(
     LongitudinalRandomSlope(),
     SurvivalExponential(),
     LinkNone()
 )
-initial_values <- initialValues(joint_model, nchains = 2)
+initial_values <- initialValues(joint_model, n_chains = 2)
 
 initial_values[[1]]$lm_rs_intercept <- 0.2
 initial_values[[2]]$lm_rs_intercept <- 0.3

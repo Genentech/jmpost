@@ -2,7 +2,11 @@
 % Please edit documentation in R/settings.R
 \name{jmpost-settings}
 \alias{jmpost-settings}
+\alias{set_options}
 \title{jmpost settings}
+\usage{
+set_options()
+}
 \description{
 Define settings that modify the behaviour of the \code{jmpost} package
 
@@ -22,6 +26,14 @@ distribution with a shrinkage factor towards the mean. That is:
 
 This setting controls the shrinkage factor. A value of 0 means no shrinkage (i.e.
 pure random draw) whilst a value of 1 means the initial value is just the mean.
+}
+
+\subsection{\code{jmpost.cache_dir}}{
+
+Default = \code{tempfile()}
+
+Directory to store compiled stan models in. If not set, a temporary directory is used for
+the given R session. Can also be set via the environment variable \code{JMPOST_CACHE_DIR}.
 }
 }
 \examples{

@@ -6,7 +6,7 @@ library(tidyr)
 devtools::document()
 devtools::load_all(export_all = FALSE)
 
-options("jmpost.cache.dir" = file.path("local", "models"))
+options("jmpost.cache_dir" = file.path("local", "models"))
 
 #### Example 1 - Fully specified model - using the defaults for everything
 jm <- JointModel(
