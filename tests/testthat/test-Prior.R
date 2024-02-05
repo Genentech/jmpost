@@ -130,6 +130,11 @@ test_that("Invalid prior parameters are rejected", {
         regexp = "Invalid.*`beta`"
     )
 
+    expect_error(
+        prior_uniform(10, 9),
+        regexp = "`alpha`` must be less than `beta`"
+    )
+
 
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
     expect_s4_class(prior_none(), "Prior")

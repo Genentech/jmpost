@@ -364,6 +364,10 @@ prior_none <- function() {
 #'
 #' @export
 prior_uniform <- function(alpha, beta) {
+    assert_that(
+        alpha < beta,
+        msg = "`alpha`` must be less than `beta`"
+    )
     Prior(
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
