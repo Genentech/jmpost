@@ -181,7 +181,7 @@ test_that("jmpost.prior_shrinkage works as expected", {
             )
 
             ## Reset Shrinkage factor
-            options("jmpost.prior_shrinkage" = 0.1)
+            options("jmpost.prior_shrinkage" = 0.5)
         },
         local_rnorm = \(...) 4
     )

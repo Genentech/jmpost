@@ -377,7 +377,17 @@ brierScore(sq)
 By default `jmpost` will set the initial values for all parameters to be a random value
 drawn from the prior distribution that has been shrunk towards the
 mean of said distribution e.g. for a `prior_normal(4, 2)`
-the initial value for each chain will be: `(4 + rnorm(1, 4, 2)) * 0.5`.
+the initial value for each chain will be: 
+```
+4 * shrinkage_factor + rnorm(1, 4, 2) * (1 - shrinkage_factor)
+```
+
+Note that the shrinkage factor is set to 0.5 by default and can be changed via the
+`jmpost.prior_shrinkage` option e.g.
+
+```
+options("jmpost.prior_shrinkage" = 0.7)
+```
 
 If you wish to manually specify the initial values you can do so via the `initialValues()` function.
 For example:
