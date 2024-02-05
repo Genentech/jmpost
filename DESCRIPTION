@@ -88,6 +88,7 @@ Collate:
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'
+    'settings.R'
     'simulations.R'
     'simulations_gsf.R'
     'simulations_os.R'

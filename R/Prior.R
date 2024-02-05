@@ -188,7 +188,8 @@ NULL
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
 initialValues.Prior <- function(object, ...) {
-    0.5 * object@init + 0.5 * object@sample(1)
+    getOption("jmpost.prior_shrinkage") * object@init +
+        (1 - getOption("jmpost.prior_shrinkage")) * object@sample(1)
 }
 
 

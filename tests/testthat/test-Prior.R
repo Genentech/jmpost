@@ -156,3 +156,33 @@ test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_loglogistic(1, 2)))
     expect_snapshot(print(prior_invgamma(alpha = 1, beta = 2)))
 })
+
+
+test_that("jmpost.prior_shrinkage works as expected", {
+    x <- prior_normal(1, 2)
+    with_mocked_bindings(
+        {
+            options("jmpost.prior_shrinkage" = 0.5)
+            expect_equal(
+                initialValues(x),
+                1 * 0.5 + 4 * 0.5
+            )
+
+            options("jmpost.prior_shrinkage" = 0.9)
+            expect_equal(
+                initialValues(x),
+                1 * 0.9 + 4 * 0.1
+            )
+
+            options("jmpost.prior_shrinkage" = 0.1)
+            expect_equal(
+                initialValues(x),
+                1 * 0.1 + 4 * 0.9
+            )
+
+            ## Reset Shrinkage factor
+            options("jmpost.prior_shrinkage" = 0.1)
+        },
+        local_rnorm = \(...) 4
+    )
+})
