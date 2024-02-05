@@ -27,6 +27,7 @@ reference:
   - title: Package
     contents:
       - jmpost-package
+      - jmpost-settings
   
   - title: Data Specification
     contents:
