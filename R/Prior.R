@@ -536,6 +536,34 @@ prior_invgamma <- function(alpha, beta) {
 #'
 #' @importFrom stats rbeta rcauchy rgamma rlnorm rlogis rnorm rt runif
 #'
+#' @details
+#'
+#' ## Log-Logistic
+#'
+#' There is no log-logistic sampling function within base R so it was implemented
+#' in terms of sampling from the CDF distribution. Using the Stan parameterisation
+#' the CDF is defined as:
+#' \deqn{
+#' u = F(x) = \frac{1}{1 + (x/ \alpha)^{-\beta}}
+#' }
+#' The inverse of this function is:
+#' \deqn{
+#' x = ((u / (1 - u))^(1 / beta)) * alpha
+#' }
+#'
+#' Thus we can sample u from a \eqn{Uni(0, 1)} distribution and then derive x from this.
+#'
+#' ## Inverse-Gamma
+#'
+#' The inverse Gamma distribution is defined as 1/Gamma thus we calculate this simply
+#' by sampling sampling from the Gamma distribution and then taking the reciprocal.
+#'
+#' ## Student-t
+#'
+#' R's sampling functions only produce the standard Student-t distribution so in order
+#' to match Stan's implementation we multiply by the scale parameter and add the location
+#' parameter. See https://stats.stackexchange.com/a/623611 for details
+#'
 #' @name Local_Sample
 #' @keywords internal
 NULL

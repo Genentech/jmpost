@@ -53,4 +53,34 @@ tests in order to provide deterministic values. In most cases
 these are just straight forward pass throughs for the underlying
 distributions.
 }
+\details{
+\subsection{Log-Logistic}{
+
+There is no log-logistic sampling function within base R so it was implemented
+in terms of sampling from the CDF distribution. Using the Stan parameterisation
+the CDF is defined as:
+\deqn{
+u = F(x) = \frac{1}{1 + (x/ \alpha)^{-\beta}}
+}
+The inverse of this function is:
+\deqn{
+x = ((u / (1 - u))^(1 / beta)) * alpha
+}
+
+Thus we can sample u from a \eqn{Uni(0, 1)} distribution and then derive x from this.
+}
+
+\subsection{Inverse-Gamma}{
+
+The inverse Gamma distribution is defined as 1/Gamma thus we calculate this simply
+by sampling sampling from the Gamma distribution and then taking the reciprocal.
+}
+
+\subsection{Student-t}{
+
+R's sampling functions only produce the standard Student-t distribution so in order
+to match Stan's implementation we multiply by the scale parameter and add the location
+parameter. See https://stats.stackexchange.com/a/623611 for details
+}
+}
 \keyword{internal}
