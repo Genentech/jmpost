@@ -4,10 +4,7 @@
 \alias{prior_std_normal}
 \title{Standard Normal Prior Distribution}
 \usage{
-prior_std_normal(init = 0)
-}
-\arguments{
-\item{init}{(\code{number})\cr initial value.}
+prior_std_normal()
 }
 \description{
 Standard Normal Prior Distribution
@@ -17,11 +14,11 @@ Other Prior:
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_student_t}()},
 \code{\link{prior_uniform}()}

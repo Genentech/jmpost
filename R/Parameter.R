@@ -102,6 +102,7 @@ as_stan_list.Parameter <- function(object, ...) {
 #'
 #' @param x (`Paramater`) \cr A model parameter
 #' @param object (`Paramater`) \cr A model parameter
+#' @param ... Not used.
 #'
 #' @description
 #' Getter functions for the slots of a [`Parameter`] object
@@ -115,7 +116,7 @@ names.Parameter <- function(x) x@name
 
 #' @describeIn Parameter-Getter-Methods The parameter's initial values
 #' @export
-initialValues.Parameter <- function(object) initialValues(object@prior)
+initialValues.Parameter <- function(object, ...) initialValues(object@prior)
 
 #' @describeIn Parameter-Getter-Methods The parameter's dimensionality
 #' @export

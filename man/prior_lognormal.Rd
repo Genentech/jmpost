@@ -4,14 +4,12 @@
 \alias{prior_lognormal}
 \title{Log-Normal Prior Distribution}
 \usage{
-prior_lognormal(mu, sigma, init = exp(mu + (sigma^2)/2))
+prior_lognormal(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr mean of the logarithm.}
 
 \item{sigma}{(\code{number})\cr standard deviation of the logarithm.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Log-Normal Prior Distribution
@@ -21,10 +19,10 @@ Other Prior:
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_student_t}()},

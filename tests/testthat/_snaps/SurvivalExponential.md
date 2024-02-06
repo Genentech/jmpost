@@ -13,7 +13,7 @@
 ---
 
     Code
-      x <- SurvivalExponential(beta = prior_gamma(3, 4, init = 10))
+      x <- SurvivalExponential(beta = prior_gamma(3, 4))
       print(x)
     Output
       

@@ -4,7 +4,7 @@
 \alias{prior_student_t}
 \title{Student-t Prior Distribution}
 \usage{
-prior_student_t(nu, mu, sigma, init = mu)
+prior_student_t(nu, mu, sigma)
 }
 \arguments{
 \item{nu}{(\code{number})\cr Degrees of freedom parameter.}
@@ -12,8 +12,6 @@ prior_student_t(nu, mu, sigma, init = mu)
 \item{mu}{(\code{number})\cr Location parameter.}
 
 \item{sigma}{(\code{number})\cr Scale parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Student-t Prior Distribution
@@ -23,11 +21,11 @@ Other Prior:
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_uniform}()}

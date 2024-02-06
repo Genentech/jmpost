@@ -24,26 +24,17 @@ NULL
 #' @param slope_mu (`Prior`)\cr for the population slope `slope_mu`.
 #' @param slope_sigma (`Prior`)\cr for the random slope standard deviation `slope_sigma`.
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
-#' @param random_slope (`Prior`)\cr must be `prior_none()`, just used to specify initial values.
 #'
 #' @export
 LongitudinalRandomSlope <- function(
-    intercept = prior_normal(30, 10, init = 30),
-    slope_mu = prior_normal(0, 15, init = 0.001),
-    slope_sigma = prior_lognormal(1, 5, init = 1),
-    sigma = prior_lognormal(1, 5, init = 1),
-    random_slope = prior_none(init = 0)
+    intercept = prior_normal(30, 10),
+    slope_mu = prior_normal(0, 15),
+    slope_sigma = prior_lognormal(0, 1.5),
+    sigma = prior_lognormal(0, 1.5)
 ) {
 
     stan <- StanModule(
         x = "lm-random-slope/model.stan"
-    )
-
-    assert_that(
-        inherits(random_slope, "Prior"),
-        random_slope@repr_data == "",
-        random_slope@repr_model == "",
-        msg = "`random_slope` must be a `prior_none()`"
     )
 
     .LongitudinalRandomSlope(
@@ -55,7 +46,11 @@ LongitudinalRandomSlope <- function(
                 Parameter(name = "lm_rs_slope_mu", prior = slope_mu, size = "n_arms"),
                 Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma, size = 1),
                 Parameter(name = "lm_rs_sigma", prior = sigma, size = 1),
-                Parameter(name = "lm_rs_ind_rnd_slope", prior = random_slope, size = "Nind")
+                Parameter(
+                    name = "lm_rs_ind_rnd_slope",
+                    prior = prior_init_only(prior_normal(slope_mu@init, slope_sigma@init)),
+                    size = "Nind"
+                )
             )
         )
     )

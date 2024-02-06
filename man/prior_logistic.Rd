@@ -4,14 +4,12 @@
 \alias{prior_logistic}
 \title{Logistic Prior Distribution}
 \usage{
-prior_logistic(mu, sigma, init = mu)
+prior_logistic(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr Location parameter.}
 
 \item{sigma}{(\code{number})\cr Scale parameter.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Logistic Prior Distribution
@@ -21,10 +19,10 @@ Other Prior:
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_student_t}()},

@@ -4,14 +4,12 @@
 \alias{prior_normal}
 \title{Normal Prior Distribution}
 \usage{
-prior_normal(mu, sigma, init = mu)
+prior_normal(mu, sigma)
 }
 \arguments{
 \item{mu}{(\code{number})\cr mean.}
 
 \item{sigma}{(\code{number})\cr standard deviation.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Normal Prior Distribution
@@ -21,11 +19,11 @@ Other Prior:
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_student_t}()},
 \code{\link{prior_uniform}()}

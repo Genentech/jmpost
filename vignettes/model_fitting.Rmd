@@ -56,12 +56,12 @@ from the arguments of the constructors (or from the help page):
 args(LongitudinalRandomSlope)
 ```
 
-So here we see that there are 4 model parameters with a proper prior and an 
-additional `random_slope` one where just the initial value can be specified.
+So here we see that the Longitudinal Random Slope model has 4 parameters that we can
+define a prior for.
 
-## Specifying Prior and Initial Values
+## Specifying Priors
 
-We can alternatively also specify the prior distributions and the initial values
+We can alternatively also specify the prior distributions
 for the parameters manually. This is important in practice to obtain a meaningful
 model specification and hence converging MCMC chains that allow to estimate the 
 posterior distributions.
@@ -71,15 +71,12 @@ For the random slope model for the longitudinal outcome, we can e.g. say:
 ```{r random_slope_prior_inits}
 random_slope_model <- LongitudinalRandomSlope(
     intercept = prior_normal(40, 5),
-    slope_mu = prior_normal(10, 2, init = 30)
+    slope_mu = prior_normal(10, 2)
 )
 ```
 
-This sets the prior for the `intercept`, without stating an explicit initial value.
-In this case the `init` value is just set to the mean of the normal distribution,
-so 40. The `slope_mu` argument then also sets the prior and a custom initial value 
-for the `slope_mu` parameter. The other parameters are left with their default priors
-and initial values.
+This sets the prior for the `intercept` to be a $N(40, 5)$ distribution and
+the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 
 ## Separate Models
 
@@ -325,7 +322,7 @@ long_quantities <- LongitudinalQuantities(
     mcmc_results,
     groups = selected_patients
 )
-as.data.frame(long_quantities)
+as.data.frame(long_quantities) |> head()
 summary(long_quantities)
 autoplot(long_quantities)
 ```
@@ -373,3 +370,55 @@ sq <- SurvivalQuantities(
 )
 brierScore(sq)
 ```
+
+
+## Initial Values
+
+By default `jmpost` will set the initial values for all parameters to be a random value
+drawn from the prior distribution that has been shrunk towards the
+mean of said distribution e.g. for a `prior_normal(4, 2)`
+the initial value for each chain will be: 
+```
+4 * shrinkage_factor + rnorm(1, 4, 2) * (1 - shrinkage_factor)
+```
+
+Note that the shrinkage factor is set to 0.5 by default and can be changed via the
+`jmpost.prior_shrinkage` option e.g.
+
+```
+options("jmpost.prior_shrinkage" = 0.7)
+```
+
+If you wish to manually specify the initial values you can do so via the `initialValues()` function.
+For example:
+
+```r
+joint_model <- JointModel(
+    LongitudinalRandomSlope(),
+    SurvivalExponential(),
+    LinkNone()
+)
+initial_values <- initialValues(joint_model, n_chains = 2)
+
+initial_values[[1]]$lm_rs_intercept <- 0.2
+initial_values[[2]]$lm_rs_intercept <- 0.3
+
+mcmc_results <- sampleStanModel(
+    joint_model,
+    data = DataJoint(...),
+    init = initial_values,
+    chains = 2
+)
+```
+
+Note the following:
+-  `initialValues()` will return a list of lists where each sublist contains the initial
+values for the corresponding chain index.
+- `initialValues()` by default just returns 1 initial value for each parameter; the `sampleStanModel()`
+function will then broadcast this number as many times as required e.g. if you have 3 covariates
+in your survival model then the initial value for the Beta coeficient will be repeated 3 times. If
+however you want to specify individual initial values for each covariate you can do so by passing
+in a vector of the same length as the number of covariates.
+
+
+

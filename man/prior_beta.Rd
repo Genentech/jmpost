@@ -4,14 +4,12 @@
 \alias{prior_beta}
 \title{Beta Prior Distribution}
 \usage{
-prior_beta(a, b, init = a/(a + b))
+prior_beta(a, b)
 }
 \arguments{
 \item{a}{(\code{number})\cr first parameter.}
 
 \item{b}{(\code{number})\cr second parameter}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Beta Prior Distribution
@@ -20,11 +18,11 @@ Beta Prior Distribution
 Other Prior: 
 \code{\link{prior_cauchy}()},
 \code{\link{prior_gamma}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_student_t}()},

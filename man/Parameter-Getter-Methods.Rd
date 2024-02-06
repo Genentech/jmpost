@@ -9,7 +9,7 @@
 \usage{
 \method{names}{Parameter}(x)
 
-\method{initialValues}{Parameter}(object)
+\method{initialValues}{Parameter}(object, ...)
 
 \method{size}{Parameter}(object)
 }
@@ -17,6 +17,8 @@
 \item{x}{(\code{Paramater}) \cr A model parameter}
 
 \item{object}{(\code{Paramater}) \cr A model parameter}
+
+\item{...}{Not used.}
 }
 \description{
 Getter functions for the slots of a \code{\link{Parameter}} object

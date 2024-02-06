@@ -5,10 +5,12 @@
 \alias{initialValues.Prior}
 \title{Prior Getter Functions}
 \usage{
-\method{initialValues}{Prior}(object)
+\method{initialValues}{Prior}(object, ...)
 }
 \arguments{
 \item{object}{(\code{\link{Prior}})\cr a prior Distribution}
+
+\item{...}{Not Used.}
 }
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object

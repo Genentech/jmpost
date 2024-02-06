@@ -151,9 +151,20 @@ extractVariableNames <- function(object) {
 #' Obtain the `list` of initial values to be passed to the Stan sampler.
 #'
 #' @param object where to get the initial values from.
+#' @param n_chains the number of initial values to generate. See details.
+#' @param ... Not currently used.
 #'
-#' @keywords internal
-initialValues <- function(object) {
+#' @details
+#' There are multiple ways of specifying initial values to Stan, see the `init` argument
+#' in [cmdstanr::model-method-sample] for full details. Within this package we supply
+#' initial values via a list of lists where each inner list contains the initial values
+#' for a single chain. As such the `n_chains` argument specifies the number of inner lists
+#' to generate.
+#'
+#' See the Vignette for further details of how to specify initial values.
+#'
+#' @export
+initialValues <- function(object, ...) {
     UseMethod("initialValues")
 }
 

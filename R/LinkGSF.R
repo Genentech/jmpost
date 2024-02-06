@@ -149,7 +149,7 @@ link_gsf_abstract <- function(
 #'
 #' @export
 link_gsf_ttg <- function(
-    gamma = prior_normal(0, 5, init = 0)
+    gamma = prior_normal(0, 5)
 ) {
     .link_gsf_ttg(
         name = "TTG",
@@ -182,7 +182,7 @@ link_gsf_ttg <- function(
 #'
 #' @export
 link_gsf_dsld <- function(
-    beta = prior_normal(0, 5, init = 0)
+    beta = prior_normal(0, 5)
 ) {
     .link_gsf_dsld(
         name = "dSLD",
@@ -215,7 +215,7 @@ link_gsf_dsld <- function(
 #' @param tau (`Prior`)\cr prior for the link coefficient `tau`.
 #'
 #' @export
-link_gsf_identity <- function(tau = prior_normal(0, 5, init = 0)) {
+link_gsf_identity <- function(tau = prior_normal(0, 5)) {
     .link_gsf_identity(
         name = "Identity",
         stan = StanModule("lm-gsf/link_identity.stan"),

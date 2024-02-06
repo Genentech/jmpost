@@ -7,7 +7,7 @@
 \alias{link_gsf_ttg}
 \title{\code{link_gsf_ttg}}
 \usage{
-link_gsf_ttg(gamma = prior_normal(0, 5, init = 0))
+link_gsf_ttg(gamma = prior_normal(0, 5))
 }
 \arguments{
 \item{gamma}{(\code{Prior})\cr prior for the link coefficient \code{gamma}.}

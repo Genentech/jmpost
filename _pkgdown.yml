@@ -27,6 +27,7 @@ reference:
   - title: Package
     contents:
       - jmpost-package
+      - jmpost-settings
   
   - title: Data Specification
     contents:
@@ -54,11 +55,11 @@ reference:
       - prior_logistic
       - prior_loglogistic
       - prior_lognormal
-      - prior_none
       - prior_normal
       - prior_uniform
       - prior_std_normal
       - prior_student_t
+      - prior_init_only
   
   - title: Longitudinal Model Specification
     contents:
@@ -122,6 +123,7 @@ reference:
   
   - title: Convenience Functions
     contents:
+      - initialValues
       - merge
       - show
       - as_stan_list

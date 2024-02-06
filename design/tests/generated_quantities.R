@@ -7,7 +7,7 @@ library(ggplot2)
 library(stringr)
 library(tidyr)
 
-options("jmpost.cache.dir" = file.path("local", "models"))
+options("jmpost.cache_dir" = file.path("local", "models"))
 
 
 #### Example 1 - Fully specified model

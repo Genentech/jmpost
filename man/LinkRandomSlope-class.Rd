@@ -7,7 +7,7 @@
 \alias{LinkRandomSlope}
 \title{\code{LinkRandomSlope}}
 \usage{
-LinkRandomSlope(link_lm_phi = prior_normal(0.2, 0.5, init = 0.02))
+LinkRandomSlope(link_lm_phi = prior_normal(0.2, 0.5))
 }
 \arguments{
 \item{link_lm_phi}{(\code{Prior})\cr prior for the link coefficient for the

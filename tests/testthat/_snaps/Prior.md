@@ -1,7 +1,7 @@
 # show() works for Prior objects
 
     Code
-      print(prior_cauchy(0, 0.8, init = 4))
+      print(prior_cauchy(0, 0.8))
     Output
       
       Prior Object:
@@ -51,7 +51,7 @@
 ---
 
     Code
-      print(prior_none())
+      print(prior_init_only(prior_normal(1, 4)))
     Output
       
       Prior Object:
@@ -81,7 +81,7 @@
 ---
 
     Code
-      print(prior_logistic(sigma = 2, init = 1, 10))
+      print(prior_logistic(sigma = 2, 10))
     Output
       
       Prior Object:

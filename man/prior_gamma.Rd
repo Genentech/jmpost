@@ -4,14 +4,12 @@
 \alias{prior_gamma}
 \title{Gamma Prior Distribution}
 \usage{
-prior_gamma(alpha, beta, init = alpha/beta)
+prior_gamma(alpha, beta)
 }
 \arguments{
 \item{alpha}{(\code{number})\cr shape.}
 
 \item{beta}{(\code{number})\cr inverse scale.}
-
-\item{init}{(\code{number})\cr initial value.}
 }
 \description{
 Gamma Prior Distribution
@@ -20,11 +18,11 @@ Gamma Prior Distribution
 Other Prior: 
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
+\code{\link{prior_init_only}()},
 \code{\link{prior_invgamma}()},
 \code{\link{prior_logistic}()},
 \code{\link{prior_loglogistic}()},
 \code{\link{prior_lognormal}()},
-\code{\link{prior_none}()},
 \code{\link{prior_normal}()},
 \code{\link{prior_std_normal}()},
 \code{\link{prior_student_t}()},
