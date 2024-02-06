@@ -343,7 +343,7 @@ prior_beta <- function(a, b) {
 #' @family Prior
 #' @description
 #' This function is used to specify only the initial values for a parameter.
-#' This is primarily used for heiracrhical parameters whose distributions
+#' This is primarily used for hierarchical parameters whose distributions
 #' are fixed within the model and cannot be altered by the user.
 #'
 prior_init_only <- function(dist) {
