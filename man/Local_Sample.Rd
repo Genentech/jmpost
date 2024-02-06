@@ -80,7 +80,8 @@ by sampling sampling from the Gamma distribution and then taking the reciprocal.
 
 R's sampling functions only produce the standard Student-t distribution so in order
 to match Stan's implementation we multiply by the scale parameter and add the location
-parameter. See https://stats.stackexchange.com/a/623611 for details
+parameter. See this \href{https://stats.stackexchange.com/a/623611}{Stack Overflow} post
+for details
 }
 }
 \keyword{internal}
