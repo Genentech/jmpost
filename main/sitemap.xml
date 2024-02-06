@@ -76,6 +76,9 @@
     <loc>https://genentech.github.io/jmpost/reference/LinkRandomSlope-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/Local_Sample.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.html</loc>
   </url>
   <url>
@@ -295,6 +298,9 @@
     <loc>https://genentech.github.io/jmpost/reference/dim.Quantities.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/ensure_initial_values.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
   </url>
   <url>
@@ -352,6 +358,9 @@
     <loc>https://genentech.github.io/jmpost/reference/jmpost-package.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/jmpost-settings.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/link_gsf_abstract-class.html</loc>
   </url>
   <url>
@@ -379,6 +388,9 @@
     <loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/prior_init_only.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_invgamma.html</loc>
   </url>
   <url>
@@ -389,9 +401,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_lognormal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_none.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_normal.html</loc>

@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -72,13 +66,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for StanModel</span></span>
+<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for Link</span></span>
-<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for JointModel</span></span>
-<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -86,7 +83,24 @@
     <dl><dt>object</dt>
 <dd><p>where to get the initial values from.</p></dd>
 
+
+<dt>...</dt>
+<dd><p>Not currently used.</p></dd>
+
+
+<dt>n_chains</dt>
+<dd><p>the number of initial values to generate. See details.</p></dd>
+
 </dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>There are multiple ways of specifying initial values to Stan, see the <code>init</code> argument
+in <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.html" class="external-link">cmdstanr::model-method-sample</a> for full details. Within this package we supply
+initial values via a list of lists where each inner list contains the initial values
+for a single chain. As such the <code>n_chains</code> argument specifies the number of inner lists
+to generate.</p>
+<p>See the Vignette for further details of how to specify initial values.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
