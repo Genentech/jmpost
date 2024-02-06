@@ -73,7 +73,11 @@ LongitudinalGSF <- function(
 
         Parameter(name = "lm_gsf_a_phi", prior = a_phi, size = "n_arms"),
         Parameter(name = "lm_gsf_b_phi", prior = b_phi, size = "n_arms"),
-        Parameter(name = "lm_gsf_psi_phi", prior = prior_none(), size = "Nind"),
+        Parameter(
+            name = "lm_gsf_psi_phi",
+            prior = prior_init_only(prior_beta(a_phi@init, b_phi@init)),
+            size = "Nind"
+        ),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
@@ -81,9 +85,21 @@ LongitudinalGSF <- function(
     assert_flag(centered)
     parameters_extra <- if (centered) {
         list(
-            Parameter(name = "lm_gsf_psi_bsld", prior = prior_none(), size = "Nind"),
-            Parameter(name = "lm_gsf_psi_ks", prior = prior_none(), size = "Nind"),
-            Parameter(name = "lm_gsf_psi_kg", prior = prior_none(), size = "Nind")
+            Parameter(
+                name = "lm_gsf_psi_bsld",
+                prior = prior_init_only(prior_lognormal(mu_bsld@init, omega_bsld@init)),
+                size = "Nind"
+            ),
+            Parameter(
+                name = "lm_gsf_psi_ks",
+                prior = prior_init_only(prior_lognormal(mu_ks@init, omega_ks@init)),
+                size = "Nind"
+            ),
+            Parameter(
+                name = "lm_gsf_psi_kg",
+                prior = prior_init_only(prior_lognormal(mu_kg@init, omega_kg@init)),
+                size = "Nind"
+            )
         )
     } else {
         list(

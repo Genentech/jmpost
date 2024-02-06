@@ -19,6 +19,6 @@ test_that("show() works for Paramneter objects", {
     x <- Parameter(prior_beta(0.5, 0.2), "var1", "size1")
     expect_snapshot(print(x))
 
-    x <- Parameter(prior_none(), "x", "size1")
+    x <- Parameter(prior_init_only(prior_normal(0, 1)), "x", "size1")
     expect_snapshot(print(x))
 })

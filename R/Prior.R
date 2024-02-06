@@ -339,17 +339,23 @@ prior_beta <- function(a, b) {
 
 #' Only Initial Values Specification
 #'
+#' @param dist (`Prior`)\cr a prior Distribution
 #' @family Prior
+#' @description
+#' This function is used to specify only the initial values for a parameter.
+#' This is primarily used for heiracrhical parameters whose distributions
+#' are fixed within the model and cannot be altered by the user.
 #'
-#' @export
-prior_none <- function() {
+prior_init_only <- function(dist) {
     Prior(
         parameters = list(),
         display = "<None>",
         repr_model = "",
         repr_data = "",
-        sample = \(n) local_runif(n, -4, 4),
-        init = 0,
+        sample = \(n) {
+            dist@sample(n)
+        },
+        init = dist@init,
         validation = list()
     )
 }

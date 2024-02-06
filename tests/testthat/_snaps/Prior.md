@@ -51,7 +51,7 @@
 ---
 
     Code
-      print(prior_none())
+      print(prior_init_only(prior_normal(1, 4)))
     Output
       
       Prior Object:

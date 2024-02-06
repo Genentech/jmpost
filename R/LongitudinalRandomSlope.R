@@ -46,7 +46,11 @@ LongitudinalRandomSlope <- function(
                 Parameter(name = "lm_rs_slope_mu", prior = slope_mu, size = "n_arms"),
                 Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma, size = 1),
                 Parameter(name = "lm_rs_sigma", prior = sigma, size = 1),
-                Parameter(name = "lm_rs_ind_rnd_slope", prior = prior_none(), size = "Nind")
+                Parameter(
+                    name = "lm_rs_ind_rnd_slope",
+                    prior = prior_init_only(prior_normal(slope_mu@init, slope_sigma@init)),
+                    size = "Nind"
+                )
             )
         )
     )

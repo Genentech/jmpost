@@ -81,3 +81,18 @@ test_that("ensure_initial_values() works as expected", {
     expect_equal(res[[1]]$p2, array(c(2, 3), dim = c(2)))
     expect_equal(res[[1]]$p3, array(c(4, 5, 6), dim = c(3)))
 })
+
+
+test_that("intial values for fixed distributions gives valid values", {
+
+    set.seed(3150)
+    gsfmodel <- LongitudinalGSF(centered = TRUE)
+    ivs <- initialValues(gsfmodel, n_chains = 100)
+
+    for (values in ivs) {
+        expect_true(values$lm_gsf_psi_phi > 0 & values$lm_gsf_psi_phi < 1)
+        expect_true(values$lm_gsf_psi_bsld > 0)
+        expect_true(values$lm_gsf_psi_ks > 0)
+        expect_true(values$lm_gsf_psi_kg > 0)
+    }
+})

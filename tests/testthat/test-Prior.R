@@ -137,7 +137,7 @@ test_that("Invalid prior parameters are rejected", {
 
 
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
-    expect_s4_class(prior_none(), "Prior")
+    expect_s4_class(prior_init_only(prior_normal(3, 1)), "Prior")
     expect_s4_class(prior_std_normal(), "Prior")
 })
 
@@ -149,7 +149,7 @@ test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_std_normal()))
     expect_snapshot(print(prior_beta(5, 1)))
     expect_snapshot(print(prior_gamma(2.56, 12)))
-    expect_snapshot(print(prior_none()))
+    expect_snapshot(print(prior_init_only(prior_normal(1, 4))))
     expect_snapshot(print(prior_uniform(8, 10)))
     expect_snapshot(print(prior_student_t(3, 10, 4)))
     expect_snapshot(print(prior_logistic(sigma = 2, 10)))

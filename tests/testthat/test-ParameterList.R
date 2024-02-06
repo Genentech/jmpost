@@ -47,7 +47,7 @@ test_that("show() works for ParameterList objects", {
         Parameter(name = "bob", prior = prior_normal(1, 4)),
         Parameter(name = "sam", prior = prior_beta(3, 1)),
         Parameter(name = "dave", prior = prior_lognormal(3, 2), size = 4),
-        Parameter(name = "steve", prior = prior_none())
+        Parameter(name = "steve", prior = prior_init_only(prior_normal(4, 2)))
     )
 
     expect_snapshot(print(x))
