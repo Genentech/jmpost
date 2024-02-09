@@ -1,5 +1,14 @@
 
 
+functions {
+    real weibull_ph_lpdf (real t, real lambda, real gamma) {
+        return log(lambda) + log(gamma) + (gamma -1)* log(t) -lambda * t^gamma;
+    }
+    real weibull_ph_lccdf (real t, real lambda, real gamma) {
+        return -lambda * t^gamma;
+    }
+}
+
 
 data {
     int<lower=1> n;
@@ -10,26 +19,24 @@ data {
 }
 
 parameters {
-    vector[p] log_ph_beta;
+    vector[p] beta;
     real gamma;
 }
 
 model {
 
-    real alpha = gamma;
-    vector[n] lambda = exp(design * log_ph_beta);
-    vector[n] sigma = lambda .^ (-1/alpha);
+    vector[n] lambda = exp(design * beta);
 
     // Priors
-    log_ph_beta ~ normal(0, 3);
+    beta ~ normal(0, 3);
     gamma ~ lognormal(log(1), 1.5);
     
     // Likelihood
     for (i in 1:n) {
         if (event_fl[i] == 1) {
-            target += weibull_lpdf(times[i] | alpha, sigma[i]);
+            target += weibull_ph_lpdf(times[i] | lambda[i], gamma);
         } else {
-            target += weibull_lccdf(times[i] | alpha, sigma[i]);
+            target += weibull_ph_lccdf(times[i] | lambda[i], gamma);
         }
     }
 }
@@ -37,7 +44,7 @@ model {
 generated quantities {
     // Reconstruct the baseline lambda value from the intercept
     // of the design matrix
-    real lamba_0 = exp(log_ph_beta[1]);
+    real lamba_0 = exp(beta[1]);
 }
 
 
