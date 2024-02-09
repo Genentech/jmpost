@@ -13,14 +13,14 @@ functions {
 data {
     int<lower=1> n;
     int<lower=0> p;
-    vector[n] times;
-    vector[n] event_fl;
+    vector<lower=0>[n] times;
+    array[n] int<lower=0, upper=1> event_fl;
     matrix[n, p] design;
 }
 
 parameters {
     vector[p] beta;
-    real gamma;
+    real<lower=0> gamma;
 }
 
 model {

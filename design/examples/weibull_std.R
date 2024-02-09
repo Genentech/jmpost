@@ -54,6 +54,7 @@ mod <- survreg(
 gamma <- 1 / mod$scale
 lambda <- exp(-mod$coefficients[1] * gamma)
 param_log_coefs <- -mod$coefficients[-1] * gamma
+
 c(gamma, lambda, param_log_coefs)
 ## Need to use delta method to get standard errors
 
