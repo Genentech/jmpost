@@ -6,11 +6,12 @@ functions {
     //
     matrix link_ttg_contribution(
         matrix time,
-        vector psi_bsld,
-        vector psi_ks,
-        vector psi_kg,
-        vector psi_phi
+        matrix link_function_inputs,
     ) {
+        vector psi_bsld = link_function_inputs[1];
+        vector psi_phi = link_function_inputs[2];
+        vector psi_ks = link_function_inputs[3];
+        vector psi_kg = link_function_inputs[4];
         int nrows = rows(psi_bsld);
         int ncols = cols(time);
         vector[nrows] num = logit(psi_phi) + log(psi_ks ./ psi_kg);

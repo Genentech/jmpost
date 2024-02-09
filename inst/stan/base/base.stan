@@ -1,18 +1,8 @@
 
 functions {
-    //
-    // Source - base/base.stan
-    //
-
-{% if link_none %}
-    // If user has requested link_none then provide a dummy link_contribution function
-    // that does nothing
-    matrix link_contribution(matrix time, matrix pars_lm) {
-        return  rep_matrix(0, rows(time), cols(time));
-    }
-{% endif %}
 {{ longitudinal.functions }}
 {{ survival.functions }}
+{{ link.data }}
 }
 
 
@@ -21,7 +11,6 @@ data{
     //
     // Source - base/base.stan
     //
-
     int<lower=1> Nind;                 // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
@@ -30,31 +19,17 @@ data{
 
 {{ survival.data }}
 {{ longitudinal.data }}
+{{ link.data }}
 
-    //
-    // Dynamically derived priors
-    //
 {{ priors.data }}
 
 }
 
 
 transformed data {
-
 {{ longitudinal.transformed_data }}
 {{ survival.transformed_data }}
-
-
-{% if link_none %}
-    //
-    // Source - base/base.stan
-    //
-
-    // If user has requested link_none then provide a dummy pars_lm object
-    // that contains nothing
-    matrix[Nind, 0] pars_lm = rep_matrix(0, Nind, 0);
-{% endif %}
-
+{{ link.transformed_data }}
 }
 
 
@@ -62,6 +37,7 @@ transformed data {
 parameters{
 {{ longitudinal.parameters }}
 {{ survival.parameters }}
+{{ link.parameters }}
 }
 
 
@@ -76,6 +52,7 @@ transformed parameters{
 
 {{ longitudinal.transformed_parameters }}
 {{ survival.transformed_parameters }}
+{{ link.transformed_parameters }}
 
 }
 
@@ -83,10 +60,8 @@ transformed parameters{
 model{
 {{ longitudinal.model }}
 {{ survival.model }}
+{{ link.model }}
 
-    //
-    // Dynamically derived priors
-    //
 {{ priors.model }}
 
     //
@@ -99,6 +74,7 @@ generated quantities{
 
 {{ longitudinal.generated_quantities }}
 {{ survival.generated_quantities }}
+{{ link.generated_quantities }}
 
 }
 

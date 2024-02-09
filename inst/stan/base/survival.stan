@@ -1,6 +1,10 @@
 functions {
 
+        ,
+        
+
 {{ stan.functions }}
+
 
     //
     // Source - base/survival.stan
@@ -10,7 +14,8 @@ functions {
     matrix log_hazard(
         matrix time,
         vector pars_os,
-        matrix pars_lm,
+        matrix link_function_inputs,
+        vector link_coefficients
         vector cov_contribution
     ) {
         //print([rows(time), cols(time), rows(cov_contribution), cols(cov_contribution)]);
@@ -20,13 +25,16 @@ functions {
             cols(time)
         );
 
-        matrix[rows(time), cols(time)] lm_link_contribution = link_contribution(time, pars_lm);
+        matrix[rows(time), cols(time)] lm_link_contribution = link_contribution(
+            time,
+            link_function_inputs,
+            link_coefficients
+        );
 
         matrix[rows(time), cols(time)] result =
             cov_contribution_matrix +
             lm_link_contribution +
-            log_baseline
-            ;
+            log_baseline;
         return result;
     }
 
@@ -36,7 +44,8 @@ functions {
     vector log_survival(
         vector time,
         vector pars_os,
-        matrix pars_lm,
+        matrix link_function_inputs,
+        vector link_coefficients
         data vector nodes,
         data vector weights,
         vector cov_contribution
@@ -49,7 +58,8 @@ functions {
                 log_hazard(
                     node_times,
                     pars_os,
-                    pars_lm,
+                    link_function_inputs,
+                    link_coefficients,
                     cov_contribution
                 )
             )
@@ -83,7 +93,8 @@ functions {
         array[] int pt_select_index,
         vector sm_time_grid,
         vector pars_os,
-        matrix pars_lm,
+        matrix link_function_inputs,
+        vector link_coefficients,
         vector cov_contribution
     ) {
         int n_pt_select_index = num_elements(pt_select_index);
@@ -91,12 +102,15 @@ functions {
         matrix[n_pt_select_index, n_sm_time_grid] result;
         for (i in 1:n_pt_select_index) {
             int current_pt_index = pt_select_index[i];
-            result[i, ] = to_row_vector(log_hazard(
-                rep_matrix(sm_time_grid, 1),
-                pars_os,
-                rep_matrix(pars_lm[current_pt_index, ], n_sm_time_grid),
-                rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
-            ));
+            result[i, ] = to_row_vector(
+                log_hazard(
+                    rep_matrix(sm_time_grid, 1),
+                    pars_os,
+                    rep_matrix(link_function_inputs[current_pt_index, ], n_sm_time_grid),
+                    link_coefficients,
+                    rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
+                )
+            );
         }
         return result;
     }
@@ -106,7 +120,8 @@ functions {
         array[] int pt_select_index,
         vector sm_time_grid,
         vector pars_os,
-        matrix pars_lm,
+        matrix link_function_inputs,
+        vector link_coefficients,
         data vector nodes,
         data vector weights,
         vector cov_contribution
@@ -116,14 +131,17 @@ functions {
         matrix[n_pt_select_index, n_sm_time_grid] result;
         for (i in 1:n_pt_select_index) {
             int current_pt_index = pt_select_index[i];
-            result[i, ] = to_row_vector(log_survival(
-                sm_time_grid,
-                pars_os,
-                rep_matrix(pars_lm[current_pt_index, ], n_sm_time_grid),
-                nodes,
-                weights,
-                rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
-            ));
+            result[i, ] = to_row_vector(
+                log_survival(
+                    sm_time_grid,
+                    pars_os,
+                    rep_matrix(link_function_inputs[current_pt_index, ], n_sm_time_grid),
+                    link_coefficients,
+                    nodes,
+                    weights,
+                    rep_vector(cov_contribution[current_pt_index], n_sm_time_grid)
+                )
+            );
         }
         return result;
     }
@@ -200,7 +218,8 @@ transformed parameters {
     log_surv_fit_at_obs_times[time_positive_index] += log_survival(
         Times[time_positive_index],
         pars_os,
-        pars_lm[time_positive_index],
+        link_function_inputs[time_positive_index],
+        link_coefficients,
         nodes,
         weights,
         os_cov_contribution[time_positive_index]
@@ -214,7 +233,8 @@ transformed parameters {
         log_hazard(
             to_matrix(Times[dead_ind_index]),
             pars_os,
-            pars_lm[dead_ind_index],
+            link_function_inputs[dead_ind_index],
+            link_coefficients,
             os_cov_contribution[dead_ind_index]
         )
     );
@@ -237,7 +257,8 @@ generated quantities {
             pt_select_index,
             sm_time_grid,
             pars_os,
-            pars_lm,
+            link_function_inputs,
+            link_coefficients,
             nodes,
             weights,
             os_cov_contribution
@@ -246,7 +267,8 @@ generated quantities {
             pt_select_index,
             sm_time_grid,
             pars_os,
-            pars_lm,
+            link_function_inputs,
+            link_coefficients,
             os_cov_contribution
         );
     }
