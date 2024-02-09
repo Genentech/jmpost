@@ -9,40 +9,9 @@ library(bayesplot)
 library(here)
 
 
-n <- 1000
-
-log_hr_trt <- c(
-    "placebo" = 0,
-    "active" = -0.3
-)
-log_hr_sex <- c(
-    "M" = 0,
-    "F" = 0.2
-)
-log_hr_age <- 0.1
-
-lambda_bl <- 1 / 200
-gamma_bl <- 0.95
-
-dat <- tibble(
-    pt = sprintf("pt-%05d", 1:n),
-    trt = sample(names(log_hr_trt), size = n, replace = TRUE, prob = c(0.5, 0.5)),
-    age = rnorm(n),
-    sex = sample(names(log_hr_sex), size = n, replace = TRUE, prob = c(0.4, 0.6)),
-    HR = exp(
-        log(lambda_bl) +
-            log_hr_age * age +
-            log_hr_sex[sex] +
-            log_hr_trt[trt]
-    ),
-    time = rweibullPH(n, scale = HR, shape = gamma_bl),
-    centime = rexp(n, 1 / 400)
-) |>
-    mutate(event = ifelse(time <= centime, 1, 0)) |>
-    mutate(time = ifelse(time <= centime, time, centime)) |>
-    mutate(sex = factor(sex, levels = names(log_hr_sex))) |>
-    mutate(trt = factor(trt, levels = names(log_hr_trt))) |>
-    mutate(study = "Study-1")
+dat <- flexsurv::bc |>
+    as_tibble() |>
+    mutate(arm = "A", study = "S", pt = sprintf("pt-%05d", 1:n()))
 
 
 
@@ -52,7 +21,7 @@ dat <- tibble(
 #
 
 coxph(
-    Surv(time, event) ~ age + sex + trt,
+    Surv(recyrs, censrec) ~ group,
     data = dat
 )
 
@@ -64,7 +33,7 @@ coxph(
 
 
 flexsurvreg(
-    Surv(time, event) ~  sex + trt,
+    Surv(recyrs, censrec) ~ group,
     data = dat,
     dist = "weibullPH"
 )
@@ -77,7 +46,7 @@ flexsurvreg(
 
 
 mod <- survreg(
-    Surv(time, event) ~ age + sex + trt,
+    Surv(recyrs, censrec) ~ group,
     data = dat,
     dist = "weibull"
 )
@@ -100,15 +69,15 @@ mod <- cmdstan_model(
     exe_file = here("design/examples/models/weibull")
 )
 
-design_mat <- model.matrix(~  sex + trt, data = dat)
+design_mat <- model.matrix(~ group, data = dat)
 
 
 stan_data <- list(
     n = nrow(dat),
     design = design_mat,
     p = ncol(design_mat),
-    times = dat$time,
-    event_fl = dat$event
+    times = dat$rectime,
+    event_fl = dat$censrec
 )
 fit <- mod$sample(
     data = stan_data,
@@ -122,6 +91,8 @@ fit <- mod$sample(
 fit$summary()
 
 
+bayesplot::mcmc_pairs(fit$draws())
+
 ################################
 #
 # JMpost
@@ -132,8 +103,8 @@ devtools::load_all()
 
 jm <- JointModel(
     survival = SurvivalWeibullPH(
-        lambda = prior_lognormal(log(1 / 200), 0.5),
-        gamma = prior_lognormal(log(0.95), 0.5)
+        lambda = prior_lognormal(log(1/200), 1.3),
+        gamma = prior_lognormal(log(1), 1.3)
     )
 )
 
@@ -141,12 +112,12 @@ jdat <- DataJoint(
     subject = DataSubject(
         data = dat,
         subject = "pt",
-        arm = "trt",
+        arm = "arm",
         study = "study"
     ),
     survival = DataSurvival(
         data = dat,
-        formula = Surv(time, event) ~ age + sex + trt
+        formula = Surv(recyrs, censrec) ~ group
     )
 )
 
@@ -155,14 +126,39 @@ mp <- sampleStanModel(
     data = jdat,
     iter_warmup = 1000,
     iter_sampling = 1500,
-    chains = 2
+    chains = 2,
+    parallel_chains = 2
 )
 
 vars <- c(
-    "sm_weibull_ph_lambda",   # 0.005
-    "sm_weibull_ph_gamma",    # 0.95
-    "beta_os_cov"             # 0.1,  0.3,  -0.2
+    "sm_weibull_ph_lambda",
+    "sm_weibull_ph_gamma",
+    "beta_os_cov"
 )
 
 mp@results$summary(vars)
 
+
+
+
+
+flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="weibullph")
+shape = 1.37965
+scale = 0.03472
+groupMedium = 0.84654
+groupPoor = 1.67243
+
+survHE.hmc.weiph<-fit.models(formula=Surv(recyrs, censrec)~group, data=bc, distr="weibullph", method="hmc")
+shape = 1.3799683
+scale = 0.0350171
+0.8481786
+1.6736389
+
+
+
+normal(0, 20)
+
+x <- rnorm(100000, 0, 2) |>
+    exp() |>
+    density() |>
+    plot()
