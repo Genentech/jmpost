@@ -77,7 +77,7 @@ stan_data <- list(
     n = nrow(dat),
     design = design_mat,
     p = ncol(design_mat),
-    times = dat$rectime,
+    times = dat$recyrs,
     event_fl = dat$censrec
 )
 fit <- mod$sample(
@@ -139,27 +139,3 @@ vars <- c(
 
 mp@results$summary(vars)
 
-
-
-
-
-flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="weibullph")
-shape = 1.37965
-scale = 0.03472
-groupMedium = 0.84654
-groupPoor = 1.67243
-
-survHE.hmc.weiph<-fit.models(formula=Surv(recyrs, censrec)~group, data=bc, distr="weibullph", method="hmc")
-shape = 1.3799683
-scale = 0.0350171
-0.8481786
-1.6736389
-
-
-
-normal(0, 20)
-
-x <- rnorm(100000, 0, 2) |>
-    exp() |>
-    density() |>
-    plot()
