@@ -12,7 +12,7 @@ options("jmpost.cache_dir" = file.path("local", "models"))
 jm <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalExponential(),
-    link = LinkRandomSlope()
+    link = link_dsld()
 )
 
 
@@ -37,8 +37,7 @@ jlist <- simulate_joint_data(
         sigma = 3,
         slope_mu = c(1,3),
         slope_sigma = 0.2,
-        phi = 0.1,
-        .debug = TRUE
+        phi = 0.1
     ),
     os_fun = sim_os_exponential(
         lambda = 0.00333  # 1/300

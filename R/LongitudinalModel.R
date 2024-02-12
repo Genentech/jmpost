@@ -51,3 +51,34 @@ as_print_string.LongitudinalModel <- function(object, ...) {
     )
     return(string)
 }
+
+
+#' @export
+linkTTG.LongitudinalModel <- function(object, ...) {
+    stop(
+        sprintf(
+            "TTG link is not available for the %s model",
+            object@name
+        )
+    )
+}
+
+#' @export
+linkDSLD.LongitudinalModel <- function(object, ...) {
+    stop(
+        sprintf(
+            "DSLD link is not available for the %s model",
+            object@name
+        )
+    )
+}
+
+#' @export
+linkIdentity.LongitudinalModel <- function(object, ...) {
+    stop(
+        sprintf(
+            "Identity link is not available for the %s model",
+            object@name
+        )
+    )
+}

@@ -1,67 +1,56 @@
 #' @include StanModule.R
 #' @include LongitudinalModel.R
 #' @include ParameterList.R
+#' @include generics.R
 NULL
 
 
 
+setClassUnion("StanModule_or_Function", c("StanModule", "function"))
+
+# TODO - docs
 #' `Link`
 #'
 #' @slot stan (`StanModule`)\cr code containing the link specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #' @slot name (`character`)\cr display name for the link object.
 #'
+#' @name LinkComponent-class
 #' @exportClass Link
 .LinkComponent <- setClass(
-    Class = "Link",
+    Class = "LinkComponent",
     slots = list(
-        "name" = "character",
-        "stan" = "StanModule",
+        "stan" = "StanModule_or_Function",
         "parameters" = "ParameterList",
-        "parameter_name" = "character",
-        "contribution_fname" = "character"
+        "key" = "character"
     )
 )
 
 
-
-#' @rdname Link-class
-#'
-#' @inheritParams stanmodel_arguments
-#' @param ... additional arguments passed to the constructor.
-#'
+# TODO - docs
+#' @rdname LinkComponent-class
 #' @export
 LinkComponent <- function(
-    stan = StanModule(),
+    stan,
     parameters = ParameterList(),
-    name = "<Unnamed>",
-    parameter_name = "",
-    contribution_fname = "",
+    key = "",
     ...
 ) {
     .LinkComponent(
-        name = name,
         stan = stan,
+        key = key,
         parameters = parameters,
-        parameter_name = parameter_name,
-        contribution_fname = contribution_fname,
         ...
     )
 }
 
 
-#' @rdname addLink
-setMethod(
-    f = "addLink",
-    signature = c("LongitudinalModel", "LinkComponent"),
-    definition = function(x, y, ...) {
-        x@stan <- merge(x@stan, y@stan)
-        x@parameters <- merge(x@parameters, y@parameters)
-        x
-    }
-)
+# TODO - docs
+#' @export
+getParameters.LinkComponent <- function(object, ...) {
+    object@parameters
+}
 
-# initialValues-Link ----
 
 #' @rdname initialValues
 #' @export
@@ -70,58 +59,63 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 }
 
 
-link_ttg <- function(prior) {
-    function(model) {
-        link_files <- getLinkFiles(model)
-        if (!"link_ttg" %in% link_files) {
-            stop(sprintf(
-                "The %s model does not support the TTG link.",
-                model@name
-            ))
-        }
-        LinkComponent(
-            stan = StanModule(link_files[["link_ttg"]]),
-            parameter = ParameterList(Parameter(name = "link_ttg", prior = prior, size = 1)),
-            parameter_name = "link_ttg",
-            contribution_fname = "link_ttg_contribution"
-        )
+
+# TODO - docs
+#' @export
+as.StanModule.LinkComponent <- function(object, model = NULL, ...) {
+    if (is(object@stan, "StanModule")) {
+        return(object@stan)
     }
+    if (is.function(object@stan)) {
+        assert_that(
+            is(model, "LongitudinalModel"),
+            msg = "`model` must be a LongitudinalModel object"
+        )
+        stan <- object@stan(model)
+        assert_that(
+            is(stan, "StanModule"),
+            msg = "The function must return a StanModule object"
+        )
+        return(stan)
+    }
+    stop("Something went wrong")
 }
 
 
-link_dsld <- function(prior) {
-    function(model) {
-        link_files <- getLinkFiles(model)
-        if (!"link_dsld" %in% link_files) {
-            stop(sprintf(
-                "The %s model does not support the dsld link.",
-                model@name
-            ))
-        }
-        LinkComponent(
-            stan = StanModule(link_files[["link_dsld"]]),
-            parameter = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1)),
-            parameter_name = "link_dsld",
-            contribution_fname = "link_dsld_contribution"
-        )
-    }
+# TODO - docs
+#' @export
+as.list.LinkComponent <- function(object, ...) {
+    stan <- as.StanModule(object, ...)
+    as.list(stan)
 }
 
 
-link_identity <- function(prior) {
-    function(model) {
-        link_files <- getLinkFiles(model)
-        if (!"link_identity" %in% link_files) {
-            stop(sprintf(
-                "The %s model does not support the Identity link.",
-                model@name
-            ))
-        }
-        LinkComponent(
-            stan = StanModule(link_files[["link_identity"]]),
-            parameter = ParameterList(Parameter(name = "link_identity", prior = prior, size = 1)),
-            parameter_name = "link_identity",
-            contribution_fname = "link_identity_contribution"
-        )
-    }
+
+
+# TODO - docs
+#' @export
+link_ttg <- function(prior = prior_normal(0, 2)) {
+    LinkComponent(
+        key = "link_ttg",
+        stan = linkTTG,
+        parameter = ParameterList(Parameter(name = "link_ttg", prior = prior, size = 1))
+    )
+}
+
+#' @export
+link_dsld <- function(prior = prior_normal(0, 2)) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = linkDSLD,
+        parameter = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+    )
+}
+
+#' @export
+link_identity <- function(prior = prior_normal(0, 2)) {
+    LinkComponent(
+        key = "link_identity",
+        stan = linkIdenity,
+        parameter = ParameterList(Parameter(name = "link_identity", prior = prior, size = 1))
+    )
 }

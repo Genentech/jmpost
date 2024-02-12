@@ -23,7 +23,6 @@ NULL
 NULL
 
 setClassUnion("LongitudinalModel_OR_NULL", c("LongitudinalModel", "NULL"))
-setClassUnion("Link_OR_NULL", c("Link", "NULL"))
 setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 
 # JointModel-class ----
@@ -44,7 +43,7 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
     slots = list(
         longitudinal = "LongitudinalModel_OR_NULL",
         survival = "SurvivalModel_OR_NULL",
-        link = "Link_OR_NULL",
+        link = "Link",
         stan = "StanModule",
         parameters = "ParameterList"
     )
@@ -57,26 +56,40 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 JointModel <- function(
     longitudinal = NULL,
     survival = NULL,
-    link = NULL
+    link = link_none()
 ) {
-    longitudinal_linked <- addLink(longitudinal, link)
 
-    parameters <- merge(
-        getParameters(longitudinal_linked),
-        getParameters(survival)
+    # Ensure that it is a link object (e.g. wrap link components in a Link object)
+    link <- Link(link)
+
+    if (length(link) > 0) {
+        longitudinal <- enableLink(longitudinal)
+    }
+
+    parameters <- Reduce(
+        merge,
+        list(
+            getParameters(longitudinal),
+            getParameters(survival),
+            getParameters(link)
+        )
     )
 
     base_model <- paste0(read_stan("base/base.stan"), collapse = "\n")
 
     stan_full <- decorated_render(
         .x = base_model,
-        longitudinal = add_missing_stan_blocks(as.list(longitudinal_linked)),
+        longitudinal = add_missing_stan_blocks(as.list(longitudinal)),
         survival = add_missing_stan_blocks(as.list(survival)),
-        priors = as.list(parameters),
-        link_none = class(link)[[1]] == "LinkNone" | is.null(link)
+        link = add_missing_stan_blocks(as.list(link, model = longitudinal)),
+        priors = add_missing_stan_blocks(as.list(parameters))
     )
-    # Resolve any lingering references from longitudinal / survival code
-    # that haven't yet been rendered
+    # Unresolved Jinja code within the longitudinal / Survival / Link
+    # models won't be resolved by the above call to `decorated_render`.
+    # Instead they it will just be inserted into the template asis. Thus
+    # we run `decorated_render` again to resolve any lingering Jinja code
+    # Main example being models that don't have any Jinja code but still
+    # use the `decorated_render` constants `machine_double_eps`.
     stan_full <- decorated_render(.x = stan_full)
 
     stan_complete <- merge(
@@ -92,6 +105,7 @@ JointModel <- function(
         parameters = parameters
     )
 }
+
 
 
 #' `JointModel` -> `character`

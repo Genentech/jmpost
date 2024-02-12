@@ -4,7 +4,7 @@ functions {
     //
     // Source - lm-gsf/link_ttg.stan
     //
-    matrix link_ttg_contribution(
+    matrix link_ttg_contrib(
         matrix time,
         matrix link_function_inputs,
     ) {

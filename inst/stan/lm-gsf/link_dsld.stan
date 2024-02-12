@@ -5,7 +5,7 @@ functions {
     //
 
     // Derivative of SLD
-    matrix link_dsld_contribution(
+    matrix link_dsld_contrib(
         matrix time,
         matrix link_function_inputs,
     ) {

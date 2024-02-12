@@ -15,7 +15,7 @@ functions {
         matrix[nrows, ncols] matrix_link_contrib = rep_matrix(0, nrows, ncols);
         
         {% for item in items -%}
-        matrix_link_contrib += link_coefficients[{loop.index1}] .* {{ item.contribution_function }}(
+        matrix_link_contrib += link_coefficients[{{loop.index1}}] .* {{ item }}_contrib(
             time,
             link_function_inputs
         );
@@ -29,16 +29,15 @@ parameters{
     // Source - base/link.stan
     //
     {% for item in items -%}
-    real {{ item.parameter }};
+    real {{ item }};
     {% endfor -%}
-
 
 }
 
 transformed parameters {
-    vector link_coefficients[{{ len(items) }}];
+    vector[{{ length(items) }}] link_coefficients;
     {% for item in items -%}
-    link_coefficients[{{loop.index1}}] = {{ item.parameter }};
+    link_coefficients[{{loop.index1}}] = {{ item }};
     {% endfor -%}
 }
 

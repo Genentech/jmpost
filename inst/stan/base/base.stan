@@ -2,7 +2,7 @@
 functions {
 {{ longitudinal.functions }}
 {{ survival.functions }}
-{{ link.data }}
+{{ link.functions }}
 }
 
 
@@ -18,8 +18,8 @@ data{
     array[Nind] int<lower=1,upper=n_arms> pt_arm_index;       // Index of treatment arm per pt (PT index sorted)
 
 {{ survival.data }}
-{{ longitudinal.data }}
 {{ link.data }}
+{{ longitudinal.data }}
 
 {{ priors.data }}
 
@@ -28,16 +28,16 @@ data{
 
 transformed data {
 {{ longitudinal.transformed_data }}
-{{ survival.transformed_data }}
 {{ link.transformed_data }}
+{{ survival.transformed_data }}
 }
 
 
 
 parameters{
 {{ longitudinal.parameters }}
-{{ survival.parameters }}
 {{ link.parameters }}
+{{ survival.parameters }}
 }
 
 
@@ -51,16 +51,16 @@ transformed parameters{
     vector[Nind] log_lik = rep_vector(0.0, Nind);
 
 {{ longitudinal.transformed_parameters }}
-{{ survival.transformed_parameters }}
 {{ link.transformed_parameters }}
+{{ survival.transformed_parameters }}
 
 }
 
 
 model{
 {{ longitudinal.model }}
-{{ survival.model }}
 {{ link.model }}
+{{ survival.model }}
 
 {{ priors.model }}
 
@@ -73,8 +73,8 @@ model{
 generated quantities{
 
 {{ longitudinal.generated_quantities }}
-{{ survival.generated_quantities }}
 {{ link.generated_quantities }}
+{{ survival.generated_quantities }}
 
 }
 

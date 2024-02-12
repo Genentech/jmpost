@@ -5,7 +5,7 @@ functions {
     //
 
     // Identity of SLD
-    matrix link_identity_contribution(
+    matrix link_identity_contrib(
         matrix time,
         matrix link_function_inputs,
     ) {

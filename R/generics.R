@@ -35,26 +35,6 @@ setGeneric(
 NULL
 
 
-
-# addLink ----
-
-#' `addLink`
-#'
-#' Add a link to a longitudinal model.
-#'
-#' @param x the longitudinal model.
-#' @param y the link to be added.
-#' @param ... additional arguments.
-#'
-#' @export
-# Needs to be S4 for multiple dispatch !
-setGeneric(
-    name = "addLink",
-    def = function(x, y, ...) standardGeneric("addLink")
-)
-
-
-
 # write_stan ----
 
 #' `write_stan`
@@ -292,4 +272,27 @@ NULL
 #' @export
 brierScore <- function(object, ...) {
     UseMethod("brierScore")
+}
+
+
+
+# TODO - docs
+#' @export
+enableLink <- function(object, ...) {
+    UseMethod("enableLink")
+}
+
+#' @export
+linkTTG <- function(object, ...) {
+    UseMethod("linkTTG")
+}
+
+#' @export
+linkDSLD <- function(object, ...) {
+    UseMethod("linkDSLD")
+}
+
+#' @export
+linkIdentity <- function(object, ...) {
+    UseMethod("linkIdentity")
 }

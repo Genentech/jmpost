@@ -1,7 +1,5 @@
 functions {
 
-        ,
-        
 
 {{ stan.functions }}
 
@@ -15,7 +13,7 @@ functions {
         matrix time,
         vector pars_os,
         matrix link_function_inputs,
-        vector link_coefficients
+        vector link_coefficients,
         vector cov_contribution
     ) {
         //print([rows(time), cols(time), rows(cov_contribution), cols(cov_contribution)]);
@@ -45,7 +43,7 @@ functions {
         vector time,
         vector pars_os,
         matrix link_function_inputs,
-        vector link_coefficients
+        vector link_coefficients,
         data vector nodes,
         data vector weights,
         vector cov_contribution

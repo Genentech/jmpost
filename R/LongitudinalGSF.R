@@ -120,3 +120,28 @@ LongitudinalGSF <- function(
     )
     .LongitudinalGSF(x)
 }
+
+
+# TODO - docs
+#' @export
+enableLink.LongitudinalGSF <- function(model, ...) {
+    model@stan <- merge(
+        model@stan,
+        StanModule("lm-gsf/link.stan")
+    )
+}
+
+#' @export
+linkDSLD.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_dsld.stan")
+}
+
+#' @export
+linkTTG.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_ttg.stan")
+}
+
+#' @export
+linkIdentity.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_identity.stan")
+}
