@@ -56,7 +56,8 @@ LongitudinalRandomSlope <- function(
     )
 }
 
-# TODO - docs
+
+#' @rdname standard-link-methods
 #' @export
 enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object@stan <- merge(
@@ -66,11 +67,14 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object
 }
 
+#' @rdname standard-link-methods
 #' @export
 linkDSLD.LongitudinalRandomSlope <- function(object, ...) {
     StanModule("lm-random-slope/link_dsld.stan")
 }
 
+
+#' @rdname standard-link-methods
 #' @export
 linkIdentity.LongitudinalRandomSlope <- function(object, ...) {
     StanModule("lm-random-slope/link_identity.stan")

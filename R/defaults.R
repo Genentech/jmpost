@@ -9,8 +9,7 @@ NULL
 
 
 
-# getParameters ----
-#' @export
+#' @rdname getParameters
 getParameters.default <- function(object) {
     if (missing(object) || is.null(object)) {
         return(NULL)

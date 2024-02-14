@@ -93,11 +93,11 @@ as.StanModule <- function(object, ...) {
 }
 
 
-# getParameters ----
 
 #' `getParameters`
 #'
-#' Obtain the parameters from a [`StanModel`].
+#' Extract any modelling parameters as a [`ParameterList`] object
+#' from a model.
 #'
 #' @param object where to obtain the parameters from.
 #'
@@ -276,22 +276,53 @@ brierScore <- function(object, ...) {
 
 
 
-# TODO - docs
+
+
+
+#' Standard Link Methods
+#'
+#' @param object ([`StanModel`]) \cr A [`StanModel`] object.
+#' @param ... Not used.
+#'
+#' @description
+#' These generic functions enable [`LongitudinalModel`] objects to provide
+#' their own implementations for the most common link functions.
+#'
+#' @details
+#' Each of these methods should return a [`StanModule`] argument that implements
+#' the models corresponding version of that link type.
+#' For `enableLink` this is called once for a model regardless of how many links
+#' are used and its purpose is to provide the stan code to initialise any
+#' link specific objects (to avoid clashes with each individual link function declaring
+#' the same required stan objects).
+#'
+#' For further details on how to use these methods please see
+#' \code{vignette("extending-jmpost", package = "jmpost")}.
+#'
+#' @name standard-link-methods
+NULL
+
+
+#' @describeIn standard-link-methods hook to include any common link code to be shared across all
+#' link functions
 #' @export
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
 }
 
+#' @describeIn standard-link-methods Time to growth link
 #' @export
 linkTTG <- function(object, ...) {
     UseMethod("linkTTG")
 }
 
+#' @describeIn standard-link-methods Derivative of the SLD over time link
 #' @export
 linkDSLD <- function(object, ...) {
     UseMethod("linkDSLD")
 }
 
+#' @describeIn standard-link-methods Current SLD link
 #' @export
 linkIdentity <- function(object, ...) {
     UseMethod("linkIdentity")

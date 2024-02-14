@@ -149,7 +149,7 @@ as_stan_list.DataJoint <- function(object, ...) {
         ))
 }
 
-#' @name as_stan_list.DataObject
+#' @rdname as_stan_list.DataObject
 #' @export
 as.list.DataJoint <- function(x, ...) {
     as_stan_list(x, ...)

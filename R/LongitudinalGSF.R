@@ -122,7 +122,7 @@ LongitudinalGSF <- function(
 }
 
 
-# TODO - docs
+#' @rdname standard-link-methods
 #' @export
 enableLink.LongitudinalGSF <- function(model, ...) {
     model@stan <- merge(
@@ -131,16 +131,19 @@ enableLink.LongitudinalGSF <- function(model, ...) {
     )
 }
 
+#' @rdname standard-link-methods
 #' @export
 linkDSLD.LongitudinalGSF <- function(object, ...) {
     StanModule("lm-gsf/link_dsld.stan")
 }
 
+#' @rdname standard-link-methods
 #' @export
 linkTTG.LongitudinalGSF <- function(object, ...) {
     StanModule("lm-gsf/link_ttg.stan")
 }
 
+#' @rdname standard-link-methods
 #' @export
 linkIdentity.LongitudinalGSF <- function(object, ...) {
     StanModule("lm-gsf/link_identity.stan")

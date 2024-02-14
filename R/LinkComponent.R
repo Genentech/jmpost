@@ -5,16 +5,54 @@
 NULL
 
 
-
 setClassUnion("StanModule_or_Function", c("StanModule", "function"))
 
-# TODO - docs
-#' `Link`
+
+
+#' `LinkComponent` Function Arguments
 #'
-#' @slot stan (`StanModule`)\cr code containing the link specification.
-#' @slot parameters (`ParameterList`)\cr the parameter specification.
-#' @slot name (`character`)\cr display name for the link object.
+#' This exists just to contain all the common arguments for [`LinkComponent`] methods.
 #'
+#' @param stan (`StanModule`)\cr Stan code.
+#' @param x ([`LinkComponent`])\cr a link component.
+#' @param object ([`LinkComponent`])\cr a link component.
+#' @param ... Not Used.
+#'
+#' @name LinkComponent-Shared
+#' @keywords internal
+NULL
+
+
+
+
+#' `LinkComponent`
+#'
+#' @slot stan (`StanModule`)\cr See Arguments.
+#' @slot parameters (`ParameterList`)\cr See Arguments.
+#' @slot name (`character`)\cr See Arguments.
+#'
+#' @param stan (`StanModule` or `function`)\cr Stan code. See Details.
+#' @param parameters (`ParameterList`)\cr The parameter specification.
+#' @param key (`character`)\cr Link identifier. See Details.
+#'
+#' @details
+#'
+#' This object provides key information needed to construct a link contribution in the
+#' surival model based on the parameters of the longitudinal model.
+#'
+#' Each link component defines a stan function of the longitudinal model parameters which is
+#' multiplied by a model coefficient and added to the survival models hazard function.
+#'
+#' For full details about the specification of a `LinkComponent` please see
+#' \code{vignette("extending-jmpost", package = "jmpost")}.
+#'
+#' The `stan` argument can be either a `StanModule` object or a function.
+#' If a function is provided, it must take a single argument, a
+#' `LongitudinalModel` object, and return a `StanModule` object. This allows for
+#' generic functions to be used for links such as `dsld` which allows for each model
+#' to provide their own model specific implementation.
+#'
+#' @family LinkComponent
 #' @name LinkComponent-class
 #' @exportClass Link
 .LinkComponent <- setClass(
@@ -27,8 +65,8 @@ setClassUnion("StanModule_or_Function", c("StanModule", "function"))
 )
 
 
-# TODO - docs
 #' @rdname LinkComponent-class
+#' @inheritParams stanmodel_arguments
 #' @export
 LinkComponent <- function(
     stan,
@@ -45,13 +83,16 @@ LinkComponent <- function(
 }
 
 
-# TODO - docs
-#' @export
+
+
+#' @family LinkComponent
+#' @rdname getParameters
 getParameters.LinkComponent <- function(object, ...) {
     object@parameters
 }
 
 
+#' @family LinkComponent
 #' @rdname initialValues
 #' @export
 initialValues.LinkComponent <- function(object, n_chains, ...) {
@@ -60,7 +101,15 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 
 
 
-# TODO - docs
+
+#' `LinkComponent` -> `StanModule`
+#'
+#' Converts a [`LinkComponent`] object to a [`StanModule`] object
+#'
+#' @inheritParams LinkComponent-Shared
+#'
+#' @family LinkComponent
+#' @family as.StanModule
 #' @export
 as.StanModule.LinkComponent <- function(object, model = NULL, ...) {
     if (is(object@stan, "StanModule")) {
@@ -82,7 +131,16 @@ as.StanModule.LinkComponent <- function(object, model = NULL, ...) {
 }
 
 
-# TODO - docs
+
+#' `LinkComponent` -> `list`
+#'
+#' @inheritParams LinkComponent-Shared
+#'
+#' @description
+#' Returns a named list where each element of the list corresponds
+#' to a Stan modelling block e.g. `data`, `model`, etc.
+#'
+#' @family LinkComponent
 #' @export
 as.list.LinkComponent <- function(object, ...) {
     stan <- as.StanModule(object, ...)
@@ -92,7 +150,22 @@ as.list.LinkComponent <- function(object, ...) {
 
 
 
-# TODO - docs
+
+#' Standard Links
+#'
+#' @description
+#'
+#' These functions enable the inclusion of several common link functions in the survival model of
+#' the joint model.
+#'
+#' Note that the underlying implementation of these links is specific to each longitudinal model.
+#'
+#' @param prior (`Prior`)\cr The prior to use for the corresponding link coeficient.
+#' @name standard-links
+NULL
+
+
+#' @describeIn standard-links Time to growth link
 #' @export
 link_ttg <- function(prior = prior_normal(0, 2)) {
     LinkComponent(
@@ -102,6 +175,8 @@ link_ttg <- function(prior = prior_normal(0, 2)) {
     )
 }
 
+
+#' @describeIn standard-links Derivative of the SLD over time link
 #' @export
 link_dsld <- function(prior = prior_normal(0, 2)) {
     LinkComponent(
@@ -111,6 +186,8 @@ link_dsld <- function(prior = prior_normal(0, 2)) {
     )
 }
 
+
+#' @describeIn standard-links Current SLD link
 #' @export
 link_identity <- function(prior = prior_normal(0, 2)) {
     LinkComponent(
@@ -118,4 +195,11 @@ link_identity <- function(prior = prior_normal(0, 2)) {
         stan = linkIdentity,
         parameter = ParameterList(Parameter(name = "link_identity", prior = prior, size = 1))
     )
+}
+
+
+#' @describeIn standard-links No link (fit the survival and longitudinal models independently)
+#' @export
+link_none <- function() {
+    Link()
 }

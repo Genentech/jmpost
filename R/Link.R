@@ -5,7 +5,40 @@
 NULL
 
 
-# TODO - docs
+#' `Link` Function Arguments
+#'
+#' This exists just to contain all the common arguments for [`Link`] methods.
+#'
+#' @param x ([`Link`])\cr a link object.
+#' @param object ([`Link`])\cr a link object.
+#' @param ... Not Used.
+#'
+#' @name Link-Shared
+#' @keywords internal
+NULL
+
+
+
+
+#' `Link`
+#'
+#' @slot components (`list`)\cr a list of [`LinkComponent`] objects.
+#'
+#' @param ... ([`LinkComponent`])\cr an arbitrary number of link components.
+#'
+#' @description
+#' Simple container class to enable the use of multiple link components in a joint model.
+#' Note that the constructor of this object is idempotent e.g. `Link(Link(x)) == Link(x)`
+#'
+#' @examples
+#' Link(
+#'     link_dsld(),
+#'     link_ttg()
+#' )
+#'
+#' @family Link
+#' @name Link-class
+#' @exportClass Link
 .Link <- setClass(
     Class = "Link",
     slots = list(
@@ -13,8 +46,20 @@ NULL
     )
 )
 
+#' @rdname Link-class
+#' @export
+Link <- function(...) {
+    components <- list(...)
 
-# TODO - docs
+    # Enable copy constructor e.g. if passed a Link just return the Link
+    if (length(components) == 1 && is(components[[1]], "Link")) {
+        return(components[[1]])
+    }
+    .Link(components = components)
+}
+
+
+
 setValidity(
     Class = "Link",
     method = function(object) {
@@ -31,20 +76,16 @@ setValidity(
 )
 
 
-# TODO - docs
-#' @export
-Link <- function(...) {
-    components <- list(...)
-
-    # Enable copy constructor e.g. if passed a Link just return the Link
-    if (length(components) == 1 && is(components[[1]], "Link")) {
-        return(components[[1]])
-    }
-    .Link(components = components)
-}
 
 
-# TODO - docs
+#' `Link` -> `StanModule`
+#'
+#' Converts a [`Link`] object to a [`StanModule`] object
+#'
+#' @inheritParams Link-Shared
+#'
+#' @family Link
+#' @family as.StanModule
 #' @export
 as.StanModule.Link <- function(object, ...) {
 
@@ -80,16 +121,16 @@ as.StanModule.Link <- function(object, ...) {
 
 
 
-# TODO - docs
-#' @export
-link_none <- function() {
-    Link()
-}
 
-
-
-
-# TODO - docs
+#' `Link` -> `list`
+#'
+#' @inheritParams Link-Shared
+#'
+#' @description
+#' Returns a named list where each element of the list corresponds
+#' to a Stan modelling block e.g. `data`, `model`, etc.
+#'
+#' @family Link
 #' @export
 as.list.Link <- function(object, ...) {
     as.list(as.StanModule(object, ...))
@@ -97,8 +138,7 @@ as.list.Link <- function(object, ...) {
 
 
 
-# TODO - docs
-#' @export
+#' @rdname getParameters
 getParameters.Link <- function(object, ...) {
     parameters_list <- lapply(
         object@components,
@@ -112,7 +152,7 @@ getParameters.Link <- function(object, ...) {
 }
 
 
-# TODO - docs
+#' @rdname initialValues
 #' @export
 initialValues.Link <- function(object, ...) {
     unlist(
@@ -121,6 +161,15 @@ initialValues.Link <- function(object, ...) {
     )
 }
 
+
+#' `Link` -> `list`
+#'
+#' @inheritParams Link-Shared
+#'
+#' @description
+#' Returns the number of link components within the [`Link`] object
+#'
+#' @family Link
 #' @export
 length.Link <- function(x) {
     length(x@components)

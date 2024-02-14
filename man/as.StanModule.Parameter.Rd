@@ -23,6 +23,8 @@ Other Parameter:
 
 Other as.StanModule: 
 \code{\link{as.StanModule}()},
+\code{\link{as.StanModule.Link}()},
+\code{\link{as.StanModule.LinkComponent}()},
 \code{\link{as.StanModule.ParameterList}()},
 \code{\link{as.StanModule.Prior}()}
 }
