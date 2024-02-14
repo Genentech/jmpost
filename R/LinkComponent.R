@@ -115,7 +115,7 @@ link_dsld <- function(prior = prior_normal(0, 2)) {
 link_identity <- function(prior = prior_normal(0, 2)) {
     LinkComponent(
         key = "link_identity",
-        stan = linkIdenity,
+        stan = linkIdentity,
         parameter = ParameterList(Parameter(name = "link_identity", prior = prior, size = 1))
     )
 }

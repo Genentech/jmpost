@@ -9,7 +9,8 @@ sim_lm_random_slope(
   slope_mu = c(0.01, 0.03),
   slope_sigma = 0.5,
   sigma = 2,
-  phi = 0.1
+  link_dsld = 0,
+  link_identity = 0
 )
 }
 \arguments{
@@ -21,7 +22,9 @@ sim_lm_random_slope(
 
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
-\item{phi}{(\code{number})\cr the link coefficient for the random slope contribution.}
+\item{link_dsld(`number`)\cr}{the link coefficient for the DSLD contribution.}
+
+\item{link_identity(`number`)\cr}{the link coefficient for the identity contribution.}
 }
 \value{
 A function with argument \code{lm_base} that can be used to simulate

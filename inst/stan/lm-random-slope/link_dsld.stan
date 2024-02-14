@@ -11,7 +11,7 @@ functions {
     ) {
         int nrows = rows(time);
         int ncols = cols(time);
-        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,1];
+        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];
         matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);
         return rnd_slope_mat;
     }

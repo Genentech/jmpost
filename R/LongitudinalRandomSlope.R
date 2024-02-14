@@ -70,3 +70,8 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
 linkDSLD.LongitudinalRandomSlope <- function(object, ...) {
     StanModule("lm-random-slope/link_dsld.stan")
 }
+
+#' @export
+linkIdentity.LongitudinalRandomSlope <- function(object, ...) {
+    StanModule("lm-random-slope/link_identity.stan")
+}
