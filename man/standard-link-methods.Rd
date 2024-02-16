@@ -24,7 +24,7 @@ linkDSLD(object, ...)
 
 linkIdentity(object, ...)
 
-\method{enableLink}{LongitudinalGSF}(model, ...)
+\method{enableLink}{LongitudinalGSF}(object, ...)
 
 \method{linkDSLD}{LongitudinalGSF}(object, ...)
 
