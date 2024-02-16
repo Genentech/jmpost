@@ -102,8 +102,11 @@ derivative and another term for the time-to-growth.
 ```{r model_spec}
 joint_model <- JointModel(
     longitudinal = LongitudinalGSF(),
-    link = LinkGSF(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = Link(
+        link_dsld(),
+        link_ttg()
+    )
 )
 ```
 

@@ -122,9 +122,9 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)
         ),
-        link = LinkGSF(
-            link_gsf_dsld(),
-            link_gsf_ttg()
+        link = Link(
+            link_dsld(),
+            link_ttg()
         )
     )
 

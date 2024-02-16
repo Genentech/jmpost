@@ -10,8 +10,7 @@ test_that("smoke test for JointModelSamples", {
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
-            slope_sigma = 0.2,
-            phi = 0
+            slope_sigma = 0.2
         ),
         os_fun = sim_os_exponential(1 / 100),
         .debug = TRUE,

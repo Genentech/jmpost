@@ -22,6 +22,7 @@ Other Link:
 
 Other as.StanModule: 
 \code{\link{as.StanModule}()},
+\code{\link{as.StanModule.JointModel}()},
 \code{\link{as.StanModule.LinkComponent}()},
 \code{\link{as.StanModule.Parameter}()},
 \code{\link{as.StanModule.ParameterList}()},

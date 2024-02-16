@@ -138,6 +138,7 @@ as.list.Link <- function(object, ...) {
 
 
 
+#' @export
 #' @rdname getParameters
 getParameters.Link <- function(object, ...) {
     parameters_list <- lapply(
@@ -173,4 +174,22 @@ initialValues.Link <- function(object, ...) {
 #' @export
 length.Link <- function(x) {
     length(x@components)
+}
+
+
+#' @export
+as_print_string.Link <- function(x, ...) {
+    if (length(x) == 0) {
+        return("\nNo Link")
+    }
+    paste(
+        c(
+            "\nLink with the following components/parameters:",
+            paste0(
+                "    ",
+                vapply(x@components, as_print_string, character(1))
+            )
+        ),
+        collapse = "\n"
+    )
 }

@@ -119,7 +119,10 @@ jm <- JointModel(
     survival = SurvivalExponential(
         lambda = prior_lognormal(log(1 / (400 / 365)), 1)
     ),
-    link = LinkGSF()
+    link = Link(
+        link_dsld(),
+        link_ttg()
+    )
 )
 
 

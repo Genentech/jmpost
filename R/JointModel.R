@@ -120,6 +120,20 @@ as.character.JointModel <- function(x, ...) {
 }
 
 
+#' `JointModel` -> `StanModule`
+#'
+#' Converts a [`JointModel`] object to a [`StanModule`] object
+#'
+#' @inheritParams JointModel-Shared
+#'
+#' @family JointModel
+#' @family as.StanModule
+#' @export
+as.StanModule.JointModel <- function(object, ...) {
+    object@stan
+}
+
+
 # write_stan-JointModel ----
 
 #' @rdname write_stan
@@ -280,11 +294,7 @@ setMethod(
             as_print_string(object@longitudinal) |> pad_with_white_space()
         }
 
-        link_string <- if (is.null(object@link) || inherits(object@link, "LinkNone")) {
-            "\n     No Link\n"
-        } else {
-            as_print_string(object@link) |> pad_with_white_space()
-        }
+        link_string <- as_print_string(object@link) |> pad_with_white_space()
 
         string <- "\nA Joint Model with:\n\n  Survival:%s\n  Longitudinal:%s\n  Link:%s\n"
         cat(sprintf(

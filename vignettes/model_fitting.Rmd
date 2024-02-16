@@ -42,8 +42,8 @@ Let's first specify a very simple joint model with:
 ```{r simple_model}
 simple_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
-    link = LinkRandomSlope(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = link_dsld()
 )
 ```
 
@@ -81,13 +81,13 @@ the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
-the special `LinkNone` link specification. For example, 
+the special `link_none()` link specification. For example, 
 
 ```{r simple_model_no_link}
 simple_model_no_link <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
-    link = LinkNone(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = link_none()
 )
 ```
 
@@ -142,7 +142,7 @@ sim_data <- simulate_joint_data(
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
         sigma = 20,
-        phi = 0.1
+        link_dsld = 0.1
     ),
     os_fun = sim_os_weibull(
         lambda = 1 / 300,
@@ -270,7 +270,7 @@ vars <- c(
     "lm_rs_slope_mu",
     "lm_rs_slope_sigma",
     "lm_rs_sigma",
-    "link_lm_phi",
+    "link_dsld",
     "sm_weibull_ph_lambda",
     "sm_weibull_ph_gamma",
     "beta_os_cov"
@@ -394,9 +394,9 @@ For example:
 
 ```r
 joint_model <- JointModel(
-    LongitudinalRandomSlope(),
-    SurvivalExponential(),
-    LinkNone()
+    longitudinal = LongitudinalRandomSlope(),
+    survival = SurvivalExponential(),
+    link = link_none()
 )
 initial_values <- initialValues(joint_model, n_chains = 2)
 

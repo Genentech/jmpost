@@ -17,7 +17,7 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
         times = 1:1000,
         lambda_cen = 1 / 500,
         n = c(200, 200),
-        lm_fun = sim_lm_random_slope(phi = 0),
+        lm_fun = sim_lm_random_slope(),
         os_fun = sim_os_exponential(1 / 100)
     )
 

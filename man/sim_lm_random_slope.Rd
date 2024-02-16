@@ -22,9 +22,9 @@ sim_lm_random_slope(
 
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
-\item{link_dsld(`number`)\cr}{the link coefficient for the DSLD contribution.}
+\item{link_dsld}{(\code{number})\cr the link coefficient for the DSLD contribution.}
 
-\item{link_identity(`number`)\cr}{the link coefficient for the identity contribution.}
+\item{link_identity}{(\code{number})\cr the link coefficient for the identity contribution.}
 }
 \value{
 A function with argument \code{lm_base} that can be used to simulate

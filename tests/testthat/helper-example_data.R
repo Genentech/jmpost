@@ -17,7 +17,7 @@ ensure_test_data_1 <- function() {
             sigma = 3,
             slope_mu = c(1, 3),
             slope_sigma = 0.2,
-            phi = 0
+            link_dsld = 0
         ),
         os_fun = sim_os_exponential(1 / 100),
         .debug = TRUE,

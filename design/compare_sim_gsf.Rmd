@@ -310,7 +310,6 @@ s2_stan_data <- DataJoint(
 
 ```{r}
 jm <- JointModel(
-  link = LinkGSF(),
   longitudinal = LongitudinalGSF(
     omega_ks = prior_lognormal(log(1), .5, init = .1),
     omega_kg = prior_lognormal(log(1), .5, init = .1),
@@ -318,7 +317,11 @@ jm <- JointModel(
     mu_kg = prior_lognormal(log(0.1), 0.5, init = 0.005),
     mu_bsld = prior_lognormal(mu = log(55), sigma = 1.5, init = 55)
   ),
-  survival = SurvivalExponential()
+  survival = SurvivalExponential(),
+  link = Link(
+    link_dsld(),
+    link_ttg()
+  )
 )
 
 

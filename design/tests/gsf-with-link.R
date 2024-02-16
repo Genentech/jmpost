@@ -87,7 +87,10 @@ jm <- JointModel(
         tilde_phi = prior_normal(0, 5)
     ),
     survival = SurvivalExponential(),
-    link = LinkGSF()
+    link = Link(
+        link_dsld(),
+        link_ttg()
+    )
 )
 
 

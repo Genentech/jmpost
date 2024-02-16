@@ -87,6 +87,7 @@ LinkComponent <- function(
 
 #' @family LinkComponent
 #' @rdname getParameters
+#' @export
 getParameters.LinkComponent <- function(object, ...) {
     object@parameters
 }
@@ -107,6 +108,7 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 #' Converts a [`LinkComponent`] object to a [`StanModule`] object
 #'
 #' @inheritParams LinkComponent-Shared
+#' @param model (`LongitudinalModel`)\cr The longitudinal model.
 #'
 #' @family LinkComponent
 #' @family as.StanModule
@@ -148,6 +150,10 @@ as.list.LinkComponent <- function(object, ...) {
 }
 
 
+#' @export
+as_print_string.LinkComponent <- function(x, ...) {
+    as_print_string(x@parameters)
+}
 
 
 

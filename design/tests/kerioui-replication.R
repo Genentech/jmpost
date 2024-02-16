@@ -69,9 +69,7 @@ jm <- JointModel(
     survival = SurvivalExponential(
         lambda = prior_lognormal(log(0.0006896552), 1)
     ),
-    link = LinkGSF(link_gsf_identity(
-        tau = prior_normal(0.002, 0.2)
-    ))
+    link = Link(link_identity(prior_normal(0.002, 0.2)))
 )
 
 mp_k <- sampleStanModel(

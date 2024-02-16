@@ -124,11 +124,12 @@ LongitudinalGSF <- function(
 
 #' @rdname standard-link-methods
 #' @export
-enableLink.LongitudinalGSF <- function(model, ...) {
-    model@stan <- merge(
-        model@stan,
+enableLink.LongitudinalGSF <- function(object, ...) {
+    object@stan <- merge(
+        object@stan,
         StanModule("lm-gsf/link.stan")
     )
+    object
 }
 
 #' @rdname standard-link-methods

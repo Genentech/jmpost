@@ -6,14 +6,14 @@ functions {
     //
     matrix link_ttg_contrib(
         matrix time,
-        matrix link_function_inputs,
+        matrix link_function_inputs
     ) {
-        vector psi_bsld = link_function_inputs[1];
-        vector psi_phi = link_function_inputs[2];
-        vector psi_ks = link_function_inputs[3];
-        vector psi_kg = link_function_inputs[4];
-        int nrows = rows(psi_bsld);
+        int nrows = rows(link_function_inputs);
         int ncols = cols(time);
+        vector[nrows] psi_bsld = link_function_inputs[,1];
+        vector[nrows] psi_ks = link_function_inputs[,2];
+        vector[nrows] psi_kg = link_function_inputs[,3];
+        vector[nrows] psi_phi = link_function_inputs[,4];
         vector[nrows] num = logit(psi_phi) + log(psi_ks ./ psi_kg);
         vector[nrows] denom = psi_ks + psi_kg;
         vector[nrows] ttg_contribution = num ./ denom;

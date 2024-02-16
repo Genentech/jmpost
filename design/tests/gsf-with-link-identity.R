@@ -85,7 +85,7 @@ jm <- JointModel(
     survival = SurvivalExponential(
         lambda = prior_lognormal(log(1 / 400), 0.7)
     ),
-    link = LinkGSF(link_gsf_identity(tau = prior_normal(0.002, 0.2)))
+    link = Link(link_identity(prior_normal(0.002, 0.2)))
 )
 
 

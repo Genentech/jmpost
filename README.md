@@ -75,9 +75,6 @@ right format.
 
 ``` r
 library(jmpost)
-#> Registered S3 method overwritten by 'GGally':
-#>   method from   
-#>   +.gg   ggplot2
 #> Registered S3 methods overwritten by 'ggpp':
 #>   method                  from   
 #>   heightDetails.titleGrob ggplot2
@@ -118,8 +115,11 @@ via a term for the derivative and another term for the time-to-growth.
 ``` r
 joint_model <- JointModel(
     longitudinal = LongitudinalGSF(),
-    link = LinkGSF(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = Link(
+        link_dsld(),
+        link_ttg()
+    )
 )
 ```
 

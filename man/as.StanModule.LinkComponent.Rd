@@ -9,6 +9,8 @@
 \arguments{
 \item{object}{(\code{\link{LinkComponent}})\cr a link component.}
 
+\item{model}{(\code{LongitudinalModel})\cr The longitudinal model.}
+
 \item{...}{Not Used.}
 }
 \description{
@@ -23,6 +25,7 @@ Other LinkComponent:
 
 Other as.StanModule: 
 \code{\link{as.StanModule}()},
+\code{\link{as.StanModule.JointModel}()},
 \code{\link{as.StanModule.Link}()},
 \code{\link{as.StanModule.Parameter}()},
 \code{\link{as.StanModule.ParameterList}()},
