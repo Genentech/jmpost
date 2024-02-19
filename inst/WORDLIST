@@ -117,3 +117,5 @@ LogNormal
 AST
 throughs
 behaviour
+LinkComponent
+initialise

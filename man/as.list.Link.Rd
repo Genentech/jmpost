@@ -4,10 +4,10 @@
 \alias{as.list.Link}
 \title{\code{Link} -> \code{list}}
 \usage{
-\method{as.list}{Link}(object, ...)
+\method{as.list}{Link}(x, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Link}})\cr a link object.}
+\item{x}{(\code{\link{Link}})\cr a link object.}
 
 \item{...}{Not Used.}
 }

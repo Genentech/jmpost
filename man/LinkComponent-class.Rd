@@ -23,7 +23,7 @@ LinkComponent(stan, parameters = ParameterList(), key = "", ...)
 }
 \details{
 This object provides key information needed to construct a link contribution in the
-surival model based on the parameters of the longitudinal model.
+survival model based on the parameters of the longitudinal model.
 
 Each link component defines a stan function of the longitudinal model parameters which is
 multiplied by a model coefficient and added to the survival models hazard function.

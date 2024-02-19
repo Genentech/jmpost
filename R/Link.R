@@ -132,8 +132,8 @@ as.StanModule.Link <- function(object, ...) {
 #'
 #' @family Link
 #' @export
-as.list.Link <- function(object, ...) {
-    as.list(as.StanModule(object, ...))
+as.list.Link <- function(x, ...) {
+    as.list(as.StanModule(x, ...))
 }
 
 
@@ -178,8 +178,8 @@ length.Link <- function(x) {
 
 
 #' @export
-as_print_string.Link <- function(x, ...) {
-    if (length(x) == 0) {
+as_print_string.Link <- function(object, ...) {
+    if (length(object) == 0) {
         return("\nNo Link")
     }
     paste(
@@ -187,7 +187,7 @@ as_print_string.Link <- function(x, ...) {
             "\nLink with the following components/parameters:",
             paste0(
                 "    ",
-                vapply(x@components, as_print_string, character(1))
+                vapply(object@components, as_print_string, character(1))
             )
         ),
         collapse = "\n"
