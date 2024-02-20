@@ -114,3 +114,35 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
+
+# TODO - docs
+#' @export
+logLik.JointModelSamples <- function(object, ...) {
+    log_lik <- mean(apply(
+        object@results$draws("log_lik", format = "draws_matrix"),
+        1,
+        sum
+    ))
+
+    params <- Reduce(
+        merge,
+        list(
+            getParameters(object@model@longitudinal),
+            getParameters(object@model@survival),
+            getParameters(object@model@link)
+        )
+    )
+    data <- as.list(object@data)
+    values_sizes_complete <- replace_with_lookup(
+        size(params),
+        data
+    )
+    df <- sum(unlist(values_sizes_complete))
+
+    structure(
+        log_lik,
+        class = "logLik",
+        df = df,
+        nobs = data$Nind
+    )
+}

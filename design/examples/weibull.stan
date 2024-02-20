@@ -32,21 +32,23 @@ parameters {
     real<lower=0> gamma_0;
 }
 
-model {
-
+transformed parameters {
+    vector[n] log_lik;
     vector[n] lambda = lambda_0 .* exp(design_reduced * beta);
+    // Likelihood
+    for (i in 1:n) {
+        if (event_fl[i] == 1) {
+            log_lik[i] = weibull_ph_lpdf(times[i] | lambda[i], gamma_0);
+        } else {
+            log_lik[i] = weibull_ph_lccdf(times[i] | lambda[i], gamma_0);
+        }
+    }
+}
 
+model {
     // Priors
     beta ~ normal(0, 3);
     gamma_0 ~ lognormal(log(1), 1.5);
     lambda_0 ~ lognormal(log(0.05), 1.5);
-    
-    // Likelihood
-    for (i in 1:n) {
-        if (event_fl[i] == 1) {
-            target += weibull_ph_lpdf(times[i] | lambda[i], gamma_0);
-        } else {
-            target += weibull_ph_lccdf(times[i] | lambda[i], gamma_0);
-        }
-    }
+    target += sum(log_lik);
 }

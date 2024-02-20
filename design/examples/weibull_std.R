@@ -20,11 +20,11 @@ dat <- flexsurv::bc |>
 # Cox Regression
 #
 
-coxph(
+mod_cox <- coxph(
     Surv(recyrs, censrec) ~ group,
     data = dat
 )
-
+AIC(mod_cox)
 
 ################################
 #
@@ -32,12 +32,14 @@ coxph(
 #
 
 
-flexsurvreg(
+mod_flex <- flexsurvreg(
     Surv(recyrs, censrec) ~ group,
     data = dat,
     dist = "weibullPH"
 )
-
+AIC(mod_flex)
+BIC(mod_flex)
+logLik(mod_flex)
 
 ################################
 #
@@ -45,19 +47,23 @@ flexsurvreg(
 #
 
 
-mod <- survreg(
+mod_surv <- survreg(
     Surv(recyrs, censrec) ~ group,
     data = dat,
     dist = "weibull"
 )
 
-gamma <- 1 / mod$scale
-lambda <- exp(-mod$coefficients[1] * gamma)
-param_log_coefs <- -mod$coefficients[-1] * gamma
+gamma <- 1 / mod_surv$scale
+lambda <- exp(-mod_surv$coefficients[1] * gamma)
+param_log_coefs <- -mod_surv$coefficients[-1] * gamma
 
 c(gamma, lambda, param_log_coefs)
 ## Need to use delta method to get standard errors
 
+
+AIC(mod_surv)
+BIC(mod_surv)
+logLik(mod_surv)
 
 
 ################################
@@ -88,11 +94,27 @@ fit <- mod$sample(
     iter_warmup = 1000,
     iter_sampling = 1500
 )
+vars <- c(
+    "gamma_0",
+    "lambda_0",
+    "beta"
+)
+fit$summary(vars)
 
-fit$summary()
+
+# Log Likelihood
+log_lik <- fit$draws("log_lik", format = "draws_matrix") |>
+    apply(1, sum) |>
+    mean()
+
+# AIC
+k <- 2
+-2 * log_lik + k * (stan_data$p + 1) # +1 for the scale parameter
+
+# BIC
+((stan_data$p + 1) * log(stan_data$n)) + (-2 * log_lik)
 
 
-bayesplot::mcmc_pairs(fit$draws())
 
 ################################
 #
@@ -138,4 +160,5 @@ vars <- c(
 )
 
 mp@results$summary(vars)
-
+AIC(mp)
+BIC(mp)
