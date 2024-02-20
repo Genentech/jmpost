@@ -23,7 +23,7 @@ Description: Implements joint models combining a non-linear mixed effects model 
     data and therefore make better decisions.
 License: Apache License (>= 2)
 Encoding: UTF-8
-Language: en-US
+Language: en-GB
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Depends:
