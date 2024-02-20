@@ -209,3 +209,19 @@ link_identity <- function(prior = prior_normal(0, 2)) {
 link_none <- function() {
     Link()
 }
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "LinkComponent",
+    definition = function(object) {
+        cat(
+            paste0(
+                "\nLinkComponent with parameter:\n    ",
+                as_print_string(object), "\n\n"
+            )
+        )
+    }
+)

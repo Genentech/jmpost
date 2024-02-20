@@ -70,3 +70,15 @@ test_that("Link works as expected", {
         Link(link_dsld())
     )
 })
+
+test_that("Link prints as expected", {
+    expect_snapshot(
+        print(Link())
+    )
+    expect_snapshot(
+        print(Link(link_dsld()))
+    )
+    expect_snapshot(
+        print(Link(link_dsld(), link_identity()))
+    )
+})

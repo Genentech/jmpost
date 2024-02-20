@@ -120,3 +120,24 @@ test_that("Model specific links return the correct stan code", {
     )
 
 })
+
+
+test_that("print works as expected", {
+    expect_snapshot(
+        print(link_dsld())
+    )
+    expect_snapshot(
+        print(link_ttg(prior_beta(4, 1)))
+    )
+    expect_snapshot(
+        print(
+            LinkComponent(
+                stan = StanModule(),
+                parameters = ParameterList(
+                    Parameter(prior = prior_normal(0, 5), name = "bob", size = 1)
+                ),
+                key = "link_bob"
+            )
+        )
+    )
+})

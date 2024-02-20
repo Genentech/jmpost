@@ -193,3 +193,14 @@ as_print_string.Link <- function(object, ...) {
         collapse = "\n"
     )
 }
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "Link",
+    definition = function(object) {
+        cat(paste0(as_print_string(object), "\n"))
+    }
+)
