@@ -50,13 +50,13 @@ Where:
 - $h_0(t)$ is the baseline hazard function
 - $\phi_i$ is a vector of parameters from the longitudinal model
 
-Each longitudinal model is responsible for defining their own implmentations of the $\phi$ vector.
+Each longitudinal model is responsible for defining their own implementations of the $\phi$ vector.
 The interface for doing this is by providing an `enableLink` method that updates the `StanModule`
 object of the model to define a Stan matrix with the name `link_function_inputs`
 that contains 1 row per
 patient and 1 column per $\phi$ parameter.
 
-For reference the following is roughly the implmentation for the `LongitudinalGSF` model:
+For reference the following is roughly the implementation for the `LongitudinalGSF` model:
 
 ```R
 enableLink.LongitudinalGSF <- function(object, ...) {
