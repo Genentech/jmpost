@@ -28,6 +28,151 @@ library(jmpost)
 Please note that this document is currently a work-in-progress and does not
 contain complete information for this package yet. 
 
+
+## Custom Link Functions
+
+Users can defined custom link functions in several ways based upon the level of customisation
+required. In order to explain this process it is first important to understand how the link
+functions are implemented under the hood.
+
+The link functions add their contribution to the likelihood function via the log-hazard function;
+that is the general model is formulated as:
+
+$$
+log(h_i(t, \phi_i)) = log(h_0(t)) + X_i \beta + \alpha_1 f(t, \phi_i) + \alpha_2 g(t, \phi_i) + \dots
+$$
+
+Where:
+- $X$ is the design matrix of covariates
+- $\beta$ is the vector of coefficients for the covariates
+- $f(t)$ and $g(t)$ are the link functions
+- $\alpha_1$ and $\alpha_2$ are the coefficients for the link functions
+- $h_0(t)$ is the baseline hazard function
+- $\phi_i$ is a vector of parameters from the longitudinal model
+
+Each longitudinal model is responsible for defining their own implmentations of the $\phi$ vector.
+The interface for doing this is by providing an `enableLink` method that updates the `StanModule`
+object of the model to define a Stan matrix with the name `link_function_inputs`
+that contains 1 row per
+patient and 1 column per $\phi$ parameter.
+
+For reference the following is roughly the implmentation for the `LongitudinalGSF` model:
+
+```R
+enableLink.LongitudinalGSF <- function(object, ...) {
+  stan <- StanModule("
+transformed parameters {
+    matrix[Nind, 4] link_function_inputs;
+    link_function_inputs[,1] = lm_gsf_psi_bsld;
+    link_function_inputs[,2] = lm_gsf_psi_ks;
+    link_function_inputs[,3] = lm_gsf_psi_kg;
+    link_function_inputs[,4] = lm_gsf_psi_phi;
+}")
+    object@stan <- merge(
+        object@stan,
+        stan
+    )
+    object
+}
+```
+That is to say the $\phi$ parameters for the `LongitudinalGSF` model are the 4 primary parameters
+of the longitudinal model. If you wish to augment this with additional parameters then you can
+subclass the `LongitudinalGSF` model and override the `enableLink` method to the required
+additional parameters e.g.
+
+```R
+GSFextended <- setClass(
+    Class = "GSFextended",
+    contains = "LongitudinalGSF"
+)
+
+enableLink.GSFextended <- function(object, ...) {
+  stan <- StanModule("<your stan code here>")
+    object@stan <- merge(
+        object@stan,
+        stan
+    )
+    object
+}
+```
+
+Next, the individual link functions are implemented as Stan functions with the following signature:
+
+```
+matrix <key>_contrib(
+  matrix time,
+  matrix link_function_inputs
+)
+```
+Where:
+- `<key>` is the name of the link parameter as specified in the `LinkComponent` object
+- `time` is a matrix of 1 row per patient and 1 column per time point to be evaluated at for
+that patient.
+
+The `LinkComponent` object is responsible for then integrating these functions
+into the final Stan model. For reference the following is roughly the implmentation of the
+dSLD link for the `LongitudinalRandomSlope` model:
+
+```R
+LinkComponent(
+  key = "link_dsld",
+  stan = StanModule("
+functions {
+    matrix link_dsld_contrib(
+        matrix time,
+        matrix link_function_inputs
+    ) {
+        int nrows = rows(time);
+        int ncols = cols(time);
+        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];
+        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);
+        return rnd_slope_mat;
+    }
+}"),
+  parameters = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+)
+```
+
+You can then pass these `LinkComponent` objects to the `link` argument of the `JointModel`
+constructor to add them to the model. If you wish to add multiple link functions then you must
+wrap them in a `Link()` object e.g.
+
+```R
+Link(
+  LinkComponent(...),
+  LinkComponent(...)
+)
+```
+
+Note that there are a few families of link functions that are common across all models for example
+identity, dSLD, TTG. Users can access these by simply using the inbuilt `link_identity()`,
+`link_dsld()` and `link_ttg()` functions respectively.
+These functions are responsible for loading the correct `LinkComponent` to implement that link for a
+particular model.
+
+If you wish to provide implementations of these
+for new models then you need to provide method implementations for your model to `linkDSLD()`,
+`linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implmentation
+of the `linkDSLD` method for the `LongitudinalGSF` model which enables the use of `link_dsld()`:
+
+```R
+linkDSLD.LongitudinalGSF <- function(object, ...) {
+    StanModule("
+functions {
+    matrix link_dsld_contrib(
+        matrix time,
+        matrix link_function_inputs
+    ) {
+        int nrows = rows(time);
+        int ncols = cols(time);
+        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];
+        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);
+        return rnd_slope_mat;
+    }
+}")
+}
+```
+
 ## Formatting Stan Files
 
 Under the hood this library works by merging multiple Stan programs together into a single
