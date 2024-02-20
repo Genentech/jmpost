@@ -1,72 +1,52 @@
 
 
+functions {
+    // Stan's in-built weibull functions are for the AFT formulation
+    // so instead we define here the PH formulation
+    real weibull_ph_lpdf (real t, real lambda, real gamma) {
+        return log(lambda) + log(gamma) + (gamma -1)* log(t) -lambda * t^gamma;
+    }
+    real weibull_ph_lccdf (real t, real lambda, real gamma) {
+        return -lambda * t^gamma;
+    }
+}
+
+
 data {
-    int<lower=1> n;
-    int<lower=0> p;
-    vector[n] times;
-    vector[n] event_fl;
-    matrix[n, p] design;
+    int<lower=1> n;                          // Number of subjects
+    int<lower=0> p;                          // Number of covariates (including intercept)
+    vector<lower=0>[n] times;                // Event|Censor times
+    array[n] int<lower=0, upper=1> event_fl; // 1=event 0=censor
+    matrix[n, p] design;                     // Design matrix
 }
 
 transformed data {
-    // To make life easier for the user we manually derive the indices
-    // of the event and censoring times (this would be easier to implement
-    // on the R side but would require more code from the user).
-    
-    // First we work out how many censoring and events there are each so that
-    // we can construct index vectors of the correct size
-    int n_event = 0;
-    for (i in 1:n) {
-        if (event_fl[i] == 1) {
-            n_event += 1;
-        }
-    }
-    int n_censor = n - n_event;
-
-    // Now we construct the index vectors
-    array[n_event] int event_idx;
-    array[n_censor] int censor_idx;
-    int j = 1;
-    int k = 1;
-    for (i in 1:n) {
-        if (event_fl[i] == 1) {
-            event_idx[j] = i;
-            j+=1;
-        } else {
-            censor_idx[k] = i;
-            k+=1;
-        }
-    }
+    // Assuming that the first term is an intercept column which
+    // will conflict with the lambda term so remove it
+    matrix[n, p-1] design_reduced = design[, 2:p];
 }
 
 parameters {
-    vector[p] beta;
-    // real<lower = 0> lambda;  // Lambda is represented via exp(intercept) term of the design matrix
-    real<lower = 0> gamma;
+    vector[p-1] beta;
+    real<lower=0> lambda_0;
+    real<lower=0> gamma_0;
 }
-
 
 model {
-    // Stans in built distributions use the AFT parameterisation of the Weibull distribution
-    // As such we need to convert our PH parameters to the AFT parameters
-    real d_alpha;
-    vector[n] d_beta;
-    d_beta = exp(design * beta)^(-1/gamma);
-    d_alpha = gamma;
-    
+
+    vector[n] lambda = lambda_0 .* exp(design_reduced * beta);
+
     // Priors
-    beta ~ normal(0, 2);
-    gamma ~ normal(1, 0.5);
+    beta ~ normal(0, 3);
+    gamma_0 ~ lognormal(log(1), 1.5);
+    lambda_0 ~ lognormal(log(0.05), 1.5);
     
     // Likelihood
-    target += weibull_lpdf(times[event_idx] | d_alpha, d_beta[event_idx]);
-    target += weibull_lccdf(times[censor_idx] | d_alpha, d_beta[censor_idx]);
+    for (i in 1:n) {
+        if (event_fl[i] == 1) {
+            target += weibull_ph_lpdf(times[i] | lambda[i], gamma_0);
+        } else {
+            target += weibull_ph_lccdf(times[i] | lambda[i], gamma_0);
+        }
+    }
 }
-
-generated quantities {
-    // Reconstruct the baseline lambda value from the intercept
-    // of the design matrix
-    real lambda_0 = exp(beta[1]);
-}
-
-
