@@ -86,7 +86,7 @@ test_that("ensure_initial_values() works as expected", {
 test_that("intial values for fixed distributions gives valid values", {
 
     set.seed(3150)
-    gsfmodel <- LongitudinalGSF(centered = TRUE)
+    gsfmodel <- LongitudinalGSF(centred = TRUE)
     ivs <- initialValues(gsfmodel, n_chains = 100)
 
     for (values in ivs) {

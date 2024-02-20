@@ -190,7 +190,7 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     model_data <- list(
         Nta_total = nrow(df),
 
-        # Number of individuals and tumor assessments.
+        # Number of individuals and tumour assessments.
         Nta_obs_y = length(index_obs),
         Nta_cens_y = length(index_cen),
 
@@ -204,7 +204,7 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
         Ythreshold = adj_threshold,
 
         # Sparse matrix parameters
-        # Matrix of individuals x observed tumor assessments.
+        # Matrix of individuals x observed tumour assessments.
         n_mat_inds_obs_y = c(
             length(sparse_mat_inds_obs_y$w),
             length(sparse_mat_inds_obs_y$v),
@@ -214,7 +214,7 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
         v_mat_inds_obs_y = sparse_mat_inds_obs_y$v,
         u_mat_inds_obs_y = sparse_mat_inds_obs_y$u,
 
-        # Matrix of individuals x censored tumor assessments.
+        # Matrix of individuals x censored tumour assessments.
         n_mat_inds_cens_y = c(
             length(sparse_mat_inds_cens_y$w),
             length(sparse_mat_inds_cens_y$v),

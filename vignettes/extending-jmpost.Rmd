@@ -110,7 +110,7 @@ Where:
 that patient.
 
 The `LinkComponent` object is responsible for then integrating these functions
-into the final Stan model. For reference the following is roughly the implmentation of the
+into the final Stan model. For reference the following is roughly the implementation of the
 dSLD link for the `LongitudinalRandomSlope` model:
 
 ```R
@@ -152,7 +152,7 @@ particular model.
 
 If you wish to provide implementations of these
 for new models then you need to provide method implementations for your model to `linkDSLD()`,
-`linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implmentation
+`linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implementation
 of the `linkDSLD` method for the `LongitudinalGSF` model which enables the use of `link_dsld()`:
 
 ```R

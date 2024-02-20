@@ -25,7 +25,7 @@ test_that("Print method for LongitudinalGSF works as expected", {
 
 
 test_that("Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centered = TRUE))
+    jm <- JointModel(longitudinal = LongitudinalGSF(centred = TRUE))
     expect_false(any(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -37,7 +37,7 @@ test_that("Centralised parameterisation compiles without issues", {
 
 
 test_that("Non-Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centered = FALSE))
+    jm <- JointModel(longitudinal = LongitudinalGSF(centred = FALSE))
     expect_true(all(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -117,7 +117,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             a_phi = prior_lognormal(log(6), 1),
             b_phi = prior_lognormal(log(8), 1),
             sigma = prior_lognormal(log(0.01), 1),
-            centered = TRUE
+            centred = TRUE
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)

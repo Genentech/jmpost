@@ -18,22 +18,22 @@ knitr::opts_chunk$set(echo = TRUE)
 #'
 #' Simulation code slightly adapted from supplementary materials from
 #' Kerioui, M, Mercier, F, Bertrand, J, et al. Bayesian inference using Hamiltonian
-#' Monte-Carlo algorithm for nonlinear joint modeling in the context of cancer immunotherapy.
+#' Monte-Carlo algorithm for nonlinear joint modelling in the context of cancer immunotherapy.
 #' Statistics in Medicine. 2020; 39: 4853– 4868. https://doi.org/10.1002/sim.8756
 #'
 #' @param N number of patients
 #' @param BSLD baseline sum of longest diameters (SLD)
-#' @param s exponential tumor shrinkage rate
-#' @param g exponential tumor growth rate
+#' @param s exponential tumour shrinkage rate
+#' @param g exponential tumour growth rate
 #' @param phi proportion of cells responding to treatment
 #' @param omega_BSLD standard deviation of random effects for `BSLD`
 #' @param omega_s standard deviation of random effects for `s`
 #' @param omega_g standard deviation of random effects for `g`
 #' @param omega_phi standard deviation of random effects for `phi`
-#' @param sigma standard deviation of of tumor size
+#' @param sigma standard deviation of of tumour size
 #' @param lambda scale parameter for Weibull survival distribution
 #' @param beta coefficient of link of SLD in proportional hazards
-#' @param times observation times for tumor size. Should not exceed 693.
+#' @param times observation times for tumour size. Should not exceed 693.
 #'
 #' @return A data.frame with columns
 #' ID: patient id

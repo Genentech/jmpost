@@ -114,7 +114,7 @@ jm <- JointModel(
         a_phi = prior_lognormal(log(6), 1),
         b_phi = prior_lognormal(log(8), 1),
         sigma = prior_lognormal(log(0.01), 1),
-        centered = FALSE
+        centred = FALSE
     ),
     survival = SurvivalExponential(
         lambda = prior_lognormal(log(1 / (400 / 365)), 1)

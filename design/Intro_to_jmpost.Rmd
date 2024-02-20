@@ -36,7 +36,7 @@ In clinical development of new cancer medicines a key challenge is to decide on 
 In phase 1 studies patients are followed until the cancer is growing again (progression event). 
 Thus, reliable overall survival data are not available. 
 However, we can use additional information from previous clinical trials or real-world data to understand the time between progression and death.
-Specifically, we can correlate the tumor response data, that are longitudinal measurements, (i.e. the shrinkage and growth of tumor lesions over time) with the overall survival of the patients or their hazard ratios [@beyer2020multistate]. 
+Specifically, we can correlate the tumour response data, that are longitudinal measurements, (i.e. the shrinkage and growth of tumour lesions over time) with the overall survival of the patients or their hazard ratios [@beyer2020multistate]. 
 Thereby we can predict the overall survival in our Phase 1 studies and therefore make better decisions [@kerioui2020bayesian].
 
 The sum of the longest diameters (SLD) of the cancer lesions provides an effective and representative biomarker for longitudinal measurements in solid cancer. 
@@ -44,15 +44,15 @@ SLD is relatively easy to measure with reasonable accuracy while also being a go
 
 The association between the longitudinal data and the overall survival can be achieved in different ways.
 The predicted SLD value or its first derivative over time can be directly treated as the linking factor in the hazard model for survival.
-Other factors such as the time to growth, the tumor shrinkage rate or the tumor growth rate can also be used to associate longitudinal outcomes with overall survival.
+Other factors such as the time to growth, the tumour shrinkage rate or the tumour growth rate can also be used to associate longitudinal outcomes with overall survival.
 
 Bayesian methodology provides an important tool for the analysis of similar data.
 Firstly, the use of historical data from previous trials is improving the performance of the models.
 Secondly, prior definition allows the adjustment of the models according to the specific factors of each analysis.
 
 Although these statistical methods provide significant advantages in decision making processes in cancer drug development, their implementation is relatively intricate and time consuming.
-Compared to other R-packages such as `joineR` and `jmbayes`, `jmpost` provides the flexibility of non-linear mixed effects modeling for the longitudinal part of the joint model. 
-Non-linear parametrization respects the biological implications of clinical trials in oncology where the observed tumor response usually follows non-linear patterns.
+Compared to other R-packages such as `joineR` and `jmbayes`, `jmpost` provides the flexibility of non-linear mixed effects modelling for the longitudinal part of the joint model. 
+Non-linear parametrization respects the biological implications of clinical trials in oncology where the observed tumour response usually follows non-linear patterns.
 
 # Minimal usage 
 
@@ -79,7 +79,7 @@ Secondly, the summary report of the model run.
 # Customizing the analysis
 
 `jmpost` is a package aiming to optimize the procedure of developing a new Bayesian joint model. 
-The package provides complete examples of joint modeling code. 
+The package provides complete examples of joint modelling code. 
 Here we explain the workflow of the package `jmpost` using `stan` libraries as an example.  
 
 \begin{figure}[!]
@@ -116,7 +116,7 @@ Here we explain the workflow of the package `jmpost` using `stan` libraries as a
 
 Figure~1 illustrates the main workflow of the `jmpost` package.
 Three objects need to be combined for the construction of the full Bayesian joint model.
-The longitudinal sub-model, including all the required information for the modeling of the longitudinal measurements, the survival sub-model, including information of for the time to event data and the link or association factor, containing information for the conection of the two sub-models.
+The longitudinal sub-model, including all the required information for the modelling of the longitudinal measurements, the survival sub-model, including information of for the time to event data and the link or association factor, containing information for the conection of the two sub-models.
 
 ```{r Longitudinal model}
 Long_mod <- LongModel(
@@ -296,7 +296,7 @@ y_{ij} \sim N(SLD_{ij}, SLD^2_{ij}\sigma^2)
 
 Where: 
 \begin{itemize}
-\item $y_{ij}$ is the observed tumor mesasurements
+\item $y_{ij}$ is the observed tumour mesasurements
 \item $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
 \end{itemize}
 ### Expected SLD 
@@ -314,7 +314,7 @@ Where:
 \item $SLD_{ij}$ is the observed SLD measurement for subject $i$ at visit $j$
 \item $b_i$ is the Baseline sld measurement
 \item $s_i$ is the kinetics shrinkage parameter 
-\item $g_i$ is the kinetics tumor growth parameter 
+\item $g_i$ is the kinetics tumour growth parameter 
 \item $\phi_i$ is the proportion of cells affected by the treatment 
 \end{itemize}
 
@@ -405,7 +405,7 @@ Where:
 \item $G_i$ is the time to growth for subject $i$
 \item $b_i$ is the baseline SLD measurement 
 \item $s_i$ is the kinetics shrinkage parameter 
-\item $g_i$ is is the kinetics tumor growth parameter
+\item $g_i$ is is the kinetics tumour growth parameter
 \item $\phi_i$ is the proportion of cells affected by the treatment
 \end{itemize}
 
