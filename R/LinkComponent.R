@@ -144,15 +144,15 @@ as.StanModule.LinkComponent <- function(object, model = NULL, ...) {
 #'
 #' @family LinkComponent
 #' @export
-as.list.LinkComponent <- function(object, ...) {
-    stan <- as.StanModule(object, ...)
+as.list.LinkComponent <- function(x, ...) {
+    stan <- as.StanModule(x, ...)
     as.list(stan)
 }
 
 
 #' @export
-as_print_string.LinkComponent <- function(x, ...) {
-    as_print_string(x@parameters)
+as_print_string.LinkComponent <- function(object, ...) {
+    as_print_string(object@parameters)
 }
 
 

@@ -4,10 +4,10 @@
 \alias{as.list.LinkComponent}
 \title{\code{LinkComponent} -> \code{list}}
 \usage{
-\method{as.list}{LinkComponent}(object, ...)
+\method{as.list}{LinkComponent}(x, ...)
 }
 \arguments{
-\item{object}{(\code{\link{LinkComponent}})\cr a link component.}
+\item{x}{(\code{\link{LinkComponent}})\cr a link component.}
 
 \item{...}{Not Used.}
 }
