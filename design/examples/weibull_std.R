@@ -7,6 +7,7 @@ library(cmdstanr)
 library(posterior)
 library(bayesplot)
 library(here)
+library(brms)
 
 
 dat <- flexsurv::bc |>
@@ -24,7 +25,7 @@ mod_cox <- coxph(
     Surv(recyrs, censrec) ~ group,
     data = dat
 )
-AIC(mod_cox)
+
 
 ################################
 #
@@ -66,6 +67,40 @@ BIC(mod_surv)
 logLik(mod_surv)
 
 
+
+################################
+#
+# brms Weibull Regression
+#
+
+mod_brms <- brm(
+    recyrs | cens(censored) ~ group,
+    dat |> mutate(censored = if_else(censrec == 1, "none", "right")),
+    family = weibull(),
+    cores = 4,
+    warmup = 1000,
+    iter = 2000,
+    seed = 7819
+)
+
+brms_pars <- as_draws_matrix(mod_brms)[, c("shape", "b_Intercept", "b_groupMedium", "b_groupPoor")] |>
+    apply(2, mean)
+
+brms_gamma <- brms_pars[["shape"]]
+brms_lambda <- exp(-brms_pars[["b_Intercept"]] * brms_gamma)
+brms_param_log_coefs <- -brms_pars[c("b_groupMedium", "b_groupPoor")] * brms_gamma
+
+c(
+    "gamma"= brms_gamma,
+    "lambda" = brms_lambda,
+    brms_param_log_coefs
+)
+
+# Leave one out CV
+loo(mod_brms)
+
+
+
 ################################
 #
 # Bayesian Weibull Regression
@@ -94,18 +129,19 @@ fit <- mod$sample(
     iter_warmup = 1000,
     iter_sampling = 1500
 )
-vars <- c(
+vars_stan <- c(
     "gamma_0",
     "lambda_0",
     "beta"
 )
-fit$summary(vars)
+fit$summary(vars_stan)
 
 
 # Log Likelihood
 log_lik <- fit$draws("log_lik", format = "draws_matrix") |>
     apply(1, sum) |>
     mean()
+log_lik
 
 # AIC
 k <- 2
@@ -114,6 +150,9 @@ k <- 2
 # BIC
 ((stan_data$p + 1) * log(stan_data$n)) + (-2 * log_lik)
 
+
+# Leave one out CV
+fit$loo()
 
 
 ################################
@@ -160,5 +199,19 @@ vars <- c(
 )
 
 mp@results$summary(vars)
-AIC(mp)
-BIC(mp)
+
+# Log Likelihood
+log_lik <- mp@results$draws("log_lik", format = "draws_matrix") |>
+    apply(1, sum) |>
+    mean()
+log_lik
+
+# AIC
+k <- 2
+-2 * log_lik + k * 4
+
+# BIC
+(4 * log(nrow(dat))) + (-2 * log_lik)
+
+# Leave one out CV
+mp@results$loo()
