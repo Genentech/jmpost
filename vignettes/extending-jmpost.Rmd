@@ -31,7 +31,7 @@ contain complete information for this package yet.
 
 ## Custom Link Functions
 
-Users can defined custom link functions in several ways based upon the level of customisation
+Users can define custom link functions in several ways based upon the level of customisation
 required. In order to explain this process it is first important to understand how the link
 functions are implemented under the hood.
 
@@ -147,13 +147,34 @@ Link(
 Note that there are a few families of link functions that are common across all models for example
 identity, dSLD, TTG. Users can access these by simply using the inbuilt `link_identity()`,
 `link_dsld()` and `link_ttg()` functions respectively.
-These functions are responsible for loading the correct `LinkComponent` to implement that link for a
-particular model.
+These functions are responsible for loading the correct `LinkComponent` to
+implement that link for a particular model.
+That is if the user whats to specify both the
+TTG link and the dSLD for a model then they can simply use:
 
-If you wish to provide implementations of these
-for new models then you need to provide method implementations for your model to `linkDSLD()`,
+```R
+JointModel(
+  ...,
+  link = Link(
+    link_dsld(),
+    link_ttg()
+  )
+)
+```
+
+
+Note that these functions are a design quirk in order to smooth the UI; under the hood
+these functions offload responsibility to dedicated longitudinal model methods.
+That is to say, by passing `link_dsld()` to the
+`JointModel` constructor you are causing the `linkDSLD` method of the
+corresponding longitudinal model to be invoked. The `linkDSLD` method is then responsible for
+for loading the correct `StanModule` for that model's dSLD link function.
+
+If you wish to provide implementations of any of these link families
+for a new model then you need to provide model specific implementations of `linkDSLD()`,
 `linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implementation
-of the `linkDSLD` method for the `LongitudinalGSF` model which enables the use of `link_dsld()`:
+of the `linkDSLD` method for the `LongitudinalGSF` model (which the user
+invokes via `link_dsld()`):
 
 ```R
 linkDSLD.LongitudinalGSF <- function(object, ...) {
