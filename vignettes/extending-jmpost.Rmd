@@ -149,8 +149,8 @@ identity, dSLD, TTG. Users can access these by simply using the inbuilt `link_id
 `link_dsld()` and `link_ttg()` functions respectively.
 These functions are responsible for loading the correct `LinkComponent` to
 implement that link for a particular model.
-That is if the user whats to specify both the
-TTG link and the dSLD for a model then they can simply use:
+That is if the user wants to specify both the
+TTG link and the dSLD for a model then they can do so via:
 
 ```R
 JointModel(
