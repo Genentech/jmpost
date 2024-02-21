@@ -4,13 +4,7 @@
 \alias{autoplot.SurvivalQuantities}
 \title{Automatic Plotting for `SurvivalQuantities``}
 \usage{
-autoplot.SurvivalQuantities(
-  object,
-  conf.level = 0.95,
-  add_km = FALSE,
-  add_wrap = TRUE,
-  ...
-)
+\method{autoplot}{SurvivalQuantities}(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 }
 \arguments{
 \item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
@@ -38,7 +32,7 @@ Other SurvivalQuantities:
 \code{\link{summary.SurvivalQuantities}()}
 
 Other autoplot: 
-\code{\link{autoplot}},
+\code{\link{autoplot}()},
 \code{\link{autoplot.LongitudinalQuantities}()}
 }
 \concept{SurvivalQuantities}
