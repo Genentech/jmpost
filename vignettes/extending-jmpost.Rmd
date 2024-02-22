@@ -31,7 +31,8 @@ contain complete information for this package yet.
 
 ## Custom Link Functions
 
-Users can defined custom link functions in several ways based upon the level of customisation
+
+Users can define custom link functions in several ways based upon the level of customisation
 required. In order to explain this process it is first important to understand how the link
 functions are implemented under the hood.
 
@@ -147,31 +148,48 @@ Link(
 Note that there are a few families of link functions that are common across all models for example
 identity, dSLD, TTG. Users can access these by simply using the inbuilt `link_identity()`,
 `link_dsld()` and `link_ttg()` functions respectively.
-These functions are responsible for loading the correct `LinkComponent` to implement that link for a
-particular model.
 
-If you wish to provide implementations of these
-for new models then you need to provide method implementations for your model to `linkDSLD()`,
-`linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implementation
-of the `linkDSLD` method for the `LongitudinalGSF` model which enables the use of `link_dsld()`:
+These functions are responsible for loading the correct `LinkComponent` to
+implement that link for a particular model.
+That is if the user wants to specify both the
+TTG link and the dSLD for a model then they can do so via:
 
 ```R
+JointModel(
+  ...,
+  link = Link(
+    link_dsld(),
+    link_ttg()
+  )
+) 
+```
+
+Under the hood these link-family functions work by defining a `LinkComponent` object
+that specifies a method that will return a `StanModule` object instead of specifying
+the `StanModule` object directly. This method will then be called by the `JointModel` constructor
+with the `LongitudinalModel` object as its first argument. This way each longitudinal model is 
+able to specify their own implementation for the given link family. The following is a rough outline
+for how this works for the `link_dsld()` function and the `LongitudinalGSF` model:
+
+```R
+link_dsld <- function() {
+  LinkComponent(
+    key = "link_dsld",
+    stan = linkDSLD,
+    parameters = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+  )
+}
+
 linkDSLD.LongitudinalGSF <- function(object, ...) {
-    StanModule("
-functions {
-    matrix link_dsld_contrib(
-        matrix time,
-        matrix link_function_inputs
-    ) {
-        int nrows = rows(time);
-        int ncols = cols(time);
-        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];
-        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);
-        return rnd_slope_mat;
-    }
-}")
+  StanModule("<stan code for GSF dSLD link>")
 }
 ```
+
+This is to say that if you wish to overwrite a model implementation for an existing link family or
+provide an implementation for a new model then you can do so by defining/overwriting the relevant
+methods. For clarity the underlying methods are `linkDSLD`, `linkIdentity` and `linkTTG`
+respectively.
+
 
 ## Formatting Stan Files
 

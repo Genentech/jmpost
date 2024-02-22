@@ -4,7 +4,7 @@
 \alias{autoplot.LongitudinalQuantities}
 \title{Automatic Plotting for \code{LongitudinalQuantities}}
 \usage{
-\method{autoplot}{LongitudinalQuantities}(object, conf.level = 0.95, ...)
+autoplot.LongitudinalQuantities(object, conf.level = 0.95, ...)
 }
 \arguments{
 \item{object}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
@@ -25,7 +25,7 @@ Other LongitudinalQuantities:
 \code{\link{summary.LongitudinalQuantities}()}
 
 Other autoplot: 
-\code{\link{autoplot}()},
+\code{\link{autoplot}},
 \code{\link{autoplot.SurvivalQuantities}()}
 }
 \concept{LongitudinalQuantities}
