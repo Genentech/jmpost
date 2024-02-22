@@ -24,7 +24,7 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
             "C" = 0.5
         ),
         beta_cont = 0.2,
-        lm_fun = sim_lm_random_slope(phi = 0),
+        lm_fun = sim_lm_random_slope(),
         os_fun = sim_os_exponential(lambda = 1 / 100)
     )
 

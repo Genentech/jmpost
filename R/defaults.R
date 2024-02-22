@@ -7,37 +7,9 @@
 #' @include Parameter.R
 NULL
 
-# addLink ----
 
-## addLink-LongitudinalModel,NULL ----
 
-#' @rdname addLink
-setMethod(
-    "addLink",
-    signature = c("LongitudinalModel", "NULL"),
-    definition = function(x, y, ...) x
-)
-
-## addLink-NULL,Link ----
-
-#' @rdname addLink
-setMethod(
-    "addLink",
-    signature = c("NULL", "Link"),
-    definition = function(x, y, ...) stop("LongitudinalModel needs to be defined")
-)
-
-## addLink-NULL,NULL ----
-
-#' @rdname addLink
-setMethod(
-    "addLink",
-    signature = c("NULL", "NULL"),
-    definition = function(x, y, ...) NULL
-)
-
-# getParameters ----
-#' @export
+#' @rdname getParameters
 getParameters.default <- function(object) {
     if (missing(object) || is.null(object)) {
         return(NULL)

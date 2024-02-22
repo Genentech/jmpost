@@ -10,7 +10,7 @@ test_that("SurvivalExponential can recover true parameter (no covariates)", {
         lambda_cen = 1 / 9000,
         beta_cat = c("A" = 0, "B" = 0, "C" = 0),
         beta_cont = 0,
-        lm_fun = sim_lm_random_slope(phi = 0, slope_mu = 0),
+        lm_fun = sim_lm_random_slope(link_dsld = 0, slope_mu = 0),
         os_fun = sim_os_exponential(lambda = true_lambda)
     )
 
@@ -63,7 +63,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
         lambda_cen = 1 / 9000,
         beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
         beta_cont = true_beta[3],
-        lm_fun = sim_lm_random_slope(phi = 0, slope_mu = 0),
+        lm_fun = sim_lm_random_slope(link_dsld = 0, slope_mu = 0),
         os_fun = sim_os_exponential(lambda = true_lambda)
     )
 

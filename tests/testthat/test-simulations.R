@@ -48,7 +48,7 @@ test_that("sim_lm_random_slope works as expected", {
         slope_mu = c(0.01, 0.03),
         slope_sigma = 0.5,
         sigma = 2,
-        phi = 0.1
+        link_dsld = 0.1
     ))
     expect_true(is.function(result))
     set.seed(123)
@@ -151,7 +151,7 @@ test_that("sim_os_exponential creates a dataset with the correct parameter", {
         times = seq(1, 1000),
         beta_cont = 0,
         beta_cat = c("A" = 0, "B" = 0, "C" = 0),
-        lm_fun = sim_lm_random_slope(phi = 0),
+        lm_fun = sim_lm_random_slope(link_dsld = 0),
         os_fun = sim_os_exponential(lambda = 1 / 100)
     )
     osdat <- sim_data$os
@@ -175,7 +175,7 @@ test_that("sim_os_weibull creates a dataset with the correct parameter", {
         times = seq(1, 1000),
         beta_cont = 0.2,
         beta_cat = c("A" = 0, "B" = -0.6, "C" = 0.6),
-        lm_fun = sim_lm_random_slope(phi = 0),  # No link
+        lm_fun = sim_lm_random_slope(link_dsld = 0),  # No link
         os_fun = sim_os_weibull(lambda = lambda_real, gamma = gamma_real),
         .silent = TRUE
     )

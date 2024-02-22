@@ -7,7 +7,7 @@
 \alias{JointModel}
 \title{Joint Model Object and Constructor Function}
 \usage{
-JointModel(longitudinal = NULL, survival = NULL, link = NULL)
+JointModel(longitudinal = NULL, survival = NULL, link = link_none())
 }
 \arguments{
 \item{longitudinal}{(\code{\link{LongitudinalModel}} or \code{NULL})\cr the longitudinal model.}
@@ -35,6 +35,7 @@ Joint Model Object and Constructor Function
 
 \seealso{
 Other JointModel: 
+\code{\link{as.StanModule.JointModel}()},
 \code{\link{as.character.JointModel}()}
 }
 \concept{JointModel}

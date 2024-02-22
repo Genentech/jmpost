@@ -5,7 +5,8 @@
 #' @param slope_mu (`numeric`)\cr the population slope for the two treatment arms.
 #' @param slope_sigma (`number`)\cr the random slope standard deviation.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
-#' @param phi (`number`)\cr the link coefficient for the random slope contribution.
+#' @param link_dsld (`number`)\cr the link coefficient for the DSLD contribution.
+#' @param link_identity (`number`)\cr the link coefficient for the identity contribution.
 #'
 #' @returns A function with argument `lm_base` that can be used to simulate
 #'   longitudinal data from the corresponding random slope model.
@@ -16,7 +17,8 @@ sim_lm_random_slope <- function(
     slope_mu = c(0.01, 0.03),
     slope_sigma = 0.5,
     sigma = 2,
-    phi = 0.1
+    link_dsld = 0,
+    link_identity = 0
 ) {
     function(lm_base) {
 
@@ -40,7 +42,7 @@ sim_lm_random_slope <- function(
             dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, sigma)) |>
             dplyr::left_join(rs_baseline, by = "pt") |>
             dplyr::mutate(sld = intercept + .data$slope_ind * .data$time + .data$err) |>
-            dplyr::mutate(log_haz_link = .data$slope_ind * phi)
+            dplyr::mutate(log_haz_link = .data$slope_ind * link_dsld + .data$sld * link_identity)
 
         return(lm_dat)
     }

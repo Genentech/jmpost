@@ -1,18 +1,8 @@
 
 functions {
-    //
-    // Source - base/base.stan
-    //
-
-{% if link_none %}
-    // If user has requested link_none then provide a dummy link_contribution function
-    // that does nothing
-    matrix link_contribution(matrix time, matrix pars_lm) {
-        return  rep_matrix(0, rows(time), cols(time));
-    }
-{% endif %}
 {{ longitudinal.functions }}
 {{ survival.functions }}
+{{ link.functions }}
 }
 
 
@@ -21,7 +11,6 @@ data{
     //
     // Source - base/base.stan
     //
-
     int<lower=1> Nind;                 // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
@@ -29,38 +18,25 @@ data{
     array[Nind] int<lower=1,upper=n_arms> pt_arm_index;       // Index of treatment arm per pt (PT index sorted)
 
 {{ survival.data }}
+{{ link.data }}
 {{ longitudinal.data }}
 
-    //
-    // Dynamically derived priors
-    //
 {{ priors.data }}
 
 }
 
 
 transformed data {
-
 {{ longitudinal.transformed_data }}
+{{ link.transformed_data }}
 {{ survival.transformed_data }}
-
-
-{% if link_none %}
-    //
-    // Source - base/base.stan
-    //
-
-    // If user has requested link_none then provide a dummy pars_lm object
-    // that contains nothing
-    matrix[Nind, 0] pars_lm = rep_matrix(0, Nind, 0);
-{% endif %}
-
 }
 
 
 
 parameters{
 {{ longitudinal.parameters }}
+{{ link.parameters }}
 {{ survival.parameters }}
 }
 
@@ -75,6 +51,7 @@ transformed parameters{
     vector[Nind] log_lik = rep_vector(0.0, Nind);
 
 {{ longitudinal.transformed_parameters }}
+{{ link.transformed_parameters }}
 {{ survival.transformed_parameters }}
 
 }
@@ -82,11 +59,9 @@ transformed parameters{
 
 model{
 {{ longitudinal.model }}
+{{ link.model }}
 {{ survival.model }}
 
-    //
-    // Dynamically derived priors
-    //
 {{ priors.model }}
 
     //
@@ -98,6 +73,7 @@ model{
 generated quantities{
 
 {{ longitudinal.generated_quantities }}
+{{ link.generated_quantities }}
 {{ survival.generated_quantities }}
 
 }

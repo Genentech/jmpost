@@ -15,7 +15,7 @@ parameters{
     real<lower={{ machine_double_eps }}> lm_gsf_omega_ks;
     real<lower={{ machine_double_eps }}> lm_gsf_omega_kg;
 
-{% if centered -%}
+{% if centred -%}
     vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_bsld;
     vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_ks;
     vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_kg;
@@ -44,7 +44,7 @@ transformed parameters{
     // Source - lm-gsf/model.stan
     //
 
-{% if not centered -%}
+{% if not centred -%}
     vector<lower={{ machine_double_eps }}>[Nind] lm_gsf_psi_bsld = exp(
         lm_gsf_mu_bsld[pt_study_index] + (lm_gsf_eta_tilde_bsld * lm_gsf_omega_bsld)
     );
@@ -100,7 +100,7 @@ model {
     //
     // Source - lm-gsf/model.stan
     //
-{% if centered %}
+{% if centred %}
     lm_gsf_psi_bsld ~ lognormal(lm_gsf_mu_bsld[pt_study_index], lm_gsf_omega_bsld);
     lm_gsf_psi_ks ~ lognormal(lm_gsf_mu_ks[pt_arm_index], lm_gsf_omega_ks);
     lm_gsf_psi_kg ~ lognormal(lm_gsf_mu_kg[pt_arm_index], lm_gsf_omega_kg);

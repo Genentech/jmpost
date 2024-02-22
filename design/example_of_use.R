@@ -19,8 +19,8 @@ devtools::load_all(export_all = FALSE)
 
 jm <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
-    link = LinkRandomSlope(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = link_dsld()
 )
 
 
@@ -67,8 +67,8 @@ jm <- JointModel(
 
 jm <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
-    link = LinkRandomSlope(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = link_dsld()
 )
 
 
@@ -95,7 +95,7 @@ jlist <- simulate_joint_data(
         phi = 0.1
     ),
     os_fun = sim_os_weibull(
-        lambda = 0.00333,  # 1/300
+        lambda = 0.00333,
         gamma = 0.97
     )
 )

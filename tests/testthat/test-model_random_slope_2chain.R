@@ -3,7 +3,7 @@ test_that("Can recover known distribution parameters from random slope model whe
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalExponential(),
-        link = LinkRandomSlope()
+        link = link_dsld()
     )
 
     set.seed(3251)
@@ -22,7 +22,7 @@ test_that("Can recover known distribution parameters from random slope model whe
             sigma = 3,
             slope_mu = c(1, 3),
             slope_sigma = 0.2,
-            phi = 0.1
+            link_dsld = 0.1
         ),
         os_fun = sim_os_exponential(lambda = 1 / 200)
     )
@@ -69,7 +69,7 @@ test_that("Can recover known distribution parameters from random slope model whe
         "lm_rs_slope_mu[1]" = 1,
         "lm_rs_slope_mu[2]" = 3,
         "lm_rs_slope_sigma" = 0.2,
-        "link_lm_phi" = 0.1
+        "link_dsld" = 0.1
     )
 
     results_df <- mp@results$summary(names(vars))

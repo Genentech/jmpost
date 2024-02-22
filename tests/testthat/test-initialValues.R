@@ -4,7 +4,7 @@ test_that("initialValues() works as expected", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalWeibullPH(),
-        link = LinkRandomSlope()
+        link = link_dsld()
     )
 
     set.seed(341)
@@ -28,8 +28,8 @@ test_that("initialValues() works as expected", {
     expect_equal(
         c(
             "lm_rs_intercept", "lm_rs_slope_mu", "lm_rs_slope_sigma", "lm_rs_sigma",
-            "lm_rs_ind_rnd_slope", "link_lm_phi", "sm_weibull_ph_lambda",
-            "sm_weibull_ph_gamma", "beta_os_cov"
+            "lm_rs_ind_rnd_slope", "sm_weibull_ph_lambda",
+            "sm_weibull_ph_gamma", "beta_os_cov", "link_dsld"
         ),
         names(initial_values[[1]])
     )
@@ -86,7 +86,7 @@ test_that("ensure_initial_values() works as expected", {
 test_that("intial values for fixed distributions gives valid values", {
 
     set.seed(3150)
-    gsfmodel <- LongitudinalGSF(centered = TRUE)
+    gsfmodel <- LongitudinalGSF(centred = TRUE)
     ivs <- initialValues(gsfmodel, n_chains = 100)
 
     for (values in ivs) {

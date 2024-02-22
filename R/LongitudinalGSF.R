@@ -36,7 +36,7 @@ NULL
 #' @param a_phi (`Prior`)\cr for the alpha parameter for the fraction of cells that respond to treatment.
 #' @param b_phi (`Prior`)\cr for the beta parameter for the fraction of cells that respond to treatment.
 #'
-#' @param centered (`logical`)\cr whether to use the centered parameterization.
+#' @param centred (`logical`)\cr whether to use the centred parameterization.
 #'
 #' @export
 LongitudinalGSF <- function(
@@ -54,12 +54,12 @@ LongitudinalGSF <- function(
 
     sigma = prior_lognormal(log(0.1), 1),
 
-    centered = FALSE
+    centred = FALSE
 ) {
 
     gsf_model <- StanModule(decorated_render(
         .x = paste0(read_stan("lm-gsf/model.stan"), collapse = "\n"),
-        centered = centered
+        centred = centred
     ))
 
     parameters <- list(
@@ -82,8 +82,8 @@ LongitudinalGSF <- function(
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
 
-    assert_flag(centered)
-    parameters_extra <- if (centered) {
+    assert_flag(centred)
+    parameters_extra <- if (centred) {
         list(
             Parameter(
                 name = "lm_gsf_psi_bsld",
@@ -119,4 +119,33 @@ LongitudinalGSF <- function(
         parameters = do.call(ParameterList, parameters)
     )
     .LongitudinalGSF(x)
+}
+
+
+#' @rdname standard-link-methods
+#' @export
+enableLink.LongitudinalGSF <- function(object, ...) {
+    object@stan <- merge(
+        object@stan,
+        StanModule("lm-gsf/link.stan")
+    )
+    object
+}
+
+#' @rdname standard-link-methods
+#' @export
+linkDSLD.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_dsld.stan")
+}
+
+#' @rdname standard-link-methods
+#' @export
+linkTTG.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_ttg.stan")
+}
+
+#' @rdname standard-link-methods
+#' @export
+linkIdentity.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/link_identity.stan")
 }

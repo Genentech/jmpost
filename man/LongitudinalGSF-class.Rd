@@ -17,7 +17,7 @@ LongitudinalGSF(
   a_phi = prior_lognormal(log(5), 1),
   b_phi = prior_lognormal(log(5), 1),
   sigma = prior_lognormal(log(0.1), 1),
-  centered = FALSE
+  centred = FALSE
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ LongitudinalGSF(
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
 
-\item{centered}{(\code{logical})\cr whether to use the centered parameterization.}
+\item{centred}{(\code{logical})\cr whether to use the centred parameterization.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

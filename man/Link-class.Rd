@@ -7,32 +7,32 @@
 \alias{Link}
 \title{\code{Link}}
 \usage{
-Link(
-  stan = StanModule(),
-  parameters = ParameterList(),
-  name = "<Unnamed>",
-  ...
-)
+Link(...)
 }
 \arguments{
-\item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
-
-\item{parameters}{(\code{ParameterList})\cr the parameter specification.}
-
-\item{name}{(\code{character})\cr display name for the model object.}
-
-\item{...}{additional arguments passed to the constructor.}
+\item{...}{(\code{\link{LinkComponent}})\cr an arbitrary number of link components.}
 }
 \description{
-\code{Link}
+Simple container class to enable the use of multiple link components in a joint model.
+Note that the constructor of this object is idempotent e.g. \code{Link(Link(x)) == Link(x)}
 }
 \section{Slots}{
 
 \describe{
-\item{\code{stan}}{(\code{StanModule})\cr code containing the link specification.}
-
-\item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
-
-\item{\code{name}}{(\code{character})\cr display name for the link object.}
+\item{\code{components}}{(\code{list})\cr a list of \code{\link{LinkComponent}} objects.}
 }}
 
+\examples{
+Link(
+    link_dsld(),
+    link_ttg()
+)
+
+}
+\seealso{
+Other Link: 
+\code{\link{as.StanModule.Link}()},
+\code{\link{as.list.Link}()},
+\code{\link{length.Link}()}
+}
+\concept{Link}

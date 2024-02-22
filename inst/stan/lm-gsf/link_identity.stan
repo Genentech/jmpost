@@ -5,15 +5,16 @@ functions {
     //
 
     // Identity of SLD
-    matrix link_identity_contribution(
+    matrix link_identity_contrib(
         matrix time,
-        vector psi_bsld,
-        vector psi_ks,
-        vector psi_kg,
-        vector psi_phi
+        matrix link_function_inputs
     ) {
-        int nrows = rows(psi_bsld);
+        int nrows = rows(link_function_inputs);
         int ncols = cols(time);
+        vector[nrows] psi_bsld = link_function_inputs[,1];
+        vector[nrows] psi_ks = link_function_inputs[,2];
+        vector[nrows] psi_kg = link_function_inputs[,3];
+        vector[nrows] psi_phi = link_function_inputs[,4];
         matrix[nrows, ncols] result;
         for (i in 1:ncols) {
             result[,i] = fmin(
@@ -24,5 +25,3 @@ functions {
         return result;
     }
 }
-
-

@@ -5,15 +5,16 @@ functions {
     //
 
     // Derivative of SLD
-    matrix link_dsld_contribution(
+    matrix link_dsld_contrib(
         matrix time,
-        vector psi_bsld,
-        vector psi_ks,
-        vector psi_kg,
-        vector psi_phi
+        matrix link_function_inputs
     ) {
-        int nrows = rows(psi_bsld);
+        int nrows = rows(link_function_inputs);
         int ncols = cols(time);
+        vector[nrows] psi_bsld = link_function_inputs[,1];
+        vector[nrows] psi_ks = link_function_inputs[,2];
+        vector[nrows] psi_kg = link_function_inputs[,3];
+        vector[nrows] psi_phi = link_function_inputs[,4];
         
         // Here we assume that psi's are replicated along the rows of the time matrix.
         matrix[nrows, ncols] psi_bsld_matrix = rep_matrix(psi_bsld, ncols);

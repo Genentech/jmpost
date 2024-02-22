@@ -22,15 +22,15 @@ The goal of the `jmpost` package is to fit joint models involving:
 3.  a link function (*a.k.a.* association term).
 
 More specifically, the model implemented in this package utilizes a
-modeling framework described previously **\[1-3\]** to link overall
-survival to tumor size data in oncology clinical trials.
+modelling framework described previously **\[1-3\]** to link overall
+survival to tumour size data in oncology clinical trials.
 
-**\[1\]** [Tardivon *et al.* Association between tumor size kinetics and
+**\[1\]** [Tardivon *et al.* Association between tumour size kinetics and
 survival in patients with urothelial carcinoma treated with
 atezolizumab: Implications for patient follow-up. *Clin Pharm Ther*,
 2019](https://doi.org/10.1002/cpt.1450).  
 **\[2\]** [Kerioui *et al.* Bayesian inference using Hamiltonian
-Monte-Carlo algorithm for nonlinear joint modeling in the context of
+Monte-Carlo algorithm for nonlinear joint modelling in the context of
 cancer immunotherapy. *Stat in Med*,
 2020](https://doi.org/10.1002/sim.8756).  
 **\[3\]** [Kerioui *et al.* Modelling the association between biomarkers
@@ -75,9 +75,6 @@ right format.
 
 ``` r
 library(jmpost)
-#> Registered S3 method overwritten by 'GGally':
-#>   method from   
-#>   +.gg   ggplot2
 #> Registered S3 methods overwritten by 'ggpp':
 #>   method                  from   
 #>   heightDetails.titleGrob ggplot2
@@ -118,8 +115,11 @@ via a term for the derivative and another term for the time-to-growth.
 ``` r
 joint_model <- JointModel(
     longitudinal = LongitudinalGSF(),
-    link = LinkGSF(),
-    survival = SurvivalWeibullPH()
+    survival = SurvivalWeibullPH(),
+    link = Link(
+        link_dsld(),
+        link_ttg()
+    )
 )
 ```
 

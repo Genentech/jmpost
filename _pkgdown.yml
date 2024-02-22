@@ -77,17 +77,16 @@ reference:
   
   - title: Link Specification
     contents:
-      - link_gsf_dsld
-      - link_gsf_ttg
-      - link_gsf_identity
+      - link_dsld
+      - link_ttg
+      - link_identity
+      - link_none
       - Link
-      - LinkGSF
-      - LinkNone
-      - LinkRandomSlope
+      - LinkComponent
+      - standard-link-methods
   
   - title: Joint Model Specification
     contents:
-      - addLink
       - JointModel
   
   - title: Joint Model Fitting
@@ -131,6 +130,9 @@ reference:
       - as.StanModule.Parameter
       - as.StanModule.ParameterList
       - as.StanModule.Prior
+      - as.StanModule.JointModel
+      - as.StanModule.Link
+      - as.StanModule.LinkComponent
       - as.character.Parameter
       - as.character.Prior
       - show-object
@@ -149,6 +151,9 @@ reference:
       - as.list.ParameterList
       - as.list.StanModel
       - as.list.StanModule
+      - as.list.Link
+      - as.list.LinkComponent
+      - length.Link
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal
   

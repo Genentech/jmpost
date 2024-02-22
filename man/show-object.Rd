@@ -2,8 +2,8 @@
 % Please edit documentation in R/DataSubject.R, R/generics.R,
 %   R/DataLongitudinal.R, R/DataSurvival.R, R/DataJoint.R, R/StanModule.R,
 %   R/Prior.R, R/Parameter.R, R/ParameterList.R, R/StanModel.R,
-%   R/Link.R, R/JointModel.R, R/Quantities.R, R/SurvivalQuantities.R,
-%   R/JointModelSamples.R, R/LinkNone.R, R/LongitudinalQuantities.R
+%   R/LinkComponent.R, R/Link.R, R/JointModel.R, R/Quantities.R,
+%   R/SurvivalQuantities.R, R/JointModelSamples.R, R/LongitudinalQuantities.R
 \name{show,DataSubject-method}
 \alias{show,DataSubject-method}
 \alias{show-object}
@@ -15,12 +15,12 @@
 \alias{show,Parameter-method}
 \alias{show,ParameterList-method}
 \alias{show,StanModel-method}
+\alias{show,LinkComponent-method}
 \alias{show,Link-method}
 \alias{show,JointModel-method}
 \alias{show,Quantities-method}
 \alias{show,SurvivalQuantities-method}
 \alias{show,JointModelSamples-method}
-\alias{show,LinkNone-method}
 \alias{show,LongitudinalQuantities-method}
 \title{Show an Object}
 \usage{
@@ -42,6 +42,8 @@
 
 \S4method{show}{StanModel}(object)
 
+\S4method{show}{LinkComponent}(object)
+
 \S4method{show}{Link}(object)
 
 \S4method{show}{JointModel}(object)
@@ -51,8 +53,6 @@
 \S4method{show}{SurvivalQuantities}(object)
 
 \S4method{show}{JointModelSamples}(object)
-
-\S4method{show}{LinkNone}(object)
 
 \S4method{show}{LongitudinalQuantities}(object)
 }

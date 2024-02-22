@@ -2,7 +2,7 @@
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = LinkRandomSlope())
+      link = link_dsld())
       print(x)
     Output
       
@@ -23,9 +23,37 @@
                lm_rs_ind_rnd_slope ~ <None>
            
         Link:     
-           Random Slope Link with parameters:
-               link_lm_phi ~ normal(mu = 0.2, sigma = 0.5)
+           Link with the following components/parameters:
+               link_dsld ~ normal(mu = 0, sigma = 2)
+
+---
+
+    Code
+      x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
+      link = Link(link_dsld(), link_identity()))
+      print(x)
+    Output
+      
+      A Joint Model with:
+      
+        Survival:     
+           Weibull-PH Survival Model with parameters:
+               sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
+               sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
+               beta_os_cov ~ normal(mu = 0, sigma = 5)
            
+        Longitudinal:     
+           Random Slope Longitudinal Model with parameters:
+               lm_rs_intercept ~ normal(mu = 30, sigma = 10)
+               lm_rs_slope_mu ~ normal(mu = 0, sigma = 15)
+               lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5)
+               lm_rs_sigma ~ lognormal(mu = 0, sigma = 1.5)
+               lm_rs_ind_rnd_slope ~ <None>
+           
+        Link:     
+           Link with the following components/parameters:
+               link_dsld ~ normal(mu = 0, sigma = 2)
+               link_identity ~ normal(mu = 0, sigma = 2)
 
 ---
 
@@ -45,9 +73,8 @@
         Longitudinal:
            Not Specified
       
-        Link:
+        Link:     
            No Link
-      
 
 ---
 
@@ -77,15 +104,14 @@
                lm_gsf_eta_tilde_ks ~ std_normal()
                lm_gsf_eta_tilde_kg ~ std_normal()
            
-        Link:
+        Link:     
            No Link
-      
 
 ---
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = LinkNone())
+      link = Link())
       print(x)
     Output
       
@@ -105,7 +131,6 @@
                lm_rs_sigma ~ lognormal(mu = 0, sigma = 1.5)
                lm_rs_ind_rnd_slope ~ <None>
            
-        Link:
+        Link:     
            No Link
-      
 

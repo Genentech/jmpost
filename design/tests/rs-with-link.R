@@ -12,7 +12,12 @@ options("jmpost.cache_dir" = file.path("local", "models"))
 jm <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalExponential(),
-    link = LinkRandomSlope()
+    link = Link(
+        link_dsld(),
+        link_identity(
+            prior = prior_normal(0, 0.02)
+        )
+    )
 )
 
 
@@ -21,11 +26,12 @@ jm <- JointModel(
 write_stan(jm, "local/debug.stan")
 
 
+set.seed(514)
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n = c(400, 400),
+    n = c(400, 300),
     times = 1:2000,
-    lambda_cen = 1 / 9000,
+    lambda_cen = 1 / 400,
     beta_cat = c(
         "A" = 0,
         "B" = -0.1,
@@ -37,8 +43,8 @@ jlist <- simulate_joint_data(
         sigma = 3,
         slope_mu = c(1,3),
         slope_sigma = 0.2,
-        phi = 0.1,
-        .debug = TRUE
+        link_dsld = -0.1,
+        link_identity = 0.0001
     ),
     os_fun = sim_os_exponential(
         lambda = 0.00333  # 1/300
@@ -73,14 +79,17 @@ jdat <- DataJoint(
     )
 )
 
+init_vals <- initialValues(jm, n_chains = 2)
+
 ## Sample from JointModel
 mp <- sampleStanModel(
     jm,
     data = jdat,
     iter_sampling = 1000,
     iter_warmup = 1000,
-    chains = 1,
-    parallel_chains = 1
+    chains = 2,
+    parallel_chains = 2,
+    init = init_vals
 )
 
 
@@ -93,10 +102,12 @@ vars <- c(
     "lm_rs_slope_mu",      # 1 , 3
     "lm_rs_slope_sigma",   # 0.2
     "lm_rs_sigma",         # 3
-    "link_lm_phi"          # 0.1
+    "link_dsld",           # -0.1
+    "link_identity"        # 0.0001
 )
 
-mp$summary(vars)
+mp@results$summary(vars)
+
 
 
 
