@@ -80,6 +80,7 @@ Collate:
     'LongitudinalGSF.R'
     'LongitudinalQuantities.R'
     'LongitudinalRandomSlope.R'
+    'LongitudinalSteinFojo.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
@@ -92,5 +93,6 @@ Collate:
     'simulations_gsf.R'
     'simulations_os.R'
     'simulations_rs.R'
+    'simulations_sf.R'
     'zzz.R'
 VignetteBuilder: knitr
