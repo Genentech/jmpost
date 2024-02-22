@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -77,8 +71,11 @@
 <span><span class="co"># S3 method for StanModel</span></span>
 <span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for Link</span></span>
+<span><span class="co"># S3 method for LinkComponent</span></span>
 <span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for Link</span></span>
+<span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for JointModel</span></span>
 <span><span class="fu">initialValues</span><span class="op">(</span><span class="va">object</span>, <span class="va">n_chains</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -106,6 +103,14 @@ initial values via a list of lists where each inner list contains the initial va
 for a single chain. As such the <code>n_chains</code> argument specifies the number of inner lists
 to generate.</p>
 <p>See the Vignette for further details of how to specify initial values.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other LinkComponent: 
+<code><a href="LinkComponent-class.html">LinkComponent-class</a></code>,
+<code><a href="as.StanModule.LinkComponent.html">as.StanModule.LinkComponent</a>()</code>,
+<code><a href="as.list.LinkComponent.html">as.list.LinkComponent</a>()</code>,
+<code><a href="getParameters.html">getParameters</a>()</code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

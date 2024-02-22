@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -108,6 +102,156 @@
 <p>Please note that this document is currently a work-in-progress and
 does not contain complete information for this package yet.</p>
 <div class="section level3">
+<h3 id="custom-link-functions">Custom Link Functions<a class="anchor" aria-label="anchor" href="#custom-link-functions"></a>
+</h3>
+<p>Users can define custom link functions in several ways based upon the
+level of customisation required. In order to explain this process it is
+first important to understand how the link functions are implemented
+under the hood.</p>
+<p>The link functions add their contribution to the likelihood function
+via the log-hazard function; that is the general model is formulated
+as:</p>
+<p><span class="math display">\[
+log(h_i(t, \phi_i)) = log(h_0(t)) + X_i \beta + \alpha_1 f(t, \phi_i) +
+\alpha_2 g(t, \phi_i) + \dots
+\]</span></p>
+<p>Where: - <span class="math inline">\(X\)</span> is the design matrix
+of covariates - <span class="math inline">\(\beta\)</span> is the vector
+of coefficients for the covariates - <span class="math inline">\(f(t)\)</span> and <span class="math inline">\(g(t)\)</span> are the link functions - <span class="math inline">\(\alpha_1\)</span> and <span class="math inline">\(\alpha_2\)</span> are the coefficients for the
+link functions - <span class="math inline">\(h_0(t)\)</span> is the
+baseline hazard function - <span class="math inline">\(\phi_i\)</span>
+is a vector of parameters from the longitudinal model</p>
+<p>Each longitudinal model is responsible for defining their own
+implementations of the <span class="math inline">\(\phi\)</span> vector.
+The interface for doing this is by providing an <code>enableLink</code>
+method that updates the <code>StanModule</code> object of the model to
+define a Stan matrix with the name <code>link_function_inputs</code>
+that contains 1 row per patient and 1 column per <span class="math inline">\(\phi\)</span> parameter.</p>
+<p>For reference the following is roughly the implementation for the
+<code>LongitudinalGSF</code> model:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">enableLink.LongitudinalGSF</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="st">transformed parameters {</span></span>
+<span><span class="st">    matrix[Nind, 4] link_function_inputs;</span></span>
+<span><span class="st">    link_function_inputs[,1] = lm_gsf_psi_bsld;</span></span>
+<span><span class="st">    link_function_inputs[,2] = lm_gsf_psi_ks;</span></span>
+<span><span class="st">    link_function_inputs[,3] = lm_gsf_psi_kg;</span></span>
+<span><span class="st">    link_function_inputs[,4] = lm_gsf_psi_phi;</span></span>
+<span><span class="st">}"</span><span class="op">)</span></span>
+<span>    <span class="va">object</span><span class="op">@</span><span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge.html">merge</a></span><span class="op">(</span></span>
+<span>        <span class="va">object</span><span class="op">@</span><span class="va">stan</span>,</span>
+<span>        <span class="va">stan</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">object</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>That is to say the <span class="math inline">\(\phi\)</span>
+parameters for the <code>LongitudinalGSF</code> model are the 4 primary
+parameters of the longitudinal model. If you wish to augment this with
+additional parameters then you can subclass the
+<code>LongitudinalGSF</code> model and override the
+<code>enableLink</code> method to the required additional parameters
+e.g.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">GSFextended</span> <span class="op">&lt;-</span> <span class="kw">setClass</span><span class="op">(</span></span>
+<span>    Class <span class="op">=</span> <span class="st">"GSFextended"</span>,</span>
+<span>    contains <span class="op">=</span> <span class="st">"LongitudinalGSF"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">enableLink.GSFextended</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"&lt;your stan code here&gt;"</span><span class="op">)</span></span>
+<span>    <span class="va">object</span><span class="op">@</span><span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge.html">merge</a></span><span class="op">(</span></span>
+<span>        <span class="va">object</span><span class="op">@</span><span class="va">stan</span>,</span>
+<span>        <span class="va">stan</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">object</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Next, the individual link functions are implemented as Stan functions
+with the following signature:</p>
+<pre><code>matrix &lt;key&gt;_contrib(
+  matrix time,
+  matrix link_function_inputs
+)</code></pre>
+<p>Where: - <code>&lt;key&gt;</code> is the name of the link parameter
+as specified in the <code>LinkComponent</code> object -
+<code>time</code> is a matrix of 1 row per patient and 1 column per time
+point to be evaluated at for that patient.</p>
+<p>The <code>LinkComponent</code> object is responsible for then
+integrating these functions into the final Stan model. For reference the
+following is roughly the implementation of the dSLD link for the
+<code>LongitudinalRandomSlope</code> model:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span></span>
+<span>  key <span class="op">=</span> <span class="st">"link_dsld"</span>,</span>
+<span>  stan <span class="op">=</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="st">functions {</span></span>
+<span><span class="st">    matrix link_dsld_contrib(</span></span>
+<span><span class="st">        matrix time,</span></span>
+<span><span class="st">        matrix link_function_inputs</span></span>
+<span><span class="st">    ) {</span></span>
+<span><span class="st">        int nrows = rows(time);</span></span>
+<span><span class="st">        int ncols = cols(time);</span></span>
+<span><span class="st">        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];</span></span>
+<span><span class="st">        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);</span></span>
+<span><span class="st">        return rnd_slope_mat;</span></span>
+<span><span class="st">    }</span></span>
+<span><span class="st">}"</span><span class="op">)</span>,</span>
+<span>  parameters <span class="op">=</span> <span class="fu"><a href="../reference/ParameterList-class.html">ParameterList</a></span><span class="op">(</span><span class="fu"><a href="../reference/Parameter-class.html">Parameter</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"link_dsld"</span>, prior <span class="op">=</span> <span class="va">prior</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>You can then pass these <code>LinkComponent</code> objects to the
+<code>link</code> argument of the <code>JointModel</code> constructor to
+add them to the model. If you wish to add multiple link functions then
+you must wrap them in a <code><a href="../reference/Link-class.html">Link()</a></code> object e.g.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/Link-class.html">Link</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Note that there are a few families of link functions that are common
+across all models for example identity, dSLD, TTG. Users can access
+these by simply using the inbuilt <code><a href="../reference/standard-links.html">link_identity()</a></code>,
+<code><a href="../reference/standard-links.html">link_dsld()</a></code> and <code><a href="../reference/standard-links.html">link_ttg()</a></code> functions
+respectively. These functions are responsible for loading the correct
+<code>LinkComponent</code> to implement that link for a particular
+model. That is if the user wants to specify both the TTG link and the
+dSLD for a model then they can do so via:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  link <span class="op">=</span> <span class="fu"><a href="../reference/Link-class.html">Link</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/standard-links.html">link_dsld</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/standard-links.html">link_ttg</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> </span></code></pre></div>
+<p>Under the hood these link-family functions work by defining a
+<code>LinkComponent</code> object that specifies a method that will
+return a <code>StanModule</code> object instead of specifying the
+<code>StanModule</code> object directly. This method will then be called
+by the <code>JointModel</code> constructor with the
+<code>LongitudinalModel</code> object as its first argument. This way
+each longitudinal model is able to specify their own implementation for
+the given link family. The following is a rough outline for how this
+works for the <code><a href="../reference/standard-links.html">link_dsld()</a></code> function and the
+<code>LongitudinalGSF</code> model:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">link_dsld</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span></span>
+<span>    key <span class="op">=</span> <span class="st">"link_dsld"</span>,</span>
+<span>    stan <span class="op">=</span> <span class="va">linkDSLD</span>,</span>
+<span>    parameters <span class="op">=</span> <span class="fu"><a href="../reference/ParameterList-class.html">ParameterList</a></span><span class="op">(</span><span class="fu"><a href="../reference/Parameter-class.html">Parameter</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"link_dsld"</span>, prior <span class="op">=</span> <span class="va">prior</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">linkDSLD.LongitudinalGSF</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"&lt;stan code for GSF dSLD link&gt;"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>This is to say that if you wish to overwrite a model implementation
+for an existing link family or provide an implementation for a new model
+then you can do so by defining/overwriting the relevant methods. For
+clarity the underlying methods are <code>linkDSLD</code>,
+<code>linkIdentity</code> and <code>linkTTG</code> respectively.</p>
+</div>
+<div class="section level3">
 <h3 id="formatting-stan-files">Formatting Stan Files<a class="anchor" aria-label="anchor" href="#formatting-stan-files"></a>
 </h3>
 <p>Under the hood this library works by merging multiple Stan programs
@@ -129,25 +273,25 @@ after the opening <code>{</code> character.</li>
 any non-whitespace characters after it</li>
 </ul>
 <p>Valid:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x;</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>}       </span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="kw">parameters</span>{      </span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="dt">real</span> mu; </span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="dt">real</span> sigma;}</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="kw">model</span> {    </span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>x ~ normal(mu, sigma);</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    }    </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x;</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>}       </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="kw">parameters</span>{      </span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="dt">real</span> mu; </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="dt">real</span> sigma;}</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="kw">model</span> {    </span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>x ~ normal(mu, sigma);</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    }    </span></code></pre></div>
 <p>Invalid:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">// non-whitespace after opening `{`</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="kw">data</span> { <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x; } </span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>parameter { <span class="dt">real</span> mu;      <span class="co">// non-whitespace after opening `{`</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="dt">real</span> sigma;</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>} <span class="kw">model</span> {                 <span class="co">// non-whitespace before block name</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  x ~ normal(mu, sigma);</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>} <span class="co">// some comment         // non-whitespace after closing `}`</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">// non-whitespace after opening `{`</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="kw">data</span> { <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x; } </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>parameter { <span class="dt">real</span> mu;      <span class="co">// non-whitespace after opening `{`</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="dt">real</span> sigma;</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>} <span class="kw">model</span> {                 <span class="co">// non-whitespace before block name</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  x ~ normal(mu, sigma);</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>} <span class="co">// some comment         // non-whitespace after closing `}`</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

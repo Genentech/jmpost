@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -303,19 +297,9 @@
 
       <dl><dt>
           
-          <code><a href="link_gsf_dsld-class.html">link_gsf_dsld()</a></code> 
+          <code><a href="standard-links.html">link_ttg()</a></code> <code><a href="standard-links.html">link_dsld()</a></code> <code><a href="standard-links.html">link_identity()</a></code> <code><a href="standard-links.html">link_none()</a></code> 
         </dt>
-        <dd><code>link_gsf_dsld</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="link_gsf_ttg-class.html">link_gsf_ttg()</a></code> 
-        </dt>
-        <dd><code>link_gsf_ttg</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="link_gsf_identity-class.html">link_gsf_identity()</a></code> 
-        </dt>
-        <dd><code>link_gsf_identity</code></dd>
+        <dd>Standard Links</dd>
       </dl><dl><dt>
           
           <code><a href="Link-class.html">Link()</a></code> 
@@ -323,19 +307,14 @@
         <dd><code>Link</code></dd>
       </dl><dl><dt>
           
-          <code><a href="LinkGSF-class.html">LinkGSF()</a></code> 
+          <code><a href="LinkComponent-class.html">LinkComponent()</a></code> 
         </dt>
-        <dd><code>LinkGSF</code></dd>
+        <dd><code>LinkComponent</code></dd>
       </dl><dl><dt>
           
-          <code><a href="LinkNone-class.html">LinkNone()</a></code> 
+          <code><a href="standard-link-methods.html">enableLink()</a></code> <code><a href="standard-link-methods.html">linkTTG()</a></code> <code><a href="standard-link-methods.html">linkDSLD()</a></code> <code><a href="standard-link-methods.html">linkIdentity()</a></code> 
         </dt>
-        <dd><code>LinkNone</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="LinkRandomSlope-class.html">LinkRandomSlope()</a></code> 
-        </dt>
-        <dd><code>LinkRandomSlope</code></dd>
+        <dd>Standard Link Methods</dd>
       </dl></div><div class="section level2">
       <h2 id="joint-model-specification">Joint Model Specification<a class="anchor" aria-label="anchor" href="#joint-model-specification"></a></h2>
       
@@ -348,11 +327,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="addLink.html">addLink()</a></code> 
-        </dt>
-        <dd><code>addLink</code></dd>
-      </dl><dl><dt>
           
           <code><a href="JointModel-class.html">JointModel()</a></code> 
         </dt>
@@ -553,6 +527,21 @@
         <dd><code>Prior</code> -&gt; <code>StanModule</code></dd>
       </dl><dl><dt>
           
+          <code><a href="as.StanModule.JointModel.html">as.StanModule(<i>&lt;JointModel&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>JointModel</code> -&gt; <code>StanModule</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as.StanModule.Link.html">as.StanModule(<i>&lt;Link&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>Link</code> -&gt; <code>StanModule</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as.StanModule.LinkComponent.html">as.StanModule(<i>&lt;LinkComponent&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>LinkComponent</code> -&gt; <code>StanModule</code></dd>
+      </dl><dl><dt>
+          
           <code><a href="as.character.Parameter.html">as.character(<i>&lt;Parameter&gt;</i>)</a></code> 
         </dt>
         <dd><code>Parameter</code> -&gt; <code>Character</code></dd>
@@ -563,7 +552,7 @@
         <dd><code>Prior</code> -&gt; <code>Character</code></dd>
       </dl><dl><dt>
           
-          <code><a href="show-object.html">show(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataJoint&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModule&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Prior&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Parameter&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;ParameterList&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Link&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Quantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SurvivalQuantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModelSamples&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LinkNone&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LongitudinalQuantities&gt;</i>)</a></code> 
+          <code><a href="show-object.html">show(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataJoint&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModule&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Prior&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Parameter&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;ParameterList&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LinkComponent&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Link&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Quantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SurvivalQuantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModelSamples&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LongitudinalQuantities&gt;</i>)</a></code> 
         </dt>
         <dd>Show an Object</dd>
       </dl><dl><dt>
@@ -631,6 +620,21 @@
           <code><a href="as.list.StanModule.html">as.list(<i>&lt;StanModule&gt;</i>)</a></code> 
         </dt>
         <dd><code>StanModule</code> -&gt; <code>list</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as.list.Link.html">as.list(<i>&lt;Link&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>Link</code> -&gt; <code>list</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="as.list.LinkComponent.html">as.list(<i>&lt;LinkComponent&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>LinkComponent</code> -&gt; <code>list</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="length.Link.html">length(<i>&lt;Link&gt;</i>)</a></code> 
+        </dt>
+        <dd><code>Link</code> -&gt; <code>list</code></dd>
       </dl><dl><dt>
           
           <code><a href="subset.DataJoint.html">subset(<i>&lt;DataJoint&gt;</i>)</a></code> 

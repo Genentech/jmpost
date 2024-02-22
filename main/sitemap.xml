@@ -64,16 +64,16 @@
     <loc>https://genentech.github.io/jmpost/reference/JointModelSamples-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/Link-Shared.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/Link-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/LinkGSF-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LinkComponent-Shared.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/LinkNone-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LinkRandomSlope-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/LinkComponent-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/Local_Sample.html</loc>
@@ -157,10 +157,16 @@
     <loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/addLink.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModel.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Link.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.html</loc>
@@ -203,6 +209,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.list.Link.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/as.list.LinkComponent.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as.list.ParameterList.html</loc>
@@ -361,16 +373,7 @@
     <loc>https://genentech.github.io/jmpost/reference/jmpost-settings.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/link_gsf_abstract-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/link_gsf_dsld-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/link_gsf_identity-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/link_gsf_ttg-class.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/length.Link.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/longitudinal_plot.html</loc>
@@ -458,6 +461,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/size.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/standard-link-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/standard-links.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc>

@@ -12,7 +12,7 @@
     In phase 1 studies patients are followed until progression only. 
     Thus, reliable overall survival data and hence estimates are not available. 
     However, we can use additional information from previous clinical trials 
-    or real-world data - we can correlate the tumor response data, that are 
+    or real-world data - we can correlate the tumour response data, that are 
     longitudinal measurements, with the overall survival of the patients or their 
     hazard ratios. Thereby we can predict the overall survival from our phase 1 study
     data and therefore make better decisions.">
@@ -35,7 +35,7 @@
     In phase 1 studies patients are followed until progression only. 
     Thus, reliable overall survival data and hence estimates are not available. 
     However, we can use additional information from previous clinical trials 
-    or real-world data - we can correlate the tumor response data, that are 
+    or real-world data - we can correlate the tumour response data, that are 
     longitudinal measurements, with the overall survival of the patients or their 
     hazard ratios. Thereby we can predict the overall survival from our phase 1 study
     data and therefore make better decisions.">
@@ -76,12 +76,6 @@
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -122,8 +116,8 @@
 <li>a nonlinear (or linear) mixed-effect sub-model, describing individual time profiles (<em>i.e.</em> trajectories) for a continuous marker,</li>
 <li>a link function (<em>a.k.a.</em> association term).</li>
 </ol>
-<p>More specifically, the model implemented in this package utilizes a modeling framework described previously <strong>[1-3]</strong> to link overall survival to tumor size data in oncology clinical trials.</p>
-<p><strong>[1]</strong> <a href="https://doi.org/10.1002/cpt.1450" class="external-link">Tardivon <em>et al.</em> Association between tumor size kinetics and survival in patients with urothelial carcinoma treated with atezolizumab: Implications for patient follow-up. <em>Clin Pharm Ther</em>, 2019</a>.<br><strong>[2]</strong> <a href="https://doi.org/10.1002/sim.8756" class="external-link">Kerioui <em>et al.</em> Bayesian inference using Hamiltonian Monte-Carlo algorithm for nonlinear joint modeling in the context of cancer immunotherapy. <em>Stat in Med</em>, 2020</a>.<br><strong>[3]</strong> <a href="https://doi.org/10.1111/bcp.15200" class="external-link">Kerioui <em>et al.</em> Modelling the association between biomarkers and clinical outcome: An introduction to nonlinear joint models. <em>Br J Clin Pharm</em>, 2022</a>.</p>
+<p>More specifically, the model implemented in this package utilizes a modelling framework described previously <strong>[1-3]</strong> to link overall survival to tumour size data in oncology clinical trials.</p>
+<p><strong>[1]</strong> <a href="https://doi.org/10.1002/cpt.1450" class="external-link">Tardivon <em>et al.</em> Association between tumour size kinetics and survival in patients with urothelial carcinoma treated with atezolizumab: Implications for patient follow-up. <em>Clin Pharm Ther</em>, 2019</a>.<br><strong>[2]</strong> <a href="https://doi.org/10.1002/sim.8756" class="external-link">Kerioui <em>et al.</em> Bayesian inference using Hamiltonian Monte-Carlo algorithm for nonlinear joint modelling in the context of cancer immunotherapy. <em>Stat in Med</em>, 2020</a>.<br><strong>[3]</strong> <a href="https://doi.org/10.1111/bcp.15200" class="external-link">Kerioui <em>et al.</em> Modelling the association between biomarkers and clinical outcome: An introduction to nonlinear joint models. <em>Br J Clin Pharm</em>, 2022</a>.</p>
 <p>The models are implemented in <a href="https://mc-stan.org/" class="external-link">STAN</a>, and the package provides a flexible user interface. Please reach out to us via issues or email (see the <code>DESCRIPTION</code> file) if you have comments or questions or would like to get involved in the ongoing development, thank you!</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -146,9 +140,6 @@
 <p>First we simulate a data set. In practice you want to follow a similar structure of the input data and use <code><a href="reference/DataJoint-class.html">DataJoint()</a></code> to bring it into the right format.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">jmpost</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'GGally':</span></span>
-<span><span class="co">#&gt;   method from   </span></span>
-<span><span class="co">#&gt;   +.gg   ggplot2</span></span>
 <span><span class="co">#&gt; Registered S3 methods overwritten by 'ggpp':</span></span>
 <span><span class="co">#&gt;   method                  from   </span></span>
 <span><span class="co">#&gt;   heightDetails.titleGrob ggplot2</span></span>
@@ -183,8 +174,11 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joint_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="reference/LongitudinalGSF-class.html">LongitudinalGSF</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    link <span class="op">=</span> <span class="fu"><a href="reference/LinkGSF-class.html">LinkGSF</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    survival <span class="op">=</span> <span class="fu"><a href="reference/SurvivalWeibullPH-class.html">SurvivalWeibullPH</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    survival <span class="op">=</span> <span class="fu"><a href="reference/SurvivalWeibullPH-class.html">SurvivalWeibullPH</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    link <span class="op">=</span> <span class="fu"><a href="reference/Link-class.html">Link</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="reference/standard-links.html">link_dsld</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="reference/standard-links.html">link_ttg</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Finally we can sample the parameters via MCMC from the underlying Stan model. Note that in a real application you will choose more warm up and sampling iterations.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
