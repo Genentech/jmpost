@@ -166,7 +166,7 @@ Under the hood these link-family functions work by defining a `LinkComponent` ob
 that specifies a method that will return a `StanModule` object instead of specifying
 the `StanModule` object directly. This method will then be called by the `JointModel` constructor
 with the `LongitudinalModel` object as its first argument. This way each longitudinal model is 
-able to specify their own implementation for the given link family. The following is rough outline
+able to specify their own implementation for the given link family. The following is a rough outline
 for how this works for the `link_dsld()` function and the `LongitudinalGSF` model:
 
 ```R
@@ -183,8 +183,8 @@ linkDSLD.LongitudinalGSF <- function(object, ...) {
 }
 ```
 
-This is to say that if you wish to overwrite a models implementation for existing link family or
-provide an implementaiton for a new model then you can do so by defining/overwriting the relevant
+This is to say that if you wish to overwrite a model implementation for an existing link family or
+provide an implementation for a new model then you can do so by defining/overwriting the relevant
 methods. For clarity the underlying methods are `linkDSLD`, `linkIdentity` and `linkTTG`
 respectively.
 
