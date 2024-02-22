@@ -159,40 +159,35 @@ JointModel(
     link_dsld(),
     link_ttg()
   )
-)
+) 
 ```
 
-
-Note that these functions are a design quirk in order to smooth the UI; under the hood
-these functions offload responsibility to dedicated longitudinal model methods.
-That is to say, by passing `link_dsld()` to the
-`JointModel` constructor you are causing the `linkDSLD` method of the
-corresponding longitudinal model to be invoked. The `linkDSLD` method is then responsible for
-for loading the correct `StanModule` for that model's dSLD link function.
-
-If you wish to provide implementations of any of these link families
-for a new model then you need to provide model specific implementations of `linkDSLD()`,
-`linkIdentity()` and `linkTTG()` respectively. For example the following is the actual implementation
-of the `linkDSLD` method for the `LongitudinalGSF` model (which the user
-invokes via `link_dsld()`):
+Under the hood these link-family functions work by defining a `LinkComponent` object
+that specifies a method that will return a `StanModule` object instead of specifying
+the `StanModule` object directly. This method will then be called by the `JointModel` constructor
+with the `LongitudinalModel` object as its first argument. This way each longitudinal model is 
+able to specify their own implementation for the given link family. The following is rough outline
+for how this works for the `link_dsld()` function and the `LongitudinalGSF` model:
 
 ```R
+link_dsld <- function() {
+  LinkComponent(
+    key = "link_dsld",
+    stan = linkDSLD,
+    parameters = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+  )
+}
+
 linkDSLD.LongitudinalGSF <- function(object, ...) {
-    StanModule("
-functions {
-    matrix link_dsld_contrib(
-        matrix time,
-        matrix link_function_inputs
-    ) {
-        int nrows = rows(time);
-        int ncols = cols(time);
-        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];
-        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);
-        return rnd_slope_mat;
-    }
-}")
+  StanModule("<stan code for GSF dSLD link>")
 }
 ```
+
+This is to say that if you wish to overwrite a models implementation for existing link family or
+provide an implementaiton for a new model then you can do so by defining/overwriting the relevant
+methods. For clarity the underlying methods are `linkDSLD`, `linkIdentity` and `linkTTG`
+respectively.
+
 
 ## Formatting Stan Files
 
