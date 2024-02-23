@@ -105,7 +105,7 @@ Where:
 * $\omega_{\theta}$ is the population variance for parameter $\theta$.
 
 
-If using the non-centered parameterisation then the following alterative formulation is used:
+If using the non-centred parameterisation then the following alternative formulation is used:
 $$
 \begin{align*}
 b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
@@ -204,7 +204,7 @@ Where:
 * $\omega_{\theta}$ is the population variance for parameter $\theta$.
 
 
-If using the non-centered parameterisation then the following alterative formulation is used:
+If using the non-centred parameterisation then the following alternative formulation is used:
 $$
 \begin{align*}
 b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
