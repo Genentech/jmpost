@@ -1,4 +1,4 @@
-# LongitudinalGSF ----
+
 
 test_that("LongitudinalSteinFojo works as expected with default arguments", {
     result <- expect_silent(LongitudinalSteinFojo())
@@ -27,10 +27,10 @@ test_that("Print method for LongitudinalSteinFojo works as expected", {
 test_that("Centralised parameterisation compiles without issues", {
     jm <- JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE))
     expect_false(any(
-        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
     expect_true(all(
-        c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
+        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
@@ -41,10 +41,10 @@ test_that("Centralised parameterisation compiles without issues", {
 test_that("Non-Centralised parameterisation compiles without issues", {
     jm <- JointModel(longitudinal = LongitudinalSteinFojo(centred = FALSE))
     expect_true(all(
-        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
     expect_false(any(
-        c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
+        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
