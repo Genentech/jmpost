@@ -6,10 +6,6 @@
 #' @include Link.R
 NULL
 
-#
-# TODO - Add links to model reference papers
-#
-
 
 #' `LongitudinalSteinFojo`
 #'
@@ -109,35 +105,32 @@ LongitudinalSteinFojo <- function(
     .LongitudinalSteinFojo(x)
 }
 
-#
-# TODO
-#
 
 
-# #' @rdname standard-link-methods
-# #' @export
-# enableLink.LongitudinalSteinFojo <- function(object, ...) {
-#     object@stan <- merge(
-#         object@stan,
-#         StanModule("lm-stein-fojo/link.stan")
-#     )
-#     object
-# }
+#' @rdname standard-link-methods
+#' @export
+enableLink.LongitudinalSteinFojo <- function(object, ...) {
+    object@stan <- merge(
+        object@stan,
+        StanModule("lm-stein-fojo/link.stan")
+    )
+    object
+}
 
-# #' @rdname standard-link-methods
-# #' @export
-# linkDSLD.LongitudinalSteinFojo <- function(object, ...) {
-#     StanModule("lm-stein-fojo/link_dsld.stan")
-# }
+#' @rdname standard-link-methods
+#' @export
+linkDSLD.LongitudinalSteinFojo <- function(object, ...) {
+    StanModule("lm-stein-fojo/link_dsld.stan")
+}
 
-# #' @rdname standard-link-methods
-# #' @export
-# linkTTG.LongitudinalSteinFojo <- function(object, ...) {
-#     StanModule("lm-stein-fojo/link_ttg.stan")
-# }
+#' @rdname standard-link-methods
+#' @export
+linkTTG.LongitudinalSteinFojo <- function(object, ...) {
+    StanModule("lm-stein-fojo/link_ttg.stan")
+}
 
-# #' @rdname standard-link-methods
-# #' @export
-# linkIdentity.LongitudinalSteinFojo <- function(object, ...) {
-#     StanModule("lm-stein-fojo/link_identity.stan")
-# }
+#' @rdname standard-link-methods
+#' @export
+linkIdentity.LongitudinalSteinFojo <- function(object, ...) {
+    StanModule("lm-stein-fojo/link_identity.stan")
+}

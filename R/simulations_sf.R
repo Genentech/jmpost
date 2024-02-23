@@ -9,7 +9,6 @@
 #' @param g (`number`)\cr growth.
 #'
 #' @returns The function results.
-#' @export
 #' @keywords internal
 #'
 #' @examples
@@ -20,23 +19,21 @@ sf_sld <- function(time, b, s, g) {
 
 
 #' @rdname sf_sld
-#' @export
 #' @examples
 #' sf_ttg(1:10, 20, 0.3, 0.6)
-sf_ttg <- function(time, b, s, g, phi) {
-    t1 <- (log(s * phi / (g * (1 - phi))) / (g + s))
+sf_ttg <- function(time, b, s, g) {
+    t1 <- (log(s) - log(g)) / (g + s)
     t1[t1 <= 0] <- 0
     return(t1)
 }
 
 
 #' @rdname sf_sld
-#' @export
 #' @examples
 #' sf_dsld(1:10, 20, 0.3, 0.6)
-sf_dsld <- function(time, b, s, g, phi) {
-    t1 <- (1 - phi) * g * exp(g * time)
-    t2 <- phi * s * exp(-s * time)
+sf_dsld <- function(time, b, s, g) {
+    t1 <- g * exp(g * time)
+    t2 <- s * exp(-s * time)
     return(b * (t1 - t2))
 }
 
@@ -90,17 +87,18 @@ sim_lm_sf <- function(
             dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(mu_s[.data$arm_idx]), omega_s)) |>
             dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(mu_g[.data$arm_idx]), omega_g))
 
+
         lm_dat <- lm_base |>
             dplyr::select(!dplyr::all_of(c("study", "arm"))) |>
             dplyr::left_join(baseline_covs, by = "pt") |>
             dplyr::mutate(mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-            #dplyr::mutate(dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
-            #dplyr::mutate(ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+            dplyr::mutate(dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
+            dplyr::mutate(ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
             dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * sigma)) |>
             dplyr::mutate(
                 log_haz_link =
-                    #(link_dsld * .data$dsld) +
-                    #(link_ttg * .data$ttg) +
+                    (link_dsld * .data$dsld) +
+                    (link_ttg * .data$ttg) +
                     (link_identity * .data$mu_sld)
             )
         return(lm_dat)

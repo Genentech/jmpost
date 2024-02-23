@@ -1,10 +1,4 @@
 
-
-#
-# TODO
-#
-
-
 functions {
     //
     // Source - lm-stein-fojo/link_ttg.stan
@@ -18,10 +12,7 @@ functions {
         vector[nrows] psi_bsld = link_function_inputs[,1];
         vector[nrows] psi_ks = link_function_inputs[,2];
         vector[nrows] psi_kg = link_function_inputs[,3];
-        vector[nrows] psi_phi = link_function_inputs[,4];
-        vector[nrows] num = logit(psi_phi) + log(psi_ks ./ psi_kg);
-        vector[nrows] denom = psi_ks + psi_kg;
-        vector[nrows] ttg_contribution = num ./ denom;
+        vector[nrows] ttg_contribution = (log(psi_ks) - log(psi_kg)) ./ (psi_ks + psi_kg);
         matrix[nrows, ncols] ttg_contribution_matrix = rep_matrix(ttg_contribution, ncols);
         return ttg_contribution_matrix;
     }

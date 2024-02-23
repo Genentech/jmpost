@@ -8,9 +8,9 @@
 \usage{
 sf_sld(time, b, s, g)
 
-sf_ttg(time, b, s, g, phi)
+sf_ttg(time, b, s, g)
 
-sf_dsld(time, b, s, g, phi)
+sf_dsld(time, b, s, g)
 }
 \arguments{
 \item{time}{(\code{numeric})\cr time grid.}
@@ -20,8 +20,6 @@ sf_dsld(time, b, s, g, phi)
 \item{s}{(\code{number})\cr shrinkage.}
 
 \item{g}{(\code{number})\cr growth.}
-
-\item{phi}{(\code{number})\cr shrinkage proportion.}
 }
 \value{
 The function results.
