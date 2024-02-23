@@ -35,12 +35,146 @@ contain complete information for this package yet.
 
 # Longitudinal Model Specification
 
+## Random-Slope Model
+
+$$
+y_{ij} = \mu_0 + s_i t_{ij} + \epsilon_{ij}
+$$
+
+where:
+
+- $y_{ij}$ is the tumour size for subject $i$ at timepoint $j$
+- $\mu_0$ is the intercept
+- $s_i$ is the random slope for subject $i$ with $s_i \sim N(\mu_{sk}, \sigma_s)$
+- $\mu_{sk}$ is the mean for the random slope within treatment arm $k$
+- $\sigma_s$ is the variance term for the slopes
+- $\epsilon_{ij}$ is the error term with $\epsilon_{ij} \sim N(0, \sigma)$
+
+### Derivative of the SLD Trajectory Link 
+
+$$
+G(t \mid \mu_0, s_i) = s_i
+$$
+
+Accessible via `link_dsld()`
+
+
+### Identity Link
+
+$$
+\begin{align*}
+G(t \mid \mu_0, s_i) = \mu_0 + s_i t
+\end{align*}
+$$
+
+Accessible via `link_identity()`
+
+
+## Stein-Fojo Model 
+
+
+$$\begin{align*}
+y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+\\
+SLD_{ij} &=b_{i}
+\left[
+    e^{-s_{i}t_{ij}}+
+    e^ {g_{i}t_{ij}} - 1
+\right]\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+\end{align*}
+$$
+
+Where:
+
+* $i$ is the subject index
+* $j$ is the visit index
+* $y_{ij}$ is the observed tumour measurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+* $t_{ij}$ is the time since first treatment for subject $i$ at visit $j$
+* $b_i$ is the subject baseline SLD measurement
+* $s_i$ is the subject kinetics shrinkage parameter
+* $g_i$ is the subject kinetics tumour growth parameter
+* $\phi_i$ is the subject proportion of cells affected by the treatment
+* $k(i)$ is the treatment arm index for subject $i$
+* $l(i)$ is the study index for subject $i$
+* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+
+
+If using the non-centered parameterisation then the following alterative formulation is used:
+$$
+\begin{align*}
+b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{s i} &\sim   N(0, 1)  \\
+\eta_{g i} &\sim   N(0, 1)  \\
+\end{align*}
+$$
+
+Where:
+* $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
+
+
+
+### Derivative of the SLD Trajectory Link 
+
+
+$$
+G(t \mid b_i, s_i, g_i, ) = b_i 
+\left[
+    g_i  e^{g_i  t} - 
+    s_i  e^{-s_i  t}
+\right]
+$$
+
+Accessible via `link_dsld()`
+
+
+
+### Time to Growth Link
+
+
+$$
+G(t \mid b_i, s_i, g_i) = \frac{
+    \text{log}(s_i) - \text{log}(g_i)
+}{
+    s_i + g_i
+}
+$$
+
+Accessible via `link_ttg()`
+
+
+### Identity Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i) &= SLD_{ij} \\
+& =b_{i}
+\left[
+    e^{-s_{i}t_{ij}}+
+    e^ {g_{i}t_{ij}} - 1
+\right]
+\end{align*}
+$$
+
+Accessible via `link_identity()`
+
+
+
 
 ## Generalized Stein-Fojo (GSF) Model
 
 $$
 \begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &=b_{i}
 \left[
     \phi_i e^{-s_{i}t_{ij}}+
@@ -67,10 +201,24 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population parameter for parameter $\theta$.
+* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+
+
+If using the non-centered parameterisation then the following alterative formulation is used:
+$$
+\begin{align*}
+b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{s i} &\sim   N(0, 1)  \\
+\eta_{g i} &\sim   N(0, 1)  \\
+\end{align*}
+$$
+
+Where:
 * $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
-
-
 
 
 
