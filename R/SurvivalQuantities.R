@@ -363,13 +363,15 @@ setMethod(
 #'
 #' @description
 #' Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
-#' for the Survival estimates as detailed in Blanche et. al. (2015).
+#' for the Survival estimates as detailed in \insertCite{blanche2015}{jmpost}.
 #'
 #' @inheritParams SurvivalQuantities-Shared
 #' @inheritParams Brier-Score-Shared
 #'
 #' @family brierScore
 #' @family SurvivalQuantities
+#' @references
+#' \insertAllCited{}
 #' @export
 brierScore.SurvivalQuantities <- function(
     object,

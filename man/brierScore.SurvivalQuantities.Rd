@@ -22,7 +22,10 @@ Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} packa
 }
 \description{
 Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
-for the Survival estimates as detailed in Blanche et. al. (2015).
+for the Survival estimates as detailed in \insertCite{blanche2015}{jmpost}.
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 Other brierScore: 
