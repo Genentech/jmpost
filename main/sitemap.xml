@@ -94,6 +94,9 @@
     <loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc>
   </url>
   <url>
@@ -436,6 +439,9 @@
     <loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/sf_sld.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/show-object.html</loc>
   </url>
   <url>
@@ -446,6 +452,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/sim_lm_random_slope.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/sim_lm_sf.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/sim_os_exponential.html</loc>

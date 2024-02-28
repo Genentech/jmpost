@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -112,11 +106,179 @@ does not contain complete information for this package yet.</p>
 <h2 id="longitudinal-model-specification">Longitudinal Model Specification<a class="anchor" aria-label="anchor" href="#longitudinal-model-specification"></a>
 </h2>
 <div class="section level3">
+<h3 id="random-slope-model">Random-Slope Model<a class="anchor" aria-label="anchor" href="#random-slope-model"></a>
+</h3>
+<p><span class="math display">\[
+y_{ij} = \mu_0 + s_i t_{ij} + \epsilon_{ij}
+\]</span></p>
+<p>where:</p>
+<ul>
+<li>
+<span class="math inline">\(y_{ij}\)</span> is the tumour size for
+subject <span class="math inline">\(i\)</span> at timepoint <span class="math inline">\(j\)</span>
+</li>
+<li>
+<span class="math inline">\(\mu_0\)</span> is the intercept</li>
+<li>
+<span class="math inline">\(s_i\)</span> is the random slope for
+subject <span class="math inline">\(i\)</span> with <span class="math inline">\(s_i \sim N(\mu_{sk}, \sigma_s)\)</span>
+</li>
+<li>
+<span class="math inline">\(\mu_{sk}\)</span> is the mean for the
+random slope within treatment arm <span class="math inline">\(k\)</span>
+</li>
+<li>
+<span class="math inline">\(\sigma_s\)</span> is the variance term
+for the slopes</li>
+<li>
+<span class="math inline">\(\epsilon_{ij}\)</span> is the error term
+with <span class="math inline">\(\epsilon_{ij} \sim N(0,
+\sigma)\)</span>
+</li>
+</ul>
+<div class="section level4">
+<h4 id="derivative-of-the-sld-trajectory-link">Derivative of the SLD Trajectory Link<a class="anchor" aria-label="anchor" href="#derivative-of-the-sld-trajectory-link"></a>
+</h4>
+<p><span class="math display">\[
+G(t \mid \mu_0, s_i) = s_i
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_dsld()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="identity-link">Identity Link<a class="anchor" aria-label="anchor" href="#identity-link"></a>
+</h4>
+<p><span class="math display">\[
+\begin{align*}
+G(t \mid \mu_0, s_i) = \mu_0 + s_i t
+\end{align*}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_identity()</a></code></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="stein-fojo-model">Stein-Fojo Model<a class="anchor" aria-label="anchor" href="#stein-fojo-model"></a>
+</h3>
+<p><span class="math display">\[\begin{align*}
+y_{ij} &amp;\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+\\
+SLD_{ij} &amp;=b_{i}
+\left[
+    e^{-s_{i}t_{ij}}+
+    e^ {g_{i}t_{ij}} - 1
+\right]\\
+\\
+b_i &amp;\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
+s_i &amp;\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
+g_i &amp;\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+\end{align*}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li>
+<span class="math inline">\(i\)</span> is the subject index</li>
+<li>
+<span class="math inline">\(j\)</span> is the visit index</li>
+<li>
+<span class="math inline">\(y_{ij}\)</span> is the observed tumour
+measurements</li>
+<li>
+<span class="math inline">\(SLD_{ij}\)</span> is the expected sum of
+longest diameter for subject <span class="math inline">\(i\)</span> at
+time point <span class="math inline">\(j\)</span>
+</li>
+<li>
+<span class="math inline">\(t_{ij}\)</span> is the time since first
+treatment for subject <span class="math inline">\(i\)</span> at visit
+<span class="math inline">\(j\)</span>
+</li>
+<li>
+<span class="math inline">\(b_i\)</span> is the subject baseline SLD
+measurement</li>
+<li>
+<span class="math inline">\(s_i\)</span> is the subject kinetics
+shrinkage parameter</li>
+<li>
+<span class="math inline">\(g_i\)</span> is the subject kinetics
+tumour growth parameter</li>
+<li>
+<span class="math inline">\(\phi_i\)</span> is the subject
+proportion of cells affected by the treatment</li>
+<li>
+<span class="math inline">\(k(i)\)</span> is the treatment arm index
+for subject <span class="math inline">\(i\)</span>
+</li>
+<li>
+<span class="math inline">\(l(i)\)</span> is the study index for
+subject <span class="math inline">\(i\)</span>
+</li>
+<li>
+<span class="math inline">\(\mu_{\theta k(i)}\)</span> is the
+population mean for parameter <span class="math inline">\(\theta\)</span> in group <span class="math inline">\(k(i)\)</span>
+</li>
+<li>
+<span class="math inline">\(\omega_{\theta}\)</span> is the
+population variance for parameter <span class="math inline">\(\theta\)</span>.</li>
+</ul>
+<p>If using the non-centred parameterisation then the following
+alternative formulation is used: <span class="math display">\[
+\begin{align*}
+b_i &amp;= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
+s_i &amp;= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
+g_i &amp;= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\\
+\eta_{b i} &amp;\sim  N(0, 1)\\
+\eta_{s i} &amp;\sim   N(0, 1)  \\
+\eta_{g i} &amp;\sim   N(0, 1)  \\
+\end{align*}
+\]</span></p>
+<p>Where: * <span class="math inline">\(\eta_{\theta i}\)</span> is a
+random effects offset on parameter <span class="math inline">\(\theta\)</span> for subject <span class="math inline">\(i\)</span></p>
+<div class="section level4">
+<h4 id="derivative-of-the-sld-trajectory-link-1">Derivative of the SLD Trajectory Link<a class="anchor" aria-label="anchor" href="#derivative-of-the-sld-trajectory-link-1"></a>
+</h4>
+<p><span class="math display">\[
+G(t \mid b_i, s_i, g_i, ) = b_i
+\left[
+    g_i  e^{g_i  t} -
+    s_i  e^{-s_i  t}
+\right]
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_dsld()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="time-to-growth-link">Time to Growth Link<a class="anchor" aria-label="anchor" href="#time-to-growth-link"></a>
+</h4>
+<p><span class="math display">\[
+G(t \mid b_i, s_i, g_i) = \frac{
+    \text{log}(s_i) - \text{log}(g_i)
+}{
+    s_i + g_i
+}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_ttg()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="identity-link-1">Identity Link<a class="anchor" aria-label="anchor" href="#identity-link-1"></a>
+</h4>
+<p><span class="math display">\[
+\begin{align*}
+G(t \mid b_i, s_i, g_i) &amp;= SLD_{ij} \\
+&amp; =b_{i}
+\left[
+    e^{-s_{i}t_{ij}}+
+    e^ {g_{i}t_{ij}} - 1
+\right]
+\end{align*}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_identity()</a></code></p>
+</div>
+</div>
+<div class="section level3">
 <h3 id="generalized-stein-fojo-gsf-model">Generalized Stein-Fojo (GSF) Model<a class="anchor" aria-label="anchor" href="#generalized-stein-fojo-gsf-model"></a>
 </h3>
 <p><span class="math display">\[
 \begin{align*}
-y_{ij} &amp;\sim \mathcal{N}(SLD_{ij}, SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &amp;\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &amp;=b_{i}
 \left[
     \phi_i e^{-s_{i}t_{ij}}+
@@ -173,13 +335,22 @@ population mean for parameter <span class="math inline">\(\theta\)</span> in gro
 </li>
 <li>
 <span class="math inline">\(\omega_{\theta}\)</span> is the
-population parameter for parameter <span class="math inline">\(\theta\)</span>.</li>
-<li>
-<span class="math inline">\(\eta_{\theta i}\)</span> is a random
-effects offset on parameter <span class="math inline">\(\theta\)</span>
-for subject <span class="math inline">\(i\)</span>
-</li>
+population variance for parameter <span class="math inline">\(\theta\)</span>.</li>
 </ul>
+<p>If using the non-centred parameterisation then the following
+alternative formulation is used: <span class="math display">\[
+\begin{align*}
+b_i &amp;= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
+s_i &amp;= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
+g_i &amp;= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\\
+\eta_{b i} &amp;\sim  N(0, 1)\\
+\eta_{s i} &amp;\sim   N(0, 1)  \\
+\eta_{g i} &amp;\sim   N(0, 1)  \\
+\end{align*}
+\]</span></p>
+<p>Where: * <span class="math inline">\(\eta_{\theta i}\)</span> is a
+random effects offset on parameter <span class="math inline">\(\theta\)</span> for subject <span class="math inline">\(i\)</span></p>
 </div>
 </div>
 <div class="section level2">
