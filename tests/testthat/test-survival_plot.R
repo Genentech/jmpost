@@ -95,7 +95,7 @@ test_that("survival_plot works as expected", {
         scale_y_continuous(trans = "sqrt")
 
     vdiffr::expect_doppelganger(
-        "survival_plot with no wrap and no ci + km + ggplot2 integration",
+        "survival_plot-no wrap + no ci + km + ggplot2 ",
         p3
     )
 })
