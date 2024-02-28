@@ -28,6 +28,33 @@
             }
         },
         
+        {
+            "label": "JMP: Test (with cache + FULL)",
+            "type": "R",
+            "code": [
+                "devtools::test()"
+            ],
+            "env": {
+                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
+                "JMPOST_FULL_TEST": "TRUE"
+            },
+            "problemMatcher": [
+                "$testthat"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        
         
         {
             "label": "JMP: Test Current File (with cache)",

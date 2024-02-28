@@ -93,12 +93,18 @@ simulate_joint_data <- function(
         msg = "The longitudinal dataset must be sorted by pt, time"
     )
 
+
     os_dat_chaz <- time_dat_baseline |>
         dplyr::mutate(log_haz_link = lm_dat$log_haz_link) |> # only works if lm_dat is sorted pt, time
         dplyr::mutate(log_bl_haz = os_fun(.data$evalp)) |>
         # Fix to avoid issue with log(0) = NaN values
         dplyr::mutate(log_bl_haz = dplyr::if_else(.data$evalp == 0, -999, .data$log_bl_haz)) |>
         dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
+        # Reset Inf values to large number to avoid NaN issues downstream
+        # This is suitable as Hazard limits tend to be in the range of -10 to 10 so large numbers
+        # are essentially equivalent to infinity for simulation purposes
+        dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == Inf, 999, .data$hazard_instant)) |>
+        dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant)) |>
         dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
         dplyr::group_by(.data$pt) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>

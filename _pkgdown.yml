@@ -40,11 +40,11 @@ reference:
     contents:
       - simulate_joint_data
       - sim_lm_gsf
+      - sim_lm_sf
       - sim_lm_random_slope
       - sim_os_exponential
       - sim_os_loglogistic
       - sim_os_weibull
-  
   - title: Prior Distributions
     contents:
       - Prior
@@ -65,6 +65,7 @@ reference:
     contents:
       - LongitudinalRandomSlope
       - LongitudinalGSF
+      - LongitudinalSteinFojo
       - LongitudinalModel
   
   - title: Survival Model Specification

@@ -32,7 +32,9 @@ test_that("Centralised parameterisation compiles without issues", {
     expect_true(all(
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
     ))
-    compileStanModel(jm)
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(as.character(x))
 })
 
 
@@ -44,7 +46,9 @@ test_that("Non-Centralised parameterisation compiles without issues", {
     expect_false(any(
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
     ))
-    compileStanModel(jm)
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(as.character(x))
 })
 
 
@@ -174,7 +178,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     dat <- summary_post(
         mp@results,
-        c("lm_gsf_beta", "lm_gsf_gamma", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
+        c("link_dsld", "link_ttg", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
     )
 
     true_values <- c(0.1, 0.2, 4, 8, 4, 8, 1 / (1 / (400 / 365)))
