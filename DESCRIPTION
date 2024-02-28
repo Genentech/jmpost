@@ -53,6 +53,7 @@ Suggests:
     testthat (>= 3.0.0),
     scales,
     lme4,
+    purrr,
     vdiffr,
     prodlim
 Config/testthat/edition: 3
