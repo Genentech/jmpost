@@ -30,6 +30,26 @@
 #' Directory to store compiled stan models in. If not set, a temporary directory is used for
 #' the given R session. Can also be set via the environment variable `JMPOST_CACHE_DIR`.
 #'
+#'
+#'
+#' ## `jmpost.gauss_quad_n`
+#'
+#' Default = 15
+#'
+#' In most cases the survival function of the joint model does not have a closed form
+#' and as such is calculated by integrating the hazard function. `jmpost` estimates this
+#' via Gaussian Quadrature, in particular it uses [`statmod::gauss.quad`] to create the
+#' nodes and weights.
+#'
+#' This option specifies the `n` arguement in the call to [`statmod::gauss.quad`].
+#'
+#' ## `jmpost.gauss_quad_kind`
+#'
+#' Default = `"legendre"`
+#'
+#' This option specifies the `kind` arguement in the call to [`statmod::gauss.quad`].
+#' See the `jmpost.gauss_quad_n` option description for more details.
+#'
 #' @examples
 #' \dontrun{
 #' options(jmpost.prior_shrinkage = 0.5)
@@ -46,7 +66,9 @@ set_options <- function() {
     current_opts <- names(options())
     jmpost_opts <- list(
         jmpost.cache_dir = cache_dir,
-        jmpost.prior_shrinkage = 0.5
+        jmpost.prior_shrinkage = 0.5,
+        jmpost.gauss_quad_n = 15,
+        jmpost.gauss_quad_kind = "legendre"
     )
     for (opt in names(jmpost_opts)) {
         if (!opt %in% current_opts) {

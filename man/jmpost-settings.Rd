@@ -35,6 +35,26 @@ Default = \code{tempfile()}
 Directory to store compiled stan models in. If not set, a temporary directory is used for
 the given R session. Can also be set via the environment variable \code{JMPOST_CACHE_DIR}.
 }
+
+\subsection{\code{jmpost.gauss_quad_n}}{
+
+Default = 15
+
+In most cases the survival function of the joint model does not have a closed form
+and as such is calculated by integrating the hazard function. \code{jmpost} estimates this
+via Gaussian Quadrature, in particular it uses \code{\link[statmod:gauss.quad]{statmod::gauss.quad}} to create the
+nodes and weights.
+
+This option specifies the \code{n} arguement in the call to \code{\link[statmod:gauss.quad]{statmod::gauss.quad}}.
+}
+
+\subsection{\code{jmpost.gauss_quad_kind}}{
+
+Default = \code{"legendre"}
+
+This option specifies the \code{kind} arguement in the call to \code{\link[statmod:gauss.quad]{statmod::gauss.quad}}.
+See the \code{jmpost.gauss_quad_n} option description for more details.
+}
 }
 \examples{
 \dontrun{
