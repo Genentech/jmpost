@@ -10,4 +10,5 @@
 #' @importFrom glue as_glue
 #' @importFrom tibble add_case
 #' @importFrom stats acf
+#' @importFrom Rdpack reprompt
 NULL
