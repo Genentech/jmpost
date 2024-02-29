@@ -37,18 +37,13 @@
 #' Default = 15
 #'
 #' In most cases the survival function of the joint model does not have a closed form
-#' and as such is calculated by integrating the hazard function. `jmpost` estimates this
-#' via Gaussian Quadrature, in particular it uses [`statmod::gauss.quad`] to create the
-#' nodes and weights.
+#' and as such it is calculated by integrating the hazard function. `jmpost` estimates this
+#' via Gaussian Quadrature, in particular it uses [`statmod::gauss.quad`] with
+#' `kind = "legendre"` to create the nodes and weights.
 #'
-#' This option specifies the `n` arguement in the call to [`statmod::gauss.quad`].
-#'
-#' ## `jmpost.gauss_quad_kind`
-#'
-#' Default = `"legendre"`
-#'
-#' This option specifies the `kind` arguement in the call to [`statmod::gauss.quad`].
-#' See the `jmpost.gauss_quad_n` option description for more details.
+#' This option specifies the `n` arguement in the call to [`statmod::gauss.quad`]. In general
+#' higher values of `n` lead to better accuracy of the approximation but at the cost of
+#' increased computational time.
 #'
 #' @examples
 #' \dontrun{
@@ -67,8 +62,7 @@ set_options <- function() {
     jmpost_opts <- list(
         jmpost.cache_dir = cache_dir,
         jmpost.prior_shrinkage = 0.5,
-        jmpost.gauss_quad_n = 15,
-        jmpost.gauss_quad_kind = "legendre"
+        jmpost.gauss_quad_n = 15
     )
     for (opt in names(jmpost_opts)) {
         if (!opt %in% current_opts) {

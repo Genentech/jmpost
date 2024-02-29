@@ -2,7 +2,7 @@
 
 
 
-test_that("Can alter Gaussian Quadrature arguements", {
+test_that("Can alter Gaussian Quadrature arguments", {
     x <- data.frame(
         vpt = c("b", "a", "c", "d", "e"),
         vtime = c(10, 20, 30, 25, 15),
@@ -25,10 +25,7 @@ test_that("Can alter Gaussian Quadrature arguements", {
 
 
     ## Test modified values
-    options(
-        "jmpost.gauss_quad_n" = 20,
-        "jmpost.gauss_quad_kind" = "chebyshev2"
-    )
+    options( "jmpost.gauss_quad_n" = 20)
     df <- DataSurvival(
         data = x,
         formula = Surv(vtime, vevent) ~ vcov1 * vcov2
@@ -37,13 +34,10 @@ test_that("Can alter Gaussian Quadrature arguements", {
     expect_equal(li$n_nodes, 20)
     expect_equal(
         li[c("nodes", "weights")],
-        statmod::gauss.quad(20, "chebyshev2")
+        statmod::gauss.quad(20, "legendre")
     )
 
 
     ## Reset back to default to not impact additional tests
-    options(
-        "jmpost.gauss_quad_n" = 15,
-        "jmpost.gauss_quad_kind" = "legendre"
-    )
+    options( "jmpost.gauss_quad_n" = 15)
 })
