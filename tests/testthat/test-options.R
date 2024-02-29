@@ -25,7 +25,7 @@ test_that("Can alter Gaussian Quadrature arguments", {
 
 
     ## Test modified values
-    options( "jmpost.gauss_quad_n" = 20)
+    options("jmpost.gauss_quad_n" = 20)
     df <- DataSurvival(
         data = x,
         formula = Surv(vtime, vevent) ~ vcov1 * vcov2
