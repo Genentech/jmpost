@@ -39,5 +39,5 @@ test_that("Can alter Gaussian Quadrature arguments", {
 
 
     ## Reset back to default to not impact additional tests
-    options( "jmpost.gauss_quad_n" = 15)
+    options("jmpost.gauss_quad_n" = 15)
 })
