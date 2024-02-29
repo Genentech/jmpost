@@ -42,7 +42,7 @@ package.}
 Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} package.}
 }
 \description{
-Implements the Brier Score as detailed in Blanche et. al. (2015)
+Implements the Brier Score as detailed in \insertCite{blanche2015}{jmpost}
 }
 \details{
 \itemize{
@@ -50,5 +50,8 @@ Implements the Brier Score as detailed in Blanche et. al. (2015)
 of the formula.
 \item \code{bs_get_weights()} - implements the IPCW weighting
 }
+}
+\references{
+\insertAllCited{}
 }
 \keyword{internal}
