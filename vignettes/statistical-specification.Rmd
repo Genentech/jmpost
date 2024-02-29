@@ -53,7 +53,7 @@ Where:
 The following sections outline the available distributions to users which can be selected for the
 baseline hazard distribution $h_0(.)$. Please note that some of these distributions do note have
 the proportional-hazards property meaning that the resulting $h_i(.)$ distribution will not be of 
-the same parameteric family has $h_0(.)$.
+the same parametric family has $h_0(.)$.
 
 ## Log-Logistic Distribution
 

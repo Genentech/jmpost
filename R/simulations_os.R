@@ -34,7 +34,7 @@ sim_os_exponential <- function(lambda) {
 sim_os_loglogistic <- function(a, b) {
     function(time) {
         c1 <- - log(a) + log(b) + (b - 1) * (- log(a) + log(time))
-        c2 <- log(1 + (time/a)^b)
+        c2 <- log(1 + (time / a)^b)
         return(c1 - c2)
     }
 }
