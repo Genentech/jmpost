@@ -45,7 +45,7 @@ and as such it is calculated by integrating the hazard function. \code{jmpost} e
 via Gaussian Quadrature, in particular it uses \code{\link[statmod:gauss.quad]{statmod::gauss.quad}} with
 \code{kind = "legendre"} to create the nodes and weights.
 
-This option specifies the \code{n} arguement in the call to \code{\link[statmod:gauss.quad]{statmod::gauss.quad}}. In general
+This option specifies the \code{n} argument in the call to \code{\link[statmod:gauss.quad]{statmod::gauss.quad}}. In general
 higher values of \code{n} lead to better accuracy of the approximation but at the cost of
 increased computational time.
 }
