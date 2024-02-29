@@ -18,14 +18,14 @@ NULL
 
 #' @rdname SurvivalLogLogistic-class
 #'
-#' @param lambda (`Prior`)\cr for the inverse median `lambda`.
-#' @param p (`Prior`)\cr for the shape parameter `p`.
-#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#' @param a (`Prior`)\cr Prior distribution for the scale parameter `a`.
+#' @param b (`Prior`)\cr Prior distribution for the shape parameter `b`.
+#' @param beta (`Prior`)\cr Prior distribution for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalLogLogistic <- function(
-    lambda = prior_lognormal(log(0.1), 5),
-    p = prior_gamma(2, 5),
+    a = prior_lognormal(log(0.1), 5),
+    b = prior_gamma(2, 5),
     beta = prior_normal(0, 5)
 ) {
     .SurvivalLogLogistic(
@@ -33,8 +33,8 @@ SurvivalLogLogistic <- function(
             name = "Log-Logistic",
             stan = StanModule("sm-loglogistic/model.stan"),
             parameters = ParameterList(
-                Parameter(name = "sm_logl_lambda", prior = lambda, size = 1),
-                Parameter(name = "sm_logl_p", prior = p, size = 1),
+                Parameter(name = "sm_loglogis_a", prior = a, size = 1),
+                Parameter(name = "sm_loglogis_b", prior = b, size = 1),
                 Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
             )
         )

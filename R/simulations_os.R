@@ -26,15 +26,15 @@ sim_os_exponential <- function(lambda) {
 
 #' Construct a Log Hazard Function for the Log-Logistic Model
 #'
-#' @param lambda (`number`)\cr the inverse median parameter.
-#' @param p (`number`)\cr the shape parameter.
+#' @param a (`number`)\cr the scale parameter.
+#' @param b (`number`)\cr the shape parameter.
 #'
 #' @returns A function of `time` returning the log hazard.
 #' @export
-sim_os_loglogistic <- function(lambda, p) {
+sim_os_loglogistic <- function(a, b) {
     function(time) {
-        c1 <- log(lambda) + log(p) + (p - 1) * (log(lambda) + log(time))
-        c2 <- log(1 + (lambda * time)^p)
+        c1 <- - log(a) + log(b) + (b - 1) * (- log(a) + log(time))
+        c2 <- log(1 + (time/a)^b)
         return(c1 - c2)
     }
 }

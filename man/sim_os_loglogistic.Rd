@@ -4,12 +4,12 @@
 \alias{sim_os_loglogistic}
 \title{Construct a Log Hazard Function for the Log-Logistic Model}
 \usage{
-sim_os_loglogistic(lambda, p)
+sim_os_loglogistic(a, b)
 }
 \arguments{
-\item{lambda}{(\code{number})\cr the inverse median parameter.}
+\item{a}{(\code{number})\cr the scale parameter.}
 
-\item{p}{(\code{number})\cr the shape parameter.}
+\item{b}{(\code{number})\cr the shape parameter.}
 }
 \value{
 A function of \code{time} returning the log hazard.
