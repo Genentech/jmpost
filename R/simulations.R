@@ -48,6 +48,7 @@ get_timepoints <- function(x) {
     )
 )
 
+#' @export
 #' @rdname SimGroup
 SimGroup <- function(n, arm, study) {
     .SimGroup(
@@ -92,7 +93,7 @@ setValidity(
 #'
 #' @details
 #'
-#' The `design` arguement is used to specify how many distinct groups should be simulated
+#' The `design` argument is used to specify how many distinct groups should be simulated
 #' including key information such as the number of subjects within the group as well as
 #' which treatment arm and study the group belongs to. The `design` argument should be a
 #' list of [`SimGroup`] objects e.g.

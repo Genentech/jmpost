@@ -44,7 +44,7 @@ List with simulated \code{lm} (longitudinal) and \code{os} (survival) data sets.
 Simulating Joint Longitudinal and Time-to-Event Data
 }
 \details{
-The \code{design} arguement is used to specify how many distinct groups should be simulated
+The \code{design} argument is used to specify how many distinct groups should be simulated
 including key information such as the number of subjects within the group as well as
 which treatment arm and study the group belongs to. The \code{design} argument should be a
 list of \code{\link{SimGroup}} objects e.g.
