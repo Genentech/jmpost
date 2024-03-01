@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.942067736185383" branch-rate="0" lines-covered="2114" lines-valid="2244" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-01 12:22:18.468449">
+<coverage line-rate="0.942067736185383" branch-rate="0" lines-covered="2114" lines-valid="2244" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-01 12:48:08.465591">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -5338,8 +5338,8 @@
             </method>
             <method name="is_windows" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="204" hits="29" branch="false"/>
-                <line number="205" hits="29" branch="false"/>
+                <line number="204" hits="33" branch="false"/>
+                <line number="205" hits="33" branch="false"/>
               </lines>
             </method>
             <method name="expand_time_grid" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -5499,8 +5499,8 @@
             <line number="197" hits="79" branch="false"/>
             <line number="198" hits="79" branch="false"/>
             <line number="199" hits="79" branch="false"/>
-            <line number="204" hits="29" branch="false"/>
-            <line number="205" hits="29" branch="false"/>
+            <line number="204" hits="33" branch="false"/>
+            <line number="205" hits="33" branch="false"/>
             <line number="221" hits="26" branch="false"/>
             <line number="222" hits="26" branch="false"/>
             <line number="223" hits="5" branch="false"/>
