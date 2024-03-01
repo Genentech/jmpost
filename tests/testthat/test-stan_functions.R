@@ -15,7 +15,11 @@ run_stan_function <- function(stan_data, fun_files, dir, basename) {
         ),
         exe_file = file.path(
             dir,
-            paste0("testfuns_", basename)
+            paste0(
+                "testfuns_",
+                basename,
+                if (is_windows()) ".exe" else ""
+            )
         )
     )
     # Completely silence call to STAN as we aren't fitting a real model

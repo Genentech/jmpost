@@ -38,7 +38,10 @@ test_that("extract_quantities() works as expected", {
         ),
         exe_file = file.path(
             CACHE_DIR,
-            paste0("test_extract_gq")
+            paste0(
+                "test_extract_gq",
+                if (is_windows()) ".exe" else ""
+            )
         )
     )
 
