@@ -41,25 +41,25 @@ $$
 
 Where:
 
-- $h_0(.)$ is a parametric baseline hazard distribution
+- $h_0(.)$ is a parametric baseline hazard function
 - $t$ is the event time
 - $\theta$ is a vector of parameters that parameterise the baseline hazard distribution
-- $\psi_i$ is am arbitrary vector of parameters for subject $i$ specified by the Longitudinal model
+- $\psi_i$ is an arbitrary vector of parameters for subject $i$ specified by the longitudinal model
 - $G_j(.)$ is a link function that maps $\psi_i$ to a contribution to the log-hazard function where $j$ simply indexes the given link function
 - $X_i$ is the subjects covariate design matrix
 - $\beta$ is the corresponding coefficients to scale the design matrix covariates contribution to the log-hazard function
 
 
 The following sections outline the available distributions to users which can be selected for the
-baseline hazard distribution $h_0(.)$. Please note that some of these distributions do note have
-the proportional-hazards property meaning that the resulting $h_i(.)$ distribution will not be of 
-the same parametric family has $h_0(.)$.
+baseline hazard $h_0(.)$. Please note that some of these distributions do not have
+the proportional-hazards property meaning that the resulting survival model corresponding to the hazard $h_i()$ will not be of 
+the same parametric family as the baseline distribution with the hazard $h_0(.)$.
 
 ## Log-Logistic Distribution
 
 $$
 h(x \mid a, b) =  \frac
-{(b/a)\left(x/a\right)^{(b-1)}}
+{(b/a)(x/a)^{(b-1)}}
 {1 + (x/a)^b}
 $$
 
