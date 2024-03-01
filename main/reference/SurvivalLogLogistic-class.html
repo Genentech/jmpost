@@ -70,24 +70,24 @@ log-logistic survival model.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SurvivalLogLogistic</span><span class="op">(</span></span>
-<span>  lambda <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>  p <span class="op">=</span> <span class="fu"><a href="prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  a <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  b <span class="op">=</span> <span class="fu"><a href="prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  beta <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>lambda</dt>
-<dd><p>(<code>Prior</code>)<br> for the inverse median <code>lambda</code>.</p></dd>
+    <dl><dt>a</dt>
+<dd><p>(<code>Prior</code>)<br> Prior distribution for the scale parameter <code>a</code>.</p></dd>
 
 
-<dt>p</dt>
-<dd><p>(<code>Prior</code>)<br> for the shape parameter <code>p</code>.</p></dd>
+<dt>b</dt>
+<dd><p>(<code>Prior</code>)<br> Prior distribution for the shape parameter <code>b</code>.</p></dd>
 
 
 <dt>beta</dt>
-<dd><p>(<code>Prior</code>)<br> for covariates coefficients <code>beta</code>.</p></dd>
+<dd><p>(<code>Prior</code>)<br> Prior distribution for covariates coefficients <code>beta</code>.</p></dd>
 
 </dl></div>
 

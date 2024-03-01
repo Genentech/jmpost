@@ -103,6 +103,66 @@
 does not contain complete information for this package yet.</p>
 </div>
 <div class="section level2">
+<h2 id="survival-model-specification">Survival Model Specification<a class="anchor" aria-label="anchor" href="#survival-model-specification"></a>
+</h2>
+<p>This package can only be used to fit proportional hazards models of
+the form:</p>
+<p><span class="math display">\[
+\log(h_i(t \mid \theta, \psi_i)) = \log(h_0(t \mid \theta)) + X_i \beta
++ \sum_j G_j(t \mid \psi_i)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li>
+<span class="math inline">\(h_0(.)\)</span> is a parametric baseline
+hazard function</li>
+<li>
+<span class="math inline">\(t\)</span> is the event time</li>
+<li>
+<span class="math inline">\(\theta\)</span> is a vector of
+parameters that parameterise the baseline hazard distribution</li>
+<li>
+<span class="math inline">\(\psi_i\)</span> is an arbitrary vector
+of parameters for subject <span class="math inline">\(i\)</span>
+specified by the longitudinal model</li>
+<li>
+<span class="math inline">\(G_j(.)\)</span> is a link function that
+maps <span class="math inline">\(\psi_i\)</span> to a contribution to
+the log-hazard function where <span class="math inline">\(j\)</span>
+simply indexes the given link function</li>
+<li>
+<span class="math inline">\(X_i\)</span> is the subjects covariate
+design matrix</li>
+<li>
+<span class="math inline">\(\beta\)</span> is the corresponding
+coefficients to scale the design matrix covariates contribution to the
+log-hazard function</li>
+</ul>
+<p>The following sections outline the available distributions to users
+which can be selected for the baseline hazard <span class="math inline">\(h_0(.)\)</span>. Please note that some of these
+distributions do not have the proportional-hazards property meaning that
+the resulting survival model corresponding to the hazard <span class="math inline">\(h_i()\)</span> will not be of the same parametric
+family as the baseline distribution with the hazard <span class="math inline">\(h_0(.)\)</span>.</p>
+<div class="section level3">
+<h3 id="log-logistic-distribution">Log-Logistic Distribution<a class="anchor" aria-label="anchor" href="#log-logistic-distribution"></a>
+</h3>
+<p><span class="math display">\[
+h(x \mid a, b) =  \frac
+{(b/a)(x/a)^{(b-1)}}
+{1 + (x/a)^b}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li>
+<span class="math inline">\(a &gt; 0\)</span> is the scale
+parameter</li>
+<li>
+<span class="math inline">\(b &gt; 0\)</span> is the shape
+parameter</li>
+</ul>
+</div>
+</div>
+<div class="section level2">
 <h2 id="longitudinal-model-specification">Longitudinal Model Specification<a class="anchor" aria-label="anchor" href="#longitudinal-model-specification"></a>
 </h2>
 <div class="section level3">
