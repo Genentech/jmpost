@@ -11,7 +11,7 @@ matrix link_contribution(matrix time, matrix pars_lm)
 ```
 
 - must return same dimensions as time
-- where time is 1 row per subject (Nind) and 1 column per required timepoint (nodes from the guasian quadrature) (i.e. if multiple timepoints need to be evaluated for each subject it will still be 1 row but with multiple columns, if only 1 timepoint needs to be evaluated then there will only be 1 column)
+- where time is 1 row per subject (Nind) and 1 column per required timepoint (nodes from the Gaussian quadrature) (i.e. if multiple timepoints need to be evaluated for each subject it will still be 1 row but with multiple columns, if only 1 timepoint needs to be evaluated then there will only be 1 column)
 - pars_lm is a matrix with 1 row per subject and as many columns as you need defined in transformed_parameters()
 
 
