@@ -59,7 +59,10 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     set.seed(7143)
     jlist <- simulate_joint_data(
         .debug = TRUE,
-        n_arm = c(80, 100),
+        design = list(
+            SimGroup(80, "Arm-A", "Study-X"),
+            SimGroup(100, "Arm-B", "Study-X")
+        ),
         times = seq(0, 3, by = (1 / 365) / 2),
         lambda_cen = 1 / 9000,
         beta_cat = c(
@@ -138,7 +141,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         iter_warmup = 400,
         iter_sampling = 800,
         chains = 2,
-        refresh = 200,
+        refresh = 0,
         parallel_chains = 2
     ))
 

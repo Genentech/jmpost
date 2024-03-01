@@ -18,7 +18,9 @@ options("jmpost.cache_dir" = file.path("local", "models"))
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n_arm = 200,
+    design = list(
+        SimGroup(200, "Arm-A", "Study-X")
+    ),
     times = seq(0, 1000),
     lambda_cen = 1 / 9000,
     beta_cat = c(

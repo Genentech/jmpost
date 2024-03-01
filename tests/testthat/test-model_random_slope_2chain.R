@@ -8,7 +8,10 @@ test_that("Can recover known distribution parameters from random slope model whe
 
     set.seed(3251)
     jlist <- simulate_joint_data(
-        n = c(150, 150),
+        design = list(
+            SimGroup(150, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
+        ),
         times = 1:2000,
         lambda_cen = 1 / 9000,
         beta_cat = c(

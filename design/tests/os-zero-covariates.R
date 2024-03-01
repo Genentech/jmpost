@@ -7,7 +7,9 @@ options("jmpost.cache_dir" = file.path("local", "models"))
 true_lambda <- 1/100
 
 jlist <- simulate_joint_data(
-    n_arm = c(500),
+    design = list(
+        SimGroup(500, "Arm-B", "Study-X")
+    ),
     times = seq(1, 1000, by = 0.5),
     lambda_cen = 1 / 9000,
     beta_cat = c( "A" = 0, "B" = 0, "C" = 0),

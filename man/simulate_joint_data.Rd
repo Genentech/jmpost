@@ -5,7 +5,8 @@
 \title{Simulating Joint Longitudinal and Time-to-Event Data}
 \usage{
 simulate_joint_data(
-  n_arm = c(50, 80),
+  design = list(SimGroup(n = 50, study = "Study-1", arm = "Arm-A"), SimGroup(n = 50,
+    study = "Study-1", arm = "Arm-B")),
   times = 0:2000,
   lambda_cen = 1/3,
   beta_cont = 0.2,
@@ -17,7 +18,7 @@ simulate_joint_data(
 )
 }
 \arguments{
-\item{n_arm}{(\code{numeric})\cr numbers of patients per treatment arm.}
+\item{design}{(\code{list})\cr a list of \code{\link{SimGroup}} objects. See details.}
 
 \item{times}{(\code{numeric})\cr time grid, e.g. specifying the days after randomization.}
 
@@ -41,4 +42,16 @@ List with simulated \code{lm} (longitudinal) and \code{os} (survival) data sets.
 }
 \description{
 Simulating Joint Longitudinal and Time-to-Event Data
+}
+\details{
+The \code{design} arguement is used to specify how many distinct groups should be simulated
+including key information such as the number of subjects within the group as well as
+which treatment arm and study the group belongs to. The \code{design} argument should be a
+list of \code{\link{SimGroup}} objects e.g.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{design = list(
+    SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
+    SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
+)
+}\if{html}{\out{</div>}}
 }

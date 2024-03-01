@@ -4,7 +4,10 @@ test_that("Random Slope Model can recover known parameter values", {
     ## Generate data with known parameters
     set.seed(739)
     jlist <- simulate_joint_data(
-        n = c(250, 150),
+        design = list(
+            SimGroup(250, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
+        ),
         times = 1:2000,
         lambda_cen = 1 / 9000,
         lm_fun = sim_lm_random_slope(

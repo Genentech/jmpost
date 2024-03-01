@@ -14,9 +14,9 @@ sim_lm_random_slope(
 )
 }
 \arguments{
-\item{intercept}{(\code{number})\cr the mean baseline value.}
+\item{intercept}{(\code{number})\cr the mean baseline value for each study.}
 
-\item{slope_mu}{(\code{numeric})\cr the population slope for the two treatment arms.}
+\item{slope_mu}{(\code{numeric})\cr the population slope for each treatment arm.}
 
 \item{slope_sigma}{(\code{number})\cr the random slope standard deviation.}
 

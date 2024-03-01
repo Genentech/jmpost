@@ -81,6 +81,8 @@ sim_lm_gsf <- function(
 
         assert_that(
             length(unique(lm_base$study)) == length(mu_b),
+            is.factor(lm_base$study),
+            is.factor(lm_base$arm),
             length(mu_b) == 1,
             length(sigma) == 1,
             length(mu_s) == length(unique(lm_base$arm)),
@@ -92,8 +94,8 @@ sim_lm_gsf <- function(
 
         baseline_covs <- lm_base |>
             dplyr::distinct(.data$pt, .data$arm, .data$study) |>
-            dplyr::mutate(study_idx = as.numeric(factor(as.character(.data$study)))) |>
-            dplyr::mutate(arm_idx = as.numeric(factor(as.character(.data$arm)))) |>
+            dplyr::mutate(study_idx = as.numeric(.data$study)) |>
+            dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
             dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(mu_b[.data$study_idx]), omega_b)) |>
             dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(mu_s[.data$arm_idx]), omega_s)) |>
             dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(mu_g[.data$arm_idx]), omega_g)) |>

@@ -15,7 +15,10 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
 
     set.seed(11023)
     jlist <- simulate_joint_data(
-        n_arm = c(100, 150),
+        design = list(
+            SimGroup(100, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
+        ),
         times = seq(1, 1000, by = 0.5),
         lambda_cen = 1 / 9000,
         beta_cat = c(
@@ -58,6 +61,7 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
         iter_sampling = 300,
         iter_warmup = 300,
         chains = 1,
+        refresh = 0,
         parallel_chains = 1
     )
 

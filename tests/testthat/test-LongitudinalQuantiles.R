@@ -1,7 +1,7 @@
 
-ensure_test_data_1()
 
 test_that("Test that LongitudinalQuantities works as expected", {
+    ensure_test_data_1()
 
     expected_column_names <- c("median", "lower", "upper", "time", "group")
 

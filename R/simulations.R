@@ -23,10 +23,63 @@ get_timepoints <- function(x) {
     )
 }
 
+#' Define Simulation Group
+#'
+#' Specifies a simulation group to be used by [`simulate_joint_data()`].
+#'
+#' @param n (`numeric`)\cr number of subjects in the group.
+#' @param arm (`character`)\cr treatment arm.
+#' @param study (`character`)\cr study name.
+#'
+#' @slot n (`numeric`)\cr See arguments.
+#' @slot arm (`character`)\cr See arguments.
+#' @slot study (`character`)\cr See arguments.
+#'
+#' @examples
+#' SimGroup(n = 50, arm = "Arm-A", study = "Study-1")
+#' @name SimGroup
+#' @export
+.SimGroup <- setClass(
+    "SimGroup",
+    slots = c(
+        n = "numeric",
+        study = "character",
+        arm = "character"
+    )
+)
+
+#' @rdname SimGroup
+SimGroup <- function(n, arm, study) {
+    .SimGroup(
+        n = n,
+        arm = arm,
+        study = study
+    )
+}
+
+
+setValidity(
+    "SimGroup",
+    function(object) {
+        if (length(object@n) != 1) {
+            return("`n` must be a length 1 integer")
+        }
+        if (length(object@arm) != 1) {
+            return("`arm` must be a length 1 string")
+        }
+        if (length(object@study) != 1) {
+            return("`study` must be a length 1 string")
+        }
+        if (any(object@n < 1) | any(object@n %% 1 != 0)) {
+            return("`n` must be positive integer")
+        }
+        return(TRUE)
+    }
+)
 
 #' Simulating Joint Longitudinal and Time-to-Event Data
 #'
-#' @param n_arm (`numeric`)\cr numbers of patients per treatment arm.
+#' @param design (`list`)\cr a list of [`SimGroup`] objects. See details.
 #' @param times (`numeric`)\cr time grid, e.g. specifying the days after randomization.
 #' @param lambda_cen (`number`)\cr rate of the exponential censoring distribution.
 #' @param beta_cont (`number`)\cr coefficient for the continuous covariate.
@@ -37,10 +90,26 @@ get_timepoints <- function(x) {
 #' @param .debug (`flag`)\cr whether to enter debug mode such that the function
 #'   would only return a subset of columns.
 #'
+#' @details
+#'
+#' The `design` arguement is used to specify how many distinct groups should be simulated
+#' including key information such as the number of subjects within the group as well as
+#' which treatment arm and study the group belongs to. The `design` argument should be a
+#' list of [`SimGroup`] objects e.g.
+#' ```
+#' design = list(
+#'     SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
+#'     SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
+#' )
+#' ```
+#'
 #' @returns List with simulated `lm` (longitudinal) and `os` (survival) data sets.
 #' @export
 simulate_joint_data <- function(
-    n_arm = c(50, 80),   # Number of arms and number of subjects per arm
+    design = list(
+        SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
+        SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
+    ),
     times = 0:2000,
     lambda_cen = 1 / 3,
     beta_cont = 0.2,
@@ -50,24 +119,31 @@ simulate_joint_data <- function(
     .silent = FALSE,
     .debug = FALSE
 ) {
-    n <- sum(n_arm)
+
+    assert(
+        all(vapply(design, \(x) is(x, "SimGroup"), logical(1))),
+        msg = "All elements of `design` must be of class `SimGroup`"
+    )
+
+    n_group <- vapply(design, function(x) x@n, numeric(1))
+    arms <- vapply(design, function(x) x@arm, character(1))
+    studies <- vapply(design, function(x) x@study, character(1))
+    n <- sum(n_group)
     u_pts <- sprintf("pt_%05i", seq_len(n))
     bounds <- get_timepoints(times)
-
-    ARMS <- paste0("Group-", seq_along(n_arm))
 
     os_baseline <- dplyr::tibble(pt = u_pts) |>
         dplyr::mutate(cov_cont = stats::rnorm(n)) |>
         dplyr::mutate(cov_cat = factor(
-            sample(c("A", "B", "C"), replace = TRUE, size = n),
-            levels = c("A", "B", "C")
+            sample(names(beta_cat), replace = TRUE, size = n),
+            levels = names(beta_cat)
         )) |>
         dplyr::mutate(log_haz_cov = .data$cov_cont * beta_cont + beta_cat[.data$cov_cat]) |>
         dplyr::mutate(survival = stats::runif(n)) |>
         dplyr::mutate(chazard_limit = -log(.data$survival)) |>
         dplyr::mutate(time_cen = stats::rexp(n, lambda_cen)) |>
-        dplyr::mutate(study = factor("Study-1")) |>
-        dplyr::mutate(arm = factor(rep(ARMS, times = n_arm), levels = ARMS)) |>
+        dplyr::mutate(arm = factor(rep(arms, times = n_group), levels = unique(arms))) |>
+        dplyr::mutate(study = factor(rep(studies, times = n_group), levels = unique(studies))) |>
         dplyr::select(!dplyr::all_of("survival"))
 
     time_dat <- expand.grid(

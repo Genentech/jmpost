@@ -22,7 +22,9 @@ test_that("SurvivalLogLogistic can recover known values", {
     set.seed(837)
     jlist <- suppressMessages({
         simulate_joint_data(
-            n_arm = c(300),
+            design = list(
+                SimGroup(300, "Arm-A", "Study-X")
+            ),
             times = seq(1, 2000, by = 0.5),
             lambda_cen = 1 / 9000,
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
