@@ -37,8 +37,8 @@ get_timepoints <- function(x) {
 #'
 #' @examples
 #' SimGroup(n = 50, arm = "Arm-A", study = "Study-1")
-#' @name SimGroup
-#' @export
+#' @name SimGroup-class
+#' @exportClass SimGroup
 .SimGroup <- setClass(
     "SimGroup",
     slots = c(
@@ -49,7 +49,7 @@ get_timepoints <- function(x) {
 )
 
 #' @export
-#' @rdname SimGroup
+#' @rdname SimGroup-class
 SimGroup <- function(n, arm, study) {
     .SimGroup(
         n = n,
