@@ -55,6 +55,7 @@ Suggests:
     scales,
     lme4,
     flexsurv,
+    purrr,
     vdiffr,
     prodlim
 Config/testthat/edition: 3

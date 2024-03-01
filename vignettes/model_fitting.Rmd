@@ -323,7 +323,7 @@ long_quantities <- LongitudinalQuantities(
     groups = selected_patients
 )
 as.data.frame(long_quantities) |> head()
-summary(long_quantities)
+summary(long_quantities) |> head()
 autoplot(long_quantities)
 ```
 
@@ -337,8 +337,8 @@ surv_quantities <- SurvivalQuantities(
     mcmc_results,
     groups = selected_patients
 )
-as.data.frame(surv_quantities)
-summary(surv_quantities)
+as.data.frame(surv_quantities) |> head()
+summary(surv_quantities) |> head()
 autoplot(surv_quantities)
 ```
 
