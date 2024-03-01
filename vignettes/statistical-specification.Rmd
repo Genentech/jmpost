@@ -43,7 +43,7 @@ Where:
 
 - $h_0(.)$ is a parametric baseline hazard function
 - $t$ is the event time
-- $\theta$ is a vector of parameters that parameterise the baseline hazard distribution
+- $\theta$ is a vector of parameters that parameterise the baseline hazard
 - $\psi_i$ is an arbitrary vector of parameters for subject $i$ specified by the longitudinal model
 - $G_j(.)$ is a link function that maps $\psi_i$ to a contribution to the log-hazard function where $j$ simply indexes the given link function
 - $X_i$ is the subjects covariate design matrix
