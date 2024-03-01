@@ -125,7 +125,10 @@ as_stan_list.DataSurvival <- function(object, ...) {
     rownames(design_mat) <- NULL
 
     # Parameters for efficient integration of hazard function -> survival function
-    gh_parameters <- statmod::gauss.quad(n = 15, kind = "legendre")
+    gh_parameters <- statmod::gauss.quad(
+        n = getOption("jmpost.gauss_quad_n"),
+        kind = getOption("jmpost.gauss_quad_kind")
+    )
 
     model_data <- list(
         Nind_dead = sum(df[[vars$event]]),
