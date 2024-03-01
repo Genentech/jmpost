@@ -31,6 +31,42 @@ Please note that this document is currently a work-in-progress and does not
 contain complete information for this package yet. 
 
 
+# Survival Model Specification
+
+This package can only be used to fit proportional hazards models of the form:
+
+$$
+\log(h_i(t \mid \theta, \psi_i)) = \log(h_0(t \mid \theta)) + X_i \beta + \sum_j G_j(t \mid \psi_i) 
+$$
+
+Where:
+
+- $h_0(.)$ is a parametric baseline hazard function
+- $t$ is the event time
+- $\theta$ is a vector of parameters that parameterise the baseline hazard distribution
+- $\psi_i$ is an arbitrary vector of parameters for subject $i$ specified by the longitudinal model
+- $G_j(.)$ is a link function that maps $\psi_i$ to a contribution to the log-hazard function where $j$ simply indexes the given link function
+- $X_i$ is the subjects covariate design matrix
+- $\beta$ is the corresponding coefficients to scale the design matrix covariates contribution to the log-hazard function
+
+
+The following sections outline the available distributions to users which can be selected for the
+baseline hazard $h_0(.)$. Please note that some of these distributions do not have
+the proportional-hazards property meaning that the resulting survival model corresponding to the hazard $h_i()$ will not be of 
+the same parametric family as the baseline distribution with the hazard $h_0(.)$.
+
+## Log-Logistic Distribution
+
+$$
+h(x \mid a, b) =  \frac
+{(b/a)(x/a)^{(b-1)}}
+{1 + (x/a)^b}
+$$
+
+Where:
+
+- $a > 0$ is the scale parameter
+- $b > 0$ is the shape parameter
 
 
 # Longitudinal Model Specification

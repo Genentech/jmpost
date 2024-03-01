@@ -8,17 +8,17 @@
 \title{\code{SurvivalLogLogistic}}
 \usage{
 SurvivalLogLogistic(
-  lambda = prior_lognormal(log(0.1), 5),
-  p = prior_gamma(2, 5),
+  a = prior_lognormal(log(0.1), 5),
+  b = prior_gamma(2, 5),
   beta = prior_normal(0, 5)
 )
 }
 \arguments{
-\item{lambda}{(\code{Prior})\cr for the inverse median \code{lambda}.}
+\item{a}{(\code{Prior})\cr Prior distribution for the scale parameter \code{a}.}
 
-\item{p}{(\code{Prior})\cr for the shape parameter \code{p}.}
+\item{b}{(\code{Prior})\cr Prior distribution for the shape parameter \code{b}.}
 
-\item{beta}{(\code{Prior})\cr for covariates coefficients \code{beta}.}
+\item{beta}{(\code{Prior})\cr Prior distribution for covariates coefficients \code{beta}.}
 }
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the
