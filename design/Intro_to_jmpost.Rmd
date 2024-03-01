@@ -15,7 +15,7 @@ header-includes:
   - \usetikzlibrary{shapes.geometric, arrows}   
 output:
   pdf_document: default
-bibliography: bibliography.bib
+bibliography: '`r system.file("REFERENCES.bib", package = "jmpost")`'
 vignette: |
   %\VignetteIndexEntry{Introduction to `jmpost`}
   %\VignetteEncoding{UTF-8}

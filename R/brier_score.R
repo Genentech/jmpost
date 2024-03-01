@@ -123,12 +123,15 @@ reverse_km_cen_first <- function(t, times, events) {
 #' @inheritParams Brier-Score-Shared
 #'
 #' @description
-#' Implements the Brier Score as detailed in Blanche et. al. (2015)
+#' Implements the Brier Score as detailed in \insertCite{blanche2015}{jmpost}
 #'
 #' @details
 #' - `bs_get_squared_dist()` - implements the squared distance part
 #' of the formula.
 #' - `bs_get_weights()` - implements the IPCW weighting
+#'
+#' @references
+#' \insertAllCited{}
 #'
 #' @keywords internal
 brier_score <- function(

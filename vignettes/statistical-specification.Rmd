@@ -1,7 +1,7 @@
 ---
 title: "Statistical Specifications"
 package: jmpost
-bibliography: '`r system.file("references.bib", package = "jmpost")`'
+bibliography: '`r system.file("REFERENCES.bib", package = "jmpost")`'
 csl: '`r system.file("jss.csl", package = "jmpost")`'
 output:
   rmarkdown::html_vignette:
