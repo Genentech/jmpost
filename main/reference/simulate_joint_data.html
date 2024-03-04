@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -73,7 +67,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_joint_data</span><span class="op">(</span></span>
-<span>  n_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="SimGroup-class.html">SimGroup</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, study <span class="op">=</span> <span class="st">"Study-1"</span>, arm <span class="op">=</span> <span class="st">"Arm-A"</span><span class="op">)</span>, <span class="fu"><a href="SimGroup-class.html">SimGroup</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    study <span class="op">=</span> <span class="st">"Study-1"</span>, arm <span class="op">=</span> <span class="st">"Arm-B"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2000</span>,</span>
 <span>  lambda_cen <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span>,</span>
 <span>  beta_cont <span class="op">=</span> <span class="fl">0.2</span>,</span>
@@ -87,8 +82,8 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>n_arm</dt>
-<dd><p>(<code>numeric</code>)<br> numbers of patients per treatment arm.</p></dd>
+    <dl><dt>design</dt>
+<dd><p>(<code>list</code>)<br> a list of <code><a href="SimGroup-class.html">SimGroup</a></code> objects. See details.</p></dd>
 
 
 <dt>times</dt>
@@ -129,6 +124,17 @@ would only return a subset of columns.</p></dd>
     
 
 <p>List with simulated <code>lm</code> (longitudinal) and <code>os</code> (survival) data sets.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The <code>design</code> argument is used to specify how many distinct groups should be simulated
+including key information such as the number of subjects within the group as well as
+which treatment arm and study the group belongs to. The <code>design</code> argument should be a
+list of <code><a href="SimGroup-class.html">SimGroup</a></code> objects e.g.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>design <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="fu">SimGroup</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">study =</span> <span class="st">"Study-1"</span>, <span class="at">arm =</span> <span class="st">"Arm-A"</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">SimGroup</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">study =</span> <span class="st">"Study-1"</span>, <span class="at">arm =</span> <span class="st">"Arm-B"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span></code></pre><p></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

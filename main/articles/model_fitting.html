@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -231,7 +225,10 @@ baseline hazard under the given survival model.</li>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">129</span><span class="op">)</span></span>
 <span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_joint_data.html">simulate_joint_data</a></span><span class="op">(</span></span>
-<span>    n_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>    design <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/SimGroup-class.html">SimGroup</a></span><span class="op">(</span><span class="fl">50</span>, <span class="st">"Arm-A"</span>, <span class="st">"Study-X"</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../reference/SimGroup-class.html">SimGroup</a></span><span class="op">(</span><span class="fl">50</span>, <span class="st">"Arm-B"</span>, <span class="st">"Study-X"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2000</span>,</span>
 <span>    lambda_cen <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">9000</span>,</span>
 <span>    beta_cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -281,14 +278,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   pt        time event cov_cont cov_cat study   arm    </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001    35     1   -<span style="color: #BB0000;">1.12</span>  B       Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002    17     1   -<span style="color: #BB0000;">0.990</span> C       Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003   876     1   -<span style="color: #BB0000;">1.37</span>  C       Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004   100     1   -<span style="color: #BB0000;">1.36</span>  C       Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     9     1    2.00  B       Study-1 Group-1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006   122     1    0.696 B       Study-1 Group-1</span></span></code></pre></div>
+<span><span class="co">#&gt;   pt        time event cov_cont cov_cat study   arm  </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001    35     1   -<span style="color: #BB0000;">1.12</span>  B       Study-X Arm-A</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002    17     1   -<span style="color: #BB0000;">0.990</span> C       Study-X Arm-A</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003   876     1   -<span style="color: #BB0000;">1.37</span>  C       Study-X Arm-A</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004   100     1   -<span style="color: #BB0000;">1.36</span>  C       Study-X Arm-A</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     9     1    2.00  B       Study-X Arm-A</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006   122     1    0.696 B       Study-X Arm-A</span></span></code></pre></div>
 <p>The longitudinal data has:</p>
 <ul>
 <li>patient ID</li>
@@ -301,14 +298,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">long_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">#&gt;   pt        time    sld study   arm     observed</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001     1 23.4   Study-1 Group-1 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002     1 16.1   Study-1 Group-1 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003     1 41.9   Study-1 Group-1 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004     1 44.5   Study-1 Group-1 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     1 23.8   Study-1 Group-1 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006     1  0.130 Study-1 Group-1 TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt;   pt        time    sld study   arm   observed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001     1 23.4   Study-X Arm-A TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002     1 16.1   Study-X Arm-A TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003     1 41.9   Study-X Arm-A TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004     1 44.5   Study-X Arm-A TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     1 23.8   Study-X Arm-A TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006     1  0.130 Study-X Arm-A TRUE</span></span></code></pre></div>
 <p>Finally, we wrap these in the data formatting functions. Here the
 mapping of the column names to the required variables happens. This
 means that in our applications we don’t have to use the same variable
@@ -378,7 +375,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpSG5osa/model-d5958366acb.stan', line 495, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpQ9NnCM/model-d6c1e9f94a0.stan', line 495, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -393,7 +390,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 13.2 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 12.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
