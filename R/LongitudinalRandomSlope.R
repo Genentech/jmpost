@@ -42,7 +42,7 @@ LongitudinalRandomSlope <- function(
             name = "Random Slope",
             stan = stan,
             parameters = ParameterList(
-                Parameter(name = "lm_rs_intercept", prior = intercept, size = 1),
+                Parameter(name = "lm_rs_intercept", prior = intercept, size = "n_studies"),
                 Parameter(name = "lm_rs_slope_mu", prior = slope_mu, size = "n_arms"),
                 Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma, size = 1),
                 Parameter(name = "lm_rs_sigma", prior = sigma, size = 1),

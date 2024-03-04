@@ -78,7 +78,10 @@ write_stan(jm, "local/debug.stan")
 
 ## Generate Test data with known parameters
 jlist <- simulate_joint_data(
-    n_arm = c(500, 500),
+    design = list(
+        SimGroup(500, "Arm-A", "Study-X"),
+        SimGroup(500, "Arm-B", "Study-X")
+    ),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(

@@ -48,7 +48,10 @@ options("jmpost.cache_dir" = file.path("local", "models"))
 set.seed(7143)
 jlist <- simulate_joint_data(
     .debug = TRUE,
-    n_arm = c(85, 100),
+    design = list(
+        SimGroup(85, "Arm-A", "Study-X"),
+        SimGroup(100, "Arm-B", "Study-X")
+    ),
     times = seq(0, 3, by = (1/365)/2),
     lambda_cen = 1 / 9000,
     beta_cat = c(

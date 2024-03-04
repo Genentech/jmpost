@@ -45,6 +45,7 @@ reference:
       - sim_os_exponential
       - sim_os_loglogistic
       - sim_os_weibull
+      - SimGroup
   - title: Prior Distributions
     contents:
       - Prior

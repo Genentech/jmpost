@@ -59,7 +59,10 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     set.seed(9438)
     ## Generate Test data with known parameters
     jlist <- simulate_joint_data(
-        n_arm = c(120, 120),
+        design = list(
+            SimGroup(120, "Arm-A", "Study-X"),
+            SimGroup(120, "Arm-B", "Study-X")
+        ),
         times = seq(0, 4, by = (1 / 365) / 2),
         lambda_cen = 1 / 9000,
         beta_cat = c(

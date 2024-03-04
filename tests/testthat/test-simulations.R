@@ -6,8 +6,8 @@ test_that("sim_lm_gsf works as expected", {
     df <- data.frame(
         pt = rep(c("1", "2", "3"), each = 5),
         time = rep(1:5, 3),
-        arm = rep(c("A", "B"), c(1, 2) * 5),
-        study = "study1"
+        arm = factor(rep(c("A", "B"), c(1, 2) * 5)),
+        study = factor("study1")
     )
     result <- expect_silent(sim_lm_gsf(
         sigma = 0.003,
@@ -40,8 +40,8 @@ test_that("sim_lm_random_slope works as expected", {
     df <- data.frame(
         pt = rep(c("1", "2", "3"), each = 5),
         time = rep(1:5, 3),
-        arm = rep(c("A", "B"), c(1, 2) * 5),
-        study = "study1"
+        arm = factor(rep(c("A", "B"), c(1, 2) * 5)),
+        study = factor("study1")
     )
     result <- expect_silent(sim_lm_random_slope(
         intercept = 50,
@@ -68,7 +68,10 @@ test_that("simulate_joint_data works as expected", {
     set.seed(5433)
     times <- seq(0, 4, by = (1 / 365) / 2)
     result <- expect_silent(simulate_joint_data(
-        n_arm = c(80, 80),
+        design = list(
+            SimGroup(50, "Arm-A", "Study-X"),
+            SimGroup(80, "Arm-B", "Study-X")
+        ),
         times = times,
         lambda_cen = 1 / 9000,
         beta_cat = c(
@@ -93,7 +96,8 @@ test_that("simulate_joint_data works as expected", {
         os_fun = sim_os_weibull(
             lambda = 1 / 200 * 365,
             gamma = 0.97
-        )
+        ),
+        .silent = TRUE
     ))
     expect_type(result, "list")
     expect_s3_class(result$os, "tbl_df")
@@ -101,7 +105,7 @@ test_that("simulate_joint_data works as expected", {
         names(result$os),
         c("pt", "time", "event", "cov_cont", "cov_cat", "study", "arm")
     )
-    expect_equal(nrow(result$os), 80 + 80)
+    expect_equal(nrow(result$os), 50 + 80)
     expect_s3_class(result$lm, "tbl_df")
     expect_identical(
         names(result$lm),
@@ -117,7 +121,9 @@ test_that("simulate_joint_data leads to valid DataJoint with almost only default
     set.seed(321)
     sim_data <- simulate_joint_data(
         lm_fun = sim_lm_random_slope(),
-        os_fun = sim_os_exponential(lambda = 1 / 100)
+        os_fun = sim_os_exponential(lambda = 1 / 100),
+        lambda_cen = 1 / 200,
+        .silent = TRUE
     )
     os_data <- sim_data$os
     long_data <- sim_data$lm |>
@@ -147,7 +153,10 @@ test_that("simulate_joint_data leads to valid DataJoint with almost only default
 test_that("sim_os_exponential creates a dataset with the correct parameter", {
     set.seed(321)
     sim_data <- simulate_joint_data(
-        n_arm = c(200, 200),
+        design = list(
+            SimGroup(200, "Arm-A", "Study-X"),
+            SimGroup(200, "Arm-B", "Study-X")
+        ),
         times = seq(1, 1000),
         beta_cont = 0,
         beta_cat = c("A" = 0, "B" = 0, "C" = 0),
@@ -171,7 +180,10 @@ test_that("sim_os_weibull creates a dataset with the correct parameter", {
     lambda_real <- 1 / 100
     gamma_real <- 0.9
     sim_data <- simulate_joint_data(
-        n_arm = c(200, 200),
+        design = list(
+            SimGroup(200, "Arm-A", "Study-X"),
+            SimGroup(200, "Arm-B", "Study-X")
+        ),
         times = seq(1, 1000),
         beta_cont = 0.2,
         beta_cat = c("A" = 0, "B" = -0.6, "C" = 0.6),
@@ -203,4 +215,62 @@ test_that("sim_os_weibull creates a dataset with the correct parameter", {
     log_scale_se <- sqrt(vcov(mod)["Log(scale)", "Log(scale)"])
     z_score <- (log_scale_obs - log_scale_real) / log_scale_se
     expect_true(abs(z_score) < qnorm(0.9))
+})
+
+
+test_that("simulate_joint_data correctly generates an intercept per study", {
+    set.seed(3521)
+    sim_data <- simulate_joint_data(
+        times = seq(1, 1000) / 365,
+        design = list(
+            SimGroup(200, "Arm-A", "Study-X"),
+            SimGroup(200, "Arm-A", "Study-Y")
+        ),
+        lm_fun = sim_lm_random_slope(
+            intercept = c(50, 70),
+            slope_mu = 10,
+            slope_sigma = 0.5,
+            sigma = 2,
+            link_dsld = 0,
+            link_identity = 0
+        ),
+        os_fun = sim_os_exponential(lambda = 1 / 100),
+        lambda_cen = 1 / 200,
+        .silent = TRUE
+    )
+
+    dat_lm <- sim_data$lm |>
+        dplyr::filter(time %in% (c(10, 100, 200, 500, 700, 900) / 365))
+
+    mod <- lme4::lmer(
+        dat = dat_lm,
+        formula = sld ~ 0 + study + time + (0 + time | pt),
+    )
+
+    ests <- lme4::fixef(mod)
+    ests_se <- sqrt(diag(as.matrix(vcov(mod))))
+    z_score <- (ests - c(50, 70, 10)) / ests_se
+    expect_true(all(abs(z_score) < qnorm(0.99)))
+})
+
+
+test_that("SimGroup() works as expected", {
+    sim_group <- SimGroup(100, "Arm-A", "Study-X")
+    expect_s4_class(sim_group, "SimGroup")
+    expect_equal(sim_group@n, 100)
+    expect_equal(sim_group@arm, "Arm-A")
+    expect_equal(sim_group@study, "Study-X")
+
+    expect_error(
+        SimGroup(c(100, 200), "Arm-A", "Study-X"),
+        regexp = "`n` must be a length 1 integer"
+    )
+    expect_error(
+        SimGroup(100, c("Arm-A", "Arm-b"), "Study-X"),
+        regexp = "`arm` must be a length 1 string"
+    )
+    expect_error(
+        SimGroup(100, "Arm-A", c("Study-X", "Study-Z")),
+        regexp = "`study` must be a length 1 string"
+    )
 })

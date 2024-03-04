@@ -74,17 +74,19 @@ Where:
 ## Random-Slope Model
 
 $$
-y_{ij} = \mu_0 + s_i t_{ij} + \epsilon_{ij}
+y_{ij} = \mu_{l(i)} + s_i t_{ij} + \epsilon_{ij}
 $$
 
 where:
 
 - $y_{ij}$ is the tumour size for subject $i$ at timepoint $j$
-- $\mu_0$ is the intercept
-- $s_i$ is the random slope for subject $i$ with $s_i \sim N(\mu_{sk}, \sigma_s)$
-- $\mu_{sk}$ is the mean for the random slope within treatment arm $k$
+- $\mu_{l(i)}$ is the intercept for subject $i$
+- $s_i$ is the random slope for subject $i$ with $s_i \sim N(\mu_{sk(i)}, \sigma_s)$
+- $\mu_{sk(i)}$ is the mean for the random slope within treatment arm $k(i)$
 - $\sigma_s$ is the variance term for the slopes
 - $\epsilon_{ij}$ is the error term with $\epsilon_{ij} \sim N(0, \sigma)$
+* $k(i)$ is the treatment arm index for subject $i$
+* $l(i)$ is the study index for subject $i$
 
 ### Derivative of the SLD Trajectory Link 
 

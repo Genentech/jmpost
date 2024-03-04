@@ -1,8 +1,8 @@
 
 
-ensure_test_data_1()
 
 test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected", {
+    ensure_test_data_1()
 
     expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
 

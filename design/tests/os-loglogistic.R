@@ -6,7 +6,10 @@ library(bayesplot)
 options("jmpost.cache_dir" = file.path("local", "models"))
 
 jlist <- simulate_joint_data(
-    n_arm = c(1000, 1000),
+    design = list(
+        SimGroup(1000, "Arm-A", "Study-X"),
+        SimGroup(1000, "Arm-B", "Study-X")
+    ),
     times = 1:2000,
     lambda_cen = 1 / 9000,
     beta_cat = c(

@@ -1,8 +1,8 @@
 
 #' Construct a Simulation Function for Longitudinal Data from Random Slope Model
 #'
-#' @param intercept (`number`)\cr the mean baseline value.
-#' @param slope_mu (`numeric`)\cr the population slope for the two treatment arms.
+#' @param intercept (`number`)\cr the mean baseline value for each study.
+#' @param slope_mu (`numeric`)\cr the population slope for each treatment arm.
 #' @param slope_sigma (`number`)\cr the random slope standard deviation.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param link_dsld (`number`)\cr the link coefficient for the DSLD contribution.
@@ -23,20 +23,29 @@ sim_lm_random_slope <- function(
     function(lm_base) {
 
         assert_that(
-            length(slope_mu) == 1 | length(slope_mu) == length(unique(lm_base$arm)),
-            msg = "slope_mu should either be length 1 or equal to the length of n_arm"
+            is.factor(lm_base$study),
+            is.factor(lm_base$arm)
         )
 
-        if (length(slope_mu) == 1) {
-            slope_mu <- rep(slope_mu, length(unique(lm_base$arm)))
-        }
+        assert_that(
+            length(slope_mu) == length(unique(lm_base$arm)),
+            msg = "`length(slope_mu)` should be equal to the number of unique studies"
+        )
+
+        assert_that(
+            length(intercept) == length(unique(lm_base$study)),
+            msg = "`length(intercept)` should be equal to the number of unique studies"
+        )
 
         rs_baseline <- lm_base |>
-            dplyr::distinct(.data$pt, .data$arm) |>
+            dplyr::distinct(.data$pt, .data$arm, .data$study) |>
+            dplyr::mutate(intercept = intercept[as.numeric(.data$study)]) |>
             dplyr::mutate(slope_ind = stats::rnorm(
-                dplyr::n(), slope_mu[as.numeric(factor(as.character(.data$arm)))], sd = slope_sigma
+                n = dplyr::n(),
+                mean = slope_mu[as.numeric(.data$arm)],
+                sd = slope_sigma
             )) |>
-            dplyr::select(!dplyr::any_of("arm"))
+            dplyr::select(!dplyr::any_of(c("arm", "study")))
 
         lm_dat <- lm_base |>
             dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, sigma)) |>
