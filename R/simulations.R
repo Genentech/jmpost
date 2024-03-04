@@ -43,8 +43,8 @@ get_timepoints <- function(x) {
     "SimGroup",
     slots = c(
         n = "numeric",
-        study = "character",
-        arm = "character"
+        arm = "character",
+        study = "character"
     )
 )
 
