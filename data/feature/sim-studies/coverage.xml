@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.941773268636965" branch-rate="0" lines-covered="2135" lines-valid="2267" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-01 17:17:39.842756">
+<coverage line-rate="0.941773268636965" branch-rate="0" lines-covered="2135" lines-valid="2267" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-04 11:47:27.062712">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -4111,11 +4111,11 @@
             </method>
             <method name="SimGroup" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="54" hits="27" branch="false"/>
-                <line number="55" hits="27" branch="false"/>
-                <line number="56" hits="27" branch="false"/>
-                <line number="57" hits="27" branch="false"/>
-                <line number="58" hits="27" branch="false"/>
+                <line number="54" hits="31" branch="false"/>
+                <line number="55" hits="31" branch="false"/>
+                <line number="56" hits="31" branch="false"/>
+                <line number="57" hits="31" branch="false"/>
+                <line number="58" hits="31" branch="false"/>
               </lines>
             </method>
             <method name="simulate_joint_data" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -4231,11 +4231,11 @@
             <line number="21" hits="15" branch="false"/>
             <line number="22" hits="15" branch="false"/>
             <line number="23" hits="15" branch="false"/>
-            <line number="54" hits="27" branch="false"/>
-            <line number="55" hits="27" branch="false"/>
-            <line number="56" hits="27" branch="false"/>
-            <line number="57" hits="27" branch="false"/>
-            <line number="58" hits="27" branch="false"/>
+            <line number="54" hits="31" branch="false"/>
+            <line number="55" hits="31" branch="false"/>
+            <line number="56" hits="31" branch="false"/>
+            <line number="57" hits="31" branch="false"/>
+            <line number="58" hits="31" branch="false"/>
             <line number="124" hits="15" branch="false"/>
             <line number="125" hits="15" branch="false"/>
             <line number="126" hits="15" branch="false"/>
