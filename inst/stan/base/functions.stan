@@ -81,5 +81,22 @@ functions {
         }
         return ret;
     }
+    
+    matrix replace_lt_0(matrix x, real replacement) {
+        matrix[rows(x), cols(x)] result;
+        for (i in 1:rows(x)) {
+            for (j in 1:cols(x)) {
+                result[i, j] = x[i, j] < 0 ? replacement : x[i, j];
+            }
+        }
+        return result;
+    }
+    vector replace_lt_0(vector x, real replacement) {
+        vector[rows(x)] result;
+        for (i in 1:rows(x)) {
+            result[i] = x[i] < 0 ? replacement : x[i];
+        }
+        return result;
+    }
 }
 

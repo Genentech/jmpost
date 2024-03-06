@@ -21,7 +21,9 @@ functions {
         matrix[nrows, ncols] psi_ks_matrix = rep_matrix(psi_ks, ncols);
         matrix[nrows, ncols] psi_kg_matrix = rep_matrix(psi_kg, ncols);
         matrix[nrows, ncols] psi_phi_matrix = rep_matrix(psi_phi, ncols);
-        
+
+        psi_phi_matrix = replace_lt_0(psi_phi_matrix, 0);
+
         matrix[nrows, ncols] result = fmin(
             8000.0,
             psi_bsld_matrix .* (
