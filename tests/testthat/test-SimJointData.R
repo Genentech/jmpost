@@ -274,3 +274,31 @@ test_that("SimGroup() works as expected", {
         regexp = "`study` must be a length 1 string"
     )
 })
+
+
+test_that("Can simulate data with negative times", {
+
+
+    set.seed(5433)
+    times <- seq(-2, 4, by = (1 / 365) / 2)
+    result <- expect_silent()
+
+
+
+
+})
+
+
+SimJointData(
+    design = list(
+        SimGroup(50, "Arm-A", "Study-X"),
+        SimGroup(80, "Arm-B", "Study-X")
+    ),
+    survival = SimSurvivalExponential(
+        lambda = 1 / 400
+    ),
+    longitudinal = SimLongitudinalRandomSlope(
+        times = c(-50, -20, 0, 150, 250, 400)
+    )
+)
+

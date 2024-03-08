@@ -14,6 +14,7 @@
 #' @examples
 #' sf_sld(1:10, 20, 0.3, 0.6)
 sf_sld <- function(time, b, s, g) {
+    s <- dplyr::if_else(time >= 0, s, 0)
     b * (exp(-s * time) + exp(g * time) - 1)
 }
 
@@ -34,6 +35,7 @@ sf_ttg <- function(time, b, s, g) {
 #' @examples
 #' sf_dsld(1:10, 20, 0.3, 0.6)
 sf_dsld <- function(time, b, s, g) {
+    s <- dplyr::if_else(time >= 0, s, 0)
     t1 <- g * exp(g * time)
     t2 <- s * exp(-s * time)
     return(b * (t1 - t2))

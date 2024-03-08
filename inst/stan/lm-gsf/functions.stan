@@ -12,7 +12,7 @@ functions {
         vector psi_phi
     ) {
         int nrow = rows(time);
-        vector[nrow] psi_phi_mod = replace_lt_0(psi_phi, 0);
+        vector[nrow] psi_phi_mod = if_lt0_else(time, psi_phi, 0);
 
         vector[nrow] result = fmin(
             8000.0,

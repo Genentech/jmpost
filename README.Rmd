@@ -67,27 +67,24 @@ of the input data and use `DataJoint()` to bring it into the right format.
 ```{r sim_data}
 library(jmpost)
 set.seed(321)
-sim_data <- simulate_joint_data(
-    lm_fun = sim_lm_random_slope(),
-    os_fun = sim_os_exponential(lambda = 1 / 100)
+sim_data <- SimJointData(
+    longitudinal = SimLongitudinalRandomSlope(),
+    survival = SimSurvivalExponential(lambda = 1 / 100)
 )
-os_data <- sim_data$os
-long_data <- sim_data$lm |>
-    dplyr::arrange(time, pt)
 
 joint_data <- DataJoint(
     subject = DataSubject(
-        data = os_data,
+        data = sim_data@survival,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
     survival = DataSurvival(
-        data = os_data,
+        data = sim_data@survival,
         formula = Surv(time, event) ~ cov_cat + cov_cont
     ),
     longitudinal = DataLongitudinal(
-        data = long_data,
+        data = sim_dat@longitudinal,
         formula = sld ~ time,
         threshold = 5
     )

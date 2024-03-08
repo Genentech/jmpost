@@ -11,15 +11,13 @@ functions {
         vector psi_kg
     ) {
         int n = rows(time);
-        vector[n] is_post_baseline = ifelse(
-            is_negative(time),
-            zeros_vector(n),
-            rep_vector(1, n)
-        );
+        vector[n] psi_ks_mod = if_lt0_else(time, psi_ks, 0);
         vector[n] result = fmin(
             8000.0,
-            psi_bsld .* is_post_baseline .* (
-                exp(- psi_ks .* time) +  exp(psi_kg .* time) - rep_vector(1, n)
+            psi_bsld  .* (
+                exp(- psi_ks_mod .* time)
+                + exp(psi_kg .* time)
+                - rep_vector(1, n)
             )
         );
         return result;

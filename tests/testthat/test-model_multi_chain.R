@@ -7,47 +7,46 @@ test_that("Can recover known distribution parameters from random slope model whe
     )
 
     set.seed(3251)
-    jlist <- simulate_joint_data(
+    jlist <- SimJointData(
         design = list(
             SimGroup(150, "Arm-A", "Study-X"),
             SimGroup(150, "Arm-B", "Study-X")
         ),
-        times = 1:2000,
-        lambda_cen = 1 / 9000,
-        beta_cat = c(
-            "A" = 0,
-            "B" = -0.1,
-            "C" = 0.5
+        survival = SimSurvivalExponential(
+            lambda = 1 / 200,
+            time_max = 2000,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
         ),
-        beta_cont = 0.3,
-        lm_fun = sim_lm_random_slope(
+        longitudinal = SimLongitudinalRandomSlope(
+            times = c(1, 50, 100, 150, 200, 250, 300),
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
             slope_sigma = 0.2,
             link_dsld = 0.1
         ),
-        os_fun = sim_os_exponential(lambda = 1 / 200)
+        .silent = TRUE
     )
-
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
-        dplyr::arrange(time, pt)
 
     jdat <- DataJoint(
         subject = DataSubject(
-            data = dat_os,
+            data = jlist@survival,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
         survival = DataSurvival(
-            data = dat_os,
+            data = jlist@survival,
             formula = Surv(time, event) ~ cov_cat + cov_cont
         ),
         longitudinal = DataLongitudinal(
-            data = dat_lm,
+            data = jlist@longitudinal,
             formula = sld ~ time,
             threshold = 5
         )

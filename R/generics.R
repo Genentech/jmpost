@@ -327,3 +327,19 @@ linkDSLD <- function(object, ...) {
 linkIdentity <- function(object, ...) {
     UseMethod("linkIdentity")
 }
+
+
+# TODO - Docs
+#' @export
+sampleObservations <- function(object, times_df) {
+    UseMethod("sampleObservations")
+}
+
+#' @export
+sampleSubjects <- function(object, subjects_df) {
+    UseMethod("sampleSubjects")
+}
+
+hazardWindows <- function(object) {
+    UseMethod("hazardWindows")
+}

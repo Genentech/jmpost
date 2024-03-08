@@ -8,29 +8,28 @@ ensure_test_data_1 <- function() {
     }
 
     set.seed(739)
-    jlist <- simulate_joint_data(
+    simjdat <- SimJointData(
         design = list(
             SimGroup(250, "Arm-A", "Study-X"),
             SimGroup(150, "Arm-B", "Study-X")
         ),
-        times = 1:2000,
-        lambda_cen = 1 / 9000,
-        lm_fun = sim_lm_random_slope(
+        survival = SimSurvivalExponential(
+            lambda = 1 / 100,
+            time_max = 2000
+        ),
+        longitudinal = SimLongitudinalRandomSlope(
+            times = c(0, 1, 100, 200, 250, 300, 350),
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
             slope_sigma = 0.2,
             link_dsld = 0
         ),
-        os_fun = sim_os_exponential(1 / 100),
-        .debug = TRUE,
         .silent = TRUE
     )
 
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(0, 1, 100, 200, 250, 300, 350)) |>
-        dplyr::arrange(pt, time)
+    dat_os <- simjdat@survival
+    dat_lm <- simjdat@longitudinal
 
 
     jm <- JointModel(

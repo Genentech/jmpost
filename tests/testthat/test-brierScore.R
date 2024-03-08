@@ -11,63 +11,13 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     # related to extracting the predicted values & the time & event data are working
     # as expected.
     #
+    ensure_test_data_1()
 
-
-    set.seed(11023)
-    jlist <- simulate_joint_data(
-        design = list(
-            SimGroup(100, "Arm-A", "Study-X"),
-            SimGroup(150, "Arm-B", "Study-X")
-        ),
-        times = seq(1, 1000, by = 0.5),
-        lambda_cen = 1 / 9000,
-        beta_cat = c(
-            "A" = 0,
-            "B" = -0.3,
-            "C" = 0.5
-        ),
-        beta_cont = 0.2,
-        lm_fun = sim_lm_random_slope(),
-        os_fun = sim_os_exponential(lambda = 1 / 100)
-    )
-
-    dat_os <- jlist$os
-
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(1, 100, 150, 200, 300, 400, 500, 600, 800, 900)) |>
-        dplyr::arrange(time, pt)
-
-
-    jm <- JointModel(
-        survival = SurvivalExponential()
-    )
-
-    jdat <- DataJoint(
-        subject = DataSubject(
-            data = dat_os,
-            subject = "pt",
-            arm = "arm",
-            study = "study"
-        ),
-        survival = DataSurvival(
-            data = dat_os,
-            formula = Surv(time, event) ~ cov_cat + cov_cont
-        )
-    )
-
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 300,
-        iter_warmup = 300,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
-
+    dat_os <- test_data_1$dat_os
+    mp <- test_data_1$jsamples
 
     ### Get our internal bayesian estimate
-    t_grid <- c(1, 50, 100, 400, 800)
+    t_grid <- c(1, 50, 75, 350, 860)
     sq <- SurvivalQuantities(
         mp,
         time_grid = t_grid,

@@ -20,21 +20,21 @@ test_that("SurvivalLogLogistic can recover known values", {
     true_b <- 2
     true_beta <- c(0.5, -0.2, 0.1)
     set.seed(837)
-    jlist <- suppressMessages({
-        simulate_joint_data(
-            design = list(
-                SimGroup(300, "Arm-A", "Study-X")
-            ),
-            times = seq(1, 2000, by = 0.5),
-            lambda_cen = 1 / 9000,
+
+    jdat <- SimJointData(
+        design = list(SimGroup(350, "Arm-A", "Study-X")),
+        survival = SimSurvivalLogLogistic(
+            a = true_a,
+            b = true_b,
+            lambda_censor = 1 / 9000,
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
             beta_cont = true_beta[3],
-            lm_fun = sim_lm_random_slope(link_dsld = 0, slope_mu = 0),
-            os_fun = sim_os_loglogistic(a = true_a, b = true_b)
-        )
-    })
+        ),
+        longitudinal = SimLongitudinalRandomSlope(slope_mu = 0),
+        .silent = TRUE
+    )
 
-    dat_os <- jlist$os
+    dat_os <- jdat@survival
 
     jm <- JointModel(
         survival = SurvivalLogLogistic(
@@ -59,8 +59,8 @@ test_that("SurvivalLogLogistic can recover known values", {
     mp <- sampleStanModel(
         jm,
         data = jdat,
-        iter_sampling = 500,
-        iter_warmup = 400,
+        iter_warmup = 300,
+        iter_sampling = 400,
         chains = 1,
         refresh = 0,
         parallel_chains = 1
@@ -80,9 +80,6 @@ test_that("SurvivalLogLogistic can recover known values", {
     expect_true(all(abs(z_score) <= qnorm(0.99)))
 
 })
-
-
-
 
 
 test_that("Print method for SurvivalLogLogistic works as expected", {
