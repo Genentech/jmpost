@@ -87,7 +87,9 @@ Collate:
     'SimGroup.R'
     'SimJointData.R'
     'SimLongitudinal.R'
+    'SimLongitudinalGSF.R'
     'SimLongitudinalRandomSlope.R'
+    'SimLongitudinalSteinFojo.R'
     'SimSurvival.R'
     'SurvivalExponential.R'
     'SurvivalLoglogistic.R'
@@ -97,8 +99,6 @@ Collate:
     'external-exports.R'
     'jmpost-package.R'
     'settings.R'
-    'simulations_gsf.R'
-    'simulations_sf.R'
     'zzz.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack

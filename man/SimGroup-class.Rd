@@ -17,7 +17,7 @@ SimGroup(n, arm, study)
 \item{study}{(\code{character})\cr study name.}
 }
 \description{
-Specifies a simulation group to be used by \code{\link[=simulate_joint_data]{simulate_joint_data()}}.
+Specifies a simulation group to be used by \code{\link[=SimJointData]{SimJointData()}}.
 }
 \section{Slots}{
 

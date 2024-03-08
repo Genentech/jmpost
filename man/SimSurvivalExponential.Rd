@@ -4,7 +4,14 @@
 \alias{SimSurvivalExponential}
 \title{Construct a Log Hazard Function for the Exponential Model}
 \usage{
-SimSurvivalExponential(lambda, ...)
+SimSurvivalExponential(
+  lambda,
+  time_max = 2000,
+  time_step = 1,
+  lambda_censor = 1/3000,
+  beta_cont = 0.2,
+  beta_cat = c(A = 0, B = -0.4, C = 0.2)
+)
 }
 \arguments{
 \item{lambda}{(\code{number})\cr the rate parameter.}

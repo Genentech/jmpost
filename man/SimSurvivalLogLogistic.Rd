@@ -4,7 +4,15 @@
 \alias{SimSurvivalLogLogistic}
 \title{Construct a Log Hazard Function for the Log-Logistic Model}
 \usage{
-SimSurvivalLogLogistic(a, b, ...)
+SimSurvivalLogLogistic(
+  a,
+  b,
+  time_max = 2000,
+  time_step = 1,
+  lambda_censor = 1/3000,
+  beta_cont = 0.2,
+  beta_cat = c(A = 0, B = -0.4, C = 0.2)
+)
 }
 \arguments{
 \item{a}{(\code{number})\cr the scale parameter.}
