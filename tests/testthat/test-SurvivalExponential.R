@@ -2,9 +2,9 @@
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
     true_lambda <- 1 / 100
     true_beta <- c(0.5, -0.2, 0.1)
-    set.seed(20234)
+    set.seed(2034)
     jdat <- SimJointData(
-        design = list(SimGroup(650, "Arm-A", "Study-X")),
+        design = list(SimGroup(700, "Arm-A", "Study-X")),
         survival = SimSurvivalExponential(
             lambda = true_lambda,
             lambda_censor = 1 / 9000,
@@ -35,8 +35,8 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
         sampleStanModel(
             jm,
             data = jdat,
-            iter_sampling = 400,
-            iter_warmup = 400,
+            iter_sampling = 600,
+            iter_warmup = 500,
             chains = 1,
             refresh = 0,
             parallel_chains = 1

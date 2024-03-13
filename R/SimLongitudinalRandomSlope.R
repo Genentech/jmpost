@@ -60,7 +60,7 @@ sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
     times_df |>
         dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, object@sigma)) |>
         dplyr::mutate(sld_mu = .data$intercept + .data$slope_ind * .data$time) |>
-        dplyr::mutate(sld = sld_mu + .data$err) |>
+        dplyr::mutate(sld = .data$sld_mu + .data$err) |>
         dplyr::mutate(
             log_haz_link =
                 object@link_dsld * .data$slope_ind +

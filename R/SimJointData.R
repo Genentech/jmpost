@@ -107,7 +107,7 @@ SimJointData <- function(
     )
 
     lm_dat2 <- lm_dat |>
-        dplyr::left_join(dplyr::select(os_dat, pt, os_time = time), by = "pt") |>
+        dplyr::left_join(dplyr::select(os_dat, "pt", os_time = "time"), by = "pt") |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
         dplyr::arrange(dplyr::pick(c("pt", "time")))
 
