@@ -8,7 +8,7 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        list("a" = c("pt_00001", "pt_00002")),
+        list("a" = c("pt_001", "pt_002")),
         c(10, 20, 200, 300)
     )
     preds <- summary(survsamps)
@@ -30,7 +30,7 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        c("pt_00001", "pt_00003")
+        c("pt_001", "pt_003")
     )
     preds <- preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
@@ -40,18 +40,18 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
     # Check that the relationship between the quantitites is preservered e.g.
     # that `surv = exp(-cumhaz)`
     preds1 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_00001", c(200, 300)
+        test_data_1$jsamples, "pt_001", c(200, 300)
     ) |> summary()
     preds2 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_00001", c(200, 300),
+        test_data_1$jsamples, "pt_001", c(200, 300),
         type = "cumhaz"
     ) |> summary()
     preds3 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_00001", c(200, 300),
+        test_data_1$jsamples, "pt_001", c(200, 300),
         type = "haz"
     ) |> summary()
     preds4 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_00001", c(200, 300),
+        test_data_1$jsamples, "pt_001", c(200, 300),
         type = "loghaz"
     ) |> summary()
     expect_equal(unique(preds1$type), "surv")
@@ -68,7 +68,7 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
 test_that("autoplot.SurvivalSamples works as expected", {
     samps <- SurvivalQuantities(
         test_data_1$jsamples,
-        c("pt_00011", "pt_00061")
+        c("pt_011", "pt_061")
     )
     p <- autoplot(
         samps,
@@ -85,7 +85,7 @@ test_that("autoplot.SurvivalSamples works as expected", {
 
     samps <- SurvivalQuantities(
         test_data_1$jsamples,
-        groups = list("a" = c("pt_00011", "pt_00061"), "b" = c("pt_00001", "pt_00002")),
+        groups = list("a" = c("pt_011", "pt_061"), "b" = c("pt_001", "pt_002")),
         type = "loghaz",
         time_grid = c(10, 20, 50, 200)
     )

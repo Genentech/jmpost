@@ -1,9 +1,7 @@
 
-
-# TODO - Docs
-
-#' Construct a Simulation Function for Longitudinal Data from Random Slope Model
+#' Simulate Longitudinal Data from a Random Slope Model
 #'
+#' @param times (`numeric`)\cr the times to generate observations at.
 #' @param intercept (`number`)\cr the mean baseline value for each study.
 #' @param slope_mu (`numeric`)\cr the population slope for each treatment arm.
 #' @param slope_sigma (`number`)\cr the random slope standard deviation.
@@ -11,8 +9,15 @@
 #' @param link_dsld (`number`)\cr the link coefficient for the DSLD contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the identity contribution.
 #'
-#' @returns A function with argument `lm_base` that can be used to simulate
-#'   longitudinal data from the corresponding random slope model.
+#' @slot intercept (`numeric`)\cr See arguments.
+#' @slot slope_mu (`numeric`)\cr See arguments.
+#' @slot slope_sigma (`numeric`)\cr See arguments.
+#' @slot sigma (`numeric`)\cr See arguments.
+#' @slot link_dsld (`numeric`)\cr See arguments.
+#' @slot link_identity (`numeric`)\cr See arguments.
+#'
+#' @family SimLongitudinal
+#' @name SimLongitudinalRandomSlope-class
 #' @exportClass SimLongitudinalRandomSlope
 .SimLongitudinalRandomSlope <- setClass(
     "SimLongitudinalRandomSlope",
@@ -27,6 +32,7 @@
     )
 )
 
+#' @rdname SimLongitudinalRandomSlope-class
 #' @export
 SimLongitudinalRandomSlope <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
@@ -48,6 +54,7 @@ SimLongitudinalRandomSlope <- function(
     )
 }
 
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
     times_df |>
@@ -61,7 +68,7 @@ sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
         )
 }
 
-
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     assert_that(

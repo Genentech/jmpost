@@ -1,9 +1,7 @@
 
-
-# TODO - Docs
-
-#' Construct a Simulation Function for Longitudinal Data from GSF Model
+#' Simulate Longitudinal Data from a  GSF Model
 #'
+#' @param times (`numeric`)\cr the times to generate observations at.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param mu_s (`numeric`)\cr the mean shrinkage rates for the two treatment arms.
 #' @param mu_g (`numeric`)\cr the mean growth rates for the two treatment arms.
@@ -17,9 +15,20 @@
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #'
-#' @returns A function with argument `lm_base` that can be used to simulate
-#'   longitudinal data from the corresponding GSF model.
-#'
+#' @slot sigma (`numeric`)\cr See arguments.
+#' @slot mu_s (`numeric`)\cr See arguments.
+#' @slot mu_g (`numeric`)\cr See arguments.
+#' @slot mu_b (`numeric`)\cr See arguments.
+#' @slot omega_b (`numeric`)\cr See arguments.
+#' @slot omega_s (`numeric`)\cr See arguments.
+#' @slot omega_g (`numeric`)\cr See arguments.
+#' @slot a_phi (`numeric`)\cr See arguments.
+#' @slot b_phi (`numeric`)\cr See arguments.
+#' @slot link_dsld (`numeric`)\cr See arguments.
+#' @slot link_ttg (`numeric`)\cr See arguments.
+#' @slot link_identity (`numeric`)\cr See arguments.
+#' @family SimLongitudinal
+#' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
 .SimLongitudinalGSF <- setClass(
     "SimLongitudinalGSF",
@@ -40,6 +49,7 @@
     )
 )
 
+#' @rdname SimLongitudinalGSF-class
 #' @export
 SimLongitudinalGSF <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
@@ -100,6 +110,7 @@ setValidity(
 )
 
 
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
     times_df |>
@@ -116,16 +127,17 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
 }
 
 
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
     assert_that(
-        length(subjects_df$study) == length(object@mu_b),
-        length(subjects_df$arm) == length(object@mu_s),
         is.factor(subjects_df$study),
-        is.factor(subjects_df$arm)
+        is.factor(subjects_df$arm),
+        length(levels(subjects_df$study)) == length(object@mu_b),
+        length(levels(subjects_df$arm)) == length(object@mu_s)
     )
 
-    subjects_df |>
+    res <- subjects_df |>
         dplyr::distinct(.data$pt, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
@@ -133,6 +145,8 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
         dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g)) |>
         dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), object@a_phi[.data$arm_idx], object@b_phi[.data$arm_idx]))
+
+    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
 
 
@@ -149,11 +163,8 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
 #' @param phi (`number`)\cr shrinkage proportion.
 #'
 #' @returns The function results.
-#' @export
-#' @keywords internal
 #'
-#' @examples
-#' gsf_sld(1:10, 20, 0.3, 0.6, 0.2)
+#' @keywords internal
 gsf_sld <- function(time, b, s, g, phi) {
     phi <- dplyr::if_else(time >= 0, phi, 0)
     b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
@@ -161,9 +172,6 @@ gsf_sld <- function(time, b, s, g, phi) {
 
 
 #' @rdname gsf_sld
-#' @export
-#' @examples
-#' gsf_ttg(1:10, 20, 0.3, 0.6, 0.2)
 gsf_ttg <- function(time, b, s, g, phi) {
     t1 <- (log(s * phi / (g * (1 - phi))) / (g + s))
     t1[t1 <= 0] <- 0
@@ -172,9 +180,6 @@ gsf_ttg <- function(time, b, s, g, phi) {
 
 
 #' @rdname gsf_sld
-#' @export
-#' @examples
-#' gsf_dsld(1:10, 20, 0.3, 0.6, 0.2)
 gsf_dsld <- function(time, b, s, g, phi) {
     phi <- dplyr::if_else(time >= 0, phi, 0)
     t1 <- (1 - phi) * g * exp(g * time)

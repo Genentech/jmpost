@@ -57,27 +57,31 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     skip_if_not(is_full_test())
 
     set.seed(7143)
-    jlist <- simulate_joint_data(
-        .debug = TRUE,
+    jlist <- SimJointData(
         design = list(
             SimGroup(80, "Arm-A", "Study-X"),
             SimGroup(100, "Arm-B", "Study-X")
         ),
-        times = seq(0, 3, by = (1 / 365) / 2),
-        lambda_cen = 1 / 9000,
-        beta_cat = c(
-            "A" = 0,
-            "B" = -0.1,
-            "C" = 0.5
+        survival = SimSurvivalExponential(
+            lambda = 1 / (400 / 365),
+            time_max = 3,
+            time_step = 1 / 365,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
         ),
-        beta_cont = 0.3,
-        lm_fun = sim_lm_gsf(
+        longitudinal = SimLongitudinalGSF(
+            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
             sigma = 0.01,
             mu_s = c(0.6, 0.4),
             mu_g = c(0.25, 0.35),
             mu_b = 60,
-            a_phi = c(4, 6),
-            b_phi = c(4, 6),
+            a_phi = c(20, 15),
+            b_phi = c(15, 20),
             omega_b = 0.2,
             omega_s = 0.2,
             omega_g = 0.2,
@@ -85,30 +89,22 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             link_ttg = 0.2,
             link_identity = 0
         ),
-        os_fun = sim_os_exponential(1 / (400 / 365))
+        .silent = TRUE
     )
-
-    set.seed(333)
-    select_times <- sample(jlist$lm$time, 12)
-
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% select_times) |>
-        dplyr::arrange(time, pt)
 
     jdat <- DataJoint(
         subject = DataSubject(
-            data = dat_os,
+            data = jlist@survival,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
         survival = DataSurvival(
-            data = dat_os,
+            data = jlist@survival,
             formula = Surv(time, event) ~ cov_cat + cov_cont
         ),
         longitudinal = DataLongitudinal(
-            data = dat_lm,
+            data = jlist@longitudinal,
             formula = sld ~ time
         )
     )
@@ -121,8 +117,8 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             omega_bsld = prior_lognormal(log(0.2), 1),
             omega_ks = prior_lognormal(log(0.2), 1),
             omega_kg = prior_lognormal(log(0.2), 1),
-            a_phi = prior_lognormal(log(6), 1),
-            b_phi = prior_lognormal(log(8), 1),
+            a_phi = prior_lognormal(log(18), 1),
+            b_phi = prior_lognormal(log(18), 1),
             sigma = prior_lognormal(log(0.01), 1),
             centred = TRUE
         ),
@@ -135,15 +131,19 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         )
     )
 
-    mp <- suppressWarnings(sampleStanModel(
-        jm,
-        data = jdat,
-        iter_warmup = 400,
-        iter_sampling = 800,
-        chains = 2,
-        refresh = 0,
-        parallel_chains = 2
-    ))
+    suppressWarnings({
+        mp <- run_quietly({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_warmup = 400,
+                iter_sampling = 800,
+                chains = 2,
+                refresh = 0,
+                parallel_chains = 2
+            )
+        })
+    })
 
     summary_post <- function(model, vars, exp = FALSE) {
         no_name_quant <- \(...) {
@@ -184,7 +184,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         c("link_dsld", "link_ttg", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
     )
 
-    true_values <- c(0.1, 0.2, 4, 8, 4, 8, 1 / (1 / (400 / 365)))
+    true_values <- c(0.1, 0.2, 20, 15, 15, 20, 1 / (1 / (400 / 365)))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))

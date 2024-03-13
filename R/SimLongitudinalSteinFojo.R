@@ -1,9 +1,7 @@
 
-
-# TODO - Docs
-
-#' Construct a Simulation Function for Longitudinal Data from Stein-Fojo Model
+#' Simulate Longitudinal Data from a Stein-Fojo Model
 #'
+#' @param times (`numeric`)\cr the times to generate observations at.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param mu_s (`numeric`)\cr the mean shrinkage rates for the two treatment arms.
 #' @param mu_g (`numeric`)\cr the mean growth rates for the two treatment arms.
@@ -15,10 +13,20 @@
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #'
-#' @returns A function with argument `lm_base` that can be used to simulate
-#'   longitudinal data from the corresponding Stein-Fojo model.
+#' @slot sigma (`numeric`)\cr See arguments.
+#' @slot mu_s (`numeric`)\cr See arguments.
+#' @slot mu_g (`numeric`)\cr See arguments.
+#' @slot mu_b (`numeric`)\cr See arguments.
+#' @slot omega_b (`numeric`)\cr See arguments.
+#' @slot omega_s (`numeric`)\cr See arguments.
+#' @slot omega_g (`numeric`)\cr See arguments.
+#' @slot link_dsld (`numeric`)\cr See arguments.
+#' @slot link_ttg (`numeric`)\cr See arguments.
+#' @slot link_identity (`numeric`)\cr See arguments.
 #'
-#' @exportclass SimLongitudinalSteinFojo
+#' @family SimLongitudinal
+#' @name SimLongitudinalSteinFojo-class
+#' @exportClass SimLongitudinalSteinFojo
 .SimLongitudinalSteinFojo <- setClass(
     "SimLongitudinalSteinFojo",
     contains = "SimLongitudinal",
@@ -36,6 +44,7 @@
     )
 )
 
+#' @rdname SimLongitudinalSteinFojo-class
 #' @export
 SimLongitudinalSteinFojo <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
@@ -89,7 +98,7 @@ setValidity(
     }
 )
 
-
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
     times_df |>
@@ -106,22 +115,25 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
 }
 
 
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
     assert_that(
-        length(subjects_df$study) == length(object@mu_b),
-        length(subjects_df$arm) == length(object@mu_s),
         is.factor(subjects_df$study),
-        is.factor(subjects_df$arm)
+        is.factor(subjects_df$arm),
+        length(levels(subjects_df$study)) == length(object@mu_b),
+        length(levels(subjects_df$arm)) == length(object@mu_s)
     )
 
-    subjects_df |>
+    res <- subjects_df |>
         dplyr::distinct(.data$pt, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
         dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(object@mu_b[.data$study_idx]), object@omega_b)) |>
         dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
         dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g))
+
+    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g")]
 }
 
 
@@ -134,9 +146,6 @@ sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
 #'
 #' @returns The function results.
 #' @keywords internal
-#' @export
-#' @examples
-#' sf_sld(1:10, 20, 0.3, 0.6)
 sf_sld <- function(time, b, s, g) {
     s <- dplyr::if_else(time >= 0, s, 0)
     b * (exp(-s * time) + exp(g * time) - 1)
@@ -144,9 +153,6 @@ sf_sld <- function(time, b, s, g) {
 
 
 #' @rdname sf_sld
-#' @export
-#' @examples
-#' sf_ttg(1:10, 20, 0.3, 0.6)
 sf_ttg <- function(time, b, s, g) {
     t1 <- (log(s) - log(g)) / (g + s)
     t1[t1 <= 0] <- 0
@@ -155,9 +161,6 @@ sf_ttg <- function(time, b, s, g) {
 
 
 #' @rdname sf_sld
-#' @export
-#' @examples
-#' sf_dsld(1:10, 20, 0.3, 0.6)
 sf_dsld <- function(time, b, s, g) {
     s <- dplyr::if_else(time >= 0, s, 0)
     t1 <- g * exp(g * time)

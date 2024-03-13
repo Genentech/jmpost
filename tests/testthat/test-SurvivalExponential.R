@@ -31,15 +31,17 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 400,
-        iter_warmup = 400,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 400,
+            iter_warmup = 400,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
 
     # Variables to extract (order important)
     vars <- c("sm_exp_lambda", "beta_os_cov")

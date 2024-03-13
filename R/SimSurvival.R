@@ -1,5 +1,50 @@
-# TODO - docs
+
+#' `SimSurvival` Function Arguments
+#'
+#' The documentation lists all the conventional arguments for [`SimSurvival`]
+#' constructors.
+#'
+#' @param time_max (`number`)\cr the maximum time to simulate to.
+#' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
+#' @param lambda_censor (`number`)\cr the censoring rate.
+#' @param beta_cont (`number`)\cr the continuous covariate coefficient.
+#' @param beta_cat (`numeric`)\cr the categorical covariate coefficients.
+#' @param loghazard (`function`)\cr the log hazard function.
+#' @param ... Not Used.
+#'
+#' @section Hazard Evaluation:
+#'
+#' Event times are simulated by sampling a cumulative hazard limit from a \eqn{U(0, 1)} distribution
+#' for
+#' each subject and then counting how much hazard they've been exposed to by evaluating the
+#' log-hazard function at a set interval. The `time_max` argument sets the upper bound for the
+#' number of time points to evaluate the log-hazard function at with subjects who have not had an
+#' event being censored at `time_max`. The `time_step` argument sets the interval at which to
+#' evaluate the log-hazard function. Setting smaller values for `time_step` will increase the
+#' precision of the simulation at the cost of increased computation time. Likewise, setting large
+#' values for `time_max` will minimize the number of censored subjects at the cost of
+#' incread computation time.
+#'
+#' @name SimSurvival-Shared
+#' @keywords internal
+NULL
+
+
+#' Abstract Simulation Class for Survival Data
+#'
+#' @inheritParams SimSurvival-Shared
+#' @inheritSection SimSurvival-Shared Hazard Evaluation
+#'
+#' @slot time_max (`numeric`)\cr See arguments.
+#' @slot time_step (`numeric`)\cr See arguments.
+#' @slot lambda_censor (`numeric`)\cr See arguments.
+#' @slot beta_cont (`numeric`)\cr See arguments.
+#' @slot beta_cat (`numeric`)\cr See arguments.
+#' @slot loghazard (`function`)\cr See arguments.
+#'
+#' @family SimSurvival
 #' @exportClass SimSurvival
+#' @name SimSurvival-class
 .SimSurvival <- setClass(
     "SimSurvival",
     slots = c(
@@ -12,6 +57,7 @@
     )
 )
 
+#' @rdname SimSurvival-class
 #' @export
 SimSurvival <- function(
     time_max = 2000,
@@ -33,7 +79,7 @@ SimSurvival <- function(
 
 #' Construct Time Intervals
 #'
-#' @param x (`numeric`)\cr grid of time points.
+#' @param object (`SimSurvival`)\cr the survival simulation object to create evaluation points for.
 #'
 #' @return A `tibble` with `lower`, `upper`, `time`, `eval` and `width`.
 #' @keywords internal
@@ -51,6 +97,7 @@ hazardWindows.SimSurvival <- function(object) {
     )
 }
 
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimSurvival <- function(object, subjects_df) {
     subjects_df |>
@@ -65,6 +112,8 @@ sampleSubjects.SimSurvival <- function(object, subjects_df) {
         dplyr::mutate(time_cen = stats::rexp(dplyr::n(), object@lambda_censor))
 }
 
+
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimSurvival <- function(object, times_df) {
 
@@ -117,12 +166,16 @@ sampleObservations.SimSurvival <- function(object, times_df) {
 }
 
 
-#' Construct a Log Hazard Function for the Weibull Model
+#' Simulate Survival Data from a Weibull Proportional Hazard Model
 #'
 #' @param lambda (`number`)\cr the scale parameter.
 #' @param gamma (`number`)\cr the shape parameter.
 #'
-#' @returns A function of `time` returning the log hazard.
+#' @inheritParams SimSurvival-Shared
+#' @inheritSection SimSurvival-Shared Hazard Evaluation
+#'
+#' @family SimSurvival
+#'
 #' @export
 SimSurvivalWeibullPH <- function(
     lambda,
@@ -146,12 +199,15 @@ SimSurvivalWeibullPH <- function(
 }
 
 
-#' Construct a Log Hazard Function for the Log-Logistic Model
+#' Simulate Survival Data from a Log-Logistic Proportional Hazard Model
 #'
 #' @param a (`number`)\cr the scale parameter.
 #' @param b (`number`)\cr the shape parameter.
 #'
-#' @returns A function of `time` returning the log hazard.
+#' @inheritParams SimSurvival-Shared
+#' @inheritSection SimSurvival-Shared Hazard Evaluation
+#'
+#' @family SimSurvival
 #' @export
 SimSurvivalLogLogistic <- function(
     a,
@@ -178,11 +234,15 @@ SimSurvivalLogLogistic <- function(
 
 
 
-#' Construct a Log Hazard Function for the Exponential Model
+#' Simulate Survival Data from a Exponential Proportional Hazard Model
 #'
 #' @param lambda (`number`)\cr the rate parameter.
 #'
-#' @returns A function of `time` returning the log hazard.
+#' @inheritParams SimSurvival-Shared
+#' @inheritSection SimSurvival-Shared Hazard Evaluation
+#'
+#' @family SimSurvival
+#'
 #' @export
 SimSurvivalExponential <- function(
     lambda,
@@ -203,4 +263,3 @@ SimSurvivalExponential <- function(
         }
     )
 }
-

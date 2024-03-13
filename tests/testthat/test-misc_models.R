@@ -9,7 +9,7 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
     mp <- capture_messages({
         devnull_out <- capture.output({
             devnull_model <- sampleStanModel(
-                jm,
+                test_data_1$jmodel,
                 data = test_data_1$jdata,
                 iter_sampling = 3,
                 iter_warmup = 3,

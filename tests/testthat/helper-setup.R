@@ -34,3 +34,9 @@ load_with_base_stan <- function(...) {
         StanModule("base/functions.stan")
     )
 }
+
+
+run_quietly <- function(expr) {
+    suppressMessages(capture.output((x <- expr)))
+    return(x)
+}

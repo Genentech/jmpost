@@ -4,8 +4,22 @@
 \name{SimLongitudinalRandomSlope-class}
 \alias{SimLongitudinalRandomSlope-class}
 \alias{.SimLongitudinalRandomSlope}
-\title{Construct a Simulation Function for Longitudinal Data from Random Slope Model}
+\alias{SimLongitudinalRandomSlope}
+\title{Simulate Longitudinal Data from a Random Slope Model}
+\usage{
+SimLongitudinalRandomSlope(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  intercept = 50,
+  slope_mu = c(0.01, 0.03),
+  slope_sigma = 0.5,
+  sigma = 2,
+  link_dsld = 0,
+  link_identity = 0
+)
+}
 \arguments{
+\item{times}{(\code{numeric})\cr the times to generate observations at.}
+
 \item{intercept}{(\code{number})\cr the mean baseline value for each study.}
 
 \item{slope_mu}{(\code{numeric})\cr the population slope for each treatment arm.}
@@ -18,10 +32,29 @@
 
 \item{link_identity}{(\code{number})\cr the link coefficient for the identity contribution.}
 }
-\value{
-A function with argument \code{lm_base} that can be used to simulate
-longitudinal data from the corresponding random slope model.
-}
 \description{
-Construct a Simulation Function for Longitudinal Data from Random Slope Model
+Simulate Longitudinal Data from a Random Slope Model
 }
+\section{Slots}{
+
+\describe{
+\item{\code{intercept}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{slope_mu}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{slope_sigma}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{sigma}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_dsld}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
+}}
+
+\seealso{
+Other SimLongitudinal: 
+\code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalGSF-class}},
+\code{\link{SimLongitudinalSteinFojo-class}}
+}
+\concept{SimLongitudinal}

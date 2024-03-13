@@ -4,8 +4,28 @@
 \name{SimLongitudinalGSF-class}
 \alias{SimLongitudinalGSF-class}
 \alias{.SimLongitudinalGSF}
-\title{Construct a Simulation Function for Longitudinal Data from GSF Model}
+\alias{SimLongitudinalGSF}
+\title{Simulate Longitudinal Data from a  GSF Model}
+\usage{
+SimLongitudinalGSF(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
+  sigma = 0.01,
+  mu_s = c(0.6, 0.4),
+  mu_g = c(0.25, 0.35),
+  mu_b = 60,
+  a_phi = c(4, 6),
+  b_phi = c(4, 6),
+  omega_b = 0.2,
+  omega_s = 0.2,
+  omega_g = 0.2,
+  link_dsld = 0,
+  link_ttg = 0,
+  link_identity = 0
+)
+}
 \arguments{
+\item{times}{(\code{numeric})\cr the times to generate observations at.}
+
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
 \item{mu_s}{(\code{numeric})\cr the mean shrinkage rates for the two treatment arms.}
@@ -14,15 +34,15 @@
 
 \item{mu_b}{(\code{numeric})\cr the mean baseline values for the two treatment arms.}
 
+\item{a_phi}{(\code{number})\cr the alpha parameter for the fraction of cells that respond to treatment.}
+
+\item{b_phi}{(\code{number})\cr the beta parameter for the fraction of cells that respond to treatment.}
+
 \item{omega_b}{(\code{number})\cr the baseline value standard deviation.}
 
 \item{omega_s}{(\code{number})\cr the shrinkage rate standard deviation.}
 
 \item{omega_g}{(\code{number})\cr the growth rate standard deviation.}
-
-\item{a_phi}{(\code{number})\cr the alpha parameter for the fraction of cells that respond to treatment.}
-
-\item{b_phi}{(\code{number})\cr the beta parameter for the fraction of cells that respond to treatment.}
 
 \item{link_dsld}{(\code{number})\cr the link coefficient for the derivative contribution.}
 
@@ -30,10 +50,41 @@
 
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 }
-\value{
-A function with argument \code{lm_base} that can be used to simulate
-longitudinal data from the corresponding GSF model.
-}
 \description{
-Construct a Simulation Function for Longitudinal Data from GSF Model
+Simulate Longitudinal Data from a  GSF Model
 }
+\section{Slots}{
+
+\describe{
+\item{\code{sigma}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_s}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_g}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_b}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_b}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_s}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_g}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{a_phi}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{b_phi}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_dsld}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_ttg}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
+}}
+
+\seealso{
+Other SimLongitudinal: 
+\code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalRandomSlope-class}},
+\code{\link{SimLongitudinalSteinFojo-class}}
+}
+\concept{SimLongitudinal}

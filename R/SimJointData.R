@@ -1,29 +1,12 @@
-# TODO - DOCS
-
-#' @exportClass SimJointData
-.SimJointData <- setClass(
-    "SimJointData",
-    slots = list(
-        longitudinal = "data.frame",
-        survival = "data.frame"
-    )
-)
-
-
-
-
 #' Simulating Joint Longitudinal and Time-to-Event Data
 #'
 #' @param design (`list`)\cr a list of [`SimGroup`] objects. See details.
-#' @param times (`numeric`)\cr time grid, e.g. specifying the days after randomization.
-#' @param lambda_cen (`number`)\cr rate of the exponential censoring distribution.
-#' @param beta_cont (`number`)\cr coefficient for the continuous covariate.
-#' @param beta_cat (`numeric`)\cr coefficients for the categorical covariate levels.
-#' @param longitudinal (`function`)\cr function of `lm_base` generating the longitudinal model outcomes.
-#' @param survival (`function`)\cr function of `lm_base` generating the survival model outcomes.
+#' @param longitudinal ([`SimLongitudinal`])\cr object specifying how to simulate the longitudinal data
+#' @param survival ([`SimSurvival`])\cr object specifying how to simulate the survival data
 #' @param .silent (`flag`)\cr whether to suppress info messages
-#' @param .debug (`flag`)\cr whether to enter debug mode such that the function
-#'   would only return a subset of columns.
+#'
+#' @slot longitudinal (`data.frame`)\cr the simulated longitudinal data.
+#' @slot survival (`data.frame`)\cr the simulated survival data.
 #'
 #' @details
 #'
@@ -38,7 +21,20 @@
 #' )
 #' ```
 #'
-#' @returns List with simulated `lm` (longitudinal) and `os` (survival) data sets.
+#' @name SimJointData-class
+#' @exportClass SimJointData
+.SimJointData <- setClass(
+    "SimJointData",
+    slots = list(
+        longitudinal = "data.frame",
+        survival = "data.frame"
+    )
+)
+
+
+
+
+#' @rdname SimJointData-class
 #' @export
 SimJointData <- function(
     design = list(
@@ -47,8 +43,7 @@ SimJointData <- function(
     ),
     longitudinal,
     survival,
-    .silent = FALSE,
-    .debug = FALSE
+    .silent = FALSE
 ) {
 
     assert(

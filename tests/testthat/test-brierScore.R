@@ -17,7 +17,7 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     mp <- test_data_1$jsamples
 
     ### Get our internal bayesian estimate
-    t_grid <- c(1, 50, 75, 350, 860)
+    t_grid <- c(1, 25, 60, 425, 750)
     sq <- SurvivalQuantities(
         mp,
         time_grid = t_grid,

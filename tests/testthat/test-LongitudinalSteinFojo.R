@@ -58,20 +58,13 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     set.seed(9438)
     ## Generate Test data with known parameters
-    jlist <- simulate_joint_data(
+    jlist <- SimJointData(
         design = list(
             SimGroup(120, "Arm-A", "Study-X"),
             SimGroup(120, "Arm-B", "Study-X")
         ),
-        times = seq(0, 4, by = (1 / 365) / 2),
-        lambda_cen = 1 / 9000,
-        beta_cat = c(
-            "A" = 0,
-            "B" = -0.1,
-            "C" = 0.5
-        ),
-        beta_cont = 0.3,
-        lm_fun = sim_lm_sf(
+        longitudinal = SimLongitudinalSteinFojo(
+            times = c(-100, -50, -10, 1, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900) * (1 / 365),
             sigma = 0.005,
             mu_s = c(0.2, 0.25),
             mu_g = c(0.15, 0.2),
@@ -82,19 +75,21 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             link_ttg = -0.2,
             link_dsld = 0.2
         ),
-        os_fun = sim_os_weibull(
+        survival = SimSurvivalWeibullPH(
+            time_max = 4,
+            time_step = 1 / 365,
             lambda = 1,
-            gamma = 1
-        )
+            gamma = 1,
+            lambda_cen = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
+        ),
+        .silent = TRUE
     )
-
-
-    dat_os <- jlist$os
-    select_times <- c(1, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900) * (1 / 365)
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% select_times) |>
-        dplyr::arrange(pt, time)
-
 
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
@@ -122,17 +117,17 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     jdat <- DataJoint(
         subject = DataSubject(
-            data = dat_os,
+            data = jlist@survival,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
         survival = DataSurvival(
-            data = dat_os,
+            data = jlist@survival,
             formula = Surv(time, event) ~ cov_cat + cov_cont
         ),
         longitudinal = DataLongitudinal(
-            data = dat_lm,
+            data = jlist@longitudinal,
             formula = sld ~ time,
             threshold = 5
         )
@@ -142,14 +137,16 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     set.seed(2213)
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 600,
-        iter_warmup = 1000,
-        chains = 2,
-        parallel_chains = 2
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 600,
+            iter_warmup = 1000,
+            chains = 2,
+            parallel_chains = 2
+        )
+    })
 
     summary_post <- function(model, vars, exp = FALSE) {
         dat <- model$summary(

@@ -4,8 +4,26 @@
 \name{SimLongitudinalSteinFojo-class}
 \alias{SimLongitudinalSteinFojo-class}
 \alias{.SimLongitudinalSteinFojo}
-\title{Construct a Simulation Function for Longitudinal Data from Stein-Fojo Model}
+\alias{SimLongitudinalSteinFojo}
+\title{Simulate Longitudinal Data from a Stein-Fojo Model}
+\usage{
+SimLongitudinalSteinFojo(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
+  sigma = 0.01,
+  mu_s = c(0.6, 0.4),
+  mu_g = c(0.25, 0.35),
+  mu_b = 60,
+  omega_b = 0.2,
+  omega_s = 0.2,
+  omega_g = 0.2,
+  link_dsld = 0,
+  link_ttg = 0,
+  link_identity = 0
+)
+}
 \arguments{
+\item{times}{(\code{numeric})\cr the times to generate observations at.}
+
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
 \item{mu_s}{(\code{numeric})\cr the mean shrinkage rates for the two treatment arms.}
@@ -26,10 +44,37 @@
 
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 }
-\value{
-A function with argument \code{lm_base} that can be used to simulate
-longitudinal data from the corresponding Stein-Fojo model.
-}
 \description{
-Construct a Simulation Function for Longitudinal Data from Stein-Fojo Model
+Simulate Longitudinal Data from a Stein-Fojo Model
 }
+\section{Slots}{
+
+\describe{
+\item{\code{sigma}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_s}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_g}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{mu_b}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_b}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_s}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{omega_g}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_dsld}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_ttg}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
+}}
+
+\seealso{
+Other SimLongitudinal: 
+\code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalGSF-class}},
+\code{\link{SimLongitudinalRandomSlope-class}}
+}
+\concept{SimLongitudinal}

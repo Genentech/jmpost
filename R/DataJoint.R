@@ -132,7 +132,7 @@ setValidity(
 #'
 #' @description
 #' Coerces a data object into a `list` of data components required
-#' for fitting a [`JointModel`]. See the vignette (TODO) for more details.
+#' for fitting a [`JointModel`]. See the "Extending jmpost" vignette for more details.
 #'
 #' @name as_stan_list.DataObject
 #' @family as_stan_list

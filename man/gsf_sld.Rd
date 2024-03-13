@@ -29,9 +29,4 @@ The function results.
 \description{
 Generalized Stein-Fojo Functionals
 }
-\examples{
-gsf_sld(1:10, 20, 0.3, 0.6, 0.2)
-gsf_ttg(1:10, 20, 0.3, 0.6, 0.2)
-gsf_dsld(1:10, 20, 0.3, 0.6, 0.2)
-}
 \keyword{internal}

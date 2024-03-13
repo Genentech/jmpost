@@ -60,19 +60,19 @@ ensure_test_data_1 <- function() {
             threshold = 5
         )
     )
-    devnull <- capture.output({
-        suppressMessages({
-            mp <- sampleStanModel(
-                jm,
-                data = jdat,
-                iter_sampling = 100,
-                iter_warmup = 150,
-                chains = 1,
-                refresh = 0,
-                parallel_chains = 1
-            )
-        })
+
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 100,
+            iter_warmup = 150,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
     })
+
 
     test_data_1$dat_os <- dat_os
     test_data_1$dat_lm <- dat_lm

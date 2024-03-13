@@ -1,13 +1,7 @@
-# smoke test for JointModelSamples
+# print works as expected for JointModelSamples
 
     Code
-      devnull <- capture.output({
-        suppressMessages({
-          mpp <- sampleStanModel(jm, data = jdat, iter_sampling = 100, iter_warmup = 150,
-            chains = 1, refresh = 0, parallel_chains = 1)
-        })
-      })
-      print(mpp)
+      print(test_data_1$jsamples)
     Output
       
          JointModelSamples Object with:
@@ -16,12 +10,12 @@
             # of chains            = 1
         
             Variables:
-                Ypred[2400]
+                Ypred[2800]
                 beta_os_cov[3]
                 lm_rs_ind_intercept[400]
                 lm_rs_ind_rnd_slope[400]
                 lm_rs_intercept
-                lm_rs_rslope_ind[2400]
+                lm_rs_rslope_ind[2800]
                 lm_rs_sigma
                 lm_rs_slope_mu[2]
                 lm_rs_slope_sigma

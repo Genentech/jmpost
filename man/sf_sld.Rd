@@ -27,9 +27,4 @@ The function results.
 \description{
 Stein-Fojo Functionals
 }
-\examples{
-sf_sld(1:10, 20, 0.3, 0.6)
-sf_ttg(1:10, 20, 0.3, 0.6)
-sf_dsld(1:10, 20, 0.3, 0.6)
-}
 \keyword{internal}

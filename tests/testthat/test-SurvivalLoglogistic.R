@@ -8,7 +8,7 @@ test_that("sim_os_loglogistic() is consistant with flexsurv", {
     t <- c(1, 4, 50, 200, 600)
     expect_equal(
         log(flexsurv::hllogis(t, scale = 400, shape = 2)),
-        sim_os_loglogistic(a = 400, b = 2)(t)
+        SimSurvivalLogLogistic(a = 400, b = 2)@loghazard(t)
     )
 })
 
@@ -56,15 +56,17 @@ test_that("SurvivalLogLogistic can recover known values", {
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_warmup = 300,
-        iter_sampling = 400,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_warmup = 300,
+            iter_sampling = 400,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
 
     # Variables to extract (order important)
     vars <- c("sm_loglogis_a", "sm_loglogis_b", "beta_os_cov")

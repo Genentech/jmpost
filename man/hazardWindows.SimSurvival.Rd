@@ -7,7 +7,7 @@
 \method{hazardWindows}{SimSurvival}(object)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr grid of time points.}
+\item{object}{(\code{SimSurvival})\cr the survival simulation object to create evaluation points for.}
 }
 \value{
 A \code{tibble} with \code{lower}, \code{upper}, \code{time}, \code{eval} and \code{width}.

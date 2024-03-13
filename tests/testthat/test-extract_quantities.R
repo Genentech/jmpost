@@ -57,10 +57,12 @@ test_that("extract_quantities() works as expected", {
     )
     stan_fitted <- posterior::as_draws_matrix(list(null_y_mean = 1:2))
 
-    gq <- mod$generate_quantities(
-        data = stan_data,
-        fitted_params = stan_fitted
-    )
+    gq <- run_quietly({
+        mod$generate_quantities(
+            data = stan_data,
+            fitted_params = stan_fitted
+        )
+    })
 
     run_test <- function(vals, keyword) {
         actual <- extract_quantities(gq, type = keyword)

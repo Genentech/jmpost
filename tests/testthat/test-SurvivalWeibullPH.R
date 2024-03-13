@@ -59,15 +59,17 @@ test_that("SurvivalWeibullPH can recover known values", {
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_warmup = 300,
-        iter_sampling = 400,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_warmup = 300,
+            iter_sampling = 400,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
 
     # Variables to extract (order important)
     vars <- c("sm_weibull_ph_lambda", "sm_weibull_ph_gamma", "beta_os_cov")

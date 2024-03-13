@@ -1,9 +1,15 @@
 
 test_that("Can recover known distribution parameters from random slope model when using multiple chains", {
     jm <- JointModel(
-        longitudinal = LongitudinalRandomSlope(),
-        survival = SurvivalExponential(),
-        link = link_dsld()
+        longitudinal = LongitudinalRandomSlope(
+            intercept = prior_normal(30, 5),
+            slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
+            sigma = prior_lognormal(log(3), sigma = 0.5)
+        ),
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(1 / 200), 0.5)
+        ),
+        link = link_dsld(prior = prior_normal(0.1, 0.2))
     )
 
     set.seed(3251)
@@ -52,15 +58,17 @@ test_that("Can recover known distribution parameters from random slope model whe
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 400,
-        iter_warmup = 200,
-        chains = 3,
-        refresh = 0,
-        parallel_chains = 3
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 400,
+            iter_warmup = 200,
+            chains = 3,
+            parallel_chains = 3
+        )
+    })
+
 
     vars <- c(
         "sm_exp_lambda" = 1 / 200,

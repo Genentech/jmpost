@@ -69,17 +69,19 @@ test_that("LongitudinalRandomSlope correctly generates an intercept per study", 
         link = Link()
     )
 
-    mp <- suppressWarnings(
-        sampleStanModel(
-            jm,
-            data = jdat,
-            iter_warmup = 600,
-            iter_sampling = 900,
-            chains = 2,
-            refresh = 0,
-            parallel_chains = 2
-        )
-    )
+    suppressWarnings({
+        mp <- run_quietly({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_warmup = 600,
+                iter_sampling = 900,
+                chains = 2,
+                refresh = 0,
+                parallel_chains = 2
+            )
+        })
+    })
 
     samples <- mp@results$draws(
         c("lm_rs_intercept", "lm_rs_slope_mu", "lm_rs_slope_sigma", "lm_rs_sigma"),
@@ -141,15 +143,17 @@ test_that("Random Slope Model can recover known parameter values", {
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 200,
-        iter_warmup = 400,
-        chains = 1,
-        refresh = 0,
-        parallel_chains = 1
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 200,
+            iter_warmup = 400,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
 
 
     vars <- c(

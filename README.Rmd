@@ -68,8 +68,17 @@ of the input data and use `DataJoint()` to bring it into the right format.
 library(jmpost)
 set.seed(321)
 sim_data <- SimJointData(
-    longitudinal = SimLongitudinalRandomSlope(),
-    survival = SimSurvivalExponential(lambda = 1 / 100)
+    design = list(
+        SimGroup(50, "Arm-A", "Study-X"),
+        SimGroup(50, "Arm-B", "Study-X")
+    ),
+    longitudinal = SimLongitudinalRandomSlope(
+        times = c(1, 50, 100, 150, 200, 250, 300),
+    ),
+    survival = SimSurvivalWeibullPH(
+        lambda = 1 / 300,
+        gamma = 0.97
+    )
 )
 
 joint_data <- DataJoint(
@@ -84,7 +93,7 @@ joint_data <- DataJoint(
         formula = Surv(time, event) ~ cov_cat + cov_cont
     ),
     longitudinal = DataLongitudinal(
-        data = sim_dat@longitudinal,
+        data = sim_data@longitudinal,
         formula = sld ~ time,
         threshold = 5
     )
