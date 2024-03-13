@@ -34,7 +34,7 @@ event being censored at \code{time_max}. The \code{time_step} argument sets the 
 evaluate the log-hazard function. Setting smaller values for \code{time_step} will increase the
 precision of the simulation at the cost of increased computation time. Likewise, setting large
 values for \code{time_max} will minimize the number of censored subjects at the cost of
-incread computation time.
+increased computation time.
 }
 
 \keyword{internal}

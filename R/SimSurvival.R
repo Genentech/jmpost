@@ -23,7 +23,7 @@
 #' evaluate the log-hazard function. Setting smaller values for `time_step` will increase the
 #' precision of the simulation at the cost of increased computation time. Likewise, setting large
 #' values for `time_max` will minimize the number of censored subjects at the cost of
-#' incread computation time.
+#' increased computation time.
 #'
 #' @name SimSurvival-Shared
 #' @keywords internal
