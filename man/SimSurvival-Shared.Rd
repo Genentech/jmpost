@@ -16,6 +16,8 @@
 
 \item{loghazard}{(\code{function})\cr the log hazard function.}
 
+\item{name}{(\code{character})\cr the name of the object.}
+
 \item{...}{Not Used.}
 }
 \description{

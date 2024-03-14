@@ -10,6 +10,7 @@
 #' @param beta_cont (`number`)\cr the continuous covariate coefficient.
 #' @param beta_cat (`numeric`)\cr the categorical covariate coefficients.
 #' @param loghazard (`function`)\cr the log hazard function.
+#' @param name (`character`)\cr the name of the object.
 #' @param ... Not Used.
 #'
 #' @section Hazard Evaluation:
@@ -41,6 +42,7 @@ NULL
 #' @slot beta_cont (`numeric`)\cr See arguments.
 #' @slot beta_cat (`numeric`)\cr See arguments.
 #' @slot loghazard (`function`)\cr See arguments.
+#' @slot name (`character`)\cr See arguments.
 #'
 #' @family SimSurvival
 #' @exportClass SimSurvival

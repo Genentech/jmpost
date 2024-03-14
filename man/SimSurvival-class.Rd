@@ -29,6 +29,8 @@ SimSurvival(
 \item{beta_cat}{(\code{numeric})\cr the categorical covariate coefficients.}
 
 \item{loghazard}{(\code{function})\cr the log hazard function.}
+
+\item{name}{(\code{character})\cr the name of the object.}
 }
 \description{
 Abstract Simulation Class for Survival Data
@@ -47,6 +49,8 @@ Abstract Simulation Class for Survival Data
 \item{\code{beta_cat}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{loghazard}}{(\code{function})\cr See arguments.}
+
+\item{\code{name}}{(\code{character})\cr See arguments.}
 }}
 
 \section{Hazard Evaluation}{
