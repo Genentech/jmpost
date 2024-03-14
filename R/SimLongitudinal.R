@@ -21,3 +21,21 @@
 SimLongitudinal <- function(times = seq(0, 100, 50)) {
     .SimLongitudinal(times = times)
 }
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "SimLongitudinal",
+    definition = function(object) {
+        x <- sprintf("\nA %s Object\n\n", as_print_string(object))
+        cat(x)
+        return(object)
+    }
+)
+
+#' @rdname as_print_string
+as_print_string.SimLongitudinal <- function(object) {
+    return("SimLongitudinal")
+}

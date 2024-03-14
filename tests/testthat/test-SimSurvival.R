@@ -81,3 +81,10 @@ test_that("SimSurvivalWeibullPH creates a dataset with the correct parameter", {
     z_score <- (log_scale_obs - log_scale_real) / log_scale_se
     expect_true(abs(z_score) < qnorm(0.9))
 })
+
+test_that("print methods work as expected", {
+    expect_snapshot(print(SimSurvival(loghazard = \(x) x)))
+    expect_snapshot(print(SimSurvivalExponential(lambda = 5)))
+    expect_snapshot(print(SimSurvivalLogLogistic(a = 5, b = 0.5)))
+    expect_snapshot(print(SimSurvivalWeibullPH(lambda = 5, gamma = 5)))
+})

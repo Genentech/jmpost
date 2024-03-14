@@ -89,3 +89,15 @@ test_that("SimJointData leads to valid DataJoint with almost only default argume
     )
     expect_true(validObject(joint_data))
 })
+
+
+test_that("print methods work as expected", {
+    expect_snapshot({
+        sim_data <- SimJointData(
+            longitudinal = SimLongitudinalGSF(),
+            survival = SimSurvivalExponential(time_max = 4, lambda = 365 / 100, time_step = 1 / 365),
+            .silent = TRUE
+        )
+        print(sim_data)
+    })
+})

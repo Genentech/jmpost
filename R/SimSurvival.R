@@ -53,7 +53,8 @@ NULL
         lambda_censor = "numeric",
         beta_cont = "numeric",
         beta_cat = "numeric",
-        loghazard = "function"
+        loghazard = "function",
+        name = "character"
     )
 )
 
@@ -65,7 +66,8 @@ SimSurvival <- function(
     lambda_censor = 1 / 3000,
     beta_cont = 0.2,
     beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2),
-    loghazard
+    loghazard,
+    name = "SimSurvival"
 ) {
     .SimSurvival(
         time_max = time_max,
@@ -73,9 +75,29 @@ SimSurvival <- function(
         lambda_censor = lambda_censor,
         beta_cont = beta_cont,
         beta_cat = beta_cat,
-        loghazard = loghazard
+        loghazard = loghazard,
+        name = name
     )
 }
+
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "SimSurvival",
+    definition = function(object) {
+        x <- sprintf("\nA %s Object\n\n", as_print_string(object))
+        cat(x)
+        return(object)
+    }
+)
+
+#' @rdname as_print_string
+as_print_string.SimSurvival <- function(object) {
+    return(object@name)
+}
+
 
 #' Construct Time Intervals
 #'
@@ -194,10 +216,10 @@ SimSurvivalWeibullPH <- function(
         beta_cat = beta_cat,
         loghazard = function(time) {
             log(lambda) + log(gamma) + (gamma - 1) * log(time)
-        }
+        },
+        name = "SimSurvivalWeibullPH"
     )
 }
-
 
 #' Simulate Survival Data from a Log-Logistic Proportional Hazard Model
 #'
@@ -228,7 +250,8 @@ SimSurvivalLogLogistic <- function(
             c1 <- - log(a) + log(b) + (b - 1) * (- log(a) + log(time))
             c2 <- log(1 + (time / a)^b)
             return(c1 - c2)
-        }
+        },
+        name = "SimSurvivalLogLogistic"
     )
 }
 
@@ -260,6 +283,7 @@ SimSurvivalExponential <- function(
         beta_cat = beta_cat,
         loghazard = function(time) {
             log(lambda)
-        }
+        },
+        name = "SimSurvivalExponential"
     )
 }

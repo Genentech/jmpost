@@ -33,7 +33,6 @@
 
 
 
-
 #' @rdname SimJointData-class
 #' @export
 SimJointData <- function(
@@ -132,3 +131,15 @@ SimJointData <- function(
         )
     )
 }
+
+#' @rdname show-object
+#' @export
+setMethod(
+    f = "show",
+    signature = "SimJointData",
+    definition = function(object) {
+        x <- sprintf("\nA SimJointData Object\n\n")
+        cat(x)
+        return(object)
+    }
+)

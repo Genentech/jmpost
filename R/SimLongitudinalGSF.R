@@ -107,6 +107,10 @@ setValidity(
     }
 )
 
+#' @rdname as_print_string
+as_print_string.SimLongitudinalGSF <- function(object) {
+    return("SimLongitudinalGSF")
+}
 
 #' @rdname sampleObservations
 #' @export

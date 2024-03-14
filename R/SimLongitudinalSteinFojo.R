@@ -98,6 +98,11 @@ setValidity(
     }
 )
 
+#' @rdname as_print_string
+as_print_string.SimLongitudinalSteinFojo <- function(object) {
+    return("SimLongitudinalSteinFojo")
+}
+
 #' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {

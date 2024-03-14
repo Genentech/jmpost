@@ -60,3 +60,7 @@ test_that("SimLongitudinalGSF works as expected", {
         )
     )
 })
+
+test_that("print methods work as expected", {
+    expect_snapshot(print(SimLongitudinalGSF()))
+})

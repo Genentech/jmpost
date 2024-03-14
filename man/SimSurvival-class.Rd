@@ -13,7 +13,8 @@ SimSurvival(
   lambda_censor = 1/3000,
   beta_cont = 0.2,
   beta_cat = c(A = 0, B = -0.4, C = 0.2),
-  loghazard
+  loghazard,
+  name = "SimSurvival"
 )
 }
 \arguments{

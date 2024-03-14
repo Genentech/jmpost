@@ -54,6 +54,11 @@ SimLongitudinalRandomSlope <- function(
     )
 }
 
+#' @rdname as_print_string
+as_print_string.SimLongitudinalRandomSlope <- function(object) {
+    return("SimLongitudinalRandomSlope")
+}
+
 #' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {

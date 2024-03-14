@@ -87,3 +87,7 @@ test_that("SimLongitudinalRandomSlope correctly generates a dataset with known p
     z_score <- (ests - c(50, 70, 10)) / ests_se
     expect_true(all(abs(z_score) < qnorm(0.99)))
 })
+
+test_that("print methods work as expected", {
+    expect_snapshot(print(SimLongitudinalRandomSlope()))
+})
