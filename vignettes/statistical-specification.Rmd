@@ -114,12 +114,11 @@ Accessible via `link_identity()`
 $$\begin{align*}
 y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
 \\
-SLD_{ij} &=b_{i}
-\left[
-    e^{-s_{i}t_{ij}}+
-    e^ {g_{i}t_{ij}} - 1
-\right]\\
-\\
+SLD_{ij} &=
+\begin{cases}
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t\lt 0
+\end{cases}\\\\
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
@@ -165,11 +164,10 @@ Where:
 
 
 $$
-G(t \mid b_i, s_i, g_i, ) = b_i 
-\left[
-    g_i  e^{g_i  t} - 
-    s_i  e^{-s_i  t}
-\right]
+G(t \mid b_i, s_i, g_i) = \begin{cases}
+b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) & \text{if } t\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
+\end{cases}
 $$
 
 Accessible via `link_dsld()`
@@ -180,11 +178,14 @@ Accessible via `link_dsld()`
 
 
 $$
-G(t \mid b_i, s_i, g_i) = \frac{
-    \text{log}(s_i) - \text{log}(g_i)
-}{
-    s_i + g_i
-}
+G(t \mid b_i, s_i, g_i) = \max \left(
+    \frac{
+        \text{log}(s_i) - \text{log}(g_i)
+    }{
+        s_i + g_i
+    },
+    0
+\right)
 $$
 
 Accessible via `link_ttg()`
@@ -194,12 +195,7 @@ Accessible via `link_ttg()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &= SLD_{ij} \\
-& =b_{i}
-\left[
-    e^{-s_{i}t_{ij}}+
-    e^ {g_{i}t_{ij}} - 1
-\right]
+G(t \mid b_i, s_i, g_i) &= SLD_{ij}
 \end{align*}
 $$
 
@@ -213,11 +209,12 @@ Accessible via `link_identity()`
 $$
 \begin{align*}
 y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
-SLD_{ij} &=b_{i}
-\left[
-    \phi_i e^{-s_{i}t_{ij}}+
-    (1-\phi_{i}) e^ {g_{i}t_{ij}}
-\right] \\ \\
+SLD_{ij} &= 
+\begin{cases}
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t\lt 0
+\end{cases}\\
+\\
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
@@ -257,6 +254,47 @@ $$
 
 Where:
 * $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
+
+
+### Derivative of the SLD Trajectory Link 
+
+
+$$
+G(t \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
+b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) & \text{if } t\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
+\end{cases}
+$$
+
+Accessible via `link_dsld()`
+
+
+
+### Time to Growth Link
+
+
+$$
+G(t \mid b_i, s_i, g_i, \phi_i) = \max \left(
+    \frac{
+        \log(s_i) + \log(\phi_i) - \log(g_i) - \log(1-\phi_i)
+    }{
+        s_i + g_i
+    }, 0
+\right)
+$$
+
+Accessible via `link_ttg()`
+
+
+### Identity Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
+\end{align*}
+$$
+
+Accessible via `link_identity()`
 
 
 

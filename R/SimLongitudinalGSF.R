@@ -1,5 +1,5 @@
 
-#' Simulate Longitudinal Data from a  GSF Model
+#' Simulate Longitudinal Data from a GSF Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
@@ -96,15 +96,13 @@ setValidity(
         if (length(unique(par_lengths)) != 1) {
             return("The parameters `mu_s`, `mu_g`, `a_phi`, and `b_phi` must have the same length.")
         }
-        if (length(object@sigma) != 1) {
-            return("The parameter `sigma` must have length 1.")
+
+        for (par in c("sigma", "omega_b", "omega_s", "omega_g", "link_dsld", "link_ttg", "link_identity")) {
+            if (length(slot(object, par)) != 1) {
+                return(sprintf("The `%s` parameter must be a length 1 numeric.", par))
+            }
         }
-        if (length(c(object@omega_b, object@omega_s, object@omega_g)) != 3) {
-            return("The parameters `omega_b`, `omega_s`, and `omega_g` must be length 1.")
-        }
-        if (length(c(object@link_dsld, object@link_ttg, object@link_identity)) != 3) {
-            return("The parameters `link_dsld`, `link_ttg`, and `link_identity` must be length 1.")
-        }
+
         return(TRUE)
     }
 )

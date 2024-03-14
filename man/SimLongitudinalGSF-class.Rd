@@ -5,7 +5,7 @@
 \alias{SimLongitudinalGSF-class}
 \alias{.SimLongitudinalGSF}
 \alias{SimLongitudinalGSF}
-\title{Simulate Longitudinal Data from a  GSF Model}
+\title{Simulate Longitudinal Data from a GSF Model}
 \usage{
 SimLongitudinalGSF(
   times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
@@ -51,7 +51,7 @@ SimLongitudinalGSF(
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 }
 \description{
-Simulate Longitudinal Data from a  GSF Model
+Simulate Longitudinal Data from a GSF Model
 }
 \section{Slots}{
 

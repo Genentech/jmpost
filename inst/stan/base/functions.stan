@@ -82,7 +82,7 @@ functions {
         return ret;
     }
 
-    // Replaces the values of `y` with `replacement` if the coressponding value
+    // Replaces the values of `y` with `replacement` if the corresponding value
     // of `x` is less than 0.
     matrix if_lt0_else(matrix x, matrix y, real replacement) {
         matrix[rows(x), cols(x)] result;
