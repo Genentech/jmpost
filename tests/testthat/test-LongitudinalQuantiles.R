@@ -5,21 +5,22 @@ test_that("Test that LongitudinalQuantities works as expected", {
 
     expected_column_names <- c("median", "lower", "upper", "time", "group")
 
+    times <- c(-50, -10, 0, 10, 20, 50, 200, 300)
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
         c("pt_001", "pt_002"),
-        c(10, 20, 200, 300)
+        times
     )
     preds <- summary(longsamps)
-    expect_equal(nrow(preds), 8)
+    expect_equal(nrow(preds), length(times) * 2)
     expect_equal(length(unique(preds$group)), 2)
     expect_equal(names(preds), expected_column_names)
     expect_equal(preds$type, NULL)
 
 
-    longsamps <- LongitudinalQuantities(test_data_1$jsamples, time_grid = c(10, 20, 200, 300))
+    longsamps <- LongitudinalQuantities(test_data_1$jsamples, time_grid = c(-30, 10, 20, 200, 300))
     preds <- summary(longsamps)
-    expect_equal(nrow(preds), 4 * nrow(test_data_1$dat_os)) # 4 timepoints for each subject in the OS dataset
+    expect_equal(nrow(preds), 5 * nrow(test_data_1$dat_os)) # 4 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$group), test_data_1$dat_os$pt)
 
@@ -109,7 +110,7 @@ test_that("LongitudinalQuantities can recover known results", {
     ensure_test_data_1()
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        time_grid = c(0, 1, 100, 200, 250, 300, 350)
+        time_grid = c(-100, -50, -10, 0, 1, 100, 200, 250, 300, 350)
     )
 
     dat_sum <- dplyr::tibble(summary(longsamps)) |>

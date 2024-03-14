@@ -153,3 +153,43 @@ test_that("SurvivalQuantities print method works as expected", {
         print(samps_p2)
     })
 })
+
+
+test_that("SurvivalQuantities() works with time = 0", {
+    ensure_test_data_1()
+
+    expect_error(
+        {
+            SurvivalQuantities(
+                test_data_1$jsamples,
+                list("a" = c("pt_001", "pt_002")),
+                c(-10, 0, 10, 20, 200, 300)
+            )
+        },
+        regexp = "must be >= 0"
+    )
+
+    survsamps <- SurvivalQuantities(
+        test_data_1$jsamples,
+        list("a" = c("pt_001", "pt_002")),
+        c(0, 10, 20)
+    )
+    preds <- summary(survsamps)
+    # Time 0 should result in certainty of survival = 1
+    expect_equal(preds$median[1], 1)
+    expect_equal(preds$lower[1], 1)
+    expect_equal(preds$upper[1], 1)
+
+
+    survsamps <- SurvivalQuantities(
+        test_data_1$jsamples,
+        list("a" = c("pt_001", "pt_002")),
+        c(0, 10, 20),
+        type = "cumhaz"
+    )
+    preds <- summary(survsamps)
+    # Time 0 should result in certainty of cumhaz = 0
+    expect_equal(preds$median[1], 0)
+    expect_equal(preds$lower[1], 0)
+    expect_equal(preds$upper[1], 0)
+})
