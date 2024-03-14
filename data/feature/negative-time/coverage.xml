@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.959897610921502" branch-rate="0" lines-covered="2250" lines-valid="2344" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-13 17:31:42.625576">
+<coverage line-rate="0.959897610921502" branch-rate="0" lines-covered="2250" lines-valid="2344" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-14 15:42:02.06655">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -3992,6 +3992,8 @@
             </method>
             <method name="sampleObservations.SimLongitudinalGSF" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="114" hits="5" branch="false"/>
+                <line number="115" hits="5" branch="false"/>
                 <line number="116" hits="5" branch="false"/>
                 <line number="117" hits="5" branch="false"/>
                 <line number="118" hits="5" branch="false"/>
@@ -4001,48 +4003,46 @@
                 <line number="122" hits="5" branch="false"/>
                 <line number="123" hits="5" branch="false"/>
                 <line number="124" hits="5" branch="false"/>
-                <line number="125" hits="5" branch="false"/>
-                <line number="126" hits="5" branch="false"/>
               </lines>
             </method>
             <method name="sampleSubjects.SimLongitudinalGSF" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="131" hits="3" branch="false"/>
+                <line number="132" hits="3" branch="false"/>
                 <line number="133" hits="3" branch="false"/>
                 <line number="134" hits="3" branch="false"/>
                 <line number="135" hits="3" branch="false"/>
                 <line number="136" hits="3" branch="false"/>
-                <line number="137" hits="3" branch="false"/>
                 <line number="138" hits="3" branch="false"/>
+                <line number="139" hits="3" branch="false"/>
                 <line number="140" hits="3" branch="false"/>
                 <line number="141" hits="3" branch="false"/>
                 <line number="142" hits="3" branch="false"/>
                 <line number="143" hits="3" branch="false"/>
                 <line number="144" hits="3" branch="false"/>
                 <line number="145" hits="3" branch="false"/>
-                <line number="146" hits="3" branch="false"/>
                 <line number="147" hits="3" branch="false"/>
-                <line number="149" hits="3" branch="false"/>
               </lines>
             </method>
             <method name="gsf_sld" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="169" hits="10" branch="false"/>
-                <line number="170" hits="10" branch="false"/>
+                <line number="167" hits="10" branch="false"/>
+                <line number="168" hits="10" branch="false"/>
               </lines>
             </method>
             <method name="gsf_ttg" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="174" hits="5" branch="false"/>
+                <line number="175" hits="5" branch="false"/>
                 <line number="176" hits="5" branch="false"/>
-                <line number="177" hits="5" branch="false"/>
-                <line number="178" hits="5" branch="false"/>
               </lines>
             </method>
             <method name="gsf_dsld" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="182" hits="5" branch="false"/>
+                <line number="183" hits="5" branch="false"/>
                 <line number="184" hits="5" branch="false"/>
                 <line number="185" hits="5" branch="false"/>
-                <line number="186" hits="5" branch="false"/>
-                <line number="187" hits="5" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -4062,6 +4062,8 @@
             <line number="81" hits="3" branch="false"/>
             <line number="82" hits="3" branch="false"/>
             <line number="83" hits="3" branch="false"/>
+            <line number="114" hits="5" branch="false"/>
+            <line number="115" hits="5" branch="false"/>
             <line number="116" hits="5" branch="false"/>
             <line number="117" hits="5" branch="false"/>
             <line number="118" hits="5" branch="false"/>
@@ -4071,32 +4073,30 @@
             <line number="122" hits="5" branch="false"/>
             <line number="123" hits="5" branch="false"/>
             <line number="124" hits="5" branch="false"/>
-            <line number="125" hits="5" branch="false"/>
-            <line number="126" hits="5" branch="false"/>
+            <line number="131" hits="3" branch="false"/>
+            <line number="132" hits="3" branch="false"/>
             <line number="133" hits="3" branch="false"/>
             <line number="134" hits="3" branch="false"/>
             <line number="135" hits="3" branch="false"/>
             <line number="136" hits="3" branch="false"/>
-            <line number="137" hits="3" branch="false"/>
             <line number="138" hits="3" branch="false"/>
+            <line number="139" hits="3" branch="false"/>
             <line number="140" hits="3" branch="false"/>
             <line number="141" hits="3" branch="false"/>
             <line number="142" hits="3" branch="false"/>
             <line number="143" hits="3" branch="false"/>
             <line number="144" hits="3" branch="false"/>
             <line number="145" hits="3" branch="false"/>
-            <line number="146" hits="3" branch="false"/>
             <line number="147" hits="3" branch="false"/>
-            <line number="149" hits="3" branch="false"/>
-            <line number="169" hits="10" branch="false"/>
-            <line number="170" hits="10" branch="false"/>
+            <line number="167" hits="10" branch="false"/>
+            <line number="168" hits="10" branch="false"/>
+            <line number="174" hits="5" branch="false"/>
+            <line number="175" hits="5" branch="false"/>
             <line number="176" hits="5" branch="false"/>
-            <line number="177" hits="5" branch="false"/>
-            <line number="178" hits="5" branch="false"/>
+            <line number="182" hits="5" branch="false"/>
+            <line number="183" hits="5" branch="false"/>
             <line number="184" hits="5" branch="false"/>
             <line number="185" hits="5" branch="false"/>
-            <line number="186" hits="5" branch="false"/>
-            <line number="187" hits="5" branch="false"/>
           </lines>
         </class>
         <class name="SimLongitudinalRandomSlope.R" filename="R/SimLongitudinalRandomSlope.R" line-rate="1" branch-rate="0" complexity="0">
