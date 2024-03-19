@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -230,29 +224,31 @@ baseline hazard under the given survival model.</li>
 <p>So let’s run the code for that:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">129</span><span class="op">)</span></span>
-<span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_joint_data.html">simulate_joint_data</a></span><span class="op">(</span></span>
+<span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SimJointData-class.html">SimJointData</a></span><span class="op">(</span></span>
 <span>    design <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/SimGroup-class.html">SimGroup</a></span><span class="op">(</span><span class="fl">50</span>, <span class="st">"Arm-A"</span>, <span class="st">"Study-X"</span><span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/SimGroup-class.html">SimGroup</a></span><span class="op">(</span><span class="fl">50</span>, <span class="st">"Arm-B"</span>, <span class="st">"Study-X"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2000</span>,</span>
-<span>    lambda_cen <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">9000</span>,</span>
-<span>    beta_cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>        <span class="st">"A"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>        <span class="st">"B"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,</span>
-<span>        <span class="st">"C"</span> <span class="op">=</span> <span class="fl">0.5</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    beta_cont <span class="op">=</span> <span class="fl">0.3</span>,</span>
-<span>    lm_fun <span class="op">=</span> <span class="fu"><a href="../reference/sim_lm_random_slope.html">sim_lm_random_slope</a></span><span class="op">(</span></span>
+<span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/SimLongitudinalRandomSlope-class.html">SimLongitudinalRandomSlope</a></span><span class="op">(</span></span>
+<span>        times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">250</span>, <span class="fl">300</span><span class="op">)</span>,</span>
 <span>        intercept <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>        slope_mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>        slope_sigma <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>        sigma <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>        link_dsld <span class="op">=</span> <span class="fl">0.1</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    os_fun <span class="op">=</span> <span class="fu"><a href="../reference/sim_os_weibull.html">sim_os_weibull</a></span><span class="op">(</span></span>
+<span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SimSurvivalWeibullPH.html">SimSurvivalWeibullPH</a></span><span class="op">(</span></span>
 <span>        lambda <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">300</span>,</span>
-<span>        gamma <span class="op">=</span> <span class="fl">0.97</span></span>
+<span>        gamma <span class="op">=</span> <span class="fl">0.97</span>,</span>
+<span>        time_max <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>        time_step <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        lambda_cen <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">9000</span>,</span>
+<span>        beta_cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>            <span class="st">"A"</span> <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>            <span class="st">"B"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,</span>
+<span>            <span class="st">"C"</span> <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        beta_cont <span class="op">=</span> <span class="fl">0.3</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We might get a message here that a few patients did not die before
@@ -266,10 +262,8 @@ feeling of how many survival events are included in the data set.</p>
 <p>We start with extracting data into individual data sets, and then
 reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">os_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">os</span></span>
-<span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">lm</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">250</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">pt</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">os_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">@</span><span class="va">survival</span></span>
+<span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="va">sim_data</span><span class="op">@</span><span class="va">longitudinal</span></span></code></pre></div>
 <p>Let’s have a quick look at the format:</p>
 <p>The survival data has:</p>
 <ul>
@@ -284,14 +278,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   pt        time event cov_cont cov_cat study   arm  </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001    35     1   -<span style="color: #BB0000;">1.12</span>  B       Study-X Arm-A</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002    17     1   -<span style="color: #BB0000;">0.990</span> C       Study-X Arm-A</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003   876     1   -<span style="color: #BB0000;">1.37</span>  C       Study-X Arm-A</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004   100     1   -<span style="color: #BB0000;">1.36</span>  C       Study-X Arm-A</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     9     1    2.00  B       Study-X Arm-A</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006   122     1    0.696 B       Study-X Arm-A</span></span></code></pre></div>
+<span><span class="co">#&gt;   pt    study   arm    time event cov_cont cov_cat</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_01 Study-X Arm-A    35     1   -<span style="color: #BB0000;">1.12</span>  B      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_02 Study-X Arm-A    17     1   -<span style="color: #BB0000;">0.990</span> C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_03 Study-X Arm-A   876     1   -<span style="color: #BB0000;">1.37</span>  C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_04 Study-X Arm-A   100     1   -<span style="color: #BB0000;">1.36</span>  C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_05 Study-X Arm-A     9     1    2.00  B      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_06 Study-X Arm-A   122     1    0.696 B</span></span></code></pre></div>
 <p>The longitudinal data has:</p>
 <ul>
 <li>patient ID</li>
@@ -304,14 +298,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">long_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">#&gt;   pt        time    sld study   arm   observed</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_00001     1 23.4   Study-X Arm-A TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_00002     1 16.1   Study-X Arm-A TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_00003     1 41.9   Study-X Arm-A TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_00004     1 44.5   Study-X Arm-A TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_00005     1 23.8   Study-X Arm-A TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_00006     1  0.130 Study-X Arm-A TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt;   pt    arm   study    time   sld observed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_01 Arm-A Study-X     1  23.4 TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_01 Arm-A Study-X    50 108.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_01 Arm-A Study-X   100 137.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_01 Arm-A Study-X   150 141.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_01 Arm-A Study-X   200 220.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_01 Arm-A Study-X   250 325.  FALSE</span></span></code></pre></div>
 <p>Finally, we wrap these in the data formatting functions. Here the
 mapping of the column names to the required variables happens. This
 means that in our applications we don’t have to use the same variable
@@ -381,7 +375,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpQ9NnCM/model-d6c1e9f94a0.stan', line 495, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpRRwBeq/model-d5c3e548a35.stan', line 514, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -396,7 +390,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 12.6 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 6.3 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -420,17 +414,17 @@ because the <code>results</code> element is of class
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
 <span><span class="co">#&gt;    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte… 29.8     29.8     1.44    1.38    27.5     32.3    1.00      154.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop…  1.00     1.00    0.028<span style="text-decoration: underline;">8</span>  0.030<span style="text-decoration: underline;">1</span>   0.953    1.04   1.02      531.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop…  1.96     1.96    0.032<span style="text-decoration: underline;">2</span>  0.034<span style="text-decoration: underline;">1</span>   1.91     2.02   1.01      607.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop…  0.204    0.204   0.015<span style="text-decoration: underline;">4</span>  0.015<span style="text-decoration: underline;">3</span>   0.180    0.231  1.01      672.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma 19.6     19.6     0.601   0.574   18.7     20.6    0.999     817.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_dsld   -<span style="color: #BB0000;">0.023</span><span style="color: #BB0000; text-decoration: underline;">3</span>  -<span style="color: #BB0000;">0.019</span><span style="color: #BB0000; text-decoration: underline;">1</span>  0.204   0.216   -<span style="color: #BB0000;">0.382</span>    0.293  1.00      549.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull…  0.009<span style="text-decoration: underline;">47</span>  0.008<span style="text-decoration: underline;">19</span> 0.005<span style="text-decoration: underline;">72</span> 0.004<span style="text-decoration: underline;">74</span>  0.003<span style="text-decoration: underline;">10</span>  0.020<span style="text-decoration: underline;">0</span> 1.00      435.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull…  0.888    0.885   0.072<span style="text-decoration: underline;">1</span>  0.070<span style="text-decoration: underline;">9</span>   0.775    1.01   0.998     557.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co…  0.019<span style="text-decoration: underline;">1</span>   0.018<span style="text-decoration: underline;">7</span>  0.247   0.256   -<span style="color: #BB0000;">0.365</span>    0.411  0.998     616.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co…  0.344    0.345   0.276   0.278   -<span style="color: #BB0000;">0.104</span>    0.798  0.999     551.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co…  0.359    0.357   0.122   0.129    0.162    0.560  0.999    <span style="text-decoration: underline;">1</span>234.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte… 27.5     27.4     1.27    1.33    25.5     29.6    1.00      152.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop…  1.02     1.02    0.028<span style="text-decoration: underline;">3</span>  0.027<span style="text-decoration: underline;">3</span>   0.974    1.07   1.00      376.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop…  1.97     1.97    0.031<span style="text-decoration: underline;">2</span>  0.030<span style="text-decoration: underline;">1</span>   1.91     2.01   1.00      531.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop…  0.205    0.204   0.016<span style="text-decoration: underline;">0</span>  0.015<span style="text-decoration: underline;">8</span>   0.182    0.233  1.00      452.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma 19.2     19.1     0.582   0.572   18.3     20.2    1.00      505.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_dsld   -<span style="color: #BB0000;">0.028</span><span style="color: #BB0000; text-decoration: underline;">2</span>  -<span style="color: #BB0000;">0.025</span><span style="color: #BB0000; text-decoration: underline;">3</span>  0.202   0.196   -<span style="color: #BB0000;">0.369</span>    0.306  0.999     372.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull…  0.009<span style="text-decoration: underline;">51</span>  0.008<span style="text-decoration: underline;">03</span> 0.005<span style="text-decoration: underline;">42</span> 0.004<span style="text-decoration: underline;">23</span>  0.003<span style="text-decoration: underline;">39</span>  0.020<span style="text-decoration: underline;">1</span> 1.00      231.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull…  0.887    0.885   0.072<span style="text-decoration: underline;">1</span>  0.071<span style="text-decoration: underline;">5</span>   0.756    0.997  1.00      319.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co… -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">7</span>  0.231   0.234   -<span style="color: #BB0000;">0.391</span>    0.358  1.00      404.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co…  0.334    0.339   0.239   0.233   -<span style="color: #BB0000;">0.078</span><span style="color: #BB0000; text-decoration: underline;">0</span>   0.739  1.00      439.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co…  0.366    0.364   0.106   0.113    0.190    0.548  1.00      719.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can already see here from the <code>rhat</code> statistic whether
 the MCMC sampler converged - values close to 1 indicate convergence,
@@ -460,7 +454,7 @@ element, we can extract the samples in a format that is understood by
 <code class="sourceCode R"><span><span class="va">vars_draws</span> <span class="op">&lt;-</span> <span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/" class="external-link">bayesplot</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; This is bayesplot version 1.10.0</span></span>
+<span><span class="co">#&gt; This is bayesplot version 1.11.1</span></span>
 <span><span class="co">#&gt; - Online documentation and vignettes at mc-stan.org/bayesplot</span></span>
 <span><span class="co">#&gt; - bayesplot theme set to bayesplot::theme_default()</span></span>
 <span><span class="co">#&gt;    * Does _not_ affect other ggplot2 plots</span></span>
@@ -482,21 +476,21 @@ plot here the first 10 patients:</p>
 <span>    groups <span class="op">=</span> <span class="va">selected_patients</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    values time    group</span></span>
-<span><span class="co">#&gt; 1 31.5833    0 pt_00001</span></span>
-<span><span class="co">#&gt; 2 30.2612    0 pt_00001</span></span>
-<span><span class="co">#&gt; 3 31.5650    0 pt_00001</span></span>
-<span><span class="co">#&gt; 4 28.2796    0 pt_00001</span></span>
-<span><span class="co">#&gt; 5 30.2755    0 pt_00001</span></span>
-<span><span class="co">#&gt; 6 30.6664    0 pt_00001</span></span>
+<span><span class="co">#&gt;    values time group</span></span>
+<span><span class="co">#&gt; 1 29.7616    0 pt_01</span></span>
+<span><span class="co">#&gt; 2 29.8819    0 pt_01</span></span>
+<span><span class="co">#&gt; 3 29.4391    0 pt_01</span></span>
+<span><span class="co">#&gt; 4 29.1148    0 pt_01</span></span>
+<span><span class="co">#&gt; 5 29.8959    0 pt_01</span></span>
+<span><span class="co">#&gt; 6 29.3997    0 pt_01</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     median    lower    upper time    group</span></span>
-<span><span class="co">#&gt; 1 29.81625 26.94499 32.87489  0.0 pt_00001</span></span>
-<span><span class="co">#&gt; 2 31.35985 28.48551 34.41976  1.5 pt_00001</span></span>
-<span><span class="co">#&gt; 3 32.90190 30.02602 35.91383  3.0 pt_00001</span></span>
-<span><span class="co">#&gt; 4 34.46915 31.56280 37.43334  4.5 pt_00001</span></span>
-<span><span class="co">#&gt; 5 36.04605 33.14698 38.96887  6.0 pt_00001</span></span>
-<span><span class="co">#&gt; 6 37.60940 34.73763 40.49008  7.5 pt_00001</span></span>
+<span><span class="co">#&gt;     median    lower    upper time group</span></span>
+<span><span class="co">#&gt; 1 27.41805 24.99980 29.97155  0.0 pt_01</span></span>
+<span><span class="co">#&gt; 2 29.00665 26.57345 31.53869  1.5 pt_01</span></span>
+<span><span class="co">#&gt; 3 30.60555 28.20344 33.17464  3.0 pt_01</span></span>
+<span><span class="co">#&gt; 4 32.19275 29.77339 34.79398  4.5 pt_01</span></span>
+<span><span class="co">#&gt; 5 33.77065 31.33962 36.41544  6.0 pt_01</span></span>
+<span><span class="co">#&gt; 6 35.35575 32.83846 38.01443  7.5 pt_01</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 </div>
@@ -511,21 +505,21 @@ same for the estimated survival functions.</p>
 <span>    groups <span class="op">=</span> <span class="va">selected_patients</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   values time    group type</span></span>
-<span><span class="co">#&gt; 1      1    0 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 2      1    0 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 3      1    0 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 4      1    0 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 5      1    0 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 6      1    0 pt_00001 surv</span></span>
+<span><span class="co">#&gt;   values time group type</span></span>
+<span><span class="co">#&gt; 1      1    0 pt_01 surv</span></span>
+<span><span class="co">#&gt; 2      1    0 pt_01 surv</span></span>
+<span><span class="co">#&gt; 3      1    0 pt_01 surv</span></span>
+<span><span class="co">#&gt; 4      1    0 pt_01 surv</span></span>
+<span><span class="co">#&gt; 5      1    0 pt_01 surv</span></span>
+<span><span class="co">#&gt; 6      1    0 pt_01 surv</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      median     lower     upper   time    group type</span></span>
-<span><span class="co">#&gt; 1 1.0000000 1.0000000 1.0000000  0.000 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 2 0.9601122 0.9263082 0.9818214  9.685 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 3 0.9277378 0.8769151 0.9639501 19.370 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 4 0.8980693 0.8347591 0.9457441 29.055 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 5 0.8704983 0.7945022 0.9283269 38.740 pt_00001 surv</span></span>
-<span><span class="co">#&gt; 6 0.8444823 0.7598901 0.9108295 48.425 pt_00001 surv</span></span>
+<span><span class="co">#&gt;      median     lower     upper   time group type</span></span>
+<span><span class="co">#&gt; 1 1.0000000 1.0000000 1.0000000  0.000 pt_01 surv</span></span>
+<span><span class="co">#&gt; 2 0.9618832 0.9244823 0.9796309  9.685 pt_01 surv</span></span>
+<span><span class="co">#&gt; 3 0.9308307 0.8736700 0.9601639 19.370 pt_01 surv</span></span>
+<span><span class="co">#&gt; 4 0.9016382 0.8310835 0.9418359 29.055 pt_01 surv</span></span>
+<span><span class="co">#&gt; 5 0.8749706 0.7944977 0.9245329 38.740 pt_01 surv</span></span>
+<span><span class="co">#&gt; 6 0.8498444 0.7620302 0.9075830 48.425 pt_01 surv</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
@@ -554,7 +548,7 @@ Scores (predictive performance measure) from our
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/brierScore.html">brierScore</a></span><span class="op">(</span><span class="va">sq</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          1         50        100        400        800 </span></span>
-<span><span class="co">#&gt; 0.01952505 0.17194545 0.23768225 0.14860818 0.06098067</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.01951304 0.17182019 0.23803494 0.14943521 0.06124604</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="initial-values">Initial Values<a class="anchor" aria-label="anchor" href="#initial-values"></a>

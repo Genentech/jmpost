@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -237,12 +231,11 @@ G(t \mid \mu_0, s_i) = \mu_0 + s_i t
 <p><span class="math display">\[\begin{align*}
 y_{ij} &amp;\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
 \\
-SLD_{ij} &amp;=b_{i}
-\left[
-    e^{-s_{i}t_{ij}}+
-    e^ {g_{i}t_{ij}} - 1
-\right]\\
-\\
+SLD_{ij} &amp;=
+\begin{cases}
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] &amp; \text{if } t\geq 0 \\
+b_i e^{g_i t_{ij}} &amp; \text{if } t\lt 0
+\end{cases}\\\\
 b_i &amp;\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &amp;\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &amp;\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
@@ -313,11 +306,10 @@ random effects offset on parameter <span class="math inline">\(\theta\)</span> f
 <h4 id="derivative-of-the-sld-trajectory-link-1">Derivative of the SLD Trajectory Link<a class="anchor" aria-label="anchor" href="#derivative-of-the-sld-trajectory-link-1"></a>
 </h4>
 <p><span class="math display">\[
-G(t \mid b_i, s_i, g_i, ) = b_i
-\left[
-    g_i  e^{g_i  t} -
-    s_i  e^{-s_i  t}
-\right]
+G(t \mid b_i, s_i, g_i) = \begin{cases}
+b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) &amp; \text{if } t\geq 0 \\
+b_i g_i e^{g_i t_{ij}} &amp; \text{if } t\lt 0
+\end{cases}
 \]</span></p>
 <p>Accessible via <code><a href="../reference/standard-links.html">link_dsld()</a></code></p>
 </div>
@@ -325,11 +317,14 @@ G(t \mid b_i, s_i, g_i, ) = b_i
 <h4 id="time-to-growth-link">Time to Growth Link<a class="anchor" aria-label="anchor" href="#time-to-growth-link"></a>
 </h4>
 <p><span class="math display">\[
-G(t \mid b_i, s_i, g_i) = \frac{
-    \text{log}(s_i) - \text{log}(g_i)
-}{
-    s_i + g_i
-}
+G(t \mid b_i, s_i, g_i) = \max \left(
+    \frac{
+        \text{log}(s_i) - \text{log}(g_i)
+    }{
+        s_i + g_i
+    },
+    0
+\right)
 \]</span></p>
 <p>Accessible via <code><a href="../reference/standard-links.html">link_ttg()</a></code></p>
 </div>
@@ -338,12 +333,7 @@ G(t \mid b_i, s_i, g_i) = \frac{
 </h4>
 <p><span class="math display">\[
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &amp;= SLD_{ij} \\
-&amp; =b_{i}
-\left[
-    e^{-s_{i}t_{ij}}+
-    e^ {g_{i}t_{ij}} - 1
-\right]
+G(t \mid b_i, s_i, g_i) &amp;= SLD_{ij}
 \end{align*}
 \]</span></p>
 <p>Accessible via <code><a href="../reference/standard-links.html">link_identity()</a></code></p>
@@ -355,11 +345,13 @@ G(t \mid b_i, s_i, g_i) &amp;= SLD_{ij} \\
 <p><span class="math display">\[
 \begin{align*}
 y_{ij} &amp;\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
-SLD_{ij} &amp;=b_{i}
-\left[
-    \phi_i e^{-s_{i}t_{ij}}+
-    (1-\phi_{i}) e^ {g_{i}t_{ij}}
-\right] \\ \\
+SLD_{ij} &amp;=
+\begin{cases}
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] &amp; \text{if }
+t\geq 0 \\
+b_i e^{g_i t_{ij}} &amp; \text{if } t\lt 0
+\end{cases}\\
+\\
 b_i &amp;\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &amp;\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &amp;\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
@@ -427,6 +419,42 @@ g_i &amp;= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
 \]</span></p>
 <p>Where: * <span class="math inline">\(\eta_{\theta i}\)</span> is a
 random effects offset on parameter <span class="math inline">\(\theta\)</span> for subject <span class="math inline">\(i\)</span></p>
+<div class="section level4">
+<h4 id="derivative-of-the-sld-trajectory-link-2">Derivative of the SLD Trajectory Link<a class="anchor" aria-label="anchor" href="#derivative-of-the-sld-trajectory-link-2"></a>
+</h4>
+<p><span class="math display">\[
+G(t \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
+b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) &amp;
+\text{if } t\geq 0 \\
+b_i g_i e^{g_i t_{ij}} &amp; \text{if } t\lt 0
+\end{cases}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_dsld()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="time-to-growth-link-1">Time to Growth Link<a class="anchor" aria-label="anchor" href="#time-to-growth-link-1"></a>
+</h4>
+<p><span class="math display">\[
+G(t \mid b_i, s_i, g_i, \phi_i) = \max \left(
+    \frac{
+        \log(s_i) + \log(\phi_i) - \log(g_i) - \log(1-\phi_i)
+    }{
+        s_i + g_i
+    }, 0
+\right)
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_ttg()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="identity-link-2">Identity Link<a class="anchor" aria-label="anchor" href="#identity-link-2"></a>
+</h4>
+<p><span class="math display">\[
+\begin{align*}
+G(t \mid b_i, s_i, g_i, \phi_i) &amp;= SLD_{ij}
+\end{align*}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-links.html">link_identity()</a></code></p>
+</div>
 </div>
 </div>
 <div class="section level2">

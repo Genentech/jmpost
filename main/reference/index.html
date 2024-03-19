@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -129,39 +123,49 @@
 
       <dl><dt>
           
-          <code><a href="simulate_joint_data.html">simulate_joint_data()</a></code> 
+          <code><a href="SimJointData-class.html">SimJointData()</a></code> 
         </dt>
         <dd>Simulating Joint Longitudinal and Time-to-Event Data</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_lm_gsf.html">sim_lm_gsf()</a></code> 
+          <code><a href="SimLongitudinal-class.html">SimLongitudinal()</a></code> 
         </dt>
-        <dd>Construct a Simulation Function for Longitudinal Data from GSF Model</dd>
+        <dd>Abstract Simulation Class for Longitudinal Data</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_lm_sf.html">sim_lm_sf()</a></code> 
+          <code><a href="SimLongitudinalGSF-class.html">SimLongitudinalGSF()</a></code> 
         </dt>
-        <dd>Construct a Simulation Function for Longitudinal Data from Stein-Fojo Model</dd>
+        <dd>Simulate Longitudinal Data from a GSF Model</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_lm_random_slope.html">sim_lm_random_slope()</a></code> 
+          <code><a href="SimLongitudinalSteinFojo-class.html">SimLongitudinalSteinFojo()</a></code> 
         </dt>
-        <dd>Construct a Simulation Function for Longitudinal Data from Random Slope Model</dd>
+        <dd>Simulate Longitudinal Data from a Stein-Fojo Model</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_os_exponential.html">sim_os_exponential()</a></code> 
+          <code><a href="SimLongitudinalRandomSlope-class.html">SimLongitudinalRandomSlope()</a></code> 
         </dt>
-        <dd>Construct a Log Hazard Function for the Exponential Model</dd>
+        <dd>Simulate Longitudinal Data from a Random Slope Model</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_os_loglogistic.html">sim_os_loglogistic()</a></code> 
+          <code><a href="SimSurvival-class.html">SimSurvival()</a></code> 
         </dt>
-        <dd>Construct a Log Hazard Function for the Log-Logistic Model</dd>
+        <dd>Abstract Simulation Class for Survival Data</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_os_weibull.html">sim_os_weibull()</a></code> 
+          <code><a href="SimSurvivalLogLogistic.html">SimSurvivalLogLogistic()</a></code> 
         </dt>
-        <dd>Construct a Log Hazard Function for the Weibull Model</dd>
+        <dd>Simulate Survival Data from a Log-Logistic Proportional Hazard Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="SimSurvivalExponential.html">SimSurvivalExponential()</a></code> 
+        </dt>
+        <dd>Simulate Survival Data from a Exponential Proportional Hazard Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="SimSurvivalWeibullPH.html">SimSurvivalWeibullPH()</a></code> 
+        </dt>
+        <dd>Simulate Survival Data from a Weibull Proportional Hazard Model</dd>
       </dl><dl><dt>
           
           <code><a href="SimGroup-class.html">SimGroup()</a></code> 
@@ -573,7 +577,7 @@
         <dd><code>Prior</code> -&gt; <code>Character</code></dd>
       </dl><dl><dt>
           
-          <code><a href="show-object.html">show(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataJoint&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModule&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Prior&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Parameter&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;ParameterList&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LinkComponent&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Link&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Quantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SurvivalQuantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModelSamples&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LongitudinalQuantities&gt;</i>)</a></code> 
+          <code><a href="show-object.html">show(<i>&lt;DataSubject&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataLongitudinal&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataSurvival&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;DataJoint&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModule&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Prior&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Parameter&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;ParameterList&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;StanModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LinkComponent&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Link&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModel&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;Quantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SurvivalQuantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;JointModelSamples&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;LongitudinalQuantities&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SimJointData&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SimLongitudinal&gt;</i>)</a></code> <code><a href="show-object.html">show(<i>&lt;SimSurvival&gt;</i>)</a></code> 
         </dt>
         <dd>Show an Object</dd>
       </dl><dl><dt>
@@ -666,6 +670,21 @@
           <code><a href="extractVariableNames.DataLongitudinal.html">extractVariableNames(<i>&lt;DataLongitudinal&gt;</i>)</a></code> 
         </dt>
         <dd>Extract Mapping to Standardised Variable Names</dd>
+      </dl><dl><dt>
+          
+          <code><a href="hazardWindows.html">hazardWindows()</a></code> 
+        </dt>
+        <dd>Generate time windows for evaluating a hazard function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sampleObservations.html">sampleObservations()</a></code> 
+        </dt>
+        <dd>Generate Simulated Observations</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sampleSubjects.html">sampleSubjects()</a></code> 
+        </dt>
+        <dd>Generate Simulated Subjects</dd>
       </dl></div><div class="section level2">
       <h2 id="miscellaneous">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a></h2>
       

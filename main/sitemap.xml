@@ -133,6 +133,36 @@
     <loc>https://genentech.github.io/jmpost/reference/SimGroup-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimJointData-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinal-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimSurvival-Shared.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimSurvival-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalExponential.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/StanModel-class.html</loc>
   </url>
   <url>
@@ -352,13 +382,16 @@
     <loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/get_timepoints.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/harmonise.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/hazardWindows.SimSurvival.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/hazardWindows.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/index.html</loc>
@@ -433,7 +466,13 @@
     <loc>https://genentech.github.io/jmpost/reference/reverse_km.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/sampleObservations.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/sampleStanModel.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/sampleSubjects.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc>
@@ -446,27 +485,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/show.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_lm_gsf.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_lm_random_slope.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_lm_sf.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_os_exponential.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_os_loglogistic.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sim_os_weibull.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/simulate_joint_data.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/size.html</loc>
