@@ -80,6 +80,11 @@ SurvivalQuantities <- function(
 
     time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
 
+    assert_that(
+        all(time_grid >= 0),
+        msg = "All requested time points must be >= 0"
+    )
+
     gq <- generateQuantities(
         object,
         patients = patients$unique_values,

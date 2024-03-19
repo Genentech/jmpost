@@ -43,7 +43,7 @@ containing the subject identifier.}
 }
 \description{
 Coerces a data object into a \code{list} of data components required
-for fitting a \code{\link{JointModel}}. See the vignette (TODO) for more details.
+for fitting a \code{\link{JointModel}}. See the "Extending jmpost" vignette for more details.
 }
 \seealso{
 Other DataSubject: 

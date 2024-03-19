@@ -11,14 +11,13 @@ functions {
         vector psi_kg,
         vector psi_phi
     ) {
-        vector[num_elements(time)] psi_phi_mod = ifelse(
-            is_negative(time),
-            zeros_vector(num_elements(time)),
-            psi_phi
-        );
-        vector[num_elements(time)] result = fmin(
+        int nrow = rows(time);
+        vector[nrow] psi_phi_mod = if_lt0_else(time, psi_phi, 0);
+
+        vector[nrow] result = fmin(
             8000.0,
-            psi_bsld .* (psi_phi_mod .* exp(- psi_ks .* time) + (1 - psi_phi_mod) .* exp(psi_kg .* time))
+            psi_bsld .* 
+            (psi_phi_mod .* exp(- psi_ks .* time) + (1 - psi_phi_mod) .* exp(psi_kg .* time))
         );
         return result;
     }

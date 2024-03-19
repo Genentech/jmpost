@@ -327,3 +327,56 @@ linkDSLD <- function(object, ...) {
 linkIdentity <- function(object, ...) {
     UseMethod("linkIdentity")
 }
+
+
+#' Generate Simulated Observations
+#'
+#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate observations from.
+#' @param times_df (`data.frame`) \cr the times at which to generate observations. See details.
+#'
+#' @details
+#' The `times_df` argument should be a `data.frame` as created by `sampleSubjects` but
+#' replicated for each time point at which observations are to be generated. That is if you want
+#' to generate observations for times `c(0, 1, 2, 3)` then `times_df` should be created as:
+#' ```
+#' subject_dat <- sampleSubjects(object, ...)
+#' times_df <- tidyr::expand_grid(
+#'     subject_dat,
+#'     time = c(0, 1, 2, 3)
+#' )
+#' ```
+#'
+#' @export
+sampleObservations <- function(object, times_df) {
+    UseMethod("sampleObservations")
+}
+
+
+#' Generate Simulated Subjects
+#'
+#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate subjects from.
+#' @param subjects_df (`data.frame`) \cr the subjects to generate observations for. See details.
+#'
+#' @details
+#' The `subjects_df` argument should be a `data.frame` with 1 row per desired subject to create
+#' with the following columns:
+#' - `study` (`factor`) the study identifier.
+#' - `arm` (`factor`) the treatment arm identifier.
+#' - `pt` (`character`) the subject identifier.
+#'
+#' This method takes care of generating all the individual subject data required for the
+#' [`sampleObservations`] method to generate the observations.
+#' @export
+sampleSubjects <- function(object, subjects_df) {
+    UseMethod("sampleSubjects")
+}
+
+
+#' Generate time windows for evaluating a hazard function
+#'
+#' @param object (`SurvivalModel`) \cr object to generate time windows for.
+#' @param ... Not used.
+#'
+hazardWindows <- function(object, ...) {
+    UseMethod("hazardWindows")
+}

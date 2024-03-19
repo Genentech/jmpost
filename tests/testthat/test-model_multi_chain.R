@@ -1,67 +1,74 @@
 
 test_that("Can recover known distribution parameters from random slope model when using multiple chains", {
     jm <- JointModel(
-        longitudinal = LongitudinalRandomSlope(),
-        survival = SurvivalExponential(),
-        link = link_dsld()
+        longitudinal = LongitudinalRandomSlope(
+            intercept = prior_normal(30, 5),
+            slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
+            sigma = prior_lognormal(log(3), sigma = 0.5)
+        ),
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(1 / 200), 0.5)
+        ),
+        link = link_dsld(prior = prior_normal(0.1, 0.2))
     )
 
     set.seed(3251)
-    jlist <- simulate_joint_data(
+    jlist <- SimJointData(
         design = list(
             SimGroup(150, "Arm-A", "Study-X"),
             SimGroup(150, "Arm-B", "Study-X")
         ),
-        times = 1:2000,
-        lambda_cen = 1 / 9000,
-        beta_cat = c(
-            "A" = 0,
-            "B" = -0.1,
-            "C" = 0.5
+        survival = SimSurvivalExponential(
+            lambda = 1 / 200,
+            time_max = 2000,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
         ),
-        beta_cont = 0.3,
-        lm_fun = sim_lm_random_slope(
+        longitudinal = SimLongitudinalRandomSlope(
+            times = c(1, 50, 100, 150, 200, 250, 300),
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
             slope_sigma = 0.2,
             link_dsld = 0.1
         ),
-        os_fun = sim_os_exponential(lambda = 1 / 200)
+        .silent = TRUE
     )
-
-    dat_os <- jlist$os
-    dat_lm <- jlist$lm |>
-        dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
-        dplyr::arrange(time, pt)
 
     jdat <- DataJoint(
         subject = DataSubject(
-            data = dat_os,
+            data = jlist@survival,
             subject = "pt",
             arm = "arm",
             study = "study"
         ),
         survival = DataSurvival(
-            data = dat_os,
+            data = jlist@survival,
             formula = Surv(time, event) ~ cov_cat + cov_cont
         ),
         longitudinal = DataLongitudinal(
-            data = dat_lm,
+            data = jlist@longitudinal,
             formula = sld ~ time,
             threshold = 5
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 400,
-        iter_warmup = 200,
-        chains = 3,
-        refresh = 0,
-        parallel_chains = 3
-    )
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 400,
+            iter_warmup = 200,
+            chains = 3,
+            parallel_chains = 3
+        )
+    })
+
 
     vars <- c(
         "sm_exp_lambda" = 1 / 200,

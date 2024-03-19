@@ -19,12 +19,14 @@ functions {
         matrix[nrows, ncols] psi_bsld_matrix = rep_matrix(psi_bsld, ncols);
         matrix[nrows, ncols] psi_ks_matrix = rep_matrix(psi_ks, ncols);
         matrix[nrows, ncols] psi_kg_matrix = rep_matrix(psi_kg, ncols);
-        
+
+        matrix[nrows, ncols] psi_ks_matrix_mod = if_lt0_else(time, psi_ks_matrix, 0);
+
         matrix[nrows, ncols] result = fmin(
             8000.0,
             psi_bsld_matrix .* (
                 psi_kg_matrix .* exp(psi_kg_matrix .* time) -
-                psi_ks_matrix .* exp(- psi_ks_matrix .* time)
+                psi_ks_matrix_mod .* exp(- psi_ks_matrix_mod .* time)
             )
         );
         return result;

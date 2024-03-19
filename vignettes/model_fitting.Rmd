@@ -127,29 +127,31 @@ So let's run the code for that:
 
 ```{r simulate_data}
 set.seed(129)
-sim_data <- simulate_joint_data(
+sim_data <- SimJointData(
     design = list(
         SimGroup(50, "Arm-A", "Study-X"),
         SimGroup(50, "Arm-B", "Study-X")
     ),
-    times = 1:2000,
-    lambda_cen = 1 / 9000,
-    beta_cat = c(
-        "A" = 0,
-        "B" = -0.1,
-        "C" = 0.5
-    ),
-    beta_cont = 0.3,
-    lm_fun = sim_lm_random_slope(
+    longitudinal = SimLongitudinalRandomSlope(
+        times = c(1, 50, 100, 150, 200, 250, 300),
         intercept = 30,
         slope_mu = c(1, 2),
         slope_sigma = 0.2,
         sigma = 20,
         link_dsld = 0.1
     ),
-    os_fun = sim_os_weibull(
+    survival = SimSurvivalWeibullPH(
         lambda = 1 / 300,
-        gamma = 0.97
+        gamma = 0.97,
+        time_max = 2000,
+        time_step = 1,
+        lambda_cen = 1 / 9000,
+        beta_cat = c(
+            "A" = 0,
+            "B" = -0.1,
+            "C" = 0.5
+        ),
+        beta_cont = 0.3
     )
 )
 ```
@@ -166,10 +168,8 @@ We start with extracting data into individual data sets, and then reducing the
 longitudinal data to specific time points.
 
 ```{r individual_data}
-os_data <- sim_data$os
-long_data <- sim_data$lm |>
-    dplyr::filter(time %in% c(1, 50, 100, 150, 200, 250, 300)) |>
-    dplyr::arrange(time, pt)
+os_data <- sim_data@survival
+long_data <- sim_data@longitudinal
 ```
 
 Let's have a quick look at the format:

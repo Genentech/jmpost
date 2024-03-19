@@ -25,8 +25,8 @@ More specifically, the model implemented in this package utilizes a
 modelling framework described previously **\[1-3\]** to link overall
 survival to tumour size data in oncology clinical trials.
 
-**\[1\]** [Tardivon *et al.* Association between tumour size kinetics and
-survival in patients with urothelial carcinoma treated with
+**\[1\]** [Tardivon *et al.* Association between tumour size kinetics
+and survival in patients with urothelial carcinoma treated with
 atezolizumab: Implications for patient follow-up. *Clin Pharm Ther*,
 2019](https://doi.org/10.1002/cpt.1450).  
 **\[2\]** [Kerioui *et al.* Bayesian inference using Hamiltonian
@@ -80,27 +80,34 @@ library(jmpost)
 #>   heightDetails.titleGrob ggplot2
 #>   widthDetails.titleGrob  ggplot2
 set.seed(321)
-sim_data <- simulate_joint_data(
-    lm_fun = sim_lm_random_slope(),
-    os_fun = sim_os_exponential(lambda = 1 / 100)
+sim_data <- SimJointData(
+    design = list(
+        SimGroup(50, "Arm-A", "Study-X"),
+        SimGroup(50, "Arm-B", "Study-X")
+    ),
+    longitudinal = SimLongitudinalRandomSlope(
+        times = c(1, 50, 100, 150, 200, 250, 300),
+    ),
+    survival = SimSurvivalWeibullPH(
+        lambda = 1 / 300,
+        gamma = 0.97
+    )
 )
-os_data <- sim_data$os
-long_data <- sim_data$lm |>
-    dplyr::arrange(time, pt)
+#> INFO: 1 patients did not die before max(times)
 
 joint_data <- DataJoint(
     subject = DataSubject(
-        data = os_data,
+        data = sim_data@survival,
         subject = "pt",
         arm = "arm",
         study = "study"
     ),
     survival = DataSurvival(
-        data = os_data,
+        data = sim_data@survival,
         formula = Surv(time, event) ~ cov_cat + cov_cont
     ),
     longitudinal = DataLongitudinal(
-        data = long_data,
+        data = sim_data@longitudinal,
         formula = sld ~ time,
         threshold = 5
     )
