@@ -55,7 +55,24 @@ parameters {
 }
 
 transformed parameters {
+    //
+    // Source - base/longitudinal.stan
+    //
+    vector[Nta_total] Ypred_log_lik = rep_vector(0, Nta_total);
+
     {{ stan.transformed_parameters }}
+
+    //
+    // Source - base/longitudinal.stan
+    //
+    log_lik += csr_matrix_times_vector(
+        Nind,
+        Nta_total,
+        w_mat_inds_all_y,
+        v_mat_inds_all_y,
+        u_mat_inds_all_y,
+        Ypred_log_lik
+    );
 }
 
 model {

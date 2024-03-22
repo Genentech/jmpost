@@ -35,17 +35,18 @@ transformed parameters {
 
     vector[Nta_total] Ypred = lm_rs_ind_intercept[ind_index] + lm_rs_rslope_ind .* Tobs;
 
-    Ypred_log_dens = vect_normal_log_dens(
-        Yobs,
-        Ypred,
-        rep_vector(lm_rs_sigma, Nta_total)
+    Ypred_log_lik[obs_y_index] = vect_normal_log_dens(
+        Yobs[obs_y_index],
+        Ypred[obs_y_index],
+        rep_vector(lm_rs_sigma, Nta_obs_y)
     );
-
-    Ypred_log_cum = vect_normal_log_cum(
-        Yobs,
-        Ypred,
-        rep_vector(lm_rs_sigma, Nta_total)
-    );
+    if (Nta_cens_y > 0 ) {
+        Ypred_log_lik[cens_y_index] = vect_normal_log_cum(
+            Ythreshold,
+            Ypred[cens_y_index],
+            rep_vector(lm_rs_sigma, Nta_cens_y)
+        );
+    }
 }
 
 
