@@ -28,13 +28,19 @@ LongitudinalModel <- function(
     ...
 ) {
 
-    base_long <- StanModule(
-        x = "base/longitudinal.stan"
+    base_stan <- paste0(
+        read_stan("base/longitudinal.stan"),
+        collapse = "\n"
+    )
+
+    stan_full <- decorated_render(
+        .x = base_stan,
+        stan = add_missing_stan_blocks(as.list(stan))
     )
 
     .LongitudinalModel(
         StanModel(
-            stan = merge(base_long, stan),
+            stan = StanModule(stan_full),
             parameters = parameters,
             name = name,
             ...

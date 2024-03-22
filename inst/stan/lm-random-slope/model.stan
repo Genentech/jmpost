@@ -1,5 +1,16 @@
 
-
+functions {
+    //
+    // Source - lm-random-slope/model.stan
+    //
+    row_vector lm_predict_individual_patient(vector time, row_vector long_gq_parameters) {
+        int nrow = rows(time);
+        return (
+            rep_vector(long_gq_parameters[1], nrow) + 
+            rep_vector(long_gq_parameters[2], nrow) .* time
+        )';
+    }
+}
 
 
 parameters {
@@ -55,14 +66,7 @@ generated quantities {
     //
     // Source - lm-random-slope/model.stan
     //
-    matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
-    if (n_lm_time_grid > 0) {
-        for (i in 1:n_pt_select_index) {
-            int current_pt_index = pt_select_index[i];
-            y_fit_at_time_grid[i, ] =
-                lm_rs_ind_intercept[current_pt_index] +
-                lm_rs_ind_rnd_slope[current_pt_index] .*
-                to_row_vector(lm_time_grid);
-        }
-    }
+    matrix[Nind, 2] long_gq_parameters;
+    long_gq_parameters[, 1] = lm_rs_ind_intercept;
+    long_gq_parameters[, 2] = lm_rs_ind_rnd_slope;
 }
