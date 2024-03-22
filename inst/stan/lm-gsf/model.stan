@@ -113,17 +113,9 @@ generated quantities {
     //
     // Source - lm-gsf/model.stan
     //
-    matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
-    if (n_lm_time_grid > 0) {
-        for (i in 1:n_pt_select_index) {
-            int current_pt_index = pt_select_index[i];
-            y_fit_at_time_grid[i, ] = to_row_vector(sld(
-                lm_time_grid,
-                rep_vector(lm_gsf_psi_bsld[current_pt_index], n_lm_time_grid),
-                rep_vector(lm_gsf_psi_ks[current_pt_index], n_lm_time_grid),
-                rep_vector(lm_gsf_psi_kg[current_pt_index], n_lm_time_grid),
-                rep_vector(lm_gsf_psi_phi[current_pt_index], n_lm_time_grid)
-            ));
-        }
-    }
+    matrix[Nind, 4] long_gq_parameters;
+    long_gq_parameters[, 1] = lm_gsf_psi_bsld;
+    long_gq_parameters[, 2] = lm_gsf_psi_ks;
+    long_gq_parameters[, 3] = lm_gsf_psi_kg;
+    long_gq_parameters[, 4] = lm_gsf_psi_phi;
 }

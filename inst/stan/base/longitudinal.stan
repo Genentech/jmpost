@@ -1,4 +1,8 @@
 
+functions {
+    {{ stan.functions }}
+}
+
 
 data{
     //
@@ -38,5 +42,40 @@ data{
     vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
     array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
     array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
+
+    {{ stan.data }}
 }
 
+transformed data {
+   {{ stan.transformed_data }}
+}
+
+parameters {
+    {{ stan.parameters }}
+}
+
+transformed parameters {
+    {{ stan.transformed_parameters }}
+}
+
+model {
+    {{ stan.model }}
+}
+
+generated quantities {
+    {{ stan.generated_quantities }}
+
+    //
+    // Source - base/longitudinal.stan
+    //
+    matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
+    if (n_lm_time_grid > 0) {
+        for (i in 1:n_pt_select_index) {
+            int current_pt_index = pt_select_index[i];
+            y_fit_at_time_grid[i, ] = lm_predict_individual_patient(
+                lm_time_grid,
+                long_gq_parameters[current_pt_index, ]
+            );
+        }
+    }
+}
