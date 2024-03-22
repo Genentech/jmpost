@@ -167,7 +167,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     }
 
     dat <- summary_post(
-        mp@results,
+        as.CmdStanMCMC(mp),
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
         TRUE
     )
@@ -177,7 +177,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     expect_true(all(dat$ess_bulk > 100))
 
     dat <- summary_post(
-        mp@results,
+        as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "sm_exp_lambda")
     )
 

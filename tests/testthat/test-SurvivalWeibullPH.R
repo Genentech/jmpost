@@ -73,7 +73,7 @@ test_that("SurvivalWeibullPH can recover known values", {
 
     # Variables to extract (order important)
     vars <- c("sm_weibull_ph_lambda", "sm_weibull_ph_gamma", "beta_os_cov")
-    results_summary <- mp@results$summary(vars)
+    results_summary <- as.CmdStanMCMC(mp)$summary(vars)
 
     # calculate Z-scores
     par_mean <- results_summary$mean
