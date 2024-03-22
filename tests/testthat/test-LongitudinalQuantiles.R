@@ -138,7 +138,7 @@ test_that("LongitudinalQuantities correctly subsets patients and rebuilds correc
     )
 
     map_me <- function(time, mat) {
-        tibble(time = as.data.frame(mat[, 1] + mat[, 2] * time)[, 1])
+        dplyr::tibble(time = as.data.frame(mat[, 1] + mat[, 2] * time)[, 1])
     }
 
     vars_10 <- c("lm_rs_ind_intercept[10]", "lm_rs_ind_rnd_slope[10]")
@@ -153,7 +153,7 @@ test_that("LongitudinalQuantities correctly subsets patients and rebuilds correc
     mat3 <- test_data_1$jsamples@results$draws(vars_99, format = "draws_matrix")
     dat3 <- dplyr::bind_rows(lapply(times, map_me, mat = mat3))
 
-    vec_actual <- data.frame(longsamps)[["values"]]
+    vec_actual <- as.data.frame(longsamps)[["values"]]
     vec_expected <- c(dat1$time, dat2$time, dat3$time)
 
     # cmdstanr rounds the generated samples to 6 s.f.
