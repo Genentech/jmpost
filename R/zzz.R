@@ -1,6 +1,6 @@
 
 .onLoad <- function(libname, pkgname) {
-    if (!"cmdstanr" %in% installed.packages()[, "Package"]) {
+    if (!"cmdstanr" %in% utils::installed.packages()[, "Package"]) {
         stop(c(
             "The `cmdstanr` package is not installed.",
             " Please note that this package is not available on CRAN.",
