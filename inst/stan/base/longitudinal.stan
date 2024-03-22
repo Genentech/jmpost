@@ -64,6 +64,10 @@ model {
 
 generated quantities {
     {{ stan.generated_quantities }}
+
+    //
+    // Source - base/longitudinal.stan
+    //
     matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
     if (n_lm_time_grid > 0) {
         for (i in 1:n_pt_select_index) {
