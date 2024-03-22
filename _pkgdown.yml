@@ -130,6 +130,8 @@ reference:
       - merge
       - show
       - as_stan_list
+      - as.CmdStanMCMC
+      - as.CmdStanMCMC.JointModelSamples
       - as.character.JointModel
       - as.StanModule.Parameter
       - as.StanModule.ParameterList
