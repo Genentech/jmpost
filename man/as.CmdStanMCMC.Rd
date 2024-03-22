@@ -3,7 +3,7 @@
 \name{as.CmdStanMCMC}
 \alias{as.CmdStanMCMC}
 \alias{as.CmdStanMCMC.JointModelSamples}
-\title{Coerce to CmdStanMCMC}
+\title{Coerce to \code{CmdStanMCMC}}
 \usage{
 as.CmdStanMCMC(object, ...)
 

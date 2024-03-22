@@ -382,7 +382,7 @@ hazardWindows <- function(object, ...) {
 }
 
 
-#' Coerce to CmdStanMCMC
+#' Coerce to `CmdStanMCMC`
 #'
 #' @param object to be converted
 #' @param ... additional options
