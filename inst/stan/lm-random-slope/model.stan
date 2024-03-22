@@ -24,17 +24,16 @@ transformed parameters {
 
     vector[Nta_total] Ypred = lm_rs_ind_intercept[ind_index] + lm_rs_rslope_ind .* Tobs;
 
-    log_lik += csr_matrix_times_vector(
-        Nind,
-        Nta_total,
-        w_mat_inds_all_y,
-        v_mat_inds_all_y,
-        u_mat_inds_all_y,
-        vect_normal_log_dens(
-            Yobs,
-            Ypred,
-            rep_vector(lm_rs_sigma, Nta_total)
-        )
+    Ypred_log_dens = vect_normal_log_dens(
+        Yobs,
+        Ypred,
+        rep_vector(lm_rs_sigma, Nta_total)
+    );
+
+    Ypred_log_cum = vect_normal_log_cum(
+        Yobs,
+        Ypred,
+        rep_vector(lm_rs_sigma, Nta_total)
     );
 }
 
