@@ -34,7 +34,6 @@ Imports:
     checkmate,
     dplyr,
     stringr,
-    cmdstanr,
     ggplot2,
     ggplot2.utils,
     statmod,
@@ -46,7 +45,8 @@ Imports:
     digest,
     posterior,
     stats
-Suggests: 
+Suggests:
+    cmdstanr,
     bayesplot,
     knitr,
     rmarkdown,

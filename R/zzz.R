@@ -1,5 +1,12 @@
 
 .onLoad <- function(libname, pkgname) {
+    if (!"cmdstanr" %in% installed.packages()[, "Package"]) {
+        stop(c(
+            "The `cmdstanr` package is not installed.",
+            " Please note that this package is not available on CRAN.",
+            " To install it, please follow the instructions at: https://mc-stan.org/cmdstanr/"
+        ))
+    }
     set_options()
 }
 
