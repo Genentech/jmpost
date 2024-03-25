@@ -237,7 +237,8 @@ as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
 #' @param filename (`string`)\cr file name.
 #'
 #' @keywords internal
-is_file <- function(filename = NULL) { if (is.null(filename)) {
+is_file <- function(filename = NULL) {
+    if (is.null(filename)) {
         return(FALSE)
     }
     assert_that(
