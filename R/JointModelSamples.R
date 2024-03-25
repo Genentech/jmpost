@@ -58,7 +58,7 @@ generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm,
     devnull <- utils::capture.output(
         results <- model$generate_quantities(
             data = data,
-            fitted_params = object@results$draws()
+            fitted_params = as.CmdStanMCMC(object)$draws()
         )
     )
     return(results)
@@ -74,7 +74,7 @@ generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm,
 #' @export
 as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sizes <- vapply(
-        object@results$metadata()[["stan_variable_sizes"]],
+        as.CmdStanMCMC(object)$metadata()[["stan_variable_sizes"]],
         \(x) {
             if (length(x) == 1 && x == 1) return("")
             paste0("[", paste(x, collapse = ", "), "]")
@@ -83,7 +83,7 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     )
     variable_string <- paste0(
         "        ",
-        object@results$metadata()[["stan_variables"]],
+        as.CmdStanMCMC(object)$metadata()[["stan_variables"]],
         sizes
     )
     template <- c(
@@ -99,8 +99,8 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     template_padded <- paste(pad, template)
     sprintf(
         paste(template_padded, collapse = "\n"),
-        object@results$metadata()$iter_sampling,
-        object@results$metadata()$num_chains
+        as.CmdStanMCMC(object)$metadata()$iter_sampling,
+        as.CmdStanMCMC(object)$metadata()$num_chains
     )
 }
 
@@ -114,3 +114,10 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
+
+
+#' @rdname as.CmdStanMCMC
+#' @export
+as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
+    return(object@results)
+}

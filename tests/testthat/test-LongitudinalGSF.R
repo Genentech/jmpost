@@ -169,7 +169,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     }
 
     dat <- summary_post(
-        mp@results,
+        as.CmdStanMCMC(mp),
         c("lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg"),
         TRUE
     )
@@ -180,7 +180,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     expect_true(all(dat$ess_bulk > 100))
 
     dat <- summary_post(
-        mp@results,
+        as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
     )
 
