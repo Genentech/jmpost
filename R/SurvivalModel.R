@@ -27,7 +27,7 @@ SurvivalModel <- function(
     name = "<Unnamed>",
     ...
 ) {
-    base_stan <- paste0(read_stan("base/survival.stan"), collapse = "\n")
+    base_stan <- read_stan("base/survival.stan")
     stan_full <- decorated_render(
         .x = base_stan,
         stan = add_missing_stan_blocks(as.list(stan))

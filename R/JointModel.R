@@ -75,7 +75,7 @@ JointModel <- function(
         )
     )
 
-    base_model <- paste0(read_stan("base/base.stan"), collapse = "\n")
+    base_model <- read_stan("base/base.stan")
 
     stan_full <- decorated_render(
         .x = base_model,

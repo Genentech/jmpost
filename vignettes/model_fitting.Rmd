@@ -278,7 +278,7 @@ vars <- c(
     "sm_weibull_ph_gamma",
     "beta_os_cov"
 )
-mcmc_results@results$summary(vars)
+as.CmdStanMCMC(mcmc_results)$summary(vars)
 ```
 
 We can already see here from the `rhat` statistic whether the MCMC sampler
@@ -306,7 +306,7 @@ in a format that is understood by `bayesplot`. We can e.g. look
 at some simple trace plots:
 
 ```{r fig.width=6}
-vars_draws <- mcmc_results@results$draws(vars)
+vars_draws <- as.CmdStanMCMC(mcmc_results)$draws(vars)
 
 library(bayesplot)
 mcmc_trace(vars_draws)

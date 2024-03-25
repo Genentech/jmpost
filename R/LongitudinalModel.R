@@ -27,11 +27,7 @@ LongitudinalModel <- function(
     name = "<Unnamed>",
     ...
 ) {
-
-    base_stan <- paste0(
-        read_stan("base/longitudinal.stan"),
-        collapse = "\n"
-    )
+    base_stan <- read_stan("base/longitudinal.stan")
 
     stan_full <- decorated_render(
         .x = base_stan,
