@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -381,7 +375,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpRRwBeq/model-d5c3e548a35.stan', line 514, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpZq5Q3T/model-d6938707b06.stan', line 514, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -416,7 +410,7 @@ because the <code>results</code> element is of class
 <span>    <span class="st">"sm_weibull_ph_gamma"</span>,</span>
 <span>    <span class="st">"beta_os_cov"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/as.CmdStanMCMC.html">as.CmdStanMCMC</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
 <span><span class="co">#&gt;    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -457,7 +451,7 @@ chain with plots.</p>
 element, we can extract the samples in a format that is understood by
 <code>bayesplot</code>. We can e.g. look at some simple trace plots:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">vars_draws</span> <span class="op">&lt;-</span> <span class="va">mcmc_results</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">vars_draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.CmdStanMCMC.html">as.CmdStanMCMC</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/" class="external-link">bayesplot</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; This is bayesplot version 1.11.1</span></span>
