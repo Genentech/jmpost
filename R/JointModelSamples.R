@@ -12,7 +12,7 @@ setOldClass("CmdStanMCMC")
 #'
 #' @slot model ([`JointModel`])\cr the model that the samples were drawn from.
 #' @slot data ([`DataJoint`])\cr the data that the model was fitted on.
-#' @slot results ([`CmdStanMCMC`])\cr the STAN samples.
+#' @slot results ([`cmdstanr::CmdStanMCMC`])\cr the STAN samples.
 #'
 #' @aliases JointModelSamples
 #' @export

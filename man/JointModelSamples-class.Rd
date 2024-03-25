@@ -16,6 +16,6 @@ Contains samples from a \code{\link{JointModel}}.
 
 \item{\code{data}}{(\code{\link{DataJoint}})\cr the data that the model was fitted on.}
 
-\item{\code{results}}{(\code{\link{CmdStanMCMC}})\cr the STAN samples.}
+\item{\code{results}}{(\code{\link[cmdstanr:CmdStanMCMC]{cmdstanr::CmdStanMCMC}})\cr the STAN samples.}
 }}
 
