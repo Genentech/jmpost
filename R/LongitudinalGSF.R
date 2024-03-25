@@ -58,7 +58,7 @@ LongitudinalGSF <- function(
 ) {
 
     gsf_model <- StanModule(decorated_render(
-        .x = paste0(read_stan("lm-gsf/model.stan"), collapse = "\n"),
+        .x = read_stan("lm-gsf/model.stan"),
         centred = centred
     ))
 
