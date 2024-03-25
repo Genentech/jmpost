@@ -262,16 +262,17 @@ is_file <- function(filename = NULL) {
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 read_stan <- function(string) {
-    string <- paste0(string, collapse = "\n")
     local_inst_file <- file.path("inst", "stan", string)
     system_file <- system.file(file.path("stan", string), package = "jmpost")
     local_file <- string
     files <- c(local_file, local_inst_file, system_file)
     for (fi in files) {
         if (is_file(fi)) {
-            return(readLines(fi))
+            string <- readLines(fi)
+            break
         }
     }
+    string <- paste0(string, collapse = "\n")
     return(string)
 }
 
