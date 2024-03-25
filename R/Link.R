@@ -101,7 +101,7 @@ as.StanModule.Link <- function(object, ...) {
 
     base_stan <- StanModule(
         decorated_render(
-            .x = paste(read_stan("base/link.stan"), collapse = "\n"),
+            .x = read_stan("base/link.stan"),
             items = as.list(keys)
         )
     )

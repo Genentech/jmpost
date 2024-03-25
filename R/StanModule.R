@@ -268,9 +268,11 @@ read_stan <- function(string) {
     files <- c(local_file, local_inst_file, system_file)
     for (fi in files) {
         if (is_file(fi)) {
-            return(readLines(fi))
+            string <- readLines(fi)
+            break
         }
     }
+    string <- paste0(string, collapse = "\n")
     return(string)
 }
 

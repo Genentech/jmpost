@@ -124,3 +124,44 @@ test_that("LongitudinalQuantities can recover known results", {
 
     expect_true(all(dat_all$correl > 0.99))
 })
+
+
+test_that("LongitudinalQuantities correctly subsets patients and rebuilds correct value for each sample", {
+    set.seed(101)
+    ensure_test_data_1()
+    times <- c(-100, 0, 1, 100, 200)
+
+    longsamps <- LongitudinalQuantities(
+        test_data_1$jsamples,
+        groups = c("pt_010", "pt_011", "pt_099"),
+        time_grid = times
+    )
+
+    map_me <- function(time, mat) {
+        dplyr::tibble(time = as.data.frame(mat[, 1] + mat[, 2] * time)[, 1])
+    }
+
+    vars_10 <- c("lm_rs_ind_intercept[10]", "lm_rs_ind_rnd_slope[10]")
+    mat1 <- test_data_1$jsamples@results$draws(vars_10, format = "draws_matrix")
+    dat1 <- dplyr::bind_rows(lapply(times, map_me, mat = mat1))
+
+    vars_11 <- c("lm_rs_ind_intercept[11]", "lm_rs_ind_rnd_slope[11]")
+    mat2 <- test_data_1$jsamples@results$draws(vars_11, format = "draws_matrix")
+    dat2 <- dplyr::bind_rows(lapply(times, map_me, mat = mat2))
+
+    vars_99 <- c("lm_rs_ind_intercept[99]", "lm_rs_ind_rnd_slope[99]")
+    mat3 <- test_data_1$jsamples@results$draws(vars_99, format = "draws_matrix")
+    dat3 <- dplyr::bind_rows(lapply(times, map_me, mat = mat3))
+
+    vec_actual <- as.data.frame(longsamps)[["values"]]
+    vec_expected <- c(dat1$time, dat2$time, dat3$time)
+
+    # cmdstanr rounds the generated samples to 6 s.f.
+    # Stan then uses these rounded samples when calculating the generated quantiles
+    # The generated quantities themselves are then rounded to 6 s.f. when being stored on disk
+    # This makes direct comparison of values (even with rounding or tolerance) impossible
+    # Instead we just test for an extremely high correlation
+    # For reference even changing a single number in one of the vectors from say 34 to 35
+    # is enough to cause this test to fail
+    expect_gt(cor(vec_actual, vec_expected), 0.9999999999)
+})
