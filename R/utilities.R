@@ -328,3 +328,7 @@ decompose_patients <- function(patients, all_pts) {
         indexes = patients_index
     )
 }
+
+is_cmdstanr_available <- function() {
+    requireNamespace("cmdstanr", quietly = TRUE)
+}
