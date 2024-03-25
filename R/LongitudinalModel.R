@@ -27,7 +27,6 @@ LongitudinalModel <- function(
     name = "<Unnamed>",
     ...
 ) {
-
     base_stan <- read_stan("base/longitudinal.stan")
 
     stan_full <- decorated_render(

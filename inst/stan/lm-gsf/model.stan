@@ -66,31 +66,17 @@ transformed parameters{
         lm_gsf_psi_phi[ind_index]
     );
 
-    log_lik += csr_matrix_times_vector(
-        Nind,
-        Nta_obs_y,
-        w_mat_inds_obs_y,
-        v_mat_inds_obs_y,
-        u_mat_inds_obs_y,
-        vect_normal_log_dens(
-            Yobs[obs_y_index],
-            Ypred[obs_y_index],
-            Ypred[obs_y_index] * lm_gsf_sigma
-        )
-    );
 
+    Ypred_log_lik[obs_y_index] = vect_normal_log_dens(
+        Yobs[obs_y_index],
+        Ypred[obs_y_index],
+        Ypred[obs_y_index] * lm_gsf_sigma
+    );
     if (Nta_cens_y > 0 ) {
-        log_lik += csr_matrix_times_vector(
-            Nind,
-            Nta_cens_y,
-            w_mat_inds_cens_y,
-            v_mat_inds_cens_y,
-            u_mat_inds_cens_y,
-            vect_normal_log_cum(
-                Ythreshold,
-                Ypred[cens_y_index],
-                Ypred[cens_y_index] * lm_gsf_sigma
-            )
+        Ypred_log_lik[cens_y_index] = vect_normal_log_cum(
+            Ythreshold,
+            Ypred[cens_y_index],
+            Ypred[cens_y_index] * lm_gsf_sigma
         );
     }
 }

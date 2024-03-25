@@ -11,6 +11,7 @@
         
             Variables:
                 Ypred[2800]
+                Ypred_log_lik[2800]
                 beta_os_cov[3]
                 lm_rs_ind_intercept[400]
                 lm_rs_ind_rnd_slope[400]
