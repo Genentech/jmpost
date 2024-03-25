@@ -83,7 +83,7 @@ test_that("LongitudinalRandomSlope correctly generates an intercept per study", 
         })
     })
 
-    samples <- mp@results$draws(
+    samples <- as.CmdStanMCMC(mp)$draws(
         c("lm_rs_intercept", "lm_rs_slope_mu", "lm_rs_slope_sigma", "lm_rs_sigma"),
         format = "draws_matrix"
     )
@@ -163,7 +163,7 @@ test_that("Random Slope Model can recover known parameter values", {
         "lm_rs_sigma"            # 3
     )
 
-    pars <- mp@results$summary(vars)
+    pars <- as.CmdStanMCMC(mp)$summary(vars)
 
 
     ## Check that we can recover main effects parameters
@@ -173,7 +173,7 @@ test_that("Random Slope Model can recover known parameter values", {
 
     ## Check that we can recover random effects parameters
     pars <- suppressWarnings({
-        mp@results$summary("lm_rs_ind_rnd_slope")$mean
+        as.CmdStanMCMC(mp)$summary("lm_rs_ind_rnd_slope")$mean
     })
 
     ## Extract real random effects per patient
