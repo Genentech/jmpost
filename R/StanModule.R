@@ -237,8 +237,7 @@ as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
 #' @param filename (`string`)\cr file name.
 #'
 #' @keywords internal
-is_file <- function(filename = NULL) {
-    if (is.null(filename)) {
+is_file <- function(filename = NULL) { if (is.null(filename)) {
         return(FALSE)
     }
     assert_that(
@@ -262,6 +261,7 @@ is_file <- function(filename = NULL) {
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
 read_stan <- function(string) {
+    string <- paste0(string, collapse = "\n")
     local_inst_file <- file.path("inst", "stan", string)
     system_file <- system.file(file.path("stan", string), package = "jmpost")
     local_file <- string

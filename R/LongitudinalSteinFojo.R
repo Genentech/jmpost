@@ -50,7 +50,7 @@ LongitudinalSteinFojo <- function(
 ) {
 
     sf_model <- StanModule(decorated_render(
-        .x = paste0(read_stan("lm-stein-fojo/model.stan"), collapse = "\n"),
+        .x = read_stan("lm-stein-fojo/model.stan"),
         centred = centred
     ))
 

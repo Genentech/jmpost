@@ -126,7 +126,7 @@ test_that("LongitudinalQuantities can recover known results", {
 })
 
 
-test_that("LongitudinalQuantities correctly subsets patients and rebuilds correct value for each smaple", {
+test_that("LongitudinalQuantities correctly subsets patients and rebuilds correct value for each sample", {
     set.seed(101)
     ensure_test_data_1()
     times <- c(-100, 0, 1, 100, 200)
