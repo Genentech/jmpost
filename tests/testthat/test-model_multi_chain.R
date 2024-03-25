@@ -82,7 +82,7 @@ test_that("Can recover known distribution parameters from random slope model whe
         "link_dsld" = 0.1
     )
 
-    results_df <- mp@results$summary(names(vars))
+    results_df <- as.CmdStanMCMC(mp)$summary(names(vars))
 
     z_score <- abs(vars - results_df$mean) / results_df$sd
     expect_true(all(z_score < qnorm(0.95)))
