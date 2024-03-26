@@ -1,6 +1,8 @@
 # "missing" = no argument provided
 # "NULL" = explicit NULL
 setClassUnion("empty", c("missing", "NULL"))
+setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
+setClassUnion("character_or_NULL", c("character", "NULL"))
 
 # merge ----
 
@@ -393,4 +395,16 @@ hazardWindows <- function(object, ...) {
 #' @export
 as.CmdStanMCMC <- function(object, ...) {
     UseMethod("as.CmdStanMCMC")
+}
+
+
+#' @export
+as.QuantityGenerator <- function(object, ...) {
+    UseMethod("as.QuantityGenerator")
+}
+
+
+#' @export
+as.QuantityCollapser <- function(object, ...) {
+    UseMethod("as.QuantityCollapser")
 }

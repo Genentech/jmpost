@@ -3,13 +3,12 @@
 test_that("Test that LongitudinalQuantities works as expected", {
     ensure_test_data_1()
 
-    expected_column_names <- c("median", "lower", "upper", "time", "group")
+    expected_column_names <- c("group", "time", "median", "lower", "upper")
 
     times <- c(-50, -10, 0, 10, 20, 50, 200, 300)
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        c("pt_001", "pt_002"),
-        times
+        grid = GridFixed(times = times, subjects = c("pt_0001", "pt_0002"))
     )
     preds <- summary(longsamps)
     expect_equal(nrow(preds), length(times) * 2)
@@ -18,35 +17,33 @@ test_that("Test that LongitudinalQuantities works as expected", {
     expect_equal(preds$type, NULL)
 
 
-    longsamps <- LongitudinalQuantities(test_data_1$jsamples, time_grid = c(-30, 10, 20, 200, 300))
+    longsamps <- LongitudinalQuantities(
+        test_data_1$jsamples,
+        grid = GridFixed(times = c(-30, 10, 20, 200, 300))
+    )
     preds <- summary(longsamps)
-    expect_equal(nrow(preds), 5 * nrow(test_data_1$dat_os)) # 4 timepoints for each subject in the OS dataset
+    expect_equal(nrow(preds), 5 * nrow(test_data_1$dat_os)) # 5 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$group), test_data_1$dat_os$pt)
 
 
-    longsamps <- LongitudinalQuantities(test_data_1$jsamples, c("pt_001", "pt_003"))
-    preds <- preds <- summary(longsamps)
+    longsamps <- LongitudinalQuantities(
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = c("pt_0001", "pt_0003"))
+    )
+    preds <- summary(longsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
-})
-
-
-test_that("LongitudinalQuantities does not support group aggregation", {
-    expect_error(
-        LongitudinalQuantities(
-            test_data_1$jsamples,
-            groups = list("a" = c("pt_011", "pt_012"))
-        ),
-        regexp = "not 'list'"
-    )
 })
 
 
 
 test_that("autoplot.LongitudinalQuantities works as expected", {
 
-    samps <- LongitudinalQuantities(test_data_1$jsamples, c("pt_011", "pt_061"))
+    samps <- LongitudinalQuantities(
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = c("pt_0011", "pt_0061"))
+    )
     p <- autoplot(
         samps,
         conf.level = FALSE
@@ -63,8 +60,10 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 
     samps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        groups = c("pt_011", "pt_061", "pt_001", "pt_002"),
-        time_grid = c(10, 20, 50, 200)
+        grid = GridFixed(
+            subjects = c("pt_0011", "pt_0061", "pt_0001", "pt_0002"),
+            times = c(10, 20, 50, 200)
+        )
     )
     p <- autoplot(samps)
     dat <- summary(samps)
@@ -86,12 +85,23 @@ test_that("LongitudinalQuantities print method works as expected", {
     expect_snapshot({
         ptgroups <- c("pt_011", "pt_061", "pt_001", "pt_002")
         times <- seq(0, 100, by = 10)
-        samps_p1 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups, times)
+        samps_p1 <- LongitudinalQuantities(
+            test_data_1$jsamples,
+            grid = GridFixed(
+                subjects = ptgroups,
+                times = times
+            )
+        )
         print(samps_p1)
     })
     expect_snapshot({
         ptgroups <- c("pt_011", "pt_061")
-        samps_p2 <- LongitudinalQuantities(test_data_1$jsamples, ptgroups)
+        samps_p2 <- LongitudinalQuantities(
+            test_data_1$jsamples,
+            grid = GridFixed(
+                subjects = ptgroups
+            )
+        )
         print(samps_p2)
     })
 })
@@ -110,7 +120,9 @@ test_that("LongitudinalQuantities can recover known results", {
     ensure_test_data_1()
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        time_grid = c(-100, -50, -10, 0, 1, 100, 200, 250, 300, 350)
+        grid = GridFixed(
+            times = c(-100, -50, -10, 0, 1, 100, 200, 250, 300, 350)
+        )
     )
 
     dat_sum <- dplyr::tibble(summary(longsamps)) |>
@@ -133,8 +145,10 @@ test_that("LongitudinalQuantities correctly subsets patients and rebuilds correc
 
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        groups = c("pt_010", "pt_011", "pt_099"),
-        time_grid = times
+        grid = GridFixed(
+            subjects = c("pt_0010", "pt_0011", "pt_0099"),
+            times = times
+        )
     )
 
     map_me <- function(time, mat) {
@@ -153,7 +167,10 @@ test_that("LongitudinalQuantities correctly subsets patients and rebuilds correc
     mat3 <- test_data_1$jsamples@results$draws(vars_99, format = "draws_matrix")
     dat3 <- dplyr::bind_rows(lapply(times, map_me, mat = mat3))
 
-    vec_actual <- as.data.frame(longsamps)[["values"]]
+    vec_actual <- as.data.frame(longsamps) |>
+        dplyr::arrange(.data$group, .data$time) |>
+        dplyr::pull(.data$values)
+
     vec_expected <- c(dat1$time, dat2$time, dat3$time)
 
     # cmdstanr rounds the generated samples to 6 s.f.

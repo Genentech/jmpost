@@ -7,7 +7,7 @@
 \alias{LongitudinalQuantities}
 \title{\code{LongitudinalQuantities} Object & Constructor Function}
 \usage{
-LongitudinalQuantities(object, groups = NULL, time_grid = NULL)
+LongitudinalQuantities(object, grid)
 }
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
@@ -30,19 +30,11 @@ group aggregation.
 \describe{
 \item{\code{quantities}}{(\code{Quantities})\cr The sampled quantities. Should contain 1 element per
 element of \code{group}}
-
-\item{\code{groups}}{(\code{list})\cr See argument section for details}
-
-\item{\code{time_grid}}{(\code{numeric})\cr See argument section for details}
-
-\item{\code{data}}{(\code{\link{DataJoint}})\cr The data that the Joint Model was fitted to to produce
-the samples/quantities}
 }}
 
 \seealso{
 Other LongitudinalQuantities: 
 \code{\link{as.data.frame.LongitudinalQuantities}()},
-\code{\link{as_print_string.LongitudinalQuantities}()},
 \code{\link{autoplot.LongitudinalQuantities}()},
 \code{\link{summary.LongitudinalQuantities}()}
 }

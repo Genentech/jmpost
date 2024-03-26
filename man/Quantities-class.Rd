@@ -7,11 +7,13 @@
 \alias{Quantities}
 \title{Generated Quantities Container}
 \usage{
-Quantities(x)
+Quantities(quantities, times, groups)
 }
 \arguments{
 \item{x}{(\code{list})\cr a \code{list} of \code{matrix} objects. Each matrix must have the exact
 same dimensions.}
+
+\item{todo}{todo}
 }
 \description{
 A simple wrapper around a \code{list} to ensure each element complies

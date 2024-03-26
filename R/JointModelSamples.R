@@ -29,24 +29,39 @@ setOldClass("CmdStanMCMC")
 #' @rdname generateQuantities
 #' @param patients (`character`)\cr explicit vector of patient IDs for whom the
 #' generated quantities should be extracted
-#' @param time_grid_lm (`numeric`)\cr grid of time points to use for providing samples
-#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed event time.
-#' @param time_grid_sm (`numeric`)\cr grid of time points to use for providing samples
-#'   of the survival model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed event time.
+#' @param type (`character`)\cr type of quantities to be generated, must be either "survial" or
+#' "longitudinal".
+#' @param times TODO
 #' @export
-generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm, time_grid_sm, ...) {
+generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
+
     data <- append(
         as_stan_list(object@data),
         as_stan_list(object@model@parameters)
     )
-    data[["n_lm_time_grid"]] <- length(time_grid_lm)
-    data[["lm_time_grid"]] <- time_grid_lm
-    data[["n_sm_time_grid"]] <- length(time_grid_sm)
-    data[["sm_time_grid"]] <- time_grid_sm
-    data[["n_pt_select_index"]] <- length(patients)
-    data[["pt_select_index"]] <- data$pt_to_ind[patients]
+
+    patients <- generator@subjects
+    times <- generator@times
+
+    assert_that(
+        length(type) == 1,
+        type %in% c("survival", "longitudinal"),
+        length(patients) == length(times),
+        all(patients %in% names(data$pt_to_ind))
+    )
+
+    if (type == "survival") {
+        data[["gq_long_flag"]] <- 0
+        data[["gq_surv_flag"]] <- 1
+    } else {
+        data[["gq_long_flag"]] <- 1
+        data[["gq_surv_flag"]] <- 0
+    }
+
+    data[["gq_n_quant"]] <- length(patients)
+    data[["gq_pt_index"]] <- data$pt_to_ind[as.character(patients)]
+    data[["gq_times"]] <- times
+
     stanObject <- object@model@stan
     stanObject_data <- merge(
         stanObject,
@@ -54,11 +69,10 @@ generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm,
     )
 
     model <- compileStanModel(stanObject_data)
-
     devnull <- utils::capture.output(
         results <- model$generate_quantities(
             data = data,
-            fitted_params = as.CmdStanMCMC(object)$draws()
+            fitted_params = object@results
         )
     )
     return(results)

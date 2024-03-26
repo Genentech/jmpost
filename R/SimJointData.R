@@ -58,7 +58,7 @@ SimJointData <- function(
     n_subjects <- sum(n_group)
     n_times <- length(hazard_evaluation_info$midpoint)
 
-    sprintf_string <- paste0("pt_%0", ceiling(log(n_subjects, 10)), "i")
+    sprintf_string <- paste0("pt_%0", ceiling(log(n_subjects, 10)) + 1, "i")
 
     baseline <- dplyr::tibble(pt = sprintf(sprintf_string, seq_len(n_subjects))) |>
         dplyr::mutate(arm = factor(rep(arms, times = n_group), levels = unique(arms))) |>
