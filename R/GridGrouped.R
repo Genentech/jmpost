@@ -13,12 +13,29 @@ NULL
 )
 
 #' @export
-GridGrouped <- function(groups = NULL, times = NULL) {
+GridGrouped <- function(groups, times = NULL) {
     .GridGrouped(
         groups = groups,
         times = times
     )
 }
+
+
+setValidity(
+    "GridGrouped",
+    function(object) {
+        if (!all(vapply(object@groups, is.character, logical(1)))) {
+            return("Each element of `groups` must be a character vector")
+        }
+        gnames <- names(object@groups)
+        gnames <- gnames[!is.na(gnames) & gnames != ""]
+        if (length(gnames) != length(object@groups)) {
+            return("Each element of `groups` must be named")
+        }
+        return(TRUE)
+    }
+)
+
 
 
 #' @export
@@ -76,6 +93,6 @@ as.QuantityCollapser.GridGrouped <- function(object, data) {
 }
 
 #' @export
-as.list.GridGrouped <- function(x) {
+as.list.GridGrouped <- function(x, ...) {
     x@groups
 }

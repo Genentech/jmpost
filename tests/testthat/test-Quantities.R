@@ -74,7 +74,7 @@ test_that("collapse_quantities() works as expected", {
     actual <- collapse_quantities(x, collapser)
     expect_equal(
         actual |> samples_median_ci(),
-        bind_rows(
+        dplyr::bind_rows(
             get_ci_summary(x[, c(1, 3)]),
             get_ci_summary(x[, c(4, 1)])
         )
@@ -90,7 +90,7 @@ test_that("collapse_quantities() works as expected", {
     actual <- collapse_quantities(x, collapser)
     expect_equal(
         actual |> samples_median_ci(),
-        bind_rows(
+        dplyr::bind_rows(
             get_ci_summary(x[, c(1, 3, 1, 1)]),
             get_ci_summary(x[, c(4, 1)])
         )

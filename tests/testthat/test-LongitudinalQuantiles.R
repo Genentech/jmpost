@@ -81,9 +81,9 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 
 
 test_that("LongitudinalQuantities print method works as expected", {
-
+    ensure_test_data_1()
     expect_snapshot({
-        ptgroups <- c("pt_011", "pt_061", "pt_001", "pt_002")
+        ptgroups <- c("pt_0011", "pt_0061", "pt_0001", "pt_0002")
         times <- seq(0, 100, by = 10)
         samps_p1 <- LongitudinalQuantities(
             test_data_1$jsamples,
@@ -95,7 +95,7 @@ test_that("LongitudinalQuantities print method works as expected", {
         print(samps_p1)
     })
     expect_snapshot({
-        ptgroups <- c("pt_011", "pt_061")
+        ptgroups <- c("pt_0011", "pt_0061")
         samps_p2 <- LongitudinalQuantities(
             test_data_1$jsamples,
             grid = GridFixed(

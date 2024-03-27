@@ -179,7 +179,7 @@ autoplot.SurvivalQuantities <- function(
     kmdf <- if (add_km) {
         subset(
             object@data,
-            as.list(object@grid, object@data)
+            as.list(object@grid, data = object@data)
         )
     } else {
         NULL
@@ -305,12 +305,14 @@ setMethod(
         template <- c(
             "SurvivalQuantities Object:",
             "    # of samples    = %d",
-            "    # of quantities = %d"
+            "    # of quantities = %d",
+            "    Type            = %s"
         )
         string <- sprintf(
             paste(template, collapse = "\n"),
             nrow(object@quantities),
-            ncol(object@quantities)
+            ncol(object@quantities),
+            object@type
         )
         cat("\n", string, "\n\n")
     }
