@@ -292,7 +292,7 @@ vector[Nind] Times;
 ```stan
 array[Nind_dead] int dead_ind_index;
 ```
-- Is the index into `Times` to identiy which times are an event. The rest are censored.
+- Is the index into `Times` to identify which times are an event. The rest are censored.
 
 
 **Number of covariates for the survival model**
@@ -324,7 +324,7 @@ array[n_positive] int time_positive_index
 ```
 
 
-**Gausian Quadrature Integration Parameters**
+**Gaussian Quadrature Integration Parameters**
 ```stan
 int<lower=1> n_nodes;
 vector[n_nodes] nodes;
