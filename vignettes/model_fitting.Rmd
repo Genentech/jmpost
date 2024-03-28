@@ -422,6 +422,7 @@ function will then broadcast this number as many times as required e.g. if you h
 in your survival model then the initial value for the Beta coeficient will be repeated 3 times. If
 however you want to specify individual initial values for each covariate you can do so by passing
 in a vector of the same length as the number of covariates.
-
-
-
+- `initialValues()` will not check if the proposed values are valid for constrained parameters.
+That is, if you are using a `prior_cauchy(0, 1)` prior for a parameter that should be `>0`
+then you will need to manually set the initial value (as described above) to ensure that it is a
+valid value.
