@@ -232,3 +232,188 @@ parameter { real mu;      // non-whitespace after opening `{`
   x ~ normal(mu, sigma);
 } // some comment         // non-whitespace after closing `}`
 ```
+
+## Stan Data Objects
+
+When writing your own Stan code to extend jmpost it is important to note that
+many different data objects have already been defined in the `data` block of the
+base Stan template. This section outlines the different data objects that are
+made available to user. Note that some objects are only made available if
+the corresponding model is used; for example death times are only available if
+the user specifies a `SurvivalModel` object to `JointModel()`.
+
+### Global Data Objects
+
+**Number of unique subjects**
+```stan
+int<lower=1> Nind;
+```
+
+**Number of unique studies**
+```stan
+int<lower=1> n_studies;
+```
+
+**Number of unique treatment arms**
+```stan
+int<lower=1> n_arms;
+```
+
+**Study index for each patient**
+```stan
+array[Nind] int<lower=1,upper=n_studies> pt_study_index;
+```
+- Note that this is sorted based upon the patients factor level within the R `data.frame`.
+For example lets say patient `"A"` has a factor level of 15 and that their corresponding
+study value has a factor level of 2 then `pt_study_index[15]` will be 2.
+
+**Treatment arm index for each patient**
+```stan
+  array[Nind] int<lower=1,upper=n_arms> pt_arm_index;
+```
+- A mirror of `pt_study_index` but for the treatment arm.
+
+
+### Survival Data Objects
+
+
+**Number of events**
+```stan
+int<lower=1> Nind_dead;
+```
+
+**Event/Censor Times**
+```stan
+vector[Nind] Times;
+```
+- Ordered by patient factor level
+
+**Event Index**
+```stan
+array[Nind_dead] int dead_ind_index;
+```
+- Is the index into `Times` to identiy which times are an event. The rest are censored.
+
+
+**Number of covariates for the survival model**
+```stan
+int<lower=0> p_os_cov_design;
+```
+- Note that this does not include the intercept term.
+
+**Covariate design matrix for the survival model**
+```stan
+matrix[Nind, p_os_cov_design] os_cov_design;
+```
+- Note that this does not include the intercept term.
+
+
+**Time >0 flag**
+```stan
+array[rows(Times)] int time_positive;
+```
+
+**Number of times >0**
+```stan
+int n_positive;
+```
+
+**Positive time index**
+```stan
+array[n_positive] int time_positive_index
+```
+
+
+**Gausian Quadrature Integration Parameters**
+```stan
+int<lower=1> n_nodes;
+vector[n_nodes] nodes;
+vector<lower=0, upper=1>[n_nodes] weights;
+```
+- These are the nodes and weights for the Gaussian quadrature integration.
+
+
+### Longitudinal Data Objects
+
+**Total number of tumour assessments**
+```stan
+int<lower=1> Nta_total;
+```
+
+**Number of tumour assessments above LLoQ**
+```stan
+int<lower=1> Nta_obs_y;
+```
+
+**Number of tumour assessments below LLoQ**
+```stan
+int<lower=0> Nta_cens_y;
+```
+
+**Tumour assessments values**
+```stan
+vector[Nta_total] Yobs;
+```
+
+**Tumour assessments time points**
+```stan
+vector[Nta_total] Tobs;
+```
+
+**LLoQ threshold**
+```stan
+real Ythreshold;
+```
+
+**Individual tumour assessment index**
+```stan
+array[Nta_total] int ind_index;
+```
+- That is if tumour assessment 1 belongs to the patient with factor level 3 then
+`ind_index[1]` will be 3.
+
+
+**Tumour assessment index for observations above LLoQ**
+```stan
+array[Nta_obs_y] int obs_y_index;
+```
+- For example if only tumour assessments 3 and 5 were above the LLoQ then
+`obs_y_index` will be `[3, 5]`.
+
+**Tumour assessment index for observations below LLoQ**
+```stan
+array[Nta_cens_y] int cens_y_index;
+```
+- For example if only tumour assessments 1 and 2 were below the LLoQ then
+`obs_y_index` will be `[1, 2]`.
+
+
+**Sparse matrix components for patient indexes of the tumour assessments**
+```stan
+array [3] int<lower=0> n_mat_inds_all_y;
+vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
+array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
+array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
+```
+- This is the sparse matrix representation of the binary matrix that has one row per patient and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `Yobs` belongs to the patient with factor level 3. This matrix is primarily used to calculate the sum
+of log-likelihood for all tumour assessments per patient in an efficient way.
+- See [the Stan CSR documentation](https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR) for more information on the sparse matrix representation.
+
+
+**Sparse matrix components for patient indexes of the tumour assessments above the LLoQ**
+```stan
+array [3] int<lower=1> n_mat_inds_obs_y;
+vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
+array[n_mat_inds_obs_y[2]] int v_mat_inds_obs_y;
+array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
+```
+- Same as above but only for the tumour assessments above the LLoQ.
+
+**Sparse matrix components for patient indexes of the tumour assessments below the LLoQ**
+```stan
+array [3] int<lower=0> n_mat_inds_cens_y;
+vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
+array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
+array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
+```
+- Same as above but only for the tumour assessments below the LLoQ.
