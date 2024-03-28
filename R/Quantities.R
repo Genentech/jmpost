@@ -20,6 +20,10 @@ NULL
 #' @param times (`numeric`)\cr labels specifying which time point the quantity was generated at.
 #' @param groups (`character`)\cr labels for which group the quantity belongs to.
 #'
+#' @slot quantities (`matrix`)\cr See Arguments for details.
+#' @slot times (`numeric`)\cr See Arguments for details.
+#' @slot groups (`character`)\cr See Arguments for details.
+#'
 #' @details
 #' Each row of the matrix represents a sample and each column represents a distinct quantity.
 #' As such the number of columns in the matrix should equal the length of `times` and `groups`

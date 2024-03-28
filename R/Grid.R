@@ -60,11 +60,11 @@ NULL
 #' which consist of the subjects `pt-1`, `pt-2` and `pt-3`, `pt-4` respectively at two time points
 #' `10` and `20`. We can achieve this as follows:
 #' ```
-#' .QuantityGenerator(
+#' QuantityGenerator(
 #'     times = c(10, 10, 10, 10, 20, 20, 20, 20),
 #'     subjects = c("pt-1" "pt-2", "pt-3", "pt-4", "pt-1" "pt-2", "pt-3", "pt-4")
 #' )
-#' .QuantityCollapser(
+#' QuantityCollapser(
 #'     times = c(10, 20, 10 , 20),
 #'     groups = c("Group-1", "Group-1", "Group-2", "Group-2"),
 #'     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
@@ -86,10 +86,15 @@ NULL
 #' Developer details for `QuantityX` objects/methods. This page just outlines the arguements
 #' and slots of these objects/methods. For the full implementation details please see [Grid-Dev]
 #'
-#' @slot times (`numeric`)\cr vector of time points to extract quantities at.
-#' @slot subjects (`character`)\cr vector of subjects to extract quantities for.
-#' @slot groups (`character`)\cr vector of labels to apply to the generated quantities.
-#' @slot indexes (`list`)\cr list of indexes that specify which observations from a
+#' @slot times (`numeric`)\cr See Arguments for details.
+#' @slot subjects (`character`)\cr See Arguments for details.
+#' @slot groups (`character`)\cr See Arguments for details.
+#' @slot indexes (`list`)\cr See Arguments for details.
+#'
+#' @param times (`numeric`)\cr vector of time points to extract quantities at.
+#' @param subjects (`character`)\cr vector of subjects to extract quantities for.
+#' @param groups (`character`)\cr vector of labels to apply to the generated quantities.
+#' @param indexes (`list`)\cr list of indexes that specify which observations from a
 #' `QuantityGenerator` should be combined to form the desired quantities.
 #'
 #' @param object (`Grid`)\cr object to convert to a `QuantityGenerator` or `QuantityCollapser`.
@@ -116,6 +121,13 @@ NULL
         "subjects" = "character"
     )
 )
+#' @rdname Quant-Dev
+QuantityGenerator <- function(times, subjects) {
+    .QuantityGenerator(
+        times = times,
+        subjects = subjects
+    )
+}
 
 #' @rdname Quant-Dev
 .QuantityCollapser <- setClass(
@@ -126,6 +138,14 @@ NULL
         "indexes" = "list"
     )
 )
+#' @rdname Quant-Dev
+QuantityCollapser <- function(times, groups, indexes) {
+    .QuantityCollapser(
+        times = times,
+        groups = groups,
+        indexes = indexes
+    )
+}
 
 setValidity(
     "QuantityCollapser",

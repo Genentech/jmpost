@@ -41,7 +41,7 @@ test_that("collapse_quantities() works as expected", {
     )
 
 
-    collapser <- .QuantityCollapser(
+    collapser <- QuantityCollapser(
         times = 2,
         groups = "A",
         indexes = list(1)
@@ -53,7 +53,7 @@ test_that("collapse_quantities() works as expected", {
     )
 
     ## Can average multiple columns together
-    collapser <- .QuantityCollapser(
+    collapser <- QuantityCollapser(
         times = 99,
         groups = "A",
         indexes = list(c(1, 3))
@@ -66,7 +66,7 @@ test_that("collapse_quantities() works as expected", {
 
 
     ## Can select the same subject in multiple groups
-    collapser <- .QuantityCollapser(
+    collapser <- QuantityCollapser(
         times = c(13, 123),
         groups = c("A", "A"),
         indexes = list(c(1, 3), c(4, 1))
@@ -82,7 +82,7 @@ test_that("collapse_quantities() works as expected", {
 
 
     ## Can select the same subject multiple times
-    collapser <- .QuantityCollapser(
+    collapser <- QuantityCollapser(
         times = c(13, 123),
         groups = c("A", "A"),
         indexes = list(c(1, 3, 1, 1), c(4, 1))

@@ -24,6 +24,16 @@ Each row of the matrix represents a sample and each column represents a distinct
 As such the number of columns in the matrix should equal the length of \code{times} and \code{groups}
 which provide metadata for who the quantity belongs to and at what time point it was generated at.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{quantities}}{(\code{matrix})\cr See Arguments for details.}
+
+\item{\code{times}}{(\code{numeric})\cr See Arguments for details.}
+
+\item{\code{groups}}{(\code{character})\cr See Arguments for details.}
+}}
+
 \seealso{
 Other Quantities: 
 \code{\link{as.data.frame.Quantities}()},

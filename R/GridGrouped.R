@@ -88,7 +88,7 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     )
     names(select_indexes) <- NULL
 
-    .QuantityCollapser(
+    QuantityCollapser(
         times = group_grid$time,
         groups = group_grid$group,
         indexes = select_indexes

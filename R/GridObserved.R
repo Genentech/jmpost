@@ -40,7 +40,7 @@ as.QuantityGenerator.GridObserved <- function(object, data, ...) {
 as.QuantityCollapser.GridObserved <- function(object, data, ...) {
     generator <- as.QuantityGenerator(object, data)
 
-    .QuantityCollapser(
+    QuantityCollapser(
         times = generator@times,
         groups = generator@subjects,
         indexes = as.list(seq_along(generator@times))

@@ -8,8 +8,10 @@
 \alias{Quant-Dev}
 \alias{QuantityGenerator-class}
 \alias{.QuantityGenerator}
+\alias{QuantityGenerator}
 \alias{QuantityCollapser-class}
 \alias{.QuantityCollapser}
+\alias{QuantityCollapser}
 \alias{as.QuantityGenerator.GridFixed}
 \alias{as.QuantityCollapser.GridFixed}
 \alias{as.QuantityGenerator.GridGrouped}
@@ -21,6 +23,10 @@
 as.QuantityGenerator(object, ...)
 
 as.QuantityCollapser(object, ...)
+
+QuantityGenerator(times, subjects)
+
+QuantityCollapser(times, groups, indexes)
 
 \method{as.QuantityGenerator}{GridFixed}(object, data, ...)
 
@@ -39,6 +45,15 @@ as.QuantityCollapser(object, ...)
 
 \item{...}{Not currently used.}
 
+\item{times}{(\code{numeric})\cr vector of time points to extract quantities at.}
+
+\item{subjects}{(\code{character})\cr vector of subjects to extract quantities for.}
+
+\item{groups}{(\code{character})\cr vector of labels to apply to the generated quantities.}
+
+\item{indexes}{(\code{list})\cr list of indexes that specify which observations from a
+\code{QuantityGenerator} should be combined to form the desired quantities.}
+
 \item{data}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
 }
 \description{
@@ -52,14 +67,13 @@ The \code{as.QuantityCollapser} must return a \code{QuantityCollapser} object.
 \section{Slots}{
 
 \describe{
-\item{\code{times}}{(\code{numeric})\cr vector of time points to extract quantities at.}
+\item{\code{times}}{(\code{numeric})\cr See Arguments for details.}
 
-\item{\code{subjects}}{(\code{character})\cr vector of subjects to extract quantities for.}
+\item{\code{subjects}}{(\code{character})\cr See Arguments for details.}
 
-\item{\code{groups}}{(\code{character})\cr vector of labels to apply to the generated quantities.}
+\item{\code{groups}}{(\code{character})\cr See Arguments for details.}
 
-\item{\code{indexes}}{(\code{list})\cr list of indexes that specify which observations from a
-\code{QuantityGenerator} should be combined to form the desired quantities.}
+\item{\code{indexes}}{(\code{list})\cr See Arguments for details.}
 }}
 
 \keyword{internal}

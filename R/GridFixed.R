@@ -36,7 +36,7 @@ as.QuantityGenerator.GridFixed <- function(object, data, ...) {
         stringsAsFactors = FALSE
     )
 
-    .QuantityGenerator(
+    QuantityGenerator(
         times = pt_times$time,
         subjects = pt_times$pt
     )
@@ -46,7 +46,7 @@ as.QuantityGenerator.GridFixed <- function(object, data, ...) {
 #' @export
 as.QuantityCollapser.GridFixed <- function(object, data, ...) {
     generator <- as.QuantityGenerator(object, data)
-    .QuantityCollapser(
+    QuantityCollapser(
         times = generator@times,
         groups = generator@subjects,
         indexes = as.list(seq_along(generator@times))

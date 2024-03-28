@@ -30,11 +30,11 @@ As an example say we want to generate grouped samples for the groups \code{Group
 which consist of the subjects \code{pt-1}, \code{pt-2} and \code{pt-3}, \code{pt-4} respectively at two time points
 \code{10} and \code{20}. We can achieve this as follows:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{.QuantityGenerator(
+\if{html}{\out{<div class="sourceCode">}}\preformatted{QuantityGenerator(
     times = c(10, 10, 10, 10, 20, 20, 20, 20),
     subjects = c("pt-1" "pt-2", "pt-3", "pt-4", "pt-1" "pt-2", "pt-3", "pt-4")
 )
-.QuantityCollapser(
+QuantityCollapser(
     times = c(10, 20, 10 , 20),
     groups = c("Group-1", "Group-1", "Group-2", "Group-2"),
     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
