@@ -323,7 +323,9 @@ that we are interested in. For illustration, we will plot here the first
 selected_patients <- head(os_data$pt, 10)
 long_quantities <- LongitudinalQuantities(
     mcmc_results,
-    groups = selected_patients
+    grid = GridFixed(
+        subjects = selected_patients
+    )
 )
 as.data.frame(long_quantities) |> head()
 summary(long_quantities) |> head()
@@ -338,7 +340,9 @@ functions.
 ```{r fig.width=6}
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
-    groups = selected_patients
+    grid = GridFixed(
+        subjects = selected_patients
+    )
 )
 as.data.frame(surv_quantities) |> head()
 summary(surv_quantities) |> head()
@@ -349,10 +353,11 @@ We can also aggregate the estimated survival curves from groups of patients,
 using the corresponding method.
 
 ```{r, warning=FALSE, fig.width=6}
-groups <- split(os_data$pt, os_data$arm)
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
-    groups = groups
+    grid = GridGrouped(
+        groups = split(os_data$pt, os_data$arm)
+    )
 )
 autoplot(surv_quantities, add_km = TRUE)
 ```
@@ -365,10 +370,9 @@ The `brierScore()` method can be used to extract the Brier Scores (predictive pe
 from our `SurvivalQuantities` object.
 
 ```{R}
-prediction_times <- c(1, 50, 100, 400, 800)
 sq <- SurvivalQuantities(
     mcmc_results,
-    time_grid = prediction_times,
+    grid = GridFixed(times = c(1, 50, 100, 400, 800)),
     type = "surv"
 )
 brierScore(sq)
