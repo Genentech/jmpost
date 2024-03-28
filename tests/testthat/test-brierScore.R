@@ -4,7 +4,7 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     #
     # As we are using a survival-only model with weakly informative priors
     # the point estimates model should be very similar to that of the frequentist
-    # model implemented by `survref`.
+    # model implemented by `survreg`.
     # As a result the Brier Scores generated for the 2 models should be near
     # identical.
     # In all this acts as an integration test to show that all of our functions
@@ -20,7 +20,7 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     t_grid <- c(1, 25, 60, 425, 750)
     sq <- SurvivalQuantities(
         mp,
-        time_grid = t_grid,
+        grid = GridFixed(times = t_grid),
         type = "surv"
     )
     bs_survquant <- brierScore(sq)

@@ -4,18 +4,10 @@
 \alias{summary.Quantities}
 \title{summary}
 \usage{
-\method{summary}{Quantities}(object, time_grid, type, groups, conf.level = 0.95, ...)
+\method{summary}{Quantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
 \item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
-
-\item{time_grid}{(\code{numeric})\cr sets the \code{time} variable.
-Must be equal in length to \code{ncol(x)}.}
-
-\item{type}{(\code{character})\cr sets the \code{type} variable.}
-
-\item{groups}{(\code{list})\cr named \code{list}.
-The element names are used to set the \code{group} variable.}
 
 \item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
 

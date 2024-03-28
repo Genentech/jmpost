@@ -1,15 +1,13 @@
 # Quantities print method works as expected
 
     Code
-      raw_x1 <- matrix(1:12, ncol = 3)
-      raw_x2 <- matrix(21:32, ncol = 3)
-      pobj <- Quantities(list(raw_x1, raw_x2))
-      print(pobj)
+      raw_x <- matrix(1:10, ncol = 2)
+      x <- Quantities(quantities = raw_x, groups = c("a", "b"), times = c(10, 20))
+      print(x)
     Output
       
          Quantities Object:
-            # of Elements  = 2
-            # of Rows      = 4
-            # of Columns   = 3 
+            # of samples    = 5
+            # of quantities = 2 
       
 

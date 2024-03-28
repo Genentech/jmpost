@@ -80,19 +80,17 @@ model {
 }
 
 generated quantities {
-    {{ stan.generated_quantities }}
-
     //
     // Source - base/longitudinal.stan
     //
-    matrix[n_pt_select_index, n_lm_time_grid] y_fit_at_time_grid;
-    if (n_lm_time_grid > 0) {
-        for (i in 1:n_pt_select_index) {
-            int current_pt_index = pt_select_index[i];
-            y_fit_at_time_grid[i, ] = lm_predict_individual_patient(
-                lm_time_grid,
-                long_gq_parameters[current_pt_index, ]
+    vector[gq_n_quant] y_fit_at_time_grid;
+    {
+        {{ stan.generated_quantities }}
+        if (gq_long_flag == 1) {
+            y_fit_at_time_grid = lm_predict_individual_patient(
+                gq_times,
+                long_gq_parameters[gq_pt_index, ]
             );
-        }
+        }    
     }
 }

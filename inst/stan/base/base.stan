@@ -71,11 +71,9 @@ model{
 }
 
 generated quantities{
-
 {{ longitudinal.generated_quantities }}
 {{ link.generated_quantities }}
 {{ survival.generated_quantities }}
-
 }
 
 

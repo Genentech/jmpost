@@ -34,7 +34,6 @@ Other brierScore:
 Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
 }

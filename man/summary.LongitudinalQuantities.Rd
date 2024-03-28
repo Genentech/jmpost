@@ -20,7 +20,6 @@ This method returns a \code{data.frame} of the longitudinal quantities.
 Other LongitudinalQuantities: 
 \code{\link{LongitudinalQuantities-class}},
 \code{\link{as.data.frame.LongitudinalQuantities}()},
-\code{\link{as_print_string.LongitudinalQuantities}()},
 \code{\link{autoplot.LongitudinalQuantities}()}
 
 Other summary: 

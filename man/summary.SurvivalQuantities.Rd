@@ -14,13 +14,12 @@
 \item{...}{not used.}
 }
 \description{
-This method returns a \code{data.frame} of key quantities (survival / log-hazard / etc)
+This method returns a \code{data.frame} of the longitudinal quantities.
 }
 \seealso{
 Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
 \code{\link{brierScore.SurvivalQuantities}()}
 
