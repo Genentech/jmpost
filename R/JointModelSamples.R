@@ -27,11 +27,10 @@ setOldClass("CmdStanMCMC")
 
 
 #' @rdname generateQuantities
-#' @param patients (`character`)\cr explicit vector of patient IDs for whom the
-#' generated quantities should be extracted
-#' @param type (`character`)\cr type of quantities to be generated, must be either "survial" or
+#' @param generator ([`QuantityGenerator`])\cr object that specifies which subjects and time points
+#' to calculate the quantities at
+#' @param type (`character`)\cr type of quantities to be generated, must be either "survival" or
 #' "longitudinal".
-#' @param times TODO
 #' @export
 generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 

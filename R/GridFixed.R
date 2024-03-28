@@ -2,6 +2,8 @@
 #' @include generics.R
 NULL
 
+
+#' @rdname Grid-Dev
 .GridFixed <- setClass(
     "GridFixed",
     contains = "Grid",
@@ -11,6 +13,7 @@ NULL
     )
 )
 
+#' @rdname Grid-Functions
 #' @export
 GridFixed <- function(subjects = NULL, times = NULL) {
     .GridFixed(
@@ -19,8 +22,9 @@ GridFixed <- function(subjects = NULL, times = NULL) {
     )
 }
 
+#' @rdname Quant-Dev
 #' @export
-as.QuantityGenerator.GridFixed <- function(object, data) {
+as.QuantityGenerator.GridFixed <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
@@ -38,8 +42,9 @@ as.QuantityGenerator.GridFixed <- function(object, data) {
     )
 }
 
+#' @rdname Quant-Dev
 #' @export
-as.QuantityCollapser.GridFixed <- function(object, data) {
+as.QuantityCollapser.GridFixed <- function(object, data, ...) {
     generator <- as.QuantityGenerator(object, data)
     .QuantityCollapser(
         times = generator@times,
@@ -50,7 +55,7 @@ as.QuantityCollapser.GridFixed <- function(object, data) {
 
 
 #' @export
-as.list.GridFixed <- function(x, data) {
+as.list.GridFixed <- function(x, data, ...) {
     data_list <- as.list(data)
     subjects <- if (is.null(x@subjects)) {
         subs <- as.list(names(data_list$pt_to_ind))

@@ -3,6 +3,7 @@
 #' @include generics.R
 NULL
 
+#' @rdname Grid-Dev
 .GridGrouped <- setClass(
     "GridGrouped",
     contains = "Grid",
@@ -12,6 +13,7 @@ NULL
     )
 )
 
+#' @rdname Grid-Functions
 #' @export
 GridGrouped <- function(groups, times = NULL) {
     .GridGrouped(
@@ -37,9 +39,9 @@ setValidity(
 )
 
 
-
+#' @rdname Quant-Dev
 #' @export
-as.QuantityGenerator.GridGrouped <- function(object, data) {
+as.QuantityGenerator.GridGrouped <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     patients_unique <- unique(unlist(object@groups))
@@ -56,8 +58,9 @@ as.QuantityGenerator.GridGrouped <- function(object, data) {
 }
 
 
+#' @rdname Quant-Dev
 #' @export
-as.QuantityCollapser.GridGrouped <- function(object, data) {
+as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     assert_that(

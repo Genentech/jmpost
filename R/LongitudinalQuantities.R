@@ -15,7 +15,6 @@ NULL
 NULL
 
 
-# TODO - Update docs
 #' `LongitudinalQuantities` Object & Constructor Function
 #'
 #' Constructor function to generate a `LongitudinalQuantities` object.
@@ -27,6 +26,7 @@ NULL
 #' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
 #' element of `group`
 #'
+#' @slot data (`DataJoint`)\cr Survival and Longitudinal Data.
 #'
 #' @family LongitudinalQuantities
 #' @name LongitudinalQuantities-class
@@ -41,11 +41,8 @@ NULL
 
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #'
-#' @param groups (`character`, `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#'
-#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_longitudinal_time, length = 201)`.
+#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
+#' quantities for. See [Grid-Functions].
 #' @rdname LongitudinalQuantities-class
 LongitudinalQuantities <- function(
     object,

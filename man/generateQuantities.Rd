@@ -14,13 +14,11 @@ generateQuantities(object, ...)
 
 \item{...}{additional options.}
 
-\item{type}{(\code{character})\cr type of quantities to be generated, must be either "survial" or
+\item{generator}{(\code{\link{QuantityGenerator}})\cr object that specifies which subjects and time points
+to calculate the quantities at}
+
+\item{type}{(\code{character})\cr type of quantities to be generated, must be either "survival" or
 "longitudinal".}
-
-\item{patients}{(\code{character})\cr explicit vector of patient IDs for whom the
-generated quantities should be extracted}
-
-\item{times}{TODO}
 }
 \description{
 Obtain the generated quantities from a Stan Model.

@@ -3,11 +3,7 @@
 #'
 #' @param x ([`Quantities`]) \cr generated quantities.
 #' @param object ([`Quantities`]) \cr generated quantities.
-#' @param time_grid (`numeric`)\cr sets the `time` variable.
-#' Must be equal in length to `ncol(x)`.
 #' @param type (`character`)\cr sets the `type` variable.
-#' @param groups (`list`)\cr named `list`.
-#' The element names are used to set the `group` variable.
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
 #' @param ... not used.
 #'
@@ -18,8 +14,16 @@ NULL
 
 #' Generated Quantities Container
 #'
-#' A simple wrapper around a `list` to ensure each element complies
-#' to specific formatting rules
+#' A simple wrapper around a `matrix` to store required metadata
+#'
+#' @param quantities (`matrix`)\cr of generated quantities.
+#' @param times (`numeric`)\cr labels specifying which time point the quantity was generated at.
+#' @param groups (`character`)\cr labels for which group the quantity belongs to.
+#'
+#' @details
+#' Each row of the matrix represents a sample and each column represents a distinct quantity.
+#' As such the number of columns in the matrix should equal the length of `times` and `groups`
+#' which provide metadata for who the quantity belongs to and at what time point it was generated at.
 #'
 #' @keywords internal
 #' @name Quantities-class
@@ -32,10 +36,6 @@ NULL
         "groups" = "character"
     )
 )
-
-#' @param x (`list`)\cr a `list` of `matrix` objects. Each matrix must have the exact
-#' same dimensions.
-#' @param todo todo
 #' @rdname Quantities-class
 Quantities <- function(quantities, times, groups) {
     .Quantities(
@@ -59,12 +59,7 @@ setValidity(
 )
 
 
-#' Dimensions of `Quantitites`
-#'
-#' TODO
-#'
-#' @inheritParams Quantities-Shared
-#' @keywords internal
+
 #' @export
 dim.Quantities <- function(x) {
     dim(x@quantities)
@@ -120,38 +115,21 @@ summary.Quantities <- function(object, conf.level = 0.95, ...) {
 }
 
 
-# TODO - Update docs
-#' Extract and Average Quantities By Group Index
+
+#' Create Grouped Quantities
 #'
-#' This function takes a [posterior::draws_matrix()] (matrix of cmdstanr sample draws) and extracts
-#' the specified columns and aggregates them by calculating the pointwise average.
+#' This function takes a matrix of quantity samples and aggregates them by calculating the
+#' pointwise average.
 #'
-#' @param subject_index (`numeric`)\cr which subject indices to extract from `quantities`.
-#' See details.
+#' @param quantities_raw (`matrix`)\cr of samples with 1 row per sample and 1 column per
+#' distinct quantity.
 #'
-#' @param time_index (`numeric`)\cr which time point indices to extract from `quantities`.
-#' See details.
-#'
-#' @param quantities ([`posterior::draws_matrix`])\cr sample draws.
-#' See details.
+#' @param collapser ([QuantityCollapser])\cr specifies which columns to combine together.
 #'
 #' @details
-#' It is assumed that `quantities` consists of the cartesian product
-#' of subject indices and time indices. That is, if the matrix contains 4 subjects and 3 time
-#' points then it should have 12 columns.
-#' It is also assumed that each column of `quantities` are named as:
-#' ```
-#' "quantity[x,y]"
-#' ```
-#' Where
-#' - `x` is the subject index
-#' - `y` is the time point index
-#'
-#' This function returns a `matrix` with 1 row per sample and 1 column per `time_index`.
-#'
-#' Note that if multiple values are provided for `subject_index` then the pointwise average
-#' will be calculated for each time point by taking the mean across the specified subjects
-#' at each time point.
+#' This function essentially implements the group wise average by collapsing multiple columns
+#' together based on the specification provided by the `QuantityCollapser` object.
+#' The [Grid-Dev] page provides an example of what this function implements
 #'
 #' @keywords internal
 collapse_quantities <- function(quantities_raw, collapser) {

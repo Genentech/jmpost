@@ -56,15 +56,12 @@ NULL
 
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #'
-#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#' See "Group Specification" for more details.
+#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
+#' quantities for. See [Grid-Functions].
 #'
 #' @param type (`character`)\cr quantity to be generated.
 #' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
 #'
-#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
 #' @rdname SurvivalQuantities-class
 SurvivalQuantities <- function(
     object,

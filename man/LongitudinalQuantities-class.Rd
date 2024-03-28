@@ -12,11 +12,8 @@ LongitudinalQuantities(object, grid)
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{groups}{(\code{character}, \code{NULL})\cr which patients to calculate the desired
-quantities for.}
-
-\item{time_grid}{(\code{numeric} or \code{NULL})\cr a vector of time points to calculate the desired
-quantity at. If \code{NULL} will be set to \code{seq(0, max_longitudinal_time, length = 201)}.}
+\item{grid}{(\code{Grid}) \cr object that specifies which subjects and time points to calculate the
+quantities for. See \link{Grid-Functions}.}
 }
 \description{
 Constructor function to generate a \code{LongitudinalQuantities} object.
@@ -30,6 +27,8 @@ group aggregation.
 \describe{
 \item{\code{quantities}}{(\code{Quantities})\cr The sampled quantities. Should contain 1 element per
 element of \code{group}}
+
+\item{\code{data}}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
 }}
 
 \seealso{

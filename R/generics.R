@@ -397,13 +397,13 @@ as.CmdStanMCMC <- function(object, ...) {
     UseMethod("as.CmdStanMCMC")
 }
 
-
+#' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator <- function(object, ...) {
     UseMethod("as.QuantityGenerator")
 }
 
-
+#' @rdname Quant-Dev
 #' @export
 as.QuantityCollapser <- function(object, ...) {
     UseMethod("as.QuantityCollapser")

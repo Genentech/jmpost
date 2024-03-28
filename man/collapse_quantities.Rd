@@ -2,43 +2,23 @@
 % Please edit documentation in R/Quantities.R
 \name{collapse_quantities}
 \alias{collapse_quantities}
-\title{Extract and Average Quantities By Group Index}
+\title{Create Grouped Quantities}
 \usage{
 collapse_quantities(quantities_raw, collapser)
 }
 \arguments{
-\item{subject_index}{(\code{numeric})\cr which subject indices to extract from \code{quantities}.
-See details.}
+\item{quantities_raw}{(\code{matrix})\cr of samples with 1 row per sample and 1 column per
+distinct quantity.}
 
-\item{time_index}{(\code{numeric})\cr which time point indices to extract from \code{quantities}.
-See details.}
-
-\item{quantities}{(\code{\link[posterior:draws_matrix]{posterior::draws_matrix}})\cr sample draws.
-See details.}
+\item{collapser}{(\link{QuantityCollapser})\cr specifies which columns to combine together.}
 }
 \description{
-This function takes a \code{\link[posterior:draws_matrix]{posterior::draws_matrix()}} (matrix of cmdstanr sample draws) and extracts
-the specified columns and aggregates them by calculating the pointwise average.
+This function takes a matrix of quantity samples and aggregates them by calculating the
+pointwise average.
 }
 \details{
-It is assumed that \code{quantities} consists of the cartesian product
-of subject indices and time indices. That is, if the matrix contains 4 subjects and 3 time
-points then it should have 12 columns.
-It is also assumed that each column of \code{quantities} are named as:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{"quantity[x,y]"
-}\if{html}{\out{</div>}}
-
-Where
-\itemize{
-\item \code{x} is the subject index
-\item \code{y} is the time point index
-}
-
-This function returns a \code{matrix} with 1 row per sample and 1 column per \code{time_index}.
-
-Note that if multiple values are provided for \code{subject_index} then the pointwise average
-will be calculated for each time point by taking the mean across the specified subjects
-at each time point.
+This function essentially implements the group wise average by collapsing multiple columns
+together based on the specification provided by the \code{QuantityCollapser} object.
+The \link{Grid-Dev} page provides an example of what this function implements
 }
 \keyword{internal}

@@ -2,6 +2,7 @@
 #' @include generics.R
 NULL
 
+#' @rdname Grid-Dev
 .GridObserved <- setClass(
     "GridObserved",
     contains = "Grid",
@@ -10,6 +11,8 @@ NULL
     )
 )
 
+
+#' @rdname Grid-Functions
 #' @export
 GridObserved <- function(subjects = NULL) {
     .GridObserved(
@@ -17,8 +20,9 @@ GridObserved <- function(subjects = NULL) {
     )
 }
 
+#' @rdname Quant-Dev
 #' @export
-as.QuantityGenerator.GridObserved <- function(object, data) {
+as.QuantityGenerator.GridObserved <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
@@ -31,9 +35,9 @@ as.QuantityGenerator.GridObserved <- function(object, data) {
     )
 }
 
-
+#' @rdname Quant-Dev
 #' @export
-as.QuantityCollapser.GridObserved <- function(object, data) {
+as.QuantityCollapser.GridObserved <- function(object, data, ...) {
     generator <- as.QuantityGenerator(object, data)
 
     .QuantityCollapser(
@@ -44,7 +48,7 @@ as.QuantityCollapser.GridObserved <- function(object, data) {
 }
 
 #' @export
-as.list.GridObserved <- function(x, data) {
+as.list.GridObserved <- function(x, data, ...) {
     data_list <- as.list(data)
     subjects <- if (is.null(x@subjects)) {
         subs <- as.list(names(data_list$pt_to_ind))
