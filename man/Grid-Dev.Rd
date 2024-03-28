@@ -71,6 +71,6 @@ named \code{Group-1} and \code{Group-2} which are composed of the subjects \code
 }
 
 \seealso{
-Quant-Dev
+\code{Quant-Dev}
 }
 \keyword{internal}

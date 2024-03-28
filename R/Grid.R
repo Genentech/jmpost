@@ -74,7 +74,7 @@ NULL
 #' @inheritSection Grid-Functions Group Specification
 #'
 #' @keywords internal
-#' @seealso Quant-Dev
+#' @seealso `Quant-Dev`
 #' @name Grid-Dev
 NULL
 
@@ -83,7 +83,7 @@ NULL
 #' Quantity Developer Notes
 #'
 #' @description
-#' Developer details for `QuantityX` objects/methods. This page just outlines the arguements
+#' Developer details for `QuantityX` objects/methods. This page just outlines the arguments
 #' and slots of these objects/methods. For the full implementation details please see [Grid-Dev]
 #'
 #' @slot times (`numeric`)\cr See Arguments for details.

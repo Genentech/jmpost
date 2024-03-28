@@ -10,7 +10,7 @@ collapse_quantities(quantities_raw, collapser)
 \item{quantities_raw}{(\code{matrix})\cr of samples with 1 row per sample and 1 column per
 distinct quantity.}
 
-\item{collapser}{(\link{QuantityCollapser})\cr specifies which columns to combine together.}
+\item{collapser}{(\code{\link{QuantityCollapser}})\cr specifies which columns to combine together.}
 }
 \description{
 This function takes a matrix of quantity samples and aggregates them by calculating the

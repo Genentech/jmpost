@@ -57,7 +57,7 @@ QuantityCollapser(times, groups, indexes)
 \item{data}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
 }
 \description{
-Developer details for \code{QuantityX} objects/methods. This page just outlines the arguements
+Developer details for \code{QuantityX} objects/methods. This page just outlines the arguments
 and slots of these objects/methods. For the full implementation details please see \link{Grid-Dev}
 }
 \details{
