@@ -55,18 +55,41 @@ baseline hazard $h_0(.)$. Please note that some of these distributions do not ha
 the proportional-hazards property meaning that the resulting survival model corresponding to the hazard $h_i()$ will not be of 
 the same parametric family as the baseline distribution with the hazard $h_0(.)$.
 
+
+
+## Exponential Distribution
+
+$$
+h(t \mid \lambda) = \lambda
+$$
+
+Where:
+- $\lambda > 0$ is the scale parameter
+
+## Weibull Distribution (Proportional Hazard Parameterisation)
+
+$$
+h(t \mid \lambda, \gamma) = \lambda \gamma t^{\gamma - 1 };
+$$
+
+Where:
+- $\lambda > 0$ is the scale parameter
+- $\gamma > 0$ is the shape parameter
+
 ## Log-Logistic Distribution
 
 $$
-h(x \mid a, b) =  \frac
-{(b/a)(x/a)^{(b-1)}}
-{1 + (x/a)^b}
+h(t \mid a, b) =  \frac
+{(b/a)(t/a)^{(b-1)}}
+{1 + (t/a)^b}
 $$
 
 Where:
 
 - $a > 0$ is the scale parameter
 - $b > 0$ is the shape parameter
+
+
 
 
 # Longitudinal Model Specification
