@@ -374,7 +374,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpPaxHm1/model-d6f4882bce0.stan', line 542, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/Rtmp9PUTG8/model-d6e45da4414.stan', line 542, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -589,7 +589,12 @@ as many times as required e.g. if you have 3 covariates in your survival
 model then the initial value for the Beta coeficient will be repeated 3
 times. If however you want to specify individual initial values for each
 covariate you can do so by passing in a vector of the same length as the
-number of covariates.</p>
+number of covariates. - <code><a href="../reference/initialValues.html">initialValues()</a></code> will not check if
+the proposed values are valid for constrained parameters. That is, if
+you are using a <code>prior_cauchy(0, 1)</code> prior for a parameter
+that should be <code>&gt;0</code> then you will need to manually set the
+initial value (as described above) to ensure that it is a valid
+value.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -144,12 +144,29 @@ distributions do not have the proportional-hazards property meaning that
 the resulting survival model corresponding to the hazard <span class="math inline">\(h_i()\)</span> will not be of the same parametric
 family as the baseline distribution with the hazard <span class="math inline">\(h_0(.)\)</span>.</p>
 <div class="section level3">
-<h3 id="log-logistic-distribution">Log-Logistic Distribution<a class="anchor" aria-label="anchor" href="#log-logistic-distribution"></a>
+<h3 id="exponential-distribution">Exponential Distribution<a class="anchor" aria-label="anchor" href="#exponential-distribution"></a>
 </h3>
 <p><span class="math display">\[
-h(x \mid a, b) =  \frac
-{(b/a)(x/a)^{(b-1)}}
-{1 + (x/a)^b}
+h(t \mid \lambda) = \lambda
+\]</span></p>
+<p>Where: - <span class="math inline">\(\lambda &gt; 0\)</span> is the
+rate parameter</p>
+</div>
+<div class="section level3">
+<h3 id="weibull-distribution-proportional-hazard-parameterisation">Weibull Distribution (Proportional Hazard Parameterisation)<a class="anchor" aria-label="anchor" href="#weibull-distribution-proportional-hazard-parameterisation"></a>
+</h3>
+<p><span class="math display">\[
+h(t \mid \lambda, \gamma) = \lambda \gamma t^{\gamma - 1 };
+\]</span></p>
+<p>Where: - <span class="math inline">\(\lambda &gt; 0\)</span> is the
+rate parameter - <span class="math inline">\(\gamma &gt; 0\)</span> is
+the shape parameter Note that with <span class="math inline">\(\gamma =
+1\)</span> we obtain the exponential distribution as a special case. ##
+Log-Logistic Distribution</p>
+<p><span class="math display">\[
+h(t \mid a, b) =  \frac
+{(b/a)(t/a)^{(b-1)}}
+{1 + (t/a)^b}
 \]</span></p>
 <p>Where:</p>
 <ul>
