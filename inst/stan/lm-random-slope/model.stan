@@ -22,7 +22,7 @@ parameters {
     array [n_arms] real lm_rs_slope_mu;
     real<lower={{ machine_double_eps }}> lm_rs_slope_sigma;
     real<lower={{ machine_double_eps }}> lm_rs_sigma;
-    vector[Nind] lm_rs_ind_rnd_slope;
+    vector[n_subjects] lm_rs_ind_rnd_slope;
 }
 
 
@@ -30,7 +30,7 @@ transformed parameters {
     //
     // Source - lm-random-slope/model.stan
     //
-    vector[Nind] lm_rs_ind_intercept = to_vector(lm_rs_intercept[pt_study_index]);
+    vector[n_subjects] lm_rs_ind_intercept = to_vector(lm_rs_intercept[pt_study_index]);
     vector[Nta_total] lm_rs_rslope_ind = to_vector(lm_rs_ind_rnd_slope[ind_index]);
 
     vector[Nta_total] Ypred = lm_rs_ind_intercept[ind_index] + lm_rs_rslope_ind .* Tobs;

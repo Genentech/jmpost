@@ -196,7 +196,7 @@ respectively.
 Under the hood this library works by merging multiple Stan programs together into a single
 program. It does this by parsing the program to extract out each block independently.
 Unfortunately, the formal Stan parser (`stanc`) provided by the Stan team
-only works with complete programs whereas most of the programs within jmpost are
+only works with complete programs whereas most of the programs within `jmpost` are
 incomplete fragments. This package has therefore implemented its own
 simple parser; as a result, in order to not have to traverse the full abstract syntax tree (AST),
 a few addition constraints are made on how Stan programs can be formatted.
@@ -235,7 +235,7 @@ parameter { real mu;      // non-whitespace after opening `{`
 
 ## Stan Data Objects
 
-When writing your own Stan code to extend jmpost it is important to note that
+When writing your own Stan code to extend `jmpost` it is important to note that
 many different data objects have already been defined in the `data` block of the
 base Stan template. This section outlines the different data objects that are
 made available to user. Note that some objects are only made available if
@@ -246,7 +246,7 @@ the user specifies a `SurvivalModel` object to `JointModel()`.
 
 **Number of unique subjects**
 ```stan
-int<lower=1> Nind;
+int<lower=1> n_subjects;
 ```
 
 **Number of unique studies**
@@ -261,7 +261,7 @@ int<lower=1> n_arms;
 
 **Study index for each patient**
 ```stan
-array[Nind] int<lower=1,upper=n_studies> pt_study_index;
+array[n_subjects] int<lower=1,upper=n_studies> pt_study_index;
 ```
 - Note that this is sorted based upon the patients factor level within the R `data.frame`.
 For example lets say patient `"A"` has a factor level of 15 and that their corresponding
@@ -269,7 +269,7 @@ study value has a factor level of 2 then `pt_study_index[15]` will be 2.
 
 **Treatment arm index for each patient**
 ```stan
-  array[Nind] int<lower=1,upper=n_arms> pt_arm_index;
+  array[n_subjects] int<lower=1,upper=n_arms> pt_arm_index;
 ```
 - A mirror of `pt_study_index` but for the treatment arm.
 
@@ -284,7 +284,7 @@ int<lower=1> Nind_dead;
 
 **Event/Censor Times**
 ```stan
-vector[Nind] Times;
+vector[n_subjects] Times;
 ```
 - Ordered by patient factor level
 

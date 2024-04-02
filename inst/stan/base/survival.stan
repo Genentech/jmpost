@@ -154,9 +154,9 @@ data{
 
     int<lower=1> Nind_dead;            // Number of dead individuals (observed survival time).
     array[Nind_dead] int dead_ind_index;     // Index of dead individuals (observed survival time).
-    vector[Nind] Times;
+    vector[n_subjects] Times;
     int<lower=0> p_os_cov_design;
-    matrix[Nind, p_os_cov_design] os_cov_design;
+    matrix[n_subjects, p_os_cov_design] os_cov_design;
 
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
@@ -199,7 +199,7 @@ transformed parameters {
     //
 
     // Calculate covariate contributions to log hazard function
-    vector[Nind] os_cov_contribution = get_os_cov_contribution(
+    vector[n_subjects] os_cov_contribution = get_os_cov_contribution(
         os_cov_design,
         beta_os_cov
     );
@@ -211,7 +211,7 @@ transformed parameters {
     //
 
     // Log of survival function at the observed time points.
-    vector[Nind] log_surv_fit_at_obs_times;
+    vector[n_subjects] log_surv_fit_at_obs_times;
     log_surv_fit_at_obs_times = rep_vector(0.0, Nind);
     log_surv_fit_at_obs_times[time_positive_index] += log_survival(
         Times[time_positive_index],

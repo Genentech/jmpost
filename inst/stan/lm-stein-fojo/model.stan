@@ -16,13 +16,13 @@ parameters{
     real<lower={{ machine_double_eps }}> lm_sf_omega_kg;
 
 {% if centred -%}
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_bsld;
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_ks;
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_kg;
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_bsld;
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_ks;
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_kg;
 {% else -%}
-    vector[Nind] lm_sf_eta_tilde_bsld;
-    vector[Nind] lm_sf_eta_tilde_ks;
-    vector[Nind] lm_sf_eta_tilde_kg;
+    vector[n_subjects] lm_sf_eta_tilde_bsld;
+    vector[n_subjects] lm_sf_eta_tilde_ks;
+    vector[n_subjects] lm_sf_eta_tilde_kg;
 {%- endif -%}
 
     // Standard deviation of the error term
@@ -40,13 +40,13 @@ transformed parameters{
     //
 
 {% if not centred -%}
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_bsld = exp(
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_bsld = exp(
         lm_sf_mu_bsld[pt_study_index] + (lm_sf_eta_tilde_bsld * lm_sf_omega_bsld)
     );
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_ks = exp(
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_ks = exp(
         lm_sf_mu_ks[pt_arm_index] + (lm_sf_eta_tilde_ks * lm_sf_omega_ks)
     );
-    vector<lower={{ machine_double_eps }}>[Nind] lm_sf_psi_kg = exp(
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_kg = exp(
         lm_sf_mu_kg[pt_arm_index] + (lm_sf_eta_tilde_kg * lm_sf_omega_kg)
     );
 {%- endif -%}

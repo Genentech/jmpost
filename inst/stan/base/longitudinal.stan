@@ -23,21 +23,21 @@ data{
     real Ythreshold;          // Censoring threshold.
 
     // Matrix of individuals x observed tumour assessments (sparse matrix of 0s and 1s),
-    // so the dimension is Nind x Nta_obs_y.
+    // so the dimension is n_subjects x Nta_obs_y.
     array [3] int<lower=1> n_mat_inds_obs_y;
     vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
     array[n_mat_inds_obs_y[2]] int v_mat_inds_obs_y;
     array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
 
     // Matrix of individuals x censored tumour assessments (sparse matrix of 0s and 1s).
-    // so the dimension is Nind x Nta_cens_y.
+    // so the dimension is n_subjects x Nta_cens_y.
     array [3] int<lower=0> n_mat_inds_cens_y;
     vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
     array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
     array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
 
     // Matrix of all individuals x tumour assessments (sparse matrix of 0s and 1s).
-    // so the dimension is Nind x Nta_total.
+    // so the dimension is n_subjects x Nta_total.
     array [3] int<lower=0> n_mat_inds_all_y;
     vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
     array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
@@ -66,7 +66,7 @@ transformed parameters {
     // Source - base/longitudinal.stan
     //
     log_lik += csr_matrix_times_vector(
-        Nind,
+        n_subjects,
         Nta_total,
         w_mat_inds_all_y,
         v_mat_inds_all_y,
