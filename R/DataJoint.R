@@ -186,8 +186,8 @@ as.list.DataJoint <- function(x, ...) {
 subset.DataJoint <- function(x, patients, ...) {
     data <- as.list(x)
     dat <- data.frame(
-        time = data[["Times"]],
-        event = as.numeric(seq_along(data[["Times"]]) %in% data[["dead_ind_index"]]),
+        time = data[["event_times"]],
+        event = as.numeric(seq_along(data[["event_times"]]) %in% data[["subject_event_index"]]),
         patient = names(data[["pt_to_ind"]])
     )
     subset_and_add_grouping(dat, patients)
@@ -246,9 +246,9 @@ extract_observed_values <- function(object) {
     assert_class(object, "DataJoint")
     data <- as.list(object)
     x <- data.frame(
-        subject = names(data$pt_to_ind)[data$ind_index],
-        time = data$Tobs,
-        Yob = data$Yobs
+        subject = names(data$pt_to_ind)[data$subject_tumour_index],
+        time = data$tumour_time,
+        Yob = data$tumour_value
     )
     row.names(x) <- NULL
     x

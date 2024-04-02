@@ -131,9 +131,9 @@ as_stan_list.DataSurvival <- function(object, ...) {
     )
 
     model_data <- list(
-        Nind_dead = sum(df[[vars$event]]),
-        dead_ind_index = which(df[[vars$event]] == 1),
-        Times = df[[vars$time]],
+        n_subject_event = sum(df[[vars$event]]),
+        subject_event_index = which(df[[vars$event]] == 1),
+        event_times = df[[vars$time]],
         p_os_cov_design = ncol(design_mat),
         os_cov_design = design_mat,
         n_nodes = length(gh_parameters$nodes),

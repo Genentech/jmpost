@@ -14,8 +14,8 @@ data{
     int<lower=1> n_subjects;                 // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
-    array[n_subjects] int<lower=1,upper=n_studies> pt_study_index;  // Index of study per pt (PT index sorted)
-    array[n_subjects] int<lower=1,upper=n_arms> pt_arm_index;       // Index of treatment arm per pt (PT index sorted)
+    array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;  // Index of study per pt (PT index sorted)
+    array[n_subjects] int<lower=1,upper=n_arms> subject_arm_index;       // Index of treatment arm per pt (PT index sorted)
 
 {{ survival.data }}
 {{ link.data }}

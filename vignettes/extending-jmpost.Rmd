@@ -63,7 +63,7 @@ For reference the following is roughly the implementation for the `LongitudinalG
 enableLink.LongitudinalGSF <- function(object, ...) {
   stan <- StanModule("
 transformed parameters {
-    matrix[Nind, 4] link_function_inputs;
+    matrix[n_subjects, 4] link_function_inputs;
     link_function_inputs[,1] = lm_gsf_psi_bsld;
     link_function_inputs[,2] = lm_gsf_psi_ks;
     link_function_inputs[,3] = lm_gsf_psi_kg;
@@ -259,19 +259,19 @@ int<lower=1> n_studies;
 int<lower=1> n_arms;
 ```
 
-**Study index for each patient**
+**Study index for each subject**
 ```stan
-array[n_subjects] int<lower=1,upper=n_studies> pt_study_index;
+array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;
 ```
-- Note that this is sorted based upon the patients factor level within the R `data.frame`.
-For example lets say patient `"A"` has a factor level of 15 and that their corresponding
-study value has a factor level of 2 then `pt_study_index[15]` will be 2.
+- Note that this is sorted based upon the subject's factor level within the R `data.frame`.
+For example lets say subject `"A"` has a factor level of 15 and that their corresponding
+study value has a factor level of 2 then `subject_study_index[15]` will be 2.
 
-**Treatment arm index for each patient**
+**Treatment arm index for each subject**
 ```stan
-  array[n_subjects] int<lower=1,upper=n_arms> pt_arm_index;
+  array[n_subjects] int<lower=1,upper=n_arms> subject_arm_index;
 ```
-- A mirror of `pt_study_index` but for the treatment arm.
+- A mirror of `subject_study_index` but for the treatment arm.
 
 
 ### Survival Data Objects
@@ -279,20 +279,20 @@ study value has a factor level of 2 then `pt_study_index[15]` will be 2.
 
 **Number of events**
 ```stan
-int<lower=1> Nind_dead;
+int<lower=1> n_subject_event;
 ```
 
 **Event/Censor Times**
 ```stan
-vector[n_subjects] Times;
+vector[n_subjects] event_times;
 ```
 - Ordered by patient factor level
 
 **Event Index**
 ```stan
-array[Nind_dead] int dead_ind_index;
+array[n_subject_event] int subject_event_index;
 ```
-- Is the index into `Times` to identify which times are an event. The rest are censored.
+- Is the index into `event_times` to identify which times are an event. The rest are censored.
 
 
 **Number of covariates for the survival model**
@@ -303,24 +303,24 @@ int<lower=0> p_os_cov_design;
 
 **Covariate design matrix for the survival model**
 ```stan
-matrix[Nind, p_os_cov_design] os_cov_design;
+matrix[n_subjects, p_os_cov_design] os_cov_design;
 ```
 - Note that this does not include the intercept term.
 
 
 **Time >0 flag**
 ```stan
-array[rows(Times)] int time_positive;
+array[rows(event_times)] int time_positive_flag;
 ```
 
 **Number of times >0**
 ```stan
-int n_positive;
+int n_times_positive;
 ```
 
 **Positive time index**
 ```stan
-array[n_positive] int time_positive_index
+array[n_times_positive] int time_positive_index
 ```
 
 
@@ -337,55 +337,55 @@ vector<lower=0, upper=1>[n_nodes] weights;
 
 **Total number of tumour assessments**
 ```stan
-int<lower=1> Nta_total;
+int<lower=1> n_tumour_all;
 ```
 
-**Number of tumour assessments above LLoQ**
+**Number of tumour assessments above LLoQ (Lower Limit of Quantification)**
 ```stan
-int<lower=1> Nta_obs_y;
+int<lower=1> n_tumour_obs;
 ```
 
-**Number of tumour assessments below LLoQ**
+**Number of tumour assessments below LLoQ (Lower Limit of Quantification)**
 ```stan
-int<lower=0> Nta_cens_y;
+int<lower=0> n_tumour_cens;
 ```
 
 **Tumour assessments values**
 ```stan
-vector[Nta_total] Yobs;
+vector[n_tumour_all] tumour_value;
 ```
 
 **Tumour assessments time points**
 ```stan
-vector[Nta_total] Tobs;
+vector[n_tumour_all] tumour_time;
 ```
 
 **LLoQ threshold**
 ```stan
-real Ythreshold;
+real tumour_value_lloq;
 ```
 
 **Individual tumour assessment index**
 ```stan
-array[Nta_total] int ind_index;
+array[n_tumour_all] int subject_tumour_index;
 ```
 - That is if tumour assessment 1 belongs to the patient with factor level 3 then
-`ind_index[1]` will be 3.
+`subject_tumour_index[1]` will be 3.
 
 
-**Tumour assessment index for observations above LLoQ**
+**Tumour assessment index for observations above LLoQ (Lower Limit of Quantification)**
 ```stan
-array[Nta_obs_y] int obs_y_index;
+array[n_tumour_obs] int subject_tumour_index_obs;
 ```
 - For example if only tumour assessments 3 and 5 were above the LLoQ then
-`obs_y_index` will be `[3, 5]`.
+`subject_tumour_index_obs` will be `[3, 5]`.
 
-**Tumour assessment index for observations below LLoQ**
+**Tumour assessment index for observations below LLoQ (Lower Limit of Quantification)**
 ```stan
-array[Nta_cens_y] int cens_y_index;
+array[n_tumour_cens] int subject_tumour_index_cens;
 ```
 - For example if only tumour assessments 1 and 2 were below the LLoQ then
-`obs_y_index` will be `[1, 2]`.
+`subject_tumour_index_obs` will be `[1, 2]`.
 
 
 **Sparse matrix components for patient indexes of the tumour assessments**
@@ -395,7 +395,7 @@ vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
 array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
 array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
 ```
-- This is the sparse matrix representation of the binary matrix that has one row per patient and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `Yobs` belongs to the patient with factor level 3. This matrix is primarily used to calculate the sum
+- This is the sparse matrix representation of the binary matrix that has one row per patient and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `tumour_value` belongs to the patient with factor level 3. This matrix is primarily used to calculate the sum
 of log-likelihood for all tumour assessments per patient in an efficient way.
 - See [the Stan CSR documentation](https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR) for more information on the sparse matrix representation.
 

@@ -10,34 +10,34 @@ data{
     //
 
     // Longitudinal data
-    int<lower=1> Nta_total;            // Total number of tumour assessments.
-    int<lower=1> Nta_obs_y;            // Number of observed tumour assessments (not censored).
-    int<lower=0> Nta_cens_y;           // Number of censored tumour assessments (below threshold).
+    int<lower=1> n_tumour_all;            // Total number of tumour assessments.
+    int<lower=1> n_tumour_obs;            // Number of observed tumour assessments (not censored).
+    int<lower=0> n_tumour_cens;           // Number of censored tumour assessments (below threshold).
 
-    array[Nta_total] int ind_index;          // Index of individuals for each tumour assessment.
-    array[Nta_obs_y] int obs_y_index;        // Index of observed tumour assessments (not censored).
-    array[Nta_cens_y] int cens_y_index;      // Index of censored tumour assessments.
+    array[n_tumour_all] int subject_tumour_index;          // Index of individuals for each tumour assessment.
+    array[n_tumour_obs] int subject_tumour_index_obs;        // Index of observed tumour assessments (not censored).
+    array[n_tumour_cens] int subject_tumour_index_cens;      // Index of censored tumour assessments.
 
-    vector[Nta_total] Yobs;   // Array of individual responses.
-    vector[Nta_total] Tobs;   // Individual timepoints.
-    real Ythreshold;          // Censoring threshold.
+    vector[n_tumour_all] tumour_value;   // Array of individual responses.
+    vector[n_tumour_all] tumour_time;   // Individual timepoints.
+    real tumour_value_lloq;          // Censoring threshold.
 
     // Matrix of individuals x observed tumour assessments (sparse matrix of 0s and 1s),
-    // so the dimension is n_subjects x Nta_obs_y.
+    // so the dimension is n_subjects x n_tumour_obs.
     array [3] int<lower=1> n_mat_inds_obs_y;
     vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
     array[n_mat_inds_obs_y[2]] int v_mat_inds_obs_y;
     array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
 
     // Matrix of individuals x censored tumour assessments (sparse matrix of 0s and 1s).
-    // so the dimension is n_subjects x Nta_cens_y.
+    // so the dimension is n_subjects x n_tumour_cens.
     array [3] int<lower=0> n_mat_inds_cens_y;
     vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
     array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
     array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
 
     // Matrix of all individuals x tumour assessments (sparse matrix of 0s and 1s).
-    // so the dimension is n_subjects x Nta_total.
+    // so the dimension is n_subjects x n_tumour_all.
     array [3] int<lower=0> n_mat_inds_all_y;
     vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
     array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
@@ -58,7 +58,7 @@ transformed parameters {
     //
     // Source - base/longitudinal.stan
     //
-    vector[Nta_total] Ypred_log_lik = rep_vector(0, Nta_total);
+    vector[n_tumour_all] Ypred_log_lik = rep_vector(0, n_tumour_all);
 
     {{ stan.transformed_parameters }}
 
@@ -67,7 +67,7 @@ transformed parameters {
     //
     log_lik += csr_matrix_times_vector(
         n_subjects,
-        Nta_total,
+        n_tumour_all,
         w_mat_inds_all_y,
         v_mat_inds_all_y,
         u_mat_inds_all_y,

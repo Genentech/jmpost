@@ -72,24 +72,24 @@ LongitudinalSteinFojo <- function(
             Parameter(
                 name = "lm_sf_psi_bsld",
                 prior = prior_init_only(prior_lognormal(mu_bsld@init, omega_bsld@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_ks",
                 prior = prior_init_only(prior_lognormal(mu_ks@init, omega_ks@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_kg",
                 prior = prior_init_only(prior_lognormal(mu_kg@init, omega_kg@init)),
-                size = "Nind"
+                size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_sf_eta_tilde_bsld", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_sf_eta_tilde_ks", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_sf_eta_tilde_kg", prior = prior_std_normal(), size = "Nind")
+            Parameter(name = "lm_sf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_sf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_sf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects")
         )
     }
     parameters <- append(parameters, parameters_extra)
