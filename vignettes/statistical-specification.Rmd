@@ -64,7 +64,7 @@ h(t \mid \lambda) = \lambda
 $$
 
 Where:
-- $\lambda > 0$ is the scale parameter
+- $\lambda > 0$ is the rate parameter
 
 ## Weibull Distribution (Proportional Hazard Parameterisation)
 
@@ -73,9 +73,9 @@ h(t \mid \lambda, \gamma) = \lambda \gamma t^{\gamma - 1 };
 $$
 
 Where:
-- $\lambda > 0$ is the scale parameter
+- $\lambda > 0$ is the rate parameter
 - $\gamma > 0$ is the shape parameter
-
+Note that with $\gamma = 1$ we obtain the exponential distribution as a special case.
 ## Log-Logistic Distribution
 
 $$
