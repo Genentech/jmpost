@@ -66,7 +66,7 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     assert_that(
         all(unique(unlist(object@groups)) %in% names(data_list$pt_to_ind))
     )
-    time_grid <- expand_time_grid(object@times, max(data_list[["Tobs"]]))
+    time_grid <- expand_time_grid(object@times, max(data_list[["tumour_time"]]))
 
     group_grid <- expand.grid(
         group = names(object@groups),

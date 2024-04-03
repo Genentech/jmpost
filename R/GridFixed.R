@@ -28,7 +28,7 @@ as.QuantityGenerator.GridFixed <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
-    time_grid <- expand_time_grid(object@times, max(data_list[["Tobs"]]))
+    time_grid <- expand_time_grid(object@times, max(data_list[["tumour_time"]]))
 
     pt_times <- expand.grid(
         pt = subjects,
