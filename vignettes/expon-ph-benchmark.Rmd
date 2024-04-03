@@ -1,0 +1,98 @@
+---
+title: "{jmpost} documentation"
+subtitle: "01 // Survival model only // Exponential (PH) model fit"
+package: jmpost
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Fitting}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+
+## Scope of this document
+This document describes how to fit survival models implemented in the `jmpost` R package and how the results of this modeling step compare with the ones obtained using other common packages: `flexsurv` and `survstan`.
+
+
+## Survival distributions in a nutshell
+The quantity of interest in survival analysis is the probability of survival beyond time $t$,
+
+$$
+S(t) = Pr(T > t) = 1 - F(t),
+$$
+where $T$ is a random variable denoting the time when the event occurs. The survival function is the complement of the cumulative density function (CDF), $F(t) = \int_0^t f(u)du$, where $f(t)$ is the probability density function (PDF).
+The hazard function, *i.e.* the instantaneous rate at which an event occurs at time $t$ given survival until time $t$ is given by:
+
+$$
+\lambda (t) = \frac{f(t)}{S(t)}.
+$$
+The survivor function can also be expressed in terms of the cumulative hazard function, $\Lambda(t) = \int_0^t \lambda (u)du$, as follow:
+$$
+S(t) = e^{-\Lambda(t)}.
+$$
+The default `stats` package contains functions for the PDF, the CDF, and random number generation for many of the distributions. 
+Additional distributions, as well as support for hazard functions, are provided in `flexsurv`.    
+
+
+## Comparing {flexsurv}, {survstan} and {jmpost}
+
+In this document, the 'bc' dataset from the R package [{flexsurv}](https://chjackson.github.io/flexsurv/) is used. It contains data for 686  patients with primary node positive breast cancer. The variable `recyrs` represents the time (in years) of death or cancer recurrence when `censrec` is 1, or right censoring when `censrec` is 0. The covariate `group` is a factor representing a prognostic score, with 3 levels: "Good" (the reference), "Medium" and "Poor".
+
+The details of the exponential model implementation in {flexsurv} are provided in the reference article ([DOI](https://www.jstatsoft.org/article/view/v070i08)).
+The exponential distribution has a single parameter and only supports a hazard that is constant over time. The hazard is equal to the rate parameter.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(kableExtra)
+```
+
+```{r, eval=FALSE, echo=TRUE}
+flexsurv.exp<-flexsurv::flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="exp")
+flexsurv.exp
+```
+
+The same model in {survstan} would be implemented as follow:
+
+```{r, eval=FALSE, echo=TRUE}
+survstan.exp<-survstan::phreg(Surv(recyrs, censrec)~group, data=bc, dist="exponential")
+summary(survstan.exp)
+
+```
+
+The same model in {jmpost} would be implemented as follow:
+
+```{r, eval=FALSE, echo=TRUE}
+jm<-JointModel(survival=
+        SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
+
+bc1<-bc %>%
+  mutate(ID=as.character(1:n()), study=1)
+jdat<-DataJoint(
+  subject = DataSubject(data=bc1, subject="ID", arm="group", study="study"),
+  survival = DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
+)
+
+mp<-sampleStanModel(jm, data=jdat, iter_warmup=4000, iter_sampling=1000, chains=4)
+vars<-c("sm_exp_lambda", "beta_os_cov")
+mp@results$summary(vars)
+
+```
+
+As shown in the below table, these various model calls provide consistent outputs.
+More details on the {jmpost} outputs are provided in the separate vignette ABC123.
+
+```{r, file="expon-ph-benchmark.R", echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+# Create table
+altogether %>%
+  kable(escape = F) %>%
+  kable_styling()
+```
+
+
