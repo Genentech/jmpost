@@ -29,7 +29,7 @@ test_that("link_none() works as expected", {
     )
     expect_true(
         grepl(
-            "matrix[Nind, 0] link_function_inputs = rep_matrix(0, Nind, 0);",
+            "matrix[n_subjects, 0] link_function_inputs = rep_matrix(0, n_subjects, 0);",
             as.character(x),
             fixed = TRUE
         )

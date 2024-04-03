@@ -8,6 +8,6 @@ data {
 
     int <lower=1> gq_n_quant;
 
-    array[gq_n_quant] int<lower=1, upper=Nind> gq_pt_index;
+    array[gq_n_quant] int<lower=1, upper=n_subjects> gq_pt_index;
     vector[gq_n_quant] gq_times;
 }

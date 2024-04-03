@@ -21,7 +21,7 @@ transformed data {
     //
     // If user has requested link_none then provide a dummy pars_lm object
     // that contains nothing
-    matrix[Nind, 0] link_function_inputs = rep_matrix(0, Nind, 0);
+    matrix[n_subjects, 0] link_function_inputs = rep_matrix(0, n_subjects, 0);
     vector[0] link_coefficients;
 }
 
