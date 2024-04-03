@@ -48,106 +48,87 @@ NULL
     Class = "SurvivalQuantities",
     slots = c(
         "quantities" = "Quantities",
-        "groups" = "list",
+        "grid" = "Grid",
         "type" = "character",
-        "time_grid" = "numeric",
         "data" = "DataJoint"
     )
 )
 
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #'
-#' @param groups (`character` or `list` or `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#' See "Group Specification" for more details.
+#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
+#' quantities for. See [Grid-Functions].
 #'
 #' @param type (`character`)\cr quantity to be generated.
 #' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
 #'
-#' @param time_grid (`numeric` or `NULL`)\cr vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_survival_time, length = 201)`.
 #' @rdname SurvivalQuantities-class
 SurvivalQuantities <- function(
     object,
-    groups = NULL,
-    time_grid = NULL,
+    grid,
     type = c("surv", "haz", "loghaz", "cumhaz")
 ) {
     type <- match.arg(type)
+    assert_class(object, "JointModelSamples")
+    assert_class(grid, "Grid")
 
-    data <- as.list(object@data)
-    patients <- decompose_patients(groups, names(data$pt_to_ind))
-
-    time_grid <- expand_time_grid(time_grid, max(data[["event_times"]]))
+    generator <- as.QuantityGenerator(grid, object@data)
 
     assert_that(
-        all(time_grid >= 0),
-        msg = "All requested time points must be >= 0"
+        all(generator@times >= 0),
+        msg = "Time points must be greater than or equal to 0"
     )
 
     gq <- generateQuantities(
         object,
-        patients = patients$unique_values,
-        time_grid_lm = numeric(0),
-        time_grid_sm = time_grid
+        generator = generator,
+        type = "survival"
     )
 
     quantities_raw <- extract_quantities(gq, type)
-
-    quantities <- lapply(
-        patients$indexes,
-        average_samples_by_index,
-        time_index = seq_along(time_grid),
-        quantities = quantities_raw
-    )
+    collapser <- as.QuantityCollapser(grid, object@data)
+    quantities <- collapse_quantities(quantities_raw, collapser)
 
     .SurvivalQuantities(
-        quantities = Quantities(quantities),
-        groups = patients$groups,
-        type = type,
-        time_grid = time_grid,
-        data = object@data
+        quantities = Quantities(
+            quantities,
+            groups = collapser@groups,
+            times = collapser@times
+        ),
+        grid = grid,
+        data = object@data,
+        type = type
     )
 }
 
 setValidity(
     Class = "SurvivalQuantities",
     method = function(object) {
-        if (length(object@quantities) != length(object@groups)) {
-            return("`quantities` and `groups` should be the same length")
-        }
-        if (length(object@groups) != length(names(object@groups))) {
-            return("`groups` must be a named list")
-        }
-        if (length(object@type) != 1) {
-            return("`type` should be a length 1 character")
-        }
-        if (!object@type %in% c("surv", "loghaz", "cumhaz", "haz")) {
-            return("`type` must be one of 'surv', 'loghaz', 'cumhaz', 'haz'")
-        }
-        if (length(object@time_grid) == 0) {
-            return("`time_grid` cannot be length 0")
-        }
-        if (ncol(object@quantities) != length(object@time_grid)) {
-            return("`quantities` must have #columns = `length(time_grid)`")
-        }
-        for (group in object@groups) {
-            if (!(is.character(group) && length(group > 0))) {
-                return("Each element of `groups` must be a length >= 1 character vector")
-            }
-        }
+        # TODO
+        return(TRUE)
     }
 )
 
 
+#' `as.data.frame`
+#'
+#' @param x ([`SurvivalQuantities`]) \cr longitudinal quantities.
+#' @param ... not used.
+#' @family SurvivalQuantities
+#' @export
+as.data.frame.SurvivalQuantities <- function(x, ...) {
+    as.data.frame(x@quantities)
+}
+
+
+
 #' summary
 #'
-#'
 #' @description
-#' This method returns a `data.frame` of key quantities (survival / log-hazard / etc)
+#' This method returns a `data.frame` of the longitudinal quantities.
 #'
-#' @inheritParams SurvivalQuantities-Shared
 #' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @inheritParams SurvivalQuantities-Shared
 #'
 #' @family SurvivalQuantities
 #' @family summary
@@ -157,30 +138,7 @@ summary.SurvivalQuantities <- function(
     conf.level = 0.95,
     ...
 ) {
-    summary(
-        object@quantities,
-        time_grid = object@time_grid,
-        groups = object@groups,
-        type = object@type,
-        conf.level = conf.level
-    )
-}
-
-
-
-#' `SurvivalQuantities` -> `data.frame`
-#'
-#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
-#' @param ... not used.
-#' @family SurvivalQuantities
-#' @export
-as.data.frame.SurvivalQuantities <- function(x, ...) {
-    as.data.frame(
-        x@quantities,
-        time_grid = x@time_grid,
-        groups = x@groups,
-        type = x@type
-    )
+    summary(object@quantities, conf.level = conf.level)
 }
 
 
@@ -198,7 +156,8 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 #' @family SurvivalQuantities
 #' @family autoplot
 #' @export
-autoplot.SurvivalQuantities <- function(object,
+autoplot.SurvivalQuantities <- function(
+    object,
     conf.level = 0.95,
     add_km = FALSE,
     add_wrap = TRUE,
@@ -214,9 +173,17 @@ autoplot.SurvivalQuantities <- function(object,
         conf.level < 1,
         is.flag(add_wrap)
     )
-    kmdf <- if (add_km) subset(object@data, object@groups) else NULL
+    kmdf <- if (add_km) {
+        subset(
+            object@data,
+            as.list(object@grid, data = object@data)
+        )
+    } else {
+        NULL
+    }
     all_fit_df <- summary(object, conf.level = conf.level)
-    label <- switch(object@type,
+    label <- switch(
+        object@type,
         "surv" = expression(S(t)),
         "cumhaz" = expression(H(t)),
         "haz" = expression(h(t)),
@@ -326,38 +293,24 @@ survival_plot <- function(
 }
 
 
-#' `SurvivalQuantities` -> Printable `Character`
-#'
-#' Converts [`SurvivalQuantities`] object into a printable string.
-#' @inheritParams SurvivalQuantities-Shared
-#' @family SurvivalQuantities
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
-#' @keywords internal
-#' @export
-as_print_string.SurvivalQuantities <- function(object, indent = 1, ...) {
-    template <- c(
-        "SurvivalQuantities Object:",
-        "    Type              = %s",
-        "    # of Groups       = %d",
-        "    # of Time Points  = %d"
-    )
-    pad <- rep(" ", indent) |> paste(collapse = "")
-    template_padded <- paste(pad, template)
-    sprintf(
-        paste(template_padded, collapse = "\n"),
-        object@type,
-        length(object@groups),
-        length(object@time_grid)
-    )
-}
-
 #' @rdname show-object
 #' @export
 setMethod(
     f = "show",
     signature = "SurvivalQuantities",
     definition = function(object) {
-        string <- as_print_string(object)
+        template <- c(
+            "SurvivalQuantities Object:",
+            "    # of samples    = %d",
+            "    # of quantities = %d",
+            "    Type            = %s"
+        )
+        string <- sprintf(
+            paste(template, collapse = "\n"),
+            nrow(object@quantities),
+            ncol(object@quantities),
+            object@type
+        )
         cat("\n", string, "\n\n")
     }
 )
@@ -386,10 +339,24 @@ brierScore.SurvivalQuantities <- function(
 ) {
     assert_that(
         object@type == "surv",
-        msg = "Brier Score can only be calculated for survival quantities"
+        msg = paste(
+            "Brier Score can only be calculated when the survival quantities were",
+            "generated with `type = 'surv'`",
+            collapse = " "
+        )
     )
+    assert_that(
+        is(object@grid, "GridFixed"),
+        msg = paste(
+            "Brier Score can only be calculated when the survival quantities were",
+            "generated with `grid = GridFixed()`",
+            collapse = " "
+        )
+    )
+
     sdat <- summary(object)
-    times <- object@time_grid
+    times <- unique(as.QuantityGenerator(object@grid, object@data)@times)
+    times <- times[order(times)]
     assert_that(
         nrow(sdat) == length(times) * length(unique(sdat$group))
     )

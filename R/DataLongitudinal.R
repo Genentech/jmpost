@@ -12,7 +12,6 @@ NULL
 #' @keywords internal
 NULL
 
-setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 
 # DataLongitudinal-class ----
 

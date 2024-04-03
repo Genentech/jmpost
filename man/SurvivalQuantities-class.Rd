@@ -7,22 +7,13 @@
 \alias{SurvivalQuantities}
 \title{\code{SurvivalQuantities} Object & Constructor Function}
 \usage{
-SurvivalQuantities(
-  object,
-  groups = NULL,
-  time_grid = NULL,
-  type = c("surv", "haz", "loghaz", "cumhaz")
-)
+SurvivalQuantities(object, grid, type = c("surv", "haz", "loghaz", "cumhaz"))
 }
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{groups}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
-quantities for.
-See "Group Specification" for more details.}
-
-\item{time_grid}{(\code{numeric} or \code{NULL})\cr vector of time points to calculate the desired
-quantity at. If \code{NULL} will be set to \code{seq(0, max_survival_time, length = 201)}.}
+\item{grid}{(\code{Grid}) \cr object that specifies which subjects and time points to calculate the
+quantities for. See \link{Grid-Functions}.}
 
 \item{type}{(\code{character})\cr quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
@@ -63,7 +54,6 @@ If \code{groups=NULL} then all subjects from original dataset will be selected
 \seealso{
 Other SurvivalQuantities: 
 \code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
 \code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
