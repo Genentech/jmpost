@@ -32,12 +32,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -72,7 +66,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LongitudinalQuantities</span><span class="op">(</span><span class="va">object</span>, groups <span class="op">=</span> <span class="cn">NULL</span>, time_grid <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LongitudinalQuantities</span><span class="op">(</span><span class="va">object</span>, <span class="va">grid</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,14 +75,9 @@
 <dd><p>(<code><a href="JointModelSamples-class.html">JointModelSamples</a></code>) <br> samples as drawn from a Joint Model.</p></dd>
 
 
-<dt>groups</dt>
-<dd><p>(<code>character</code>, <code>NULL</code>)<br> which patients to calculate the desired
-quantities for.</p></dd>
-
-
-<dt>time_grid</dt>
-<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> a vector of time points to calculate the desired
-quantity at. If <code>NULL</code> will be set to <code>seq(0, max_longitudinal_time, length = 201)</code>.</p></dd>
+<dt>grid</dt>
+<dd><p>(<code>Grid</code>) <br> object that specifies which subjects and time points to calculate the
+quantities for. See <a href="Grid-Functions.html">Grid-Functions</a>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -105,17 +94,8 @@ group aggregation.</p>
 element of <code>group</code></p></dd>
 
 
-<dt><code>groups</code></dt>
-<dd><p>(<code>list</code>)<br> See argument section for details</p></dd>
-
-
-<dt><code>time_grid</code></dt>
-<dd><p>(<code>numeric</code>)<br> See argument section for details</p></dd>
-
-
 <dt><code>data</code></dt>
-<dd><p>(<code><a href="DataJoint-class.html">DataJoint</a></code>)<br> The data that the Joint Model was fitted to to produce
-the samples/quantities</p></dd>
+<dd><p>(<code>DataJoint</code>)<br> Survival and Longitudinal Data.</p></dd>
 
 
 </dl></div>
@@ -123,7 +103,6 @@ the samples/quantities</p></dd>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other LongitudinalQuantities: 
 <code><a href="as.data.frame.LongitudinalQuantities.html">as.data.frame.LongitudinalQuantities</a>()</code>,
-<code><a href="as_print_string.LongitudinalQuantities.html">as_print_string.LongitudinalQuantities</a>()</code>,
 <code><a href="autoplot.LongitudinalQuantities.html">autoplot.LongitudinalQuantities</a>()</code>,
 <code><a href="summary.LongitudinalQuantities.html">summary.LongitudinalQuantities</a>()</code></p></div>
     </div>

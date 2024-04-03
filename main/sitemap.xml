@@ -52,6 +52,12 @@
     <loc>https://genentech.github.io/jmpost/reference/DataSurvival-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/Grid-Dev.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/Grid-Functions.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/JointModel-Shared.html</loc>
   </url>
   <url>
@@ -119,6 +125,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/Quant-Dev.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/Quantities-Shared.html</loc>
@@ -274,9 +283,6 @@
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.LongitudinalQuantities.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc>
   </url>
   <url>
@@ -284,9 +290,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.StanModule.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.SurvivalQuantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.html</loc>
@@ -322,9 +325,6 @@
     <loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/average_samples_by_index.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.html</loc>
   </url>
   <url>
@@ -334,6 +334,9 @@
     <loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
   </url>
   <url>
@@ -341,9 +344,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/dim.Quantities.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/ensure_initial_values.html</loc>
