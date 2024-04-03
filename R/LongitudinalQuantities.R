@@ -61,7 +61,7 @@ LongitudinalQuantities <- function(
     assert_character(groups, null.ok = TRUE)
     data <- as.list(object@data)
     patients <- decompose_patients(groups, names(data$pt_to_ind))
-    time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
+    time_grid <- expand_time_grid(time_grid, max(data[["tumour_time"]]))
 
     gq <- generateQuantities(
         object,

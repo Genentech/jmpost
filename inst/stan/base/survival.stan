@@ -152,11 +152,11 @@ data{
     // Source - base/survival.stan
     //
 
-    int<lower=1> Nind_dead;            // Number of dead individuals (observed survival time).
-    array[Nind_dead] int dead_ind_index;     // Index of dead individuals (observed survival time).
-    vector[Nind] Times;
+    int<lower=1> n_subject_event;            // Number of dead individuals (observed survival time).
+    array[n_subject_event] int subject_event_index;     // Index of dead individuals (observed survival time).
+    vector[n_subjects] event_times;
     int<lower=0> p_os_cov_design;
-    matrix[Nind, p_os_cov_design] os_cov_design;
+    matrix[n_subjects, p_os_cov_design] os_cov_design;
 
     // Integration parameters ----
     // These are the x positions and weights required to evaluate a polynomial function
@@ -168,9 +168,9 @@ data{
 
 
 transformed data {
-    array[rows(Times)] int time_positive = is_positive(Times);
-    int n_positive = sum(time_positive);
-    array[n_positive] int time_positive_index = which(time_positive);
+    array[rows(event_times)] int time_positive_flag = is_positive(event_times);
+    int n_times_positive = sum(time_positive_flag);
+    array[n_times_positive] int time_positive_index = which(time_positive_flag);
 
 {{ stan.transformed_data }}
 }
@@ -199,7 +199,7 @@ transformed parameters {
     //
 
     // Calculate covariate contributions to log hazard function
-    vector[Nind] os_cov_contribution = get_os_cov_contribution(
+    vector[n_subjects] os_cov_contribution = get_os_cov_contribution(
         os_cov_design,
         beta_os_cov
     );
@@ -211,10 +211,10 @@ transformed parameters {
     //
 
     // Log of survival function at the observed time points.
-    vector[Nind] log_surv_fit_at_obs_times;
-    log_surv_fit_at_obs_times = rep_vector(0.0, Nind);
+    vector[n_subjects] log_surv_fit_at_obs_times;
+    log_surv_fit_at_obs_times = rep_vector(0.0, n_subjects);
     log_surv_fit_at_obs_times[time_positive_index] += log_survival(
-        Times[time_positive_index],
+        event_times[time_positive_index],
         pars_os,
         link_function_inputs[time_positive_index],
         link_coefficients,
@@ -227,13 +227,13 @@ transformed parameters {
     log_lik += log_surv_fit_at_obs_times;
 
     // In case of death we add the log-hazard on top.
-    log_lik[dead_ind_index] += to_vector(
+    log_lik[subject_event_index] += to_vector(
         log_hazard(
-            to_matrix(Times[dead_ind_index]),
+            to_matrix(event_times[subject_event_index]),
             pars_os,
-            link_function_inputs[dead_ind_index],
+            link_function_inputs[subject_event_index],
             link_coefficients,
-            os_cov_contribution[dead_ind_index]
+            os_cov_contribution[subject_event_index]
         )
     );
 }

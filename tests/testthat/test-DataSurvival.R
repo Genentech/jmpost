@@ -22,16 +22,16 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "Nind_dead", "dead_ind_index", "Times", "p_os_cov_design",
+            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
             "os_cov_design", "n_nodes", "nodes", "weights"
         ),
         names(res)
     )
-    expect_equal(res$Nind_dead, 3)
+    expect_equal(res$n_subject_event, 3)
     expect_equal(res$p_os_cov_design, 3)
     expect_equal(res$os_cov_design, covmat)
-    expect_equal(res$dead_ind_index, c(1, 2, 4))
-    expect_equal(res$Times, c(10, 20, 30, 25, 15))
+    expect_equal(res$subject_event_index, c(1, 2, 4))
+    expect_equal(res$event_times, c(10, 20, 30, 25, 15))
 
 
     ## Dropped rows works as expected
@@ -61,16 +61,16 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "Nind_dead", "dead_ind_index", "Times", "p_os_cov_design",
+            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
             "os_cov_design", "n_nodes", "nodes", "weights"
         ),
         names(res)
     )
-    expect_equal(res$Nind_dead, 2)
+    expect_equal(res$n_subject_event, 2)
     expect_equal(res$p_os_cov_design, 3)
     expect_equal(res$os_cov_design, covmat)
-    expect_equal(res$dead_ind_index, c(1, 2))
-    expect_equal(res$Times, c(10, 20, 30, 15))
+    expect_equal(res$subject_event_index, c(1, 2))
+    expect_equal(res$event_times, c(10, 20, 30, 15))
 })
 
 

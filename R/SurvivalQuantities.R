@@ -78,7 +78,7 @@ SurvivalQuantities <- function(
     data <- as.list(object@data)
     patients <- decompose_patients(groups, names(data$pt_to_ind))
 
-    time_grid <- expand_time_grid(time_grid, max(data[["Times"]]))
+    time_grid <- expand_time_grid(time_grid, max(data[["event_times"]]))
 
     assert_that(
         all(time_grid >= 0),

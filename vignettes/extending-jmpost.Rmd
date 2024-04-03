@@ -63,7 +63,7 @@ For reference the following is roughly the implementation for the `LongitudinalG
 enableLink.LongitudinalGSF <- function(object, ...) {
   stan <- StanModule("
 transformed parameters {
-    matrix[Nind, 4] link_function_inputs;
+    matrix[n_subjects, 4] link_function_inputs;
     link_function_inputs[,1] = lm_gsf_psi_bsld;
     link_function_inputs[,2] = lm_gsf_psi_ks;
     link_function_inputs[,3] = lm_gsf_psi_kg;
@@ -196,7 +196,7 @@ respectively.
 Under the hood this library works by merging multiple Stan programs together into a single
 program. It does this by parsing the program to extract out each block independently.
 Unfortunately, the formal Stan parser (`stanc`) provided by the Stan team
-only works with complete programs whereas most of the programs within jmpost are
+only works with complete programs whereas most of the programs within `jmpost` are
 incomplete fragments. This package has therefore implemented its own
 simple parser; as a result, in order to not have to traverse the full abstract syntax tree (AST),
 a few addition constraints are made on how Stan programs can be formatted.
@@ -232,3 +232,188 @@ parameter { real mu;      // non-whitespace after opening `{`
   x ~ normal(mu, sigma);
 } // some comment         // non-whitespace after closing `}`
 ```
+
+## Stan Data Objects
+
+When writing your own Stan code to extend `jmpost` it is important to note that
+many different data objects have already been defined in the `data` block of the
+base Stan template. This section outlines the different data objects that are
+made available to user. Note that some objects are only made available if
+the corresponding model is used; for example death times are only available if
+the user specifies a `SurvivalModel` object to `JointModel()`.
+
+### Global Data Objects
+
+**Number of unique subjects**
+```stan
+int<lower=1> n_subjects;
+```
+
+**Number of unique studies**
+```stan
+int<lower=1> n_studies;
+```
+
+**Number of unique treatment arms**
+```stan
+int<lower=1> n_arms;
+```
+
+**Study index for each subject**
+```stan
+array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;
+```
+- Note that this is sorted based upon the subject's factor level within the R `data.frame`.
+For example lets say subject `"A"` has a factor level of 15 and that their corresponding
+study value has a factor level of 2 then `subject_study_index[15]` will be 2.
+
+**Treatment arm index for each subject**
+```stan
+  array[n_subjects] int<lower=1,upper=n_arms> subject_arm_index;
+```
+- A mirror of `subject_study_index` but for the treatment arm.
+
+
+### Survival Data Objects
+
+
+**Number of events**
+```stan
+int<lower=1> n_subject_event;
+```
+
+**Event/Censor Times**
+```stan
+vector[n_subjects] event_times;
+```
+- Ordered by patient factor level
+
+**Event Index**
+```stan
+array[n_subject_event] int subject_event_index;
+```
+- Is the index into `event_times` to identify which times are an event. The rest are censored.
+
+
+**Number of covariates for the survival model**
+```stan
+int<lower=0> p_os_cov_design;
+```
+- Note that this does not include an intercept term, which would conflict with the baseline distribution parameters.
+
+**Covariate design matrix for the survival model**
+```stan
+matrix[n_subjects, p_os_cov_design] os_cov_design;
+```
+- Note that this does not include an intercept term, which would conflict with the baseline distribution parameters.
+
+
+**Time >0 flag**
+```stan
+array[rows(event_times)] int time_positive_flag;
+```
+
+**Number of times >0**
+```stan
+int n_times_positive;
+```
+
+**Positive time index**
+```stan
+array[n_times_positive] int time_positive_index
+```
+
+
+**Gaussian Quadrature Integration Parameters**
+```stan
+int<lower=1> n_nodes;
+vector[n_nodes] nodes;
+vector<lower=0, upper=1>[n_nodes] weights;
+```
+- These are the nodes and weights for the Gaussian quadrature integration.
+
+
+### Longitudinal Data Objects
+
+**Total number of tumour assessments**
+```stan
+int<lower=1> n_tumour_all;
+```
+
+**Number of tumour assessments above LLoQ (Lower Limit of Quantification)**
+```stan
+int<lower=1> n_tumour_obs;
+```
+
+**Number of tumour assessments below LLoQ (Lower Limit of Quantification)**
+```stan
+int<lower=0> n_tumour_cens;
+```
+
+**Tumour assessments values**
+```stan
+vector[n_tumour_all] tumour_value;
+```
+
+**Tumour assessments time points**
+```stan
+vector[n_tumour_all] tumour_time;
+```
+
+**LLoQ threshold**
+```stan
+real tumour_value_lloq;
+```
+
+**Individual tumour assessment index**
+```stan
+array[n_tumour_all] int subject_tumour_index;
+```
+- That is if tumour assessment 1 belongs to the patient with factor level 3 then
+`subject_tumour_index[1]` will be 3.
+
+
+**Tumour assessment index for observations above LLoQ (Lower Limit of Quantification)**
+```stan
+array[n_tumour_obs] int subject_tumour_index_obs;
+```
+- For example if only tumour assessments 3 and 5 were above the LLoQ then
+`subject_tumour_index_obs` will be `[3, 5]`.
+
+**Tumour assessment index for observations below LLoQ (Lower Limit of Quantification)**
+```stan
+array[n_tumour_cens] int subject_tumour_index_cens;
+```
+- For example if only tumour assessments 1 and 2 were below the LLoQ then
+`subject_tumour_index_obs` will be `[1, 2]`.
+
+
+**Sparse matrix components for patient indexes of the tumour assessments**
+```stan
+array [3] int<lower=0> n_mat_inds_all_y;
+vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
+array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
+array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
+```
+- This is the sparse matrix representation of the binary matrix that has one row per patient and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `tumour_value` belongs to the patient with factor level 3. This matrix is primarily used to calculate the sum
+of log-likelihood for all tumour assessments per patient in an efficient way.
+- See [the Stan CSR documentation](https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR) for more information on the sparse matrix representation.
+
+
+**Sparse matrix components for patient indexes of the tumour assessments above the LLoQ**
+```stan
+array [3] int<lower=1> n_mat_inds_obs_y;
+vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
+array[n_mat_inds_obs_y[2]] int v_mat_inds_obs_y;
+array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
+```
+- Same as above but only for the tumour assessments above the LLoQ.
+
+**Sparse matrix components for patient indexes of the tumour assessments below the LLoQ**
+```stan
+array [3] int<lower=0> n_mat_inds_cens_y;
+vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
+array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
+array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
+```
+- Same as above but only for the tumour assessments below the LLoQ.
