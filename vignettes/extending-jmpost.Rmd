@@ -299,13 +299,13 @@ array[n_subject_event] int subject_event_index;
 ```stan
 int<lower=0> p_os_cov_design;
 ```
-- Note that this does not include the intercept term.
+- Note that this does not include an intercept term, which would conflict with the baseline distribution parameters.
 
 **Covariate design matrix for the survival model**
 ```stan
 matrix[n_subjects, p_os_cov_design] os_cov_design;
 ```
-- Note that this does not include the intercept term.
+- Note that this does not include an intercept term, which would conflict with the baseline distribution parameters.
 
 
 **Time >0 flag**
