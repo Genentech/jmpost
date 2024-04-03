@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -139,7 +133,7 @@ that contains 1 row per patient and 1 column per <span class="math inline">\(\ph
 <code class="sourceCode R"><span><span class="va">enableLink.LongitudinalGSF</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">transformed parameters {</span></span>
-<span><span class="st">    matrix[Nind, 4] link_function_inputs;</span></span>
+<span><span class="st">    matrix[n_subjects, 4] link_function_inputs;</span></span>
 <span><span class="st">    link_function_inputs[,1] = lm_gsf_psi_bsld;</span></span>
 <span><span class="st">    link_function_inputs[,2] = lm_gsf_psi_ks;</span></span>
 <span><span class="st">    link_function_inputs[,3] = lm_gsf_psi_kg;</span></span>
@@ -265,11 +259,11 @@ clarity the underlying methods are <code>linkDSLD</code>,
 together into a single program. It does this by parsing the program to
 extract out each block independently. Unfortunately, the formal Stan
 parser (<code>stanc</code>) provided by the Stan team only works with
-complete programs whereas most of the programs within jmpost are
-incomplete fragments. This package has therefore implemented its own
-simple parser; as a result, in order to not have to traverse the full
-abstract syntax tree (AST), a few addition constraints are made on how
-Stan programs can be formatted.</p>
+complete programs whereas most of the programs within
+<code>jmpost</code> are incomplete fragments. This package has therefore
+implemented its own simple parser; as a result, in order to not have to
+traverse the full abstract syntax tree (AST), a few addition constraints
+are made on how Stan programs can be formatted.</p>
 <p>These additional constraints are:</p>
 <ul>
 <li>The opening to each block must start on a newline and can’t have any
@@ -299,6 +293,164 @@ any non-whitespace characters after it</li>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>} <span class="kw">model</span> {                 <span class="co">// non-whitespace before block name</span></span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  x ~ normal(mu, sigma);</span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>} <span class="co">// some comment         // non-whitespace after closing `}`</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="stan-data-objects">Stan Data Objects<a class="anchor" aria-label="anchor" href="#stan-data-objects"></a>
+</h3>
+<p>When writing your own Stan code to extend <code>jmpost</code> it is
+important to note that many different data objects have already been
+defined in the <code>data</code> block of the base Stan template. This
+section outlines the different data objects that are made available to
+user. Note that some objects are only made available if the
+corresponding model is used; for example death times are only available
+if the user specifies a <code>SurvivalModel</code> object to
+<code><a href="../reference/JointModel-class.html">JointModel()</a></code>.</p>
+<div class="section level4">
+<h4 id="global-data-objects">Global Data Objects<a class="anchor" aria-label="anchor" href="#global-data-objects"></a>
+</h4>
+<p><strong>Number of unique subjects</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subjects;</span></code></pre></div>
+<p><strong>Number of unique studies</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_studies;</span></code></pre></div>
+<p><strong>Number of unique treatment arms</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_arms;</span></code></pre></div>
+<p><strong>Study index for each subject</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_studies&gt; subject_study_index;</span></code></pre></div>
+<ul>
+<li>Note that this is sorted based upon the subject’s factor level
+within the R <code>data.frame</code>. For example lets say subject
+<code>"A"</code> has a factor level of 15 and that their corresponding
+study value has a factor level of 2 then
+<code>subject_study_index[15]</code> will be 2.</li>
+</ul>
+<p><strong>Treatment arm index for each subject</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>  <span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_arms&gt; subject_arm_index;</span></code></pre></div>
+<ul>
+<li>A mirror of <code>subject_study_index</code> but for the treatment
+arm.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="survival-data-objects">Survival Data Objects<a class="anchor" aria-label="anchor" href="#survival-data-objects"></a>
+</h4>
+<p><strong>Number of events</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subject_event;</span></code></pre></div>
+<p><strong>Event/Censor Times</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="dt">vector</span>[n_subjects] event_times;</span></code></pre></div>
+<ul>
+<li>Ordered by patient factor level</li>
+</ul>
+<p><strong>Event Index</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="dt">array</span>[n_subject_event] <span class="dt">int</span> subject_event_index;</span></code></pre></div>
+<ul>
+<li>Is the index into <code>event_times</code> to identify which times
+are an event. The rest are censored.</li>
+</ul>
+<p><strong>Number of covariates for the survival model</strong></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; p_os_cov_design;</span></code></pre></div>
+<ul>
+<li>Note that this does not include an intercept term, which would
+conflict with the baseline distribution parameters.</li>
+</ul>
+<p><strong>Covariate design matrix for the survival model</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="dt">matrix</span>[n_subjects, p_os_cov_design] os_cov_design;</span></code></pre></div>
+<ul>
+<li>Note that this does not include an intercept term, which would
+conflict with the baseline distribution parameters.</li>
+</ul>
+<p><strong>Time &gt;0 flag</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="dt">array</span>[rows(event_times)] <span class="dt">int</span> time_positive_flag;</span></code></pre></div>
+<p><strong>Number of times &gt;0</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="dt">int</span> n_times_positive;</span></code></pre></div>
+<p><strong>Positive time index</strong></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="dt">array</span>[n_times_positive] <span class="dt">int</span> time_positive_index</span></code></pre></div>
+<p><strong>Gaussian Quadrature Integration Parameters</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_nodes;</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="dt">vector</span>[n_nodes] nodes;</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt;[n_nodes] weights;</span></code></pre></div>
+<ul>
+<li>These are the nodes and weights for the Gaussian quadrature
+integration.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="longitudinal-data-objects">Longitudinal Data Objects<a class="anchor" aria-label="anchor" href="#longitudinal-data-objects"></a>
+</h4>
+<p><strong>Total number of tumour assessments</strong></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_all;</span></code></pre></div>
+<p><strong>Number of tumour assessments above LLoQ (Lower Limit of
+Quantification)</strong></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_obs;</span></code></pre></div>
+<p><strong>Number of tumour assessments below LLoQ (Lower Limit of
+Quantification)</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_tumour_cens;</span></code></pre></div>
+<p><strong>Tumour assessments values</strong></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_value;</span></code></pre></div>
+<p><strong>Tumour assessments time points</strong></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_time;</span></code></pre></div>
+<p><strong>LLoQ threshold</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="dt">real</span> tumour_value_lloq;</span></code></pre></div>
+<p><strong>Individual tumour assessment index</strong></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_all] <span class="dt">int</span> subject_tumour_index;</span></code></pre></div>
+<ul>
+<li>That is if tumour assessment 1 belongs to the patient with factor
+level 3 then <code>subject_tumour_index[1]</code> will be 3.</li>
+</ul>
+<p><strong>Tumour assessment index for observations above LLoQ (Lower
+Limit of Quantification)</strong></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_obs] <span class="dt">int</span> subject_tumour_index_obs;</span></code></pre></div>
+<ul>
+<li>For example if only tumour assessments 3 and 5 were above the LLoQ
+then <code>subject_tumour_index_obs</code> will be
+<code>[3, 5]</code>.</li>
+</ul>
+<p><strong>Tumour assessment index for observations below LLoQ (Lower
+Limit of Quantification)</strong></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_cens] <span class="dt">int</span> subject_tumour_index_cens;</span></code></pre></div>
+<ul>
+<li>For example if only tumour assessments 1 and 2 were below the LLoQ
+then <code>subject_tumour_index_obs</code> will be
+<code>[1, 2]</code>.</li>
+</ul>
+<p><strong>Sparse matrix components for patient indexes of the tumour
+assessments</strong></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_all_y;</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_all_y[<span class="dv">1</span>]] w_mat_inds_all_y;</span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_all_y;</span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_all_y;</span></code></pre></div>
+<ul>
+<li>This is the sparse matrix representation of the binary matrix that
+has one row per patient and one column per tumour assessment. That is,
+for row 3 of this matrix all columns that have an entry of 1 indicate
+that the corresponding entry in <code>tumour_value</code> belongs to the
+patient with factor level 3. This matrix is primarily used to calculate
+the sum of log-likelihood for all tumour assessments per patient in an
+efficient way.</li>
+<li>See <a href="https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR" class="external-link">the
+Stan CSR documentation</a> for more information on the sparse matrix
+representation.</li>
+</ul>
+<p><strong>Sparse matrix components for patient indexes of the tumour
+assessments above the LLoQ</strong></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_mat_inds_obs_y;</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_obs_y[<span class="dv">1</span>]] w_mat_inds_obs_y;</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_obs_y;</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_obs_y;</span></code></pre></div>
+<ul>
+<li>Same as above but only for the tumour assessments above the
+LLoQ.</li>
+</ul>
+<p><strong>Sparse matrix components for patient indexes of the tumour
+assessments below the LLoQ</strong></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_cens_y;</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_cens_y[<span class="dv">1</span>]] w_mat_inds_cens_y;</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_cens_y;</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_cens_y;</span></code></pre></div>
+<ul>
+<li>Same as above but only for the tumour assessments below the
+LLoQ.</li>
+</ul>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
