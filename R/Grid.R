@@ -7,10 +7,28 @@
 #' If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
 #' observation time (for [`LongitudinalQuantities`]) or max event time (for [`SurvivalQuantities`]).
 #' @param groups (`list`)\cr named list of subjects to extract quantities for. See Group Specification.
-#'
+#' @param spec (`list`)\cr named list of subjects to extract quantities for. The names of each
+#' element should be the required subjects with the element itself being a numeric vector of timepoints
+#' to generate the quantity at.
 #' @description
 #' These functions are used to specify which subjects and timepoints should be generated
 #' when calculating quantities via [`SurvivalQuantities`] and [`LongitudinalQuantities`].
+#'
+#' @details
+#'
+#' - `GridFixed()` is used to specify a fixed set of timepoints to generate quantities at for
+#' all the specified subjects.
+#'
+#' - `GridGrouped()` is similar to `GridFixed()` but allows for groupwise averaging
+#' (see Group Specification).
+#'
+#' - `GridObserved()` generates quantities at the observed longitudinal timepoints for each
+#' subject.
+#'
+#' - `GridManual()` allows for individual timepoint specification for each subject.
+#'
+#' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
+#' between each subjects first and last longitudinal observations.
 #'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list

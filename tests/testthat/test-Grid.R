@@ -105,6 +105,32 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
+
+    #
+    # GridManual
+    #
+    grid <- GridManual(
+        spec = list(
+            "B" = c(2, 4),
+            "A" = c(1, 10, 50),
+            "C" = 6
+        )
+    )
+    actual <- as.QuantityGenerator(grid, data = dj)
+    expected <- .QuantityGenerator(
+        subjects = c("B", "B", "A", "A", "A", "C"),
+        times = c(2, 4, 1, 10, 50, 6)
+    )
+    expect_equal(actual, expected)
+
+    actual <- as.QuantityCollapser(grid, data = dj)
+    expected <- .QuantityCollapser(
+        groups = c("B", "B", "A", "A", "A", "C"),
+        times = c(2, 4, 1, 10, 50, 6),
+        indexes = list(1, 2, 3, 4, 5, 6)
+    )
+    expect_equal(actual, expected)
+
 })
 
 
@@ -218,14 +244,28 @@ test_that("GridObservered + Constructs correct quantities", {
     # Longitudinal Data
     #
     #
-    longquant <- LongitudinalQuantities(
+    longquant_obsv <- LongitudinalQuantities(
         mp,
         grid = GridObserved(
             subjects = c("pt_004", "pt_002", "pt_050")
         )
     )
+    actual_obsv <- summary(longquant_obsv)
 
-    actual <- summary(longquant)
+
+    longquant_manual <- LongitudinalQuantities(
+        mp,
+        grid = GridManual(
+            spec = list(
+                "pt_004" = dat_lm |> dplyr::filter(pt == "pt_004") |> dplyr::arrange(time) |> dplyr::pull(time),
+                "pt_002" = dat_lm |> dplyr::filter(pt == "pt_002") |> dplyr::arrange(time) |> dplyr::pull(time),
+                "pt_050" = dat_lm |> dplyr::filter(pt == "pt_050") |> dplyr::arrange(time) |> dplyr::pull(time)
+            )
+        )
+    )
+    actual_manual <- summary(longquant_manual)
+
+    expect_equal(actual_obsv, actual_manual)
 
 
     pred_mat <- as.CmdStanMCMC(mp)$draws("Ypred", format = "draws_matrix")
@@ -256,14 +296,11 @@ test_that("GridObservered + Constructs correct quantities", {
         upper = apply(preds_reduced, 2, quantile, 0.975)
     )
 
-    expect_gt(cor(actual$median, expected$median), 0.99999999)
-    expect_gt(cor(actual$lower, expected$lower), 0.99999999)
-    expect_gt(cor(actual$upper, expected$upper), 0.99999999)
-    expect_equal(actual$time, expected$time)
-    expect_equal(actual$group, expected$group)
-
-
-
+    expect_gt(cor(actual_obsv$median, expected$median), 0.99999999)
+    expect_gt(cor(actual_obsv$lower, expected$lower), 0.99999999)
+    expect_gt(cor(actual_obsv$upper, expected$upper), 0.99999999)
+    expect_equal(actual_obsv$time, expected$time)
+    expect_equal(actual_obsv$group, expected$group)
 
     #
     #
