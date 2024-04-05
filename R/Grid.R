@@ -10,6 +10,7 @@
 #' @param spec (`list`)\cr named list of subjects to extract quantities for. The names of each
 #' element should be the required subjects with the element itself being a numeric vector of timepoints
 #' to generate the quantity at.
+#' @param length.out (`numeric`)\cr number of evenly spaced timepoints to generate quantities at.
 #' @description
 #' These functions are used to specify which subjects and timepoints should be generated
 #' when calculating quantities via [`SurvivalQuantities`] and [`LongitudinalQuantities`].
@@ -180,4 +181,25 @@ setValidity(
 #' @export
 length.QuantityCollapser <- function(x) {
     length(x@indexes)
+}
+
+
+expand_null_subs_to_all_subs <- function(x, data, ...) {
+    data_list <- as.list(data)
+    subjects <- if (is.null(x@subjects)) {
+        subs <- as.list(names(data_list$subject_to_index))
+        names(subs) <- names(data_list$subject_to_index)
+        subs
+    } else {
+        subs <- as.list(x@subjects)
+        names(subs) <- x@subjects
+        subs
+    }
+    assert_that(
+        identical(
+            unlist(subjects, use.names = FALSE),
+            unique(unlist(subjects, use.names = FALSE))
+        )
+    )
+    subjects
 }

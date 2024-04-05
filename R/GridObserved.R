@@ -27,7 +27,7 @@ as.QuantityGenerator.GridObserved <- function(object, data, ...) {
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
     unique_visits <- tapply(data_list$tumour_time, data_list$subject_tumour_index, unique)
-    patient_visits <- unique_visits[data_list$pt_to_ind[subjects]]
+    patient_visits <- unique_visits[data_list$subject_to_index[subjects]]
     visit_lengths <- vapply(patient_visits, length, numeric(1))
     .QuantityGenerator(
         times = unlist(patient_visits, use.names = FALSE),
@@ -49,21 +49,5 @@ as.QuantityCollapser.GridObserved <- function(object, data, ...) {
 
 #' @export
 as.list.GridObserved <- function(x, data, ...) {
-    data_list <- as.list(data)
-    subjects <- if (is.null(x@subjects)) {
-        subs <- as.list(names(data_list$pt_to_ind))
-        names(subs) <- names(data_list$pt_to_ind)
-        subs
-    } else {
-        subs <- as.list(x@subjects)
-        names(subs) <- x@subjects
-        subs
-    }
-    assert_that(
-        identical(
-            unlist(subjects, use.names = FALSE),
-            unique(unlist(subjects, use.names = FALSE))
-        )
-    )
-    subjects
+    expand_null_subs_to_all_subs(x, data, ...)
 }

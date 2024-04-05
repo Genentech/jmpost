@@ -131,6 +131,33 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
+
+
+    #
+    # GridEven
+    #
+    grid <- GridEven(
+        subjects = c("D", "A"),
+        length.out = 4
+    )
+    actual <- as.QuantityGenerator(grid, data = dj)
+    expected <- .QuantityGenerator(
+        subjects = c("D", "D", "D", "D", "A", "A", "A", "A"),
+        times = c(
+            seq(1000, 3000, length.out = 4),
+            seq(1, 3, length.out = 4)
+        )
+    )
+    expect_equal(actual, expected)
+
+    actual <- as.QuantityCollapser(grid, data = dj)
+    expected <- .QuantityCollapser(
+        groups = expected@subjects,
+        times = expected@times,
+        indexes = as.list(seq_along(expected@times))
+    )
+    expect_equal(actual, expected)
+
 })
 
 

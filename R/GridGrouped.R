@@ -46,7 +46,7 @@ as.QuantityGenerator.GridGrouped <- function(object, data, ...) {
     data_list <- as.list(data)
     patients_unique <- unique(unlist(object@groups))
     assert_that(
-        all(patients_unique %in% names(data_list$pt_to_ind))
+        all(patients_unique %in% names(data_list$subject_to_index))
     )
     as.QuantityGenerator(
         GridFixed(
@@ -64,7 +64,7 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     assert_that(
-        all(unique(unlist(object@groups)) %in% names(data_list$pt_to_ind))
+        all(unique(unlist(object@groups)) %in% names(data_list$subject_to_index))
     )
     time_grid <- expand_time_grid(object@times, max(data_list[["tumour_time"]]))
 

@@ -67,6 +67,7 @@ Collate:
     'DataSurvival.R'
     'DataJoint.R'
     'Grid.R'
+    'GridEven.R'
     'GridFixed.R'
     'GridGrouped.R'
     'GridManual.R'

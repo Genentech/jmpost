@@ -47,10 +47,10 @@ setValidity(
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator.GridManual <- function(object, data, ...) {
-    assert_that(is(data, "DataJoint"))
+    assert_class(data, "DataJoint")
     data_list <- as.list(data)
     assert_that(
-        all(names(object@spec) %in% names(data_list$pt_to_ind)),
+        all(names(object@spec) %in% names(data_list$subject_to_index)),
         msg = "All subject names must be in the `DataSubject` object"
     )
     lens <- vapply(object@spec, length, numeric(1))

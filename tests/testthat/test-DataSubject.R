@@ -20,7 +20,7 @@ test_that("DataSubject works as expected", {
 
     expected_variables <- c(
         "n_subjects", "n_studies", "n_arms", "subject_study_index",
-        "subject_arm_index", "pt_to_ind"
+        "subject_arm_index", "subject_to_index"
     )
 
     li <- as_stan_list(obj)
@@ -32,7 +32,7 @@ test_that("DataSubject works as expected", {
     expect_equal(li$n_arms, 3)
     expect_equal(li$subject_study_index, c(2, 1, 1, 2))
     expect_equal(li$subject_arm_index, c(3, 2, 1, 3))
-    expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3, "D" = 4))
+    expect_equal(li$subject_to_index, c("C" = 1, "B" = 2, "A" = 3, "D" = 4))
 })
 
 test_that("DataSubject print method works as expected", {

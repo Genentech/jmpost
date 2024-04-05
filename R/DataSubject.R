@@ -111,7 +111,7 @@ as_stan_list.DataSubject <- function(object, ...) {
         n_arms = length(unique(df[[vars$arm]])),
         subject_study_index = as.numeric(df[[vars$study]]),
         subject_arm_index = as.numeric(df[[vars$arm]]),
-        pt_to_ind = stats::setNames(
+        subject_to_index = stats::setNames(
             seq_len(nlevels(df[[vars$subject]])),
             levels(df[[vars$subject]])
         )
