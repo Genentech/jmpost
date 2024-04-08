@@ -49,5 +49,5 @@ as.QuantityCollapser.GridObserved <- function(object, data, ...) {
 
 #' @export
 as.list.GridObserved <- function(x, data, ...) {
-    expand_null_subs_to_all_subs(x, data, ...)
+    subjects_to_list(x@subjects, data)
 }

@@ -78,5 +78,5 @@ as.QuantityCollapser.GridEven <- function(object, data, ...) {
 
 #' @export
 as.list.GridEven <- function(x, data, ...) {
-    expand_null_subs_to_all_subs(x, data, ...)
+    subjects_to_list(x@subjects, data)
 }

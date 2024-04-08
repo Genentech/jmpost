@@ -184,22 +184,35 @@ length.QuantityCollapser <- function(x) {
 }
 
 
-expand_null_subs_to_all_subs <- function(x, data, ...) {
+#' Expand and Validate Subjects
+#'
+#' @param subjects (`character`)\cr vector of subjects that should exist in `data`
+#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#'
+#' @description
+#' If `subjects` is `NULL` this will return a named list of all subjects in `data`.
+#' Else it will return `subjects` as a named list ensuring that all subjects exist in `data`.
+#'
+#' @keywords internal
+subjects_to_list <- function(subjects = NULL, data) {
     data_list <- as.list(data)
-    subjects <- if (is.null(x@subjects)) {
+    subjects_exp <- if (is.null(subjects)) {
         subs <- as.list(names(data_list$subject_to_index))
         names(subs) <- names(data_list$subject_to_index)
         subs
     } else {
-        subs <- as.list(x@subjects)
-        names(subs) <- x@subjects
+        subs <- as.list(subjects)
+        names(subs) <- subjects
         subs
     }
+    subjects_exp_vec <- unlist(subjects_exp, use.names = FALSE)
     assert_that(
-        identical(
-            unlist(subjects, use.names = FALSE),
-            unique(unlist(subjects, use.names = FALSE))
-        )
+        identical(subjects_exp_vec, unique(subjects_exp_vec)),
+        msg = "All subject names must be unique"
     )
-    subjects
+    assert_that(
+        all(subjects_exp_vec %in% names(data_list$subject_to_index)),
+        msg = "Not all subjects exist within the data object"
+    )
+    subjects_exp
 }

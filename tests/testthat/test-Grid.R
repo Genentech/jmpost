@@ -381,3 +381,38 @@ test_that("GridObservered + Constructs correct quantities", {
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$pt)
 })
+
+
+test_that("subjects_to_list works as expected", {
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
+    d_joint <- DataJoint(
+        subject = DataSubject(
+            data = df_subj,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy"
+        )
+    )
+
+    expect_equal(
+        subjects_to_list(NULL, data = d_joint),
+        list("C" = "C", "B" = "B", "A" = "A")
+    )
+    expect_equal(
+        subjects_to_list(c("A", "B"), data = d_joint),
+        list("A" = "A", "B" = "B")
+    )
+    expect_equal(
+        subjects_to_list(c("B"), data = d_joint),
+        list("B" = "B")
+    )
+    expect_error(
+        subjects_to_list(c("B", "XX"), data = d_joint),
+        regex = "Not all subjects exist within the data object"
+    )
+})
