@@ -38,7 +38,7 @@ test_that("DataJoint basic usage", {
     li <- as.list(d_joint)
     expect_equal(li$n_subjects, 3)
     expect_equal(li$n_tumour_all, 6)
-    expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3))
+    expect_equal(li$subject_to_index, c("C" = 1, "B" = 2, "A" = 3))
     expect_equal(li$n_arms, 3)
     expect_equal(li$subject_study_index, c(2, 1, 1))
     expect_equal(li$n_studies, 2)

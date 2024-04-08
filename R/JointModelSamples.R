@@ -46,7 +46,7 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
         length(type) == 1,
         type %in% c("survival", "longitudinal"),
         length(patients) == length(times),
-        all(patients %in% names(data$pt_to_ind))
+        all(patients %in% names(data$subject_to_index))
     )
 
     if (type == "survival") {
@@ -58,7 +58,7 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
     }
 
     data[["gq_n_quant"]] <- length(patients)
-    data[["gq_pt_index"]] <- data$pt_to_ind[as.character(patients)]
+    data[["gq_pt_index"]] <- data$subject_to_index[as.character(patients)]
     data[["gq_times"]] <- times
 
     stanObject <- object@model@stan

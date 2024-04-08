@@ -56,21 +56,5 @@ as.QuantityCollapser.GridFixed <- function(object, data, ...) {
 
 #' @export
 as.list.GridFixed <- function(x, data, ...) {
-    data_list <- as.list(data)
-    subjects <- if (is.null(x@subjects)) {
-        subs <- as.list(names(data_list$pt_to_ind))
-        names(subs) <- names(data_list$pt_to_ind)
-        subs
-    } else {
-        subs <- as.list(x@subjects)
-        names(subs) <- x@subjects
-        subs
-    }
-    assert_that(
-        identical(
-            unlist(subjects, use.names = FALSE),
-            unique(unlist(subjects, use.names = FALSE))
-        )
-    )
-    subjects
+    subjects_to_list(x@subjects, data)
 }
