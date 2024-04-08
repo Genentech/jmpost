@@ -31,6 +31,8 @@ jlist <- SimJointData(
         beta_cont = 0.3
     ),
     longitudinal = SimLongitudinalGSF(
+        # Large number of time points so that we can subset later to have random timepoints
+        # per subject
         times = c(
             -50, -10, -5, -4, -3, -2, -1, 0, 1, 2, 5, 6, 10,
             25, 30, 40, 50, 75, 80, 100, 110, 125, 150, 175, 200, 225, 250, 275,
@@ -96,6 +98,7 @@ jdat <- DataJoint(
     )
 )
 
+# Define the required model
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
         mu_bsld = prior_normal(log(60), 1),
@@ -126,9 +129,7 @@ mp <- sampleStanModel(
     parallel_chains = 3
 )
 
-
-
-
+# get the raw stan object for subsequent processing
 stanobj <- as.CmdStanMCMC(mp)
 
 
@@ -171,9 +172,9 @@ sampled_subjects <- sample(dat_lm$pt, 4)
 
 longquant_fixed <- LongitudinalQuantities(
     mp,
-    grid = GridFixed(
+    grid = GridEven(
         subjects = sampled_subjects,
-        times = seq(-50, 1100, length.out = 100) / 365
+        length.out = 40
     )
 )
 
@@ -191,24 +192,28 @@ dat_os_plot <- dat_os |>
     mutate(group = pt) |>
     filter(pt %in% sampled_subjects) |>
     mutate(event_chr = ifelse(event == 1, "Event", "Censored")) |>
-    mutate(event_chr = factor(event_chr, labels = c("Event", "Censored")))
+    mutate(event_chr = factor(
+        event_chr,
+        labels = c("Event", "Censored"),
+        levels = c("Event", "Censored")
+    ))
 
 ggplot() +
     geom_ribbon(
         data = dat_quant_fixed,
         aes(x = time, ymin = lower, ymax = upper, group = group),
         alpha = 0.3,
-        fill = "#df667a"
+        fill = "#fffb78"
     ) +
     geom_line(
         data = dat_quant_fixed,
         aes(x = time, y = median, group = group),
-        col = "#000000"
+        col = "#81d681"
     ) +
     geom_point(
         data = dat_lm |> mutate(group = pt) |> filter(pt %in% sampled_subjects),
         aes(x = time, y = sld, group = pt),
-        col = "#000000"
+        col = "#9c3abf"
     ) +
     geom_vline(
         data = dat_os_plot,
@@ -217,9 +222,12 @@ ggplot() +
     ) +
     theme_bw() +
     facet_wrap(~group) +
-    ylab("Observed SLD (mm)") +
+    ylab("SLD (mm)") +
     xlab("Time (years)") +
     scale_linetype_discrete(name = "")
+
+
+
 
 
 ############################
@@ -251,18 +259,10 @@ grouped_samples <- tidyr::crossing(
         lm_gsf_phi_1 = lm_gsf_a_phi.1. / (lm_gsf_a_phi.1. + lm_gsf_b_phi.1.),
         lm_gsf_phi_2 = lm_gsf_a_phi.2. / (lm_gsf_a_phi.2. + lm_gsf_b_phi.2.),
         esld_g1 = gsf_sld(
-            time,
-            exp(lm_gsf_mu_bsld.1.),
-            exp(lm_gsf_mu_ks.1.),
-            exp(lm_gsf_mu_kg.1.),
-            lm_gsf_phi_1
+            time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), lm_gsf_phi_1
         ),
         esld_g2 = gsf_sld(
-            time,
-            exp(lm_gsf_mu_bsld.1.),
-            exp(lm_gsf_mu_ks.2.),
-            exp(lm_gsf_mu_kg.2.),
-            lm_gsf_phi_2
+            time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
         )
     ) |>
     select(time, esld_g1, esld_g2, sample_id) |>
@@ -283,23 +283,87 @@ ggplot() +
         data = grouped_samples,
         mapping = aes(x = time, y = sld, group = interaction(sample_id, group)),
         alpha = 0.05,
-        col = "#6c9e6c"
+        col = "#60e160"
     ) +
     theme_bw() +
     facet_wrap(~group) +
-    geom_point(
+    geom_line(
         data = grouped_samples_sum,
         aes(x = time, y = median),
         col = "#7e1abd"
+    ) +
+    geom_point(
+        data = grouped_samples_sum,
+        aes(x = time, y = median),
+        col = "#7e1abd",
+        alpha = 0.9,
+        size = 3
     ) +
     geom_errorbar(
         data = grouped_samples_sum,
         aes(x = time, ymin = lower, ymax = upper),
         width = 0,
-        col = "#7e1abd"
+        col = "#7e1abd",
+        alpha = 0.7
+    )
+
+
+
+############################
+#
+# Plot 4 - Median of individuals
+#
+#
+
+longquant_fixed <- LongitudinalQuantities(
+    mp,
+    grid = GridFixed(
+        times = seq(0, 3, by = 0.1)
+    )
+)
+
+longquant_fixed_sum <- summary(longquant_fixed) |>
+    as_tibble() |>
+    group_by(time) |> # Group by additional variables as required e.g. EGFR status
+    summarise(
+        median_lq = quantile(median, 0.025),
+        median_med = median(median),
+        median_med = quantile(median, 0.975),
+        lower_lq = quantile(lower, 0.025),
+        lower_med = median(lower),
+        lower_uq = quantile(lower, 0.975),
+        upper_lq = quantile(upper, 0.025),
+        upper_med = median(upper),
+        upper_uq = quantile(upper, 0.975),
+        .groups = "drop"
+    )
+
+
+ggplot() +
+    geom_ribbon(
+        data = longquant_fixed_sum,
+        aes(x = time, ymin = lower_lq, ymax = lower_uq),
+        alpha = 0.6,
+        fill = "#8af6a9"
+    ) +
+    geom_ribbon(
+        data = longquant_fixed_sum,
+        aes(x = time, ymin = upper_lq, ymax = upper_uq),
+        alpha = 0.6,
+        fill = "#8af6a9"
     ) +
     geom_line(
-        data = grouped_samples_sum,
-        aes(x = time, y = median),
-        col = "#7e1abd"
-    )
+        data = dat_lm,
+        aes(x = time, y = sld, group = pt),
+        alpha = 0.7,
+        size = 0.2
+    ) +
+    geom_line(
+        data = longquant_fixed_sum,
+        aes(x = time, y = median_med),
+        size = 0.7,
+        col = "#23a123"
+    ) +
+    theme_bw() +
+    xlab("Time (Years)") +
+    ylab("SLD (mm)")
