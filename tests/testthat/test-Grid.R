@@ -105,6 +105,59 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
+
+    #
+    # GridManual
+    #
+    grid <- GridManual(
+        spec = list(
+            "B" = c(2, 4),
+            "A" = c(1, 10, 50),
+            "C" = 6
+        )
+    )
+    actual <- as.QuantityGenerator(grid, data = dj)
+    expected <- .QuantityGenerator(
+        subjects = c("B", "B", "A", "A", "A", "C"),
+        times = c(2, 4, 1, 10, 50, 6)
+    )
+    expect_equal(actual, expected)
+
+    actual <- as.QuantityCollapser(grid, data = dj)
+    expected <- .QuantityCollapser(
+        groups = c("B", "B", "A", "A", "A", "C"),
+        times = c(2, 4, 1, 10, 50, 6),
+        indexes = list(1, 2, 3, 4, 5, 6)
+    )
+    expect_equal(actual, expected)
+
+
+
+    #
+    # GridEven
+    #
+    grid <- GridEven(
+        subjects = c("D", "A"),
+        length.out = 4
+    )
+    actual <- as.QuantityGenerator(grid, data = dj)
+    expected <- .QuantityGenerator(
+        subjects = c("D", "D", "D", "D", "A", "A", "A", "A"),
+        times = c(
+            seq(1000, 3000, length.out = 4),
+            seq(1, 3, length.out = 4)
+        )
+    )
+    expect_equal(actual, expected)
+
+    actual <- as.QuantityCollapser(grid, data = dj)
+    expected <- .QuantityCollapser(
+        groups = expected@subjects,
+        times = expected@times,
+        indexes = as.list(seq_along(expected@times))
+    )
+    expect_equal(actual, expected)
+
 })
 
 
@@ -218,14 +271,28 @@ test_that("GridObservered + Constructs correct quantities", {
     # Longitudinal Data
     #
     #
-    longquant <- LongitudinalQuantities(
+    longquant_obsv <- LongitudinalQuantities(
         mp,
         grid = GridObserved(
             subjects = c("pt_004", "pt_002", "pt_050")
         )
     )
+    actual_obsv <- summary(longquant_obsv)
 
-    actual <- summary(longquant)
+
+    longquant_manual <- LongitudinalQuantities(
+        mp,
+        grid = GridManual(
+            spec = list(
+                "pt_004" = dat_lm |> dplyr::filter(pt == "pt_004") |> dplyr::arrange(time) |> dplyr::pull(time),
+                "pt_002" = dat_lm |> dplyr::filter(pt == "pt_002") |> dplyr::arrange(time) |> dplyr::pull(time),
+                "pt_050" = dat_lm |> dplyr::filter(pt == "pt_050") |> dplyr::arrange(time) |> dplyr::pull(time)
+            )
+        )
+    )
+    actual_manual <- summary(longquant_manual)
+
+    expect_equal(actual_obsv, actual_manual)
 
 
     pred_mat <- as.CmdStanMCMC(mp)$draws("Ypred", format = "draws_matrix")
@@ -256,14 +323,11 @@ test_that("GridObservered + Constructs correct quantities", {
         upper = apply(preds_reduced, 2, quantile, 0.975)
     )
 
-    expect_gt(cor(actual$median, expected$median), 0.99999999)
-    expect_gt(cor(actual$lower, expected$lower), 0.99999999)
-    expect_gt(cor(actual$upper, expected$upper), 0.99999999)
-    expect_equal(actual$time, expected$time)
-    expect_equal(actual$group, expected$group)
-
-
-
+    expect_gt(cor(actual_obsv$median, expected$median), 0.99999999)
+    expect_gt(cor(actual_obsv$lower, expected$lower), 0.99999999)
+    expect_gt(cor(actual_obsv$upper, expected$upper), 0.99999999)
+    expect_equal(actual_obsv$time, expected$time)
+    expect_equal(actual_obsv$group, expected$group)
 
     #
     #
@@ -316,4 +380,39 @@ test_that("GridObservered + Constructs correct quantities", {
     expect_gt(cor(actual$upper, expected$upper), 0.99999999)
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$pt)
+})
+
+
+test_that("subjects_to_list works as expected", {
+    df_subj <- data.frame(
+        vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
+        varm = c("A2", "A3", "A4"),
+        vstudy = c("S1", "S1", "S2")
+    )
+
+    d_joint <- DataJoint(
+        subject = DataSubject(
+            data = df_subj,
+            subject = "vpt",
+            arm = "varm",
+            study = "vstudy"
+        )
+    )
+
+    expect_equal(
+        subjects_to_list(NULL, data = d_joint),
+        list("C" = "C", "B" = "B", "A" = "A")
+    )
+    expect_equal(
+        subjects_to_list(c("A", "B"), data = d_joint),
+        list("A" = "A", "B" = "B")
+    )
+    expect_equal(
+        subjects_to_list(c("B"), data = d_joint),
+        list("B" = "B")
+    )
+    expect_error(
+        subjects_to_list(c("B", "XX"), data = d_joint),
+        regex = "Not all subjects exist within the data object"
+    )
 })

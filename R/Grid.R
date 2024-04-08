@@ -7,10 +7,29 @@
 #' If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
 #' observation time (for [`LongitudinalQuantities`]) or max event time (for [`SurvivalQuantities`]).
 #' @param groups (`list`)\cr named list of subjects to extract quantities for. See Group Specification.
-#'
+#' @param spec (`list`)\cr named list of subjects to extract quantities for. The names of each
+#' element should be the required subjects with the element itself being a numeric vector of timepoints
+#' to generate the quantity at.
+#' @param length.out (`numeric`)\cr number of evenly spaced timepoints to generate quantities at.
 #' @description
 #' These functions are used to specify which subjects and timepoints should be generated
 #' when calculating quantities via [`SurvivalQuantities`] and [`LongitudinalQuantities`].
+#'
+#' @details
+#'
+#' - `GridFixed()` is used to specify a fixed set of timepoints to generate quantities at for
+#' all the specified subjects.
+#'
+#' - `GridGrouped()` is similar to `GridFixed()` but allows for groupwise averaging
+#' (see Group Specification).
+#'
+#' - `GridObserved()` generates quantities at the observed longitudinal timepoints for each
+#' subject.
+#'
+#' - `GridManual()` allows for individual timepoint specification for each subject.
+#'
+#' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
+#' between each subjects first and last longitudinal observations.
 #'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list
@@ -162,4 +181,38 @@ setValidity(
 #' @export
 length.QuantityCollapser <- function(x) {
     length(x@indexes)
+}
+
+
+#' Expand and Validate Subjects
+#'
+#' @param subjects (`character`)\cr vector of subjects that should exist in `data`
+#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#'
+#' @description
+#' If `subjects` is `NULL` this will return a named list of all subjects in `data`.
+#' Else it will return `subjects` as a named list ensuring that all subjects exist in `data`.
+#'
+#' @keywords internal
+subjects_to_list <- function(subjects = NULL, data) {
+    data_list <- as.list(data)
+    subjects_exp <- if (is.null(subjects)) {
+        subs <- as.list(names(data_list$subject_to_index))
+        names(subs) <- names(data_list$subject_to_index)
+        subs
+    } else {
+        subs <- as.list(subjects)
+        names(subs) <- subjects
+        subs
+    }
+    subjects_exp_vec <- unlist(subjects_exp, use.names = FALSE)
+    assert_that(
+        identical(subjects_exp_vec, unique(subjects_exp_vec)),
+        msg = "All subject names must be unique"
+    )
+    assert_that(
+        all(subjects_exp_vec %in% names(data_list$subject_to_index)),
+        msg = "Not all subjects exist within the data object"
+    )
+    subjects_exp
 }
