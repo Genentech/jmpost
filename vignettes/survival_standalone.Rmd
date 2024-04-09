@@ -1,0 +1,339 @@
+---
+title: "{jmpost} documentation"
+subtitle: "01. Survival models"
+package: jmpost
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Fitting}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+## Scope of this document
+
+This document describes how to analyze survival data using parametric
+survival models implemented in the **jmpost** R package. It is organized
+in 4 sections:
+
+1.  Introduction
+
+2.  Survival model framework
+
+3.  Fitting a simple survival model in **jmpost**
+
+4.  Comparing with **flexsurv** and **survstan** outputs
+
+## 1. Introduction
+
+Survival (or time-to-event, or failure time) analysis is concerned with
+the study of survival times and factors influencing them.
+
+There are 3 common approaches to modelling survival data:
+
+1.  Models of the instantaneous rate of the event (known as the hazard)
+    as a function of time taken as a continuous variable. This includes
+    the well-known class of proportional hazards (PH) regression models.
+
+2.  Models the event time itself, again considering time as a continuous
+    variable, including the accelerated failure time (AFT) models.
+
+3.  Models of the occurrence of event when time is taken as a discrete
+    variable, specifically the additive hazard regression (AHR) model.
+
+In the current version of **jmpost**, we focus on approach 1., and
+specifically on PH models, implemented in a Bayesian framework.
+
+Proportional hazard (PH) models play an important role in analyzing
+survival and rely on a key assumption: the hazard ratio (HR) comparing
+any two levels of a covariate is constant over time. The Cox PH model is
+most popular for two reasons: (a) no assumption is required about the
+probability distribution of survival times, and (b) it fits the data
+reasonably well no matter which parametric model is appropriate.
+
+In contrast, distributional assumption is required for a fully
+parametric PH model (Kalbfleisch and Prentice 2002 :: The Statistical
+Analysis of Failure Time Data. John Wiley & Sons, New Jersey; Lawless
+2002 :: Statistical Models and Methods for Lifetime Data. John Wiley &
+Sons, New Jersey (2002)). When the distribution is selected wisely,
+parametric models lead to more efficient (i.e. smaller standard errors)
+estimates than Cox's model (Collett 2003 :: Modelling Survival Data in
+Medical Research. Chapman and Hall/CRC, Florida).
+
+Moreover, the use of Cox PH in joint modeling of time-to-event and
+longitudinal data (Wulfsohn and Tsiatis 1997 :: A joint model for
+survival and longitudinal data measured with errror. Biometrics. 53,
+330--339) usually leads to an underestimation of the parameter estimates
+standard errors (Hsieh et al. 2006 :: Joint modeling of survival and
+longitudinal data: Likelihood approach revisited. Biometrics. 62,
+1037--1043; Rizopoulos 2012 :: Joint Models for Longitudinal and
+Time-to-Event Data With Applications in R. Chapman and Hall/CRC,
+Florida). Therefore, most methods for joint modeling are based on
+parametric response distributions (Hwang and Pennell 2014 ::
+Semiparametric bayesian joint modeling of a binary and continuous
+outcome with applications in toxicological risk assessment. Stat. Med.
+33, 1162--1175).
+
+Bayesian inference offers the opportunity 
+
+- to make probability statements about parameters, 
+
+- to handle hierarchical structures naturally, 
+
+- to have good statistical properties when dealing with small samples, and 
+
+- to quantify uncertainty in predicted quantities easily. 
+
+All these properties are convenient for joint models, but also
+for survival models taken separately.
+
+**jmpost** is written in Stan, a high-level language (itself written in
+a C++) for Bayesian modeling and inference that primarily uses a version
+of the No-U-Turn sampler (NUTS) (Hoffman & Gelman, 2014 :: Hoffman, M.
+D., & Gelman, A. (2014). The No-U-turn sampler: Adaptively setting path
+lengths in Hamiltonian Monte Carlo. Journal of Machine Learning
+Research, 15(47), 1593-1623) to obtain posterior samples given a
+user-specified model and data.
+
+Although Stan is an extremely flexible and powerful software for
+statistical modelling, it is neither user-friendly nor easy to learn. To
+remove this hurdle, we propose **jmpost** as a layer on top of Stan to
+facilitate the encoding of PH models, either stand-alone, or integrated
+in joint models.
+
+## 2. Survival model framework
+
+Let $T^*_i$ denote a continuous non-negative random variable
+representing survival time for individual $i$ (with $i=1, ..., n$).
+
+In reality, the event time $T^*_i$ may not be observed due to
+right-censoring; for instance, the event may occur after the end of the
+clinical study, denoted $\tau_f$. We define the outcome as the pair:
+$T_i$ being the observed event or censoring time (with $T_i>0$) and
+$d_i \in \{0,1\}$, an indicator taking value 0 in case of right
+censoring (i.e. $T^*_i>\tau_f$), or value 1 if the event is observed
+(i.e. $T^*_i=T_i$).
+
+Three key quantities form the likelihood function for survival models:
+the hazard rate, the cumulative hazard, and the survival probability.
+
+The survival function $S(t, \psi_i)$ gives the probability that the
+event happens to individual $i$ after time t, where $\psi_i$ represent
+the individual parameters. 
+$$
+S(t, \psi_i) = P(T_i>t; \psi_i)
+$$
+
+The hazard function $h(t, \psi_i)$ is the instantaneous rate of occurrence of the event for individual $i$ at time $t$, given that the event has not already occurred. Mathematically, it is defined as: 
+$$
+h(t, \psi_i) = \displaystyle \lim_{dt \to 0} \displaystyle \frac{P(t \le T_i < t+dt \mid T_i > t)}{dt}
+$$ 
+where $dt$ is a small time interval.
+
+This is equivalent to: 
+$$
+h(t, \psi_i)= - \frac{d}{dt} \log S(t, \psi_i)
+$$ 
+Knowing the hazard function gives access to the survival function.
+
+The cumulative hazard is defined as: 
+$$
+H(a, b, \psi_i)=\int_{a}^{b} h(t, \psi_i) \; dt
+$$ 
+
+which implies that: 
+$$
+S(t, \psi_i) = \exp(-H(0, t, \psi_i))
+$$
+
+The log-likelihood function in presence of right-censoring measures the risk of experiencing the event at any time point $t$, conditionally on that individual $i$ has in fact survival until that time point; if s/he has not survived, then the probability of experiencing the event again is 0: 
+$$
+log \mathcal{L}=\sum_{i = 1}^{n} \left[ d_i \log h(t, \psi_i) + \log S(t, \psi_i) \right]
+$$
+
+When formulating a parametric survival model, we need to specify the form of the probability distribution assumed to describe the underlying uncertainty in the observed times.
+
+In general terms, we can specify the vector of relevant parameters as $\theta = (μ(x), \alpha(x))$. In this notation, consistent with **flexsurv**, we consider: 
+
+- a vector of potential covariates $x$ (e.g., treatment group, age, or sex), 
+
+- a *location* parameter $\mu(x)$, which indicates the *mean* or the *scale* of the probability distribution, 
+
+- and a (set of) ancillary parameters $\alpha(x)$, which describe the *shape* or *variance* of the distribution. 
+
+While it is possible for both $\mu$ and $\alpha$ to explicitly depend on the covariates $x$, usually the formulation is simplified to assume that these only affect directly the location parameter.
+
+To parameterize the effect of covariates on the location parameter, a generalized linear formulation is employed:
+$$
+g(\mu_i)=\beta_0+\sum_{k = 1}^{K} \beta_k x_ik
+$$
+The function $g(.)$ is typically the logarithm, but alternative transformations such as square-root or Box-Cox could also be considered.
+
+We model the hazard of event for individual $i$ at time $t$ using the regression model: 
+$$
+h(t, \psi_i)=h_0(t) \exp(\beta_0+\sum_{k = 1}^{K} \beta_k x_{ik})
+$$
+where $h_0(t)$ is the baseline hazard (i.e. the hazard for an individual with the covariates set equals to zero) at time $t$, and the terms in $exp(.)$ denotes the linear predictors evaluated for individual $i$ at time $t$.
+
+The following distributional assumptions for the baseline hazard are currently implemented in the **jmpost** package:
+
+1- Exponential
+
+2- Weibull
+
+3- Log-logistic
+
+The following table shows the location and ancillary parameter with their default priors.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(flexsurv)
+```
+
+```{r distributiontable, echo=FALSE}
+ztab <- data.frame(
+    Dist = c("\\( \\ T_i \\sim \\exp(\\mu_i) \\)", 
+             "\\( \\ T_i \\sim Weibull(\\mu_i, \\alpha) \\)",
+             "\\( \\ T_i \\sim logLogistic(\\mu_i, \\alpha) \\)"),
+    Loca = c("\\( \\ Rate: \\mu_i=\\exp(\\beta_0+\\sum_{k = 1}^{K} \\beta_k x_{ik}) \\)", 
+             "\\( \\ Scale: \\mu_i= (idem) \\)",
+             "\\( \\ Rate: \\mu_i= (idem) \\)"),
+    Shap = c("\\( NA \\)",
+             "\\( \\ Shape: \\alpha \\sim \\gamma(0.1, 0.1) \\)", 
+             "\\( \\ Shape: \\alpha \\sim \\gamma(0.1, 0.1) \\)")
+)
+
+# Create table
+knitr::kable(ztab, 
+    escape = F, 
+    caption = 'Table example', 
+    col.names = c("Distribution", "Location (or Scale)", "Shape"))
+```
+ 
+The models implemented in **jmpost** all have a PH parameterization.
+
+
+## 3. Fitting a simple survival model in jmpost
+
+### 3.1. Call
+
+In the following, we run a simple example to present the features of **jmpost**.
+
+The 'bc' dataset from [**flexsurv**](https://chjackson.github.io/flexsurv/) is used. It contains data for 686 patients with primary node positive breast cancer. The right-censored time-to-event variable `recyrs` represents the time (in years) of death or cancer recurrence when `censrec` is 1, or right censoring when `censrec` is 0. The covariate `group` is a factor representing a prognostic score, with 3 levels: "Good" (the reference), "Medium" and "Poor".
+
+Showing the first 6 and the last 6 rows, the dataset looks like this:
+```{r, eval=TRUE, echo=TRUE}
+rbind(head(bc), tail(bc))
+```
+
+The call to fit an exponential PH model in **jmpost** would be as follow:
+
+```{r, eval=FALSE, echo=TRUE}
+jm<-JointModel(survival=
+        SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
+
+bc1<-bc %>%
+  mutate(ID=as.character(1:n()), study=1)
+jdat<-DataJoint(
+  subject = DataSubject(data=bc1, subject="ID", arm="group", study="study"),
+  survival = DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
+)
+
+mp<-sampleStanModel(jm, data=jdat, iter_warmup=4000, iter_sampling=1000, chains=4)
+vars<-c("sm_exp_lambda", "beta_os_cov")
+mp@results$summary(vars)
+
+```
+
+Details about the parameters and functions are available in the [Model Fitting](https://genentech.github.io/jmpost/main/articles/model_fitting.html).
+
+### 3.2 Default outputs
+
+The default output reports statistics for one or more sampler chains over all model parameters and quantities of interest. 
+The statistics reported include both summary statistics of the estimates and diagnostic statistics on the sampler chains, reported in the following order: 
+- mean: sample mean, 
+- median: sample median,
+- sd: sample standard deviation,
+- q5, q95: 5th and 95th percentiles of the posterior distribution,
+- rhat: 
+
+
+```{r}
+
+#' Convert the samples in a df
+#' ------------------------------------------------------------\
+mp@results$summary(vars)
+
+my_fit_df <- posterior::as_draws_df(mp@results)
+my_pars<-c("sm_exp_lambda", "beta_os_cov[1]", "beta_os_cov[2]")
+
+
+#' Summarize the posterior samples
+#' ------------------------------------------------------------\
+#' Using {posterior}
+posterior::summarise_draws(my_fit_df)
+
+```
+
+ 
+### 3.3 Goodness-of-fit evaluation
+
+
+### 3.4 Observed vs. fitted survival
+
+
+
+<!--
+
+## Comparing {flexsurv}, {survstan} and {jmpost}
+
+### Data preparation
+
+### Flexsurv implementation
+
+The details of the exponential model implementation in {flexsurv} are
+provided in the reference article
+([DOI](https://www.jstatsoft.org/article/view/v070i08)). The exponential
+distribution has a single parameter and only supports a hazard that is
+constant over time. The hazard is equal to the rate parameter.
+
+```{r, eval=FALSE, echo=TRUE}
+flexsurv.exp<-flexsurv::flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="exp")
+flexsurv.exp
+```
+
+The same model in {survstan} would be implemented as follow:
+
+```{r, eval=FALSE, echo=TRUE}
+survstan.exp<-survstan::phreg(Surv(recyrs, censrec)~group, data=bc, dist="exponential")
+summary(survstan.exp)
+
+```
+
+
+As shown in the below table, these various model calls provide
+consistent outputs. More details on the {jmpost} outputs are provided in
+the separate vignette ABC123.
+
+```{r, file="expon-ph-benchmark.R", echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+# Create table
+altogether %>%
+  kable(escape = F) %>%
+  kable_styling()
+```
+
+Both `jmpost` and `survstan` implement these analysis in Stan, a
+probabilistic programming language supporting Bayesian approach.
+
+--> 
