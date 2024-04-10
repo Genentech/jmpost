@@ -72,6 +72,14 @@ SurvivalQuantities <- function(
     assert_class(object, "JointModelSamples")
     assert_class(grid, "Grid")
 
+    time_grid <- seq(
+        from = 0,
+        to = max(as.list(object@data)[["event_times"]]),
+        length = 201
+    )
+
+    grid <- coalesceGridTime(grid, time_grid)
+
     generator <- as.QuantityGenerator(grid, object@data)
 
     assert_that(

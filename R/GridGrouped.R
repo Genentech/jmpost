@@ -66,11 +66,12 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     assert_that(
         all(unique(unlist(object@groups)) %in% names(data_list$subject_to_index))
     )
-    time_grid <- expand_time_grid(object@times, max(data_list[["tumour_time"]]))
+
+    validate_time_grid(object@times)
 
     group_grid <- expand.grid(
         group = names(object@groups),
-        time = time_grid,
+        time = object@times,
         stringsAsFactors = FALSE
     )
 
@@ -98,4 +99,16 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
 #' @export
 as.list.GridGrouped <- function(x, ...) {
     x@groups
+}
+
+#' @rdname coalesceGridTime
+#' @export
+coalesceGridTime.GridGrouped <- function(object, times, ...) {
+    if (is.null(object@times)) {
+        object <- GridGrouped(
+            groups = object@groups,
+            times = times
+        )
+    }
+    object
 }

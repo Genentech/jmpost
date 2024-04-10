@@ -34,10 +34,10 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
         test_data_1$jsamples,
         grid = GridGrouped(groups = list("pt_0001" = "pt_0001", "pt_0003" = "pt_0003"))
     )
-    preds <- preds <- summary(survsamps)
+    preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
-
+    expect_equal(max(preds$time), max(test_data_1$dat_os$time))
 
     # Check that the relationship between the quantitites is preservered e.g.
     # that `surv = exp(-cumhaz)`
@@ -214,3 +214,38 @@ test_that("SurvivalQuantities() works with time = 0", {
     expect_equal(preds$lower[1], 0)
     expect_equal(preds$upper[1], 0)
 })
+
+
+
+
+jlist <- SimJointData(
+    design = list(
+        SimGroup(50, "Arm-A", "Study-X"),
+        SimGroup(30, "Arm-B", "Study-X")
+    ),
+    survival = SimSurvivalExponential(
+        365 / 700,
+        time_max = 4
+    ),
+    longitudinal = SimLongitudinalGSF(
+        times = seq(0, 4, by = 1 / 365)
+    ),
+    .silent = TRUE
+)
+
+jdat <- DataJoint(
+    subject = DataSubject(
+        data = jlist@survival,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = jlist@survival,
+        formula = Surv(time, event) ~ cov_cat
+    )
+)
+
+gr <- GridFixed(c("pt_001", "pt_002", "pt_003"))
+
+as.QuantityGenerator(gr, data = jdat)

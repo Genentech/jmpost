@@ -51,6 +51,14 @@ LongitudinalQuantities <- function(
     assert_class(object, "JointModelSamples")
     assert_class(grid, "Grid")
 
+    time_grid <- seq(
+        from = 0,
+        to = max(as.list(object@data)[["tumour_time"]]),
+        length = 201
+    )
+
+    grid <- coalesceGridTime(grid, time_grid)
+
     gq <- generateQuantities(
         object,
         generator = as.QuantityGenerator(grid, object@data),

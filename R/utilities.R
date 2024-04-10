@@ -205,23 +205,20 @@ is_windows <- function() {
     return(sysname == "Windows")
 }
 
-#' `expand_time_grid`
+#' `validate_time_grid`
 #'
-#' This function expands a given time grid by setting a default grid if one hasn't been provided
-#' and then verifying it's properties.
-#' The grid must be finite, sorted, and contain unique values.
+#' Validate that the provided time grid is:
+#' - finite
+#' - numeric
+#' - non-missing
+#' - sorted
+#' - unique
 #'
-#' @param time_grid (`numeric` or `NULL`)\cr A vector of times which quantities will be
-#' evaluated at. If NULL, a default grid will be created as a length 201 vector spanning
-#' from 0 to `max_time`.
-#' @param max_time (`numeric``)\cr Specifies the maximum time to be used in creating the default grid.
-#' @return Returns the expanded time_grid.
+#' @param time_grid (`numeric`)\cr A vector of times which quantities will be
+#' evaluated at.
+#'
 #' @keywords internal
-expand_time_grid <- function(time_grid, max_time) {
-    default_grid <- seq(from = 0, to = max_time, length = 201)
-    if (is.null(time_grid)) {
-        time_grid <- default_grid
-    }
+validate_time_grid <- function(time_grid) {
     assert_that(
         !any(is.na(time_grid)),
         is.numeric(time_grid),
@@ -231,7 +228,7 @@ expand_time_grid <- function(time_grid, max_time) {
         all(is.finite(time_grid)),
         msg = "`time_grid` needs to be finite, sorted, unique valued numeric vector"
     )
-    time_grid
+    invisible(time_grid)
 }
 
 
