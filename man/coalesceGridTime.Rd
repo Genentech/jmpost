@@ -4,7 +4,7 @@
 \alias{coalesceGridTime}
 \alias{coalesceGridTime.GridFixed}
 \alias{coalesceGridTime.GridGrouped}
-\title{Coallesce Time}
+\title{Coalesce Time}
 \usage{
 coalesceGridTime(object, times, ...)
 
@@ -22,6 +22,6 @@ coalesceGridTime(object, times, ...)
 Method used to replace NULL times on grid objects (if appropriate)}
 }
 \description{
-Coallesce Time
+Coalesce Time
 }
 \keyword{internal}

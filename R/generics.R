@@ -410,7 +410,7 @@ as.QuantityCollapser <- function(object, ...) {
 }
 
 
-#' Coallesce Time
+#' Coalesce Time
 #'
 #' @param object ([`Grid`]) \cr object to coalesce time for.
 #' @param times (`numeric`) \cr the times to coalesce to.

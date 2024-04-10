@@ -214,38 +214,3 @@ test_that("SurvivalQuantities() works with time = 0", {
     expect_equal(preds$lower[1], 0)
     expect_equal(preds$upper[1], 0)
 })
-
-
-
-
-jlist <- SimJointData(
-    design = list(
-        SimGroup(50, "Arm-A", "Study-X"),
-        SimGroup(30, "Arm-B", "Study-X")
-    ),
-    survival = SimSurvivalExponential(
-        365 / 700,
-        time_max = 4
-    ),
-    longitudinal = SimLongitudinalGSF(
-        times = seq(0, 4, by = 1 / 365)
-    ),
-    .silent = TRUE
-)
-
-jdat <- DataJoint(
-    subject = DataSubject(
-        data = jlist@survival,
-        subject = "pt",
-        arm = "arm",
-        study = "study"
-    ),
-    survival = DataSurvival(
-        data = jlist@survival,
-        formula = Surv(time, event) ~ cov_cat
-    )
-)
-
-gr <- GridFixed(c("pt_001", "pt_002", "pt_003"))
-
-as.QuantityGenerator(gr, data = jdat)
