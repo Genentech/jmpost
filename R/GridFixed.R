@@ -25,14 +25,15 @@ GridFixed <- function(subjects = NULL, times = NULL) {
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator.GridFixed <- function(object, data, ...) {
+
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
-    time_grid <- expand_time_grid(object@times, max(data_list[["tumour_time"]]))
 
+    validate_time_grid(object@times)
     pt_times <- expand.grid(
         pt = subjects,
-        time = time_grid,
+        time = object@times,
         stringsAsFactors = FALSE
     )
 
@@ -57,4 +58,16 @@ as.QuantityCollapser.GridFixed <- function(object, data, ...) {
 #' @export
 as.list.GridFixed <- function(x, data, ...) {
     subjects_to_list(x@subjects, data)
+}
+
+#' @rdname coalesceGridTime
+#' @export
+coalesceGridTime.GridFixed <- function(object, times, ...) {
+    if (is.null(object@times)) {
+        object <- GridFixed(
+            subjects = object@subjects,
+            times = times
+        )
+    }
+    object
 }

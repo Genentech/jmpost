@@ -416,3 +416,22 @@ test_that("subjects_to_list works as expected", {
         regex = "Not all subjects exist within the data object"
     )
 })
+
+
+test_that("coalesceGridTime() works as expected", {
+    grid <- GridFixed("A")
+    grid2 <- coalesceGridTime(grid, c(1, 2, 3))
+    expect_equal(grid2@times, c(1, 2, 3))
+
+    grid <- GridFixed("A", 5)
+    grid2 <- coalesceGridTime(grid, c(1, 2, 3))
+    expect_equal(grid2@times, 5)
+
+    grid <- GridGrouped(list("A" = "A"))
+    grid2 <- coalesceGridTime(grid, c(1, 2, 3))
+    expect_equal(grid2@times, c(1, 2, 3))
+
+    grid <- GridGrouped(list("A" = "A"), 5)
+    grid2 <- coalesceGridTime(grid, c(1, 2, 3))
+    expect_equal(grid2@times, 5)
+})

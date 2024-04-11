@@ -408,3 +408,21 @@ as.QuantityGenerator <- function(object, ...) {
 as.QuantityCollapser <- function(object, ...) {
     UseMethod("as.QuantityCollapser")
 }
+
+
+#' Coalesce Time
+#'
+#' @param object ([`Grid`]) \cr object to coalesce time for.
+#' @param times (`numeric`) \cr the times to coalesce to.
+#' @param ... Not used
+#'
+#' Method used to replace NULL times on grid objects (if appropriate)
+#'
+#' @keywords internal
+coalesceGridTime <- function(object, times, ...) {
+    UseMethod("coalesceGridTime")
+}
+#' @export
+coalesceGridTime.default <- function(object, times, ...) {
+    object
+}

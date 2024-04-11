@@ -146,38 +146,41 @@ test_that("samples_median_ci works with a custom credibility level", {
 
 
 
-test_that("expand_time_grid() works as expected", {
+test_that("validate_time_grid() works as expected", {
 
-    ## Smoke test of basic usage
     expect_equal(
-        expand_time_grid(NULL, 5),
-        seq(0, 5, length.out = 201)
-    )
-    expect_equal(
-        expand_time_grid(c(1, 2, 3), 5),
+        validate_time_grid(c(1, 2, 3)),
         c(1, 2, 3)
     )
     expect_equal(
-        expand_time_grid(c(1, 2, 3)),
-        c(1, 2, 3)
+        validate_time_grid(c(1)),
+        c(1)
+    )
+    expect_equal(
+        validate_time_grid(c(1, 2, 30000.3)),
+        c(1, 2, 30000.3)
+    )
+    expect_equal(
+        validate_time_grid(c(1L, 2L, 4L)),
+        c(1L, 2L, 4L)
     )
 
 
     ## Error handling
     expect_error(
-        expand_time_grid(c(1, 1, 2)),
+        validate_time_grid(c(1, 1, 2)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(2, 1, 3)),
+        validate_time_grid(c(2, 1, 3)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(1, 3, NA)),
+        validate_time_grid(c(1, 3, NA)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(1, 3, -Inf)),
+        validate_time_grid(c(1, 3, -Inf)),
         regexp = "`time_grid`"
     )
 })

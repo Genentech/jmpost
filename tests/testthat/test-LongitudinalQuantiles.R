@@ -34,6 +34,7 @@ test_that("Test that LongitudinalQuantities works as expected", {
     preds <- summary(longsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
+    expect_equal(max(preds$time), max(test_data_1$dat_lm$time))
 })
 
 

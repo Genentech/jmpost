@@ -34,10 +34,10 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
         test_data_1$jsamples,
         grid = GridGrouped(groups = list("pt_0001" = "pt_0001", "pt_0003" = "pt_0003"))
     )
-    preds <- preds <- summary(survsamps)
+    preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
-
+    expect_equal(max(preds$time), max(test_data_1$dat_os$time))
 
     # Check that the relationship between the quantitites is preservered e.g.
     # that `surv = exp(-cumhaz)`
