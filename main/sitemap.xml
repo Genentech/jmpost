@@ -334,6 +334,9 @@
     <loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc>
   </url>
   <url>
@@ -353,9 +356,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/expand_patients.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/expand_time_grid.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.html</loc>
@@ -521,6 +521,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/validate_time_grid.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc>
