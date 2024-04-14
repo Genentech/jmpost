@@ -9,7 +9,7 @@ test_that("Can recover known distribution parameters from random slope model whe
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(1 / 200), 0.5)
         ),
-        link = link_dsld(prior = prior_normal(0.1, 0.2))
+        link = linkDSLD(prior = prior_normal(0.1, 0.2))
     )
 
     set.seed(3251)

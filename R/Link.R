@@ -2,6 +2,7 @@
 #' @include LongitudinalModel.R
 #' @include ParameterList.R
 #' @include LinkComponent.R
+#' @include Prior.R
 NULL
 
 
@@ -19,12 +20,13 @@ NULL
 
 
 
-
 #' `Link`
 #'
-#' @slot components (`list`)\cr a list of [`LinkComponent`] objects.
+#' @slot components (`list`)\cr a list of [`LinkComponent`] or [`PromiseLinkComponent`] objects.
+#' @slot resolved (`logical`)\cr indicates if all the `components` have been resolved.
 #'
-#' @param ... ([`LinkComponent`])\cr an arbitrary number of link components.
+#' @param ... ([`LinkComponent`] or [`PromiseLinkComponent`])\cr
+#' an arbitrary number of link components.
 #'
 #' @description
 #' Simple container class to enable the use of multiple link components in a joint model.
@@ -32,8 +34,8 @@ NULL
 #'
 #' @examples
 #' Link(
-#'     link_dsld(),
-#'     link_ttg()
+#'     linkDSLD(),
+#'     linkTTG()
 #' )
 #'
 #' @family Link
@@ -42,7 +44,8 @@ NULL
 .Link <- setClass(
     Class = "Link",
     slots = list(
-        components = "list"
+        components = "list",
+        resolved = "logical"
     )
 )
 
@@ -51,25 +54,63 @@ NULL
 Link <- function(...) {
     components <- list(...)
 
-    # Enable copy constructor e.g. if passed a Link just return the Link
+    # If the input is already a Link object, return it (e.g. implement
+    # a constructor that is idempotent)
     if (length(components) == 1 && is(components[[1]], "Link")) {
         return(components[[1]])
     }
-    .Link(components = components)
+
+    .Link(
+        components = components,
+        resolved = !any(vapply(components, \(x) is(x, "PromiseLinkComponent"), logical(1)))
+    )
 }
 
+
+#' Resolve any promises
+#'
+#' Loops over all components and ensures that any [`PromiseLinkComponent`] objects
+#' are resolved to [`LinkComponent`] objects.
+#'
+#' @param object ([`Link`])\cr a link object.
+#' @param model ([`LongitudinalModel`])\cr the model object.
+#'
+#' @export
+resolvePromise.Link <- function(object, model, ...) {
+    if (length(object) == 0) {
+        return(object)
+    }
+    assert_that(
+        is(model, "LongitudinalModel"),
+        msg = "model must be of class `LongitudinalModel`"
+    )
+    do.call(Link, lapply(object@components, resolvePromise, model = model))
+}
 
 
 setValidity(
     Class = "Link",
     method = function(object) {
-        if (length(object@components) == 0) {
-            return(TRUE)
-        }
-        for (component in object@components) {
-            if (!is(component, "LinkComponent")) {
-                return("Link components must be of class `LinkComponent`.")
+
+        for (i in object@components) {
+            if (!(is(i, "LinkComponent") || is(i, "PromiseLinkComponent"))) {
+                return("All components must be of class `LinkComponent` or `PromiseLinkComponent`")
             }
+        }
+
+        contains_promise <- any(
+            vapply(
+                object@components,
+                \(x) is(x, "PromiseLinkComponent"),
+                logical(1)
+            )
+        )
+        if (contains_promise & object@resolved) {
+            return("Object cannot be resolved if it contains promises")
+        }
+
+        if (length(object@resolved) > 1) {
+            return("The `resolved` slot must be a logical scalar")
         }
         return(TRUE)
     }
@@ -108,8 +149,7 @@ as.StanModule.Link <- function(object, ...) {
 
     stan_list <- lapply(
         object@components,
-        as.StanModule,
-        ...
+        as.StanModule
     )
 
     stan <- Reduce(
@@ -182,13 +222,13 @@ as_print_string.Link <- function(object, ...) {
     if (length(object) == 0) {
         return("\nNo Link")
     }
+
+    strings <- vapply(object@components, as_print_string, character(1))
+
     paste(
         c(
             "\nLink with the following components/parameters:",
-            paste0(
-                "    ",
-                vapply(object@components, as_print_string, character(1))
-            )
+            paste0("    ", strings)
         ),
         collapse = "\n"
     )

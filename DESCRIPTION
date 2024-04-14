@@ -90,6 +90,7 @@ Collate:
     'LongitudinalQuantities.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSteinFojo.R'
+    'Promise.R'
     'SimGroup.R'
     'SimJointData.R'
     'SimLongitudinal.R'
@@ -104,6 +105,7 @@ Collate:
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'
+    'link_generics.R'
     'settings.R'
     'zzz.R'
 VignetteBuilder: knitr

@@ -78,7 +78,7 @@ transformed parameters {
 ```
 That is to say the $\phi$ parameters for the `LongitudinalGSF` model are the 4 primary parameters
 of the longitudinal model. If you wish to augment this with additional parameters then you can
-subclass the `LongitudinalGSF` model and override the `enableLink` method to the required
+subclass the `LongitudinalGSF` model and override the `enableLink` method with the required
 additional parameters e.g.
 
 ```R
@@ -88,7 +88,7 @@ GSFextended <- setClass(
 )
 
 enableLink.GSFextended <- function(object, ...) {
-  stan <- StanModule("<your stan code here>")
+  stan <- StanModule("<stan-code-here>")
     object@stan <- merge(
         object@stan,
         stan
@@ -112,7 +112,7 @@ that patient.
 
 The `LinkComponent` object is responsible for then integrating these functions
 into the final Stan model. For reference the following is roughly the implementation of the
-dSLD link for the `LongitudinalRandomSlope` model:
+dSLD link component for the `LongitudinalRandomSlope` model:
 
 ```R
 LinkComponent(
@@ -130,66 +130,92 @@ functions {
         return rnd_slope_mat;
     }
 }"),
-  parameters = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+  key = "link_dsld",
+  prior = prior
 )
 ```
 
 You can then pass these `LinkComponent` objects to the `link` argument of the `JointModel`
-constructor to add them to the model. If you wish to add multiple link functions then you must
-wrap them in a `Link()` object e.g.
-
-```R
-Link(
-  LinkComponent(...),
-  LinkComponent(...)
-)
-```
-
-Note that there are a few families of link functions that are common across all models for example
-identity, dSLD, TTG. Users can access these by simply using the inbuilt `link_identity()`,
-`link_dsld()` and `link_ttg()` functions respectively.
-
-These functions are responsible for loading the correct `LinkComponent` to
-implement that link for a particular model.
-That is if the user wants to specify both the
-TTG link and the dSLD for a model then they can do so via:
+constructor to add them to the model e.g.
 
 ```R
 JointModel(
-  ...,
-  link = Link(
-    link_dsld(),
-    link_ttg()
-  )
-) 
+  longitudinal = LongitudinalRandomSlope(),
+  survival = SurvivalExponential(),
+  link = LinkComponent(...)
+)
 ```
 
-Under the hood these link-family functions work by defining a `LinkComponent` object
-that specifies a method that will return a `StanModule` object instead of specifying
-the `StanModule` object directly. This method will then be called by the `JointModel` constructor
-with the `LongitudinalModel` object as its first argument. This way each longitudinal model is 
-able to specify their own implementation for the given link family. The following is a rough outline
-for how this works for the `link_dsld()` function and the `LongitudinalGSF` model:
+If you wish to add multiple link functions then you must wrap them in a `Link()` object e.g.
 
 ```R
-link_dsld <- function() {
-  LinkComponent(
-    key = "link_dsld",
-    stan = linkDSLD,
-    parameters = ParameterList(Parameter(name = "link_dsld", prior = prior, size = 1))
+JointModel(
+  longitudinal = LongitudinalRandomSlope(),
+  survival = SurvivalExponential(),
+  link = Link(
+    LinkComponent(...),
+    LinkComponent(...)
   )
-}
+)
+```
 
-linkDSLD.LongitudinalGSF <- function(object, ...) {
-  StanModule("<stan code for GSF dSLD link>")
+For most users the above should be sufficient for adding your own custom link functions for a
+specific analysis. The following explains how to create your own generic link
+functions which can be usful if you are wanting to share your code with other users or if
+you are building a link function that is applicable to multiple longitudinal models and you need
+polymorphism; this is only recommended for advanced users.
+
+
+In order to avoid the user specify the exact model specific link component we provide
+several generic functions that will return the correct link component given their
+chosen link family. For example the `linkDSLD()` function will return a different implementation
+of the derivative of the SLD link depending on which longitudinal model the user has provided.
+These are implemented as standard S3 methods e.g.
+
+```R
+linkDSLD.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("<stan-code-here>"),
+        prior = prior
+    )
 }
 ```
 
-This is to say that if you wish to overwrite a model implementation for an existing link family or
-provide an implementation for a new model then you can do so by defining/overwriting the relevant
-methods. For clarity the underlying methods are `linkDSLD`, `linkIdentity` and `linkTTG`
-respectively.
+A key design quirk to be aware of is that these methods dispatch off of the `model` argument not
+the `prior` argument. The reason for this is explained further below.
 
+
+In order to simplify the end user API, the generic link functions have a default `model` argument
+of `PromiseLongitudinalModel()`. This is a special object that is used to dispatch the 
+`link<type>.PromiseLongitudinalModel()` method which in turn creates a
+`PromiseLinkComponent` object.
+The purpose of these objects is to defer the creation of the `LinkComponent` object until within
+the `JointModel` constructor which will then call the `link<Type>` method again but with the correct
+model object. As an example the following is the implementation of the `linkDSLD` generic. 
+
+```R
+linkDSLD <- function(prior, model = PromiseLongitudinalModel(), ...) {
+    UseMethod("linkDSLD", model)
+}
+
+linkDSLD.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+    PromiseLinkComponent(fun = linkDSLD, prior = prior, key = "link_dsld")
+}
+
+linkDSLD.default <- function(prior, model, ...) {
+    stop(sprintf("Method `linkDSLD` is not available for `%s`", class(model)[[1]]))
+}
+```
+
+For reference the `JointModel` constructor will then attempt to resolve the promise by executing
+the provided function against the user provided longitudinal model object e.g.
+```R
+object@fun(
+    prior = object@prior,
+    model = <longitudinal-model>,
+)
+```
 
 ## Formatting Stan Files
 

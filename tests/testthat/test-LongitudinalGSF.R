@@ -126,8 +126,8 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)
         ),
         link = Link(
-            link_dsld(),
-            link_ttg()
+            linkDSLD(),
+            linkTTG()
         )
     )
 

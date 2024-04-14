@@ -4,7 +4,7 @@ test_that("initialValues() works as expected", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalWeibullPH(),
-        link = link_dsld()
+        link = linkDSLD()
     )
 
     set.seed(341)

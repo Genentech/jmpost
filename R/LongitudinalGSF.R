@@ -13,6 +13,11 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkTTG()`]
+#' - [`linkIdentity()`]
+#' @family LongitudinalGSF_links
 #' @exportClass LongitudinalGSF
 .LongitudinalGSF <- setClass(
     Class = "LongitudinalGSF",
@@ -122,7 +127,6 @@ LongitudinalGSF <- function(
 }
 
 
-#' @rdname standard-link-methods
 #' @export
 enableLink.LongitudinalGSF <- function(object, ...) {
     object@stan <- merge(
@@ -132,20 +136,29 @@ enableLink.LongitudinalGSF <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkDSLD.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_dsld.stan")
+linkDSLD.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-gsf/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkTTG.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_ttg.stan")
+linkTTG.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_ttg",
+        stan = StanModule("lm-gsf/link_ttg.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_identity.stan")
+linkIdentity.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-gsf/link_identity.stan"),
+        prior = prior
+    )
 }

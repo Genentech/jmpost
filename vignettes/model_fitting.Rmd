@@ -43,7 +43,7 @@ Let's first specify a very simple joint model with:
 simple_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
-    link = link_dsld()
+    link = linkDSLD()
 )
 ```
 

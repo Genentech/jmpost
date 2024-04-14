@@ -7,16 +7,16 @@
 \alias{LinkComponent}
 \title{\code{LinkComponent}}
 \usage{
-LinkComponent(stan, parameters = ParameterList(), key = "", ...)
+LinkComponent(stan, prior, key, ...)
 }
 \arguments{
-\item{stan}{(\code{StanModule} or \code{function})\cr Stan code. See Details.}
-
-\item{parameters}{(\code{ParameterList})\cr The parameter specification.}
+\item{stan}{(\code{StanModule})\cr Stan code. See Details.}
 
 \item{key}{(\code{character})\cr Link identifier. See Details.}
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
+
+\item{parameters}{(\code{ParameterList})\cr The parameter specification.}
 }
 \description{
 \code{LinkComponent}
@@ -30,12 +30,6 @@ multiplied by a model coefficient and added to the survival models hazard functi
 
 For full details about the specification of a \code{LinkComponent} please see
 \code{vignette("extending-jmpost", package = "jmpost")}.
-
-The \code{stan} argument can be either a \code{StanModule} object or a function.
-If a function is provided, it must take a single argument, a
-\code{LongitudinalModel} object, and return a \code{StanModule} object. This allows for
-generic functions to be used for links such as \code{dsld} which allows for each model
-to provide their own model specific implementation.
 }
 \section{Slots}{
 

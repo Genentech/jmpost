@@ -278,59 +278,6 @@ brierScore <- function(object, ...) {
 
 
 
-
-
-
-#' Standard Link Methods
-#'
-#' @param object ([`StanModel`]) \cr A [`StanModel`] object.
-#' @param ... Not used.
-#'
-#' @description
-#' These generic functions enable [`LongitudinalModel`] objects to provide
-#' their own implementations for the most common link functions.
-#'
-#' @details
-#' Each of these methods should return a [`StanModule`] argument that implements
-#' the models corresponding version of that link type.
-#' For `enableLink` this is called once for a model regardless of how many links
-#' are used and its purpose is to provide the stan code to initialise any
-#' link specific objects (to avoid clashes with each individual link function declaring
-#' the same required stan objects).
-#'
-#' For further details on how to use these methods please see
-#' \code{vignette("extending-jmpost", package = "jmpost")}.
-#'
-#' @name standard-link-methods
-NULL
-
-
-#' @describeIn standard-link-methods hook to include any common link code to be shared across all
-#' link functions
-#' @export
-enableLink <- function(object, ...) {
-    UseMethod("enableLink")
-}
-
-#' @describeIn standard-link-methods Time to growth link
-#' @export
-linkTTG <- function(object, ...) {
-    UseMethod("linkTTG")
-}
-
-#' @describeIn standard-link-methods Derivative of the SLD over time link
-#' @export
-linkDSLD <- function(object, ...) {
-    UseMethod("linkDSLD")
-}
-
-#' @describeIn standard-link-methods Current SLD link
-#' @export
-linkIdentity <- function(object, ...) {
-    UseMethod("linkIdentity")
-}
-
-
 #' Generate Simulated Observations
 #'
 #' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate observations from.
@@ -425,4 +372,39 @@ coalesceGridTime <- function(object, times, ...) {
 #' @export
 coalesceGridTime.default <- function(object, times, ...) {
     object
+}
+
+
+#' Resolve a Promise
+#'
+#' @param object (`ANY`)\cr an object to resolve.
+#'
+#' If `object` is not a promise will just return itself else will resolve the promise
+#' and return the promised object.
+#'
+#' @export
+resolvePromise <- function(object, ...) {
+    UseMethod("resolvePromise")
+}
+
+#' @rdname resolvePromise
+#' @export
+resolvePromise.default <- function(object, ...) {
+    object
+}
+
+#' Enable Link Generic
+#'
+#' @param object ([`LongitudinalModel`])\cr to enable link for.
+#' @param ... Not used.
+#'
+#' Optional hook method that is called on a [`LongitudinalModel`] only if a link method
+#' is provided to [`JointModel`]. This can be used to allow the model to include any
+#' optional stan code that is only required if there are links present.
+#'
+#' @return [`LongitudinalModel`] object
+#'
+#' @export
+enableLink <- function(object, ...) {
+    UseMethod("enableLink")
 }

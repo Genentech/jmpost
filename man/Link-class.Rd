@@ -10,7 +10,8 @@
 Link(...)
 }
 \arguments{
-\item{...}{(\code{\link{LinkComponent}})\cr an arbitrary number of link components.}
+\item{...}{(\code{\link{LinkComponent}} or \code{\link{PromiseLinkComponent}})\cr
+an arbitrary number of link components.}
 }
 \description{
 Simple container class to enable the use of multiple link components in a joint model.
@@ -19,13 +20,15 @@ Note that the constructor of this object is idempotent e.g. \code{Link(Link(x)) 
 \section{Slots}{
 
 \describe{
-\item{\code{components}}{(\code{list})\cr a list of \code{\link{LinkComponent}} objects.}
+\item{\code{components}}{(\code{list})\cr a list of \code{\link{LinkComponent}} or \code{\link{PromiseLinkComponent}} objects.}
+
+\item{\code{resolved}}{(\code{logical})\cr indicates if all the \code{components} have been resolved.}
 }}
 
 \examples{
 Link(
-    link_dsld(),
-    link_ttg()
+    linkDSLD(),
+    linkTTG()
 )
 
 }

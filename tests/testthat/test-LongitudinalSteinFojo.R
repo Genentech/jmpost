@@ -110,8 +110,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             lambda = prior_lognormal(log(365 * (1 / 400)), 0.5)
         ),
         link = Link(
-            link_ttg(prior_normal(-0.2, 0.5)),
-            link_dsld(prior_normal(0.2, 0.5))
+            linkTTG(prior_normal(-0.2, 0.5)),
+            linkDSLD(prior_normal(0.2, 0.5))
         )
     )
 

@@ -13,6 +13,6 @@
 \item{...}{Not Used.}
 }
 \description{
-This exists just to contain all the common arguments for \code{\link{LinkComponent}} methods.
+This exists to contain all the common arguments for \code{\link{LinkComponent}} methods.
 }
 \keyword{internal}

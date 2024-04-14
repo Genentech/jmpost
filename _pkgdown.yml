@@ -81,7 +81,7 @@ reference:
   
   - title: Link Specification
     contents:
-      - link_dsld
+      - linkDSLD
       - link_ttg
       - link_identity
       - link_none
