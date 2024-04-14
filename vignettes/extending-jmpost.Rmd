@@ -161,7 +161,7 @@ JointModel(
 
 For most users the above should be sufficient for adding your own custom link functions for a
 specific analysis. The following explains how to create your own generic link
-functions which can be usful if you are wanting to share your code with other users or if
+functions which can be useful if you are wanting to share your code with other users or if
 you are building a link function that is applicable to multiple longitudinal models and you need
 polymorphism; this is only recommended for advanced users.
 

@@ -81,13 +81,13 @@ the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
-the special `link_none()` link specification. For example, 
+the special `linkNone()` link specification. For example, 
 
 ```{r simple_model_no_link}
 simple_model_no_link <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
-    link = link_none()
+    link = linkNone()
 )
 ```
 
@@ -403,7 +403,7 @@ For example:
 joint_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalExponential(),
-    link = link_none()
+    link = linkNone()
 )
 initial_values <- initialValues(joint_model, n_chains = 2)
 

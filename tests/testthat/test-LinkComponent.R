@@ -135,7 +135,7 @@ test_that("print works as expected", {
     )
 })
 
- 
+
 test_that("PromiseLinkComponents work as expected", {
     x <- PromiseLinkComponent(
         fun = \(prior, model, ...) {
