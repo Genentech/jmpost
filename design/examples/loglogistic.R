@@ -9,10 +9,13 @@ library(posterior)
 library(bayesplot)
 library(here)
 
+# library(jmpost)
+devtools::load_all()
+
 
 dat <- flexsurv::bc |>
     as_tibble() |>
-    mutate(arm = "A", study = "S", pt = sprintf("pt-%05d", 1:n()))
+    mutate(arm = "A", study = "S", pt = sprintf("pt-%05d", seq_len(n())))
 
 
 #
@@ -101,8 +104,7 @@ k <- 2
 # JMpost
 #
 
-devtools::load_all()
-# library(jmpost)
+
 
 jm <- JointModel(
     survival = SurvivalLogLogistic()
@@ -131,20 +133,22 @@ mp <- sampleStanModel(
 )
 
 vars <- c(
-    "sm_logl_lambda",
-    "sm_logl_p"
+    "sm_loglogis_a",
+    "sm_loglogis_b"
 )
 
-x <- mp@results$summary(vars)
+stanobj <- as.CmdStanMCMC(mp)
+
+x <- stanobj$summary(vars)
 
 c(
-    "scale" = 1 / x$mean[1],
+    "scale" = x$mean[1],
     "shape" = x$mean[2]
 )
 
 
 # Log Likelihood
-log_lik <- mp@results$draws("log_lik", format = "draws_matrix") |>
+log_lik <- stanobj$draws("log_lik", format = "draws_matrix") |>
     apply(1, sum) |>
     mean()
 log_lik
