@@ -166,6 +166,16 @@ reference:
       - hazardWindows
       - sampleObservations
       - sampleSubjects
+      - enableLink
+  
+  - title: Promises
+    contents:
+      - Promise
+      - PromiseLinkComponent
+      - PromiseLongitudinalModel
+      - resolvePromise.Link
+      - resolvePromise.PromiseLinkComponent
+      - resolvePromise.PromiseLongitudinalModel
   
   - title: Miscellaneous 
     contents:
