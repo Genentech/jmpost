@@ -48,4 +48,3 @@ Stein-Fojo model for the longitudinal outcome.
 }
 }
 
-\concept{LongitudinalSteinFojo-links}

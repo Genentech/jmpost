@@ -17,7 +17,6 @@ NULL
 #' - [`linkDSLD()`]
 #' - [`linkTTG()`]
 #' - [`linkIdentity()`]
-#' @family LongitudinalGSF_links
 #' @exportClass LongitudinalGSF
 .LongitudinalGSF <- setClass(
     Class = "LongitudinalGSF",

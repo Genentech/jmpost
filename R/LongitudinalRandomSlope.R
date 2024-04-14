@@ -12,7 +12,6 @@ NULL
 #' @section Available Links:
 #' - [`linkDSLD()`]
 #' - [`linkIdentity()`]
-#' @family LongitudinalRandomSlope-links
 #' @exportClass LongitudinalRandomSlope
 .LongitudinalRandomSlope <- setClass(
     Class = "LongitudinalRandomSlope",

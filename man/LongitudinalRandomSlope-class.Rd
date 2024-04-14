@@ -35,4 +35,3 @@ random slope linear model for the longitudinal outcome.
 }
 }
 
-\concept{LongitudinalRandomSlope-links}

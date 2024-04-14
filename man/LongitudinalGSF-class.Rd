@@ -54,4 +54,3 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 }
 }
 
-\concept{LongitudinalGSF_links}

@@ -16,7 +16,6 @@ NULL
 #' - [`linkDSLD()`]
 #' - [`linkTTG()`]
 #' - [`linkIdentity()`]
-#' @family LongitudinalSteinFojo-links
 #' @exportClass LongitudinalSteinFojo
 .LongitudinalSteinFojo <- setClass(
     Class = "LongitudinalSteinFojo",
