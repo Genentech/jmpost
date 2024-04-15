@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -135,7 +129,7 @@ linear predictor of the survival model.</li>
 <code class="sourceCode R"><span><span class="va">simple_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalWeibullPH-class.html">SurvivalWeibullPH</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-links.html">link_dsld</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-link-user.html">linkDSLD</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note that here we use all the default options for the two models and
 the link, in particular the prior distributions and the initial values
@@ -172,13 +166,13 @@ the <code>slope_mu</code> parameter to be a <span class="math inline">\(N(10, 2)
 <h3 id="separate-models">Separate Models<a class="anchor" aria-label="anchor" href="#separate-models"></a>
 </h3>
 <p>It is also possible to not link the longitudinal and the survival
-models, by using the special <code><a href="../reference/standard-links.html">link_none()</a></code> link
-specification. For example,</p>
+models, by using the special <code><a href="../reference/standard-link-user.html">linkNone()</a></code> link specification.
+For example,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simple_model_no_link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalWeibullPH-class.html">SurvivalWeibullPH</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-links.html">link_none</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-link-user.html">linkNone</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>would allow to fit the two models separately, but in the same MCMC
 chain.</p>
@@ -380,7 +374,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpBGOQZQ/model-d95237abf38.stan', line 483, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/Rtmp65W1vs/model-de119ac4d9c.stan', line 483, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -395,7 +389,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 6.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 6.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -577,7 +571,7 @@ the <code><a href="../reference/initialValues.html">initialValues()</a></code> f
 <code class="sourceCode R"><span><span class="va">joint_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-links.html">link_none</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    link <span class="op">=</span> <span class="fu"><a href="../reference/standard-link-user.html">linkNone</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">initial_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/initialValues.html">initialValues</a></span><span class="op">(</span><span class="va">joint_model</span>, n_chains <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>

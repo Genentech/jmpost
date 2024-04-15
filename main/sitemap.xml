@@ -127,6 +127,15 @@
     <loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/Promise-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/Quant-Dev.html</loc>
   </url>
   <url>
@@ -349,6 +358,9 @@
     <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/enableLink.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/ensure_initial_values.html</loc>
   </url>
   <url>
@@ -466,6 +478,15 @@
     <loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.Link.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.PromiseLinkComponent.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/reverse_km.html</loc>
   </url>
   <url>
@@ -493,10 +514,7 @@
     <loc>https://genentech.github.io/jmpost/reference/size.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/standard-link-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/standard-links.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc>
