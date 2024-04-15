@@ -173,6 +173,7 @@ reference:
       - Promise
       - PromiseLinkComponent
       - PromiseLongitudinalModel
+      - resolvePromise
       - resolvePromise.Link
       - resolvePromise.PromiseLinkComponent
   
