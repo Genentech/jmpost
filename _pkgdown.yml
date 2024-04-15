@@ -175,7 +175,6 @@ reference:
       - PromiseLongitudinalModel
       - resolvePromise.Link
       - resolvePromise.PromiseLinkComponent
-      - resolvePromise.PromiseLongitudinalModel
   
   - title: Miscellaneous 
     contents:
