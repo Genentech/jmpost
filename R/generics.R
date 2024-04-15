@@ -378,6 +378,7 @@ coalesceGridTime.default <- function(object, times, ...) {
 #' Resolve a Promise
 #'
 #' @param object (`ANY`)\cr an object to resolve.
+#' @param ... (`ANY`)\cr additional arguments.
 #'
 #' If `object` is not a promise will just return itself else will resolve the promise
 #' and return the promised object.

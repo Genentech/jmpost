@@ -10,6 +10,8 @@
 \item{object}{(\code{\link{Link}})\cr a link object.}
 
 \item{model}{(\code{\link{LongitudinalModel}})\cr the model object.}
+
+\item{...}{Not Used.}
 }
 \description{
 Loops over all components and ensures that any \code{\link{PromiseLinkComponent}} objects

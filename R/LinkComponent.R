@@ -27,11 +27,11 @@ NULL
 #' `LinkComponent`
 #'
 #' @slot stan (`StanModule`)\cr See Arguments.
-#' @slot parameters (`ParameterList`)\cr See Arguments.
 #' @slot name (`character`)\cr See Arguments.
+#' @slot parameters (`ParameterList`)\cr The parameter specification.
 #'
 #' @param stan (`StanModule`)\cr Stan code. See Details.
-#' @param parameters (`ParameterList`)\cr The parameter specification.
+#' @param prior (`Prior`)\cr The prior for the scaling coeficient.
 #' @param key (`character`)\cr Link identifier. See Details.
 #'
 #' @details
@@ -45,6 +45,7 @@ NULL
 #' For full details about the specification of a `LinkComponent` please see
 #' \code{vignette("extending-jmpost", package = "jmpost")}.
 #'
+#' @inheritParams stanmodel_arguments
 #' @family LinkComponent
 #' @name LinkComponent-class
 #' @exportClass Link
@@ -59,7 +60,6 @@ NULL
 
 
 #' @rdname LinkComponent-class
-#' @inheritParams stanmodel_arguments
 #' @export
 LinkComponent <- function(stan, prior, key, ...) {
     .LinkComponent(

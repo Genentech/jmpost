@@ -4,6 +4,7 @@
 \name{Promise-class}
 \alias{Promise-class}
 \alias{.Promise}
+\alias{Promise}
 \title{Promise}
 \description{
 Abstract class for promise objects to inherit off of

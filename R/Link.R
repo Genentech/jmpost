@@ -74,6 +74,7 @@ Link <- function(...) {
 #'
 #' @param object ([`Link`])\cr a link object.
 #' @param model ([`LongitudinalModel`])\cr the model object.
+#' @param ... Not Used.
 #'
 #' @export
 resolvePromise.Link <- function(object, model, ...) {

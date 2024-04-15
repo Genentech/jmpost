@@ -10,5 +10,5 @@
 PromiseLongitudinalModel()
 }
 \description{
-An object that promises to resolve to a \code{\link{LongutidunalModel}} object.
+An object that promises to resolve to a \code{\link{LongitudinalModel}} object.
 }

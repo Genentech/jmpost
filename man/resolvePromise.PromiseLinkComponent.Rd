@@ -10,6 +10,8 @@
 \item{object}{(\code{\link{PromiseLinkComponent}}) \cr the promise to resolve}
 
 \item{model}{(\code{\link{LongitudinalModel}}) \cr the model to resolve the promise with}
+
+\item{...}{Not used.}
 }
 \value{
 (\code{\link{LinkComponent}}) \cr the resolved \code{LinkComponent} object

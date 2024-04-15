@@ -3,12 +3,14 @@
 #' Promise
 #'
 #' Abstract class for promise objects to inherit off of
+#' @aliases Promise
+#' @exportClass Promise
 .Promise <- setClass("Promise")
 
 
 #' Promise of a `LongitudinalModel`
 #'
-#' An object that promises to resolve to a [`LongutidunalModel`] object.
+#' An object that promises to resolve to a [`LongitudinalModel`] object.
 #'
 #' @exportClass PromiseLongitudinalModel
 .PromiseLongitudinalModel <- setClass(
@@ -31,6 +33,9 @@ PromiseLongitudinalModel <- function() {
 #' Inheriting from [`Promise`] and [`LinkComponent`].
 #'
 #' @slot fun (`function`) \cr a function that returns a `LinkComponent`. See details.
+#'
+#' @param fun (`function`) \cr a function that returns a `LinkComponent`. See details.
+#' @inheritParams LinkComponent
 #'
 #' @details
 #'
@@ -73,6 +78,7 @@ as.StanModule.PromiseLinkComponent <- function(object, model, ...) {
 #'
 #' @param object ([`PromiseLinkComponent`]) \cr the promise to resolve
 #' @param model ([`LongitudinalModel`]) \cr the model to resolve the promise with
+#' @param ... Not used.
 #' @return ([`LinkComponent`]) \cr the resolved `LinkComponent` object
 #'
 #' @export

@@ -10,7 +10,9 @@ resolvePromise(object, ...)
 \method{resolvePromise}{default}(object, ...)
 }
 \arguments{
-\item{object}{(\code{ANY})\cr an object to resolve.
+\item{object}{(\code{ANY})\cr an object to resolve.}
+
+\item{...}{(\code{ANY})\cr additional arguments.
 
 If \code{object} is not a promise will just return itself else will resolve the promise
 and return the promised object.}
