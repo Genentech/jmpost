@@ -27,7 +27,7 @@ test_that("complete models with links pass stan's syntax checker", {
     x <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalWeibullPH(),
-        link = Link(link_dsld(), link_identity())
+        link = Link(linkDSLD(), linkIdentity())
     )
     stan <- as.StanModule(x)
     # Currently generated quantities depends on data elements that aren't defined
@@ -40,7 +40,7 @@ test_that("complete models with links pass stan's syntax checker", {
     x <- JointModel(
         longitudinal = LongitudinalGSF(),
         survival = SurvivalLogLogistic(),
-        link = Link(link_dsld(), link_identity(), link_ttg())
+        link = Link(linkDSLD(), linkIdentity(), linkTTG())
     )
     stan <- as.StanModule(x)
     # Currently generated quantities depends on data elements that aren't defined
@@ -52,17 +52,10 @@ test_that("complete models with links pass stan's syntax checker", {
 
 
 test_that("LinkComponents are constructed correctly and can access key components", {
-    par_list <- ParameterList(
-        Parameter(prior = prior_normal(0, 5), name = "bobby", size = 1)
-    )
-
     x <- LinkComponent(
-        stan = \(model) {
-            expect_class(model, "LongitudinalGSF")
-            StanModule("lm-gsf/link_ttg.stan")
-        },
+        stan = StanModule("lm-gsf/link_ttg.stan"),
         key = "bob",
-        parameters = par_list
+        prior = prior_normal(0, 5)
     )
 
     # Check that `stan` function arguments are called correctly
@@ -73,7 +66,9 @@ test_that("LinkComponents are constructed correctly and can access key component
 
     expect_equal(
         getParameters(x),
-        par_list
+        ParameterList(
+            Parameter(prior = prior_normal(0, 5), name = "bob", size = 1)
+        )
     )
 
     expect_equal(
@@ -88,35 +83,35 @@ test_that("Model specific links return the correct stan code", {
     ### GSF
 
     expect_equal(
-        as.StanModule(link_dsld(), model = LongitudinalGSF()),
+        as.StanModule(linkDSLD(model = LongitudinalGSF())),
         StanModule("lm-gsf/link_dsld.stan")
     )
 
     expect_equal(
-        as.StanModule(link_identity(), model = LongitudinalGSF()),
+        as.StanModule(linkIdentity(model = LongitudinalGSF())),
         StanModule("lm-gsf/link_identity.stan")
     )
 
     expect_equal(
-        as.StanModule(link_ttg(), model = LongitudinalGSF()),
+        as.StanModule(linkTTG(model = LongitudinalGSF())),
         StanModule("lm-gsf/link_ttg.stan")
     )
 
     ### Random Slope
 
     expect_equal(
-        as.StanModule(link_dsld(), model = LongitudinalRandomSlope()),
+        as.StanModule(linkDSLD(model = LongitudinalRandomSlope())),
         StanModule("lm-random-slope/link_dsld.stan")
     )
 
     expect_equal(
-        as.StanModule(link_identity(), model = LongitudinalRandomSlope()),
+        as.StanModule(linkIdentity(model = LongitudinalRandomSlope())),
         StanModule("lm-random-slope/link_identity.stan")
     )
 
     expect_error(
-        as.StanModule(link_ttg(), model = LongitudinalRandomSlope()),
-        regexp = "TTG link is not available"
+        as.StanModule(linkTTG(model = LongitudinalRandomSlope())),
+        regexp = "Method `linkTTG` is not available"
     )
 
 })
@@ -124,20 +119,69 @@ test_that("Model specific links return the correct stan code", {
 
 test_that("print works as expected", {
     expect_snapshot(
-        print(link_dsld())
+        print(linkDSLD())
     )
     expect_snapshot(
-        print(link_ttg(prior_beta(4, 1)))
+        print(linkTTG(prior_beta(4, 1)))
     )
     expect_snapshot(
         print(
             LinkComponent(
                 stan = StanModule(),
-                parameters = ParameterList(
-                    Parameter(prior = prior_normal(0, 5), name = "bob", size = 1)
-                ),
-                key = "link_bob"
+                prior = prior_normal(0, 5),
+                key = "bob"
             )
         )
+    )
+})
+
+
+test_that("PromiseLinkComponents work as expected", {
+    x <- PromiseLinkComponent(
+        fun = \(prior, model, ...) {
+            LinkComponent(
+                stan = StanModule("lm-gsf/link_ttg.stan"),
+                prior = prior,
+                key = "bob"
+            )
+        },
+        key = "bob",
+        prior = prior_normal(0, 5)
+    )
+
+    # Check that `stan` function arguments are called correctly
+    expect_equal(
+        as.StanModule(x, model = LongitudinalGSF()),
+        StanModule("lm-gsf/link_ttg.stan")
+    )
+
+    expect_equal(
+        getParameters(x),
+        ParameterList(
+            Parameter(prior = prior_normal(0, 5), name = "bob", size = 1)
+        )
+    )
+
+    expect_equal(
+        x@key,
+        "bob"
+    )
+
+
+    # Resolving promise throws an error if the function changes the key
+    x <- PromiseLinkComponent(
+        fun = \(prior, model, ...) {
+            LinkComponent(
+                stan = StanModule("lm-gsf/link_ttg.stan"),
+                prior = prior,
+                key = "steve"
+            )
+        },
+        key = "bob",
+        prior = prior_normal(0, 5)
+    )
+    expect_error(
+        resolvePromise(x, model = LongitudinalGSF()),
+        regex = "the same key as the promise"
     )
 })

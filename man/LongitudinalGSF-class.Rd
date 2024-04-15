@@ -45,3 +45,12 @@ LongitudinalGSF(
 This class extends the general \code{\link{LongitudinalModel}} class for using the
 Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 }
+\section{Available Links}{
+
+\itemize{
+\item \code{\link[=linkDSLD]{linkDSLD()}}
+\item \code{\link[=linkTTG]{linkTTG()}}
+\item \code{\link[=linkIdentity]{linkIdentity()}}
+}
+}
+

@@ -56,11 +56,10 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 JointModel <- function(
     longitudinal = NULL,
     survival = NULL,
-    link = link_none()
+    link = Link()
 ) {
 
-    # Ensure that it is a link object (e.g. wrap link components in a Link object)
-    link <- Link(link)
+    link <- resolvePromise(Link(link), longitudinal)
 
     if (length(link) > 0) {
         longitudinal <- enableLink(longitudinal)
@@ -81,7 +80,7 @@ JointModel <- function(
         .x = base_model,
         longitudinal = add_missing_stan_blocks(as.list(longitudinal)),
         survival = add_missing_stan_blocks(as.list(survival)),
-        link = add_missing_stan_blocks(as.list(link, model = longitudinal)),
+        link = add_missing_stan_blocks(as.list(link)),
         priors = add_missing_stan_blocks(as.list(parameters))
     )
     # Unresolved Jinja code within the longitudinal / Survival / Link

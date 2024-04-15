@@ -124,8 +124,8 @@ joint_model <- JointModel(
     longitudinal = LongitudinalGSF(),
     survival = SurvivalWeibullPH(),
     link = Link(
-        link_dsld(),
-        link_ttg()
+        linkDSLD(),
+        linkTTG()
     )
 )
 ```

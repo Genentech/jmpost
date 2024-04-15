@@ -9,6 +9,9 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' random slope linear model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkIdentity()`]
 #' @exportClass LongitudinalRandomSlope
 .LongitudinalRandomSlope <- setClass(
     Class = "LongitudinalRandomSlope",
@@ -57,7 +60,6 @@ LongitudinalRandomSlope <- function(
 }
 
 
-#' @rdname standard-link-methods
 #' @export
 enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object@stan <- merge(
@@ -67,15 +69,21 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
+
 #' @export
-linkDSLD.LongitudinalRandomSlope <- function(object, ...) {
-    StanModule("lm-random-slope/link_dsld.stan")
+linkDSLD.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-random-slope/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalRandomSlope <- function(object, ...) {
-    StanModule("lm-random-slope/link_identity.stan")
+linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-random-slope/link_identity.stan"),
+        prior = prior
+    )
 }

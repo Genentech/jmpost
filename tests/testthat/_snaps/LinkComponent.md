@@ -1,7 +1,7 @@
 # print works as expected
 
     Code
-      print(link_dsld())
+      print(linkDSLD())
     Output
       
       LinkComponent with parameter:
@@ -11,7 +11,7 @@
 ---
 
     Code
-      print(link_ttg(prior_beta(4, 1)))
+      print(linkTTG(prior_beta(4, 1)))
     Output
       
       LinkComponent with parameter:
@@ -21,8 +21,7 @@
 ---
 
     Code
-      print(LinkComponent(stan = StanModule(), parameters = ParameterList(Parameter(
-        prior = prior_normal(0, 5), name = "bob", size = 1)), key = "link_bob"))
+      print(LinkComponent(stan = StanModule(), prior = prior_normal(0, 5), key = "bob"))
     Output
       
       LinkComponent with parameter:

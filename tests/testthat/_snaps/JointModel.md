@@ -2,7 +2,7 @@
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = link_dsld())
+      link = linkDSLD())
       print(x)
     Output
       
@@ -30,7 +30,7 @@
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = Link(link_dsld(), link_identity()))
+      link = Link(linkDSLD(), linkIdentity()))
       print(x)
     Output
       

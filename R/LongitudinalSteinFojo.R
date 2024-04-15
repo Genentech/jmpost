@@ -12,6 +12,10 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' Stein-Fojo model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkTTG()`]
+#' - [`linkIdentity()`]
 #' @exportClass LongitudinalSteinFojo
 .LongitudinalSteinFojo <- setClass(
     Class = "LongitudinalSteinFojo",
@@ -107,7 +111,6 @@ LongitudinalSteinFojo <- function(
 
 
 
-#' @rdname standard-link-methods
 #' @export
 enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object@stan <- merge(
@@ -117,20 +120,29 @@ enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkDSLD.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_dsld.stan")
+linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-sf/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkTTG.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_ttg.stan")
+linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_ttg",
+        stan = StanModule("lm-sf/link_ttg.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_identity.stan")
+linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-sf/link_identity.stan"),
+        prior = prior
+    )
 }

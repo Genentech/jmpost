@@ -81,13 +81,13 @@ reference:
   
   - title: Link Specification
     contents:
-      - link_dsld
-      - link_ttg
-      - link_identity
-      - link_none
+      - linkDSLD
+      - linkTTG
+      - linkIdentity
+      - linkNone
       - Link
       - LinkComponent
-      - standard-link-methods
+      - standard-link-user
   
   - title: Joint Model Specification
     contents:
@@ -166,6 +166,16 @@ reference:
       - hazardWindows
       - sampleObservations
       - sampleSubjects
+      - enableLink
+  
+  - title: Promises
+    contents:
+      - Promise
+      - PromiseLinkComponent
+      - PromiseLongitudinalModel
+      - resolvePromise
+      - resolvePromise.Link
+      - resolvePromise.PromiseLinkComponent
   
   - title: Miscellaneous 
     contents:
