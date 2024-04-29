@@ -44,10 +44,30 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 
     assert_that(
         length(type) == 1,
-        type %in% c("survival", "longitudinal"),
-        length(patients) == length(times),
-        all(patients %in% names(data$subject_to_index))
+        type %in% c("survival", "longitudinal")
     )
+
+    # If `arms` have been provided assume that we are generating population
+    # quantities and not individual subject quantities
+    if (length(generator@arms)) {
+        data[["gq_long_population_flag"]] <- 1
+        data[["gq_long_pop_arm_index"]] <- generator@arms
+        data[["gq_long_pop_study_index"]] <- generator@studies
+        data[["gq_pt_index"]] <- seq_along(generator@studies)
+        data[["gq_n_quant"]] <- length(generator@arms)
+        assert_that(
+            length(generator@arms) == length(generator@studies),
+            length(generator@arms) == length(times)
+        )
+    } else {
+        data[["gq_long_population_flag"]] <- 0
+        data[["gq_pt_index"]] <- data$subject_to_index[as.character(patients)]
+        data[["gq_n_quant"]] <- length(patients)
+        assert_that(
+            length(patients) == length(times),
+            all(patients %in% names(data$subject_to_index))
+        )
+    }
 
     if (type == "survival") {
         data[["gq_long_flag"]] <- 0
@@ -57,8 +77,6 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
         data[["gq_surv_flag"]] <- 0
     }
 
-    data[["gq_n_quant"]] <- length(patients)
-    data[["gq_pt_index"]] <- data$subject_to_index[as.character(patients)]
     data[["gq_times"]] <- times
 
     stanObject <- object@model@stan

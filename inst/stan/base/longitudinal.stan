@@ -87,10 +87,17 @@ generated quantities {
     {
         {{ stan.generated_quantities }}
         if (gq_long_flag == 1) {
-            y_fit_at_time_grid = lm_predict_individual_patient(
-                gq_times,
-                long_gq_parameters[gq_pt_index, ]
-            );
-        }    
+            if (gq_long_population_flag == 0) {
+                y_fit_at_time_grid = lm_predict_individual_patient(
+                    gq_times,
+                    long_gq_parameters[gq_pt_index, ]
+                );
+            } else {
+                y_fit_at_time_grid = lm_predict_individual_patient(
+                    gq_times,
+                    long_gq_pop_parameters
+                );
+            }
+        }
     }
 }

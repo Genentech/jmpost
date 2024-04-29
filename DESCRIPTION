@@ -72,6 +72,7 @@ Collate:
     'GridGrouped.R'
     'GridManual.R'
     'GridObserved.R'
+    'GridPopulation.R'
     'constants.R'
     'StanModule.R'
     'Prior.R'

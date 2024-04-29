@@ -137,14 +137,18 @@ NULL
     "QuantityGenerator",
     slots = c(
         "times" = "numeric",
-        "subjects" = "character"
+        "subjects" = "character_or_NULL",
+        "studies" = "numeric_or_NULL",
+        "arms" = "numeric_or_NULL"
     )
 )
 #' @rdname Quant-Dev
-QuantityGenerator <- function(times, subjects) {
+QuantityGenerator <- function(times, subjects = NULL, studies = NULL, arms = NULL) {
     .QuantityGenerator(
         times = times,
-        subjects = subjects
+        subjects = subjects,
+        studies = studies,
+        arms = arms
     )
 }
 
