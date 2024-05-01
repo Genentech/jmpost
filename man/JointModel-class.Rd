@@ -28,8 +28,6 @@ Joint Model Object and Constructor Function
 
 \item{\code{link}}{(\code{Link})\cr the link.}
 
-\item{\code{stan}}{(\code{StanModule})\cr code containing the joint model specification.}
-
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
 }}
 

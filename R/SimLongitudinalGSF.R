@@ -1,4 +1,9 @@
 
+
+#' @include SimLongitudinal.R
+#' @include generics.R
+NULL
+
 #' Simulate Longitudinal Data from a GSF Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.

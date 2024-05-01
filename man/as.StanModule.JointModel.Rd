@@ -4,7 +4,7 @@
 \alias{as.StanModule.JointModel}
 \title{\code{JointModel} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{JointModel}(object, ...)
+\method{as.StanModule}{JointModel}(object, include_gq = FALSE, ...)
 }
 \arguments{
 \item{object}{(\code{\link{JointModel}}) \cr Joint model specification.}

@@ -271,6 +271,9 @@ test_that("GridObservered + Constructs correct quantities", {
     # Longitudinal Data
     #
     #
+
+    # Testing that GridObserved returns sames results as GridManual assuming same time
+    # specification
     longquant_obsv <- LongitudinalQuantities(
         mp,
         grid = GridObserved(
@@ -293,6 +296,7 @@ test_that("GridObservered + Constructs correct quantities", {
     actual_manual <- summary(longquant_manual)
 
     expect_equal(actual_obsv, actual_manual)
+
 
 
     pred_mat <- as.CmdStanMCMC(mp)$draws("Ypred", format = "draws_matrix")
@@ -434,4 +438,173 @@ test_that("coalesceGridTime() works as expected", {
     grid <- GridGrouped(list("A" = "A"), 5)
     grid2 <- coalesceGridTime(grid, c(1, 2, 3))
     expect_equal(grid2@times, 5)
+})
+
+
+
+test_that("GridPopulation() works as expected", {
+    set.seed(739)
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(50, "Arm-A", "Study-X"),
+            SimGroup(30, "Arm-B", "Study-Y"),
+            SimGroup(30, "Arm-B", "Study-X")
+        ),
+        survival = SimSurvivalExponential(
+            lambda = 1 / (400 / 365),
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
+        ),
+        longitudinal = SimLongitudinalGSF(
+            times = seq(0, 4, by = 1 / 365),
+            sigma = 0.01,
+            mu_s = c(0.6, 0.4),
+            mu_g = c(0.25, 0.35),
+            mu_b = c(60, 50),
+            a_phi = c(15, 15),
+            b_phi = c(15, 15),
+            omega_b = 0.2,
+            omega_s = 0.2,
+            omega_g = 0.2
+        ),
+        .silent = TRUE
+    )
+
+
+    dat_os <- jlist@survival
+    dat_lm <- jlist@longitudinal |>
+        dplyr::group_by(pt) |>
+        dplyr::sample_n(9) |>
+        dplyr::group_by(pt) |>
+        dplyr::filter(!pt == "pt_004" | seq_len(dplyr::n()) <= 7) |>
+        dplyr::ungroup()
+
+
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(
+            mu_bsld = prior_normal(log(60), 0.5),
+            mu_ks = prior_normal(log(0.6), 0.5),
+            mu_kg = prior_normal(log(0.3), 0.5),
+            omega_bsld = prior_lognormal(log(0.2), 0.5),
+            omega_ks = prior_lognormal(log(0.2), 0.5),
+            omega_kg = prior_lognormal(log(0.2), 0.5),
+            a_phi = prior_lognormal(log(15), 0.5),
+            b_phi = prior_lognormal(log(15), 0.5),
+            sigma = prior_lognormal(log(0.01), 0.5),
+            centred = TRUE
+        ),
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(1 / (400 / 365)), 1)
+        ),
+        link = Link()
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = dat_os,
+            subject = "pt",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
+        longitudinal = DataLongitudinal(
+            data = dat_lm,
+            formula = sld ~ time
+        )
+    )
+
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 100,
+            iter_warmup = 100,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
+
+
+    selected_times <- seq(-0.5, 4, by = 0.02)
+
+    actual_quants <- LongitudinalQuantities(
+        mp,
+        grid = GridPopulation(
+            times = selected_times
+        )
+    )
+    actual <- summary(actual_quants) |>
+        arrange(group, time)
+
+
+    #
+    # Derive values by hand
+    #
+    gsf_sld <- function(time, b, s, g, phi) {
+        phi <- dplyr::if_else(time >= 0, phi, 0)
+        b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
+    }
+
+    samples_df <- as.CmdStanMCMC(mp)$draws(
+        c("lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_bsld", "lm_gsf_a_phi", "lm_gsf_b_phi"),
+        format = "draws_df"
+    ) |>
+        as_tibble(.name_repair = make.names) |>
+        mutate(sample_id = seq_len(n()))
+
+
+    grouped_samples <- tidyr::crossing(
+        samples_df,
+        time = selected_times
+    ) |>
+        mutate(
+            lm_gsf_phi_1 = lm_gsf_a_phi.1. / (lm_gsf_a_phi.1. + lm_gsf_b_phi.1.),
+            lm_gsf_phi_2 = lm_gsf_a_phi.2. / (lm_gsf_a_phi.2. + lm_gsf_b_phi.2.),
+            esld_g1 = gsf_sld(
+                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), lm_gsf_phi_1
+            ),
+            esld_g2 = gsf_sld(
+                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
+            ),
+            esld_g3 = gsf_sld(
+                time, exp(lm_gsf_mu_bsld.2.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
+            ),
+        ) |>
+        select(time, esld_g1, esld_g2, esld_g3, sample_id) |>
+        pivot_longer(cols = starts_with("esld"), names_to = "group", values_to = "sld") |>
+        mutate(group = factor(
+            group,
+            levels = c("esld_g1", "esld_g2", "esld_g3"),
+            labels = c("arm=Arm-A; study=Study-X", "arm=Arm-B; study=Study-X", "arm=Arm-B; study=Study-Y")
+        )) |>
+        mutate(group = as.character(group))
+
+    expected <- grouped_samples |>
+        group_by(time, group) |>
+        summarise(
+            lower = quantile(sld, 0.025),
+            median = median(sld),
+            upper = quantile(sld, 0.975),
+            .groups = "drop"
+        ) |>
+        select(group, time, median, lower, upper) |>
+        arrange(group, time)
+
+    expect_gt(cor(actual$median, expected$median), 0.99999999)
+    expect_gt(cor(actual$lower, expected$lower), 0.99999999)
+    expect_gt(cor(actual$upper, expected$upper), 0.99999999)
+    expect_equal(actual$time, expected$time)
+    expect_equal(actual$group, expected$group)
+
 })

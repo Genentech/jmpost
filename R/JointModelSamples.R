@@ -50,42 +50,46 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
     # If `arms` have been provided assume that we are generating population
     # quantities and not individual subject quantities
     if (length(generator@arms)) {
-        data[["gq_long_population_flag"]] <- 1
+
+        data[["gq_n_quant"]] <- length(generator@arms)
         data[["gq_long_pop_arm_index"]] <- generator@arms
         data[["gq_long_pop_study_index"]] <- generator@studies
-        data[["gq_pt_index"]] <- seq_along(generator@studies)
-        data[["gq_n_quant"]] <- length(generator@arms)
         assert_that(
             length(generator@arms) == length(generator@studies),
             length(generator@arms) == length(times)
         )
     } else {
-        data[["gq_long_population_flag"]] <- 0
         data[["gq_pt_index"]] <- data$subject_to_index[as.character(patients)]
         data[["gq_n_quant"]] <- length(patients)
+
+        # dummy pop indexes in order for stan code to actualy compile. In this setting
+        # this matrix isn't actually used so doesn't matter what these values are
+        # but don't want to have to burden individual longitudinal models with the
+        # conditional logic to check if they are generating population quantities or not
+        data[["gq_long_pop_arm_index"]] <- rep(1, length(patients))
+        data[["gq_long_pop_study_index"]] <- rep(1, length(patients))
         assert_that(
             length(patients) == length(times),
             all(patients %in% names(data$subject_to_index))
         )
     }
 
-    if (type == "survival") {
-        data[["gq_long_flag"]] <- 0
-        data[["gq_surv_flag"]] <- 1
-    } else {
-        data[["gq_long_flag"]] <- 1
-        data[["gq_surv_flag"]] <- 0
-    }
-
     data[["gq_times"]] <- times
 
-    stanObject <- object@model@stan
-    stanObject_data <- merge(
-        stanObject,
-        StanModule("base/generated_quantities_data.stan")
+    quant_stanobj <- read_stan("base/quantities.stan") |>
+        decorated_render(
+            include_gq_survival_idv = (type == "survival"),
+            include_gq_longitudinal_idv = (type == "longitudinal") & !length(generator@arms),
+            include_gq_longitudinal_pop = (type == "longitudinal") & length(generator@arms)
+        ) |>
+        StanModule()
+
+    stanobj <- merge(
+        as.StanModule(object@model, include_gq = TRUE),
+        quant_stanobj
     )
 
-    model <- compileStanModel(stanObject_data)
+    model <- compileStanModel(stanobj)
     devnull <- utils::capture.output(
         results <- model$generate_quantities(
             data = data,

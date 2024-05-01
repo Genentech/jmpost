@@ -32,7 +32,6 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 #' @slot longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
 #' @slot survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
 #' @slot link (`Link`)\cr the link.
-#' @slot stan (`StanModule`)\cr code containing the joint model specification.
 #' @slot parameters (`ParameterList`)\cr the parameter specification.
 #'
 #' @family JointModel
@@ -44,7 +43,6 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
         longitudinal = "LongitudinalModel_OR_NULL",
         survival = "SurvivalModel_OR_NULL",
         link = "Link",
-        stan = "StanModule",
         parameters = "ParameterList"
     )
 )
@@ -56,9 +54,7 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 JointModel <- function(
     longitudinal = NULL,
     survival = NULL,
-    link = Link()
-) {
-
+    link = Link()) {
     link <- resolvePromise(Link(link), longitudinal)
 
     if (length(link) > 0) {
@@ -74,48 +70,12 @@ JointModel <- function(
         )
     )
 
-    base_model <- read_stan("base/base.stan")
-
-    stan_full <- decorated_render(
-        .x = base_model,
-        longitudinal = add_missing_stan_blocks(as.list(longitudinal)),
-        survival = add_missing_stan_blocks(as.list(survival)),
-        link = add_missing_stan_blocks(as.list(link)),
-        priors = add_missing_stan_blocks(as.list(parameters))
-    )
-    # Unresolved Jinja code within the longitudinal / Survival / Link
-    # models won't be resolved by the above call to `decorated_render`.
-    # Instead they it will just be inserted into the template asis. Thus
-    # we run `decorated_render` again to resolve any lingering Jinja code
-    # Main example being models that don't have any Jinja code but still
-    # use the `decorated_render` constants `machine_double_eps`.
-    stan_full <- decorated_render(.x = stan_full)
-
-    stan_complete <- merge(
-        StanModule("base/functions.stan"),
-        StanModule(stan_full)
-    )
-
     .JointModel(
         longitudinal = longitudinal,
         survival = survival,
         link = link,
-        stan = stan_complete,
         parameters = parameters
     )
-}
-
-
-
-#' `JointModel` -> `character`
-#'
-#' Renders a [`JointModel`] object to a stan program
-#'
-#' @inheritParams JointModel-Shared
-#' @family JointModel
-#' @export
-as.character.JointModel <- function(x, ...) {
-    as.character(x@stan)
 }
 
 
@@ -128,8 +88,47 @@ as.character.JointModel <- function(x, ...) {
 #' @family JointModel
 #' @family as.StanModule
 #' @export
-as.StanModule.JointModel <- function(object, ...) {
-    object@stan
+as.StanModule.JointModel <- function(object, include_gq = FALSE, ...) {
+
+    base_model <- read_stan("base/base.stan")
+
+    stan_full <- decorated_render(
+        .x = base_model,
+        longitudinal = add_missing_stan_blocks(as.list(object@longitudinal)),
+        survival = add_missing_stan_blocks(as.list(object@survival)),
+        link = add_missing_stan_blocks(as.list(object@link)),
+        priors = add_missing_stan_blocks(as.list(object@parameters))
+    )
+    # Unresolved Jinja code within the longitudinal / Survival / Link
+    # models won't be resolved by the above call to `decorated_render`.
+    # Instead they it will just be inserted into the template asis. Thus
+    # we run `decorated_render` again to resolve any lingering Jinja code
+    # Main example being models that don't have any Jinja code but still
+    # use the `decorated_render` constants `machine_double_eps`.
+    stan_full <- decorated_render(.x = stan_full)
+
+    x <- merge(
+        StanModule("base/functions.stan"),
+        StanModule(stan_full)
+    )
+
+    if (!include_gq) {
+        x@generated_quantities <- ""
+    }
+    return(x)
+}
+
+
+
+#' `JointModel` -> `character`
+#'
+#' Renders a [`JointModel`] object to a stan program
+#'
+#' @inheritParams JointModel-Shared
+#' @family JointModel
+#' @export
+as.character.JointModel <- function(x, ...) {
+    as.character(as.StanModule(x))
 }
 
 
@@ -149,10 +148,10 @@ write_stan.JointModel <- function(object, file_path) {
 #' @rdname compileStanModel
 #' @export
 compileStanModel.JointModel <- function(object) {
-    stanObject <- object@stan
-    stanObject@generated_quantities <- ""
-    x <- compileStanModel(stanObject)
-    invisible(x)
+    object |>
+        as.StanModule() |>
+        compileStanModel() |>
+        invisible()
 }
 
 

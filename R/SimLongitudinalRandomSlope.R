@@ -1,4 +1,8 @@
 
+#' @include SimLongitudinal.R
+#' @include generics.R
+NULL
+
 #' Simulate Longitudinal Data from a Random Slope Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.
