@@ -33,8 +33,8 @@ as.QuantityGenerator.GridPopulation <- function(object, data, ...) {
 
     QuantityGenerator(
         times = rep(object@times, each = n_quant),
-        arms = rep(data_list$pop_arm_index, n_times),
-        studies = rep(data_list$pop_study_index, n_times)
+        arms = rep(names(data_list$arm_to_index)[data_list$pop_arm_index], n_times),
+        studies = rep(names(data_list$study_to_index)[data_list$pop_study_index], n_times)
     )
 }
 
@@ -48,8 +48,8 @@ as.QuantityCollapser.GridPopulation <- function(object, data, ...) {
         times = generator@times,
         groups = sprintf(
             "arm=%s; study=%s",
-            names(data_list$arm_to_index)[generator@arms],
-            names(data_list$study_to_index)[generator@studies]
+            generator@arms,
+            generator@studies
         ),
         indexes = as.list(seq_along(generator@times))
     )

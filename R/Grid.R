@@ -138,8 +138,8 @@ NULL
     slots = c(
         "times" = "numeric",
         "subjects" = "character_or_NULL",
-        "studies" = "numeric_or_NULL",
-        "arms" = "numeric_or_NULL"
+        "studies" = "character_or_NULL",
+        "arms" = "character_or_NULL"
     )
 )
 #' @rdname Quant-Dev
@@ -151,6 +151,36 @@ QuantityGenerator <- function(times, subjects = NULL, studies = NULL, arms = NUL
         arms = arms
     )
 }
+setValidity(
+    "QuantityGenerator",
+    function(object) {
+        if (!is.null(object@subjects) & !is.null(object@studies)) {
+            return("Only one of `subjects` or `studies` can be specified")
+        }
+        if (!is.null(object@subjects) & !is.null(object@arms)) {
+            return("Only one of `subjects` or `studies` can be specified")
+        }
+        if (xor(is.null(object@studies), is.null(object@arms))) {
+            return("Both `studies` and `arms` must be specified together or both must be `NULL`")
+        }
+        if (!is.null(object@arms)) {
+            if (length(object@times) != length(object@arms)) {
+                return("Length of `times` and `arms` must be equal")
+            }
+        }
+        if (!is.null(object@studies)) {
+            if (length(object@times) != length(object@studies)) {
+                return("Length of `times` and `studies` must be equal")
+            }
+        }
+        if (!is.null(object@subjects)) {
+            if (length(object@times) != length(object@subjects)) {
+                return("Length of `times` and `subjects` must be equal")
+            }
+        }
+        return(TRUE)
+    }
+)
 
 #' @rdname Quant-Dev
 .QuantityCollapser <- setClass(

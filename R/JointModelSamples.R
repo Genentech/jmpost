@@ -39,7 +39,6 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
         as_stan_list(object@model@parameters)
     )
 
-    patients <- generator@subjects
     times <- generator@times
 
     assert_that(
@@ -52,26 +51,29 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
     if (length(generator@arms)) {
 
         data[["gq_n_quant"]] <- length(generator@arms)
-        data[["gq_long_pop_arm_index"]] <- generator@arms
-        data[["gq_long_pop_study_index"]] <- generator@studies
+        data[["gq_long_pop_arm_index"]] <- data$arm_to_index[generator@arms]
+        data[["gq_long_pop_study_index"]] <- data$study_to_index[generator@studies]
         assert_that(
             length(generator@arms) == length(generator@studies),
             length(generator@arms) == length(times)
         )
-    } else {
-        data[["gq_pt_index"]] <- data$subject_to_index[as.character(patients)]
-        data[["gq_n_quant"]] <- length(patients)
+    } else if (length(generator@subjects)) {
+        subjects <- generator@subjects
+        data[["gq_pt_index"]] <- data$subject_to_index[as.character(subjects)]
+        data[["gq_n_quant"]] <- length(subjects)
 
         # dummy pop indexes in order for stan code to actualy compile. In this setting
         # this matrix isn't actually used so doesn't matter what these values are
         # but don't want to have to burden individual longitudinal models with the
         # conditional logic to check if they are generating population quantities or not
-        data[["gq_long_pop_arm_index"]] <- rep(1, length(patients))
-        data[["gq_long_pop_study_index"]] <- rep(1, length(patients))
+        data[["gq_long_pop_arm_index"]] <- rep(1, length(subjects))
+        data[["gq_long_pop_study_index"]] <- rep(1, length(subjects))
         assert_that(
-            length(patients) == length(times),
-            all(patients %in% names(data$subject_to_index))
+            length(subjects) == length(times),
+            all(subjects %in% names(data$subject_to_index))
         )
+    } else {
+        stop("something went wrong")
     }
 
     data[["gq_times"]] <- times
@@ -90,6 +92,7 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
     )
 
     model <- compileStanModel(stanobj)
+
     devnull <- utils::capture.output(
         results <- model$generate_quantities(
             data = data,
