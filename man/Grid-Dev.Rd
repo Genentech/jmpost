@@ -46,6 +46,9 @@ QuantityCollapser(
     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
 )
 }\if{html}{\out{</div>}}
+
+For population based quantities use the \code{arms} and \code{studies} arguments of \code{QuantityGenerator}
+instead of \code{subjects}.
 }
 \section{Slots}{
 

@@ -9,6 +9,8 @@
 \arguments{
 \item{object}{(\code{\link{JointModel}}) \cr Joint model specification.}
 
+\item{include_gq}{(\code{logical})\cr whether to include the generated quantities block.}
+
 \item{...}{Not Used.}
 }
 \description{
