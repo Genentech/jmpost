@@ -452,7 +452,7 @@ test_that("GridObservered + Constructs correct quantities", {
     # Survival Data
     #
     #
-    design <- model.matrix(~ cov_cat + cov_cont, data = dat_os)
+    design <- model.matrix(~ cov_cat + cov_cont, data = fixtures_gsf$dat_os)
 
     beta_coefs <- as.CmdStanMCMC(fixtures_gsf$mp)$draws(
         c("sm_exp_lambda", "beta_os_cov"),
