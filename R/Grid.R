@@ -31,6 +31,10 @@
 #' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
 #' between each subjects first and last longitudinal observations.
 #'
+#' - `GridPopulation()` generates quantities based on the population parameters at the
+#' specified time points. Generates 1 set of quantities for each distinct combination of `arm`
+#' and `study` within the [`DataSubject`] object provided to the [`JointModel`].
+#'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list
 #' must be a character vector of the subjects that will form the group where the element name
@@ -89,6 +93,8 @@ NULL
 #'     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
 #' )
 #' ```
+#' For population based quantities use the `arms` and `studies` arguments of `QuantityGenerator`
+#' instead of `subjects`.
 #'
 #' @inheritSection Grid-Functions Group Specification
 #'
