@@ -3,7 +3,7 @@
 # Setup global data objects to be used within this test file
 #
 
-set_gsf_fixture <- function() {
+set_fixtures_gsf <- function() {
     set.seed(739)
     jlist <- SimJointData(
         design = list(
@@ -106,7 +106,7 @@ set_gsf_fixture <- function() {
 
 }
 
-set_fixture_rs <- function() {
+set_fixtures_rs <- function() {
     set.seed(739)
     jlist <- SimJointData(
         design = list(
@@ -188,18 +188,18 @@ set_fixture_rs <- function() {
         )
     })
 
-    fixture_rs <- new.env()
-    fixture_rs$mp <- mp
-    fixture_rs$jdat <- jdat
-    fixture_rs$dat_os <- dat_os
-    fixture_rs$dat_lm <- dat_lm
-    fixture_rs$jlist <- jlist
-    return(fixture_rs)
+    fixtures_rs <- new.env()
+    fixtures_rs$mp <- mp
+    fixtures_rs$jdat <- jdat
+    fixtures_rs$dat_os <- dat_os
+    fixtures_rs$dat_lm <- dat_lm
+    fixtures_rs$jlist <- jlist
+    return(fixtures_rs)
 
 }
 
-fixtures_gsf <- set_fixture_gsf()
-fixtures_rs <- set_fixture_rs()
+fixtures_gsf <- set_fixtures_gsf()
+fixtures_rs <- set_fixtures_rs()
 
 
 test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
@@ -639,7 +639,7 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     selected_times <- seq(-60, 400, by = 20)
 
     actual_quants <- LongitudinalQuantities(
-        fixture_rs$mp,
+        fixtures_rs$mp,
         grid = GridPopulation(
             times = selected_times
         )
@@ -652,7 +652,7 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     #
     # Derive values by hand
     #
-    samples_df <- as.CmdStanMCMC(fixture_rs$mp)$draws(
+    samples_df <- as.CmdStanMCMC(fixtures_rs$mp)$draws(
         c("lm_rs_intercept", "lm_rs_slope_mu"),
         format = "draws_df"
     ) |>
