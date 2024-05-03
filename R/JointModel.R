@@ -54,7 +54,8 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 JointModel <- function(
     longitudinal = NULL,
     survival = NULL,
-    link = Link()) {
+    link = Link()
+) {
     link <- resolvePromise(Link(link), longitudinal)
 
     if (length(link) > 0) {
@@ -84,7 +85,7 @@ JointModel <- function(
 #' Converts a [`JointModel`] object to a [`StanModule`] object
 #'
 #' @inheritParams JointModel-Shared
-#'
+#' @param include_gq (`logical`)\cr whether to include the generated quantities block.
 #' @family JointModel
 #' @family as.StanModule
 #' @export
