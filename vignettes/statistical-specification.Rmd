@@ -226,6 +226,13 @@ Accessible via `linkIdentity()`
 
 
 
+### Population Quantities
+
+Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0. For the $\phi$ parameter
+the mean of the distribution is used.
+
 
 ## Generalized Stein-Fojo (GSF) Model
 
@@ -319,6 +326,12 @@ $$
 
 Accessible via `linkIdentity()`
 
+
+### Population Quantities
+
+Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0.
 
 
 # Post-Processing

@@ -31,6 +31,10 @@
 #' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
 #' between each subjects first and last longitudinal observations.
 #'
+#' - `GridPopulation()` generates quantities based on the population parameters at the
+#' specified time points. Generates 1 set of quantities for each distinct combination of `arm`
+#' and `study` within the [`DataSubject`] object provided to the [`JointModel`].
+#'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list
 #' must be a character vector of the subjects that will form the group where the element name
@@ -89,6 +93,8 @@ NULL
 #'     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
 #' )
 #' ```
+#' For population based quantities use the `arms` and `studies` arguments of `QuantityGenerator`
+#' instead of `subjects`.
 #'
 #' @inheritSection Grid-Functions Group Specification
 #'
@@ -137,16 +143,50 @@ NULL
     "QuantityGenerator",
     slots = c(
         "times" = "numeric",
-        "subjects" = "character"
+        "subjects" = "character_or_NULL",
+        "studies" = "character_or_NULL",
+        "arms" = "character_or_NULL"
     )
 )
 #' @rdname Quant-Dev
-QuantityGenerator <- function(times, subjects) {
+QuantityGenerator <- function(times, subjects = NULL, studies = NULL, arms = NULL) {
     .QuantityGenerator(
         times = times,
-        subjects = subjects
+        subjects = subjects,
+        studies = studies,
+        arms = arms
     )
 }
+setValidity(
+    "QuantityGenerator",
+    function(object) {
+        if (!is.null(object@subjects) & !is.null(object@studies)) {
+            return("Only one of `subjects` or `studies` can be specified")
+        }
+        if (!is.null(object@subjects) & !is.null(object@arms)) {
+            return("Only one of `subjects` or `studies` can be specified")
+        }
+        if (xor(is.null(object@studies), is.null(object@arms))) {
+            return("Both `studies` and `arms` must be specified together or both must be `NULL`")
+        }
+        if (!is.null(object@arms)) {
+            if (length(object@times) != length(object@arms)) {
+                return("Length of `times` and `arms` must be equal")
+            }
+        }
+        if (!is.null(object@studies)) {
+            if (length(object@times) != length(object@studies)) {
+                return("Length of `times` and `studies` must be equal")
+            }
+        }
+        if (!is.null(object@subjects)) {
+            if (length(object@times) != length(object@subjects)) {
+                return("Length of `times` and `subjects` must be equal")
+            }
+        }
+        return(TRUE)
+    }
+)
 
 #' @rdname Quant-Dev
 .QuantityCollapser <- setClass(

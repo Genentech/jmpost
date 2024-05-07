@@ -236,76 +236,61 @@ ggplot() +
 #
 #
 
-gsf_sld <- function(time, b, s, g, phi) {
-    phi <- dplyr::if_else(time >= 0, phi, 0)
-    b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
-}
-
-samples_df <- stanobj$draws(
-    c("lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_bsld", "lm_gsf_a_phi", "lm_gsf_b_phi"),
-    format = "draws_df"
-) |>
-    as_tibble(.name_repair = make.names) |>
-    mutate(sample_id = seq_len(n()))
-
 select_times <- seq(-50, 500, length.out = 100) / 365
 select_times_reduced <- select_times[seq(0, 100, length.out = 8)]
 
-grouped_samples <- tidyr::crossing(
-    samples_df,
-    time = select_times
-) |>
-    mutate(
-        lm_gsf_phi_1 = lm_gsf_a_phi.1. / (lm_gsf_a_phi.1. + lm_gsf_b_phi.1.),
-        lm_gsf_phi_2 = lm_gsf_a_phi.2. / (lm_gsf_a_phi.2. + lm_gsf_b_phi.2.),
-        esld_g1 = gsf_sld(
-            time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), lm_gsf_phi_1
-        ),
-        esld_g2 = gsf_sld(
-            time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
-        )
-    ) |>
-    select(time, esld_g1, esld_g2, sample_id) |>
-    pivot_longer(cols = starts_with("esld"), names_to = "group", values_to = "sld")
-
-grouped_samples_sum <- grouped_samples |>
-    filter(time %in% select_times_reduced) |>
-    group_by(time, group) |>
-    summarise(
-        lower = quantile(sld, 0.025),
-        median = median(sld),
-        upper = quantile(sld, 0.975),
-        .groups = "drop"
+longquant_pop <- LongitudinalQuantities(
+    mp,
+    grid = GridPopulation(
+        times = select_times
     )
+)
+
+
+autoplot(longquant_pop) +
+    ylab("SLD (mm)") +
+    xlab("Time (years)")
+
+
+## Alternative if want more manual control / styling
+
+pdat_sample <- as.data.frame(longquant_pop) |>
+    as_tibble() |>
+    group_by(group, time) |>
+    mutate(id = seq_len(n()))
+
+pdat_summary <- summary(longquant_pop) |>
+    as_tibble() |>
+    filter(time %in% select_times_reduced)
 
 ggplot() +
     geom_line(
-        data = grouped_samples,
-        mapping = aes(x = time, y = sld, group = interaction(sample_id, group)),
+        data = pdat,
+        aes(x = time, y = values, group = id),
         alpha = 0.05,
         col = "#60e160"
     ) +
-    theme_bw() +
-    facet_wrap(~group) +
     geom_line(
-        data = grouped_samples_sum,
+        data = pdat_summary,
         aes(x = time, y = median),
         col = "#7e1abd"
     ) +
     geom_point(
-        data = grouped_samples_sum,
+        data = pdat_summary,
         aes(x = time, y = median),
         col = "#7e1abd",
         alpha = 0.9,
         size = 3
     ) +
     geom_errorbar(
-        data = grouped_samples_sum,
+        data = pdat_summary,
         aes(x = time, ymin = lower, ymax = upper),
         width = 0,
         col = "#7e1abd",
         alpha = 0.7
-    )
+    ) +
+    facet_wrap(~group) +
+    theme_bw()
 
 
 

@@ -80,17 +80,5 @@ model {
 }
 
 generated quantities {
-    //
-    // Source - base/longitudinal.stan
-    //
-    vector[gq_n_quant] y_fit_at_time_grid;
-    {
-        {{ stan.generated_quantities }}
-        if (gq_long_flag == 1) {
-            y_fit_at_time_grid = lm_predict_individual_patient(
-                gq_times,
-                long_gq_parameters[gq_pt_index, ]
-            );
-        }    
-    }
+    {{ stan.generated_quantities }}
 }

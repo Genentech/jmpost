@@ -185,31 +185,6 @@ model{
     {{ stan.model }}
 }
 
-
 generated quantities {
-    //
-    // Source - base/survival.stan
-    //
-    vector[gq_n_quant] log_surv_fit_at_time_grid;
-    vector[gq_n_quant] log_haz_fit_at_time_grid;
-    
-    if (gq_surv_flag == 1) {
-        log_surv_fit_at_time_grid = log_survival(
-            gq_times,
-            pars_os,
-            link_function_inputs[gq_pt_index, ],
-            link_coefficients,
-            nodes,
-            weights,
-            os_cov_contribution[gq_pt_index]
-        );
-
-        log_haz_fit_at_time_grid = log_hazard(
-            rep_matrix(gq_times, 1),
-            pars_os,
-            link_function_inputs[gq_pt_index, ],
-            link_coefficients,
-            os_cov_contribution[gq_pt_index]
-        )[, 1];
-    }
+    {{ stan.generated_quantities }}
 }

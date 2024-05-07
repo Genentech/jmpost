@@ -11,7 +11,7 @@ data{
     //
     // Source - base/base.stan
     //
-    int<lower=1> n_subjects;                 // Number of individuals.
+    int<lower=1> n_subjects;           // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
     array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;  // Index of study per pt (PT index sorted)
