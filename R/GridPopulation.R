@@ -31,7 +31,7 @@ as.QuantityGenerator.GridPopulation <- function(object, data, ...) {
     n_times <- length(object@times)
     n_quant <- length(data_list$pop_study_index)
 
-    QuantityGenerator(
+    QuantityGeneratorPopulation(
         times = rep(object@times, each = n_quant),
         arms = rep(names(data_list$arm_to_index)[data_list$pop_arm_index], n_times),
         studies = rep(names(data_list$study_to_index)[data_list$pop_study_index], n_times)

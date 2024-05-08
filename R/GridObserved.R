@@ -29,7 +29,7 @@ as.QuantityGenerator.GridObserved <- function(object, data, ...) {
     unique_visits <- tapply(data_list$tumour_time, data_list$subject_tumour_index, unique)
     patient_visits <- unique_visits[data_list$subject_to_index[subjects]]
     visit_lengths <- vapply(patient_visits, length, numeric(1))
-    .QuantityGenerator(
+    QuantityGeneratorSubject(
         times = unlist(patient_visits, use.names = FALSE),
         subjects = rep(subjects, visit_lengths)
     )

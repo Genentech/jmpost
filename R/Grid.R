@@ -140,53 +140,21 @@ NULL
 
 #' @rdname Quant-Dev
 .QuantityGenerator <- setClass(
-    "QuantityGenerator",
-    slots = c(
-        "times" = "numeric",
-        "subjects" = "character_or_NULL",
-        "studies" = "character_or_NULL",
-        "arms" = "character_or_NULL"
-    )
+    "QuantityGenerator"
 )
-#' @rdname Quant-Dev
-QuantityGenerator <- function(times, subjects = NULL, studies = NULL, arms = NULL) {
-    .QuantityGenerator(
-        times = times,
-        subjects = subjects,
-        studies = studies,
-        arms = arms
-    )
+#' `QuantityGenerator` -> `list`
+#' @description
+#' Converts a `QuantityGenerator` object to a list containing the required input data for a stan
+#' model.
+#' @param object (`QuantityGenerator`)\cr object to convert to a list.
+#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#' @param ... Not currently used.
+#' @keywords internal
+as_stan_list.QuantityGenerator <- function(object, data, ...) {
+    stop("as_stan_list.QuantityGenerator not implemented")
 }
-setValidity(
-    "QuantityGenerator",
-    function(object) {
-        if (!is.null(object@subjects) & !is.null(object@studies)) {
-            return("Only one of `subjects` or `studies` can be specified")
-        }
-        if (!is.null(object@subjects) & !is.null(object@arms)) {
-            return("Only one of `subjects` or `studies` can be specified")
-        }
-        if (xor(is.null(object@studies), is.null(object@arms))) {
-            return("Both `studies` and `arms` must be specified together or both must be `NULL`")
-        }
-        if (!is.null(object@arms)) {
-            if (length(object@times) != length(object@arms)) {
-                return("Length of `times` and `arms` must be equal")
-            }
-        }
-        if (!is.null(object@studies)) {
-            if (length(object@times) != length(object@studies)) {
-                return("Length of `times` and `studies` must be equal")
-            }
-        }
-        if (!is.null(object@subjects)) {
-            if (length(object@times) != length(object@subjects)) {
-                return("Length of `times` and `subjects` must be equal")
-            }
-        }
-        return(TRUE)
-    }
-)
+
+
 
 #' @rdname Quant-Dev
 .QuantityCollapser <- setClass(
