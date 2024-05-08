@@ -27,7 +27,7 @@ setOldClass("CmdStanMCMC")
 
 
 #' @rdname generateQuantities
-#' @param generator ([`QuantityGenerator`])\cr object that specifies which subjects and time points
+#' @param generator (`QuantityGenerator`)\cr object that specifies which subjects and time points
 #' to calculate the quantities at
 #' @param type (`character`)\cr type of quantities to be generated, must be either "survival" or
 #' "longitudinal".
