@@ -696,3 +696,15 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     expect_equal(actual$group, expected$group)
 
 })
+
+test_that("GridPopulation() doesn't work with SurvivalQuantities", {
+    expect_error(
+        SurvivalQuantities(
+            fixtures_gsf$mp,
+            grid = GridPopulation(
+                times = seq(1, 4, by = 0.02)
+            )
+        ),
+        regex = "not supported"
+    )
+})

@@ -71,6 +71,10 @@ SurvivalQuantities <- function(
     type <- match.arg(type)
     assert_class(object, "JointModelSamples")
     assert_class(grid, "Grid")
+    assert_that(
+        !is(grid, "GridPopulation"),
+        msg = "GridPopulation objects are not supported for `SurvivalQuantities`"
+    )
 
     time_grid <- seq(
         from = 0,
