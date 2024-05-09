@@ -37,7 +37,7 @@ as.QuantityGenerator.GridFixed <- function(object, data, ...) {
         stringsAsFactors = FALSE
     )
 
-    QuantityGenerator(
+    QuantityGeneratorSubject(
         times = pt_times$time,
         subjects = pt_times$pt
     )

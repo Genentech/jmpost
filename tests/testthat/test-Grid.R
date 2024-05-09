@@ -244,14 +244,14 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         times = c(1, 4)
     )
     actual <- as.QuantityGenerator(grid, data = dj)
-    expected <- .QuantityGenerator(
+    expected <- QuantityGeneratorSubject(
         subjects = c("A", "B", "D", "A", "B", "D"),
         times = c(1, 1, 1, 4, 4, 4)
     )
     expect_equal(actual, expected)
 
     actual <- as.QuantityCollapser(grid, data = dj)
-    expected <- .QuantityCollapser(
+    expected <- QuantityCollapser(
         groups = c("A", "B", "D", "A", "B", "D"),
         times = c(1, 1, 1, 4, 4, 4),
         indexes = list(1, 2, 3, 4, 5, 6)
@@ -267,14 +267,14 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         times = c(1, 4)
     )
     actual <- as.QuantityGenerator(grid, data = dj)
-    expected <- .QuantityGenerator(
+    expected <- QuantityGeneratorSubject(
         subjects = c("A", "D", "B", "A", "D", "B"),
         times = c(1, 1, 1, 4, 4, 4)
     )
     expect_equal(actual, expected)
 
     actual <- as.QuantityCollapser(grid, data = dj)
-    expected <- .QuantityCollapser(
+    expected <- QuantityCollapser(
         groups = c("G1", "G2", "G1", "G2"),
         times = c(1, 1, 4, 4),
         indexes = list(c(1, 2), c(1, 3), c(4, 5), c(4, 6))
@@ -289,14 +289,14 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         subjects = c("C", "A")
     )
     actual <- as.QuantityGenerator(grid, data = dj)
-    expected <- .QuantityGenerator(
+    expected <- QuantityGeneratorSubject(
         subjects = c("C", "C", "C", "A", "A", "A"),
         times = c(100, 200, 300, 1, 2, 3)
     )
     expect_equal(actual, expected)
 
     actual <- as.QuantityCollapser(grid, data = dj)
-    expected <- .QuantityCollapser(
+    expected <- QuantityCollapser(
         groups = c("C", "C", "C", "A", "A", "A"),
         times = c(100, 200, 300, 1, 2, 3),
         indexes = list(1, 2, 3, 4, 5, 6)
@@ -315,14 +315,14 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         )
     )
     actual <- as.QuantityGenerator(grid, data = dj)
-    expected <- .QuantityGenerator(
+    expected <- QuantityGeneratorSubject(
         subjects = c("B", "B", "A", "A", "A", "C"),
         times = c(2, 4, 1, 10, 50, 6)
     )
     expect_equal(actual, expected)
 
     actual <- as.QuantityCollapser(grid, data = dj)
-    expected <- .QuantityCollapser(
+    expected <- QuantityCollapser(
         groups = c("B", "B", "A", "A", "A", "C"),
         times = c(2, 4, 1, 10, 50, 6),
         indexes = list(1, 2, 3, 4, 5, 6)
@@ -339,7 +339,7 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         length.out = 4
     )
     actual <- as.QuantityGenerator(grid, data = dj)
-    expected <- .QuantityGenerator(
+    expected <- QuantityGeneratorSubject(
         subjects = c("D", "D", "D", "D", "A", "A", "A", "A"),
         times = c(
             seq(1000, 3000, length.out = 4),
@@ -349,7 +349,7 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     expect_equal(actual, expected)
 
     actual <- as.QuantityCollapser(grid, data = dj)
-    expected <- .QuantityCollapser(
+    expected <- QuantityCollapser(
         groups = expected@subjects,
         times = expected@times,
         indexes = as.list(seq_along(expected@times))

@@ -54,7 +54,7 @@ as.QuantityGenerator.GridManual <- function(object, data, ...) {
         msg = "All subject names must be in the `DataSubject` object"
     )
     lens <- vapply(object@spec, length, numeric(1))
-    .QuantityGenerator(
+    QuantityGeneratorSubject(
         times = unlist(object@spec, use.names = FALSE),
         subjects = rep(names(object@spec), lens)
     )

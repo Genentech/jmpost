@@ -27,62 +27,27 @@ setOldClass("CmdStanMCMC")
 
 
 #' @rdname generateQuantities
-#' @param generator ([`QuantityGenerator`])\cr object that specifies which subjects and time points
+#' @param generator (`QuantityGenerator`)\cr object that specifies which subjects and time points
 #' to calculate the quantities at
 #' @param type (`character`)\cr type of quantities to be generated, must be either "survival" or
 #' "longitudinal".
 #' @export
 generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 
-    data <- append(
-        as_stan_list(object@data),
-        as_stan_list(object@model@parameters)
-    )
-
-    times <- generator@times
+    data <- as_stan_list(object@data) |>
+        append(as_stan_list(object@model@parameters)) |>
+        append(as_stan_list(generator, data = object@data))
 
     assert_that(
         length(type) == 1,
         type %in% c("survival", "longitudinal")
     )
 
-    # If `arms` have been provided assume that we are generating population
-    # quantities and not individual subject quantities
-    if (length(generator@arms)) {
-
-        data[["gq_n_quant"]] <- length(generator@arms)
-        data[["gq_long_pop_arm_index"]] <- data$arm_to_index[generator@arms]
-        data[["gq_long_pop_study_index"]] <- data$study_to_index[generator@studies]
-        assert_that(
-            length(generator@arms) == length(generator@studies),
-            length(generator@arms) == length(times)
-        )
-    } else if (length(generator@subjects)) {
-        subjects <- generator@subjects
-        data[["gq_pt_index"]] <- data$subject_to_index[as.character(subjects)]
-        data[["gq_n_quant"]] <- length(subjects)
-
-        # dummy pop indexes in order for stan code to actualy compile. In this setting
-        # this matrix isn't actually used so doesn't matter what these values are
-        # but don't want to have to burden individual longitudinal models with the
-        # conditional logic to check if they are generating population quantities or not
-        data[["gq_long_pop_arm_index"]] <- rep(1, length(subjects))
-        data[["gq_long_pop_study_index"]] <- rep(1, length(subjects))
-        assert_that(
-            length(subjects) == length(times),
-            all(subjects %in% names(data$subject_to_index))
-        )
-    } else {
-        stop("something went wrong")
-    }
-
-    data[["gq_times"]] <- times
-
     quant_stanobj <- read_stan("base/quantities.stan") |>
         decorated_render(
             include_gq_survival_idv = (type == "survival"),
-            include_gq_longitudinal_idv = (type == "longitudinal") & !length(generator@arms),
-            include_gq_longitudinal_pop = (type == "longitudinal") & length(generator@arms)
+            include_gq_longitudinal_idv = (type == "longitudinal") & is(generator, "QuantityGeneratorSubject"),
+            include_gq_longitudinal_pop = (type == "longitudinal") & is(generator, "QuantityGeneratorPopulation")
         ) |>
         StanModule()
 

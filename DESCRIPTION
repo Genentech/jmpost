@@ -92,6 +92,8 @@ Collate:
     'LongitudinalRandomSlope.R'
     'LongitudinalSteinFojo.R'
     'Promise.R'
+    'QuantityGeneratorPopulation.R'
+    'QuantityGeneratorSubject.R'
     'SimGroup.R'
     'SimJointData.R'
     'SimLongitudinal.R'
