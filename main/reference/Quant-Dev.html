@@ -34,12 +34,6 @@ and slots of these objects/methods. For the full implementation details please s
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -79,8 +73,6 @@ and slots of these objects/methods. For the full implementation details please s
 <span></span>
 <span><span class="fu">as.QuantityCollapser</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">QuantityGenerator</span><span class="op">(</span><span class="va">times</span>, subjects <span class="op">=</span> <span class="cn">NULL</span>, studies <span class="op">=</span> <span class="cn">NULL</span>, arms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">QuantityCollapser</span><span class="op">(</span><span class="va">times</span>, <span class="va">groups</span>, <span class="va">indexes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for GridEven</span></span>
@@ -117,7 +109,11 @@ and slots of these objects/methods. For the full implementation details please s
 <span><span class="fu">as.QuantityGenerator</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for GridPopulation</span></span>
-<span><span class="fu">as.QuantityCollapser</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">as.QuantityCollapser</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">QuantityGeneratorPopulation</span><span class="op">(</span><span class="va">times</span>, studies <span class="op">=</span> <span class="cn">NULL</span>, arms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">QuantityGeneratorSubject</span><span class="op">(</span><span class="va">times</span>, subjects <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -134,10 +130,6 @@ and slots of these objects/methods. For the full implementation details please s
 <dd><p>(<code>numeric</code>)<br> vector of time points to extract quantities at.</p></dd>
 
 
-<dt>subjects</dt>
-<dd><p>(<code>character</code>)<br> vector of subjects to extract quantities for.</p></dd>
-
-
 <dt>groups</dt>
 <dd><p>(<code>character</code>)<br> vector of labels to apply to the generated quantities.</p></dd>
 
@@ -149,6 +141,10 @@ and slots of these objects/methods. For the full implementation details please s
 
 <dt>data</dt>
 <dd><p>(<code>DataJoint</code>)<br> Survival and Longitudinal Data.</p></dd>
+
+
+<dt>subjects</dt>
+<dd><p>(<code>character</code>)<br> vector of subjects to extract quantities for.</p></dd>
 
 </dl></div>
     <div class="section level2">
