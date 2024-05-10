@@ -104,14 +104,14 @@ test_that("mirror_design_matrix() works as expected", {
     sample_cat <- function(lvls, n) {
         factor(sample(lvls, size = N, replace = TRUE), levels = lvls)
     }
-    dat <- tibble(
+    dat <- dplyr::tibble(
         trt = sample_cat(c("A", "B"), N),
         sex = sample_cat(c("M", "F"), N),
         covar1 = rnorm(N),
         covar2 = rnorm(N),
         lp =  0.6 * covar1 + -0.4 * covar2 + beta_trt[trt] + beta_sex[sex],
         lambda = 1 / 200 * exp(lp),
-        time_real = rweibullPH(N, 0.95, lambda),
+        time_real = flexsurv::rweibullPH(N, 0.95, lambda),
         cnsr = rexp(N, 1 / 300),
         event = ifelse(cnsr < time_real, 0, 1),
         time = ifelse(cnsr < time_real, cnsr, time_real)
@@ -119,7 +119,7 @@ test_that("mirror_design_matrix() works as expected", {
 
     x <- DataSurvival(
         dat,
-        Surv(time, event) ~ trt * sex + covar1 * covar2 + covar1 * sex
+        survival::Surv(time, event) ~ trt * sex + covar1 * covar2 + covar1 * sex
     )
 
 

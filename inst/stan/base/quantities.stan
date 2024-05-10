@@ -5,7 +5,7 @@ data {
     //
     int <lower=1> gq_n_quant;
 
-{% if include_gq_survival_idv -%}
+{% if include_gq_survival_idv or include_gq_longitudinal_idv -%}
     array[gq_n_quant] int<lower=1, upper=n_subjects> gq_pt_index;
 {%- endif %}
 

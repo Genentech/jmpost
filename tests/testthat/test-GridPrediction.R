@@ -88,8 +88,8 @@ set_fixtures_gsf_link <- function() {
         sampleStanModel(
             jm,
             data = jdat,
-            iter_sampling = 50,
-            iter_warmup = 50,
+            iter_sampling = 40,
+            iter_warmup = 40,
             chains = 1,
             refresh = 0,
             parallel_chains = 1

@@ -706,3 +706,14 @@ test_that("GridPopulation() doesn't work with SurvivalQuantities", {
         regex = "not supported"
     )
 })
+
+
+test_that("GridFixed() bug has been fixed", {
+    long_quantities <- LongitudinalQuantities(
+        fixtures_rs$mp,
+        grid = GridFixed(
+            subjects = c("pt_0001", "pt_0002")
+        )
+    )
+    expect_class(long_quantities, "LongitudinalQuantities")
+})
