@@ -59,7 +59,8 @@ setValidity(
         if (length(x$frm) != 3) {
             return("`formula` should be a 2 sided formula")
         }
-        if (as.character(x$frm[[2]][[1]]) != "Surv") {
+        LHS <- as.character(x$frm[[2]][[1]])
+        if (!(identical(LHS, "Surv") || identical(LHS, c("::", "survival", "Surv")))) {
             return("The LHS of `formula` should be a call to survival::Surv()")
         }
         for (v in c(x$time, x$event)) {
@@ -70,6 +71,8 @@ setValidity(
         return(TRUE)
     }
 )
+
+
 
 
 
