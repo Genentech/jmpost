@@ -3,14 +3,25 @@
 #'
 #' @param subjects (`character` or `NULL`)\cr vector of subjects to extract quantities for.
 #' If `NULL` will default to all subjects within the dataset.
+#'
 #' @param times (`numeric` or `NULL`)\cr vector of time points to extract quantities at.
 #' If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
 #' observation time (for [`LongitudinalQuantities`]) or max event time (for [`SurvivalQuantities`]).
+#'
 #' @param groups (`list`)\cr named list of subjects to extract quantities for. See Group Specification.
+#'
 #' @param spec (`list`)\cr named list of subjects to extract quantities for. The names of each
 #' element should be the required subjects with the element itself being a numeric vector of timepoints
 #' to generate the quantity at.
+#'
 #' @param length.out (`numeric`)\cr number of evenly spaced timepoints to generate quantities at.
+#'
+#' @param newdata (`data.frame`) \cr new data to generate quantities for. Must contain the same columns
+#' and factor levels of the original data used in the [`DataSurvival`] object.
+#'
+#' @param params (`list`)\cr named list of parameters to fix the longitudinal model parameters at when
+#' predicting survival quantities. See [`getPredictionNames()`] for the required parameters.
+#'
 #' @description
 #' These functions are used to specify which subjects and timepoints should be generated
 #' when calculating quantities via [`SurvivalQuantities`] and [`LongitudinalQuantities`].
@@ -31,9 +42,14 @@
 #' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
 #' between each subjects first and last longitudinal observations.
 #'
-#' - `GridPopulation()` generates quantities based on the population parameters at the
+#' - `GridPopulation()` generates longitudinal model quantities based on the population parameters at the
 #' specified time points. Generates 1 set of quantities for each distinct combination of `arm`
 #' and `study` within the [`DataSubject`] object provided to the [`JointModel`].
+#'
+#' - `GridPrediction()` generates survival quantities based on any user-defined values at the
+#' specified time points. This is useful for generating quantities for a new dataset
+#' on specific TGI model parameters. See [`getPredictionNames()`] to determine which TGI model
+#' parameters need to be defined for a given longitudinal model.
 #'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list

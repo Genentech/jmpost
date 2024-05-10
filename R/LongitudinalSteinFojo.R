@@ -147,7 +147,7 @@ linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model
     )
 }
 
-# TODO
+#' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalSteinFojo <- function(object, ...) {
     c("b", "s", "g")

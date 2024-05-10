@@ -42,6 +42,12 @@ observation time (for \code{\link{LongitudinalQuantities}}) or max event time (f
 \item{spec}{(\code{list})\cr named list of subjects to extract quantities for. The names of each
 element should be the required subjects with the element itself being a numeric vector of timepoints
 to generate the quantity at.}
+
+\item{newdata}{(\code{data.frame}) \cr new data to generate quantities for. Must contain the same columns
+and factor levels of the original data used in the \code{\link{DataSurvival}} object.}
+
+\item{params}{(\code{list})\cr named list of parameters to fix the longitudinal model parameters at when
+predicting survival quantities. See \code{\link[=getPredictionNames]{getPredictionNames()}} for the required parameters.}
 }
 \description{
 These functions are used to specify which subjects and timepoints should be generated
@@ -58,9 +64,13 @@ subject.
 \item \code{GridManual()} allows for individual timepoint specification for each subject.
 \item \code{GridEven()} generates quantities for each subject at N evenly spaced timepoints
 between each subjects first and last longitudinal observations.
-\item \code{GridPopulation()} generates quantities based on the population parameters at the
+\item \code{GridPopulation()} generates longitudinal model quantities based on the population parameters at the
 specified time points. Generates 1 set of quantities for each distinct combination of \code{arm}
 and \code{study} within the \code{\link{DataSubject}} object provided to the \code{\link{JointModel}}.
+\item \code{GridPrediction()} generates survival quantities based on any user-defined values at the
+specified time points. This is useful for generating quantities for a new dataset
+on specific TGI model parameters. See \code{\link[=getPredictionNames]{getPredictionNames()}} to determine which TGI model
+parameters need to be defined for a given longitudinal model.
 }
 }
 \section{Group Specification}{

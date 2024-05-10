@@ -113,13 +113,6 @@ SurvivalQuantities <- function(
     )
 }
 
-setValidity(
-    Class = "SurvivalQuantities",
-    method = function(object) {
-        # TODO
-        return(TRUE)
-    }
-)
 
 
 #' `as.data.frame`

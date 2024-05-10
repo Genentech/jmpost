@@ -162,7 +162,8 @@ linkIdentity.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...)
     )
 }
 
-# TODO
+
+#' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalGSF <- function(object, ...) {
     c("b", "s", "g", "phi")
