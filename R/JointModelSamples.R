@@ -36,7 +36,7 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 
     data <- as_stan_list(object@data) |>
         append(as_stan_list(object@model@parameters)) |>
-        append(as_stan_list(generator, data = object@data))
+        append(as_stan_list(generator, data = object@data, model = object@model))
 
     assert_that(
         length(type) == 1,
@@ -45,9 +45,10 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 
     quant_stanobj <- read_stan("base/quantities.stan") |>
         decorated_render(
-            include_gq_survival_idv = (type == "survival"),
             include_gq_longitudinal_idv = (type == "longitudinal") & is(generator, "QuantityGeneratorSubject"),
-            include_gq_longitudinal_pop = (type == "longitudinal") & is(generator, "QuantityGeneratorPopulation")
+            include_gq_longitudinal_pop = (type == "longitudinal") & is(generator, "QuantityGeneratorPopulation"),
+            include_gq_survival_idv = (type == "survival") & is(generator, "QuantityGeneratorSubject"),
+            include_gq_survival_pred = (type == "survival") & is(generator, "QuantityGeneratorPrediction")
         ) |>
         StanModule()
 

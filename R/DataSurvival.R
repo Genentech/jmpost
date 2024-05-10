@@ -222,3 +222,51 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
+
+#' Build design matrix for prediction data
+#'
+#' @description
+#' This function takes a `DataSurvival` object and a `data.frame` object and generates
+#' a design matrix for the `data.frame` that has the identical structure to the
+#' design matrix of the `DataSurvival` object.
+#'
+#' This is used for predicting new data using a model that was trained on a different
+#' original data source
+#'
+#' @param olddata ([`DataSurvival`]) \cr The original data to be used as a template for the new data
+#' @param newdata ([`data.frame`]) \cr The new data to be used to generate the design matrix
+#' @importFrom stats .checkMFClasses terms delete.response model.frame model.matrix
+#' @importFrom survival coxph
+#' @keywords internal
+mirror_design_matrix <- function(olddata, newdata) {
+    frm <- as_formula(olddata)
+    # Dummy model to generate a bunch of meta information that we can use to
+    # re-construct the design matrix
+    model <- coxph(data = as.data.frame(olddata), formula = frm)
+    model_terms <- delete.response(terms(model))
+    model_frame <- model.frame(
+        model_terms,
+        newdata,
+        xlev = model$xlevels
+    )
+    if (
+        !is.null(data_classes <- attr(model_terms, "dataClasses"))) {
+        .checkMFClasses(data_classes, model_frame)
+    }
+    design_mat <- model.matrix(
+        model_terms,
+        model_frame,
+        contrasts.arg = model$contrasts
+    )
+    remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
+    design_mat <- design_mat[, -remove_index, drop = FALSE]
+    rownames(design_mat) <- NULL
+    design_mat
+}
+
+
+#' @export
+as_formula.DataSurvival <- function(x, ...) {
+    vars <- extractVariableNames(x)
+    vars$frm
+}

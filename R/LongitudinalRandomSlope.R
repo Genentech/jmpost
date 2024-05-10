@@ -87,3 +87,9 @@ linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), mod
         prior = prior
     )
 }
+
+# TODO
+#' @export
+getPredictionNames.LongitudinalRandomSlope <- function(object, ...) {
+    c("intercept", "slope")
+}

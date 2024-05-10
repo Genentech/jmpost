@@ -198,6 +198,7 @@ set_fixtures_rs <- function() {
 
 }
 
+
 fixtures_gsf <- set_fixtures_gsf()
 fixtures_rs <- set_fixtures_rs()
 
@@ -630,9 +631,6 @@ test_that("GridPopulation() works as expected for GSF models", {
     expect_equal(actual$group, expected$group)
 
 })
-
-
-
 
 test_that("GridPopulation() works as expected for Longitudinal models", {
 

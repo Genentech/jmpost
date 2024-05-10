@@ -409,3 +409,20 @@ resolvePromise.default <- function(object, ...) {
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
 }
+
+# TODO
+#' @export
+getPredictionNames <- function(object, ...) {
+    UseMethod("getPredictionNames")
+}
+
+# TODO
+#' @export
+as_formula <- function(x, ...) {
+    UseMethod("as_formula")
+}
+
+#' @export
+as_formula.default <- function(x, ...) {
+    as.formula(x, ...)
+}

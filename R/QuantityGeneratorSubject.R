@@ -50,8 +50,8 @@ as_stan_list.QuantityGeneratorSubject <- function(object, data, ...) {
     # this matrix isn't actually used so doesn't matter what these values are
     # but don't want to have to burden individual longitudinal models with the
     # conditional logic to check if they are generating population quantities or not
-    ret[["gq_long_pop_arm_index"]] <- rep(1, length(object@subjects))
-    ret[["gq_long_pop_study_index"]] <- rep(1, length(object@subjects))
+    ret[["gq_long_pop_arm_index"]] <- rep(1, ret[["gq_n_quant"]])
+    ret[["gq_long_pop_study_index"]] <- rep(1, ret[["gq_n_quant"]])
 
     # Sanity checks
     assert_that(
