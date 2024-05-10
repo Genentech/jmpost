@@ -375,12 +375,15 @@ subject:
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
     grid = GridPrediction(
-        times = seq(1, 800, by = 50) / 365,
+        times = seq(1, 800, by = 50),
         newdata = dplyr::tibble(
             cov_cat = c("A", "B"),
             cov_cont = c(1.2, 2)
         ),
-        params = list(b = 50, s = 0.6, g = 0.3, phi = 0.5)
+        params = list(
+            intercept = 40,
+            slope = 0.05
+        )
     )
 )
 autoplot(surv_quantities)
