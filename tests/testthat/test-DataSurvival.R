@@ -125,11 +125,11 @@ test_that("mirror_design_matrix() works as expected", {
         dat,
         survival::Surv(time, event) ~ trt * sex + covar1 * covar2 + covar1 * sex
     )
-    expect_equal(x1, x2)
+    expect_equal(as_stan_list(x1), as_stan_list(x2))
 
     new_data <- dat |>
-        slice(5, 10) |>
-        mutate(trt = "B", sex = c("F", "M"))
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M"))
 
     new_design <- mirror_design_matrix(x2, new_data)
     old_design <- as_stan_list(x2)$os_cov_design
