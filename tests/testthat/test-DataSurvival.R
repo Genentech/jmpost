@@ -171,33 +171,33 @@ test_that("mirror_design_matrix() works as expected", {
 
     # New factor level
     new_data <- dat |>
-        slice(5, 10) |>
-        mutate(trt = "C", sex = c("F", "M"))
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "C", sex = c("F", "M"))
 
     expect_error(
-        mirror_design_matrix(x, new_data),
+        mirror_design_matrix(x1, new_data),
         regex = "trt has new level C"
     )
 
     # Missing variable
     new_data <- dat |>
-        slice(5, 10) |>
-        mutate(trt = "B", sex = c("F", "M")) |>
-        select(-covar1)
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M")) |>
+        dplyr::select(-covar1)
 
     expect_error(
-        mirror_design_matrix(x, new_data),
+        mirror_design_matrix(x1, new_data),
         regex = "'covar1' not found"
     )
 
     # Change of data type
     new_data <- dat |>
-        slice(5, 10) |>
-        mutate(trt = "B", sex = c("F", "M")) |>
-        mutate(covar1 = c("A"))
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M")) |>
+        dplyr::mutate(covar1 = c("A"))
 
     expect_error(
-        mirror_design_matrix(x, new_data),
+        mirror_design_matrix(x1, new_data),
         regex = "'covar1' was fitted with type \"numeric\" but type \"character\""
     )
 })
