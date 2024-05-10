@@ -50,9 +50,9 @@ LongitudinalQuantities <- function(
 ) {
     assert_class(object, "JointModelSamples")
     assert_class(grid, "Grid")
-    assert_class(
+    assert_that(
         !is(grid, "GridPrediction"),
-        msg = "`GridPrediction`` objects are not supported for `LongitudinalQuantities`"
+        msg = "`GridPrediction` objects are not supported for `LongitudinalQuantities`"
     )
 
     time_grid <- seq(
