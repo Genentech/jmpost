@@ -69,8 +69,8 @@ specified time points. Generates 1 set of quantities for each distinct combinati
 and \code{study} within the \code{\link{DataSubject}} object provided to the \code{\link{JointModel}}.
 \item \code{GridPrediction()} generates survival quantities based on any user-defined values at the
 specified time points. This is useful for generating quantities for a new dataset
-on specific TGI model parameters. See \code{\link[=getPredictionNames]{getPredictionNames()}} to determine which TGI model
-parameters need to be defined for a given longitudinal model.
+on specific longitudinal model parameters. See \code{\link[=getPredictionNames]{getPredictionNames()}} to determine which
+longitudinal model parameters need to be defined for a given longitudinal model.
 }
 }
 \section{Group Specification}{

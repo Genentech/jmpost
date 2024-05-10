@@ -366,9 +366,9 @@ autoplot(surv_quantities, add_km = TRUE)
 ## Predicting Survival Quantities for Hypothetical Subjects
 
 The `SurvivalQuantities()` method can also be used to predict survival quantities for hypothetical
-subjects with any arbitrary covariate and TGI model parameter values. This is done via passing a
+subjects with any arbitrary covariate and longitudinal model parameter values. This is done via passing a
 `GridPrediction()` object to the method where the `newdata` and `params` arguments are used to
-specify the desired values for the covariates and TGI model parameters respectively.
+specify the desired values for the covariates and longitudinal model parameters respectively.
 For example below we use these functions to predict the survival distribution for a hypothetical
 subject:
 ```{r}
@@ -383,7 +383,7 @@ surv_quantities <- SurvivalQuantities(
 autoplot(surv_quantities)
 ```
 
-The exact names that are required for the `params` argument (i.e. the TGI model parameters) can be
+The exact names that are required for the `params` argument (i.e. the longitudinal model parameters) can be
 found by running `getPredictionNames()` on the longitudinal model object. For example:
 ```{r}
 getPredictionNames(LongitudinalGSF())

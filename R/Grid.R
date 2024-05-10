@@ -48,8 +48,8 @@
 #'
 #' - `GridPrediction()` generates survival quantities based on any user-defined values at the
 #' specified time points. This is useful for generating quantities for a new dataset
-#' on specific TGI model parameters. See [`getPredictionNames()`] to determine which TGI model
-#' parameters need to be defined for a given longitudinal model.
+#' on specific longitudinal model parameters. See [`getPredictionNames()`] to determine which
+#' longitudinal model parameters need to be defined for a given longitudinal model.
 #'
 #' @section Group Specification:
 #' For `GridGrouped()`, `groups` must be a named list of character vectors. Each element of the list
