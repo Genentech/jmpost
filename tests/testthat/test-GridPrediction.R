@@ -280,4 +280,3 @@ test_that("getPredictionNames() works as expected", {
         c("intercept", "slope")
     )
 })
-
