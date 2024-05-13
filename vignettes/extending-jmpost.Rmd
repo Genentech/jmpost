@@ -29,6 +29,83 @@ Please note that this document is currently a work-in-progress and does not
 contain complete information for this package yet. 
 
 
+## Custom Survival Distributions
+
+Survival distributions in `jmpost` are specified via their contribution to the log-hazard
+function. Note that at present all distributions are implemented as proportional hazards
+models. This means that for any distribution that does not have the proportional hazards
+property that the distribution of any specific individual subject will not be of the same family.
+That is to say the distribution family e.g. "Log-Logistic" is just defining the baseline survival
+distribution only.
+
+Survival distributions are implemented as an S4 objects that inherit from `SurvivalModel`.
+The two main components of the `SurvivalModel` object are the `stan` and `parameters` slots.
+The `parameters` slot is a `ParametersList()` object which is used to specify the prior distributions
+of each parameter used by the survival distribution as well as for the design matrix coefficients.
+
+The `stan` slot is a `StanModule()` object which needs to define the following:
+
+1) In the `parameters` block each of the distributions parameters must be formall declared.
+
+
+2) In the `transformed parameters` block there must define a vector called `pars_os` which contains 1
+element for each parameter used by the survival distribution.
+
+
+3) In the `functions` block there must define a function called `log_h0` which returns the
+log-hazard contribution. This function must have the following signature:
+
+```stan
+matrix log_h0(matrix time, vector pars_os)
+```
+
+Where:
+- The return matrix must be of the same dimensionality as the `time` argument matrix where each 
+element is the log-hazard contribution for the corresponding timepoint in the `time` matrix.
+- The `time` matrix contains 1 row per unique subject and 1 column per timepoint for that subject
+- The `pars_os` vector is as defined from (2) above and contains the parameters for that
+particular distribution.
+
+For example the following is roughly equivalent to how the Weibull distribution is implemented:
+```R
+SurvivalWeibullPH <- function(
+    lambda = prior_gamma(2, 0.5),
+    gamma = prior_gamma(2, 0.5),
+    beta = prior_normal(0, 5)
+) {
+    stan <- StanModule("
+        functions {
+            matrix log_h0(matrix time, vector pars_os) {
+                matrix[rows(time), cols(time)] result;
+                result = log(pars_os[1]) + log(pars_os[2]) + (pars_os[2] - 1) * log(time);
+                return result;
+            }
+        }
+
+        parameters {
+            real<lower=0> sm_weibull_ph_lambda;
+            real<lower=0> sm_weibull_ph_gamma;
+        }
+
+        transformed parameters {
+            vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma]';
+        }
+    ")
+    SurvivalModel(
+        stan = stan,
+        parameters = ParameterList(
+            Parameter(name = "sm_weibull_ph_lambda", prior = lambda, size = 1),
+            Parameter(name = "sm_weibull_ph_gamma", prior = gamma, size = 1),
+            Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
+        )
+    )
+}
+```
+
+
+
+
+
 ## Custom Link Functions
 
 
