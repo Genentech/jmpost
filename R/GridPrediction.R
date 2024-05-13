@@ -34,6 +34,9 @@ as.QuantityGenerator.GridPrediction <- function(object, data, ...) {
     n_times <- length(object@times)
     n_obs <- nrow(object@newdata)
     newdata <- object@newdata
+    if (!is.null(newdata[["..new_subject.."]])) {
+        stop("newdata must not contain a column named '..new_subject..'")
+    }
     newdata[["..new_subject.."]] <- sprintf(
         "new_subject_%i",
         seq_len(nrow(newdata))

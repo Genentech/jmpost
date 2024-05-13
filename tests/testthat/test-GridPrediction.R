@@ -280,3 +280,15 @@ test_that("getPredictionNames() works as expected", {
         c("intercept", "slope")
     )
 })
+
+test_that("GridPrediction() throws an error if key column already exists", {
+    grid <- GridPrediction(
+        newdata = dplyr::tibble("..new_subject.." = 1, val = 5),
+        times = c(1, 2, 3),
+        params = list()
+    )
+    expect_error(
+        as.QuantityGenerator(grid, data = fixtures_gsf_link$jdat),
+        regex = "must not contain a column named '..new_subject..'"
+    )
+})
