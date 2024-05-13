@@ -187,7 +187,7 @@ supported in `jmpost` via the `GridPopulation()` function. What
 this means in practice though is often model and parameterisation specific.
 For example some models would
 take the median of the distribution whilst others might take the mean or set the random effects
-offset to 0. As such if you wish for your model to be compatibile with the `GridPopulation()`
+offset to 0. As such if you wish for your model to be compatible with the `GridPopulation()`
 then you need to declare and populate the `long_gq_pop_parameters` object with the following
 signature:
 ```stan
