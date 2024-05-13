@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -108,6 +102,80 @@
 <p>Please note that this document is currently a work-in-progress and
 does not contain complete information for this package yet.</p>
 <div class="section level3">
+<h3 id="custom-survival-distributions">Custom Survival Distributions<a class="anchor" aria-label="anchor" href="#custom-survival-distributions"></a>
+</h3>
+<p>Survival distributions in <code>jmpost</code> are specified via their
+contribution to the log-hazard function. Note that at present all
+distributions are implemented as proportional hazards models. This means
+that for any distribution that does not have the proportional hazards
+property that the distribution of any specific individual subject will
+not be of the same family. That is to say the distribution family
+e.g. “Log-Logistic” is just defining the baseline survival distribution
+only.</p>
+<p>Survival distributions are implemented as S4 classes that inherit
+from <code>SurvivalModel</code>. The two main components of the
+<code>SurvivalModel</code> object are the <code>stan</code> and
+<code>parameters</code> slots. The <code>parameters</code> slot is a
+<code>ParametersList()</code> object which is used to specify the prior
+distributions of each parameter used by the survival distribution as
+well as for the design matrix coefficients.</p>
+<p>The <code>stan</code> slot is a <code><a href="../reference/StanModule-class.html">StanModule()</a></code> object
+which needs to define the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>In the <code>parameters</code> block each of the distributions
+parameters must be formally declared.</p></li>
+<li><p>In the <code>transformed parameters</code> block there must
+define a vector called <code>pars_os</code> which contains one element
+for each parameter used by the survival distribution.</p></li>
+<li><p>In the <code>functions</code> block there must define a function
+called <code>log_h0</code> which returns the log-hazard contribution.
+This function must have the following signature:</p></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="dt">matrix</span> log_h0(<span class="dt">matrix</span> time, <span class="dt">vector</span> pars_os)</span></code></pre></div>
+<p>Where: - The return matrix must be of the same dimensionality as the
+<code>time</code> argument matrix where each element is the log-hazard
+contribution for the corresponding timepoint in the <code>time</code>
+matrix. - The <code>time</code> matrix contains one row per unique
+subject and one column per timepoint for that subject - The
+<code>pars_os</code> vector is as defined from (2) above and contains
+the parameters for that particular distribution.</p>
+<p>For example the following is roughly equivalent to how the Weibull
+distribution is implemented:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">SurvivalWeibullPH</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>    <span class="va">lambda</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    <span class="va">gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    <span class="va">beta</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="st">        functions {</span></span>
+<span><span class="st">            matrix log_h0(matrix time, vector pars_os) {</span></span>
+<span><span class="st">                matrix[rows(time), cols(time)] result;</span></span>
+<span><span class="st">                result = log(pars_os[1]) + log(pars_os[2]) + (pars_os[2] - 1) * log(time);</span></span>
+<span><span class="st">                return result;</span></span>
+<span><span class="st">            }</span></span>
+<span><span class="st">        }</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">        parameters {</span></span>
+<span><span class="st">            real&lt;lower=0&gt; sm_weibull_ph_lambda;</span></span>
+<span><span class="st">            real&lt;lower=0&gt; sm_weibull_ph_gamma;</span></span>
+<span><span class="st">        }</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">        transformed parameters {</span></span>
+<span><span class="st">            vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma]';</span></span>
+<span><span class="st">        }</span></span>
+<span><span class="st">    "</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/SurvivalModel-class.html">SurvivalModel</a></span><span class="op">(</span></span>
+<span>        stan <span class="op">=</span> <span class="va">stan</span>,</span>
+<span>        parameters <span class="op">=</span> <span class="fu"><a href="../reference/ParameterList-class.html">ParameterList</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="../reference/Parameter-class.html">Parameter</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sm_weibull_ph_lambda"</span>, prior <span class="op">=</span> <span class="va">lambda</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="../reference/Parameter-class.html">Parameter</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sm_weibull_ph_gamma"</span>, prior <span class="op">=</span> <span class="va">gamma</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="../reference/Parameter-class.html">Parameter</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"beta_os_cov"</span>, prior <span class="op">=</span> <span class="va">beta</span>, size <span class="op">=</span> <span class="st">"p_os_cov_design"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="custom-link-functions">Custom Link Functions<a class="anchor" aria-label="anchor" href="#custom-link-functions"></a>
 </h3>
 <p>Users can define custom link functions in several ways based upon the
@@ -135,7 +203,7 @@ define a Stan matrix with the name <code>link_function_inputs</code>
 that contains 1 row per patient and 1 column per <span class="math inline">\(\phi\)</span> parameter.</p>
 <p>For reference the following is roughly the implementation for the
 <code>LongitudinalGSF</code> model:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enableLink.LongitudinalGSF</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">transformed parameters {</span></span>
@@ -158,7 +226,7 @@ additional parameters then you can subclass the
 <code>LongitudinalGSF</code> model and override the
 <code>enableLink</code> method with the required additional parameters
 e.g.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GSFextended</span> <span class="op">&lt;-</span> <span class="kw">setClass</span><span class="op">(</span></span>
 <span>    Class <span class="op">=</span> <span class="st">"GSFextended"</span>,</span>
 <span>    contains <span class="op">=</span> <span class="st">"LongitudinalGSF"</span></span>
@@ -186,7 +254,7 @@ point to be evaluated at for that patient.</p>
 integrating these functions into the final Stan model. For reference the
 following is roughly the implementation of the dSLD link component for
 the <code>LongitudinalRandomSlope</code> model:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span></span>
 <span>  key <span class="op">=</span> <span class="st">"link_dsld"</span>,</span>
 <span>  stan <span class="op">=</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
@@ -208,7 +276,7 @@ the <code>LongitudinalRandomSlope</code> model:</p>
 <p>You can then pass these <code>LinkComponent</code> objects to the
 <code>link</code> argument of the <code>JointModel</code> constructor to
 add them to the model e.g.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>  longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -216,7 +284,7 @@ add them to the model e.g.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>If you wish to add multiple link functions then you must wrap them in
 a <code><a href="../reference/Link-class.html">Link()</a></code> object e.g.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>  longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -238,7 +306,7 @@ correct link component given their chosen link family. For example the
 of the derivative of the SLD link depending on which longitudinal model
 the user has provided. These are implemented as standard S3 methods
 e.g.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">linkDSLD.LongitudinalRandomSlope</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">prior</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="va">model</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="../reference/LinkComponent-class.html">LinkComponent</a></span><span class="op">(</span></span>
 <span>        key <span class="op">=</span> <span class="st">"link_dsld"</span>,</span>
@@ -260,7 +328,7 @@ object until within the <code>JointModel</code> constructor which will
 then call the <code>link&lt;Type&gt;</code> method again but with the
 correct model object. As an example the following is the implementation
 of the <code>linkDSLD</code> generic.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">linkDSLD</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">prior</span>, <span class="va">model</span> <span class="op">=</span> <span class="fu"><a href="../reference/PromiseLongitudinalModel-class.html">PromiseLongitudinalModel</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/UseMethod.html" class="external-link">UseMethod</a></span><span class="op">(</span><span class="st">"linkDSLD"</span>, <span class="va">model</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -275,10 +343,10 @@ of the <code>linkDSLD</code> generic.</p>
 <p>For reference the <code>JointModel</code> constructor will then
 attempt to resolve the promise by executing the provided function
 against the user provided longitudinal model object e.g.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>object<span class="sc">@</span><span class="fu">fun</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="at">prior =</span> object<span class="sc">@</span>prior,</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="at">model =</span> <span class="sc">&lt;</span>longitudinal<span class="sc">-</span>model<span class="sc">&gt;</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>object<span class="sc">@</span><span class="fu">fun</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="at">prior =</span> object<span class="sc">@</span>prior,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="at">model =</span> <span class="sc">&lt;</span>longitudinal<span class="sc">-</span>model<span class="sc">&gt;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="formatting-stan-files">Formatting Stan Files<a class="anchor" aria-label="anchor" href="#formatting-stan-files"></a>
@@ -302,25 +370,25 @@ after the opening <code>{</code> character.</li>
 any non-whitespace characters after it</li>
 </ul>
 <p>Valid:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x;</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>}       </span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="kw">parameters</span>{      </span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="dt">real</span> mu; </span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="dt">real</span> sigma;}</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>    <span class="kw">model</span> {    </span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>x ~ normal(mu, sigma);</span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>    }    </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x;</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>}       </span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="kw">parameters</span>{      </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="dt">real</span> mu; </span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="dt">real</span> sigma;}</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    <span class="kw">model</span> {    </span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>x ~ normal(mu, sigma);</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    }    </span></code></pre></div>
 <p>Invalid:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">// non-whitespace after opening `{`</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="kw">data</span> { <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x; } </span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>parameter { <span class="dt">real</span> mu;      <span class="co">// non-whitespace after opening `{`</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="dt">real</span> sigma;</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>} <span class="kw">model</span> {                 <span class="co">// non-whitespace before block name</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  x ~ normal(mu, sigma);</span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>} <span class="co">// some comment         // non-whitespace after closing `}`</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">// non-whitespace after opening `{`</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="kw">data</span> { <span class="dt">int</span> n; <span class="dt">array</span>[n] <span class="dt">real</span> x; } </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>parameter { <span class="dt">real</span> mu;      <span class="co">// non-whitespace after opening `{`</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="dt">real</span> sigma;</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>} <span class="kw">model</span> {                 <span class="co">// non-whitespace before block name</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  x ~ normal(mu, sigma);</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>} <span class="co">// some comment         // non-whitespace after closing `}`</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stan-data-objects">Stan Data Objects<a class="anchor" aria-label="anchor" href="#stan-data-objects"></a>
@@ -337,13 +405,13 @@ if the user specifies a <code>SurvivalModel</code> object to
 <h4 id="global-data-objects">Global Data Objects<a class="anchor" aria-label="anchor" href="#global-data-objects"></a>
 </h4>
 <p><strong>Number of unique subjects</strong></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subjects;</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subjects;</span></code></pre></div>
 <p><strong>Number of unique studies</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_studies;</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_studies;</span></code></pre></div>
 <p><strong>Number of unique treatment arms</strong></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_arms;</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_arms;</span></code></pre></div>
 <p><strong>Study index for each subject</strong></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_studies&gt; subject_study_index;</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_studies&gt; subject_study_index;</span></code></pre></div>
 <ul>
 <li>Note that this is sorted based upon the subject’s factor level
 within the R <code>data.frame</code>. For example lets say subject
@@ -352,7 +420,7 @@ study value has a factor level of 2 then
 <code>subject_study_index[15]</code> will be 2.</li>
 </ul>
 <p><strong>Treatment arm index for each subject</strong></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>  <span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_arms&gt; subject_arm_index;</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>  <span class="dt">array</span>[n_subjects] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=n_arms&gt; subject_arm_index;</span></code></pre></div>
 <ul>
 <li>A mirror of <code>subject_study_index</code> but for the treatment
 arm.</li>
@@ -362,40 +430,40 @@ arm.</li>
 <h4 id="survival-data-objects">Survival Data Objects<a class="anchor" aria-label="anchor" href="#survival-data-objects"></a>
 </h4>
 <p><strong>Number of events</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subject_event;</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_subject_event;</span></code></pre></div>
 <p><strong>Event/Censor Times</strong></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="dt">vector</span>[n_subjects] event_times;</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="dt">vector</span>[n_subjects] event_times;</span></code></pre></div>
 <ul>
 <li>Ordered by patient factor level</li>
 </ul>
 <p><strong>Event Index</strong></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="dt">array</span>[n_subject_event] <span class="dt">int</span> subject_event_index;</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="dt">array</span>[n_subject_event] <span class="dt">int</span> subject_event_index;</span></code></pre></div>
 <ul>
 <li>Is the index into <code>event_times</code> to identify which times
 are an event. The rest are censored.</li>
 </ul>
 <p><strong>Number of covariates for the survival model</strong></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; p_os_cov_design;</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; p_os_cov_design;</span></code></pre></div>
 <ul>
 <li>Note that this does not include an intercept term, which would
 conflict with the baseline distribution parameters.</li>
 </ul>
 <p><strong>Covariate design matrix for the survival model</strong></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="dt">matrix</span>[n_subjects, p_os_cov_design] os_cov_design;</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="dt">matrix</span>[n_subjects, p_os_cov_design] os_cov_design;</span></code></pre></div>
 <ul>
 <li>Note that this does not include an intercept term, which would
 conflict with the baseline distribution parameters.</li>
 </ul>
 <p><strong>Time &gt;0 flag</strong></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="dt">array</span>[rows(event_times)] <span class="dt">int</span> time_positive_flag;</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="dt">array</span>[rows(event_times)] <span class="dt">int</span> time_positive_flag;</span></code></pre></div>
 <p><strong>Number of times &gt;0</strong></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="dt">int</span> n_times_positive;</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="dt">int</span> n_times_positive;</span></code></pre></div>
 <p><strong>Positive time index</strong></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="dt">array</span>[n_times_positive] <span class="dt">int</span> time_positive_index</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="dt">array</span>[n_times_positive] <span class="dt">int</span> time_positive_index</span></code></pre></div>
 <p><strong>Gaussian Quadrature Integration Parameters</strong></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_nodes;</span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="dt">vector</span>[n_nodes] nodes;</span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt;[n_nodes] weights;</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_nodes;</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="dt">vector</span>[n_nodes] nodes;</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt;[n_nodes] weights;</span></code></pre></div>
 <ul>
 <li>These are the nodes and weights for the Gaussian quadrature
 integration.</li>
@@ -405,28 +473,28 @@ integration.</li>
 <h4 id="longitudinal-data-objects">Longitudinal Data Objects<a class="anchor" aria-label="anchor" href="#longitudinal-data-objects"></a>
 </h4>
 <p><strong>Total number of tumour assessments</strong></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_all;</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_all;</span></code></pre></div>
 <p><strong>Number of tumour assessments above LLoQ (Lower Limit of
 Quantification)</strong></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_obs;</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_tumour_obs;</span></code></pre></div>
 <p><strong>Number of tumour assessments below LLoQ (Lower Limit of
 Quantification)</strong></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_tumour_cens;</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_tumour_cens;</span></code></pre></div>
 <p><strong>Tumour assessments values</strong></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_value;</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_value;</span></code></pre></div>
 <p><strong>Tumour assessments time points</strong></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_time;</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="dt">vector</span>[n_tumour_all] tumour_time;</span></code></pre></div>
 <p><strong>LLoQ threshold</strong></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="dt">real</span> tumour_value_lloq;</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="dt">real</span> tumour_value_lloq;</span></code></pre></div>
 <p><strong>Individual tumour assessment index</strong></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_all] <span class="dt">int</span> subject_tumour_index;</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_all] <span class="dt">int</span> subject_tumour_index;</span></code></pre></div>
 <ul>
 <li>That is if tumour assessment 1 belongs to the patient with factor
 level 3 then <code>subject_tumour_index[1]</code> will be 3.</li>
 </ul>
 <p><strong>Tumour assessment index for observations above LLoQ (Lower
 Limit of Quantification)</strong></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_obs] <span class="dt">int</span> subject_tumour_index_obs;</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_obs] <span class="dt">int</span> subject_tumour_index_obs;</span></code></pre></div>
 <ul>
 <li>For example if only tumour assessments 3 and 5 were above the LLoQ
 then <code>subject_tumour_index_obs</code> will be
@@ -434,7 +502,7 @@ then <code>subject_tumour_index_obs</code> will be
 </ul>
 <p><strong>Tumour assessment index for observations below LLoQ (Lower
 Limit of Quantification)</strong></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_cens] <span class="dt">int</span> subject_tumour_index_cens;</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_cens] <span class="dt">int</span> subject_tumour_index_cens;</span></code></pre></div>
 <ul>
 <li>For example if only tumour assessments 1 and 2 were below the LLoQ
 then <code>subject_tumour_index_obs</code> will be
@@ -442,10 +510,10 @@ then <code>subject_tumour_index_obs</code> will be
 </ul>
 <p><strong>Sparse matrix components for patient indexes of the tumour
 assessments</strong></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_all_y;</span>
-<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_all_y[<span class="dv">1</span>]] w_mat_inds_all_y;</span>
-<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_all_y;</span>
-<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_all_y;</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_all_y;</span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_all_y[<span class="dv">1</span>]] w_mat_inds_all_y;</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_all_y;</span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_all_y;</span></code></pre></div>
 <ul>
 <li>This is the sparse matrix representation of the binary matrix that
 has one row per patient and one column per tumour assessment. That is,
@@ -460,20 +528,20 @@ representation.</li>
 </ul>
 <p><strong>Sparse matrix components for patient indexes of the tumour
 assessments above the LLoQ</strong></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_mat_inds_obs_y;</span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_obs_y[<span class="dv">1</span>]] w_mat_inds_obs_y;</span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_obs_y;</span>
-<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_obs_y;</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_mat_inds_obs_y;</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_obs_y[<span class="dv">1</span>]] w_mat_inds_obs_y;</span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_obs_y;</span>
+<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_obs_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_obs_y;</span></code></pre></div>
 <ul>
 <li>Same as above but only for the tumour assessments above the
 LLoQ.</li>
 </ul>
 <p><strong>Sparse matrix components for patient indexes of the tumour
 assessments below the LLoQ</strong></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_cens_y;</span>
-<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_cens_y[<span class="dv">1</span>]] w_mat_inds_cens_y;</span>
-<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_cens_y;</span>
-<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_cens_y;</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_cens_y;</span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_cens_y[<span class="dv">1</span>]] w_mat_inds_cens_y;</span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">2</span>]] <span class="dt">int</span> v_mat_inds_cens_y;</span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_cens_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_cens_y;</span></code></pre></div>
 <ul>
 <li>Same as above but only for the tumour assessments below the
 LLoQ.</li>
