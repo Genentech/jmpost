@@ -34,12 +34,6 @@ when calculating quantities via SurvivalQuantities and LongitudinalQuantities.">
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -85,7 +79,9 @@ when calculating quantities via <code><a href="SurvivalQuantities-class.html">Su
 <span></span>
 <span><span class="fu">GridObserved</span><span class="op">(</span>subjects <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">GridPopulation</span><span class="op">(</span>times <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">GridPopulation</span><span class="op">(</span>times <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GridPrediction</span><span class="op">(</span>times <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">newdata</span>, params <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -114,6 +110,16 @@ observation time (for <code><a href="LongitudinalQuantities-class.html">Longitud
 element should be the required subjects with the element itself being a numeric vector of timepoints
 to generate the quantity at.</p></dd>
 
+
+<dt>newdata</dt>
+<dd><p>(<code>data.frame</code>) <br> new data to generate quantities for. Must contain the same columns
+and factor levels of the original data used in the <code><a href="DataSurvival-class.html">DataSurvival</a></code> object.</p></dd>
+
+
+<dt>params</dt>
+<dd><p>(<code>list</code>)<br> named list of parameters to fix the longitudinal model parameters at when
+predicting survival quantities. See <code><a href="getPredictionNames.html">getPredictionNames()</a></code> for the required parameters.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -127,9 +133,13 @@ subject.</p></li>
 <li><p><code>GridManual()</code> allows for individual timepoint specification for each subject.</p></li>
 <li><p><code>GridEven()</code> generates quantities for each subject at N evenly spaced timepoints
 between each subjects first and last longitudinal observations.</p></li>
-<li><p><code>GridPopulation()</code> generates quantities based on the population parameters at the
+<li><p><code>GridPopulation()</code> generates longitudinal model quantities based on the population parameters at the
 specified time points. Generates 1 set of quantities for each distinct combination of <code>arm</code>
 and <code>study</code> within the <code><a href="DataSubject-class.html">DataSubject</a></code> object provided to the <code><a href="JointModel-class.html">JointModel</a></code>.</p></li>
+<li><p><code>GridPrediction()</code> generates survival quantities based on any user-defined values at the
+specified time points. This is useful for generating quantities for a new dataset
+on specific longitudinal model parameters. See <code><a href="getPredictionNames.html">getPredictionNames()</a></code> to determine which
+longitudinal model parameters need to be defined for a given longitudinal model.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="group-specification">Group Specification<a class="anchor" aria-label="anchor" href="#group-specification"></a></h2>

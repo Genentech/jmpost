@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -380,7 +374,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/Rtmp87l1Mk/model-141113c6cdaa.stan', line 483, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpRfjs77/model-144c2a3c12ee.stan', line 483, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -395,7 +389,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 6.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 6.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -544,12 +538,48 @@ patients, using the corresponding method.</p>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 </div>
 <div class="section level3">
+<h3 id="predicting-survival-quantities-for-hypothetical-subjects">Predicting Survival Quantities for Hypothetical Subjects<a class="anchor" aria-label="anchor" href="#predicting-survival-quantities-for-hypothetical-subjects"></a>
+</h3>
+<p>The <code><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities()</a></code> method can also be used to
+predict survival quantities for hypothetical subjects with any arbitrary
+covariate and longitudinal model parameter values. This is done via
+passing a <code><a href="../reference/Grid-Functions.html">GridPrediction()</a></code> object to the method where the
+<code>newdata</code> and <code>params</code> arguments are used to
+specify the desired values for the covariates and longitudinal model
+parameters respectively. For example below we use these functions to
+predict the survival distribution for a hypothetical subject:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
+<span>    <span class="va">mcmc_results</span>,</span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridPrediction</a></span><span class="op">(</span></span>
+<span>        times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">800</span>, by <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>        newdata <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>            cov_cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>            cov_cont <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.2</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            intercept <span class="op">=</span> <span class="fl">40</span>,</span>
+<span>            slope <span class="op">=</span> <span class="fl">0.05</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
+<p><img src="model_fitting_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>The exact names that are required for the <code>params</code>
+argument (i.e. the longitudinal model parameters) can be found by
+running <code><a href="../reference/getPredictionNames.html">getPredictionNames()</a></code> on the longitudinal model
+object. For example:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPredictionNames.html">getPredictionNames</a></span><span class="op">(</span><span class="fu"><a href="../reference/LongitudinalGSF-class.html">LongitudinalGSF</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "b"   "s"   "g"   "phi"</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="brier-score">Brier Score<a class="anchor" aria-label="anchor" href="#brier-score"></a>
 </h3>
 <p>The <code><a href="../reference/brierScore.html">brierScore()</a></code> method can be used to extract the Brier
 Scores (predictive performance measure) from our
 <code>SurvivalQuantities</code> object.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">400</span>, <span class="fl">800</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -573,7 +603,7 @@ changed via the <code>jmpost.prior_shrinkage</code> option e.g.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"jmpost.prior_shrinkage"</span> <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre>
 <p>If you wish to manually specify the initial values you can do so via
 the <code><a href="../reference/initialValues.html">initialValues()</a></code> function. For example:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joint_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>

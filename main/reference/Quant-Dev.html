@@ -34,12 +34,6 @@ and slots of these objects/methods. For the full implementation details please s
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -117,7 +111,15 @@ and slots of these objects/methods. For the full implementation details please s
 <span><span class="co"># S3 method for GridPopulation</span></span>
 <span><span class="fu">as.QuantityCollapser</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for GridPrediction</span></span>
+<span><span class="fu">as.QuantityGenerator</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for GridPrediction</span></span>
+<span><span class="fu">as.QuantityCollapser</span><span class="op">(</span><span class="va">object</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">QuantityGeneratorPopulation</span><span class="op">(</span><span class="va">times</span>, studies <span class="op">=</span> <span class="cn">NULL</span>, arms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">QuantityGeneratorPrediction</span><span class="op">(</span><span class="va">times</span>, newdata <span class="op">=</span> <span class="cn">NULL</span>, params <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">QuantityGeneratorSubject</span><span class="op">(</span><span class="va">times</span>, subjects <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>

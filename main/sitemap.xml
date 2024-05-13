@@ -280,6 +280,9 @@
     <loc>https://genentech.github.io/jmpost/reference/as.list.StanModule.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/as_formula.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataLongitudinal.html</loc>
   </url>
   <url>
@@ -397,6 +400,9 @@
     <loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/getPredictionNames.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc>
   </url>
   <url>
@@ -434,6 +440,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/merge.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/mirror_design_matrix.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc>
