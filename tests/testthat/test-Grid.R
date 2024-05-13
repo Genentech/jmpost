@@ -198,6 +198,7 @@ set_fixtures_rs <- function() {
 
 }
 
+
 fixtures_gsf <- set_fixtures_gsf()
 fixtures_rs <- set_fixtures_rs()
 
@@ -631,9 +632,6 @@ test_that("GridPopulation() works as expected for GSF models", {
 
 })
 
-
-
-
 test_that("GridPopulation() works as expected for Longitudinal models", {
 
     selected_times <- seq(-60, 400, by = 20)
@@ -707,4 +705,15 @@ test_that("GridPopulation() doesn't work with SurvivalQuantities", {
         ),
         regex = "not supported"
     )
+})
+
+
+test_that("GridFixed() bug has been fixed", {
+    long_quantities <- LongitudinalQuantities(
+        fixtures_rs$mp,
+        grid = GridFixed(
+            subjects = c("pt_0001", "pt_0002")
+        )
+    )
+    expect_class(long_quantities, "LongitudinalQuantities")
 })

@@ -167,6 +167,8 @@ reference:
       - sampleObservations
       - sampleSubjects
       - enableLink
+      - as_formula
+      - getPredictionNames
   
   - title: Promises
     contents:

@@ -84,7 +84,7 @@ SurvivalQuantities <- function(
 
     grid <- coalesceGridTime(grid, time_grid)
 
-    generator <- as.QuantityGenerator(grid, object@data)
+    generator <- as.QuantityGenerator(grid, data = object@data)
 
     assert_that(
         all(generator@times >= 0),
@@ -113,13 +113,6 @@ SurvivalQuantities <- function(
     )
 }
 
-setValidity(
-    Class = "SurvivalQuantities",
-    method = function(object) {
-        # TODO
-        return(TRUE)
-    }
-)
 
 
 #' `as.data.frame`

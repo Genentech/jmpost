@@ -409,3 +409,32 @@ resolvePromise.default <- function(object, ...) {
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
 }
+
+
+
+#' Get Prediction Names
+#'
+#' Utility function that returns the names of the required parameters for predicting
+#' survival quantities with [`GridPrediction`].
+#'
+#' @param object (`LongitudinalModel`) \cr A longitudinal model object
+#' @param ... Not used.
+#' @export
+getPredictionNames <- function(object, ...) {
+    UseMethod("getPredictionNames")
+}
+
+#' As Formula
+#'
+#' Utility wrapper function to convert an object to a formula.
+#' @param x (`ANY`) \cr object to convert to a formula.
+#' @param ... Not used.
+#' @export
+as_formula <- function(x, ...) {
+    UseMethod("as_formula")
+}
+
+#' @export
+as_formula.default <- function(x, ...) {
+    as.formula(x, ...)
+}
