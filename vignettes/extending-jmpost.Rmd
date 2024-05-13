@@ -45,7 +45,7 @@ of each parameter used by the survival distribution as well as for the design ma
 
 The `stan` slot is a `StanModule()` object which needs to define the following:
 
-1) In the `parameters` block each of the distributions parameters must be formall declared.
+1) In the `parameters` block each of the distributions parameters must be formally declared.
 
 
 2) In the `transformed parameters` block there must define a vector called `pars_os` which contains 1
