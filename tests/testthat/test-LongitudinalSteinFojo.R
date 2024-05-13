@@ -52,6 +52,44 @@ test_that("Non-Centralised parameterisation compiles without issues", {
 })
 
 
+
+test_that("Centralised parameterisation compiles without issues", {
+    jm <- JointModel(
+        longitudinal = LongitudinalSteinFojo(centred = TRUE),
+        survival = SurvivalExponential(),
+        link = Link(linkTTG(), linkDSLD())
+    )
+    expect_false(any(
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+    ))
+    expect_true(all(
+        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(x)
+})
+
+
+test_that("Non-Centralised parameterisation compiles without issues", {
+    jm <- JointModel(
+        longitudinal = LongitudinalSteinFojo(centred = FALSE),
+        survival = SurvivalWeibullPH(),
+        link = Link()
+    )
+    expect_true(all(
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+    ))
+    expect_false(any(
+        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(x)
+})
+
+
+
 test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())

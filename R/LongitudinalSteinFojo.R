@@ -124,7 +124,7 @@ enableLink.LongitudinalSteinFojo <- function(object, ...) {
 linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_dsld",
-        stan = StanModule("lm-sf/link_dsld.stan"),
+        stan = StanModule("lm-stein-fojo/link_dsld.stan"),
         prior = prior
     )
 }
@@ -133,7 +133,7 @@ linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ..
 linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_ttg",
-        stan = StanModule("lm-sf/link_ttg.stan"),
+        stan = StanModule("lm-stein-fojo/link_ttg.stan"),
         prior = prior
     )
 }
@@ -142,7 +142,7 @@ linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...
 linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_identity",
-        stan = StanModule("lm-sf/link_identity.stan"),
+        stan = StanModule("lm-stein-fojo/link_identity.stan"),
         prior = prior
     )
 }

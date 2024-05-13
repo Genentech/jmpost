@@ -25,7 +25,11 @@ test_that("Print method for LongitudinalGSF works as expected", {
 
 
 test_that("Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centred = TRUE))
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = TRUE),
+        survival = SurvivalWeibullPH(),
+        link = Link(linkTTG(), linkDSLD())
+    )
     expect_false(any(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -34,12 +38,16 @@ test_that("Centralised parameterisation compiles without issues", {
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
-    expect_stan_syntax(as.character(x))
+    expect_stan_syntax(x)
 })
 
 
 test_that("Non-Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centred = FALSE))
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = linkDSLD()
+    )
     expect_true(all(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -48,7 +56,7 @@ test_that("Non-Centralised parameterisation compiles without issues", {
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
-    expect_stan_syntax(as.character(x))
+    expect_stan_syntax(x)
 })
 
 
