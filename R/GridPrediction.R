@@ -22,6 +22,24 @@ GridPrediction <- function(times = NULL, newdata, params = NULL) {
         newdata = newdata
     )
 }
+setValidity(
+    "GridPrediction",
+    function(object) {
+        for (param in names(object@params)) {
+            if (length(object@params[[param]]) != 1) {
+                return(sprintf("Parameter '%s' must be length 1", param))
+            }
+        }
+        if (length(object@params) != length(names(object@params))) {
+            return("All elements of `params` must be named")
+        }
+        if (!is.null(object@newdata[["..new_subject.."]])) {
+            return("`newdata` must not contain a column named '..new_subject..'")
+        }
+        return(TRUE)
+    }
+)
+
 
 #' @rdname Quant-Dev
 #' @export
@@ -34,9 +52,6 @@ as.QuantityGenerator.GridPrediction <- function(object, data, ...) {
     n_times <- length(object@times)
     n_obs <- nrow(object@newdata)
     newdata <- object@newdata
-    if (!is.null(newdata[["..new_subject.."]])) {
-        stop("newdata must not contain a column named '..new_subject..'")
-    }
     newdata[["..new_subject.."]] <- sprintf(
         "new_subject_%i",
         seq_len(nrow(newdata))
