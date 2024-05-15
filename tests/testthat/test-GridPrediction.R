@@ -106,7 +106,90 @@ set_fixtures_gsf_link <- function() {
 
 }
 
+set_fixtures_weibull_only <- function() {
+    set.seed(739)
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(50, "Arm-A", "Study-X"),
+            SimGroup(30, "Arm-B", "Study-Y"),
+            SimGroup(30, "Arm-B", "Study-X")
+        ),
+        survival = SimSurvivalWeibullPH(
+            lambda = 1 / (400 / 365),
+            gamma = 0.95,
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = -0.1,
+                "C" = 0.5
+            ),
+            beta_cont = 0.3
+        ),
+        longitudinal = SimLongitudinalGSF(
+            times = seq(0, 4, by = 1 / 365),
+            sigma = 0.01,
+            mu_s = c(0.6, 0.4),
+            mu_g = c(0.25, 0.35),
+            mu_b = c(60, 50),
+            a_phi = c(15, 15),
+            b_phi = c(15, 15),
+            omega_b = 0.2,
+            omega_s = 0.2,
+            omega_g = 0.2,
+            link_dsld = 0,
+            link_identity = 0
+        ),
+        .silent = TRUE
+    )
+
+    dat_os <- jlist@survival
+
+    jm <- JointModel(
+        survival = SurvivalWeibullPH(
+            lambda = prior_lognormal(log(1 / (400 / 365)), 1),
+            gamma = prior_lognormal(log(0.95), 1)
+        )
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = dat_os,
+            subject = "pt",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        )
+    )
+
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 200,
+            iter_warmup = 200,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1
+        )
+    })
+
+    fixtures_weibull_only <- new.env()
+    fixtures_weibull_only$mp <- mp
+    fixtures_weibull_only$jdat <- jdat
+    fixtures_weibull_only$dat_os <- dat_os
+    fixtures_weibull_only$jlist <- jlist
+    return(fixtures_weibull_only)
+
+}
+
+
 fixtures_gsf_link <- set_fixtures_gsf_link()
+fixtures_weibull_only <- set_fixtures_weibull_only()
 
 
 test_that("GridPrediction() works as expected for Survival models", {
@@ -290,4 +373,72 @@ test_that("GridPrediction() throws an error if key column already exists", {
         ),
         regex = "'..new_subject..'"
     )
+})
+
+
+test_that("GridPrediction() works for survival only models", {
+
+    selected_times <- seq(0, 200, by = 20) / 365
+
+    new_data <- dplyr::tibble(
+        cov_cont = c(1, 2, -1),
+        cov_cat = c("A", "C", "B")
+    )
+
+    actual_quants <- SurvivalQuantities(
+        fixtures_weibull_only$mp,
+        type = "surv",
+        grid = GridPrediction(
+            times = selected_times,
+            newdata = new_data
+        )
+    )
+    actual <- summary(actual_quants) |>
+        dplyr::arrange(group, time) |>
+        dplyr::as_tibble()
+
+    # Calculate expected values by hand
+    pars_dat <- as.CmdStanMCMC(fixtures_weibull_only$mp)$draws(
+        c("beta_os_cov", "sm_weibull_ph_lambda", "sm_weibull_ph_gamma"),
+        format = "draws_df"
+    ) |>
+        dplyr::as_tibble(.name_repair = make.names) |>
+        dplyr::mutate(sample_id = seq_len(dplyr::n())) |>
+        dplyr::mutate(new_subject_1 = sm_weibull_ph_lambda * exp(
+            0 * beta_os_cov.1. +
+                0 * beta_os_cov.2. +
+                1 * beta_os_cov.3.
+        )) |>
+        dplyr::mutate(new_subject_2 = sm_weibull_ph_lambda * exp(
+            0 * beta_os_cov.1. +
+                1 * beta_os_cov.2. +
+                2 * beta_os_cov.3.
+        )) |>
+        dplyr::mutate(new_subject_3 = sm_weibull_ph_lambda * exp(
+            1 * beta_os_cov.1. +
+                0 * beta_os_cov.2. +
+                -1 * beta_os_cov.3.
+        )) |>
+        dplyr::select(gamma = sm_weibull_ph_gamma, new_subject_1, new_subject_2, new_subject_3, sample_id) |>
+        tidyr::pivot_longer(cols = starts_with("new_subject"), names_to = "group", values_to = "lambda")
+
+    expected <- tidyr::crossing(
+        pars_dat,
+        time = selected_times
+    ) |>
+        dplyr::mutate(surv = flexsurv::pweibullPH(time, shape = gamma, scale = lambda, lower.tail = FALSE)) |>
+        dplyr::group_by(time, group) |>
+        dplyr::summarise(
+            lower = quantile(surv, 0.025),
+            median = median(surv),
+            upper = quantile(surv, 0.975),
+            .groups = "drop"
+        ) |>
+        dplyr::arrange(group, time)
+
+    expect_gt(cor(actual$median, expected$median), 0.999999)
+    expect_gt(cor(actual$lower, expected$lower), 0.999999)
+    expect_gt(cor(actual$upper, expected$upper), 0.999999)
+    expect_equal(actual$time, expected$time)
+    expect_equal(actual$group, expected$group)
 })
