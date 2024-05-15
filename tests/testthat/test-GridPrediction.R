@@ -144,6 +144,7 @@ set_fixtures_weibull_only <- function() {
         .silent = TRUE
     )
 
+
     dat_os <- jlist@survival
 
     jm <- JointModel(
