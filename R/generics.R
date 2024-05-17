@@ -424,6 +424,11 @@ getPredictionNames <- function(object, ...) {
     UseMethod("getPredictionNames")
 }
 
+#' @rdname getPredictionNames
+getPredictionNames.default <- function(object, ...) {
+    NULL
+}
+
 #' As Formula
 #'
 #' Utility wrapper function to convert an object to a formula.
