@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -551,6 +545,60 @@ assessments below the LLoQ</strong></p>
 <ul>
 <li>Same as above but only for the tumour assessments below the
 LLoQ.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="global-quantity-data-objects">Global Quantity Data Objects<a class="anchor" aria-label="anchor" href="#global-quantity-data-objects"></a>
+</h4>
+<p><strong>Number of quantities to be generated</strong></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="dt">int</span> &lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; gq_n_quant;</span></code></pre></div>
+<p><strong>Assessment time for that the corresponding quantity should be
+generated at</strong></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="dt">vector</span>[gq_n_quant] gq_times;</span></code></pre></div>
+<p><strong>Patient index for each quantity</strong></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="dt">array</span>[gq_n_quant] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_subjects&gt; gq_pt_index;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridFixed()</a></code> / <code><a href="../reference/Grid-Functions.html">GridGrouped()</a></code> /
+<code><a href="../reference/Grid-Functions.html">GridObserved()</a></code> / <code><a href="../reference/Grid-Functions.html">GridManual()</a></code> only</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="survival-quantity-data-objects">Survival Quantity Data Objects<a class="anchor" aria-label="anchor" href="#survival-quantity-data-objects"></a>
+</h4>
+<p><strong>Number of link parameters</strong></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; gq_n_par;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridPrediction()</a></code> only</li>
+</ul>
+<p><strong>Matrix of link function inputs</strong></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="dt">matrix</span>[gq_n_quant, gq_n_par] gq_link_function_inputs;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridPrediction()</a></code> only</li>
+</ul>
+<p><strong>Design matrix for the survival quantity model</strong></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="dt">matrix</span>[gq_n_quant, p_os_cov_design] gq_os_cov_design;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridPrediction()</a></code> only</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="longitudinal-quantity-data-objects">Longitudinal Quantity Data Objects<a class="anchor" aria-label="anchor" href="#longitudinal-quantity-data-objects"></a>
+</h4>
+<p><strong>Arm index for each quantity</strong></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="dt">array</span> [gq_n_quant] <span class="dt">int</span> &lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_arms&gt; gq_long_pop_arm_index;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridPopulation()</a></code> only</li>
+</ul>
+<p><strong>Study index for each quantity</strong></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="dt">array</span> [gq_n_quant] <span class="dt">int</span> &lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_studies&gt; gq_long_pop_study_index;</span></code></pre></div>
+<ul>
+<li>
+<code><a href="../reference/Grid-Functions.html">GridPopulation()</a></code> only</li>
 </ul>
 </div>
 </div>
