@@ -64,7 +64,12 @@ as_stan_list.QuantityGeneratorPrediction <- function(object, data, model, ...) {
             msg = sprintf("Parameter '%s' must be length 1", nam)
         )
     }
+
     par_vals <- object@params[par_names]
+    if (length(par_vals) == 0) {
+        par_vals <- 0
+        par_names <- "null_model"
+    }
 
     ret[["gq_n_par"]] <- length(par_names)
 

@@ -25,7 +25,7 @@ GridObserved(subjects = NULL)
 
 GridPopulation(times = NULL)
 
-GridPrediction(times = NULL, newdata, params = NULL)
+GridPrediction(times = NULL, newdata, params = list())
 }
 \arguments{
 \item{subjects}{(\code{character} or \code{NULL})\cr vector of subjects to extract quantities for.
