@@ -11,13 +11,13 @@
 \usage{
 getParameters(object, ...)
 
-\method{getParameters}{StanModel}(object)
+\method{getParameters}{StanModel}(object, ...)
 
 \method{getParameters}{LinkComponent}(object, ...)
 
 \method{getParameters}{Link}(object, ...)
 
-\method{getParameters}{default}(object)
+\method{getParameters}{default}(object, ...)
 }
 \arguments{
 \item{object}{where to obtain the parameters from.}
