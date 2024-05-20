@@ -103,7 +103,7 @@ as.StanModule <- function(object, ...) {
 #'
 #' @param object where to obtain the parameters from.
 #'
-#' @keywords internal
+#' @export
 getParameters <- function(object) {
     UseMethod("getParameters")
 }
@@ -408,6 +408,9 @@ resolvePromise.default <- function(object, ...) {
 #' @export
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
+}
+enableLink.default <- function(object, ...) {
+    object
 }
 
 

@@ -114,19 +114,17 @@ for the models parameters respectively (please see the "Prior Specification" sec
 
 Unlike the survival distributions, the longitudinal models are a lot more flexible and have less
 constraints on how they are implemented. That is there aren't any specific variables or functions
-that you have to define, the Stan code for the model should be written as you would normally write
-a Stan model.
+that you need to define.
 
-That being said there are a several optional features of `jmpost` that do require some specific
-setup if you do want to enable them.
+That being said there are a several optional features of `jmpost` that do require the use specific
+interfaces if you want to enable them for your model.
 
 ### 1) `loo` integration
 
 If you want to use the `loo` package to calculate the leave-one-out cross-validation
 then you need to populate the `Ypred_log_lik` vector. This vector should contain the log-likelihood
 contribution for each individual tumour observation. This vector
-is automatically created for you and thus all your code needs to do is populate it.
-The following is an example from the `LongitudinalRandomSlope` model:
+is automatically 0-initialised, thus all your code needs to do is populate it.
 ```stan
 transformed parameters {
     Ypred_log_lik = vect_normal_log_dens(
@@ -142,13 +140,14 @@ Where:
 section below)
 - `expected_tumour_value` is the expected value of the tumour assessment for each observation
 - `lm_rs_sigma` is the standard deviation of the tumour assessment
-- `vect_normal_log_dens` is a vectorised version of the normal log-likelihood function (this is 
-opposed to Stan's inbuilt `normal_lpdf` function which sums all of the log-likelihoods together)
+- `vect_normal_log_dens` is a vectorised version of the normal log-likelihood function provided by
+`jmpost` (this is opposed to Stan's inbuilt `normal_lpdf` function which returns a single value 
+of the sum all of the log-likelihoods)
 
 ### 2) Individual Subject Generated Quantity Integration
 
 In order to calculate the individual subject generated quantities (via 
-`GridFixed()` / `GridGrouped()` / etc) you need to define a function with the signature:
+`GridFixed()` / `GridGrouped()` / etc) you need to define a Stan function with the signature:
 ```stan
 vector lm_predict_individual_patient(vector time, matrix long_gq_parameters)
 ```
@@ -160,10 +159,11 @@ Where:
 
 Likewise, the `long_gq_parameters` object also needs to be defined for the model in the generated
 quantities block as a matrix with 1 row per subject and 1 column per parameter. This structure is
-to allow for random effects models. If your model doesn't have random effects then the fixed value
-should be repeated for each subject. Subject's values should be in the same order as their factor
-levels in the `DataJoint` object.
-The following is an example from the `LongitudinalRandomSlope` model:
+to allow for models with subject specific parameters, in particular random effects models.
+If your model has the same parameters for all subjects, for example a fixed effects model,
+then the value should be repeated for each subject. Subject's values should be in the same order
+as their factor levels in the `DataJoint` object. The following is an example from the
+`LongitudinalRandomSlope` model:
 ```stan
 generated quantities {
     matrix[n_subjects, 2] long_gq_parameters;

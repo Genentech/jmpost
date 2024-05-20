@@ -34,4 +34,3 @@ Other LinkComponent:
 \code{\link{initialValues}()}
 }
 \concept{LinkComponent}
-\keyword{internal}
