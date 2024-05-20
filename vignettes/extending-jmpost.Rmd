@@ -294,6 +294,164 @@ object@fun(
 )
 ```
 
+## Custom Simulation Functions
+
+To assist with testing and debugging the joint models fitted via `jmpost` the `SimJointData`
+constructor function is provided to generate joint data from known parameters.
+
+The survival functions are best explained by an example; the following is the implementation of
+the Weibull distribution:
+
+```R
+SimSurvivalWeibullPH <- function(
+    lambda,
+    gamma,
+    time_max = 2000,
+    time_step = 1,
+    lambda_censor = 1 / 3000,
+    beta_cont = 0.2,
+    beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2)
+) {
+    SimSurvival(
+        time_max = time_max,
+        time_step = time_step,
+        lambda_censor = lambda_censor,
+        beta_cont = beta_cont,
+        beta_cat = beta_cat,
+        loghazard = function(time) {
+            log(lambda) + log(gamma) + (gamma - 1) * log(time)
+        },
+        name = "SimSurvivalWeibullPH"
+    )
+}
+```
+
+The function is a essentially a constructor function for a `SimSurvival` object. This object
+needs to have the following slots defined:
+- `time_max` - The maximum time to simulate up to
+- `time_step` - How much of a gap to leave between time points to calculate the hazard at
+- `lambda_censor` - The rate parameter of the exponential censoring distribution
+- `beta_cont` - The $\beta$ coefficient for the continuous covariate (sampled from a $N(0, 1)$ for each subject)
+- `beta_cat` - The $\beta$ coefficients for the categorical covariates (evenly sampled from `names(beta_cat)` for each subject)
+- `loghazard` - Defines the baseline log-hazard distribution
+- `name` - The name of the simulation function; only used for printing purposes
+
+For reference, the simulation functions work by sampling a cumunalative hazard limit for each subject
+and then sum up the subjects exposed hazard at each time point. Subjects are then regarded
+as having had an event at the timpoint in which their cumulative hazard exceeds the sampled limit.
+The `time_max` and `time_step` arguments are used to define the time points to calculate the hazard at.
+Smaller `time_step` values will result in a more accurate approximations but will be slower to run.
+
+Custom longitudinal simulation functions are slightly more involved. Essentially the user needs to
+define a new class which inherits from `SimLongitudinal` and then implement the 
+`sampleSubjects` and `sampleObservations` methods for the new class. The object itself should
+contain all the required parameters for the model as well as a `times` slot which is a vector of
+timepoints for observations to be generated at.
+
+The `sampleSubjects` method is responsible for sampling the subject specific parameters e.g. 
+individual parameters for a random effects model. The `sampleObservations` method is responsible
+for calculating the tumour size at each provided time point. The following is a rough example of how
+the `SimLongitudinalGSF` class is implemented:
+
+```R
+# Declare the new class
+.SimLongitudinalGSF <- setClass(
+    "SimLongitudinalGSF",
+    contains = "SimLongitudinal",
+    slots = c(
+        sigma = "numeric",
+        mu_s = "numeric",
+        mu_g = "numeric",
+        mu_b = "numeric",
+        a_phi = "numeric",
+        b_phi = "numeric",
+        omega_b = "numeric",
+        omega_s = "numeric",
+        omega_g = "numeric",
+        link_dsld = "numeric",
+        link_ttg = "numeric",
+        link_identity = "numeric"
+    )
+)
+
+# Define constructor function with sensible default values
+SimLongitudinalGSF <- function(
+    times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
+    sigma = 0.01,
+    mu_s = c(0.6, 0.4),
+    mu_g = c(0.25, 0.35),
+    mu_b = 60,
+    a_phi = c(4, 6),
+    b_phi = c(4, 6),
+    omega_b = 0.2,
+    omega_s = 0.2,
+    omega_g = 0.2,
+    link_dsld = 0,
+    link_ttg = 0,
+    link_identity = 0
+) {
+    .SimLongitudinalGSF(
+        times = times,
+        sigma = sigma,
+        mu_s = mu_s,
+        mu_g = mu_g,
+        mu_b = mu_b,
+        a_phi = a_phi,
+        b_phi = b_phi,
+        omega_b = omega_b,
+        omega_s = omega_s,
+        omega_g = omega_g,
+        link_dsld = link_dsld,
+        link_ttg = link_ttg,
+        link_identity = link_identity
+    )
+}
+
+sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
+    res <- subjects_df |>
+        dplyr::mutate(study_idx = as.numeric(.data$study)) |>
+        dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
+        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(object@mu_b[.data$study_idx]), object@omega_b)) |>
+        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
+        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g)) |>
+        dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), object@a_phi[.data$arm_idx], object@b_phi[.data$arm_idx]))
+    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
+}
+
+sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
+    times_df |>
+        dplyr::mutate(mu_sld = gsf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+        dplyr::mutate(dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+        dplyr::mutate(ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * object@sigma)) |>
+        dplyr::mutate(
+            log_haz_link =
+                (object@link_dsld * .data$dsld) +
+                (object@link_ttg * .data$ttg) +
+                (object@link_identity * .data$mu_sld)
+        )
+}
+```
+
+The `subjects_df` argument to the `sampleSubjects` method is a `data.frame` with the following columns:
+- `pt` - The subject identifier
+- `arm` - The treatment arm that the subject belongs to
+- `study` - The study that the subject belongs to
+
+Of note is that this dataset is 1 row per subject. The return value must be a `data.frame` with the
+same number of rows as the input dataset as well as the `pt`, `arm` and `study` columns. The remaining
+columns are the subject specific parameters and can have any arbitrary name.
+
+The `times_df` argument to the `sampleObservations` method is the same `data.frame` that was
+generated in the `sampleSubjects` method but duplicated once per required timepoint with an
+additional `time` column that contains said timepoint. The return value must be a `data.frame` with
+the same number of rows as the input dataset as well as the original columns
+`pt`, `arm`, `study` and `time`.
+In addition to the original columns the function must also define the following new columns:
+- `sld` - The tumour size at the given timepoint
+- `log_haz_link` - The contribution to the hazard function at that timepoint (set this to 0 if not
+defining a link function)
+
 ## Formatting Stan Files
 
 Under the hood this library works by merging multiple Stan programs together into a single
