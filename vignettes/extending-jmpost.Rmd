@@ -336,9 +336,9 @@ needs to have the following slots defined:
 - `loghazard` - Defines the baseline log-hazard distribution
 - `name` - The name of the simulation function; only used for printing purposes
 
-For reference, the simulation functions work by sampling a cumunalative hazard limit for each subject
+For reference, the simulation functions work by sampling a cumulative hazard limit for each subject
 and then sum up the subjects exposed hazard at each time point. Subjects are then regarded
-as having had an event at the timpoint in which their cumulative hazard exceeds the sampled limit.
+as having had an event at the timepoint in which their cumulative hazard exceeds the sampled limit.
 The `time_max` and `time_step` arguments are used to define the time points to calculate the hazard at.
 Smaller `time_step` values will result in a more accurate approximations but will be slower to run.
 
