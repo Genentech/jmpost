@@ -124,6 +124,7 @@ reference:
       - StanModel
       - StanModule
       - write_stan
+      - getParameters
   
   - title: Convenience Functions
     contents:
