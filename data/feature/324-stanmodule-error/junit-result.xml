@@ -1,0 +1,1077 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="DataJoint" timestamp="2024-05-20T15:39:24Z" hostname="5c2d3fd45a77" tests="36" skipped="1" failures="0" errors="0" time="1.398">
+    <testcase time="1.04" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.0169999999999999" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.0100000000000002" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00399999999999956" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00200000000000022" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00299999999999967" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00200000000000022" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00299999999999967" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00200000000000022" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00299999999999967" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.004" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.00200000000000022" classname="DataJoint" name="DataJoint_basic_usage"/>
+    <testcase time="0.0139999999999998" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.00700000000000012" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.00700000000000012" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.00599999999999978" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.00800000000000001" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.00600000000000023" classname="DataJoint" name="DataJoint_errors_if_inconsistent_subject_IDs"/>
+    <testcase time="0.0110000000000001" classname="DataJoint" name="DataJoint_sorts_handles_pre_factored_levels_correctly"/>
+    <testcase time="0.0139999999999998" classname="DataJoint" name="DataJoint_sorts_handles_pre_factored_levels_correctly"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="DataJoint_sorts_handles_pre_factored_levels_correctly"/>
+    <testcase time="0.00999999999999979" classname="DataJoint" name="DataJoint_sorts_handles_character_to_factor_levels_correctly"/>
+    <testcase time="0.00800000000000001" classname="DataJoint" name="DataJoint_sorts_handles_character_to_factor_levels_correctly"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="DataJoint_sorts_handles_character_to_factor_levels_correctly"/>
+    <testcase time="0.00999999999999979" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.004" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.00499999999999989" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.00500000000000034" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.004" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.0109999999999997" classname="DataJoint" name="subset_DataJoint_works_as_expected"/>
+    <testcase time="0.0100000000000002" classname="DataJoint" name="Error_Handling"/>
+    <testcase time="0.148" classname="DataJoint" name="DataJoint_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-DataJoint.R:515:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="DataLongitudinal" timestamp="2024-05-20T15:39:26Z" hostname="5c2d3fd45a77" tests="11" skipped="1" failures="0" errors="0" time="0.098">
+    <testcase time="0.0289999999999999" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00299999999999967" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00299999999999967" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00200000000000022" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00299999999999967" classname="DataLongitudinal" name="DataLongitudinal_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.0430000000000001" classname="DataLongitudinal" name="DataSurvival_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-DataLongitudinal.R:43:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="DataSubject" timestamp="2024-05-20T15:39:26Z" hostname="5c2d3fd45a77" tests="15" skipped="1" failures="0" errors="0" time="0.121">
+    <testcase time="0.04" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00299999999999967" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.004" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00299999999999967" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00200000000000022" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.004" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.004" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00299999999999967" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.00200000000000022" classname="DataSubject" name="DataSubject_works_as_expected"/>
+    <testcase time="0.0409999999999999" classname="DataSubject" name="DataSubject_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-DataSubject.R:46:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="DataSurvival" timestamp="2024-05-20T15:39:26Z" hostname="5c2d3fd45a77" tests="22" skipped="1" failures="0" errors="0" time="0.302">
+    <testcase time="0.02" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00299999999999967" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00200000000000022" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00299999999999967" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00800000000000001" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.004" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.004" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00199999999999978" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.00200000000000022" classname="DataSurvival" name="DataSurvival_being_rendered_to_list_is_as_expected_for_simple_inputs"/>
+    <testcase time="0.0569999999999999" classname="DataSurvival" name="DataSurvival_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-DataSurvival.R:79:5')"/>
+    </testcase>
+    <testcase time="0.13" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.0140000000000002" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.00299999999999967" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.0089999999999999" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.0130000000000003" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+    <testcase time="0.00999999999999979" classname="DataSurvival" name="mirror_design_matrix_works_as_expected"/>
+  </testsuite>
+  <testsuite name="Grid" timestamp="2024-05-20T15:39:56Z" hostname="5c2d3fd45a77" tests="41" skipped="0" failures="0" errors="0" time="214.065">
+    <testcase time="30.42" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0959999999999965" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0180000000000007" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0300000000000011" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0120000000000005" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0210000000000008" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.00900000000000034" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0150000000000006" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0169999999999959" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="0.0150000000000006" classname="Grid" name="Grid_objects_work_with_QuantityGenerator_and_QuantityCollapser"/>
+    <testcase time="42.133" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.143000000000001" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.000999999999990564" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00900000000000034" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00300000000000011" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00300000000000011" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="39.114" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00199999999999534" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00100000000000477" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00400000000000489" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.00300000000000011" classname="Grid" name="GridObservered_Constructs_correct_quantities"/>
+    <testcase time="0.0120000000000005" classname="Grid" name="subjects_to_list_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="Grid" name="subjects_to_list_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="Grid" name="subjects_to_list_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="Grid" name="subjects_to_list_works_as_expected"/>
+    <testcase time="0.00799999999999557" classname="Grid" name="coalesceGridTime_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="Grid" name="coalesceGridTime_works_as_expected"/>
+    <testcase time="0.00400000000000489" classname="Grid" name="coalesceGridTime_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="Grid" name="coalesceGridTime_works_as_expected"/>
+    <testcase time="41.429" classname="Grid" name="GridPopulation_works_as_expected_for_GSF_models"/>
+    <testcase time="0.00100000000000477" classname="Grid" name="GridPopulation_works_as_expected_for_GSF_models"/>
+    <testcase time="0.00200000000000955" classname="Grid" name="GridPopulation_works_as_expected_for_GSF_models"/>
+    <testcase time="0.0029999999999859" classname="Grid" name="GridPopulation_works_as_expected_for_GSF_models"/>
+    <testcase time="0.00200000000000955" classname="Grid" name="GridPopulation_works_as_expected_for_GSF_models"/>
+    <testcase time="30.185" classname="Grid" name="GridPopulation_works_as_expected_for_Longitudinal_models"/>
+    <testcase time="0.00200000000000955" classname="Grid" name="GridPopulation_works_as_expected_for_Longitudinal_models"/>
+    <testcase time="0.00199999999998113" classname="Grid" name="GridPopulation_works_as_expected_for_Longitudinal_models"/>
+    <testcase time="0.00300000000001432" classname="Grid" name="GridPopulation_works_as_expected_for_Longitudinal_models"/>
+    <testcase time="0.0029999999999859" classname="Grid" name="GridPopulation_works_as_expected_for_Longitudinal_models"/>
+    <testcase time="0.0100000000000193" classname="Grid" name="GridPopulation_doesn_t_work_with_SurvivalQuantities"/>
+    <testcase time="30.307" classname="Grid" name="GridFixed_bug_has_been_fixed"/>
+  </testsuite>
+  <testsuite name="GridPrediction" timestamp="2024-05-20T15:44:00Z" hostname="5c2d3fd45a77" tests="18" skipped="0" failures="0" errors="0" time="123.683">
+    <testcase time="100.609" classname="GridPrediction" name="GridPrediction_works_as_expected_for_Survival_models"/>
+    <testcase time="0.000999999999976353" classname="GridPrediction" name="GridPrediction_works_as_expected_for_Survival_models"/>
+    <testcase time="0.0010000000000332" classname="GridPrediction" name="GridPrediction_works_as_expected_for_Survival_models"/>
+    <testcase time="0.00399999999996226" classname="GridPrediction" name="GridPrediction_works_as_expected_for_Survival_models"/>
+    <testcase time="0.00200000000000955" classname="GridPrediction" name="GridPrediction_works_as_expected_for_Survival_models"/>
+    <testcase time="0.0380000000000109" classname="GridPrediction" name="GridPrediction_error_handling_works_as_expected"/>
+    <testcase time="0.0180000000000291" classname="GridPrediction" name="GridPrediction_error_handling_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="GridPrediction" name="GridPrediction_error_handling_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="GridPrediction" name="GridPrediction_error_handling_works_as_expected"/>
+    <testcase time="0.129999999999995" classname="GridPrediction" name="getPredictionNames_works_as_expected"/>
+    <testcase time="0.100000000000023" classname="GridPrediction" name="getPredictionNames_works_as_expected"/>
+    <testcase time="0.0609999999999786" classname="GridPrediction" name="getPredictionNames_works_as_expected"/>
+    <testcase time="0.0160000000000196" classname="GridPrediction" name="GridPrediction_throws_an_error_if_key_column_already_exists"/>
+    <testcase time="22.673" classname="GridPrediction" name="GridPrediction_works_for_survival_only_models"/>
+    <testcase time="0.00799999999998136" classname="GridPrediction" name="GridPrediction_works_for_survival_only_models"/>
+    <testcase time="0.00200000000000955" classname="GridPrediction" name="GridPrediction_works_for_survival_only_models"/>
+    <testcase time="0.0029999999999859" classname="GridPrediction" name="GridPrediction_works_for_survival_only_models"/>
+    <testcase time="0.00300000000004275" classname="GridPrediction" name="GridPrediction_works_for_survival_only_models"/>
+  </testsuite>
+  <testsuite name="JointModel" timestamp="2024-05-20T15:45:04Z" hostname="5c2d3fd45a77" tests="3" skipped="1" failures="0" errors="0" time="0.663">
+    <testcase time="0.5" classname="JointModel" name="JointModel_smoke_tests"/>
+    <testcase time="0.00200000000000955" classname="JointModel" name="JointModel_smoke_tests"/>
+    <testcase time="0.160999999999945" classname="JointModel" name="JointModel_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-JointModel.R:19:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="JointModelSamples" timestamp="2024-05-20T15:45:05Z" hostname="5c2d3fd45a77" tests="1" skipped="1" failures="0" errors="0" time="5.63">
+    <testcase time="5.63000000000005" classname="JointModelSamples" name="print_works_as_expected_for_JointModelSamples">
+      <skipped message="Reason: On CRAN ('test-JointModelSamples.R:5:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="Link" timestamp="2024-05-20T15:45:10Z" hostname="5c2d3fd45a77" tests="9" skipped="1" failures="0" errors="0" time="1.339">
+    <testcase time="0.0219999999999914" classname="Link" name="link_none_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="Link" name="link_none_works_as_expected"/>
+    <testcase time="0.635000000000048" classname="Link" name="link_none_works_as_expected"/>
+    <testcase time="0.291999999999973" classname="Link" name="link_none_works_as_expected"/>
+    <testcase time="0.12700000000001" classname="Link" name="Link_works_as_expected"/>
+    <testcase time="0.0330000000000155" classname="Link" name="Link_works_as_expected"/>
+    <testcase time="0.18199999999996" classname="Link" name="Link_works_as_expected"/>
+    <testcase time="0.0310000000000059" classname="Link" name="Link_works_as_expected"/>
+    <testcase time="0.0130000000000337" classname="Link" name="Link_prints_as_expected">
+      <skipped message="Reason: On CRAN ('test-Link.R:77:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="LinkComponent" timestamp="2024-05-20T15:45:12Z" hostname="5c2d3fd45a77" tests="21" skipped="1" failures="0" errors="0" time="2.846">
+    <testcase time="0.135999999999967" classname="LinkComponent" name="all_link_files_pass_stan_s_syntax_checker"/>
+    <testcase time="0.110000000000014" classname="LinkComponent" name="all_link_files_pass_stan_s_syntax_checker"/>
+    <testcase time="0.13900000000001" classname="LinkComponent" name="all_link_files_pass_stan_s_syntax_checker"/>
+    <testcase time="0.116999999999962" classname="LinkComponent" name="all_link_files_pass_stan_s_syntax_checker"/>
+    <testcase time="0.108000000000004" classname="LinkComponent" name="all_link_files_pass_stan_s_syntax_checker"/>
+    <testcase time="0.624000000000024" classname="LinkComponent" name="complete_models_with_links_pass_stan_s_syntax_checker"/>
+    <testcase time="0.896000000000015" classname="LinkComponent" name="complete_models_with_links_pass_stan_s_syntax_checker"/>
+    <testcase time="0.0209999999999582" classname="LinkComponent" name="LinkComponents_are_constructed_correctly_and_can_access_key_components"/>
+    <testcase time="0.0270000000000437" classname="LinkComponent" name="LinkComponents_are_constructed_correctly_and_can_access_key_components"/>
+    <testcase time="0.0029999999999859" classname="LinkComponent" name="LinkComponents_are_constructed_correctly_and_can_access_key_components"/>
+    <testcase time="0.146000000000015" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.130999999999972" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.117000000000019" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.0699999999999932" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.0699999999999932" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.0579999999999927" classname="LinkComponent" name="Model_specific_links_return_the_correct_stan_code"/>
+    <testcase time="0.0180000000000291" classname="LinkComponent" name="print_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-LinkComponent.R:121:5')"/>
+    </testcase>
+    <testcase time="0.0249999999999773" classname="LinkComponent" name="PromiseLinkComponents_work_as_expected"/>
+    <testcase time="0.0160000000000196" classname="LinkComponent" name="PromiseLinkComponents_work_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LinkComponent" name="PromiseLinkComponents_work_as_expected"/>
+    <testcase time="0.0110000000000241" classname="LinkComponent" name="PromiseLinkComponents_work_as_expected"/>
+  </testsuite>
+  <testsuite name="LongitudinalGSF" timestamp="2024-05-20T15:45:14Z" hostname="5c2d3fd45a77" tests="10" skipped="2" failures="0" errors="0" time="2.074">
+    <testcase time="0.113" classname="LongitudinalGSF" name="LongitudinalGSF_works_as_expected_with_default_arguments"/>
+    <testcase time="0.000999999999976353" classname="LongitudinalGSF" name="LongitudinalGSF_works_as_expected_with_default_arguments"/>
+    <testcase time="0.35899999999998" classname="LongitudinalGSF" name="Print_method_for_LongitudinalGSF_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-LongitudinalGSF.R:12:5')"/>
+    </testcase>
+    <testcase time="0.22399999999999" classname="LongitudinalGSF" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.00300000000004275" classname="LongitudinalGSF" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.579999999999984" classname="LongitudinalGSF" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.247000000000014" classname="LongitudinalGSF" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalGSF" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.538000000000011" classname="LongitudinalGSF" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.00599999999997181" classname="LongitudinalGSF" name="Can_recover_known_distributional_parameters_from_a_full_GSF_joint_model">
+      <skipped message="Reason: is_full_test() is not TRUE ('test-LongitudinalGSF.R:65:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="LongitudinalQuantiles" timestamp="2024-05-20T15:45:16Z" hostname="5c2d3fd45a77" tests="28" skipped="1" failures="0" errors="0" time="13.428">
+    <testcase time="1.24600000000004" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="1.92500000000001" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="1.38300000000004" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="LongitudinalQuantiles" name="Test_that_LongitudinalQuantities_works_as_expected"/>
+    <testcase time="1.51399999999995" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0480000000000018" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="1.19" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0130000000000337" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="0.0629999999999882" classname="LongitudinalQuantiles" name="autoplot.LongitudinalQuantities_works_as_expected"/>
+    <testcase time="1.20299999999997" classname="LongitudinalQuantiles" name="LongitudinalQuantities_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-LongitudinalQuantiles.R:86:5')"/>
+    </testcase>
+    <testcase time="2.66500000000002" classname="LongitudinalQuantiles" name="LongitudinalQuantities_can_recover_known_results"/>
+    <testcase time="2.12799999999999" classname="LongitudinalQuantiles" name="LongitudinalQuantities_correctly_subsets_patients_and_rebuilds_correct_value_for_each_sample"/>
+  </testsuite>
+  <testsuite name="LongitudinalRandomSlope" timestamp="2024-05-20T15:45:30Z" hostname="5c2d3fd45a77" tests="7" skipped="1" failures="0" errors="0" time="25.002">
+    <testcase time="0.0960000000000036" classname="LongitudinalRandomSlope" name="Print_method_for_LongitudinalRandomSlope_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-LongitudinalRandomSlope.R:4:5')"/>
+    </testcase>
+    <testcase time="7.29500000000002" classname="LongitudinalRandomSlope" name="LongitudinalRandomSlope_correctly_generates_an_intercept_per_study"/>
+    <testcase time="6.63999999999999" classname="LongitudinalRandomSlope" name="Random_Slope_Model_can_recover_known_parameter_values"/>
+    <testcase time="1.56100000000004" classname="LongitudinalRandomSlope" name="Random_Slope_Model_can_recover_known_parameter_values"/>
+    <testcase time="7.88200000000001" classname="LongitudinalRandomSlope" name="Random_Slope_Model_left_censoring_works_as_expected"/>
+    <testcase time="0.00799999999998136" classname="LongitudinalRandomSlope" name="Random_Slope_Model_left_censoring_works_as_expected"/>
+    <testcase time="1.51999999999998" classname="LongitudinalRandomSlope" name="Random_Slope_Model_left_censoring_works_as_expected"/>
+  </testsuite>
+  <testsuite name="LongitudinalSteinFojo" timestamp="2024-05-20T15:45:55Z" hostname="5c2d3fd45a77" tests="16" skipped="2" failures="0" errors="0" time="2.569">
+    <testcase time="0.108000000000004" classname="LongitudinalSteinFojo" name="LongitudinalSteinFojo_works_as_expected_with_default_arguments"/>
+    <testcase time="0.0010000000000332" classname="LongitudinalSteinFojo" name="LongitudinalSteinFojo_works_as_expected_with_default_arguments"/>
+    <testcase time="0.113" classname="LongitudinalSteinFojo" name="Print_method_for_LongitudinalSteinFojo_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-LongitudinalSteinFojo.R:12:5')"/>
+    </testcase>
+    <testcase time="0.10899999999998" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.311000000000035" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.117999999999995" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.36099999999999" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.235000000000014" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.543000000000006" classname="LongitudinalSteinFojo" name="Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.180999999999983" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.0029999999999859" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.472000000000037" classname="LongitudinalSteinFojo" name="Non_Centralised_parameterisation_compiles_without_issues"/>
+    <testcase time="0.00499999999999545" classname="LongitudinalSteinFojo" name="Can_recover_known_distributional_parameters_from_a_SF_joint_model">
+      <skipped message="Reason: is_full_test() is not TRUE ('test-LongitudinalSteinFojo.R:95:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="Parameter" timestamp="2024-05-20T15:45:57Z" hostname="5c2d3fd45a77" tests="3" skipped="1" failures="0" errors="0" time="0.038">
+    <testcase time="0.0229999999999677" classname="Parameter" name="Parameters_smoke_tests"/>
+    <testcase time="0.00300000000004275" classname="Parameter" name="Parameters_smoke_tests"/>
+    <testcase time="0.0120000000000005" classname="Parameter" name="show_works_for_Paramneter_objects">
+      <skipped message="Reason: On CRAN ('test-Parameter.R:17:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="ParameterList" timestamp="2024-05-20T15:45:57Z" hostname="5c2d3fd45a77" tests="5" skipped="1" failures="0" errors="0" time="0.055">
+    <testcase time="0.0190000000000055" classname="ParameterList" name="ParameterList_smoke_tests"/>
+    <testcase time="0.0029999999999859" classname="ParameterList" name="ParameterList_smoke_tests"/>
+    <testcase time="0.0179999999999723" classname="ParameterList" name="ParameterList_smoke_tests"/>
+    <testcase time="0.00300000000004275" classname="ParameterList" name="ParameterList_smoke_tests"/>
+    <testcase time="0.0120000000000005" classname="ParameterList" name="show_works_for_ParameterList_objects">
+      <skipped message="Reason: On CRAN ('test-ParameterList.R:53:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="Prior" timestamp="2024-05-20T15:45:58Z" hostname="5c2d3fd45a77" tests="27" skipped="1" failures="0" errors="0" time="0.329">
+    <testcase time="0.0199999999999818" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.00799999999998136" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.00300000000004275" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.0029999999999859" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.00799999999998136" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.0029999999999859" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.0910000000000082" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.0540000000000305" classname="Prior" name="Priors_work_as_expected"/>
+    <testcase time="0.0120000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.00699999999994816" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.007000000000005" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.00499999999999545" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.0029999999999859" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.00200000000000955" classname="Prior" name="Invalid_prior_parameters_are_rejected"/>
+    <testcase time="0.01400000000001" classname="Prior" name="show_works_for_Prior_objects">
+      <skipped message="Reason: On CRAN ('test-Prior.R:147:5')"/>
+    </testcase>
+    <testcase time="0.0190000000000055" classname="Prior" name="jmpost.prior_shrinkage_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="Prior" name="jmpost.prior_shrinkage_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="Prior" name="jmpost.prior_shrinkage_works_as_expected"/>
+  </testsuite>
+  <testsuite name="Quantities" timestamp="2024-05-20T15:45:58Z" hostname="5c2d3fd45a77" tests="10" skipped="1" failures="0" errors="0" time="0.092">
+    <testcase time="0.0120000000000005" classname="Quantities" name="Simple_utility_functions_work_as_expected"/>
+    <testcase time="0.0040000000000191" classname="Quantities" name="Simple_utility_functions_work_as_expected"/>
+    <testcase time="0.0029999999999859" classname="Quantities" name="Simple_utility_functions_work_as_expected"/>
+    <testcase time="0.0080000000000382" classname="Quantities" name="collapse_quantities_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="Quantities" name="collapse_quantities_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="Quantities" name="collapse_quantities_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="Quantities" name="collapse_quantities_works_as_expected"/>
+    <testcase time="0.0120000000000005" classname="Quantities" name="summary.Quantiles_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="Quantities" name="as.data.frame.Quantiles_works_as_expected"/>
+    <testcase time="0.0310000000000059" classname="Quantities" name="Quantities_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-Quantities.R:140:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SimGroup" timestamp="2024-05-20T15:45:58Z" hostname="5c2d3fd45a77" tests="7" skipped="0" failures="0" errors="0" time="0.046">
+    <testcase time="0.0169999999999959" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.00600000000002865" classname="SimGroup" name="SimGroup_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="SimGroup" name="SimGroup_works_as_expected"/>
+  </testsuite>
+  <testsuite name="SimJointData" timestamp="2024-05-20T15:45:58Z" hostname="5c2d3fd45a77" tests="10" skipped="1" failures="0" errors="0" time="0.565">
+    <testcase time="0.187000000000012" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.000999999999976353" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.0010000000000332" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.00900000000001455" classname="SimJointData" name="SimJointData_works_as_expected"/>
+    <testcase time="0.173000000000002" classname="SimJointData" name="SimJointData_leads_to_valid_DataJoint_with_almost_only_default_arguments"/>
+    <testcase time="0.182999999999993" classname="SimJointData" name="print_methods_work_as_expected">
+      <skipped message="Reason: On CRAN ('test-SimJointData.R:95:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SimLongitudinalGSF" timestamp="2024-05-20T15:45:59Z" hostname="5c2d3fd45a77" tests="17" skipped="1" failures="0" errors="0" time="0.085">
+    <testcase time="0.0179999999999723" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0100000000000477" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00899999999995771" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00199999999995271" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalGSF" name="SimLongitudinalGSF_works_as_expected"/>
+    <testcase time="0.0109999999999673" classname="SimLongitudinalGSF" name="print_methods_work_as_expected">
+      <skipped message="Reason: On CRAN ('test-SimLongitudinalGSF.R:65:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SimLongitudinalRandomSlope" timestamp="2024-05-20T15:45:59Z" hostname="5c2d3fd45a77" tests="17" skipped="1" failures="0" errors="0" time="0.209">
+    <testcase time="0.0180000000000291" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00599999999997181" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00199999999995271" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00600000000002865" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00199999999995271" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_works_as_expected"/>
+    <testcase time="0.134000000000015" classname="SimLongitudinalRandomSlope" name="SimLongitudinalRandomSlope_correctly_generates_a_dataset_with_known_parameters"/>
+    <testcase time="0.0109999999999673" classname="SimLongitudinalRandomSlope" name="print_methods_work_as_expected">
+      <skipped message="Reason: On CRAN ('test-SimLongitudinalRandomSlope.R:92:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SimLongitudinalSteinFojo" timestamp="2024-05-20T15:45:59Z" hostname="5c2d3fd45a77" tests="16" skipped="1" failures="0" errors="0" time="0.362">
+    <testcase time="0.0180000000000291" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00999999999999091" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00199999999995271" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00899999999995771" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SimLongitudinalSteinFojo" name="SimLongitudinalSteinFojo_works_as_expected"/>
+    <testcase time="0.290999999999997" classname="SimLongitudinalSteinFojo" name="print_methods_work_as_expected">
+      <skipped message="Reason: On CRAN ('test-SimLongitudinalSteinFojo.R:62:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SimSurvival" timestamp="2024-05-20T15:45:59Z" hostname="5c2d3fd45a77" tests="5" skipped="1" failures="0" errors="0" time="2.589">
+    <testcase time="0.891999999999996" classname="SimSurvival" name="SimSurvivalExponential_creates_a_dataset_with_the_correct_parameter"/>
+    <testcase time="1.67900000000003" classname="SimSurvival" name="SimSurvivalWeibullPH_creates_a_dataset_with_the_correct_parameter"/>
+    <testcase time="0.00200000000000955" classname="SimSurvival" name="SimSurvivalWeibullPH_creates_a_dataset_with_the_correct_parameter"/>
+    <testcase time="0.0029999999999859" classname="SimSurvival" name="SimSurvivalWeibullPH_creates_a_dataset_with_the_correct_parameter"/>
+    <testcase time="0.0129999999999768" classname="SimSurvival" name="print_methods_work_as_expected">
+      <skipped message="Reason: On CRAN ('test-SimSurvival.R:86:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="StanModel" timestamp="2024-05-20T15:46:02Z" hostname="5c2d3fd45a77" tests="1" skipped="1" failures="0" errors="0" time="0.022">
+    <testcase time="0.0219999999999914" classname="StanModel" name="StanModel_print_function_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-StanModel.R:11:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="StanModule" timestamp="2024-05-20T15:46:02Z" hostname="5c2d3fd45a77" tests="54" skipped="1" failures="0" errors="0" time="0.246">
+    <testcase time="0.02800000000002" classname="StanModule" name="StanModule_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-StanModule.R:3:5')"/>
+    </testcase>
+    <testcase time="0.0180000000000291" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.00199999999995271" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_read_basic_stan_programs"/>
+    <testcase time="0.0080000000000382" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.00199999999995271" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_handle_trailing_characters"/>
+    <testcase time="0.00900000000001455" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_works_with_in_line_code"/>
+    <testcase time="0.00899999999995771" classname="StanModule" name="StanModule_throws_an_error_for_1_line_blocks"/>
+    <testcase time="0.00499999999999545" classname="StanModule" name="StanModule_throws_an_error_for_1_line_blocks"/>
+    <testcase time="0.0100000000000477" classname="StanModule" name="StanModule_throws_an_error_for_code_after_the_closing_bracket"/>
+    <testcase time="0.00899999999995771" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule_can_load_vignette_example_code"/>
+    <testcase time="0.00900000000001455" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00900000000001455" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00999999999999091" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="StanModule" name="StanModule.merge_works_as_expected"/>
+    <testcase time="0.00900000000001455" classname="StanModule" name="StanModule_throws_a_warning_if_non_empty_string_generates_empty_object"/>
+  </testsuite>
+  <testsuite name="SurvivalExponential" timestamp="2024-05-20T15:46:02Z" hostname="5c2d3fd45a77" tests="2" skipped="1" failures="0" errors="0" time="6.134">
+    <testcase time="6.06200000000001" classname="SurvivalExponential" name="SurvivalExponential_can_recover_true_parameter_including_covariates_"/>
+    <testcase time="0.0719999999999459" classname="SurvivalExponential" name="Print_method_for_SurvivalExponential_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-SurvivalExponential.R:62:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SurvivalLoglogistic" timestamp="2024-05-20T15:46:08Z" hostname="5c2d3fd45a77" tests="3" skipped="1" failures="0" errors="0" time="5.795">
+    <testcase time="0.0310000000000059" classname="SurvivalLoglogistic" name="sim_os_loglogistic_is_consistant_with_flexsurv"/>
+    <testcase time="5.67900000000003" classname="SurvivalLoglogistic" name="SurvivalLogLogistic_can_recover_known_values"/>
+    <testcase time="0.0849999999999795" classname="SurvivalLoglogistic" name="Print_method_for_SurvivalLogLogistic_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-SurvivalLoglogistic.R:89:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="SurvivalQuantities" timestamp="2024-05-20T15:46:14Z" hostname="5c2d3fd45a77" tests="39" skipped="1" failures="0" errors="0" time="48.108">
+    <testcase time="31.205" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="1.94599999999997" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="1.46100000000001" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="4.90899999999999" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SurvivalQuantities" name="SurvivalQuantities_and_autoplot.SurvivalQuantities_works_as_expected"/>
+    <testcase time="1.53699999999998" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="1.25300000000004" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="1.56200000000001" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="autoplot.SurvivalSamples_works_as_expected"/>
+    <testcase time="1.488" classname="SurvivalQuantities" name="SurvivalQuantities_print_method_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-SurvivalQuantities.R:140:5')"/>
+    </testcase>
+    <testcase time="0.0819999999999936" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="1.28399999999999" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="0.0040000000000191" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="1.291" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="0.0040000000000191" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+    <testcase time="0.0029999999999859" classname="SurvivalQuantities" name="SurvivalQuantities_works_with_time_0"/>
+  </testsuite>
+  <testsuite name="SurvivalWeibullPH" timestamp="2024-05-20T15:47:02Z" hostname="5c2d3fd45a77" tests="2" skipped="1" failures="0" errors="0" time="7.14">
+    <testcase time="0.0780000000000314" classname="SurvivalWeibullPH" name="Print_method_for_SurvivalWeibullPH_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-SurvivalWeibullPH.R:4:5')"/>
+    </testcase>
+    <testcase time="7.06199999999995" classname="SurvivalWeibullPH" name="SurvivalWeibullPH_can_recover_known_values"/>
+  </testsuite>
+  <testsuite name="brierScore" timestamp="2024-05-20T15:47:09Z" hostname="5c2d3fd45a77" tests="5" skipped="0" failures="0" errors="0" time="2.326">
+    <testcase time="2.19900000000001" classname="brierScore" name="brierScore_SurvivalQuantities_returns_same_results_as_survreg"/>
+    <testcase time="0.007000000000005" classname="brierScore" name="brier_score_weight_matrix_is_correctly_calculated"/>
+    <testcase time="0.00600000000002865" classname="brierScore" name="bs_get_squared_dist_works_as_expected"/>
+    <testcase time="0.101999999999975" classname="brierScore" name="reverse_km_event_first_and_reverse_km_cen_first_work_as_expected"/>
+    <testcase time="0.0120000000000005" classname="brierScore" name="reverse_km_event_first_and_reverse_km_cen_first_work_as_expected"/>
+  </testsuite>
+  <testsuite name="compile" timestamp="2024-05-20T15:47:12Z" hostname="5c2d3fd45a77" tests="1" skipped="0" failures="0" errors="0" time="14.334">
+    <testcase time="14.334" classname="compile" name="compileStanModel_doesn_t_error_if_the_directory_doesn_t_exist"/>
+  </testsuite>
+  <testsuite name="extract_quantities" timestamp="2024-05-20T15:47:26Z" hostname="5c2d3fd45a77" tests="5" skipped="0" failures="0" errors="0" time="0.329">
+    <testcase time="0.307999999999993" classname="extract_quantities" name="extract_quantities_works_as_expected"/>
+    <testcase time="0.00999999999999091" classname="extract_quantities" name="extract_quantities_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="extract_quantities" name="extract_quantities_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="extract_quantities" name="extract_quantities_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="extract_quantities" name="extract_quantities_works_as_expected"/>
+  </testsuite>
+  <testsuite name="initialValues" timestamp="2024-05-20T15:47:26Z" hostname="5c2d3fd45a77" tests="414" skipped="0" failures="0" errors="0" time="1.728">
+    <testcase time="0.168000000000006" classname="initialValues" name="initialValues_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="initialValues_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="initialValues_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="initialValues_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="initialValues_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.0010000000000332" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.000999999999976353" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.0010000000000332" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.000999999999976353" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="ensure_initial_values_works_as_expected"/>
+    <testcase time="0.182999999999993" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00199999999995271" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00199999999995271" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00199999999995271" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00199999999995271" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00199999999995271" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00200000000000955" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.01400000000001" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.01400000000001" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00600000000002865" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0130000000000337" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00300000000004275" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0129999999999768" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00499999999999545" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0029999999999859" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.0040000000000191" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+    <testcase time="0.00399999999996226" classname="initialValues" name="intial_values_for_fixed_distributions_gives_valid_values"/>
+  </testsuite>
+  <testsuite name="jinjar_render" timestamp="2024-05-20T15:47:28Z" hostname="5c2d3fd45a77" tests="3" skipped="0" failures="0" errors="0" time="0.021">
+    <testcase time="0.0110000000000241" classname="jinjar_render" name="Basic_Jinjar_syntax_works_with_decorated_render_"/>
+    <testcase time="0.0029999999999859" classname="jinjar_render" name="Basic_Jinjar_syntax_works_with_decorated_render_"/>
+    <testcase time="0.007000000000005" classname="jinjar_render" name="Global_variables_defined_by_decorated_render_are_usable"/>
+  </testsuite>
+  <testsuite name="longitudinal_plot" timestamp="2024-05-20T15:47:28Z" hostname="5c2d3fd45a77" tests="1" skipped="1" failures="0" errors="0" time="0.228">
+    <testcase time="0.228000000000009" classname="longitudinal_plot" name="longitudinal_plot_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-longitudinal_plot.R:42:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="misc_models" timestamp="2024-05-20T15:47:28Z" hostname="5c2d3fd45a77" tests="1" skipped="0" failures="0" errors="0" time="0.721">
+    <testcase time="0.721000000000004" classname="misc_models" name="Longitudinal_Model_doesn_t_print_sampler_rejection_messages"/>
+  </testsuite>
+  <testsuite name="model_multi_chain" timestamp="2024-05-20T15:47:29Z" hostname="5c2d3fd45a77" tests="1" skipped="0" failures="0" errors="0" time="11.251">
+    <testcase time="11.251" classname="model_multi_chain" name="Can_recover_known_distribution_parameters_from_random_slope_model_when_using_multiple_chains"/>
+  </testsuite>
+  <testsuite name="options" timestamp="2024-05-20T15:47:40Z" hostname="5c2d3fd45a77" tests="4" skipped="0" failures="0" errors="0" time="0.024">
+    <testcase time="0.0130000000000337" classname="options" name="Can_alter_Gaussian_Quadrature_arguments"/>
+    <testcase time="0.0029999999999859" classname="options" name="Can_alter_Gaussian_Quadrature_arguments"/>
+    <testcase time="0.00499999999999545" classname="options" name="Can_alter_Gaussian_Quadrature_arguments"/>
+    <testcase time="0.0029999999999859" classname="options" name="Can_alter_Gaussian_Quadrature_arguments"/>
+  </testsuite>
+  <testsuite name="stan_functions" timestamp="2024-05-20T15:47:40Z" hostname="5c2d3fd45a77" tests="4" skipped="0" failures="0" errors="0" time="1.334">
+    <testcase time="0.420999999999992" classname="stan_functions" name="GSF_SLD_function_works_as_expected"/>
+    <testcase time="0.41900000000004" classname="stan_functions" name="Normal_Log_Density_functions_work_as_expected"/>
+    <testcase time="0.0169999999999959" classname="stan_functions" name="Normal_Log_Density_functions_work_as_expected"/>
+    <testcase time="0.476999999999975" classname="stan_functions" name="GSF_Identity_Link_Function_works_as_expected"/>
+  </testsuite>
+  <testsuite name="survival_plot" timestamp="2024-05-20T15:47:42Z" hostname="5c2d3fd45a77" tests="1" skipped="1" failures="0" errors="0" time="0.204">
+    <testcase time="0.204000000000008" classname="survival_plot" name="survival_plot_works_as_expected">
+      <skipped message="Reason: On CRAN ('test-survival_plot.R:66:5')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="utilities" timestamp="2024-05-20T15:47:42Z" hostname="5c2d3fd45a77" tests="32" skipped="0" failures="0" errors="0" time="0.204">
+    <testcase time="0.0219999999999914" classname="utilities" name="get_missing_rownumbers_works_as_expected"/>
+    <testcase time="0.0080000000000382" classname="utilities" name="remove_missing_rows_works_as_expected"/>
+    <testcase time="0.00599999999997181" classname="utilities" name="expand_initial_values_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="utilities" name="replace_with_lookup_works_and_sets_array_attributes_as_expected"/>
+    <testcase time="0.00900000000001455" classname="utilities" name="replace_with_lookup_asserts_sizes_as_numbers_as_expected"/>
+    <testcase time="0.00899999999995771" classname="utilities" name="replace_with_lookup_asserts_looked_up_sizes_as_numbers_as_expected"/>
+    <testcase time="0.00600000000002865" classname="utilities" name="samples_median_ci_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="utilities" name="samples_median_ci_works_as_expected"/>
+    <testcase time="0.00599999999997181" classname="utilities" name="samples_median_ci_works_with_a_custom_credibility_level"/>
+    <testcase time="0.00600000000002865" classname="utilities" name="samples_median_ci_works_with_a_custom_credibility_level"/>
+    <testcase time="0.007000000000005" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.00599999999997181" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.0149999999999864" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utilities" name="validate_time_grid_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.00300000000004275" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.00399999999996226" classname="utilities" name="expand_patients_works_as_expected"/>
+    <testcase time="0.0100000000000477" classname="utilities" name="decompose_patients_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="utilities" name="decompose_patients_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="utilities" name="decompose_patients_works_as_expected"/>
+    <testcase time="0.0050000000000523" classname="utilities" name="decompose_patients_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utilities" name="decompose_patients_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utilities" name="add_missing_stan_blocks_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utilities" name="add_missing_stan_blocks_works_as_expected"/>
+  </testsuite>
+</testsuites>
