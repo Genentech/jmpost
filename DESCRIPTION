@@ -57,7 +57,8 @@ Suggests:
     flexsurv,
     purrr,
     vdiffr,
-    prodlim
+    prodlim,
+    loo
 Config/testthat/edition: 3
 Collate:
     'DataSubject.R'

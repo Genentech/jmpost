@@ -102,9 +102,10 @@ as.StanModule <- function(object, ...) {
 #' from a model.
 #'
 #' @param object where to obtain the parameters from.
+#' @param ... additional options.
 #'
 #' @export
-getParameters <- function(object) {
+getParameters <- function(object, ...) {
     UseMethod("getParameters")
 }
 
@@ -442,6 +443,7 @@ as_formula <- function(x, ...) {
     UseMethod("as_formula")
 }
 
+#' @importFrom stats as.formula
 #' @export
 as_formula.default <- function(x, ...) {
     as.formula(x, ...)
