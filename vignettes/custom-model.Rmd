@@ -77,7 +77,7 @@ this model in a real project.
 In particular the following have been omitted from this example:
 - Handling for censored observations (e.g. observations that are below the limit of quantification)
 - Separate populations per study / arm
-- Non-centered parameterisation for the hierarchical parameters (this parameterisation leads to better
+- Non-centred parameterisation for the hierarchical parameters (this parameterisation leads to better
 performance if you have small numbers of observations per each subject).
 - Handling negative observation time (e.g. observations that are taken before the start of the study)
 
