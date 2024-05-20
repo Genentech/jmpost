@@ -1,4 +1,3 @@
-
 functions {
     // Provide definition for the dsld link function
     matrix link_dsld_contrib(matrix time, matrix link_function_inputs) {

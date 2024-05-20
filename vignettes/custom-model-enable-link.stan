@@ -1,4 +1,3 @@
-
 transformed parameters {
     // Define matrix required for link functions
     matrix[n_subjects, 3] link_function_inputs;
