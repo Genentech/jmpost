@@ -655,3 +655,62 @@ array[n_mat_inds_cens_y[2]] int v_mat_inds_cens_y;
 array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
 ```
 - Same as above but only for the tumour assessments below the LLoQ.
+
+
+### Global Quantity Data Objects
+
+
+**Number of quantities to be generated**
+```stan
+int <lower=1> gq_n_quant;
+```
+
+**Assessment time for that the corresponding quantity should be generated at**
+```stan
+vector[gq_n_quant] gq_times;
+```
+
+**Patient index for each quantity**
+```stan
+array[gq_n_quant] int<lower=1, upper=n_subjects> gq_pt_index;
+```
+- `GridFixed()` / `GridGrouped()` / `GridObserved()` / `GridManual()` only
+
+
+### Survival Quantity Data Objects
+
+
+**Number of link parameters**
+```stan
+int<lower=0> gq_n_par;
+```
+- `GridPrediction()` only
+
+
+**Matrix of link function inputs**
+```stan
+matrix[gq_n_quant, gq_n_par] gq_link_function_inputs;
+```
+- `GridPrediction()` only
+
+
+**Design matrix for the survival quantity model**
+```stan
+matrix[gq_n_quant, p_os_cov_design] gq_os_cov_design;
+```
+- `GridPrediction()` only
+
+
+### Longitudinal Quantity Data Objects
+
+**Arm index for each quantity**
+```stan
+array [gq_n_quant] int <lower=1, upper=n_arms> gq_long_pop_arm_index;
+```
+- `GridPopulation()` only
+
+**Study index for each quantity**
+```stan
+array [gq_n_quant] int <lower=1, upper=n_studies> gq_long_pop_study_index;
+```
+- `GridPopulation()` only

@@ -15,7 +15,7 @@ NULL
 )
 #' @rdname Grid-Functions
 #' @export
-GridPrediction <- function(times = NULL, newdata, params = NULL) {
+GridPrediction <- function(times = NULL, newdata, params = list()) {
     .GridPrediction(
         times = times,
         params = params,

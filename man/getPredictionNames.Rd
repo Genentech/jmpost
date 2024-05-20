@@ -3,12 +3,15 @@
 %   R/LongitudinalRandomSlope.R, R/LongitudinalSteinFojo.R
 \name{getPredictionNames}
 \alias{getPredictionNames}
+\alias{getPredictionNames.default}
 \alias{getPredictionNames.LongitudinalGSF}
 \alias{getPredictionNames.LongitudinalRandomSlope}
 \alias{getPredictionNames.LongitudinalSteinFojo}
 \title{Get Prediction Names}
 \usage{
 getPredictionNames(object, ...)
+
+\method{getPredictionNames}{default}(object, ...)
 
 \method{getPredictionNames}{LongitudinalGSF}(object, ...)
 
