@@ -238,7 +238,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         ),
         longitudinal = SimLongitudinalSteinFojo(
             times = c(
-                1, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1100, 1300, 1500
+                1, 100, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900,
+                1100, 1300, 1500, 1800
             ) / 365,
             sigma = 0.005,
             mu_s = c(0.2, 0.25),
