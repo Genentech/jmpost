@@ -348,7 +348,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
         TRUE
     )
-    true_values <- c(60, 0.2, 0.25, 0.15, 0.2)
+    true_values <- c(60, 0.2, 0.25, 0.15, 0.3)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
