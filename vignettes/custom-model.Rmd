@@ -41,13 +41,13 @@ $$
 
 Where:
 * $i$ is the subject index
-* $y_{i}(t)$ is the observed tumour size measurements for subject $i$ at time $t$
-* $\mu_i(t)$ is the expected tumour size measurements for subject $i$ at time $t$
-* $b_i$ is the subject baseline tumour size measurements
+* $y_{i}(t)$ is the observed tumour size measurement for subject $i$ at time $t$
+* $\mu_i(t)$ is the expected tumour size measurement for subject $i$ at time $t$
+* $b_i$ is the subject baseline tumour size measurement
 * $s_i$ is the subject kinetics shrinkage parameter
 * $g_i$ is the subject kinetics tumour growth parameter
 * $\mu_{\theta}$ is the population mean for parameter $\theta$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta}$ is the population standard deviation for parameter $\theta$.
 
 **Survival Model**:
 $$
@@ -61,7 +61,7 @@ Where:
 - $G(.)$ is a link function that maps the subjects tumour growth parameters to a contribution to
 the log-hazard function
 - $X_i$ is the subjects covariate design matrix
-- $\beta$ is the corresponding coefficients to scale the design matrix covariates
+- $\beta$ is the corresponding coefficients vector to scale the design matrix covariates
 contribution to the log-hazard function
 
 For this example we will just consider the derivative of the growth function as the link function,
@@ -71,10 +71,11 @@ G(t \mid b_i, s_i, g_i) = -s_i b_i e^{-s_i t} + g_i
 $$
 
 
-To keep the example simple a number of features that have been implemented in the packages
+To keep the example simple, a number of features that have been implemented in the package's  
 internal models will be skipped; you may wish to consider adding these if implementing
 this model in a real project.
 In particular the following have been omitted from this example:
+
 - Handling for censored observations (e.g. observations that are below the limit of quantification)
 - Separate populations per study / arm
 - Non-centred parameterisation for the hierarchical parameters (this parameterisation leads to better
@@ -94,7 +95,7 @@ library(loo)
 
 In order to be confident that our model is working correctly we will first generate some simulated
 data. This will allow us to compare the true parameter values with the estimated parameter values.
-This can be done using the `sim_data` function as follows:
+This can be done using the `SimJointData` constructor function as follows:
 
 ```{R}
 # Define our simulation parameters + object
@@ -137,7 +138,7 @@ sampleObservations.SimWang <- function(object, times_df) {
 }
 
 
-# Generate Simulated data
+# Generate simulated data
 set.seed(1622)
 joint_data_sim <- SimJointData(
     design = list(SimGroup(80, "Arm-A", "Study-X")),
@@ -168,7 +169,7 @@ dat_lm <- joint_data_sim@longitudinal
 dat_os <- joint_data_sim@survival
 
 
-# Select 5 random subjects to plot
+# Select 6 random subjects to plot
 dat_lm_plot <- dat_lm |>
     filter(pt %in% sample(dat_os$pt, 6))
 
@@ -226,9 +227,9 @@ longmodel <- WangModel(
 )
 ```
 
-In particular note that the `parameters` argument is used to specify the priors for the model and
+Please note that the `parameters` argument is used to specify the priors for the model and
 that the `name` argument for the `Parameter`'s objects must match the name of the parameter used
-within the corresponding Stan code
+within the corresponding Stan code.
 
 The `StanModule` object contains all of the stan code used to implement the model. For this
 particular model the Stan code specified in the `custom-model.stan` file is as follows:
