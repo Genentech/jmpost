@@ -7,15 +7,11 @@
 \alias{StanModule}
 \title{\code{StanModule} Object and Constructor Function}
 \usage{
-StanModule(x = "", priors = list(), inits = list(), ...)
+StanModule(x = "", ...)
 }
 \arguments{
 \item{x}{(\code{string})\cr file path to a Stan program or a character vector
 of Stan code to be parsed.}
-
-\item{priors}{(\code{list})\cr the prior specifications.}
-
-\item{inits}{(\code{list})\cr the initial values.}
 
 \item{...}{additional arguments passed to the constructor.}
 }
@@ -38,10 +34,6 @@ of Stan code to be parsed.}
 \item{\code{model}}{(\code{character})\cr the \code{model} block.}
 
 \item{\code{generated_quantities}}{(\code{character})\cr the \code{generated_quantities} block.}
-
-\item{\code{priors}}{(\code{list})\cr the prior specifications.}
-
-\item{\code{inits}}{(\code{list})\cr the initial values.}
 }}
 
 \seealso{
