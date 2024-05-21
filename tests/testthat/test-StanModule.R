@@ -195,3 +195,11 @@ test_that("StanModule.merge works as expected", {
     expect_equal(x@generated_quantities, c("    int w;", "    int z;"))
     expect_equal(x@functions, "")
 })
+
+
+test_that("StanModule() throws a warning if non-empty string generates empty object", {
+    expect_warning(
+        StanModule("adawd.stan"),
+        regex = "empty StanModule"
+    )
+})
