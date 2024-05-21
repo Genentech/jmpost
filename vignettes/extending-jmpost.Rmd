@@ -301,8 +301,35 @@ constructor function is provided to generate joint data from known parameters.
 
 ### Custom Survival Simulation Functions
 
-The survival functions are best explained by an example; the following is the implementation of
-the Weibull distribution:
+Before describing how to implement custom survival functions it is important to understand how
+the survival simulation framework works more generally in `jmpost`.
+To simulate event times the simulation function takes advantage of the following details:
+
+$$
+\begin{align}
+S(t) &\sim U(0, 1) \\
+S(t) &= exp\left(-\int_0^th(u)\ du\right)
+\end{align}
+$$
+
+That is, it first samples a survival probability $p$ from a uniform distribution and then calculates
+the required event time $t$ to produce that survival probability. The current implementation
+approximates the integral by sequentially summing up the hazard after a given step size and
+declaring an event once the sampled probability value has been exceeded. This gives rise to two
+key parameters that need to be defined by the user:
+
+- `time_max`: The maximum time to simulate up to (events occouring after this time are censored)
+- `time_step`: How much of a gap to leave between time points to calculate the hazard at
+
+Note that there is currently an outstanding development item to convert this to use numerical 
+integration to remove the need for these parameters
+(see [issue #329](https://github.com/Genentech/jmpost/issues/329)).
+
+
+Custom survival distribution simulations are implemented as classes that inherit from `SimSurvival`
+providing key parameter values and in particular provide a log-hazard function that will be
+used as described above in combination with the covariate and link contributions.
+The following is rough example of how the Weibull distribution has been implemented:
 
 ```R
 SimSurvivalWeibullPH <- function(
@@ -327,22 +354,16 @@ SimSurvivalWeibullPH <- function(
     )
 }
 ```
+That is, the function is a essentially a constructor function for a `SimSurvival` object. This object
+then has the following slots defined:
 
-The function is a essentially a constructor function for a `SimSurvival` object. This object
-needs to have the following slots defined:
-
-- `time_max`: The maximum time to simulate up to
-- `time_step`: How much of a gap to leave between time points to calculate the hazard at
+- `time_max`: The maximum time to simulate up to (as explained mentioned above)
+- `time_step`: How much of a gap to leave between time points to calculate the hazard at (as explained mentioned above)
 - `beta_cont`: The $\beta$ coefficient for the continuous covariate (sampled from a standard normal distribution for each subject)
 - `beta_cat`: The $\beta$ coefficients for the categorical covariates (evenly sampled from `names(beta_cat)` for each subject)
 - `loghazard`: The log-hazard function of the baseline survival distribution
 - `name`: The name of the simulation function; only used for printing purposes
 
-For reference, the simulation functions work by sampling a cumulative hazard limit for each subject
-and then sum up the subjects exposed hazard at each time point. Subjects are then regarded
-as having had an event at the timepoint in which their cumulative hazard exceeds the sampled limit.
-The `time_max` and `time_step` arguments are used to define the time points to calculate the hazard at.
-Smaller `time_step` values will result in a more accurate approximations but will be slower to run.
 
 ### Custom Longitudinal Simulation Functions
 
