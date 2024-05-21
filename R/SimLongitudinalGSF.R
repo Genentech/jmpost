@@ -19,6 +19,7 @@ NULL
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
+#' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -32,6 +33,7 @@ NULL
 #' @slot link_dsld (`numeric`)\cr See arguments.
 #' @slot link_ttg (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
+#' @slot link_growth (`numeric`)\cr See arguments.
 #' @family SimLongitudinal
 #' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
@@ -50,7 +52,8 @@ NULL
         omega_g = "numeric",
         link_dsld = "numeric",
         link_ttg = "numeric",
-        link_identity = "numeric"
+        link_identity = "numeric",
+        link_growth = "numeric"
     )
 )
 
@@ -69,7 +72,8 @@ SimLongitudinalGSF <- function(
     omega_g = 0.2,
     link_dsld = 0,
     link_ttg = 0,
-    link_identity = 0
+    link_identity = 0,
+    link_growth = 0
 ) {
     .SimLongitudinalGSF(
         times = times,
@@ -84,7 +88,8 @@ SimLongitudinalGSF <- function(
         omega_g = omega_g,
         link_dsld = link_dsld,
         link_ttg = link_ttg,
-        link_identity = link_identity
+        link_identity = link_identity,
+        link_growth = link_growth
     )
 }
 
@@ -102,7 +107,12 @@ setValidity(
             return("The parameters `mu_s`, `mu_g`, `a_phi`, and `b_phi` must have the same length.")
         }
 
-        for (par in c("sigma", "omega_b", "omega_s", "omega_g", "link_dsld", "link_ttg", "link_identity")) {
+        len_1_pars <- c(
+            "sigma", "omega_b", "omega_s", "omega_g",
+            "link_dsld", "link_ttg", "link_identity",
+            "link_growth"
+        )
+        for (par in len_1_pars) {
             if (length(slot(object, par)) != 1) {
                 return(sprintf("The `%s` parameter must be a length 1 numeric.", par))
             }
@@ -129,7 +139,8 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
-                (object@link_identity * .data$mu_sld)
+                (object@link_identity * .data$mu_sld) +
+                (object@link_growth * .data$psi_g)
         )
 }
 

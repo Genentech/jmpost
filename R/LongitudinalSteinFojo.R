@@ -147,6 +147,15 @@ linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model
     )
 }
 
+#' @export
+linkGrowth.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-stein-fojo/link_growth.stan"),
+        prior = prior
+    )
+}
+
 #' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalSteinFojo <- function(object, ...) {

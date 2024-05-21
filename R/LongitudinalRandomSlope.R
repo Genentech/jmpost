@@ -88,6 +88,14 @@ linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), mod
     )
 }
 
+#' @export
+linkGrowth.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-random-slope/link_growth.stan"),
+        prior = prior
+    )
+}
 
 #' @rdname getPredictionNames
 #' @export
