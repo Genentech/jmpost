@@ -299,6 +299,8 @@ object@fun(
 To assist with testing and debugging the joint models fitted via `jmpost` the `SimJointData`
 constructor function is provided to generate joint data from known parameters.
 
+### Custom Survival Simulation Functions
+
 The survival functions are best explained by an example; the following is the implementation of
 the Weibull distribution:
 
@@ -328,19 +330,21 @@ SimSurvivalWeibullPH <- function(
 
 The function is a essentially a constructor function for a `SimSurvival` object. This object
 needs to have the following slots defined:
-- `time_max` - The maximum time to simulate up to
-- `time_step` - How much of a gap to leave between time points to calculate the hazard at
-- `lambda_censor` - The rate parameter of the exponential censoring distribution
-- `beta_cont` - The $\beta$ coefficient for the continuous covariate (sampled from a $N(0, 1)$ for each subject)
-- `beta_cat` - The $\beta$ coefficients for the categorical covariates (evenly sampled from `names(beta_cat)` for each subject)
-- `loghazard` - Defines the baseline log-hazard distribution
-- `name` - The name of the simulation function; only used for printing purposes
+
+- `time_max`: The maximum time to simulate up to
+- `time_step`: How much of a gap to leave between time points to calculate the hazard at
+- `beta_cont`: The $\beta$ coefficient for the continuous covariate (sampled from a standard normal distribution for each subject)
+- `beta_cat`: The $\beta$ coefficients for the categorical covariates (evenly sampled from `names(beta_cat)` for each subject)
+- `loghazard`: The log-hazard function of the baseline survival distribution
+- `name`: The name of the simulation function; only used for printing purposes
 
 For reference, the simulation functions work by sampling a cumulative hazard limit for each subject
 and then sum up the subjects exposed hazard at each time point. Subjects are then regarded
 as having had an event at the timepoint in which their cumulative hazard exceeds the sampled limit.
 The `time_max` and `time_step` arguments are used to define the time points to calculate the hazard at.
 Smaller `time_step` values will result in a more accurate approximations but will be slower to run.
+
+### Custom Longitudinal Simulation Functions
 
 Custom longitudinal simulation functions are slightly more involved. Essentially the user needs to
 define a new class which inherits from `SimLongitudinal` and then implement the 
@@ -433,12 +437,14 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
 }
 ```
 
-The `subjects_df` argument to the `sampleSubjects` method is a `data.frame` with the following columns:
-- `pt` - The subject identifier
-- `arm` - The treatment arm that the subject belongs to
-- `study` - The study that the subject belongs to
 
-Of note is that this dataset is 1 row per subject. The return value must be a `data.frame` with the
+The `subjects_df` argument to the `sampleSubjects` method is a `data.frame` with the following columns:
+
+- `pt`: The subject identifier
+- `arm`: The treatment arm that the subject belongs to
+- `study`: The study that the subject belongs to
+
+Of note is that this dataset contains one row per subject. The return value must be a `data.frame` with the
 same number of rows as the input dataset as well as the `pt`, `arm` and `study` columns. The remaining
 columns are the subject specific parameters and can have any arbitrary name.
 
@@ -448,8 +454,9 @@ additional `time` column that contains said timepoint. The return value must be 
 the same number of rows as the input dataset as well as the original columns
 `pt`, `arm`, `study` and `time`.
 In addition to the original columns the function must also define the following new columns:
-- `sld` - The tumour size at the given timepoint
-- `log_haz_link` - The contribution to the hazard function at that timepoint (set this to 0 if not
+
+- `sld`: The tumour size at the given timepoint
+- `log_haz_link`: The contribution to the hazard function at that timepoint (set this to 0 if not
 defining a link function)
 
 ## Formatting Stan Files
