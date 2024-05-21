@@ -56,12 +56,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -283,7 +277,7 @@ reducing the longitudinal data to specific time points.</p>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;   pt     study   arm    time event cov_cont cov_cat</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_001 Study-X Arm-A    35     1   -<span style="color: #BB0000;">1.12</span>  B      </span></span>
@@ -303,7 +297,7 @@ reducing the longitudinal data to specific time points.</p>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">long_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
 <span><span class="co">#&gt;   pt     arm   study    time   sld observed</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_001 Arm-A Study-X     1  23.4 TRUE    </span></span>
@@ -380,7 +374,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpGYSLW3/model-144c323a9a42.stan', line 483, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpqoLVgI/model-e114df04832.stan', line 483, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -416,21 +410,21 @@ because the <code>results</code> element is of class
 <span>    <span class="st">"beta_os_cov"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/as.CmdStanMCMC.html">as.CmdStanMCMC</a></span><span class="op">(</span><span class="va">mcmc_results</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 x 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
 <span><span class="co">#&gt;    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte~ 27.6     27.6     1.33    1.17    25.3     29.8    0.999     165.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop~  1.02     1.02    0.027<span style="text-decoration: underline;">4</span>  0.025<span style="text-decoration: underline;">0</span>   0.973    1.07   0.999     971.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop~  1.96     1.96    0.030<span style="text-decoration: underline;">2</span>  0.028<span style="text-decoration: underline;">2</span>   1.91     2.01   1.01      449.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop~  0.205    0.204   0.016<span style="text-decoration: underline;">4</span>  0.017<span style="text-decoration: underline;">3</span>   0.179    0.233  1.00      974.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte… 27.6     27.6     1.33    1.17    25.3     29.8    0.999     165.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop…  1.02     1.02    0.027<span style="text-decoration: underline;">4</span>  0.025<span style="text-decoration: underline;">0</span>   0.973    1.07   0.999     971.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop…  1.96     1.96    0.030<span style="text-decoration: underline;">2</span>  0.028<span style="text-decoration: underline;">2</span>   1.91     2.01   1.01      449.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop…  0.205    0.204   0.016<span style="text-decoration: underline;">4</span>  0.017<span style="text-decoration: underline;">3</span>   0.179    0.233  1.00      974.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma 19.2     19.2     0.579   0.570   18.3     20.1    1.00      791.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_dsld   -<span style="color: #BB0000;">0.066</span><span style="color: #BB0000; text-decoration: underline;">0</span>  -<span style="color: #BB0000;">0.065</span><span style="color: #BB0000; text-decoration: underline;">7</span>  0.206   0.203   -<span style="color: #BB0000;">0.403</span>    0.263  1.01      640.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull~  0.010<span style="text-decoration: underline;">3</span>   0.008<span style="text-decoration: underline;">90</span> 0.006<span style="text-decoration: underline;">38</span> 0.004<span style="text-decoration: underline;">66</span>  0.003<span style="text-decoration: underline;">25</span>  0.022<span style="text-decoration: underline;">3</span> 0.999     426.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull~  0.886    0.881   0.078<span style="text-decoration: underline;">0</span>  0.079<span style="text-decoration: underline;">2</span>   0.766    1.02   0.999     583.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co~  0.002<span style="text-decoration: underline;">43</span>  0.013<span style="text-decoration: underline;">6</span>  0.259   0.268   -<span style="color: #BB0000;">0.443</span>    0.464  1.01      642.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co~  0.337    0.353   0.263   0.264   -<span style="color: #BB0000;">0.137</span>    0.752  0.998     666.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co~  0.370    0.371   0.119   0.108    0.168    0.559  1.00      759.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># i 1 more variable: ess_tail &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull…  0.010<span style="text-decoration: underline;">3</span>   0.008<span style="text-decoration: underline;">90</span> 0.006<span style="text-decoration: underline;">38</span> 0.004<span style="text-decoration: underline;">66</span>  0.003<span style="text-decoration: underline;">25</span>  0.022<span style="text-decoration: underline;">3</span> 0.999     426.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull…  0.886    0.881   0.078<span style="text-decoration: underline;">0</span>  0.079<span style="text-decoration: underline;">2</span>   0.766    1.02   0.999     583.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co…  0.002<span style="text-decoration: underline;">43</span>  0.013<span style="text-decoration: underline;">6</span>  0.259   0.268   -<span style="color: #BB0000;">0.443</span>    0.464  1.01      642.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co…  0.337    0.353   0.263   0.264   -<span style="color: #BB0000;">0.137</span>    0.752  0.998     666.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co…  0.370    0.371   0.119   0.108    0.168    0.559  1.00      759.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can already see here from the <code>rhat</code> statistic whether
 the MCMC sampler converged - values close to 1 indicate convergence,
 while values larger than 1 indicate divergence.</p>
@@ -463,8 +457,9 @@ element, we can extract the samples in a format that is understood by
 <span><span class="co">#&gt; - Online documentation and vignettes at mc-stan.org/bayesplot</span></span>
 <span><span class="co">#&gt; - bayesplot theme set to bayesplot::theme_default()</span></span>
 <span><span class="co">#&gt;    * Does _not_ affect other ggplot2 plots</span></span>
-<span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span>
-<span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="va">vars_draws</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="va">vars_draws</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-1-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -474,7 +469,7 @@ element, we can extract the samples in a format that is understood by
 longitudinal fit samples from the result, and then plot them for all
 patients or those that we are interested in. For illustration, we will
 plot here the first 10 patients:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">selected_patients</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">long_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
@@ -489,16 +484,18 @@ plot here the first 10 patients:</p>
 <span><span class="co">#&gt; 3 pt_001    0 29.7628</span></span>
 <span><span class="co">#&gt; 4 pt_001    0 28.9944</span></span>
 <span><span class="co">#&gt; 5 pt_001    0 27.8322</span></span>
-<span><span class="co">#&gt; 6 pt_001    0 27.2914</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6 pt_001    0 27.2914</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    group time  median    lower    upper</span></span>
 <span><span class="co">#&gt; 1 pt_001    0 27.6192 25.02362 30.20194</span></span>
 <span><span class="co">#&gt; 2 pt_002    0 27.6192 25.02362 30.20194</span></span>
 <span><span class="co">#&gt; 3 pt_003    0 27.6192 25.02362 30.20194</span></span>
 <span><span class="co">#&gt; 4 pt_004    0 27.6192 25.02362 30.20194</span></span>
 <span><span class="co">#&gt; 5 pt_005    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 6 pt_006    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 pt_006    0 27.6192 25.02362 30.20194</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -506,7 +503,7 @@ plot here the first 10 patients:</p>
 </h3>
 <p>And using the <code><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities()</a></code> method we can do the
 same for the estimated survival functions.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span></span>
@@ -520,20 +517,22 @@ same for the estimated survival functions.</p>
 <span><span class="co">#&gt; 3 pt_001    0      1</span></span>
 <span><span class="co">#&gt; 4 pt_001    0      1</span></span>
 <span><span class="co">#&gt; 5 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 6 pt_001    0      1</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6 pt_001    0      1</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    group time median lower upper</span></span>
 <span><span class="co">#&gt; 1 pt_001    0      1     1     1</span></span>
 <span><span class="co">#&gt; 2 pt_002    0      1     1     1</span></span>
 <span><span class="co">#&gt; 3 pt_003    0      1     1     1</span></span>
 <span><span class="co">#&gt; 4 pt_004    0      1     1     1</span></span>
 <span><span class="co">#&gt; 5 pt_005    0      1     1     1</span></span>
-<span><span class="co">#&gt; 6 pt_006    0      1     1     1</span></span>
-<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 pt_006    0      1     1     1</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
 patients, using the corresponding method.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridGrouped</a></span><span class="op">(</span></span>
@@ -554,7 +553,7 @@ passing a <code><a href="../reference/Grid-Functions.html">GridPrediction()</a><
 specify the desired values for the covariates and longitudinal model
 parameters respectively. For example below we use these functions to
 predict the survival distribution for a hypothetical subject:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridPrediction</a></span><span class="op">(</span></span>
@@ -575,7 +574,7 @@ predict the survival distribution for a hypothetical subject:</p>
 argument (i.e. the longitudinal model parameters) can be found by
 running <code><a href="../reference/getPredictionNames.html">getPredictionNames()</a></code> on the longitudinal model
 object. For example:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/getPredictionNames.html">getPredictionNames</a></span><span class="op">(</span><span class="fu"><a href="../reference/LongitudinalGSF-class.html">LongitudinalGSF</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "b"   "s"   "g"   "phi"</span></span></code></pre></div>
 </div>
@@ -585,7 +584,7 @@ object. For example:</p>
 <p>The <code><a href="../reference/brierScore.html">brierScore()</a></code> method can be used to extract the Brier
 Scores (predictive performance measure) from our
 <code>SurvivalQuantities</code> object.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">400</span>, <span class="fl">800</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -609,7 +608,7 @@ changed via the <code>jmpost.prior_shrinkage</code> option e.g.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"jmpost.prior_shrinkage"</span> <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre>
 <p>If you wish to manually specify the initial values you can do so via
 the <code><a href="../reference/initialValues.html">initialValues()</a></code> function. For example:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joint_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>
