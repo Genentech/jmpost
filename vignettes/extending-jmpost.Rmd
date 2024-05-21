@@ -116,7 +116,7 @@ Unlike the survival distributions, the longitudinal models are a lot more flexib
 constraints on how they are implemented. That is there aren't any specific variables or functions
 that you need to define.
 
-That being said there are a several optional features of `jmpost` that do require the use specific
+That being said there are a several optional features of `jmpost` that do require the use of specific
 interfaces if you want to enable them for your model.
 
 ### 1) `loo` integration

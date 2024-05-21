@@ -25,7 +25,8 @@ knitr::opts_chunk$set(
 
 This vignette shows a complete example for how to fit a custom longitudinal model. Note that full
 details for the various different interfaces can be found in the "Extending jmpost" vignette.
-This example implements the Wang, Sung et al. 2009 mixed exponential decay and linear growth model.
+This example implements the Wang, Sung et al. 2009 mixed exponential decay and linear growth model
+along with an exponential survival model.
 In particular the following model will be implemented:
 
 **Longitudinal Model**:
@@ -56,7 +57,8 @@ $$
 
 Where:
 
-- $\lambda_0$ is the baseline hazard function (e.g. we are fitting an exponential model)
+- $\lambda_0$ is the baseline hazard rate. This is because for this 
+example we are using an exponential survival model e.g. $h_0(t) = \lambda_0$
 - $t$ is the event time
 - $G(.)$ is a link function that maps the subjects tumour growth parameters to a contribution to
 the log-hazard function
