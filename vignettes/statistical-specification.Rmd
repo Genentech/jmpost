@@ -111,13 +111,13 @@ where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 
-### Derivative of the SLD Trajectory Link 
+### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
 $$
 G(t \mid \mu_0, s_i) = s_i
 $$
 
-Accessible via `linkDSLD()`
+Accessible via `linkDSLD()` & `linkGrowth()`
 
 
 ### Identity Link
@@ -225,6 +225,16 @@ $$
 Accessible via `linkIdentity()`
 
 
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i) &= g_i
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
+
 
 ### Population Quantities
 
@@ -326,6 +336,16 @@ $$
 
 Accessible via `linkIdentity()`
 
+
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i, \phi_i) &= g_i
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
 
 ### Population Quantities
 

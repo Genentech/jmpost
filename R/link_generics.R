@@ -75,3 +75,18 @@ linkIdentity.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), mo
 linkIdentity.default <- function(prior, model, ...) {
     stop(sprintf("Method `linkIdentity` is not available for `%s`", class(model)[[1]]))
 }
+
+
+#' @describeIn standard-link-user Growth Parameter link
+#' @export
+linkGrowth <- function(prior, model = PromiseLongitudinalModel(), ...) {
+    UseMethod("linkGrowth", model)
+}
+#' @export
+linkGrowth.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+    PromiseLinkComponent(fun = linkGrowth, prior = prior, key = "link_growth")
+}
+#' @export
+linkGrowth.default <- function(prior, model, ...) {
+    stop(sprintf("Method `linkGrowth` is not available for `%s`", class(model)[[1]]))
+}

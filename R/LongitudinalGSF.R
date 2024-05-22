@@ -162,6 +162,15 @@ linkIdentity.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...)
     )
 }
 
+#' @export
+linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-gsf/link_growth.stan"),
+        prior = prior
+    )
+}
+
 
 #' @rdname getPredictionNames
 #' @export
