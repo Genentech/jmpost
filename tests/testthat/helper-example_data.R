@@ -46,7 +46,7 @@ ensure_test_data_1 <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

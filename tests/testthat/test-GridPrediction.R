@@ -38,10 +38,10 @@ set_fixtures_gsf_link <- function() {
 
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
-        dplyr::group_by(pt) |>
+        dplyr::group_by(subject) |>
         dplyr::sample_n(9) |>
-        dplyr::group_by(pt) |>
-        dplyr::filter(!pt == "pt_0004" | seq_len(dplyr::n()) <= 7) |>
+        dplyr::group_by(subject) |>
+        dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
 
 
@@ -70,7 +70,7 @@ set_fixtures_gsf_link <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -157,7 +157,7 @@ set_fixtures_weibull_only <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

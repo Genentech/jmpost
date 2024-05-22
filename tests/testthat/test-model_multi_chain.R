@@ -43,7 +43,7 @@ test_that("Can recover known distribution parameters from random slope model whe
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

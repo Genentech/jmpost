@@ -36,12 +36,12 @@ should be generated at.
 The \code{QuantityCollapser} object specifies how to combine these generated samples
 to form the desired quantities.
 As an example say we want to generate grouped samples for the groups \code{Group-1} and \code{Group-2}
-which consist of the subjects \code{pt-1}, \code{pt-2} and \code{pt-3}, \code{pt-4} respectively at two time points
+which consist of the subjects \code{sub-1}, \code{sub-2} and \code{sub-3}, \code{sub-4} respectively at two time points
 \code{10} and \code{20}. We can achieve this as follows:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{QuantityGenerator(
     times = c(10, 10, 10, 10, 20, 20, 20, 20),
-    subjects = c("pt-1" "pt-2", "pt-3", "pt-4", "pt-1" "pt-2", "pt-3", "pt-4")
+    subjects = c("sub-1" "sub-2", "sub-3", "sub-4", "sub-1" "sub-2", "sub-3", "sub-4")
 )
 QuantityCollapser(
     times = c(10, 20, 10 , 20),
@@ -70,13 +70,13 @@ If \code{NULL} will default to 201 evenly spaced timepoints between 0 and either
 For \code{GridGrouped()}, \code{groups} must be a named list of character vectors. Each element of the list
 must be a character vector of the subjects that will form the group where the element name
 is the corresponding name of the group. For example if the goal was to create two groups
-named \code{Group-1} and \code{Group-2} which are composed of the subjects \code{pt-1}, \code{pt-2} and
-\code{pt-3}, \code{pt-4} respectively then this would be specified as:
+named \code{Group-1} and \code{Group-2} which are composed of the subjects \code{sub-1}, \code{sub-2} and
+\code{sub-3}, \code{sub-4} respectively then this would be specified as:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{GridGrouped(
     groups = list(
-        "Group-1" = c("pt-1", "pt-2"),
-        "Group-2" = c("pt-3", "pt-4")
+        "Group-1" = c("sub-1", "sub-2"),
+        "Group-2" = c("sub-3", "sub-4")
     )
 )
 }\if{html}{\out{</div>}}

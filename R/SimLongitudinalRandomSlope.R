@@ -96,7 +96,7 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     )
 
     assert_that(
-        nrow(subjects_df) == length(unique(subjects_df[["pt"]])),
+        nrow(subjects_df) == length(unique(subjects_df[["subject"]])),
         msg = "The number of rows in `subjects_df` should be equal to the number of unique subjects"
     )
 

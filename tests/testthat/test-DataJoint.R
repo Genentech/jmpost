@@ -359,7 +359,7 @@ test_that("DataJoint sorts handles character-to-factor levels correctly", {
 test_that("subset(DataJoint) works as expected", {
 
     dat <- dplyr::tribble(
-        ~patient, ~time, ~event,
+        ~subject, ~time, ~event,
            "a",     1,      1,
            "b",     1,      0,
            "c",     2,      1,
@@ -374,7 +374,7 @@ test_that("subset(DataJoint) works as expected", {
         "g3" = "d"
     )
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "a",     1,      1,    "g1",
            "e",     3,      1,    "g1",
            "f",     3,      0,    "g1",
@@ -389,7 +389,7 @@ test_that("subset(DataJoint) works as expected", {
 
     pts <- c("b", "d", "a")
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "b",     1,      0,    "b",
            "d",     2,      0,    "d",
            "a",     1,      1,    "a"
@@ -405,7 +405,7 @@ test_that("subset(DataJoint) works as expected", {
         "g2" = c("a", "b", "c")
     )
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "a",     1,      1,    "g1",
            "b",     1,      0,    "g1",
            "c",     2,      1,    "g1",
@@ -419,23 +419,23 @@ test_that("subset(DataJoint) works as expected", {
     )
 
 
-    # Should error for patients that dosn't exist in vector mode
+    # Should error for subjects that dosn't exist in vector mode
     pts <- c("b", "d", "a", "z")
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
-    # Should error for patients that don't exist in list mode
+    # Should error for subjects that don't exist in list mode
     pts <- list("g1" = c("a", "z", "b"))
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
-    # Should error if we ask for the same patient multiple times
+    # Should error if we ask for the same subject multiple times
     pts <- c("b", "d", "a", "a")
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
 
 
@@ -474,7 +474,7 @@ test_that("subset(DataJoint) works as expected", {
     expected <- data.frame(
         time = c(150, 100),
         event = c(1, 0),
-        patient = c("C", "A"),
+        subject = c("C", "A"),
         group = c("C", "A"),
         row.names = NULL
     )

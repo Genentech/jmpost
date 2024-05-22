@@ -12,7 +12,7 @@
 \value{
 A list with the following named elements:
 \itemize{
-\item \code{pt} (\code{character})\cr The name of the variable containing the subject identifier
+\item \code{subject} (\code{character})\cr The name of the variable containing the subject identifier
 \item \code{frm} (\code{formula})\cr of the form \code{outcome ~ time}
 \item \code{time} (\code{character})\cr The name of the variable containing the outcome time
 \item \code{outcome} (\code{character})\cr The name of the variable containing the outcome values

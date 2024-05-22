@@ -1,10 +1,11 @@
 # LongitudinalQuantities print method works as expected
 
     Code
-      ptgroups <- c("pt_0011", "pt_0061", "pt_0001", "pt_0002")
+      subjectgroups <- c("subject_0011", "subject_0061", "subject_0001",
+        "subject_0002")
       times <- seq(0, 100, by = 10)
       samps_p1 <- LongitudinalQuantities(test_data_1$jsamples, grid = GridFixed(
-        subjects = ptgroups, times = times))
+        subjects = subjectgroups, times = times))
       print(samps_p1)
     Output
       
@@ -16,9 +17,9 @@
 ---
 
     Code
-      ptgroups <- c("pt_0011", "pt_0061")
+      subjectgroups <- c("subject_0011", "subject_0061")
       samps_p2 <- LongitudinalQuantities(test_data_1$jsamples, grid = GridFixed(
-        subjects = ptgroups))
+        subjects = subjectgroups))
       print(samps_p2)
     Output
       

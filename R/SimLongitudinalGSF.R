@@ -156,7 +156,7 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
     )
 
     res <- subjects_df |>
-        dplyr::distinct(.data$pt, .data$arm, .data$study) |>
+        dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
         dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(object@mu_b[.data$study_idx]), object@omega_b)) |>
@@ -164,7 +164,7 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g)) |>
         dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), object@a_phi[.data$arm_idx], object@b_phi[.data$arm_idx]))
 
-    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
+    res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
 
 

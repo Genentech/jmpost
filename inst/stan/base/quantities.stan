@@ -6,7 +6,7 @@ data {
     int <lower=1> gq_n_quant;
 
 {% if include_gq_survival_idv or include_gq_longitudinal_idv -%}
-    array[gq_n_quant] int<lower=1, upper=n_subjects> gq_pt_index;
+    array[gq_n_quant] int<lower=1, upper=n_subjects> gq_subject_index;
 {%- endif %}
 
 
@@ -29,14 +29,14 @@ generated quantities {
     // Source - base/generated_quantities.stan - Longitudinal
     //
 {% if include_gq_longitudinal_idv -%}
-    vector[gq_n_quant] y_fit_at_time_grid = lm_predict_individual_patient(
+    vector[gq_n_quant] y_fit_at_time_grid = lm_predict_value(
         gq_times,
-        long_gq_parameters[gq_pt_index, ]
+        long_gq_parameters[gq_subject_index, ]
     );
 {%- endif %}
 
 {% if include_gq_longitudinal_pop -%}
-    vector[gq_n_quant] y_fit_at_time_grid = lm_predict_individual_patient(
+    vector[gq_n_quant] y_fit_at_time_grid = lm_predict_value(
         gq_times,
         long_gq_pop_parameters
     );
@@ -53,19 +53,19 @@ generated quantities {
     log_surv_fit_at_time_grid = log_survival(
         gq_times,
         pars_os,
-        link_function_inputs[gq_pt_index, ],
+        link_function_inputs[gq_subject_index, ],
         link_coefficients,
         nodes,
         weights,
-        os_cov_contribution[gq_pt_index]
+        os_cov_contribution[gq_subject_index]
     );
 
     log_haz_fit_at_time_grid = log_hazard(
         rep_matrix(gq_times, 1),
         pars_os,
-        link_function_inputs[gq_pt_index, ],
+        link_function_inputs[gq_subject_index, ],
         link_coefficients,
-        os_cov_contribution[gq_pt_index]
+        os_cov_contribution[gq_subject_index]
     )[, 1];
 {%- endif %}
 

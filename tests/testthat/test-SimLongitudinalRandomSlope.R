@@ -12,12 +12,12 @@ test_that("SimLongitudinalRandomSlope works as expected", {
     expect_true(is(sim, "SimLongitudinalRandomSlope"))
 
     subs <- dplyr::tibble(
-        pt = c("1", "2", "3"),
+        subject = c("1", "2", "3"),
         arm = factor(c("A", "B", "A")),
         study = factor(c("study1", "study1", "study2"))
     )
     res_subs <- sampleSubjects(sim, subs)
-    expect_equal(res_subs$pt, subs$pt)
+    expect_equal(res_subs$subject, subs$subject)
     expect_equal(res_subs$arm, subs$arm)
     expect_equal(res_subs$study, subs$study)
     expect_equal(res_subs$intercept, c(100, 100, 50))
@@ -25,7 +25,7 @@ test_that("SimLongitudinalRandomSlope works as expected", {
     expect_equal(nrow(res_subs), nrow(subs))
     expect_equal(
         names(res_subs),
-        c("pt", "arm", "study", "intercept", "slope_ind")
+        c("subject", "arm", "study", "intercept", "slope_ind")
     )
 
 
@@ -39,7 +39,7 @@ test_that("SimLongitudinalRandomSlope works as expected", {
         dplyr::bind_rows()
 
     res_obvs <- sampleObservations(sim, tdat)
-    expect_equal(res_obvs$pt, tdat$pt)
+    expect_equal(res_obvs$subject, tdat$subject)
     expect_equal(res_obvs$arm, tdat$arm)
     expect_equal(res_obvs$study, tdat$study)
     expect_equal(res_obvs$time, tdat$time)
@@ -47,7 +47,7 @@ test_that("SimLongitudinalRandomSlope works as expected", {
     expect_equal(
         names(res_obvs),
         c(
-            "pt", "arm", "study", "intercept", "slope_ind", "time",
+            "subject", "arm", "study", "intercept", "slope_ind", "time",
             "err", "sld_mu", "sld", "log_haz_link"
         )
     )
@@ -79,7 +79,7 @@ test_that("SimLongitudinalRandomSlope correctly generates a dataset with known p
 
     mod <- lme4::lmer(
         dat = sim_data@longitudinal,
-        formula = sld ~ 0 + study + time + (0 + time | pt),
+        formula = sld ~ 0 + study + time + (0 + time | subject),
     )
 
     ests <- lme4::fixef(mod)

@@ -2,10 +2,11 @@
 
     Code
       set.seed(3219)
-      ptgroups <- list(gtpt1 = sample(test_data_1$dat_os$pt, 20), gtpt2 = sample(
-        test_data_1$dat_os$pt, 20), gtpt3 = sample(test_data_1$dat_os$pt, 20))
+      subjectgroups <- list(gtsubject1 = sample(test_data_1$dat_os$subject, 20),
+      gtsubject2 = sample(test_data_1$dat_os$subject, 20), gtsubject3 = sample(
+        test_data_1$dat_os$subject, 20))
       times <- seq(0, 100, by = 10)
-      samps_p1 <- SurvivalQuantities(test_data_1$jsamples, grid = GridGrouped(groups = ptgroups,
+      samps_p1 <- SurvivalQuantities(test_data_1$jsamples, grid = GridGrouped(groups = subjectgroups,
         times = times), type = "surv")
       print(samps_p1)
     Output

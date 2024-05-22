@@ -173,9 +173,9 @@ dat_os <- joint_data_sim@survival
 
 # Select 6 random subjects to plot
 dat_lm_plot <- dat_lm |>
-    filter(pt %in% sample(dat_os$pt, 6))
+    filter(subject %in% sample(dat_os$subject, 6))
 
-ggplot(dat_lm_plot, aes(x = time, y = sld, group = pt, color = pt)) +
+ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
     geom_line() +
     geom_point() +
     labs(x = "Time (years)", y = "Tumour Size", col = "Subject") +
@@ -293,7 +293,7 @@ model <- JointModel(
 joint_data <- DataJoint(
     subject = DataSubject(
         data = dat_os,
-        subject = "pt",
+        subject = "subject",
         arm = "arm",
         study = "study"
     ),
@@ -332,13 +332,13 @@ requirement elements for the generated quantities have been defined thus enablin
 generate quantities both at a population and individual subject level.
 
 
-This can be done at the patient level via:
+This can be done at the subject level via:
 
 ```{R}
-selected_patients <- head(dat_os$pt, 4)
+selected_subjects <- head(dat_os$subject, 4)
 long_quantities_idv <- LongitudinalQuantities(
     model_samples,
-    grid = GridFixed(subjects = selected_patients)
+    grid = GridFixed(subjects = selected_subjects)
 )
 autoplot(long_quantities_idv)
 ```

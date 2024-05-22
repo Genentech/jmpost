@@ -22,7 +22,7 @@ functions {
         return result;
     }
 
-    vector lm_predict_individual_patient(vector time, matrix long_gq_parameters) {
+    vector lm_predict_value(vector time, matrix long_gq_parameters) {
         return sld(
             time,
             long_gq_parameters[,1],

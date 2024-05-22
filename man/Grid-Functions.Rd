@@ -78,13 +78,13 @@ longitudinal model parameters need to be defined for a given longitudinal model.
 For \code{GridGrouped()}, \code{groups} must be a named list of character vectors. Each element of the list
 must be a character vector of the subjects that will form the group where the element name
 is the corresponding name of the group. For example if the goal was to create two groups
-named \code{Group-1} and \code{Group-2} which are composed of the subjects \code{pt-1}, \code{pt-2} and
-\code{pt-3}, \code{pt-4} respectively then this would be specified as:
+named \code{Group-1} and \code{Group-2} which are composed of the subjects \code{sub-1}, \code{sub-2} and
+\code{sub-3}, \code{sub-4} respectively then this would be specified as:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{GridGrouped(
     groups = list(
-        "Group-1" = c("pt-1", "pt-2"),
-        "Group-2" = c("pt-3", "pt-4")
+        "Group-1" = c("sub-1", "sub-2"),
+        "Group-2" = c("sub-3", "sub-4")
     )
 )
 }\if{html}{\out{</div>}}

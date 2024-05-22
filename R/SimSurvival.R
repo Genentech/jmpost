@@ -157,26 +157,26 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == Inf, 999, .data$hazard_instant)) |>
         dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant)) |>
         dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
-        dplyr::group_by(.data$pt) |>
+        dplyr::group_by(.data$subject) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>
         dplyr::ungroup()
 
     os_had_event <- os_dat_chaz |>
         dplyr::filter(.data$chazard >= .data$chazard_limit) |>
-        dplyr::group_by(.data$pt) |>
+        dplyr::group_by(.data$subject) |>
         dplyr::slice(1) |>
         dplyr::ungroup() |>
         dplyr::mutate(event = 1)
 
     os_had_censor <- os_dat_chaz |>
-        dplyr::filter(!.data$pt %in% os_had_event$pt) |>
-        dplyr::group_by(.data$pt) |>
+        dplyr::filter(!.data$subject %in% os_had_event$subject) |>
+        dplyr::group_by(.data$subject) |>
         dplyr::slice(dplyr::n()) |>
         dplyr::ungroup() |>
         dplyr::mutate(event = 0)
 
     if (!(nrow(os_had_censor) == 0)) {
-        message(sprintf("INFO: %i patients did not die before max(times)", nrow(os_had_censor)))
+        message(sprintf("INFO: %i subjects did not die before max(times)", nrow(os_had_censor)))
     }
 
     os_dat_complete <- os_had_event |>
@@ -184,9 +184,9 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(real_time = .data$time) |>
         dplyr::mutate(event = dplyr::if_else(.data$real_time <= .data$time_cen, .data$event, 0)) |>
         dplyr::mutate(time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
-        dplyr::arrange(.data$pt)
+        dplyr::arrange(.data$subject)
 
-    os_dat_complete[, c("pt", "study", "arm", "time", "event", "cov_cont", "cov_cat")]
+    os_dat_complete[, c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")]
 }
 
 

@@ -35,9 +35,9 @@ NULL
 #'
 #' If `groups` is a list then any elements with more than 1 subject ID will be grouped together
 #' and their quantities will be calculated by taking a point-wise average.
-#' For example: `groups = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))` would result
+#' For example: `groups = list("g1" = c("sub1", "sub2"), "g2" = c("sub3", "sub4"))` would result
 #' in 2 groups being created whose values are the pointwise average
-#' of `c("pt1", "pt2")` and `c("pt3", "pt4")` respectively.
+#' of `c("sub1", "sub2")` and `c("sub3", "sub4")` respectively.
 #'
 #' If `groups=NULL` then all subjects from original dataset will be selected
 #'
@@ -151,9 +151,9 @@ summary.SurvivalQuantities <- function(
 #'
 #' @inheritParams SurvivalQuantities-Shared
 #' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
-#' each group/patient.
+#' each group/subject.
 #' @param add_wrap (`logical`) \cr if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
-#' by each group/patient.
+#' by each group/subject.
 #' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
 #' `NULL` or `0` are provided then confidence regions will not be added to the plot
 #' @param ... not used.

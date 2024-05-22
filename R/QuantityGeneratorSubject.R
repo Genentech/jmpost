@@ -42,7 +42,7 @@ as_stan_list.QuantityGeneratorSubject <- function(object, data, ...) {
     )
     ret <- list()
     data_list <- as.list(data)
-    ret[["gq_pt_index"]] <- data_list$subject_to_index[as.character(object@subjects)]
+    ret[["gq_subject_index"]] <- data_list$subject_to_index[as.character(object@subjects)]
     ret[["gq_n_quant"]] <- length(object@subjects)
     ret[["gq_times"]] <- object@times
 

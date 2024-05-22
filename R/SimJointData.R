@@ -58,9 +58,9 @@ SimJointData <- function(
     n_subjects <- sum(n_group)
     n_times <- length(hazard_evaluation_info$midpoint)
 
-    sprintf_string <- paste0("pt_%0", ceiling(log(n_subjects, 10)) + 1, "i")
+    sprintf_string <- paste0("subject_%0", ceiling(log(n_subjects, 10)) + 1, "i")
 
-    baseline <- dplyr::tibble(pt = sprintf(sprintf_string, seq_len(n_subjects))) |>
+    baseline <- dplyr::tibble(subject = sprintf(sprintf_string, seq_len(n_subjects))) |>
         dplyr::mutate(arm = factor(rep(arms, times = n_group), levels = unique(arms))) |>
         dplyr::mutate(study = factor(rep(studies, times = n_group), levels = unique(studies)))
 
@@ -75,13 +75,13 @@ SimJointData <- function(
         }
     ) |>
         dplyr::bind_rows() |>
-        dplyr::left_join(lm_baseline, by = c("pt", "study", "arm"))
+        dplyr::left_join(lm_baseline, by = c("subject", "study", "arm"))
 
     lm_dat <- sampleObservations(longitudinal, lm_dat_no_obvs)
 
 
     hazard_eval_df <- dplyr::tibble(
-        pt = rep(lm_baseline$pt, each = n_times),
+        subject = rep(lm_baseline$subject, each = n_times),
         arm = rep(lm_baseline$arm, each = n_times),
         study = rep(lm_baseline$study, each = n_times),
         midpoint = rep(as.double(hazard_evaluation_info$midpoint), times = n_subjects),
@@ -91,11 +91,11 @@ SimJointData <- function(
 
     lm_link_dat <- sampleObservations(
         longitudinal,
-        dplyr::left_join(hazard_eval_df, lm_baseline, by = c("pt", "study", "arm"))
-    )[, c("pt", "study", "arm", "log_haz_link", "time", "width", "midpoint")]
+        dplyr::left_join(hazard_eval_df, lm_baseline, by = c("subject", "study", "arm"))
+    )[, c("subject", "study", "arm", "log_haz_link", "time", "width", "midpoint")]
 
     os_eval_df <- lm_link_dat |>
-        dplyr::left_join(os_baseline, by = c("pt", "study", "arm"))
+        dplyr::left_join(os_baseline, by = c("subject", "study", "arm"))
 
     withCallingHandlers(
         os_dat <- sampleObservations(survival, os_eval_df),
@@ -106,13 +106,13 @@ SimJointData <- function(
     )
 
     lm_dat2 <- lm_dat |>
-        dplyr::left_join(dplyr::select(os_dat, "pt", os_time = "time"), by = "pt") |>
+        dplyr::left_join(dplyr::select(os_dat, "subject", os_time = "time"), by = "subject") |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
-        dplyr::arrange(dplyr::pick(c("pt", "time")))
+        dplyr::arrange(dplyr::pick(c("subject", "time")))
 
     assert_that(
-        length(unique(os_dat$pt)) == length(os_dat$pt),
-        length(os_dat$pt) == n_subjects,
+        length(unique(os_dat$subject)) == length(os_dat$subject),
+        length(os_dat$subject) == n_subjects,
         all(os_dat$time >= 0),
         all(os_dat$event %in% c(0, 1)),
         msg = "Assumptions for the Survival data are not met (please report this issue)"
@@ -120,14 +120,14 @@ SimJointData <- function(
 
     assert_that(
         nrow(lm_dat2) == n_subjects * length(longitudinal@times),
-        length(unique(lm_dat2$pt)) == n_subjects,
+        length(unique(lm_dat2$subject)) == n_subjects,
         msg = "Assumptions for the Longitudinal data are not met (please report this issue)"
     )
 
     return(
         .SimJointData(
             survival = os_dat,
-            longitudinal = lm_dat2[, c("pt", "arm", "study", "time", "sld", "observed")]
+            longitudinal = lm_dat2[, c("subject", "arm", "study", "time", "sld", "observed")]
         )
     )
 }
