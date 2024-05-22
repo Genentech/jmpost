@@ -308,7 +308,7 @@ To simulate event times the simulation function takes advantage of the following
 $$
 \begin{align}
 S(t) &\sim U(0, 1) \\
-S(t) &= exp\left(-\int_0^th(u)\ du\right)
+S(t) &= exp\left(-\int_0^t h(u)\ du\right)
 \end{align}
 $$
 
@@ -318,7 +318,7 @@ approximates the integral by sequentially summing up the hazard after a given st
 declaring an event once the sampled probability value has been exceeded. This gives rise to two
 key parameters that need to be defined by the user:
 
-- `time_max`: The maximum time to simulate up to (events occouring after this time are censored)
+- `time_max`: The maximum time to simulate up to (events occurring after this time are censored)
 - `time_step`: How much of a gap to leave between time points to calculate the hazard at
 
 Note that there is currently an outstanding development item to convert this to use numerical 
