@@ -44,14 +44,14 @@ setValidity(
 as.QuantityGenerator.GridGrouped <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
-    patients_unique <- unique(unlist(object@groups))
+    subjects_unique <- unique(unlist(object@groups))
     assert_that(
-        all(patients_unique %in% names(data_list$subject_to_index))
+        all(subjects_unique %in% names(data_list$subject_to_index))
     )
     as.QuantityGenerator(
         GridFixed(
             times = object@times,
-            subjects = patients_unique
+            subjects = subjects_unique
         ),
         data = data
     )
@@ -79,9 +79,9 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
 
     select_indexes <- mapply(
         function(group, time) {
-            correct_pt <- generator@subjects %in% object@groups[[group]]
+            correct_subject <- generator@subjects %in% object@groups[[group]]
             correct_time <- generator@times == time
-            seq_along(correct_time)[correct_pt & correct_time]
+            seq_along(correct_time)[correct_subject & correct_time]
         },
         group_grid$group,
         group_grid$time,

@@ -156,7 +156,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -295,7 +295,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

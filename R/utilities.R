@@ -233,96 +233,96 @@ validate_time_grid <- function(time_grid) {
 
 
 
-#' `expand_patients`
+#' `expand_subjects`
 #'
-#' This function checks and expands a given patients vector.
+#' This function checks and expands a given subjects vector.
 #' The input vector must be unique and contain only values
-#' as specified by `all_pts`
+#' as specified by `all_subjects`
 #'
-#' @param patients (`character` or `NULL`)\cr Character vector representing the patients.
-#' If NULL, it will be set to the value of `all_pts`.
-#' @param all_pts (`character`)\cr Character vector representing all possible patients.
-#' @return Returns the expanded `patients` vector.
+#' @param subjects (`character` or `NULL`)\cr Character vector representing the subjects.
+#' If NULL, it will be set to the value of `all_subjects`.
+#' @param all_subjects (`character`)\cr Character vector representing all possible subjects.
+#' @return Returns the expanded `subjects` vector.
 #' @keywords internal
-expand_patients <- function(patients, all_pts) {
+expand_subjects <- function(subjects, all_subjects) {
     assert_that(
-        is.character(all_pts),
-        msg = "`all_pts` must be a character vector"
+        is.character(all_subjects),
+        msg = "`all_subjects` must be a character vector"
     )
-    if (is.null(patients)) {
-        patients <- unique(all_pts)
+    if (is.null(subjects)) {
+        subjects <- unique(all_subjects)
     }
     assert_that(
-        is.character(patients),
-        all(patients %in% all_pts),
-        !any(duplicated(patients)),
-        msg = "`patients` should be a unique character vector containing only values from the original df"
+        is.character(subjects),
+        all(subjects %in% all_subjects),
+        !any(duplicated(subjects)),
+        msg = "`subjects` should be a unique character vector containing only values from the original df"
     )
-    return(patients)
+    return(subjects)
 }
 
 
 
-#' Decompose Patients into Relevant Components
+#' Decompose subjects into Relevant Components
 #'
-#' This function takes in a character vector or list of patients and decomposes it into a
+#' This function takes in a character vector or list of subjects and decomposes it into a
 #' structured format.
 #'
 #' The primary use of this function is to correctly setup indexing variables for
 #' predicting survival quantities (see [SurvivalQuantities()])
 #'
-#' @param patients (`character` or `list`)\cr patient identifiers. If `NULL` will be set to `all_pts`.
+#' @param subjects (`character` or `list`)\cr subject identifiers. If `NULL` will be set to `all_subjects`.
 #'
-#' @param all_pts (`character`)\cr the set of allowable patient identifiers.
-#' Will cause an error if any value of `patients` is not in this vector.
+#' @param all_subjects (`character`)\cr the set of allowable subject identifiers.
+#' Will cause an error if any value of `subjects` is not in this vector.
 #'
 #' @return A list containing three components:
 #' - `groups`: (`list`)\cr each element of the list is a character vector
-#' specifying which patients belong to a given "group" where the "group" is the element name
-#' - `unique_values`: (`character`)\cr vector of the unique patients within `patients`
+#' specifying which subjects belong to a given "group" where the "group" is the element name
+#' - `unique_values`: (`character`)\cr vector of the unique subjects within `subjects`
 #' - `indexes`: (`list`)\cr each element is a named and is a numeric index vector
 #' that maps the values of `grouped` to `unique_values`
 #' @examples
 #' \dontrun{
-#' result <- decompose_patients(c("A", "B"), c("A", "B", "C", "D"))
-#' result <- decompose_patients(
+#' result <- decompose_subjects(c("A", "B"), c("A", "B", "C", "D"))
+#' result <- decompose_subjects(
 #'     list("g1" = c("A", "B"), "g2" = c("B", "C")),
 #'     c("A", "B", "C", "D")
 #' )
 #' }
-#' @seealso [expand_patients()], [SurvivalQuantities()]
+#' @seealso [expand_subjects()], [SurvivalQuantities()]
 #' @keywords internal
-decompose_patients <- function(patients, all_pts) {
-    if (is.character(patients) || is.null(patients)) {
-        patients <- expand_patients(patients, all_pts)
-        names(patients) <- patients
-        patients <- as.list(patients)
+decompose_subjects <- function(subjects, all_subjects) {
+    if (is.character(subjects) || is.null(subjects)) {
+        subjects <- expand_subjects(subjects, all_subjects)
+        names(subjects) <- subjects
+        subjects <- as.list(subjects)
     }
-    patients <- lapply(
-        patients,
-        expand_patients,
-        all_pts = all_pts
+    subjects <- lapply(
+        subjects,
+        expand_subjects,
+        all_subjects = all_subjects
     )
     assert_that(
-        is.list(patients),
-        length(unique(names(patients))) == length(patients),
-        all(vapply(patients, is.character, logical(1)))
+        is.list(subjects),
+        length(unique(names(subjects))) == length(subjects),
+        all(vapply(subjects, is.character, logical(1)))
     )
-    patients_vec_unordered <- unique(unlist(patients))
-    patients_vec <- patients_vec_unordered[order(patients_vec_unordered)]
-    patients_lookup <- stats::setNames(seq_along(patients_vec), patients_vec)
-    patients_index <- lapply(
-        patients,
+    subjects_vec_unordered <- unique(unlist(subjects))
+    subjects_vec <- subjects_vec_unordered[order(subjects_vec_unordered)]
+    subjects_lookup <- stats::setNames(seq_along(subjects_vec), subjects_vec)
+    subjects_index <- lapply(
+        subjects,
         \(x) {
-            z <- patients_lookup[x]
+            z <- subjects_lookup[x]
             names(z) <- NULL
             z
         }
     )
     list(
-        groups = patients,
-        unique_values = patients_vec,
-        indexes = patients_index
+        groups = subjects,
+        unique_values = subjects_vec,
+        indexes = subjects_index
     )
 }
 

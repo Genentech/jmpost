@@ -312,7 +312,7 @@ sampleObservations <- function(object, times_df) {
 #' with the following columns:
 #' - `study` (`factor`) the study identifier.
 #' - `arm` (`factor`) the treatment arm identifier.
-#' - `pt` (`character`) the subject identifier.
+#' - `subject` (`character`) the subject identifier.
 #'
 #' This method takes care of generating all the individual subject data required for the
 #' [`sampleObservations`] method to generate the observations.

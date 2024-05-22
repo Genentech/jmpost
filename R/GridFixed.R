@@ -31,15 +31,15 @@ as.QuantityGenerator.GridFixed <- function(object, data, ...) {
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
 
     validate_time_grid(object@times)
-    pt_times <- expand.grid(
-        pt = subjects,
+    subject_times <- expand.grid(
+        subject = subjects,
         time = object@times,
         stringsAsFactors = FALSE
     )
 
     QuantityGeneratorSubject(
-        times = pt_times$time,
-        subjects = pt_times$pt
+        times = subject_times$time,
+        subjects = subject_times$subject
     )
 }
 

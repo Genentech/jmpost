@@ -21,7 +21,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

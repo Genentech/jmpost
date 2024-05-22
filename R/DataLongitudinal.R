@@ -139,7 +139,7 @@ as.data.frame.DataLongitudinal <- function(x, ...) {
 #'
 #' @returns
 #' A list with the following named elements:
-#' - `pt` (`character`)\cr The name of the variable containing the subject identifier
+#' - `subject` (`character`)\cr The name of the variable containing the subject identifier
 #' - `frm` (`formula`)\cr of the form `outcome ~ time`
 #' - `time` (`character`)\cr The name of the variable containing the outcome time
 #' - `outcome` (`character`)\cr The name of the variable containing the outcome values

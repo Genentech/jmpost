@@ -8,7 +8,7 @@ test_that("Test that LongitudinalQuantities works as expected", {
     times <- c(-50, -10, 0, 10, 20, 50, 200, 300)
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(times = times, subjects = c("pt_0001", "pt_0002"))
+        grid = GridFixed(times = times, subjects = c("subject_0001", "subject_0002"))
     )
     preds <- summary(longsamps)
     expect_equal(nrow(preds), length(times) * 2)
@@ -24,12 +24,12 @@ test_that("Test that LongitudinalQuantities works as expected", {
     preds <- summary(longsamps)
     expect_equal(nrow(preds), 5 * nrow(test_data_1$dat_os)) # 5 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
-    expect_equal(unique(preds$group), test_data_1$dat_os$pt)
+    expect_equal(unique(preds$group), test_data_1$dat_os$subject)
 
 
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = c("pt_0001", "pt_0003"))
+        grid = GridFixed(subjects = c("subject_0001", "subject_0003"))
     )
     preds <- summary(longsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
@@ -43,7 +43,7 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 
     samps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = c("pt_0011", "pt_0061"))
+        grid = GridFixed(subjects = c("subject_0011", "subject_0061"))
     )
     p <- autoplot(
         samps,
@@ -62,7 +62,7 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
     samps <- LongitudinalQuantities(
         test_data_1$jsamples,
         grid = GridFixed(
-            subjects = c("pt_0011", "pt_0061", "pt_0001", "pt_0002"),
+            subjects = c("subject_0011", "subject_0061", "subject_0001", "subject_0002"),
             times = c(10, 20, 50, 200)
         )
     )
@@ -84,23 +84,23 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 test_that("LongitudinalQuantities print method works as expected", {
     ensure_test_data_1()
     expect_snapshot({
-        ptgroups <- c("pt_0011", "pt_0061", "pt_0001", "pt_0002")
+        subjectgroups <- c("subject_0011", "subject_0061", "subject_0001", "subject_0002")
         times <- seq(0, 100, by = 10)
         samps_p1 <- LongitudinalQuantities(
             test_data_1$jsamples,
             grid = GridFixed(
-                subjects = ptgroups,
+                subjects = subjectgroups,
                 times = times
             )
         )
         print(samps_p1)
     })
     expect_snapshot({
-        ptgroups <- c("pt_0011", "pt_0061")
+        subjectgroups <- c("subject_0011", "subject_0061")
         samps_p2 <- LongitudinalQuantities(
             test_data_1$jsamples,
             grid = GridFixed(
-                subjects = ptgroups
+                subjects = subjectgroups
             )
         )
         print(samps_p2)
@@ -127,19 +127,19 @@ test_that("LongitudinalQuantities can recover known results", {
     )
 
     dat_sum <- dplyr::tibble(summary(longsamps)) |>
-        dplyr::rename(pt = group)
+        dplyr::rename(subject = group)
 
     dat_all <- test_data_1$dat_lm |>
-        dplyr::left_join(dat_sum, by = c("pt", "time")) |>
-        dplyr::select(pt, time, sld, median) |>
-        dplyr::group_by(pt) |>
+        dplyr::left_join(dat_sum, by = c("subject", "time")) |>
+        dplyr::select(subject, time, sld, median) |>
+        dplyr::group_by(subject) |>
         dplyr::summarise(correl = cor(sld, median))
 
     expect_true(all(dat_all$correl > 0.99))
 })
 
 
-test_that("LongitudinalQuantities correctly subsets patients and rebuilds correct value for each sample", {
+test_that("LongitudinalQuantities correctly subsets subjects and rebuilds correct value for each sample", {
     set.seed(101)
     ensure_test_data_1()
     times <- c(-100, 0, 1, 100, 200)
@@ -147,7 +147,7 @@ test_that("LongitudinalQuantities correctly subsets patients and rebuilds correc
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
         grid = GridFixed(
-            subjects = c("pt_0010", "pt_0011", "pt_0099"),
+            subjects = c("subject_0010", "subject_0011", "subject_0099"),
             times = times
         )
     )

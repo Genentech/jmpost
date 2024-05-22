@@ -49,7 +49,7 @@ test_that("SurvivalWeibullPH can recover known values", {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

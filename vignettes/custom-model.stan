@@ -9,7 +9,7 @@ functions {
     }
 
     // Define required function for enabling generated quantities
-    vector lm_predict_individual_patient(vector time, matrix long_gq_parameters) {
+    vector lm_predict_value(vector time, matrix long_gq_parameters) {
         return sld(
             time,
             long_gq_parameters[,1],  // baseline
@@ -20,7 +20,7 @@ functions {
 }
 
 parameters{
-    // Declare individual patient parameters
+    // Declare individual subject parameters
     vector<lower=0>[n_subjects] baseline_idv;
     vector<lower=0>[n_subjects] shrinkage_idv;
     vector<lower=0>[n_subjects] growth_idv;

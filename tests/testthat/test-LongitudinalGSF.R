@@ -103,7 +103,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

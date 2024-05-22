@@ -3,7 +3,7 @@ functions {
     //
     // Source - lm-random-slope/model.stan
     //
-    vector lm_predict_individual_patient(vector time, matrix long_gq_parameters) {
+    vector lm_predict_value(vector time, matrix long_gq_parameters) {
         int nrow = rows(time);
         return (
             long_gq_parameters[, 1] + long_gq_parameters[, 2] .* time

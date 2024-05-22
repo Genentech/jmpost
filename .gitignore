@@ -87,3 +87,7 @@ inst/stanmodels/stan_model
 # Include all gitkeep files
 !.gitkeep
 !**/.gitkeep
+
+
+# Local R environment variables
+.Renviron

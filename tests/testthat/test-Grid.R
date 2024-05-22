@@ -41,10 +41,10 @@ set_fixtures_gsf <- function() {
 
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
-        dplyr::group_by(pt) |>
+        dplyr::group_by(subject) |>
         dplyr::sample_n(9) |>
-        dplyr::group_by(pt) |>
-        dplyr::filter(!pt == "pt_0004" | seq_len(dplyr::n()) <= 7) |>
+        dplyr::group_by(subject) |>
+        dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
 
 
@@ -70,7 +70,7 @@ set_fixtures_gsf <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -139,10 +139,10 @@ set_fixtures_rs <- function() {
 
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
-        dplyr::group_by(pt) |>
+        dplyr::group_by(subject) |>
         dplyr::sample_n(9) |>
-        dplyr::group_by(pt) |>
-        dplyr::filter(!pt == "pt_0004" | seq_len(dplyr::n()) <= 7) |>
+        dplyr::group_by(subject) |>
+        dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
 
 
@@ -162,7 +162,7 @@ set_fixtures_rs <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -205,7 +205,7 @@ fixtures_rs <- set_fixtures_rs()
 
 test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     dat_os <- dplyr::tibble(
-        pt = c("A", "B", "C", "D"),
+        subject = c("A", "B", "C", "D"),
         arm = c("Arm-A", "Arm-A", "Arm-B", "Arm-B"),
         study = c("Study-1", "Study-1", "Study-1", "Study-1"),
         time = c(1, 2, 3, 4),
@@ -214,7 +214,7 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
 
 
     dat_lm <- dplyr::tibble(
-        pt = c("A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "D"),
+        subject = c("A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "D"),
         time = c(1, 2, 3, 10, 20, 30, 100, 200, 300, 1000, 2000, 3000),
         sld = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
     )
@@ -222,7 +222,7 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     dj <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -383,7 +383,7 @@ test_that("GridObservered + Constructs correct quantities", {
     longquant_obsv <- LongitudinalQuantities(
         fixtures_gsf$mp,
         grid = GridObserved(
-            subjects = c("pt_0004", "pt_0002", "pt_0050")
+            subjects = c("subject_0004", "subject_0002", "subject_0050")
         )
     )
     actual_obsv <- summary(longquant_obsv)
@@ -393,16 +393,16 @@ test_that("GridObservered + Constructs correct quantities", {
         fixtures_gsf$mp,
         grid = GridManual(
             spec = list(
-                "pt_0004" = fixtures_gsf$dat_lm |>
-                    dplyr::filter(pt == "pt_0004") |>
+                "subject_0004" = fixtures_gsf$dat_lm |>
+                    dplyr::filter(subject == "subject_0004") |>
                     dplyr::arrange(time) |>
                     dplyr::pull(time),
-                "pt_0002" = fixtures_gsf$dat_lm |>
-                    dplyr::filter(pt == "pt_0002") |>
+                "subject_0002" = fixtures_gsf$dat_lm |>
+                    dplyr::filter(subject == "subject_0002") |>
                     dplyr::arrange(time) |>
                     dplyr::pull(time),
-                "pt_0050" = fixtures_gsf$dat_lm |>
-                    dplyr::filter(pt == "pt_0050") |>
+                "subject_0050" = fixtures_gsf$dat_lm |>
+                    dplyr::filter(subject == "subject_0050") |>
                     dplyr::arrange(time) |>
                     dplyr::pull(time)
             )
@@ -417,25 +417,25 @@ test_that("GridObservered + Constructs correct quantities", {
     pred_mat <- as.CmdStanMCMC(fixtures_gsf$mp)$draws("Ypred", format = "draws_matrix")
 
     fdat <- fixtures_gsf$dat_lm |>
-        dplyr::arrange(pt, time, sld) |>
+        dplyr::arrange(subject, time, sld) |>
         dplyr::mutate(index = seq_len(dplyr::n())) |>
-        dplyr::filter(pt %in% c("pt_0004", "pt_0002", "pt_0050"))
+        dplyr::filter(subject %in% c("subject_0004", "subject_0002", "subject_0050"))
 
     times <- c(
-        fdat |> dplyr::filter(pt == "pt_0004") |> dplyr::pull(time),
-        fdat |> dplyr::filter(pt == "pt_0002") |> dplyr::pull(time),
-        fdat |> dplyr::filter(pt == "pt_0050") |> dplyr::pull(time)
+        fdat |> dplyr::filter(subject == "subject_0004") |> dplyr::pull(time),
+        fdat |> dplyr::filter(subject == "subject_0002") |> dplyr::pull(time),
+        fdat |> dplyr::filter(subject == "subject_0050") |> dplyr::pull(time)
     )
 
     indexes <- c(
-        fdat |> dplyr::filter(pt == "pt_0004") |> dplyr::pull(index),
-        fdat |> dplyr::filter(pt == "pt_0002") |> dplyr::pull(index),
-        fdat |> dplyr::filter(pt == "pt_0050") |> dplyr::pull(index)
+        fdat |> dplyr::filter(subject == "subject_0004") |> dplyr::pull(index),
+        fdat |> dplyr::filter(subject == "subject_0002") |> dplyr::pull(index),
+        fdat |> dplyr::filter(subject == "subject_0050") |> dplyr::pull(index)
     )
 
     preds_reduced <- pred_mat[, indexes]
     expected <- dplyr::tibble(
-        group = rep(c("pt_0004", "pt_0002", "pt_0050"), c(7, 9, 9)),
+        group = rep(c("subject_0004", "subject_0002", "subject_0050"), c(7, 9, 9)),
         time = times,
         median = apply(preds_reduced, 2, median),
         lower = apply(preds_reduced, 2, quantile, 0.025),
@@ -464,7 +464,7 @@ test_that("GridObservered + Constructs correct quantities", {
     lambda_samples <- exp(design %*% t(beta_coefs))[c(4, 2, 50), ]
 
     samples_df <- dplyr::tibble(
-        pt = rep(c("pt_0004", "pt_0002", "pt_0050"), c(100, 100, 100)),
+        subject = rep(c("subject_0004", "subject_0002", "subject_0050"), c(100, 100, 100)),
         id = rep(seq_len(100), 3),
         samples = c(lambda_samples[1, ], lambda_samples[2, ], lambda_samples[3, ])
     )
@@ -477,7 +477,7 @@ test_that("GridObservered + Constructs correct quantities", {
     ) |>
         dplyr::bind_rows() |>
         dplyr::mutate(surv = pexp(time, rate = samples, lower.tail = FALSE)) |>
-        dplyr::group_by(pt, time) |>
+        dplyr::group_by(subject, time) |>
         dplyr::summarise(
             median = median(surv),
             lower = quantile(surv, 0.025),
@@ -488,7 +488,7 @@ test_that("GridObservered + Constructs correct quantities", {
     survquant <- SurvivalQuantities(
         fixtures_gsf$mp,
         grid = GridFixed(
-            subjects = c("pt_0004", "pt_0002", "pt_0050"),
+            subjects = c("subject_0004", "subject_0002", "subject_0050"),
             times = c(0.25, 0.5, 0.75, 1.50, 2)
         )
     )
@@ -498,7 +498,7 @@ test_that("GridObservered + Constructs correct quantities", {
     expect_gt(cor(actual$lower, expected$lower), 0.99999999)
     expect_gt(cor(actual$upper, expected$upper), 0.99999999)
     expect_equal(actual$time, expected$time)
-    expect_equal(actual$group, expected$pt)
+    expect_equal(actual$group, expected$subject)
 })
 
 
@@ -712,7 +712,7 @@ test_that("GridFixed() bug has been fixed", {
     long_quantities <- LongitudinalQuantities(
         fixtures_rs$mp,
         grid = GridFixed(
-            subjects = c("pt_0001", "pt_0002")
+            subjects = c("subject_0001", "subject_0002")
         )
     )
     expect_class(long_quantities, "LongitudinalQuantities")

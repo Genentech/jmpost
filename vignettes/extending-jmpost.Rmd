@@ -149,7 +149,7 @@ of the sum all of the log-likelihoods)
 In order to calculate the individual subject generated quantities (via 
 `GridFixed()` / `GridGrouped()` / etc) you need to define a Stan function with the signature:
 ```stan
-vector lm_predict_individual_patient(vector time, matrix long_gq_parameters)
+vector lm_predict_value(vector time, matrix long_gq_parameters)
 ```
 
 Where:
@@ -177,7 +177,7 @@ Where:
 random slope parameters respectively.
 
 Note that the `long_gq_parameters` matrix should be structured
-as your `lm_predict_individual_patient()` function would expect it to be for the
+as your `lm_predict_value()` function would expect it to be for the
 `long_gq_parameters` argument.
 
 ### 3) Population Generated Quantity Integration
@@ -214,7 +214,7 @@ Where:
 intercept and slope parameters respectively.
 
 Note that the `long_gq_pop_parameters` matrix should be structured
-as your `lm_predict_individual_patient()` function would expect it to be for the
+as your `lm_predict_value()` function would expect it to be for the
 `long_gq_parameters` argument.
 
 ## Prior Specification
@@ -267,7 +267,7 @@ Each longitudinal model is responsible for defining their own implementations of
 The interface for doing this is by providing an `enableLink` method that updates the `StanModule`
 object of the model to define a Stan matrix with the name `link_function_inputs`
 that contains 1 row per
-patient and 1 column per $\phi$ parameter.
+subject and 1 column per $\phi$ parameter.
 
 For reference the following is roughly the implementation for the `LongitudinalGSF` model:
 
@@ -319,8 +319,8 @@ matrix <key>_contrib(
 ```
 Where:
 - `<key>` is the name of the link parameter as specified in the `LinkComponent` object
-- `time` is a matrix of 1 row per patient and 1 column per time point to be evaluated at for
-that patient.
+- `time` is a matrix of 1 row per subject and 1 column per time point to be evaluated at for
+that subject.
 
 The `LinkComponent` object is responsible for then integrating these functions
 into the final Stan model. For reference the following is roughly the implementation of the
@@ -575,7 +575,7 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
         dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g)) |>
         dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), object@a_phi[.data$arm_idx], object@b_phi[.data$arm_idx]))
-    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
+    res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
 
 sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
@@ -596,19 +596,19 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
 
 The `subjects_df` argument to the `sampleSubjects` method is a `data.frame` with the following columns:
 
-- `pt`: The subject identifier
+- `subject`: The subject identifier
 - `arm`: The treatment arm that the subject belongs to
 - `study`: The study that the subject belongs to
 
 Of note is that this dataset contains one row per subject. The return value must be a `data.frame` with the
-same number of rows as the input dataset as well as the `pt`, `arm` and `study` columns. The remaining
+same number of rows as the input dataset as well as the `subject`, `arm` and `study` columns. The remaining
 columns are the subject specific parameters and can have any arbitrary name.
 
 The `times_df` argument to the `sampleObservations` method is the same `data.frame` that was
 generated in the `sampleSubjects` method but duplicated once per required timepoint with an
 additional `time` column that contains said timepoint. The return value must be a `data.frame` with
 the same number of rows as the input dataset as well as the original columns
-`pt`, `arm`, `study` and `time`.
+`subject`, `arm`, `study` and `time`.
 In addition to the original columns the function must also define the following new columns:
 
 - `sld`: The tumour size at the given timepoint
@@ -710,7 +710,7 @@ int<lower=1> n_subject_event;
 ```stan
 vector[n_subjects] event_times;
 ```
-- Ordered by patient factor level
+- Ordered by subject factor level
 
 **Event Index**
 ```stan
@@ -793,7 +793,7 @@ real tumour_value_lloq;
 ```stan
 array[n_tumour_all] int subject_tumour_index;
 ```
-- That is if tumour assessment 1 belongs to the patient with factor level 3 then
+- That is if tumour assessment 1 belongs to the subject with factor level 3 then
 `subject_tumour_index[1]` will be 3.
 
 
@@ -812,19 +812,19 @@ array[n_tumour_cens] int subject_tumour_index_cens;
 `subject_tumour_index_obs` will be `[1, 2]`.
 
 
-**Sparse matrix components for patient indexes of the tumour assessments**
+**Sparse matrix components for subject indexes of the tumour assessments**
 ```stan
 array [3] int<lower=0> n_mat_inds_all_y;
 vector[n_mat_inds_all_y[1]] w_mat_inds_all_y;
 array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
 array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
 ```
-- This is the sparse matrix representation of the binary matrix that has one row per patient and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `tumour_value` belongs to the patient with factor level 3. This matrix is primarily used to calculate the sum
-of log-likelihood for all tumour assessments per patient in an efficient way.
+- This is the sparse matrix representation of the binary matrix that has one row per subject and one column per tumour assessment. That is, for row 3 of this matrix all columns that have an entry of 1 indicate that the corresponding entry in `tumour_value` belongs to the subject with factor level 3. This matrix is primarily used to calculate the sum
+of log-likelihood for all tumour assessments per subject in an efficient way.
 - See [the Stan CSR documentation](https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR) for more information on the sparse matrix representation.
 
 
-**Sparse matrix components for patient indexes of the tumour assessments above the LLoQ**
+**Sparse matrix components for subject indexes of the tumour assessments above the LLoQ**
 ```stan
 array [3] int<lower=1> n_mat_inds_obs_y;
 vector[n_mat_inds_obs_y[1]] w_mat_inds_obs_y;
@@ -833,7 +833,7 @@ array[n_mat_inds_obs_y[3]] int u_mat_inds_obs_y;
 ```
 - Same as above but only for the tumour assessments above the LLoQ.
 
-**Sparse matrix components for patient indexes of the tumour assessments below the LLoQ**
+**Sparse matrix components for subject indexes of the tumour assessments below the LLoQ**
 ```stan
 array [3] int<lower=0> n_mat_inds_cens_y;
 vector[n_mat_inds_cens_y[1]] w_mat_inds_cens_y;
@@ -856,9 +856,9 @@ int <lower=1> gq_n_quant;
 vector[gq_n_quant] gq_times;
 ```
 
-**Patient index for each quantity**
+**subject index for each quantity**
 ```stan
-array[gq_n_quant] int<lower=1, upper=n_subjects> gq_pt_index;
+array[gq_n_quant] int<lower=1, upper=n_subjects> gq_subject_index;
 ```
 - `GridFixed()` / `GridGrouped()` / `GridObserved()` / `GridManual()` only
 

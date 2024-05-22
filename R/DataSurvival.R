@@ -65,7 +65,7 @@ setValidity(
         }
         for (v in c(x$time, x$event)) {
             if (! v %in% dnames) {
-                return(sprintf("Variable %s is not in `data`", x$pt))
+                return(sprintf("Variable %s is not in `data`", x$subject))
             }
         }
         return(TRUE)

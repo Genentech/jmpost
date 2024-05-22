@@ -60,6 +60,7 @@ Suggests:
     prodlim,
     loo
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Collate:
     'DataSubject.R'
     'utilities.R'
