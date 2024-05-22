@@ -44,9 +44,9 @@ only be calculated for those specific subjects.
 
 If \code{groups} is a list then any elements with more than 1 subject ID will be grouped together
 and their quantities will be calculated by taking a point-wise average.
-For example: \code{groups = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))} would result
+For example: \code{groups = list("g1" = c("sub1", "sub2"), "g2" = c("sub3", "sub4"))} would result
 in 2 groups being created whose values are the pointwise average
-of \code{c("pt1", "pt2")} and \code{c("pt3", "pt4")} respectively.
+of \code{c("sub1", "sub2")} and \code{c("sub3", "sub4")} respectively.
 
 If \code{groups=NULL} then all subjects from original dataset will be selected
 }

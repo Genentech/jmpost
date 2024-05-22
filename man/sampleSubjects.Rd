@@ -34,7 +34,7 @@ with the following columns:
 \itemize{
 \item \code{study} (\code{factor}) the study identifier.
 \item \code{arm} (\code{factor}) the treatment arm identifier.
-\item \code{pt} (\code{character}) the subject identifier.
+\item \code{subject} (\code{character}) the subject identifier.
 }
 
 This method takes care of generating all the individual subject data required for the

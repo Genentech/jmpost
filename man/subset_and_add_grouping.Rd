@@ -7,10 +7,10 @@
 subset_and_add_grouping(dat, groupings)
 }
 \arguments{
-\item{dat}{(\code{data.frame}) \cr must have a column called \code{patient} which corresponds to the
+\item{dat}{(\code{data.frame}) \cr must have a column called \code{subject} which corresponds to the
 values passed to \code{groupings}.}
 
-\item{groupings}{(\code{character} or \code{list})\cr patients that you wish to subset the dataset
+\item{groupings}{(\code{character} or \code{list})\cr subjects that you wish to subset the dataset
 to contain. If \code{groupings} is a list then an additional variable \code{group} will be added
 onto the dataset specifying which group the row belongs to.}
 }
@@ -20,12 +20,12 @@ onto the dataset specifying which group the row belongs to.}
 \details{
 Example of usage
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{pts <- c("PT1", "PT3", "PT4")
-subset_and_add_grouping(dat, pts)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{subjects <- c("SUB1", "SUB2", "SUB3", "SUB4")
+subset_and_add_grouping(dat, subjects)
 
 groups <- list(
-    "g1" = c("PT1", "PT3", "PT4"),
-    "g2" = c("PT2", "PT3")
+    "g1" = c("SUB1", "SUB3", "SUB4"),
+    "g2" = c("SUB2", "SUB3")
 )
 subset_and_add_grouping(dat, groups)
 }\if{html}{\out{</div>}}
