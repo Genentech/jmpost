@@ -24,6 +24,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/custom-model.html">Fitting a Custom Longitudinal Model</a>
     <a class="dropdown-item" href="../articles/extending-jmpost.html">Extending jmpost</a>
     <a class="dropdown-item" href="../articles/model_fitting.html">Model Fitting</a>
     <a class="dropdown-item" href="../articles/statistical-specification.html">Statistical Specifications</a>
@@ -32,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -252,7 +247,7 @@
           
           <code><a href="prior_init_only.html">prior_init_only()</a></code> 
         </dt>
-        <dd>Only Initial Values Specification</dd>
+        <dd>Initial Values Specification</dd>
       </dl></div><div class="section level2">
       <h2 id="longitudinal-model-specification">Longitudinal Model Specification<a class="anchor" aria-label="anchor" href="#longitudinal-model-specification"></a></h2>
       
@@ -328,7 +323,7 @@
 
       <dl><dt>
           
-          <code><a href="standard-link-user.html">linkNone()</a></code> <code><a href="standard-link-user.html">linkTTG()</a></code> <code><a href="standard-link-user.html">linkDSLD()</a></code> <code><a href="standard-link-user.html">linkIdentity()</a></code> 
+          <code><a href="standard-link-user.html">linkNone()</a></code> <code><a href="standard-link-user.html">linkTTG()</a></code> <code><a href="standard-link-user.html">linkDSLD()</a></code> <code><a href="standard-link-user.html">linkIdentity()</a></code> <code><a href="standard-link-user.html">linkGrowth()</a></code> 
         </dt>
         <dd>Standard Links</dd>
       </dl><dl><dt>
@@ -505,6 +500,11 @@
           <code><a href="write_stan.html">write_stan()</a></code> 
         </dt>
         <dd><code>write_stan</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="getParameters.html">getParameters()</a></code> 
+        </dt>
+        <dd><code>getParameters</code></dd>
       </dl></div><div class="section level2">
       <h2 id="convenience-functions">Convenience Functions<a class="anchor" aria-label="anchor" href="#convenience-functions"></a></h2>
       

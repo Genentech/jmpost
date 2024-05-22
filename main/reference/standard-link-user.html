@@ -30,6 +30,7 @@ vignette("Statistical Specifications", package = "jmpost") for more details.'><m
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/custom-model.html">Fitting a Custom Longitudinal Model</a>
     <a class="dropdown-item" href="../articles/extending-jmpost.html">Extending jmpost</a>
     <a class="dropdown-item" href="../articles/model_fitting.html">Model Fitting</a>
     <a class="dropdown-item" href="../articles/statistical-specification.html">Statistical Specifications</a>
@@ -38,12 +39,6 @@ vignette("Statistical Specifications", package = "jmpost") for more details.'><m
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -87,7 +82,9 @@ of the link function is model specific, see
 <span></span>
 <span><span class="fu">linkDSLD</span><span class="op">(</span><span class="va">prior</span>, model <span class="op">=</span> <span class="fu"><a href="PromiseLongitudinalModel-class.html">PromiseLongitudinalModel</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">linkIdentity</span><span class="op">(</span><span class="va">prior</span>, model <span class="op">=</span> <span class="fu"><a href="PromiseLongitudinalModel-class.html">PromiseLongitudinalModel</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">linkIdentity</span><span class="op">(</span><span class="va">prior</span>, model <span class="op">=</span> <span class="fu"><a href="PromiseLongitudinalModel-class.html">PromiseLongitudinalModel</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">linkGrowth</span><span class="op">(</span><span class="va">prior</span>, model <span class="op">=</span> <span class="fu"><a href="PromiseLongitudinalModel-class.html">PromiseLongitudinalModel</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -111,6 +108,7 @@ of the link function is model specific, see
 <li><p><code>linkTTG()</code>: Time to growth link</p></li>
 <li><p><code>linkDSLD()</code>: Derivative of the SLD over time link</p></li>
 <li><p><code>linkIdentity()</code>: Current SLD value link</p></li>
+<li><p><code>linkGrowth()</code>: Growth Parameter link</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
