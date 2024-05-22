@@ -28,7 +28,7 @@ test_that("Centralised parameterisation compiles without issues", {
     jm <- JointModel(
         longitudinal = LongitudinalGSF(centred = TRUE),
         survival = SurvivalWeibullPH(),
-        link = Link(linkTTG(), linkDSLD())
+        link = Link(linkTTG(), linkDSLD(), linkGrowth())
     )
     expect_false(any(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)

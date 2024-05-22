@@ -6,6 +6,7 @@
 \alias{linkTTG}
 \alias{linkDSLD}
 \alias{linkIdentity}
+\alias{linkGrowth}
 \title{Standard Links}
 \usage{
 linkNone()
@@ -15,6 +16,8 @@ linkTTG(prior, model = PromiseLongitudinalModel(), ...)
 linkDSLD(prior, model = PromiseLongitudinalModel(), ...)
 
 linkIdentity(prior, model = PromiseLongitudinalModel(), ...)
+
+linkGrowth(prior, model = PromiseLongitudinalModel(), ...)
 }
 \arguments{
 \item{prior}{(\code{\link{Prior}}) \cr A \code{\link{Prior}} object.}
@@ -38,5 +41,7 @@ of the link function is model specific, see
 \item \code{linkDSLD()}: Derivative of the SLD over time link
 
 \item \code{linkIdentity()}: Current SLD value link
+
+\item \code{linkGrowth()}: Growth Parameter link
 
 }}
