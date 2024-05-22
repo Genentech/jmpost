@@ -35,12 +35,6 @@ generated quantities for SurvivalQuantities and LongitudinalQuantities."><meta p
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -86,11 +80,11 @@ should be generated at.
 The <code>QuantityCollapser</code> object specifies how to combine these generated samples
 to form the desired quantities.
 As an example say we want to generate grouped samples for the groups <code>Group-1</code> and <code>Group-2</code>
-which consist of the subjects <code>pt-1</code>, <code>pt-2</code> and <code>pt-3</code>, <code>pt-4</code> respectively at two time points
+which consist of the subjects <code>sub-1</code>, <code>sub-2</code> and <code>sub-3</code>, <code>sub-4</code> respectively at two time points
 <code>10</code> and <code>20</code>. We can achieve this as follows:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">QuantityGenerator</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">20</span>),</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="at">subjects =</span> <span class="fu">c</span>(<span class="st">"pt-1"</span> <span class="st">"pt-2"</span>, <span class="st">"pt-3"</span>, <span class="st">"pt-4"</span>, <span class="st">"pt-1"</span> <span class="st">"pt-2"</span>, <span class="st">"pt-3"</span>, <span class="st">"pt-4"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="at">subjects =</span> <span class="fu">c</span>(<span class="st">"sub-1"</span> <span class="st">"sub-2"</span>, <span class="st">"sub-3"</span>, <span class="st">"sub-4"</span>, <span class="st">"sub-1"</span> <span class="st">"sub-2"</span>, <span class="st">"sub-3"</span>, <span class="st">"sub-4"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">QuantityCollapser</span>(</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">10</span> , <span class="dv">20</span>),</span>
@@ -126,12 +120,12 @@ If <code>NULL</code> will default to 201 evenly spaced timepoints between 0 and 
 <p>For <code><a href="Grid-Functions.html">GridGrouped()</a></code>, <code>groups</code> must be a named list of character vectors. Each element of the list
 must be a character vector of the subjects that will form the group where the element name
 is the corresponding name of the group. For example if the goal was to create two groups
-named <code>Group-1</code> and <code>Group-2</code> which are composed of the subjects <code>pt-1</code>, <code>pt-2</code> and
-<code>pt-3</code>, <code>pt-4</code> respectively then this would be specified as:</p>
+named <code>Group-1</code> and <code>Group-2</code> which are composed of the subjects <code>sub-1</code>, <code>sub-2</code> and
+<code>sub-3</code>, <code>sub-4</code> respectively then this would be specified as:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">GridGrouped</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="at">groups =</span> <span class="fu">list</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>        <span class="st">"Group-1"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"pt-1"</span>, <span class="st">"pt-2"</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>        <span class="st">"Group-2"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"pt-3"</span>, <span class="st">"pt-4"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>        <span class="st">"Group-1"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"sub-1"</span>, <span class="st">"sub-2"</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>        <span class="st">"Group-2"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"sub-3"</span>, <span class="st">"sub-4"</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    )</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>)</span></code></pre><p></p></div>
     </div>

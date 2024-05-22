@@ -361,7 +361,7 @@
     <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/decompose_patients.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/decompose_subjects.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
@@ -376,7 +376,7 @@
     <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/jmpost/reference/expand_patients.html</loc>
+    <loc>https://genentech.github.io/jmpost/reference/expand_subjects.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.html</loc>

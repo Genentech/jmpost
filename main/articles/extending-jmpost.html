@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -232,7 +226,7 @@ single value of the sum all of the log-likelihoods)</p>
 <p>In order to calculate the individual subject generated quantities
 (via <code><a href="../reference/Grid-Functions.html">GridFixed()</a></code> / <code><a href="../reference/Grid-Functions.html">GridGrouped()</a></code> / etc) you
 need to define a Stan function with the signature:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="dt">vector</span> lm_predict_individual_patient(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="dt">vector</span> lm_predict_value(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters)</span></code></pre></div>
 <p>Where:</p>
 <ul>
 <li>
@@ -264,9 +258,8 @@ example from the <code>LongitudinalRandomSlope</code> model:</p>
 intercept and random slope parameters respectively.</li>
 </ul>
 <p>Note that the <code>long_gq_parameters</code> matrix should be
-structured as your <code>lm_predict_individual_patient()</code> function
-would expect it to be for the <code>long_gq_parameters</code>
-argument.</p>
+structured as your <code>lm_predict_value()</code> function would expect
+it to be for the <code>long_gq_parameters</code> argument.</p>
 </div>
 <div class="section level4">
 <h4 id="population-generated-quantity-integration">3) Population Generated Quantity Integration<a class="anchor" aria-label="anchor" href="#population-generated-quantity-integration"></a>
@@ -304,9 +297,8 @@ model specific group level intercept and slope parameters
 respectively.</li>
 </ul>
 <p>Note that the <code>long_gq_pop_parameters</code> matrix should be
-structured as your <code>lm_predict_individual_patient()</code> function
-would expect it to be for the <code>long_gq_parameters</code>
-argument.</p>
+structured as your <code>lm_predict_value()</code> function would expect
+it to be for the <code>long_gq_parameters</code> argument.</p>
 </div>
 </div>
 <div class="section level3">
@@ -360,7 +352,7 @@ implementations of the <span class="math inline">\(\phi\)</span> vector.
 The interface for doing this is by providing an <code>enableLink</code>
 method that updates the <code>StanModule</code> object of the model to
 define a Stan matrix with the name <code>link_function_inputs</code>
-that contains 1 row per patient and 1 column per <span class="math inline">\(\phi\)</span> parameter.</p>
+that contains 1 row per subject and 1 column per <span class="math inline">\(\phi\)</span> parameter.</p>
 <p>For reference the following is roughly the implementation for the
 <code>LongitudinalGSF</code> model:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -408,8 +400,8 @@ with the following signature:</p>
 )</code></pre>
 <p>Where: - <code>&lt;key&gt;</code> is the name of the link parameter
 as specified in the <code>LinkComponent</code> object -
-<code>time</code> is a matrix of 1 row per patient and 1 column per time
-point to be evaluated at for that patient.</p>
+<code>time</code> is a matrix of 1 row per subject and 1 column per time
+point to be evaluated at for that subject.</p>
 <p>The <code>LinkComponent</code> object is responsible for then
 integrating these functions into the final Stan model. For reference the
 following is roughly the implementation of the dSLD link component for
@@ -677,7 +669,7 @@ class is implemented:</p>
 <span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>psi_s <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">object</span><span class="op">@</span><span class="va">mu_s</span><span class="op">[</span><span class="va">.data</span><span class="op">$</span><span class="va">arm_idx</span><span class="op">]</span><span class="op">)</span>, <span class="va">object</span><span class="op">@</span><span class="va">omega_s</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>psi_g <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">object</span><span class="op">@</span><span class="va">mu_g</span><span class="op">[</span><span class="va">.data</span><span class="op">$</span><span class="va">arm_idx</span><span class="op">]</span><span class="op">)</span>, <span class="va">object</span><span class="op">@</span><span class="va">omega_g</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>psi_phi <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">object</span><span class="op">@</span><span class="va">a_phi</span><span class="op">[</span><span class="va">.data</span><span class="op">$</span><span class="va">arm_idx</span><span class="op">]</span>, <span class="va">object</span><span class="op">@</span><span class="va">b_phi</span><span class="op">[</span><span class="va">.data</span><span class="op">$</span><span class="va">arm_idx</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pt"</span>, <span class="st">"arm"</span>, <span class="st">"study"</span>, <span class="st">"psi_b"</span>, <span class="st">"psi_s"</span>, <span class="st">"psi_g"</span>, <span class="st">"psi_phi"</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"subject"</span>, <span class="st">"arm"</span>, <span class="st">"study"</span>, <span class="st">"psi_b"</span>, <span class="st">"psi_s"</span>, <span class="st">"psi_g"</span>, <span class="st">"psi_phi"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">sampleObservations.SimLongitudinalGSF</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">times_df</span><span class="op">)</span> <span class="op">{</span></span>
@@ -698,7 +690,7 @@ class is implemented:</p>
 following columns:</p>
 <ul>
 <li>
-<code>pt</code>: The subject identifier</li>
+<code>subject</code>: The subject identifier</li>
 <li>
 <code>arm</code>: The treatment arm that the subject belongs to</li>
 <li>
@@ -706,8 +698,8 @@ following columns:</p>
 </ul>
 <p>Of note is that this dataset contains one row per subject. The return
 value must be a <code>data.frame</code> with the same number of rows as
-the input dataset as well as the <code>pt</code>, <code>arm</code> and
-<code>study</code> columns. The remaining columns are the subject
+the input dataset as well as the <code>subject</code>, <code>arm</code>
+and <code>study</code> columns. The remaining columns are the subject
 specific parameters and can have any arbitrary name.</p>
 <p>The <code>times_df</code> argument to the
 <code>sampleObservations</code> method is the same
@@ -716,7 +708,7 @@ specific parameters and can have any arbitrary name.</p>
 timepoint with an additional <code>time</code> column that contains said
 timepoint. The return value must be a <code>data.frame</code> with the
 same number of rows as the input dataset as well as the original columns
-<code>pt</code>, <code>arm</code>, <code>study</code> and
+<code>subject</code>, <code>arm</code>, <code>study</code> and
 <code>time</code>. In addition to the original columns the function must
 also define the following new columns:</p>
 <ul>
@@ -814,7 +806,7 @@ arm.</li>
 <p><strong>Event/Censor Times</strong></p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="dt">vector</span>[n_subjects] event_times;</span></code></pre></div>
 <ul>
-<li>Ordered by patient factor level</li>
+<li>Ordered by subject factor level</li>
 </ul>
 <p><strong>Event Index</strong></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="dt">array</span>[n_subject_event] <span class="dt">int</span> subject_event_index;</span></code></pre></div>
@@ -869,7 +861,7 @@ Quantification)</strong></p>
 <p><strong>Individual tumour assessment index</strong></p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="dt">array</span>[n_tumour_all] <span class="dt">int</span> subject_tumour_index;</span></code></pre></div>
 <ul>
-<li>That is if tumour assessment 1 belongs to the patient with factor
+<li>That is if tumour assessment 1 belongs to the subject with factor
 level 3 then <code>subject_tumour_index[1]</code> will be 3.</li>
 </ul>
 <p><strong>Tumour assessment index for observations above LLoQ (Lower
@@ -888,7 +880,7 @@ Limit of Quantification)</strong></p>
 then <code>subject_tumour_index_obs</code> will be
 <code>[1, 2]</code>.</li>
 </ul>
-<p><strong>Sparse matrix components for patient indexes of the tumour
+<p><strong>Sparse matrix components for subject indexes of the tumour
 assessments</strong></p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_all_y;</span>
 <span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_all_y[<span class="dv">1</span>]] w_mat_inds_all_y;</span>
@@ -896,17 +888,17 @@ assessments</strong></p>
 <span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a><span class="dt">array</span>[n_mat_inds_all_y[<span class="dv">3</span>]] <span class="dt">int</span> u_mat_inds_all_y;</span></code></pre></div>
 <ul>
 <li>This is the sparse matrix representation of the binary matrix that
-has one row per patient and one column per tumour assessment. That is,
+has one row per subject and one column per tumour assessment. That is,
 for row 3 of this matrix all columns that have an entry of 1 indicate
 that the corresponding entry in <code>tumour_value</code> belongs to the
-patient with factor level 3. This matrix is primarily used to calculate
-the sum of log-likelihood for all tumour assessments per patient in an
+subject with factor level 3. This matrix is primarily used to calculate
+the sum of log-likelihood for all tumour assessments per subject in an
 efficient way.</li>
 <li>See <a href="https://mc-stan.org/docs/functions-reference/sparse_matrix_operations.html#CSR" class="external-link">the
 Stan CSR documentation</a> for more information on the sparse matrix
 representation.</li>
 </ul>
-<p><strong>Sparse matrix components for patient indexes of the tumour
+<p><strong>Sparse matrix components for subject indexes of the tumour
 assessments above the LLoQ</strong></p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_mat_inds_obs_y;</span>
 <span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_obs_y[<span class="dv">1</span>]] w_mat_inds_obs_y;</span>
@@ -916,7 +908,7 @@ assessments above the LLoQ</strong></p>
 <li>Same as above but only for the tumour assessments above the
 LLoQ.</li>
 </ul>
-<p><strong>Sparse matrix components for patient indexes of the tumour
+<p><strong>Sparse matrix components for subject indexes of the tumour
 assessments below the LLoQ</strong></p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="dt">array</span> [<span class="dv">3</span>] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_mat_inds_cens_y;</span>
 <span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="dt">vector</span>[n_mat_inds_cens_y[<span class="dv">1</span>]] w_mat_inds_cens_y;</span>
@@ -935,8 +927,8 @@ LLoQ.</li>
 <p><strong>Assessment time for that the corresponding quantity should be
 generated at</strong></p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="dt">vector</span>[gq_n_quant] gq_times;</span></code></pre></div>
-<p><strong>Patient index for each quantity</strong></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="dt">array</span>[gq_n_quant] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_subjects&gt; gq_pt_index;</span></code></pre></div>
+<p><strong>subject index for each quantity</strong></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="dt">array</span>[gq_n_quant] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_subjects&gt; gq_subject_index;</span></code></pre></div>
 <ul>
 <li>
 <code><a href="../reference/Grid-Functions.html">GridFixed()</a></code> / <code><a href="../reference/Grid-Functions.html">GridGrouped()</a></code> /

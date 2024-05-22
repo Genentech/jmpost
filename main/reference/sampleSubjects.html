@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -103,7 +97,7 @@
     <p>The <code>subjects_df</code> argument should be a <code>data.frame</code> with 1 row per desired subject to create
 with the following columns:</p><ul><li><p><code>study</code> (<code>factor</code>) the study identifier.</p></li>
 <li><p><code>arm</code> (<code>factor</code>) the treatment arm identifier.</p></li>
-<li><p><code>pt</code> (<code>character</code>) the subject identifier.</p></li>
+<li><p><code>subject</code> (<code>character</code>) the subject identifier.</p></li>
 </ul><p>This method takes care of generating all the individual subject data required for the
 <code><a href="sampleObservations.html">sampleObservations</a></code> method to generate the observations.</p>
     </div>

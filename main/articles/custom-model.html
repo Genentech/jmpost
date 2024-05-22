@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -284,9 +278,9 @@ follows:</p>
 <span></span>
 <span><span class="co"># Select 6 random subjects to plot</span></span>
 <span><span class="va">dat_lm_plot</span> <span class="op">&lt;-</span> <span class="va">dat_lm</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pt</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">dat_os</span><span class="op">$</span><span class="va">pt</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">subject</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">dat_os</span><span class="op">$</span><span class="va">subject</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat_lm_plot</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">sld</span>, group <span class="op">=</span> <span class="va">pt</span>, color <span class="op">=</span> <span class="va">pt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dat_lm_plot</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">sld</span>, group <span class="op">=</span> <span class="va">subject</span>, color <span class="op">=</span> <span class="va">subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time (years)"</span>, y <span class="op">=</span> <span class="st">"Tumour Size"</span>, col <span class="op">=</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -355,7 +349,7 @@ specified in the <code>custom-model.stan</code> file is as follows:</p>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    }</span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="co">// Define required function for enabling generated quantities</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="dt">vector</span> lm_predict_individual_patient(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters) {</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="dt">vector</span> lm_predict_value(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters) {</span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>        <span class="cf">return</span> sld(</span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>            time,</span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">1</span>],  <span class="co">// baseline</span></span>
@@ -366,7 +360,7 @@ specified in the <code>custom-model.stan</code> file is as follows:</p>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>}</span>
 <span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a></span>
 <span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="kw">parameters</span>{</span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>    <span class="co">// Declare individual patient parameters</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>    <span class="co">// Declare individual subject parameters</span></span>
 <span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] baseline_idv;</span>
 <span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] shrinkage_idv;</span>
 <span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] growth_idv;</span>
@@ -494,7 +488,7 @@ from the full joint model.</p>
 <span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint-class.html">DataJoint</a></span><span class="op">(</span></span>
 <span>    subject <span class="op">=</span> <span class="fu"><a href="../reference/DataSubject-class.html">DataSubject</a></span><span class="op">(</span></span>
 <span>        data <span class="op">=</span> <span class="va">dat_os</span>,</span>
-<span>        subject <span class="op">=</span> <span class="st">"pt"</span>,</span>
+<span>        subject <span class="op">=</span> <span class="st">"subject"</span>,</span>
 <span>        arm <span class="op">=</span> <span class="st">"arm"</span>,</span>
 <span>        study <span class="op">=</span> <span class="st">"study"</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -519,11 +513,11 @@ from the full joint model.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 1 chain...</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/Rtmp3oKFJV/model-dd83303945e.stan', line 479, column 4 to column 63)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpSmv5f9/model-dd766a9724d.stan', line 481, column 4 to column 63)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
-<span><span class="co">#&gt; Chain 1 finished in 8.7 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 8.8 seconds.</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -548,12 +542,12 @@ from the full joint model.</p>
 several of the requirement elements for the generated quantities have
 been defined thus enabling us to generate quantities both at a
 population and individual subject level.</p>
-<p>This can be done at the patient level via:</p>
+<p>This can be done at the subject level via:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">selected_patients</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat_os</span><span class="op">$</span><span class="va">pt</span>, <span class="fl">4</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">selected_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat_os</span><span class="op">$</span><span class="va">subject</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">long_quantities_idv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">model_samples</span>,</span>
-<span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>subjects <span class="op">=</span> <span class="va">selected_patients</span><span class="op">)</span></span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>subjects <span class="op">=</span> <span class="va">selected_subjects</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities_idv</span><span class="op">)</span></span></code></pre></div>
 <p><img src="custom-model_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>

@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -127,9 +121,9 @@ the samples/quantities</p></dd>
 only be calculated for those specific subjects.</p>
 <p>If <code>groups</code> is a list then any elements with more than 1 subject ID will be grouped together
 and their quantities will be calculated by taking a point-wise average.
-For example: <code>groups = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))</code> would result
+For example: <code>groups = list("g1" = c("sub1", "sub2"), "g2" = c("sub3", "sub4"))</code> would result
 in 2 groups being created whose values are the pointwise average
-of <code>c("pt1", "pt2")</code> and <code>c("pt3", "pt4")</code> respectively.</p>
+of <code>c("sub1", "sub2")</code> and <code>c("sub3", "sub4")</code> respectively.</p>
 <p>If <code>groups=NULL</code> then all subjects from original dataset will be selected</p>
     </div>
     <div class="section level2">

@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -209,7 +203,7 @@ right format.</p>
 </h3>
 <p>Here we start from a simulated data set.</p>
 <ul>
-<li>We assign 50 patients each to the two treatment arms.</li>
+<li>We assign 50 subjects each to the two treatment arms.</li>
 <li>We use a time grid from 1 to 2000, e.g. specifying the days after
 randomization.</li>
 <li>We use an exponentially distributed censoring time with mean of 9000
@@ -258,7 +252,7 @@ baseline hazard under the given survival model.</li>
 <span>        beta_cont <span class="op">=</span> <span class="fl">0.3</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>We might get a message here that a few patients did not die before
+<p>We might get a message here that a few subjects did not die before
 the day 2000, but this is not of concern. Basically it just gives us a
 feeling of how many survival events are included in the data set.</p>
 </div>
@@ -274,7 +268,7 @@ reducing the longitudinal data to specific time points.</p>
 <p>Let’s have a quick look at the format:</p>
 <p>The survival data has:</p>
 <ul>
-<li>patient ID</li>
+<li>subject ID</li>
 <li>time point</li>
 <li>continuous covariate value</li>
 <li>categorical covariate level</li>
@@ -285,17 +279,17 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   pt     study   arm    time event cov_cont cov_cat</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_001 Study-X Arm-A    35     1   -<span style="color: #BB0000;">1.12</span>  B      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_002 Study-X Arm-A    17     1   -<span style="color: #BB0000;">0.990</span> C      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_003 Study-X Arm-A   876     1   -<span style="color: #BB0000;">1.37</span>  C      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_004 Study-X Arm-A   100     1   -<span style="color: #BB0000;">1.36</span>  C      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_005 Study-X Arm-A     9     1    2.00  B      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_006 Study-X Arm-A   122     1    0.696 B</span></span></code></pre></div>
+<span><span class="co">#&gt;   subject     study   arm    time event cov_cont cov_cat</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> subject_001 Study-X Arm-A    35     1   -<span style="color: #BB0000;">1.12</span>  B      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> subject_002 Study-X Arm-A    17     1   -<span style="color: #BB0000;">0.990</span> C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> subject_003 Study-X Arm-A   876     1   -<span style="color: #BB0000;">1.37</span>  C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> subject_004 Study-X Arm-A   100     1   -<span style="color: #BB0000;">1.36</span>  C      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> subject_005 Study-X Arm-A     9     1    2.00  B      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> subject_006 Study-X Arm-A   122     1    0.696 B</span></span></code></pre></div>
 <p>The longitudinal data has:</p>
 <ul>
-<li>patient ID</li>
+<li>subject ID</li>
 <li>time point</li>
 <li>sum of longest diameters (SLD)</li>
 <li>study ID</li>
@@ -305,14 +299,14 @@ reducing the longitudinal data to specific time points.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">long_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">#&gt;   pt     arm   study    time   sld observed</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> pt_001 Arm-A Study-X     1  23.4 TRUE    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> pt_001 Arm-A Study-X    50 108.  FALSE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> pt_001 Arm-A Study-X   100 137.  FALSE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> pt_001 Arm-A Study-X   150 141.  FALSE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> pt_001 Arm-A Study-X   200 220.  FALSE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> pt_001 Arm-A Study-X   250 325.  FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt;   subject     arm   study    time   sld observed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> subject_001 Arm-A Study-X     1  23.4 TRUE    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> subject_001 Arm-A Study-X    50 108.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> subject_001 Arm-A Study-X   100 137.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> subject_001 Arm-A Study-X   150 141.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> subject_001 Arm-A Study-X   200 220.  FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> subject_001 Arm-A Study-X   250 325.  FALSE</span></span></code></pre></div>
 <p>Finally, we wrap these in the data formatting functions. Here the
 mapping of the column names to the required variables happens. This
 means that in our applications we don’t have to use the same variable
@@ -322,7 +316,7 @@ mapping here.</p>
 <code class="sourceCode R"><span><span class="va">joint_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataJoint-class.html">DataJoint</a></span><span class="op">(</span></span>
 <span>    subject <span class="op">=</span> <span class="fu"><a href="../reference/DataSubject-class.html">DataSubject</a></span><span class="op">(</span></span>
 <span>        data <span class="op">=</span> <span class="va">os_data</span>,</span>
-<span>        subject <span class="op">=</span> <span class="st">"pt"</span>,</span>
+<span>        subject <span class="op">=</span> <span class="st">"subject"</span>,</span>
 <span>        arm <span class="op">=</span> <span class="st">"arm"</span>,</span>
 <span>        study <span class="op">=</span> <span class="st">"study"</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -381,7 +375,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmptCteHV/model-efb763c15b4.stan', line 483, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpttyKSK/model-efad45bf59.stan', line 485, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -396,7 +390,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 6.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 6.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -474,33 +468,33 @@ element, we can extract the samples in a format that is understood by
 </h3>
 <p>Using the <code>longitudinal()</code> method we can extract the
 longitudinal fit samples from the result, and then plot them for all
-patients or those that we are interested in. For illustration, we will
-plot here the first 10 patients:</p>
+subjects or those that we are interested in. For illustration, we will
+plot here the first 10 subjects:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">selected_patients</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="fl">10</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">selected_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">subject</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">long_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span></span>
-<span>        subjects <span class="op">=</span> <span class="va">selected_patients</span></span>
+<span>        subjects <span class="op">=</span> <span class="va">selected_subjects</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    group time  values</span></span>
-<span><span class="co">#&gt; 1 pt_001    0 27.7402</span></span>
-<span><span class="co">#&gt; 2 pt_001    0 25.7129</span></span>
-<span><span class="co">#&gt; 3 pt_001    0 29.7628</span></span>
-<span><span class="co">#&gt; 4 pt_001    0 28.9944</span></span>
-<span><span class="co">#&gt; 5 pt_001    0 27.8322</span></span>
-<span><span class="co">#&gt; 6 pt_001    0 27.2914</span></span></code></pre></div>
+<span><span class="co">#&gt;         group time  values</span></span>
+<span><span class="co">#&gt; 1 subject_001    0 27.7402</span></span>
+<span><span class="co">#&gt; 2 subject_001    0 25.7129</span></span>
+<span><span class="co">#&gt; 3 subject_001    0 29.7628</span></span>
+<span><span class="co">#&gt; 4 subject_001    0 28.9944</span></span>
+<span><span class="co">#&gt; 5 subject_001    0 27.8322</span></span>
+<span><span class="co">#&gt; 6 subject_001    0 27.2914</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    group time  median    lower    upper</span></span>
-<span><span class="co">#&gt; 1 pt_001    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 2 pt_002    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 3 pt_003    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 4 pt_004    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 5 pt_005    0 27.6192 25.02362 30.20194</span></span>
-<span><span class="co">#&gt; 6 pt_006    0 27.6192 25.02362 30.20194</span></span></code></pre></div>
+<span><span class="co">#&gt;         group time  median    lower    upper</span></span>
+<span><span class="co">#&gt; 1 subject_001    0 27.6192 25.02362 30.20194</span></span>
+<span><span class="co">#&gt; 2 subject_002    0 27.6192 25.02362 30.20194</span></span>
+<span><span class="co">#&gt; 3 subject_003    0 27.6192 25.02362 30.20194</span></span>
+<span><span class="co">#&gt; 4 subject_004    0 27.6192 25.02362 30.20194</span></span>
+<span><span class="co">#&gt; 5 subject_005    0 27.6192 25.02362 30.20194</span></span>
+<span><span class="co">#&gt; 6 subject_006    0 27.6192 25.02362 30.20194</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
@@ -514,36 +508,36 @@ same for the estimated survival functions.</p>
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span></span>
-<span>        subjects <span class="op">=</span> <span class="va">selected_patients</span></span>
+<span>        subjects <span class="op">=</span> <span class="va">selected_subjects</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    group time values</span></span>
-<span><span class="co">#&gt; 1 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 2 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 3 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 4 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 5 pt_001    0      1</span></span>
-<span><span class="co">#&gt; 6 pt_001    0      1</span></span></code></pre></div>
+<span><span class="co">#&gt;         group time values</span></span>
+<span><span class="co">#&gt; 1 subject_001    0      1</span></span>
+<span><span class="co">#&gt; 2 subject_001    0      1</span></span>
+<span><span class="co">#&gt; 3 subject_001    0      1</span></span>
+<span><span class="co">#&gt; 4 subject_001    0      1</span></span>
+<span><span class="co">#&gt; 5 subject_001    0      1</span></span>
+<span><span class="co">#&gt; 6 subject_001    0      1</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    group time median lower upper</span></span>
-<span><span class="co">#&gt; 1 pt_001    0      1     1     1</span></span>
-<span><span class="co">#&gt; 2 pt_002    0      1     1     1</span></span>
-<span><span class="co">#&gt; 3 pt_003    0      1     1     1</span></span>
-<span><span class="co">#&gt; 4 pt_004    0      1     1     1</span></span>
-<span><span class="co">#&gt; 5 pt_005    0      1     1     1</span></span>
-<span><span class="co">#&gt; 6 pt_006    0      1     1     1</span></span></code></pre></div>
+<span><span class="co">#&gt;         group time median lower upper</span></span>
+<span><span class="co">#&gt; 1 subject_001    0      1     1     1</span></span>
+<span><span class="co">#&gt; 2 subject_002    0      1     1     1</span></span>
+<span><span class="co">#&gt; 3 subject_003    0      1     1     1</span></span>
+<span><span class="co">#&gt; 4 subject_004    0      1     1     1</span></span>
+<span><span class="co">#&gt; 5 subject_005    0      1     1     1</span></span>
+<span><span class="co">#&gt; 6 subject_006    0      1     1     1</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
-patients, using the corresponding method.</p>
+subjects, using the corresponding method.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridGrouped</a></span><span class="op">(</span></span>
-<span>        groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">pt</span>, <span class="va">os_data</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span></span>
+<span>        groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">subject</span>, <span class="va">os_data</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span>, add_km <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
