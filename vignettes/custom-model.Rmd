@@ -1,0 +1,354 @@
+---
+title: "Fitting a Custom Longitudinal Model"
+package: jmpost
+output:
+  rmarkdown::html_vignette:
+          toc: true
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Fitting a Custom Longitudinal Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette shows a complete example for how to fit a custom longitudinal model. Note that full
+details for the various different interfaces can be found in the "Extending jmpost" vignette.
+This example implements the Wang, Sung et al. 2009 mixed exponential decay and linear growth model
+along with an exponential survival model.
+In particular the following model will be implemented:
+
+**Longitudinal Model**:
+$$
+\begin{align}
+y_{i}(t) &\sim N\left(\mu_i(t),\ \sigma^2\right) \\ \\
+\mu_i(t) &= b_i e^{-s_it} + g_i t  \\ \\
+b_i &\sim \text{LogNormal}(\mu_b,\ \sigma_b) \\
+s_i &\sim \text{LogNormal}(\mu_s,\ \sigma_s) \\
+g_i &\sim \text{LogNormal}(\mu_g,\ \sigma_g) \\
+\end{align}
+$$
+
+Where:
+* $i$ is the subject index
+* $y_{i}(t)$ is the observed tumour size measurement for subject $i$ at time $t$
+* $\mu_i(t)$ is the expected tumour size measurement for subject $i$ at time $t$
+* $b_i$ is the subject baseline tumour size measurement
+* $s_i$ is the subject kinetics shrinkage parameter
+* $g_i$ is the subject kinetics tumour growth parameter
+* $\mu_{\theta}$ is the population mean for parameter $\theta$
+* $\omega_{\theta}$ is the population standard deviation for parameter $\theta$.
+
+**Survival Model**:
+$$
+\log(h_i(t)) = \log(\lambda_0) + X_i \beta + G(t \mid b_i, s_i, g_i) 
+$$
+
+Where:
+
+- $\lambda_0$ is the baseline hazard rate. This is because for this 
+example we are using an exponential survival model e.g. $h_0(t) = \lambda_0$
+- $t$ is the event time
+- $G(.)$ is a link function that maps the subjects tumour growth parameters to a contribution to
+the log-hazard function
+- $X_i$ is the subjects covariate design matrix
+- $\beta$ is the corresponding coefficients vector to scale the design matrix covariates
+contribution to the log-hazard function
+
+For this example we will just consider the derivative of the growth function as the link function,
+e.g.
+$$
+G(t \mid b_i, s_i, g_i) = -s_i b_i e^{-s_i t} + g_i
+$$
+
+
+To keep the example simple, a number of features that have been implemented in the package's  
+internal models will be skipped; you may wish to consider adding these if implementing
+this model in a real project.
+In particular the following have been omitted from this example:
+
+- Handling for censored observations (e.g. observations that are below the limit of quantification)
+- Separate populations per study / arm
+- Non-centred parameterisation for the hierarchical parameters (this parameterisation leads to better
+performance if you have small numbers of observations per each subject).
+- Handling negative observation time (e.g. observations that are taken before the start of the study)
+
+For reference the following libraries will be used during this example:
+
+```{R}
+library(jmpost)
+library(ggplot2)
+library(dplyr)
+library(loo)
+```
+
+## Generating Simulated Data
+
+In order to be confident that our model is working correctly we will first generate some simulated
+data. This will allow us to compare the true parameter values with the estimated parameter values.
+This can be done using the `SimJointData` constructor function as follows:
+
+```{R}
+# Define our simulation parameters + object
+SimWang <- setClass(
+    "SimWang",
+    contains = "SimLongitudinal",
+    slots = c(
+        times = "numeric",
+        mu_b = "numeric",
+        mu_s = "numeric",
+        mu_g = "numeric",
+        omega_b = "numeric",
+        omega_s = "numeric",
+        omega_g = "numeric",
+        sigma = "numeric",
+        link_dsld = "numeric"
+    )
+)
+
+# Method to generate individual subjects parameters from the hierarchical distributions
+sampleSubjects.SimWang <- function(object, subjects_df) {
+    nsub <- nrow(subjects_df)
+    subjects_df$b <- stats::rlnorm(nsub, log(object@mu_b), object@omega_b)
+    subjects_df$s <- stats::rlnorm(nsub, log(object@mu_s), object@omega_s)
+    subjects_df$g <- stats::rlnorm(nsub, log(object@mu_g), object@omega_g)
+    subjects_df
+}
+
+# Method to generate observations for each indiviudal subject
+sampleObservations.SimWang <- function(object, times_df) {
+    nobs <- nrow(times_df)
+    calc_mu <- function(time, b, s, g) b * exp(-s * time) + g * time
+    calc_dsld <- function(time, b, s, g) -s * b * exp(-s * time) + g
+
+    times_df$mu_sld <- calc_mu(times_df$time, times_df$b, times_df$s, times_df$g)
+    times_df$dsld <- calc_dsld(times_df$time, times_df$b, times_df$s, times_df$g)
+    times_df$sld <- stats::rnorm(nobs, times_df$mu_sld, object@sigma)
+    times_df$log_haz_link <- object@link_dsld * times_df$dsld
+    times_df
+}
+
+
+# Generate simulated data
+set.seed(1622)
+joint_data_sim <- SimJointData(
+    design = list(SimGroup(80, "Arm-A", "Study-X")),
+    survival = SimSurvivalExponential(
+        lambda = (1 / 400) * 365,
+        time_max = 4,
+        time_step = 1 / 365,
+        lambda_censor = 1 / 9000,
+        beta_cat = c("A" = 0, "B" = -0.1, "C" = 0.5),
+        beta_cont = 0.3
+    ),
+    longitudinal = SimWang(
+        times = c(1, 50, 100, 200, 300, 400, 600,
+                800, 1000, 1300, 1600) / 365,
+        mu_b = 60,
+        mu_s = 2,
+        mu_g = 10,
+        omega_b = 0.3,
+        omega_s = 0.3,
+        omega_g = 0.3,
+        sigma = 1.5,
+        link_dsld = 0.2
+    ),
+    .silent = TRUE
+)
+
+dat_lm <- joint_data_sim@longitudinal
+dat_os <- joint_data_sim@survival
+
+
+# Select 6 random subjects to plot
+dat_lm_plot <- dat_lm |>
+    filter(pt %in% sample(dat_os$pt, 6))
+
+ggplot(dat_lm_plot, aes(x = time, y = sld, group = pt, color = pt)) +
+    geom_line() +
+    geom_point() +
+    labs(x = "Time (years)", y = "Tumour Size", col = "Subject") +
+    theme_bw() + 
+    theme(legend.position = "bottom")
+```
+
+
+## Defining the Longitudinal Model
+
+The longitudinal model can be implemented by extending the `LongitudinalModel` class. This can be
+done as follows:
+
+```{R}
+WangModel <- setClass(
+    "WangModel",
+    contains = "LongitudinalModel"
+)
+
+longmodel <- WangModel(
+    LongitudinalModel(
+        name = "Wang",
+        stan = StanModule("custom-model.stan"),
+        parameters = ParameterList(
+            Parameter(name = "mu_baseline", prior = prior_lognormal(log(60), 1), size = 1),
+            Parameter(name = "mu_shrinkage", prior = prior_lognormal(log(2), 1), size = 1),
+            Parameter(name = "mu_growth", prior = prior_lognormal(log(10), 1), size = 1),
+            Parameter(name = "sigma_baseline", prior = prior_lognormal(0.3, 1), size = 1),
+            Parameter(name = "sigma_shrinkage", prior = prior_lognormal(0.3, 1), size = 1),
+            Parameter(name = "sigma_growth", prior = prior_lognormal(0.3, 1), size = 1),
+            Parameter(name = "sigma", prior = prior_lognormal(1.5, 1), size = 1),
+            # The following is only required if we want jmpost to generate
+            # initial values automatically for us
+            Parameter(
+                name = "baseline_idv",
+                prior = prior_init_only(prior_lognormal(log(60), 1)),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "shrinkage_idv",
+                prior = prior_init_only(prior_lognormal(log(2), 1)),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "growth_idv",
+                prior = prior_init_only(prior_lognormal(log(10), 1)),
+                size = "n_subjects"
+            )
+        )
+    )
+)
+```
+
+Please note that the `parameters` argument is used to specify the priors for the model and
+that the `name` argument for the `Parameter`'s objects must match the name of the parameter used
+within the corresponding Stan code.
+
+The `StanModule` object contains all of the stan code used to implement the model. For this
+particular model the Stan code specified in the `custom-model.stan` file is as follows:
+```{R, results='asis', echo=FALSE} 
+x <- readLines("./custom-model.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+## Defining the Link Function
+
+As stated in the introduction, the link function for this model is going to be the derivative
+of the growth function. This can be implemented in using the `jmpost` framework as follows:
+
+```{R}
+enableLink.WangModel <- function(object, ...) {
+    object@stan <- merge(
+        object@stan,
+        StanModule("custom-model-enable-link.stan")
+    )
+    object
+}
+
+
+link <- LinkComponent(
+    stan = StanModule("custom-model-dsld.stan"),
+    prior = prior_normal(0, 1),
+    key = "link_dsld"
+)
+```
+
+Where the Stan code for the `custom-model-enable-link.stan` file is as follows:
+```{R, results='asis', echo=FALSE}
+x <- readLines("./custom-model-enable-link.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+And the Stan code for the `custom-model-dsld.stan` file is as follows:
+```{R, results='asis', echo=FALSE}
+x <- readLines("./custom-model-dsld.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+Note that as only one link function has been defined the `enableLink` method is not strictly
+necessary and the Stan code it contains could have been implemented directly in the `stan` slot
+of the `LinkComponent` object. However, if you have multiple link functions the `enableLink`
+method is required to avoid duplicating the implementation of the `link_function_inputs` matrix.
+
+
+## Sampling the Joint model
+
+With our longitudinal model defined we can now specify and sample from the full joint model.
+```{R}
+model <- JointModel(
+    longitudinal = longmodel,
+    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    link = link
+)
+
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = dat_os,
+        subject = "pt",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time
+    )
+)
+
+model_samples <- sampleStanModel(
+    model,
+    data = joint_data,
+    iter_warmup = 800,
+    iter_sampling = 1000,
+    chains = 1,
+    refresh = 0,
+    parallel_chains = 1
+)
+
+vars <- c(
+    "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
+    "link_dsld", "sm_exp_lambda"
+)
+as.CmdStanMCMC(model_samples)$summary(vars)
+```
+
+
+## Generating Quantities of Interest
+
+If you look at the Stan code for the above model you will notice that several of the
+requirement elements for the generated quantities have been defined thus enabling us to
+generate quantities both at a population and individual subject level.
+
+
+This can be done at the patient level via:
+
+```{R}
+selected_patients <- head(dat_os$pt, 4)
+long_quantities_idv <- LongitudinalQuantities(
+    model_samples,
+    grid = GridFixed(subjects = selected_patients)
+)
+autoplot(long_quantities_idv)
+```
+
+Or at the population level via:
+
+```{R}
+long_quantities_pop <- LongitudinalQuantities(
+    model_samples,
+    grid = GridPopulation()
+)
+autoplot(long_quantities_pop)
+```

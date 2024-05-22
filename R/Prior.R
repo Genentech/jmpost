@@ -337,7 +337,7 @@ prior_beta <- function(a, b) {
     )
 }
 
-#' Only Initial Values Specification
+#' Initial Values Specification
 #'
 #' @param dist (`Prior`)\cr a prior Distribution
 #' @family Prior
@@ -346,6 +346,7 @@ prior_beta <- function(a, b) {
 #' This is primarily used for hierarchical parameters whose distributions
 #' are fixed within the model and cannot be altered by the user.
 #'
+#' @export
 prior_init_only <- function(dist) {
     Prior(
         parameters = list(),

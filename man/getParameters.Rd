@@ -9,18 +9,20 @@
 \alias{getParameters.default}
 \title{\code{getParameters}}
 \usage{
-getParameters(object)
+getParameters(object, ...)
 
-\method{getParameters}{StanModel}(object)
+\method{getParameters}{StanModel}(object, ...)
 
 \method{getParameters}{LinkComponent}(object, ...)
 
 \method{getParameters}{Link}(object, ...)
 
-\method{getParameters}{default}(object)
+\method{getParameters}{default}(object, ...)
 }
 \arguments{
 \item{object}{where to obtain the parameters from.}
+
+\item{...}{additional options.}
 }
 \description{
 Extract any modelling parameters as a \code{\link{ParameterList}} object
@@ -34,4 +36,3 @@ Other LinkComponent:
 \code{\link{initialValues}()}
 }
 \concept{LinkComponent}
-\keyword{internal}

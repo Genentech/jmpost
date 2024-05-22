@@ -41,7 +41,8 @@ distribution only.
 Survival distributions are implemented as S4 classes that inherit from `SurvivalModel`.
 The two main components of the `SurvivalModel` object are the `stan` and `parameters` slots.
 The `parameters` slot is a `ParametersList()` object which is used to specify the prior distributions
-of each parameter used by the survival distribution as well as for the design matrix coefficients.
+of each parameter used by the survival distribution as well as for the design matrix coefficients
+(please see the "Prior Specification" section below).
 
 The `stan` slot is a `StanModule()` object which needs to define the following:
 
@@ -103,8 +104,142 @@ SurvivalWeibullPH <- function(
 ```
 
 
+## Custom Longitudinal Models
 
 
+Similar to the survival model the longitudinal models are implemented as S4 classes that inherit
+from the `LongitudinalModel` class. The two main components of the `LongitudinalModel` object are
+the `stan` and `parameters` slots which specify the underlying Stan code and prior distributions
+for the models parameters respectively (please see the "Prior Specification" section below).
+
+Unlike the survival distributions, the longitudinal models are a lot more flexible and have less
+constraints on how they are implemented. That is there aren't any specific variables or functions
+that you need to define.
+
+That being said there are a several optional features of `jmpost` that do require the use of specific
+interfaces if you want to enable them for your model.
+
+### 1) `loo` integration
+
+If you want to use the `loo` package to calculate the leave-one-out cross-validation
+then you need to populate the `Ypred_log_lik` vector. This vector should contain the log-likelihood
+contribution for each individual tumour observation. This vector
+is automatically 0-initialised, thus all your code needs to do is populate it.
+```stan
+transformed parameters {
+    Ypred_log_lik = vect_normal_log_dens(
+        tumour_value,
+        expected_tumour_value,
+        rep_vector(lm_rs_sigma, n_tumour_obs)
+    );
+}
+```
+
+Where:
+- `tumour_value`, `n_tumour_obs` are predefined data objects (see the "Longitudinal Data Objects"
+section below)
+- `expected_tumour_value` is the expected value of the tumour assessment for each observation
+- `lm_rs_sigma` is the standard deviation of the tumour assessment
+- `vect_normal_log_dens` is a vectorised version of the normal log-likelihood function provided by
+`jmpost` (this is opposed to Stan's inbuilt `normal_lpdf` function which returns a single value 
+of the sum all of the log-likelihoods)
+
+### 2) Individual Subject Generated Quantity Integration
+
+In order to calculate the individual subject generated quantities (via 
+`GridFixed()` / `GridGrouped()` / etc) you need to define a Stan function with the signature:
+```stan
+vector lm_predict_individual_patient(vector time, matrix long_gq_parameters)
+```
+
+Where:
+
+- `time` is a vector of timepoints for which to calculate the generated quantity
+- `long_gq_parameters` is a matrix with one row per subject and one column per parameter
+
+Likewise, the `long_gq_parameters` object also needs to be defined for the model in the generated
+quantities block as a matrix with 1 row per subject and 1 column per parameter. This structure is
+to allow for models with subject specific parameters, in particular random effects models.
+If your model has the same parameters for all subjects, for example a fixed effects model,
+then the value should be repeated for each subject. Subject's values should be in the same order
+as their factor levels in the `DataJoint` object. The following is an example from the
+`LongitudinalRandomSlope` model:
+```stan
+generated quantities {
+    matrix[n_subjects, 2] long_gq_parameters;
+    long_gq_parameters[, 1] = lm_rs_ind_intercept;
+    long_gq_parameters[, 2] = lm_rs_ind_rnd_slope;
+}
+```
+Where:
+
+- `lm_rs_ind_intercept` and `lm_rs_ind_rnd_slope` are the individual subject's random intercept and
+random slope parameters respectively.
+
+Note that the `long_gq_parameters` matrix should be structured
+as your `lm_predict_individual_patient()` function would expect it to be for the
+`long_gq_parameters` argument.
+
+### 3) Population Generated Quantity Integration
+
+A common use case is to calculate the quantities based on the "population" level parameters which is
+supported in `jmpost` via the `GridPopulation()` function. What
+this means in practice though is often model and parameterisation specific.
+For example some models would
+take the median of the distribution whilst others might take the mean or set the random effects
+offset to 0. As such if you wish for your model to be compatible with the `GridPopulation()`
+then you need to declare and populate the `long_gq_pop_parameters` object with the following
+signature:
+```stan
+matrix[gq_n_quant, 2] long_gq_pop_parameters;
+```
+
+Note that the number of rows is `gq_n_quant`. This number will be set to the unique number of
+combinations of the arm and study factors in the `DataJoint` object. To support populating this
+object two additional variables are provided for you namely `gq_long_pop_study_index` and
+`gq_long_pop_arm_index` which are vectors that contain the corresponding index of the study and arm
+variables for each row in the `long_gq_pop_parameters` matrix. The following is an example
+from the `LongitudinalRandomSlope` model:
+```stan
+generated quantities {
+    matrix[gq_n_quant, 2] long_gq_pop_parameters;
+    long_gq_pop_parameters[, 1] = to_vector(lm_rs_intercept[gq_long_pop_study_index]);
+    long_gq_pop_parameters[, 2] = to_vector(lm_rs_slope_mu[gq_long_pop_arm_index]);
+}
+```
+
+Where:
+
+- `lm_rs_intercept` and `lm_rs_slope_mu` are the model specific group level
+intercept and slope parameters respectively.
+
+Note that the `long_gq_pop_parameters` matrix should be structured
+as your `lm_predict_individual_patient()` function would expect it to be for the
+`long_gq_parameters` argument.
+
+## Prior Specification
+
+When writing your own custom longitudinal or survival model it is important to understand
+how the prior definitions are specified. By default `jmpost` will insert the Stan statements
+for any prior distributions based on the `parameters` slot of the model object.
+The importance of this is that it means you should not define the prior distributions in the
+Stan code itself. Note that this does not apply to hierarchical parameters who must have their
+distributions specified in the Stan code. For example in the `LongitudinalRandomSlope` model
+their is a different random slope for each treatment arm which is specified in the Stan code as:
+
+```stan
+model {
+    lm_rs_ind_rnd_slope ~ normal(
+        lm_rs_slope_mu[subject_arm_index],
+        lm_rs_slope_sigma
+    );
+}
+```
+
+There is however no prior specified in the Stan code for `lm_rs_slope_mu` or `lm_rs_slope_sigma`
+as these are handled by the `parameters` slot of the model object as mentioned above.
+The main reason for using this approach is that `jmpost` implements the priors in such a way
+that users can change them without having to re-compile the Stan model.
 
 ## Custom Link Functions
 
