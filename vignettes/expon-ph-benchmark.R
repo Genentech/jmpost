@@ -1,6 +1,6 @@
 #' #############################################################################
 #'
-#' Fit exponential model to ‘pb’ data from the {flexsurv} package,
+#' Fit Weibull PH model to ‘pb’ data from the {flexsurv} package,
 #' using various tools/packages:
 #' I. flexsurv
 #' II. survstan
@@ -57,43 +57,64 @@ head(bc, 2)
 
 #' ===========================================================
 #'
-#' Exponential model fits
+#' Weibull PH model fits
 #'
 #' ===========================================================
 
 #' Flexsurv
 #' ==========================
-flexsurv.exp<-flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="exp")
+# flexsurv.exp<-flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="exp")
 # flexsurv.exp
 # plot(flexsurv.exp)
 # flexsurv.exp$AIC
 # flexsurv.exp$res
 
+flexsurv.weiph<-flexsurvreg(Surv(recyrs, censrec)~group, data=bc, dist="weibullph")
+flexsurv.weiph
 
 #' Survstan
 #' ==========================
-survstan.exp<-survstan::phreg(Surv(recyrs, censrec)~group, data=bc, dist="exponential")
-sumsurvstan<-summary(survstan.exp)
+# survstan.exp<-survstan::phreg(Surv(recyrs, censrec)~group, data=bc, dist="exponential")
+# sumsurvstan<-summary(survstan.exp)
 # sumsurvstan$AIC
 # sumsurvstan$coefficients
 # sumsurvstan$tbl
 
+survstan.weiph<-survstan::phreg(Surv(recyrs, censrec)~group, data=bc, dist="weibull")
+summary(survstan.weiph)
+
 
 #' jmpost
 #' ==========================
-jmpost.survonly.exp<-JointModel(survival=SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
+# jmpost.survonly.exp<-JointModel(survival=SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
+
+# bc1<-bc %>% mutate(ID=as.character(1:n()), study=1)
+
+# jdat<-DataJoint(
+#   subject=DataSubject(data=bc1, subject="ID", arm="group", study="study"),
+#   survival=DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
+#   )
+
+# mp<-sampleStanModel(jmpost.survonly.exp, data=jdat, iter_warmup=4000,
+#                     iter_sampling=1000, chains=4, refresh=0)
+
+# vars<-c("sm_exp_lambda", "beta_os_cov")
+# mp@results$summary(vars)
+
+jmpost.weiph<-JointModel(survival=SurvivalWeibullPH())
 
 bc1<-bc %>% mutate(ID=as.character(1:n()), study=1)
 
 jdat<-DataJoint(
-  subject=DataSubject(data=bc1, subject="ID", arm="group", study="study"),
-  survival=DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
-  )
+    subject=DataSubject(data=bc1, subject="ID", arm="group", study="study"),
+    survival=DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
+)
 
-mp<-sampleStanModel(jmpost.survonly.exp, data=jdat, iter_warmup=4000,
+mp<-sampleStanModel(jmpost.weiph, data=jdat, iter_warmup=4000,
                     iter_sampling=1000, chains=4, refresh=0)
+mp@results
 
-vars<-c("sm_exp_lambda", "beta_os_cov")
+# vars<-c("sm_exp_lambda", "beta_os_cov")
 # mp@results$summary(vars)
 
 
@@ -124,3 +145,12 @@ jmpost.prep<-as_tibble(mp@results$summary(vars)) |>
 
 
 altogether<-rbind(flexsurv.prep, survstan.prep, jmpost.prep)
+
+
+
+
+
+
+
+
+

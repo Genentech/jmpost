@@ -192,10 +192,17 @@ The following distributional assumptions for the baseline hazard are currently i
 
 The following table shows the location and ancillary parameter with their default priors.
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r setup, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
 library(knitr)
 library(kableExtra)
 library(flexsurv)
+library(jmpost)
+library(posterior)
+library(tidybayes)
+library(bayesplot)
+
 ```
 
 ```{r distributiontable, echo=FALSE}
@@ -214,7 +221,7 @@ ztab <- data.frame(
 # Create table
 knitr::kable(ztab, 
     escape = F, 
-    caption = 'Table example', 
+    caption = 'Table 1. Location and shape parameters for the distributions implemented in jmpost', 
     col.names = c("Distribution", "Location (or Scale)", "Shape"))
 ```
  
@@ -230,13 +237,14 @@ In the following, we run a simple example to present the features of **jmpost**.
 The 'bc' dataset from [**flexsurv**](https://chjackson.github.io/flexsurv/) is used. It contains data for 686 patients with primary node positive breast cancer. The right-censored time-to-event variable `recyrs` represents the time (in years) of death or cancer recurrence when `censrec` is 1, or right censoring when `censrec` is 0. The covariate `group` is a factor representing a prognostic score, with 3 levels: "Good" (the reference), "Medium" and "Poor".
 
 Showing the first 6 and the last 6 rows, the dataset looks like this:
+
 ```{r, eval=TRUE, echo=TRUE}
 rbind(head(bc), tail(bc))
 ```
 
 The call to fit an exponential PH model in **jmpost** would be as follow:
 
-```{r, eval=FALSE, echo=TRUE}
+```{r, eval=TRUE, echo=TRUE}
 jm<-JointModel(survival=
         SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
 
@@ -247,7 +255,8 @@ jdat<-DataJoint(
   survival = DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
 )
 
-mp<-sampleStanModel(jm, data=jdat, iter_warmup=4000, iter_sampling=1000, chains=4)
+mp<-sampleStanModel(jm, data=jdat, iter_warmup=4000, 
+                    iter_sampling=1000, chains=4, refresh=0)
 vars<-c("sm_exp_lambda", "beta_os_cov")
 mp@results$summary(vars)
 
@@ -255,39 +264,73 @@ mp@results$summary(vars)
 
 Details about the parameters and functions are available in the [Model Fitting](https://genentech.github.io/jmpost/main/articles/model_fitting.html).
 
-### 3.2 Default outputs
+### 3.2 Descriptive outputs
 
-The default output reports statistics for one or more sampler chains over all model parameters and quantities of interest. 
-The statistics reported include both summary statistics of the estimates and diagnostic statistics on the sampler chains, reported in the following order: 
-- mean: sample mean, 
-- median: sample median,
-- sd: sample standard deviation,
-- q5, q95: 5th and 95th percentiles of the posterior distribution,
-- rhat: 
+The most efficient way of extracting relevant outputs from the MCMC samples is to use the **posterior** package.
+In the below snippet, after having reformatted the model results with `posterior::as_draws_df(mp@results)`, all  samples across chains are available in `my_fitall_df`.
 
+The **posterior** package can then be used to extract the relevant quantities.
 
-```{r}
-
-#' Convert the samples in a df
+```{r, eval=TRUE, echo=TRUE}
 #' ------------------------------------------------------------\
-mp@results$summary(vars)
-
-my_fit_df <- posterior::as_draws_df(mp@results)
+my_fitall_df <- posterior::as_draws_df(mp@results)
 my_pars<-c("sm_exp_lambda", "beta_os_cov[1]", "beta_os_cov[2]")
+my_fitpop_df<-posterior::subset_draws(my_fitall_df, variable=my_pars)
 
-
-#' Summarize the posterior samples
 #' ------------------------------------------------------------\
-#' Using {posterior}
-posterior::summarise_draws(my_fit_df)
+posterior::summarise_draws(my_fitpop_df)
 
 ```
 
- 
+Traceplots (a.k.a. caterpillar plots), Rhat, effective sample size (ESS) and autocorrelation in the samples have to be examined for convergence to be considered as acceptable. 
+
+To this extent a [recommendation](https://cran.r-project.org/web/packages/bayesplot/vignettes/visual-mcmc-diagnostics.html#effective-sample-size) of the Stan development team is to study these measures of convergence using the **bayesplot** package.
+
+Other interesting quantities, such as posterior quantiles or highest density interval (HDI) for any given parameter can also be extracted using the **tidybayes** package. 
+
+In the following code, we extract various measures of uncertainty associated with the mean or the median of the exponential rate (`sm_exp_lambda`).
+
+```{r, eval=TRUE, echo=TRUE}
+#' For each parameter, it is possible to extract various quantities:
+#' mean_hdci(), median_hdci(), etc ... from [median|mean|mode]_[qi|hdi]
+#' see: ggdist:: ?mean_qi
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
+  tidybayes::mean_hdci()
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
+  tidybayes::mean_qi()
+
+#' Median (and associated uncertainty expressed as lower and upper bounds for
+#' pmf containing 50%, 89%, 90% of the distribution density
+#' = e.g. 89% credibility interval for the median)
+#' for sm_exp_lambda across all chains
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
+  tidybayes::median_qi(.width = c(.50, .89, .95))
+
+```
+
+Finally, the posterior distributions for any given model parameter (across chains or overall) can be easily displayed graphically using the **bayesplot** package.
+
+```{r, eval=TRUE, echo=TRUE}
+bayesplot::mcmc_areas(my_fitpop_df, pars = my_pars, prob = 0.8)+
+  theme_minimal()
+bayesplot::mcmc_dens_overlay(my_fitpop_df, pars=my_pars)+
+  theme_minimal()
+```
+
+
 ### 3.3 Goodness-of-fit evaluation
 
 
+
 ### 3.4 Observed vs. fitted survival
+
+In this section, we illustrate how to overlay the fitted survival curves for each patient respectively and the Kaplan-Meier curve for the studied sample.
+
+We start by extracting the individual location parameter estimate.
+
 
 
 

@@ -1,13 +1,13 @@
 #' #############################################################################
 #'
-#' For a time to event model of ‘pb’ data from the {flexsurv} package, 
+#' For a time to event model of ‘pb’ data from the {flexsurv} package,
 #' assuming an exponential baseline hazard, the goal here is to
 #' illustrate the way to assess:
 #' (i) Convergence
 #' (ii) GoF
-#' 
+#'
 #' Solutions proposed by {survstan} will be used as benchmark
-#' 
+#'
 #' Initiated on: 2024-02-14
 #' Author: F. Mercier
 #'
@@ -16,9 +16,9 @@
 
 
 #' ===========================================================
-#' 
+#'
 #' INSTALL AND LOAD NECESSARY LIBRARIES
-#' 
+#'
 #' ===========================================================
 
 #' install.packages(c("Rcpp", "cli"))
@@ -43,22 +43,53 @@ library(bayestestR)
 library(hexbin)
 library(loo)
 
+library(jmpost)
+
+
+#' install.packages("simsurv")
+#' install.packages("ggsurvfit")
+library(simsurv)
+library(ggsurvfit)
 
 #' ===========================================================
-#' 
+#'
 #' Data (from the flexsurv package)
-#' 
+#'
 #' ===========================================================
 
 head(bc, 2)
 glimpse(bc)
+rbind(head(bc), tail(bc))
+
+#' Kaplan-Meier plot and Risk table
+p001 <- ggsurvfit::survfit2(Surv(recyrs, censrec) ~ group, data = bc) |>
+    ggsurvfit(linewidth = 1) +
+    add_confidence_interval() +
+    add_risktable() +
+    add_quantile(y_value = 0.5, color = "gray50", linewidth = 0.75) +
+    scale_ggsurvfit()
+p001
+
+#' Checking independent censoring
+p002 <- ggsurvfit::survfit2(Surv(recyrs, 1-censrec) ~ group, data = bc) |>
+    ggsurvfit(linewidth = 1) +
+    add_confidence_interval() +
+    scale_ggsurvfit()
+p002
+
+#' Kernel density estimate for the hazard
+futime=bc$recyrs; fustat=bc$censrec
+fit1 <- muhaz::muhaz(futime, fustat, bw.method="g")
+plot(fit1)
+summary(fit1)
 
 
 #' ===========================================================
-#' 
+#'
 #' jmpost exponential PH implementation
-#' 
+#'
 #' ===========================================================
+
 
 jmpost.survonly.exp<-JointModel(survival=SurvivalExponential(lambda=prior_lognormal(log(0.06), 1)))
 
@@ -72,103 +103,91 @@ jdat<-DataJoint(
 mp<-sampleStanModel(jmpost.survonly.exp, data=jdat, iter_warmup=4000,
                     iter_sampling=1000, chains=4, refresh=0)
 
+mp@results
+
 vars<-c("sm_exp_lambda", "beta_os_cov")
 # mp@results$summary(vars)
 
 
 #' ===========================================================
-#' 
+#'
 #' I. POSTERIOR DISTRIBUTION SUMMARY
-#' 
+#'
 #' ===========================================================
 
 
 #' Convert the samples in a df
 #' ------------------------------------------------------------\
-my_fit_df <- posterior::as_draws_df(mp@results)
+my_fitall_df <- posterior::as_draws_df(mp@results)
 my_pars<-c("sm_exp_lambda", "beta_os_cov[1]", "beta_os_cov[2]")
-
+my_fitpop_df<-posterior::subset_draws(my_fitall_df, variable=my_pars)
 
 #' Summarize the posterior samples
 #' ------------------------------------------------------------\
 #' Using {posterior}
-posterior::summarise_draws(my_fit_df)
+posterior::summarise_draws(my_fitpop_df)
 
 
-#' Highest density interval
+#' Quantiles or Highest density interval
 #' ------------------------------------------------------------\
-#' Using {posterior}
-ci_hdi <- bayestestR::ci(my_fit_df, method = "HDI")
-
-#' Using {tidybayes}
-my_fit_df %>% 
-  tidybayes::recover_types()
-
 #' For each parameter, it is possible to extract various quantities:
 #' mean_hdci(), median_hdci(), etc ... from [median|mean|mode]_[qi|hdi]
 #' see: ggdist:: ?mean_qi
-my_fit_df %>% 
-  tidybayes::spread_rvars(sm_weibull_ph_lambda) %>%
-  tidybayes::mean_hdci()
-my_fit_df %>% 
-  tidybayes::spread_rvars(sm_weibull_ph_lambda) %>%
-  tidybayes::mean_qi()
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
+    ggdist::mean_hdci()
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
+    ggdist::mean_qi()
 
-#' Median (and associated uncertainty expressed as lower and upper bounds for 
-#' pmf containing 50%, 89%, 90% of the distribution density 
+#' Median (and associated uncertainty expressed as lower and upper bounds for
+#' pmf containing 50%, 89%, 90% of the distribution density
 #' = e.g. 89% credibility interval for the median)
-#' for sm_weibull_ph_lambda across all chains
-my_fit_df %>% 
-  tidybayes::spread_rvars(sm_weibull_ph_lambda) %>%
+#' for sm_exp_lambda across all chains
+my_fitpop_df %>%
+  tidybayes::spread_rvars(sm_exp_lambda) %>%
   tidybayes::median_qi(.width = c(.50, .89, .95))
 
-#' Q1, median, Q3 of sm_weibull_ph_lambda across all chains
-lambda_samples<-my_fit_df %>% 
-  tidybayes::spread_draws(sm_weibull_ph_lambda)
-lambda_samples$sm_weibull_ph_lambda %>% quantile(., probs=c(0.25, 0.5, 0.75))
+#' Q1, median, Q3 of sm_exp_lambda across all chains
+lambda_samples<-my_fitpop_df %>%
+  tidybayes::spread_draws(sm_exp_lambda)
+lambda_samples$sm_exp_lambda %>% quantile(., probs=c(0.025, 0.5, 0.975))
 
 
 #' Posterior density
 #' using tidybayes see https://mjskay.github.io/tidybayes/articles/tidy-rstanarm.html
 #' ------------------------------------------------------------\
 
-my_fit_df %>% 
-  tidybayes::spread_draws(sm_weibull_ph_lambda) %>%
+my_fitpop_df %>%
+  tidybayes::spread_draws(sm_exp_lambda) %>%
   tidybayes::median_qi(., .width = c(.95, .66)) %>%
-  ggplot(aes(y = NA, x = sm_weibull_ph_lambda, xmin = .lower, xmax = .upper)) +
+  ggplot(aes(y = NA, x = sm_exp_lambda, xmin = .lower, xmax = .upper)) +
   scale_x_continuous("Lambda_0")+
   scale_y_discrete("")+
   tidybayes::geom_pointinterval()+
-  labs(title="sm_weibull_ph_lambda posterior distributions",
+  labs(title="sm_exp_lambda posterior distributions",
        caption="OS analysis / mercief3 / 2024-02-20")+
   theme_minimal()
 
 #' (Post-warmup) Posterior distributions
 #' ------------------------------------------------------------\
-bayesplot::mcmc_areas(my_fit_df, pars = my_pars, prob = 0.8)+
+bayesplot::mcmc_areas(my_fitpop_df, pars = my_pars, prob = 0.8)+
   theme_minimal()
-bayesplot::mcmc_dens_overlay(my_fit_df, pars=my_pars)+
-  theme_minimal()
-
-#' Scale vs. shape scatterplot
-#' ------------------------------------------------------------\
-bayesplot::mcmc_hex(my_fit_df, pars=c("sm_weibull_ph_lambda", "sm_weibull_ph_gamma"))+
+bayesplot::mcmc_dens_overlay(my_fitpop_df, pars=my_pars)+
   theme_minimal()
 
 
 
 #' ===========================================================
-#' 
+#'
 #' II. CONVERGENCE
-#' 
+#'
 #' ===========================================================
 
 
 #' Checking that Rhat<1.05
 #' ------------------------------------------------------------\
-#' Using {posterior}
 #' see https://cran.r-project.org/web/packages/bayesplot/vignettes/visual-mcmc-diagnostics.html
-posterior::summarise_draws(my_fit_df)
 
 #' Using {bayesplot}
 rhats <- bayesplot::rhat(mp@results)
@@ -203,9 +222,9 @@ bayesplot::mcmc_trace(my_fit_df,  pars = my_pars)+
 
 
 #' ===========================================================
-#' 
+#'
 #' III. GOODNESS OF FIT
-#' 
+#'
 #' ===========================================================
 
 # Log Likelihood
@@ -230,14 +249,40 @@ mp@results$loo()
 
 
 #' ===========================================================
-#' 
+#'
 #' IV. PREDICTIONS
-#' 
+#'
 #' Overlaying KM and posterior survival curves
-#' See example: 
-#' https://stablemarkets.netlify.app/post/post2/specifying-accelerated-failure-time-models-in-stan/ 
-#' 
-#' 
+#' See example:
+#' https://stablemarkets.netlify.app/post/post2/specifying-accelerated-failure-time-models-in-stan/
+#'
+#'
 #' ===========================================================
 
+# Calculate the survival distribution for each subject at each desired timepoint
+# To get different quantities change the `pweibullPH` to the desired distribution
+# function e.g. hweibullPH / HweibullPH
 
+zparms<-my_fitpop_df |>
+    pivot_longer(cols = 1:3, names_to = "parms", values_to = "value") |>
+    group_by(parms) |>
+        tidybayes::median_qi() |>
+    ungroup()
+
+jdat<-DataJoint(
+    subject=DataSubject(data=bc1, subject="ID", arm="group", study="study"),
+    survival=DataSurvival(data=bc1, formula=Surv(recyrs, censrec)~group)
+)
+
+set.seed(13579)
+covs <- data.frame(ID = bc1$ID, trt=bc1$group)
+s1 <- simsurv(dist="exponential",
+              x=covs, betas=c(trt=0),
+              lambdas = zsurv$lambda[1], maxt = max(bc1$recyrs))
+
+survfit2(Surv(eventtime, status) ~ 1, data = s1) |>
+    ggsurvfit(linewidth = 1) +
+    add_confidence_interval() +
+    add_risktable() +
+    add_quantile(y_value = 0.6, color = "gray50", linewidth = 0.75) +
+    scale_ggsurvfit()
