@@ -66,6 +66,8 @@ jobs:
     if: github.event_name == 'pull_request'
     name: Check URLs 🌐
     uses: insightsengineering/r.pkg.template/.github/workflows/links.yaml@main
+    with:
+      link-checking-method: lychee
   version:
     name: Version Check 🏁
     uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main
