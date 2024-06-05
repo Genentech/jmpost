@@ -229,12 +229,12 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 
     skip_if_not(is_full_test())
 
-    set.seed(9438)
+    set.seed(7738)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(150, "Arm-A", "Study-X"),
-            SimGroup(150, "Arm-B", "Study-X")
+            SimGroup(170, "Arm-A", "Study-X"),
+            SimGroup(170, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalSteinFojo(
             times = c(
@@ -242,8 +242,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
                 1100, 1300, 1500, 1800
             ) / 365,
             sigma = 0.005,
-            mu_s = c(0.2, 0.25),
-            mu_g = c(0.15, 0.3),
+            mu_s = c(0.15, 0.3),
+            mu_g = c(0.4, 0.25),
             mu_b = 60,
             omega_b = 0.1,
             omega_s = 0.1,
@@ -252,11 +252,10 @@ test_that("Can recover known distributional parameters from a SF joint model wit
             link_dsld = 0,
             link_growth = 3
         ),
-        survival = SimSurvivalWeibullPH(
+        survival = SimSurvivalExponential(
             time_max = 4,
             time_step = 1 / 365,
             lambda = 1,
-            gamma = 1,
             lambda_cen = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
@@ -274,7 +273,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 
             mu_bsld = prior_normal(log(60), 0.5),
             mu_ks = prior_normal(log(0.2), 0.5),
-            mu_kg = prior_normal(log(0.2), 0.5),
+            mu_kg = prior_normal(log(0.3), 0.5),
 
             omega_bsld = prior_lognormal(log(0.1), 0.5),
             omega_ks = prior_lognormal(log(0.1), 0.5),
@@ -285,7 +284,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 
         ),
         survival = SurvivalExponential(
-            lambda = prior_lognormal(log(365 * (1 / 400)), 0.5)
+            lambda = prior_lognormal(log(1), 0.5)
         ),
         link = Link(
             linkGrowth(prior_normal(0, 4))
@@ -318,8 +317,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         sampleStanModel(
             jm,
             data = jdat,
-            iter_sampling = 800,
             iter_warmup = 1500,
+            iter_sampling = 1000,
             chains = 2,
             parallel_chains = 2
         )
@@ -348,7 +347,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
         TRUE
     )
-    true_values <- c(60, 0.2, 0.25, 0.15, 0.3)
+    true_values <- c(60, 0.15, 0.3, 0.4, 0.25)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
