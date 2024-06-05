@@ -26,3 +26,5 @@
 ^local$
 ^README.Rmd$
 ^vignettes/local$
+
+^.lycheeignore$
