@@ -130,7 +130,7 @@ as_stan_list.DataSurvival <- function(object, ...) {
     # Parameters for efficient integration of hazard function -> survival function
     gh_parameters <- statmod::gauss.quad(
         n = getOption("jmpost.gauss_quad_n"),
-        kind = getOption("jmpost.gauss_quad_kind")
+        kind = "legendre"
     )
 
     model_data <- list(
