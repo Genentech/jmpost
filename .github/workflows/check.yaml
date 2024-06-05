@@ -68,6 +68,7 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/links.yaml@main
     with:
       link-checking-method: lychee
+      lychee-additional-args: "" # override the default of excluding private links
   version:
     name: Version Check 🏁
     uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main
