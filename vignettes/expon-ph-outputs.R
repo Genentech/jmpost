@@ -104,7 +104,7 @@ mp<-sampleStanModel(jmpost.survonly.exp, data=jdat, iter_warmup=4000,
                     iter_sampling=1000, chains=4, refresh=0)
 
 mp@results
-
+##
 vars<-c("sm_exp_lambda", "beta_os_cov")
 # mp@results$summary(vars)
 
