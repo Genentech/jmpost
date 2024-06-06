@@ -7,7 +7,7 @@
 \alias{SurvivalExponential}
 \title{\code{SurvivalExponential}}
 \usage{
-SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 5))
+SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 2))
 }
 \arguments{
 \item{lambda}{(\code{Prior})\cr for the exponential rate \code{lambda}.}
