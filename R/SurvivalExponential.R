@@ -24,7 +24,7 @@ NULL
 #' @export
 SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
-    beta = prior_normal(0, 5)
+    beta = prior_normal(0, 2)
 ) {
     .SurvivalExponential(
         SurvivalModel(
