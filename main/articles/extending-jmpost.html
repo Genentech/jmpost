@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -153,7 +147,7 @@ distribution is implemented:</p>
 <code class="sourceCode R"><span><span class="va">SurvivalWeibullPH</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
 <span>    <span class="va">lambda</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>    <span class="va">gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>    <span class="va">beta</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span>    <span class="va">beta</span> <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">stan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">        functions {</span></span>
