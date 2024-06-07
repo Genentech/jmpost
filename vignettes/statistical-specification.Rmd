@@ -385,7 +385,7 @@ Where:
 * $b_i$ is the subject baseline SLD value.
 * $g_i$ is the subject tumour growth rate.
 * $c_i$ is the subject treatment resistance rate.
-* $p_i$ is the subject treatment growth inhibution response.
+* $p_i$ is the subject treatment growth inhibition response.
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
