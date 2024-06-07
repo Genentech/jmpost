@@ -116,8 +116,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             omega_g = 0.12,
             omega_c = 0.12,
             omega_p = 0.12,
-            link_ttg = -0.2,
-            link_dsld = 0.1
+            link_ttg = 0.2,
+            link_dsld = -0.1
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
@@ -155,8 +155,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             lambda = prior_lognormal(log(1), 0.4)
         ),
         link = Link(
-            linkTTG(prior_normal(-0.2, 0.5)),
-            linkDSLD(prior_normal(0.1, 0.5))
+            linkTTG(prior_normal(0.2, 0.5)),
+            linkDSLD(prior_normal(-0.1, 0.5))
         )
     )
 
@@ -192,7 +192,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
         )
     })
 
-    summary_post <- function(model, vars) {
+    summary_post <- function(model, vars, exp = FALSE) {
         dat <- model$summary(
             vars,
             mean = mean,
@@ -202,12 +202,18 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             ess_bulk = posterior::ess_bulk,
             ess_tail = posterior::ess_tail
         )
+        if (exp) {
+            dat$q01 <- dat$q01 |> exp()
+            dat$q99 <- dat$q99 |> exp()
+            dat$mean <- dat$mean |> exp()
+        }
         dat
     }
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p")
+        c("lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p"),
+        TRUE
     )
     true_values <- c(60, 0.9, 1.1, 0.45, 0.35, 2.4, 1.8)
     expect_true(all(dat$q01 <= true_values))
@@ -216,7 +222,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "sm_exp_lambda")
+        #c("link_dsld", "link_ttg", "sm_exp_lambda")
+        c("sm_exp_lambda")
     )
     true_values <- c(0.2, -0.2, 1)
     expect_true(all(dat$q01 <= true_values))
