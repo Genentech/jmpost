@@ -222,10 +222,9 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        #c("link_dsld", "link_ttg", "sm_exp_lambda")
-        c("sm_exp_lambda")
+        c("link_dsld", "link_ttg", "sm_exp_lambda")
     )
-    true_values <- c(0.2, -0.2, 1)
+    true_values <- c(-0.1, 0.2, 1)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
