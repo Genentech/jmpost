@@ -51,6 +51,7 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 \item \code{\link[=linkDSLD]{linkDSLD()}}
 \item \code{\link[=linkTTG]{linkTTG()}}
 \item \code{\link[=linkIdentity]{linkIdentity()}}
+\item \code{\link[=linkGrowth]{linkGrowth()}}
 }
 }
 

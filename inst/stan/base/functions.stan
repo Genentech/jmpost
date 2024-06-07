@@ -100,5 +100,17 @@ functions {
         }
         return result;
     }
+
+    matrix if_lt0_else(matrix x, matrix y, matrix replacement) {
+        int nrow = rows(x);
+        int ncol = cols(x);
+        matrix[nrow, ncol] result;
+        for (i in 1:nrow) {
+            for (j in 1:ncol) {
+                result[i, j] = x[i, j] < 0 ? replacement[i, j] : y[i, j];
+            }
+        }
+        return result;
+    }
 }
 

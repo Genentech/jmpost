@@ -187,7 +187,7 @@ Where:
 
 
 $$
-G(t \mid b_i, s_i, g_i) = \begin{cases}
+G(t_{ij} \mid b_i, s_i, g_i) = \begin{cases}
 b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) & \text{if } t\geq 0 \\
 b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
 \end{cases}
@@ -201,7 +201,7 @@ Accessible via `linkDSLD()`
 
 
 $$
-G(t \mid b_i, s_i, g_i) = \max \left(
+G(t_{ij} \mid b_i, s_i, g_i) = \max \left(
     \frac{
         \text{log}(s_i) - \text{log}(g_i)
     }{
@@ -218,7 +218,7 @@ Accessible via `linkTTG()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &= SLD_{ij}
+G(t_{ij} \mid b_i, s_i, g_i) &= SLD_{ij}
 \end{align*}
 $$
 
@@ -229,7 +229,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &= g_i
+G(t_{ij} \mid b_i, s_i, g_i) &= g_i
 \end{align*}
 $$
 
@@ -300,7 +300,7 @@ Where:
 
 
 $$
-G(t \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
 b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) & \text{if } t\geq 0 \\
 b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
 \end{cases}
@@ -314,7 +314,7 @@ Accessible via `linkDSLD()`
 
 
 $$
-G(t \mid b_i, s_i, g_i, \phi_i) = \max \left(
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \max \left(
     \frac{
         \log(s_i) + \log(\phi_i) - \log(g_i) - \log(1-\phi_i)
     }{
@@ -330,7 +330,7 @@ Accessible via `linkTTG()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
 \end{align*}
 $$
 
@@ -341,7 +341,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i, \phi_i) &= g_i
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= g_i
 \end{align*}
 $$
 
@@ -350,6 +350,106 @@ Accessible via `linkGrowth()`
 ### Population Quantities
 
 Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0.
+
+
+
+
+## Claret-Bruno Model
+
+
+$$
+\begin{align*}
+y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases} b_i e^{g_i t_{ij}} & 
+\text{if } t < 0, \\ 
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+\text{if } t \geq 0. \end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_c) \\
+p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_p) \\
+\end{align*}
+$$
+
+Where:
+
+* $i$ is the subject index
+* $j$ is the visit index
+* $y_{ij}$ is the observed tumour measurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+* $t_{ij}$ is the time since first treatment for subject $i$ at visit $j$
+* $b_i$ is the subject baseline SLD value.
+* $g_i$ is the subject tumour growth rate.
+* $c_i$ is the subject treatment resistance rate.
+* $p_i$ is the subject treatment growth inhibution response.
+* $k(i)$ is the treatment arm index for subject $i$
+* $l(i)$ is the study index for subject $i$
+* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+
+
+### Derivative of the SLD Trajectory Link 
+
+
+$$
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \begin{cases}
+b_i \left(
+    g_i - p_i e^{-c_i t_{ij}} 
+\right)
+exp \left(
+    g_i t_{ij}
+    \frac{
+        p_i \left(1 - e^{-c_i t_{ij}}\right)
+    }
+    {c_i}
+\right)
+ & \text{if } t\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
+\end{cases}
+$$
+
+Accessible via `linkDSLD()`
+
+
+### Time to Growth Link
+
+
+$$
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \max \left(
+    \frac{ln(\frac{p_i}{g_i})}{c_i}, 0
+\right)
+$$
+
+Accessible via `linkTTG()`
+
+
+### Identity Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= SLD_{ij}
+\end{align*}
+$$
+
+Accessible via `linkIdentity()`
+
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= g_i
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
+
+### Population Quantities
+
+When generating population quantities for the $b$, $g$, $c$ and $$ parameters the median
 of the distribution is used. This is because this has the same interpretation as using a 
 non-centred parameterisation and setting the "random effects" term to be 0.
 
