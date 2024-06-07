@@ -10,7 +10,7 @@
 SurvivalWeibullPH(
   lambda = prior_gamma(2, 0.5),
   gamma = prior_gamma(2, 0.5),
-  beta = prior_normal(0, 5)
+  beta = prior_normal(0, 2)
 )
 }
 \arguments{

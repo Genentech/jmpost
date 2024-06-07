@@ -10,7 +10,7 @@
 SurvivalLogLogistic(
   a = prior_lognormal(log(0.1), 5),
   b = prior_gamma(2, 5),
-  beta = prior_normal(0, 5)
+  beta = prior_normal(0, 2)
 )
 }
 \arguments{
