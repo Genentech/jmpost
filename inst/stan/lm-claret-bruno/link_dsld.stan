@@ -29,10 +29,10 @@ functions {
             8000.0,
             ind_b_matrix .*
             (
-                ind_g_matrix - ind_p_matrix .* exp(-ind_c_matrix .* time)
+                ind_g_matrix - (ind_p_matrix .* exp(-ind_c_matrix .* time))
             ) .*
             exp(
-                (ind_g_matrix .* time) .*
+                (ind_g_matrix .* time) -
                 (ind_p_matrix ./ ind_c_matrix) .*
                 (1 -  exp(- ind_c_matrix .* time))
             )

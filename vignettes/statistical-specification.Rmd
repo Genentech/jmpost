@@ -397,18 +397,12 @@ Where:
 
 $$
 G(t_{ij} \mid b_i, g_i, c_i, p_i) = \begin{cases}
-b_i \left(
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0 \\
+\left(
     g_i - p_i e^{-c_i t_{ij}} 
 \right)
-exp \left(
-    g_i t_{ij}
-    \frac{
-        p_i \left(1 - e^{-c_i t_{ij}}\right)
-    }
-    {c_i}
-\right)
- & \text{if } t_{ij}\geq 0 \\
-b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+SLD_{ij}
+ & \text{if } t_{ij}\geq 0
 \end{cases}
 $$
 

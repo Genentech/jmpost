@@ -94,7 +94,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
 
-    set.seed(9438)
+    set.seed(1238)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(

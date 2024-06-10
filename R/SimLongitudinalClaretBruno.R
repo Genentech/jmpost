@@ -196,6 +196,6 @@ clbr_ttg <- function(t, b, g, c, p) {
 #' @rdname clbr_sld
 clbr_dsld <- function(t, b, g, c, p) {
     lt0 <- b * g * exp(g * t)
-    gt0 <- b * (g - p * exp(-c * t)) * exp((g * t) * (p / c) * (1 - exp(-c * t)))
+    gt0 <- b * (g - p * exp(-c * t)) * exp((g * t) - (p / c) * (1 - exp(-c * t)))
     ifelse(t >= 0, gt0, lt0)
 }
