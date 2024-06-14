@@ -26,9 +26,9 @@ set_fixtures_gsf <- function() {
         longitudinal = SimLongitudinalGSF(
             times = seq(0, 4, by = 1 / 365),
             sigma = 0.01,
-            mu_s = c(0.6, 0.4),
-            mu_g = c(0.25, 0.35),
-            mu_b = c(60, 50),
+            mu_s = log(c(0.6, 0.4)),
+            mu_g = log(c(0.25, 0.35)),
+            mu_b = log(c(60, 50)),
             a_phi = c(15, 15),
             b_phi = c(15, 15),
             omega_b = 0.2,

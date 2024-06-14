@@ -3,9 +3,9 @@ test_that("SimLongitudinalGSF works as expected", {
     sim <- SimLongitudinalGSF(
         times = c(-100, 0, 50),
         sigma = 0.00000001,
-        mu_b = c(60, 90),
-        mu_s = c(0.6, 0.4),
-        mu_g = c(0.25, 0.35),
+        mu_b = log(c(60, 90)),
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
         omega_b = 0.000000001,
         omega_s = 0.000000001,
         omega_g = 0.000000001,
