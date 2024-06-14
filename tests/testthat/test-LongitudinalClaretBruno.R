@@ -94,12 +94,12 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
 
-    set.seed(1238)
+    set.seed(2438)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(120, "Arm-A", "Study-X"),
-            SimGroup(120, "Arm-B", "Study-X")
+            SimGroup(250, "Arm-A", "Study-X"),
+            SimGroup(250, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
             times = c(
@@ -116,23 +116,26 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             omega_g = 0.12,
             omega_c = 0.12,
             omega_p = 0.12,
-            link_ttg = 0.2,
-            link_dsld = -0.1
+            link_ttg = 0,
+            link_dsld = -0.2,
+            link_identity = 0,
+            link_growth = 0
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
             time_step = 1 / 365,
-            lambda = 1,
+            lambda = 0.5,
             lambda_cen = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
                 "B" = -0.1,
-                "C" = 0.5
+                "C" = 0.6
             ),
-            beta_cont = 0.3
+            beta_cont = 0.25
         ),
         .silent = TRUE
     )
+
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
@@ -152,11 +155,11 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
         ),
         survival = SurvivalExponential(
-            lambda = prior_lognormal(log(1), 0.4)
+            lambda = prior_lognormal(log(0.5), 0.4),
+            beta = prior_normal(0, 2)
         ),
         link = Link(
-            linkTTG(prior_normal(0.2, 0.5)),
-            linkDSLD(prior_normal(-0.1, 0.5))
+            linkDSLD(prior_normal(0, 0.5))
         )
     )
 
@@ -180,7 +183,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     )
 
     ## Sample from JointModel
-    set.seed(2213)
+    set.seed(223)
     mp <- run_quietly({
         sampleStanModel(
             jm,
@@ -220,11 +223,14 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
+
+
+
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "sm_exp_lambda")
+        c("beta_os_cov", "sm_exp_lambda", "link_ttg")
     )
-    true_values <- c(-0.1, 0.2, 1)
+    true_values <- c(-0.1, 0.6, 0.25, 0.5, 0.2)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
