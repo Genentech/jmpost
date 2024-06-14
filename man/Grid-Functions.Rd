@@ -68,7 +68,7 @@ subject.
 \item \code{GridEven()} generates quantities for each subject at N evenly spaced timepoints
 between each subjects first and last longitudinal observations.
 \item \code{GridEvent()} generates one quantity for each subject at their event/censor time
-as indiciated by the \code{time} variable in the survival dataset.
+as indicated by the \code{time} variable in the survival dataset.
 \item \code{GridPopulation()} generates longitudinal model quantities based on the population parameters at the
 specified time points. Generates 1 set of quantities for each distinct combination of \code{arm}
 and \code{study} within the \code{\link{DataSubject}} object provided to the \code{\link{JointModel}}.
