@@ -71,6 +71,7 @@ Collate:
     'DataJoint.R'
     'Grid.R'
     'GridEven.R'
+    'GridEvent.R'
     'GridFixed.R'
     'GridGrouped.R'
     'GridManual.R'
