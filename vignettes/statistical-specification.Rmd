@@ -435,7 +435,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t_{ij} \mid b_i, g_i, c_i, p_i) &= g_i
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= log(g_i)
 \end{align*}
 $$
 

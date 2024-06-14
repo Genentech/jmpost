@@ -143,7 +143,7 @@ sampleObservations.SimLongitudinalClaretBruno <- function(object, times_df) {
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
                 (object@link_identity * .data$mu_sld) +
-                (object@link_growth * .data$ind_g)
+                (object@link_growth * log(.data$ind_g))
         )
 }
 
