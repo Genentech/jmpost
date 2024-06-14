@@ -36,7 +36,6 @@ test_that("SimLongitudinalGSF works as expected", {
         c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")
     )
 
-
     tdat <- purrr::map(
         sim@times,
         \(time) {
