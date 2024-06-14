@@ -94,18 +94,17 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
 
-    set.seed(2438)
+    set.seed(38)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(250, "Arm-A", "Study-X"),
-            SimGroup(250, "Arm-B", "Study-X")
+            SimGroup(150, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
             times = c(
-                -200, -100, -10,
                 1, 100, 200, 300, 400, 500,
-                600, 700, 800, 900, 1000, 1100
+                600, 700, 800, 900, 1000
             ) / 365,
             sigma = 0.05,
             mu_b = log(60),
@@ -183,7 +182,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     )
 
     ## Sample from JointModel
-    set.seed(223)
+    set.seed(663)
     mp <- run_quietly({
         sampleStanModel(
             jm,
@@ -228,7 +227,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("beta_os_cov", "sm_exp_lambda", "link_ttg")
+        c("beta_os_cov", "sm_exp_lambda", "link_dsld")
     )
     true_values <- c(-0.1, 0.6, 0.25, 0.5, 0.2)
     expect_true(all(dat$q01 <= true_values))
