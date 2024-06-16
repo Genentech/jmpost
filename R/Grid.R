@@ -42,6 +42,9 @@
 #' - `GridEven()` generates quantities for each subject at N evenly spaced timepoints
 #' between each subjects first and last longitudinal observations.
 #'
+#' - `GridEvent()` generates one quantity for each subject at their event/censor time
+#' as indicated by the `time` variable in the survival dataset.
+#'
 #' - `GridPopulation()` generates longitudinal model quantities based on the population parameters at the
 #' specified time points. Generates 1 set of quantities for each distinct combination of `arm`
 #' and `study` within the [`DataSubject`] object provided to the [`JointModel`].
