@@ -35,12 +35,6 @@ when calculating quantities via SurvivalQuantities and LongitudinalQuantities.">
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -77,6 +71,8 @@ when calculating quantities via <code><a href="SurvivalQuantities-class.html">Su
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GridEven</span><span class="op">(</span>subjects <span class="op">=</span> <span class="cn">NULL</span>, length.out <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GridEvent</span><span class="op">(</span>subjects <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">GridFixed</span><span class="op">(</span>subjects <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -140,6 +136,8 @@ subject.</p></li>
 <li><p><code>GridManual()</code> allows for individual timepoint specification for each subject.</p></li>
 <li><p><code>GridEven()</code> generates quantities for each subject at N evenly spaced timepoints
 between each subjects first and last longitudinal observations.</p></li>
+<li><p><code>GridEvent()</code> generates one quantity for each subject at their event/censor time
+as indicated by the <code>time</code> variable in the survival dataset.</p></li>
 <li><p><code>GridPopulation()</code> generates longitudinal model quantities based on the population parameters at the
 specified time points. Generates 1 set of quantities for each distinct combination of <code>arm</code>
 and <code>study</code> within the <code><a href="DataSubject-class.html">DataSubject</a></code> object provided to the <code><a href="JointModel-class.html">JointModel</a></code>.</p></li>
