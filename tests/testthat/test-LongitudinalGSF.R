@@ -85,9 +85,9 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         longitudinal = SimLongitudinalGSF(
             times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
             sigma = 0.01,
-            mu_s = c(0.6, 0.4),
-            mu_g = c(0.25, 0.35),
-            mu_b = 60,
+            mu_s = log(c(0.6, 0.4)),
+            mu_g = log(c(0.25, 0.35)),
+            mu_b = log(60),
             a_phi = c(20, 15),
             b_phi = c(15, 20),
             omega_b = 0.2,
