@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -76,9 +70,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SimLongitudinalSteinFojo</span><span class="op">(</span></span>
 <span>  times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">250</span>, <span class="fl">350</span>, <span class="fl">450</span>, <span class="fl">550</span><span class="op">)</span><span class="op">/</span><span class="fl">365</span>,</span>
 <span>  sigma <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  mu_s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span>,</span>
-<span>  mu_g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.35</span><span class="op">)</span>,</span>
-<span>  mu_b <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  mu_s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  mu_g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.35</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  mu_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span>
 <span>  omega_b <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  omega_s <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  omega_g <span class="op">=</span> <span class="fl">0.2</span>,</span>
