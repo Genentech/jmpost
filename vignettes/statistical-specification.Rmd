@@ -229,7 +229,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t_{ij} \mid b_i, s_i, g_i) &= g_i
+G(t_{ij} \mid b_i, s_i, g_i) &= log(g_i)
 \end{align*}
 $$
 
@@ -341,7 +341,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= g_i
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
 \end{align*}
 $$
 

@@ -10,9 +10,9 @@
 SimLongitudinalSteinFojo(
   times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
   sigma = 0.01,
-  mu_s = c(0.6, 0.4),
-  mu_g = c(0.25, 0.35),
-  mu_b = 60,
+  mu_s = log(c(0.6, 0.4)),
+  mu_g = log(c(0.25, 0.35)),
+  mu_b = log(60),
   omega_b = 0.2,
   omega_s = 0.2,
   omega_g = 0.2,

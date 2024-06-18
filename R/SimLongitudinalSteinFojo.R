@@ -56,9 +56,9 @@ NULL
 SimLongitudinalSteinFojo <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
     sigma = 0.01,
-    mu_s = c(0.6, 0.4),
-    mu_g = c(0.25, 0.35),
-    mu_b = 60,
+    mu_s = log(c(0.6, 0.4)),
+    mu_g = log(c(0.25, 0.35)),
+    mu_b = log(60),
     omega_b = 0.2,
     omega_s = 0.2,
     omega_g = 0.2,
@@ -126,7 +126,7 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
                 (object@link_identity * .data$mu_sld) +
-                (object@link_growth * .data$psi_g)
+                (object@link_growth * log(.data$psi_g))
         )
 }
 
@@ -145,9 +145,9 @@ sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(object@mu_b[.data$study_idx]), object@omega_b)) |>
-        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
-        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g))
+        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
+        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), object@mu_s[.data$arm_idx], object@omega_s)) |>
+        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g))
 
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g")]
 }

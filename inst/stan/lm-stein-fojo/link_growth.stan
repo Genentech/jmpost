@@ -10,6 +10,6 @@ functions {
     ) {
         int nrows = rows(link_function_inputs);
         int ncols = cols(time);
-        return rep_matrix(link_function_inputs[,3], ncols);
+        return rep_matrix(log(link_function_inputs[,3]), ncols);
     }
 }

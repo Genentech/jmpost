@@ -26,9 +26,9 @@ set_fixtures_gsf <- function() {
         longitudinal = SimLongitudinalGSF(
             times = seq(0, 4, by = 1 / 365),
             sigma = 0.01,
-            mu_s = c(0.6, 0.4),
-            mu_g = c(0.25, 0.35),
-            mu_b = c(60, 50),
+            mu_s = log(c(0.6, 0.4)),
+            mu_g = log(c(0.25, 0.35)),
+            mu_b = log(c(60, 50)),
             a_phi = c(15, 15),
             b_phi = c(15, 15),
             omega_b = 0.2,
@@ -208,7 +208,7 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         subject = c("A", "B", "C", "D"),
         arm = c("Arm-A", "Arm-A", "Arm-B", "Arm-B"),
         study = c("Study-1", "Study-1", "Study-1", "Study-1"),
-        time = c(1, 2, 3, 4),
+        time = c(110, 220, 42, 302),
         event = c(1, 1, 0, 1)
     )
 
@@ -356,6 +356,63 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         indexes = as.list(seq_along(expected@times))
     )
     expect_equal(actual, expected)
+
+
+    #
+    # GridEvent
+    #
+    grid <- GridEvent(
+        subjects = c("D", "A", "B")
+    )
+    # Simple comparisons against an identical grid manual
+    grid_man <- GridManual(
+        spec = list(
+            "D" = 302,
+            "A" = 110,
+            "B" = 220
+        )
+    )
+    actual <- as.QuantityGenerator(grid, data = dj)
+    expected <- QuantityGeneratorSubject(
+        subjects = c("D", "A", "B"),
+        times = c(302, 110, 220)
+    )
+    expect_equal(actual, expected)
+    expect_equal(
+        actual,
+        as.QuantityGenerator(grid_man, data = dj)
+    )
+
+    actual <- as.QuantityCollapser(grid, data = dj)
+    expected <- QuantityCollapser(
+        groups = expected@subjects,
+        times = expected@times,
+        indexes = list(1, 2, 3)
+    )
+    expect_equal(actual, expected)
+    expect_equal(
+        actual,
+        as.QuantityCollapser(grid_man, data = dj)
+    )
+
+    # Check that GridEvent errors if no survival data has been provided
+    dj2 <- DataJoint(
+        subject = DataSubject(
+            data = dat_os,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        longitudinal = DataLongitudinal(
+            data = dat_lm,
+            formula = sld ~ time,
+            threshold = 5
+        )
+    )
+    expect_error(
+        as.QuantityGenerator(grid, data = dj2),
+        regexp = "`GridEvent\\(\\)`"
+    )
 
 })
 

@@ -18,9 +18,9 @@ test_that("SimJointData works as expected", {
             ),
             longitudinal = SimLongitudinalGSF(
                 sigma = 0.003,
-                mu_s = c(0.2, 0.25),
-                mu_g = c(0.15, 0.2),
-                mu_b = 60,
+                mu_s = log(c(0.2, 0.25)),
+                mu_g = log(c(0.15, 0.2)),
+                mu_b = log(60),
                 omega_b = 0.1,
                 omega_s = 0.1,
                 omega_g = 0.1,
