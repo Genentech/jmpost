@@ -94,46 +94,75 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
 
+
+    sim_params <- list(
+        sigma = 0.005,
+        mu_b = log(60),
+        mu_g = log(c(0.9, 1.1)),
+        mu_c = log(c(0.45, 0.35)),
+        mu_p = log(c(2.4, 1.8)),
+        omega_b = 0.12,
+        omega_g = 0.12,
+        omega_c = 0.12,
+        omega_p = 0.12,
+        link_ttg = 0.3,
+        link_dsld = -0.02,
+        link_identity = 0,
+        link_growth = 0,
+        lambda = 0.5,
+        lambda_cen = 1 / 9000,
+        beta_cat_b = -0.1,
+        beta_cat_c = 0.5,
+        beta_cont = 0.3
+    )
+
     set.seed(38)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(150, "Arm-A", "Study-X"),
-            SimGroup(150, "Arm-B", "Study-X")
+            SimGroup(125, "Arm-A", "Study-X"),
+            SimGroup(125, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
             times = c(
                 1, 100, 200, 300, 400, 500,
                 600, 700, 800, 900, 1000
             ) / 365,
-            sigma = 0.05,
-            mu_b = log(60),
-            mu_g = log(c(0.9, 1.1)),
-            mu_c = log(c(0.45, 0.35)),
-            mu_p = log(c(2.4, 1.8)),
-            omega_b = 0.12,
-            omega_g = 0.12,
-            omega_c = 0.12,
-            omega_p = 0.12,
-            link_ttg = 0,
-            link_dsld = -0.2,
-            link_identity = 0,
-            link_growth = 0
+            sigma = sim_params$sigma,
+            mu_b = sim_params$mu_b,
+            mu_g = sim_params$mu_g,
+            mu_c = sim_params$mu_c,
+            mu_p = sim_params$mu_p,
+            omega_b = sim_params$omega_b,
+            omega_g = sim_params$omega_g,
+            omega_c = sim_params$omega_c,
+            omega_p = sim_params$omega_p,
+            link_ttg = sim_params$link_ttg,
+            link_dsld = sim_params$link_dsld,
+            link_identity = sim_params$link_identity,
+            link_growth = sim_params$link_growth
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
             time_step = 1 / 365,
-            lambda = 0.5,
+            lambda = sim_params$lambda,
             lambda_cen = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
-                "B" = -0.1,
-                "C" = 0.6
+                "B" = sim_params$beta_cat_b,
+                "C" = sim_params$beta_cat_c
             ),
-            beta_cont = 0.25
+            beta_cont = sim_params$beta_cont
         ),
         .silent = TRUE
     )
+
+
+    # nolint start⁠
+    ### Diagnostics helpers
+    # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
+    # median(jlist@survival$time)
+    # nolint end
 
 
     jm <- JointModel(
@@ -158,7 +187,9 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             beta = prior_normal(0, 2)
         ),
         link = Link(
-            linkDSLD(prior_normal(0, 0.5))
+            linkDSLD(prior_normal(0, 0.5)),
+            linkTTG(prior_normal(0, 0.5)),
+            linkGrowth(prior_normal(10, 3))
         )
     )
 
@@ -217,7 +248,9 @@ test_that("Can recover known distributional parameters from a SF joint model", {
         c("lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p"),
         TRUE
     )
-    true_values <- c(60, 0.9, 1.1, 0.45, 0.35, 2.4, 1.8)
+    true_values <- exp(c(
+        sim_params$mu_b, sim_params$mu_g, sim_params$mu_c, sim_params$mu_p
+    ))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
@@ -227,9 +260,15 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("beta_os_cov", "sm_exp_lambda", "link_dsld")
+        c("beta_os_cov", "sm_exp_lambda", "link_dsld", "link_growth", "link_ttg")
     )
-    true_values <- c(-0.1, 0.6, 0.25, 0.5, 0.2)
+    true_values <- c(
+        sim_params$beta_cat_b, sim_params$beta_cat_c, sim_params$beta_cont,
+        sim_params$lambda,
+        sim_params$link_dsld,
+        sim_params$link_growth,
+        sim_params$link_ttg
+    )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
