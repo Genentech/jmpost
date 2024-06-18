@@ -21,11 +21,6 @@
 #'
 #' ===========================================================
 
-#' install.packages(c("Rcpp", "cli"))
-library(Rcpp)
-library(cli)
-library(here)
-#' install.packages("tidyverse")
 library(tidyverse)
 
 library(flexsurv)
