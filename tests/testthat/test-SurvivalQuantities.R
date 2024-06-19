@@ -41,27 +41,29 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
 
     # Check that the relationship between the quantitites is preservered e.g.
     # that `surv = exp(-cumhaz)`
+    time_vec <- c(0, 1, 10, 30, 40, 200, 300, 400)
     preds1 <- SurvivalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = "subject_0001",  times = c(200, 300))
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec)
     ) |> summary()
     preds2 <- SurvivalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = "subject_0001",  times = c(200, 300)),
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "cumhaz"
     ) |> summary()
     preds3 <- SurvivalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = "subject_0001",  times = c(200, 300)),
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "haz"
     ) |> summary()
     preds4 <- SurvivalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(subjects = "subject_0001",  times = c(200, 300)),
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "loghaz"
     ) |> summary()
-    expect_equal(round(preds1$median, 5), round(exp(-preds2$median), 5))
-    expect_equal(round(preds3$median, 5), round(exp(preds4$median), 5))
+
+    expect_equal(preds1$median, exp(-preds2$median), tolerance = 0.00001)
+    expect_equal(preds3$median, exp(preds4$median), tolerance = 0.00001)
     expect_true(all(preds1$median != preds3$median))
 })
 
