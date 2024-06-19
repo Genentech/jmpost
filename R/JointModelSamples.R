@@ -108,7 +108,7 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sprintf(
         paste(template_padded, collapse = "\n"),
         as.CmdStanMCMC(object)$metadata()$iter_sampling,
-        as.CmdStanMCMC(object)$metadata()$num_chains
+        as.CmdStanMCMC(object)$num_chains()
     )
 }
 
