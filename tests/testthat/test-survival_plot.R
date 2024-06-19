@@ -1,6 +1,7 @@
 
 
 test_that("survival_plot works as expected", {
+
     set.seed(38132)
     define_data <- function(i, group) {
         n <- 120
@@ -63,10 +64,13 @@ test_that("survival_plot works as expected", {
         x_label = expression(thd[3])
     )
 
-    vdiffr::expect_doppelganger(
-        "survival_plot with wrap and ci",
-        p1
-    )
+    if (is_graph_snapshot_enabled()) {
+        vdiffr::expect_doppelganger(
+            "survival_plot with wrap and ci",
+            p1
+        )
+    }
+
 
     p2 <- survival_plot(
         res,
@@ -77,10 +81,12 @@ test_that("survival_plot works as expected", {
         x_label = expression(thd[3])
     )
 
-    vdiffr::expect_doppelganger(
-        "survival_plot with no wrap and no ci",
-        p2
-    )
+    if (is_graph_snapshot_enabled()) {
+        vdiffr::expect_doppelganger(
+            "survival_plot with no wrap and no ci",
+            p2
+        )
+    }
 
 
     p3 <- survival_plot(
@@ -94,8 +100,10 @@ test_that("survival_plot works as expected", {
         theme(legend.position = "bottom") +
         scale_y_continuous(trans = "sqrt")
 
-    vdiffr::expect_doppelganger(
-        "survival_plot-no wrap + no ci + km + ggplot2 ",
-        p3
-    )
+    if (is_graph_snapshot_enabled()) {
+        vdiffr::expect_doppelganger(
+            "survival_plot-no wrap + no ci + km + ggplot2 ",
+            p3
+        )
+    }
 })
