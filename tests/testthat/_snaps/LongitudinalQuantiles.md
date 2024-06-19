@@ -10,7 +10,7 @@
     Output
       
        LongitudinalQuantities Object:
-          # of samples    = 100
+          # of samples    = 200
           # of quantities = 44 
       
 
@@ -24,7 +24,7 @@
     Output
       
        LongitudinalQuantities Object:
-          # of samples    = 100
+          # of samples    = 200
           # of quantities = 402 
       
 
