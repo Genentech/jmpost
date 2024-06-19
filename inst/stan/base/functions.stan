@@ -88,7 +88,7 @@ functions {
         matrix[rows(x), cols(x)] result;
         for (i in 1:rows(x)) {
             for (j in 1:cols(x)) {
-                result[i, j] = x[i, j] < 0 ? replacement : y[i, j];
+                result[i, j] = x[i, j] >= 0 ?  y[i, j] : replacement;
             }
         }
         return result;
@@ -96,7 +96,7 @@ functions {
     vector if_gte0_else(vector x, vector y, real replacement) {
         vector[rows(x)] result;
         for (i in 1:rows(x)) {
-            result[i] = x[i] < 0 ? replacement : y[i];
+            result[i] = x[i] >= 0 ? y[i] : replacement;
         }
         return result;
     }
