@@ -126,7 +126,7 @@ sampleSubjects.SimWang <- function(object, subjects_df) {
     subjects_df
 }
 
-# Method to generate observations for each indiviudal subject
+# Method to generate observations for each individual subject
 sampleObservations.SimWang <- function(object, times_df) {
     nobs <- nrow(times_df)
     calc_mu <- function(time, b, s, g) b * exp(-s * time) + g * time
@@ -327,7 +327,7 @@ as.CmdStanMCMC(model_samples)$summary(vars)
 
 ## Generating Quantities of Interest
 
-In order to enable the generation of both population and indiviudal level quantities of interest
+In order to enable the generation of both population and individual level quantities of interest
 we need to implement the required
 generated quantity objects and functions as outlined in the "Extending jmpost" vignette.
 

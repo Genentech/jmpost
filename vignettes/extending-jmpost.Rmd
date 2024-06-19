@@ -250,7 +250,7 @@ that users can change them without having to re-compile the Stan model.
 
 ## Custom Generated Quantities
 
-In order to avoid unnecesary processing, code that is only used for generated quantities is
+In order to avoid unnecessary processing, code that is only used for generated quantities is
 only included into the Stan model when explicitly trying to extract the quantities via the
 `LongitidunalQuantities` and `SurvivalQuantities` constructors.
 
@@ -258,7 +258,7 @@ To facilitate this, when using `LongitidunalQuantities` or `SurvivalQuantities`
 a dedicated model method `enableGQ()` is called on the longitudinal model. This model specific
 method is responsible for returning a `StanModule` object that contains all the relevant
 code required to generate the quantities for that given model. The following is a rough
-implmentation of this method for the Random-Slope model which implements both feature (2) and (3)
+implementation of this method for the Random-Slope model which implements both feature (2) and (3)
 outlined in the above "Custom Longitudinal Model" section:
 
 ```R
