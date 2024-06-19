@@ -11,7 +11,7 @@ functions {
         vector psi_kg
     ) {
         int n = rows(time);
-        vector[n] psi_ks_mod = if_lt0_else(time, psi_ks, 0);
+        vector[n] psi_ks_mod = if_gte0_else(time, psi_ks, 0);
         vector[n] result = fmin(
             8000.0,
             psi_bsld  .* (
