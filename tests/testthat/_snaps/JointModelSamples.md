@@ -7,7 +7,7 @@
          JointModelSamples Object with:
         
             # of samples per chain = 100
-            # of chains            = 1
+            # of chains            = 2
         
             Variables:
                 Ypred[2800]

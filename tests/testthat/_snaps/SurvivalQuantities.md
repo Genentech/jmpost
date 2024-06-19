@@ -12,7 +12,7 @@
     Output
       
        SurvivalQuantities Object:
-          # of samples    = 100
+          # of samples    = 200
           # of quantities = 33
           Type            = surv 
       
@@ -27,7 +27,7 @@
     Output
       
        SurvivalQuantities Object:
-          # of samples    = 100
+          # of samples    = 200
           # of quantities = 4400
           Type            = loghaz 
       
