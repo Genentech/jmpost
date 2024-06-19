@@ -249,7 +249,7 @@ test_that("Random Slope Model left-censoring works as expected", {
         sampleStanModel(
             jm,
             data = jdat,
-            iter_sampling = 200,
+            iter_sampling = 300,
             iter_warmup = 400,
             chains = 1,
             refresh = 0,
