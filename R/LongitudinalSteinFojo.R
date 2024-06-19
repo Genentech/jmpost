@@ -112,6 +112,11 @@ LongitudinalSteinFojo <- function(
 
 
 #' @export
+enableGQ.LongitudinalSteinFojo <- function(object, ...) {
+    StanModule("lm-stein-fojo/quantities.stan")
+}
+
+#' @export
 enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object@stan <- merge(
         object@stan,

@@ -410,8 +410,29 @@ resolvePromise.default <- function(object, ...) {
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
 }
+#' @export
 enableLink.default <- function(object, ...) {
     object
+}
+
+
+#' Enable Generated Quantities Generic
+#'
+#' @param object ([`StanModel`])\cr to enable generated quantities for.
+#' @param ... Not used.
+#'
+#' Optional hook method that is called on a [`StanModel`] if attempting to use
+#' either [`LongitudinalQuantities`] or [`SurvivalQuantities`]
+#'
+#' @return [`StanModule`] object
+#'
+#' @export
+enableGQ <- function(object, ...) {
+    UseMethod("enableGQ")
+}
+#' @export
+enableGQ.default <- function(object, ...) {
+    StanModule()
 }
 
 

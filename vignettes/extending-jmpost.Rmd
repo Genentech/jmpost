@@ -180,6 +180,9 @@ Note that the `long_gq_parameters` matrix should be structured
 as your `lm_predict_value()` function would expect it to be for the
 `long_gq_parameters` argument.
 
+Please see "Custom Generated Quantities" section below for implementation details for inserting
+custom generated quantity code.
+
 ### 3) Population Generated Quantity Integration
 
 A common use case is to calculate the quantities based on the "population" level parameters which is
@@ -217,6 +220,9 @@ Note that the `long_gq_pop_parameters` matrix should be structured
 as your `lm_predict_value()` function would expect it to be for the
 `long_gq_parameters` argument.
 
+Please see "Custom Generated Quantities" section below for implementation details for inserting
+custom generated quantity code.
+
 ## Prior Specification
 
 When writing your own custom longitudinal or survival model it is important to understand
@@ -240,6 +246,46 @@ There is however no prior specified in the Stan code for `lm_rs_slope_mu` or `lm
 as these are handled by the `parameters` slot of the model object as mentioned above.
 The main reason for using this approach is that `jmpost` implements the priors in such a way
 that users can change them without having to re-compile the Stan model.
+
+
+## Custom Generated Quantities
+
+In order to avoid unnecesary processing, code that is only used for generated quantities is
+only included into the Stan model when explicitly trying to extract the quantities via the
+`LongitidunalQuantities` and `SurvivalQuantities` constructors.
+
+To facilitate this, when using `LongitidunalQuantities` or `SurvivalQuantities` 
+a dedicated model method `enableGQ()` is called on the longitudinal model. This model specific
+method is responsible for returning a `StanModule` object that contains all the relevant
+code required to generate the quantities for that given model. The following is a rough
+implmentation of this method for the Random-Slope model which implements both feature (2) and (3)
+outlined in the above "Custom Longitudinal Model" section:
+
+```R
+enableGQ.LongitudinalRandomSlope <- function() {
+    StanModule("
+        functions {
+            vector lm_predict_value(vector time, matrix long_gq_parameters) {
+                int nrow = rows(time);
+                return (
+                    long_gq_parameters[, 1] + long_gq_parameters[, 2] .* time
+                );
+            }
+        }
+
+        generated quantities {
+            matrix[n_subjects, 2] long_gq_parameters;
+            long_gq_parameters[, 1] = lm_rs_ind_intercept;
+            long_gq_parameters[, 2] = lm_rs_ind_rnd_slope;
+
+            matrix[gq_n_quant, 2] long_gq_pop_parameters;
+            long_gq_pop_parameters[, 1] = to_vector(lm_rs_intercept[gq_long_pop_study_index]);
+            long_gq_pop_parameters[, 2] = to_vector(lm_rs_slope_mu[gq_long_pop_arm_index]);
+        }
+    ")
+}
+```
+
 
 ## Custom Link Functions
 
