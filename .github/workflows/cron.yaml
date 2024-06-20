@@ -21,6 +21,7 @@ jobs:
         CMDSTANR_NO_VER_CHECK=true
         JMPOST_CACHE_DIR=${{ github.workspace }}/.cache
         JMPOST_FULL_TEST=TRUE
+        JMPOST_GRAPH_SNAPSHOT=TRUE
       additional-caches: |
         ${{ github.workspace }}/.cache
 
