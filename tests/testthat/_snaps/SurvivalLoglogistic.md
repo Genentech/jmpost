@@ -8,7 +8,7 @@
       Log-Logistic Survival Model with parameters:
           sm_loglogis_a ~ lognormal(mu = -2.30259, sigma = 5)
           sm_loglogis_b ~ gamma(alpha = 2, beta = 5)
-          beta_os_cov ~ normal(mu = 0, sigma = 5)
+          beta_os_cov ~ normal(mu = 0, sigma = 2)
       
 
 ---

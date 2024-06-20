@@ -12,7 +12,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:
@@ -40,7 +40,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:
@@ -68,7 +68,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:
            Not Specified
@@ -121,7 +121,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:
