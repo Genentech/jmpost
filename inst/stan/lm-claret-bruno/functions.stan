@@ -12,7 +12,7 @@ functions {
         vector ind_p
     ) {
         int nrow = rows(time);
-        vector[nrow] ind_p_mod = if_lt0_else(time, ind_p, 0);
+        vector[nrow] ind_p_mod = if_gte0_else(time, ind_p, 0);
 
         vector[nrow] result = fmin(
             8000.0,

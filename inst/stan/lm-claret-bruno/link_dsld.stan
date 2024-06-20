@@ -37,6 +37,6 @@ functions {
                 (1 -  exp(- ind_c_matrix .* time))
             )
         );
-        return if_lt0_else(time, result_gt0, result_lt0);
+        return if_gte0_else(time, result_gt0, result_lt0);
     }
 }

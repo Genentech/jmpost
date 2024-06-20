@@ -101,7 +101,7 @@ functions {
         return result;
     }
 
-    matrix if_lt0_else(matrix x, matrix y, matrix replacement) {
+    matrix if_gte0_else(matrix x, matrix y, matrix replacement) {
         int nrow = rows(x);
         int ncol = cols(x);
         matrix[nrow, ncol] result;
