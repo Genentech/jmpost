@@ -309,6 +309,6 @@
 <text x='377.38' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='5.87px' lengthAdjust='spacingAndGlyphs'>A</text>
 <text x='411.49' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='5.87px' lengthAdjust='spacingAndGlyphs'>B</text>
 <text x='445.60' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='6.36px' lengthAdjust='spacingAndGlyphs'>C</text>
-<text x='58.43' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='262.35px' lengthAdjust='spacingAndGlyphs'>survival_plot-no wrap + no ci + km + ggplot2 </text>
+<text x='58.43' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='141.62px' lengthAdjust='spacingAndGlyphs'>nowrap-noci-km-ggplot2</text>
 </g>
 </svg>

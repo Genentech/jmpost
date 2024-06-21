@@ -1,4 +1,10 @@
 
+## Code to re-run this from commandline
+# JMPOST_GRAPH_SNAPSHOT=TRUE \
+# NOT_CRAN=TRUE \
+# Rscript -e "devtools::load_all(); testthat::test_file('tests/testthat/test-survival_plot.R')"
+
+snap_dir <- file.path(testthat::test_path(), "_snaps", "survival_plot")
 
 test_that("survival_plot works as expected", {
 
@@ -64,9 +70,11 @@ test_that("survival_plot works as expected", {
         x_label = expression(thd[3])
     )
 
+
+    announce_snapshot_file(file.path(snap_dir, "wrap-ci.svg"))
     if (is_graph_snapshot_enabled()) {
         vdiffr::expect_doppelganger(
-            "survival_plot with wrap and ci",
+            "wrap-ci",
             p1
         )
     }
@@ -81,9 +89,10 @@ test_that("survival_plot works as expected", {
         x_label = expression(thd[3])
     )
 
+    announce_snapshot_file(file.path(snap_dir, "nowrap-noci.svg"))
     if (is_graph_snapshot_enabled()) {
         vdiffr::expect_doppelganger(
-            "survival_plot with no wrap and no ci",
+            "nowrap-noci",
             p2
         )
     }
@@ -100,10 +109,15 @@ test_that("survival_plot works as expected", {
         theme(legend.position = "bottom") +
         scale_y_continuous(trans = "sqrt")
 
+    announce_snapshot_file(file.path(snap_dir, "nowrap-noci-km-ggplot2.svg"))
     if (is_graph_snapshot_enabled()) {
         vdiffr::expect_doppelganger(
-            "survival_plot-no wrap + no ci + km + ggplot2 ",
+            "nowrap-noci-km-ggplot2",
             p3
         )
     }
+
+    # Null test so that its not considered as an empty test if the "JMPOST_GRAPH_SNAPSHOT"
+    # variable is not set
+    expect_equal(1, 1)
 })
