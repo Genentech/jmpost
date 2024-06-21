@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -381,7 +375,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmprOHY38/model-ef56cb7362d.stan', line 485, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/Rtmp9sWKs8/model-f254ffed88d.stan', line 477, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -396,7 +390,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 10.0 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 42.7 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -420,17 +414,17 @@ because the <code>results</code> element is of class
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 10</span></span></span>
 <span><span class="co">#&gt;    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte… 27.5     27.5     1.25    1.13    25.6     29.6    1.00      128.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop…  1.02     1.02    0.029<span style="text-decoration: underline;">8</span>  0.030<span style="text-decoration: underline;">2</span>   0.972    1.07   1.00      508.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop…  1.97     1.97    0.029<span style="text-decoration: underline;">3</span>  0.029<span style="text-decoration: underline;">0</span>   1.92     2.02   1.00      600.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop…  0.204    0.203   0.014<span style="text-decoration: underline;">3</span>  0.014<span style="text-decoration: underline;">1</span>   0.182    0.229  1.00      463.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma 19.2     19.2     0.592   0.554   18.2     20.1    1.00      513.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_dsld   -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">0</span>  -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">7</span>  0.185   0.186   -<span style="color: #BB0000;">0.347</span>    0.270  1.00      304.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull…  0.009<span style="text-decoration: underline;">31</span>  0.008<span style="text-decoration: underline;">03</span> 0.005<span style="text-decoration: underline;">39</span> 0.004<span style="text-decoration: underline;">12</span>  0.003<span style="text-decoration: underline;">20</span>  0.020<span style="text-decoration: underline;">5</span> 1.00      176.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull…  0.894    0.895   0.075<span style="text-decoration: underline;">0</span>  0.073<span style="text-decoration: underline;">8</span>   0.767    1.01   0.998     268.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co… -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">29</span> -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">71</span> 0.244   0.234   -<span style="color: #BB0000;">0.397</span>    0.418  0.999     486.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co…  0.338    0.332   0.254   0.241   -<span style="color: #BB0000;">0.078</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.767  1.00      441.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co…  0.366    0.364   0.108   0.117    0.203    0.539  0.999     415.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> lm_rs_inte… 27.6      2.75<span style="color: #949494;">e</span>+1 1.26    1.24    25.6     29.7    1.02      163.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> lm_rs_slop…  1.02     1.02<span style="color: #949494;">e</span>+0 0.029<span style="text-decoration: underline;">9</span>  0.026<span style="text-decoration: underline;">8</span>   0.971    1.07   1.00     <span style="text-decoration: underline;">1</span>173.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> lm_rs_slop…  1.96     1.96<span style="color: #949494;">e</span>+0 0.031<span style="text-decoration: underline;">1</span>  0.028<span style="text-decoration: underline;">7</span>   1.91     2.02   0.999     763.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> lm_rs_slop…  0.204    2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.015<span style="text-decoration: underline;">2</span>  0.015<span style="text-decoration: underline;">3</span>   0.181    0.232  1.02      476.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> lm_rs_sigma 19.2      1.92<span style="color: #949494;">e</span>+1 0.533   0.517   18.3     20.1    1.03      575.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> link_dsld   -<span style="color: #BB0000;">0.042</span><span style="color: #BB0000; text-decoration: underline;">2</span>  -<span style="color: #BB0000;">2.85</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.202   0.206   -<span style="color: #BB0000;">0.381</span>    0.294  1.01      579.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sm_weibull…  0.009<span style="text-decoration: underline;">87</span>  9.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.005<span style="text-decoration: underline;">10</span> 0.004<span style="text-decoration: underline;">68</span>  0.003<span style="text-decoration: underline;">30</span>  0.019<span style="text-decoration: underline;">6</span> 1.00      386.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sm_weibull…  0.883    8.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.070<span style="text-decoration: underline;">7</span>  0.072<span style="text-decoration: underline;">9</span>   0.770    0.997  1.00      409.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> beta_os_co…  0.004<span style="text-decoration: underline;">90</span> -<span style="color: #BB0000;">7.41</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 0.237   0.240   -<span style="color: #BB0000;">0.377</span>    0.396  1.00      764.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> beta_os_co…  0.336    3.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.286   0.290   -<span style="color: #BB0000;">0.162</span>    0.789  0.999     611.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> beta_os_co…  0.354    3.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.099<span style="text-decoration: underline;">7</span>  0.106    0.184    0.516  1.01      595.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can already see here from the <code>rhat</code> statistic whether
 the MCMC sampler converged - values close to 1 indicate convergence,
@@ -486,21 +480,21 @@ plot here the first 10 subjects:</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         group time  values</span></span>
-<span><span class="co">#&gt; 1 subject_001    0 27.3227</span></span>
-<span><span class="co">#&gt; 2 subject_001    0 27.5733</span></span>
-<span><span class="co">#&gt; 3 subject_001    0 28.2221</span></span>
-<span><span class="co">#&gt; 4 subject_001    0 26.4721</span></span>
-<span><span class="co">#&gt; 5 subject_001    0 27.1406</span></span>
-<span><span class="co">#&gt; 6 subject_001    0 27.5652</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 subject_001    0 27.1297</span></span>
+<span><span class="co">#&gt; 2 subject_001    0 28.6721</span></span>
+<span><span class="co">#&gt; 3 subject_001    0 27.6096</span></span>
+<span><span class="co">#&gt; 4 subject_001    0 27.6678</span></span>
+<span><span class="co">#&gt; 5 subject_001    0 28.0793</span></span>
+<span><span class="co">#&gt; 6 subject_001    0 28.2741</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         group time   median    lower   upper</span></span>
-<span><span class="co">#&gt; 1 subject_001    0 27.51385 25.07199 29.9975</span></span>
-<span><span class="co">#&gt; 2 subject_002    0 27.51385 25.07199 29.9975</span></span>
-<span><span class="co">#&gt; 3 subject_003    0 27.51385 25.07199 29.9975</span></span>
-<span><span class="co">#&gt; 4 subject_004    0 27.51385 25.07199 29.9975</span></span>
-<span><span class="co">#&gt; 5 subject_005    0 27.51385 25.07199 29.9975</span></span>
-<span><span class="co">#&gt; 6 subject_006    0 27.51385 25.07199 29.9975</span></span></code></pre></div>
+<span><span class="co">#&gt;         group time   median    lower    upper</span></span>
+<span><span class="co">#&gt; 1 subject_001    0 27.54515 25.20601 29.99879</span></span>
+<span><span class="co">#&gt; 2 subject_002    0 27.54515 25.20601 29.99879</span></span>
+<span><span class="co">#&gt; 3 subject_003    0 27.54515 25.20601 29.99879</span></span>
+<span><span class="co">#&gt; 4 subject_004    0 27.54515 25.20601 29.99879</span></span>
+<span><span class="co">#&gt; 5 subject_005    0 27.54515 25.20601 29.99879</span></span>
+<span><span class="co">#&gt; 6 subject_006    0 27.54515 25.20601 29.99879</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
@@ -599,7 +593,7 @@ Scores (predictive performance measure) from our
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/brierScore.html">brierScore</a></span><span class="op">(</span><span class="va">sq</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          1         50        100        400        800 </span></span>
-<span><span class="co">#&gt; 0.01953567 0.17157524 0.23745246 0.14934598 0.06113030</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.01951819 0.17197167 0.23709118 0.14840755 0.06091250</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="initial-values">Initial Values<a class="anchor" aria-label="anchor" href="#initial-values"></a>

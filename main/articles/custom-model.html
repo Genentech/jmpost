@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -184,7 +178,7 @@ example:</p>
 <span><span class="co">#&gt;   method                  from   </span></span>
 <span><span class="co">#&gt;   heightDetails.titleGrob ggplot2</span></span>
 <span><span class="co">#&gt;   widthDetails.titleGrob  ggplot2</span></span>
-<span><span class="co">#&gt; CmdStan path set to: /root/.cmdstan/cmdstan-2.34.1</span></span></code></pre></div>
+<span><span class="co">#&gt; CmdStan path set to: /root/.cmdstan/cmdstan-2.35.0</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -237,7 +231,7 @@ follows:</p>
 <span>    <span class="va">subjects_df</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Method to generate observations for each indiviudal subject</span></span>
+<span><span class="co"># Method to generate observations for each individual subject</span></span>
 <span><span class="va">sampleObservations.SimWang</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">times_df</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">nobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">times_df</span><span class="op">)</span></span>
 <span>    <span class="va">calc_mu</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">b</span>, <span class="va">s</span>, <span class="va">g</span><span class="op">)</span> <span class="va">b</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">*</span> <span class="va">time</span><span class="op">)</span> <span class="op">+</span> <span class="va">g</span> <span class="op">*</span> <span class="va">time</span></span>
@@ -353,79 +347,52 @@ specified in the <code>custom-model.stan</code> file is as follows:</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                       growth .* tumour_time;</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>        <span class="cf">return</span> tumour_value;</span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    }</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="co">// Define required function for enabling generated quantities</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="dt">vector</span> lm_predict_value(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters) {</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>        <span class="cf">return</span> sld(</span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>            time,</span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">1</span>],  <span class="co">// baseline</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">2</span>],  <span class="co">// shrinkage</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">3</span>]   <span class="co">// growth</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>        );</span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>    }</span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>}</span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="kw">parameters</span>{</span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>    <span class="co">// Declare individual subject parameters</span></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] baseline_idv;</span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] shrinkage_idv;</span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] growth_idv;</span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>    <span class="co">// Declare population level parameters</span></span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_baseline;</span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_shrinkage;</span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_growth;</span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_baseline;</span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_shrinkage;</span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_growth;</span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a></span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>    <span class="co">// Declare standard deviation for the overall model error</span></span>
-<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>}</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="kw">parameters</span>{</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    <span class="co">// Declare individual subject parameters</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] baseline_idv;</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] shrinkage_idv;</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>    <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[n_subjects] growth_idv;</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>    <span class="co">// Declare population level parameters</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_baseline;</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_shrinkage;</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; mu_growth;</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_baseline;</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_shrinkage;</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_growth;</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="co">// Declare standard deviation for the overall model error</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>}</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="kw">transformed parameters</span>{</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>    <span class="co">// Calculated the fitted Tumour values</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    <span class="dt">vector</span>[n_tumour_all] Ypred = sld(</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>        tumour_time,</span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>        baseline_idv[subject_tumour_index],</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>        shrinkage_idv[subject_tumour_index],</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>        growth_idv[subject_tumour_index]</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    );</span>
 <span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="kw">transformed parameters</span>{</span>
-<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a></span>
-<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>    <span class="co">// Calculated the fitted Tumour values</span></span>
-<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>    <span class="dt">vector</span>[n_tumour_all] Ypred = sld(</span>
-<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>        tumour_time,</span>
-<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>        baseline_idv[subject_tumour_index],</span>
-<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>        shrinkage_idv[subject_tumour_index],</span>
-<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>        growth_idv[subject_tumour_index]</span>
-<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>    );</span>
-<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a></span>
-<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>    <span class="co">// Calculate per observation log-likelihood for {loo} integration</span></span>
-<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>    <span class="co">// These values are automatically added to the target for you</span></span>
-<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>    Ypred_log_lik = vect_normal_log_dens(</span>
-<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>        tumour_value,</span>
-<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>        Ypred,</span>
-<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>        rep_vector(sigma, n_tumour_all) <span class="co">// broadcast sigma to the length of Ypred</span></span>
-<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>    );</span>
-<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>}</span>
-<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a></span>
-<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>    <span class="co">// Define the heirarchical relationship between the individual</span></span>
-<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>    <span class="co">// and population level parameters</span></span>
-<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>    baseline_idv ~ lognormal(log(mu_baseline), sigma_baseline);</span>
-<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>    shrinkage_idv ~ lognormal(log(mu_shrinkage), sigma_shrinkage);</span>
-<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>    growth_idv ~ lognormal(log(mu_growth), sigma_growth);</span>
-<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>}</span>
-<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a></span>
-<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a></span>
-<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
-<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a>    <span class="co">// Enable individual subject predictions / quantities e.g.</span></span>
-<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>    <span class="co">// `GridFixed()` / `GridObservation()` / `GridGrouped()` / `GridEven</span></span>
-<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>    <span class="dt">matrix</span>[n_subjects, <span class="dv">3</span>] long_gq_parameters;</span>
-<span id="cb6-72"><a href="#cb6-72" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">1</span>] = baseline_idv;</span>
-<span id="cb6-73"><a href="#cb6-73" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">2</span>] = shrinkage_idv;</span>
-<span id="cb6-74"><a href="#cb6-74" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">3</span>] = growth_idv;</span>
-<span id="cb6-75"><a href="#cb6-75" tabindex="-1"></a></span>
-<span id="cb6-76"><a href="#cb6-76" tabindex="-1"></a>    <span class="co">// Enable Population level predictions / quantities by taking the median of the</span></span>
-<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>    <span class="co">// hierarchical distribution e.g. `GridPopulation()`</span></span>
-<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a>    <span class="dt">matrix</span>[gq_n_quant, <span class="dv">3</span>] long_gq_pop_parameters;</span>
-<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">1</span>] = rep_vector(mu_baseline, gq_n_quant);</span>
-<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">2</span>] = rep_vector(mu_shrinkage, gq_n_quant);</span>
-<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">3</span>] = rep_vector(mu_growth, gq_n_quant);</span>
-<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>    <span class="co">// Calculate per observation log-likelihood for {loo} integration</span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>    <span class="co">// These values are automatically added to the target for you</span></span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>    Ypred_log_lik = vect_normal_log_dens(</span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>        tumour_value,</span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>        Ypred,</span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>        rep_vector(sigma, n_tumour_all) <span class="co">// broadcast sigma to the length of Ypred</span></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>    );</span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>}</span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>    <span class="co">// Define the heirarchical relationship between the individual</span></span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>    <span class="co">// and population level parameters</span></span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>    baseline_idv ~ lognormal(log(mu_baseline), sigma_baseline);</span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>    shrinkage_idv ~ lognormal(log(mu_shrinkage), sigma_shrinkage);</span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>    growth_idv ~ lognormal(log(mu_growth), sigma_growth);</span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="defining-the-link-function">Defining the Link Function<a class="anchor" aria-label="anchor" href="#defining-the-link-function"></a>
@@ -519,11 +486,11 @@ from the full joint model.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 1 chain...</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpfOXeT5/model-dd212237357.stan', line 481, column 4 to column 63)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpAQWtld/model-dde102fb8af.stan', line 471, column 4 to column 63)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
-<span><span class="co">#&gt; Chain 1 finished in 8.9 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 9.4 seconds.</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -534,37 +501,74 @@ from the full joint model.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
 <span><span class="co">#&gt;   variable       mean median     sd    mad     q5    q95  rhat ess_bulk ess_tail</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> mu_baseline  61.7   61.6   2.12   2.09   58.2   65.1   0.999    <span style="text-decoration: underline;">1</span>443.     636.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mu_shrinkage  2.04   2.04  0.069<span style="text-decoration: underline;">2</span> 0.066<span style="text-decoration: underline;">7</span>  1.93   2.15  0.999    <span style="text-decoration: underline;">1</span>356.     644.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mu_growth    10.2   10.2   0.306  0.303   9.71  10.7   1.00     <span style="text-decoration: underline;">1</span>394.     676.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> sigma         1.52   1.52  0.039<span style="text-decoration: underline;">8</span> 0.039<span style="text-decoration: underline;">6</span>  1.46   1.59  1.01      628.     788.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> link_dsld     0.218  0.218 0.027<span style="text-decoration: underline;">2</span> 0.028<span style="text-decoration: underline;">6</span>  0.177  0.265 1.00     <span style="text-decoration: underline;">1</span>403.     670.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> sm_exp_lamb…  1.01   0.997 0.212  0.205   0.690  1.41  1.00      844.     634.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> mu_baseline  61.5   61.4   2.19   2.04   58.0   65.2   1.00     <span style="text-decoration: underline;">1</span>863.     645.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mu_shrinkage  2.04   2.04  0.064<span style="text-decoration: underline;">7</span> 0.065<span style="text-decoration: underline;">0</span>  1.94   2.15  1.00     <span style="text-decoration: underline;">1</span>304.     618.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mu_growth    10.2   10.2   0.307  0.313   9.70  10.7   0.999    <span style="text-decoration: underline;">1</span>910.     745.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> sigma         1.52   1.52  0.042<span style="text-decoration: underline;">4</span> 0.041<span style="text-decoration: underline;">5</span>  1.45   1.59  0.999    <span style="text-decoration: underline;">1</span>006.     758.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> link_dsld     0.218  0.217 0.026<span style="text-decoration: underline;">4</span> 0.025<span style="text-decoration: underline;">5</span>  0.175  0.263 1.00     <span style="text-decoration: underline;">1</span>335.     825.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> sm_exp_lamb…  1.00   0.981 0.207  0.200   0.687  1.37  0.999     704.     641.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="generating-quantities-of-interest">Generating Quantities of Interest<a class="anchor" aria-label="anchor" href="#generating-quantities-of-interest"></a>
 </h2>
-<p>If you look at the Stan code for the above model you will notice that
-several of the requirement elements for the generated quantities have
-been defined thus enabling us to generate quantities both at a
-population and individual subject level.</p>
-<p>This can be done at the subject level via:</p>
+<p>In order to enable the generation of both population and individual
+level quantities of interest we need to implement the required generated
+quantity objects and functions as outlined in the “Extending jmpost”
+vignette.</p>
+<p>This can be done as follows:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">enableGQ.WangModel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/StanModule-class.html">StanModule</a></span><span class="op">(</span><span class="st">"custom-model-gq.stan"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Where the Stan code for the <code>custom-model-gq.stan</code> file is
+as follows:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="kw">functions</span> {</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="co">// Define required function for enabling generated quantities</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="dt">vector</span> lm_predict_value(<span class="dt">vector</span> time, <span class="dt">matrix</span> long_gq_parameters) {</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>        <span class="cf">return</span> sld(</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>            time,</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">1</span>],  <span class="co">// baseline</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">2</span>],  <span class="co">// shrinkage</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>            long_gq_parameters[,<span class="dv">3</span>]   <span class="co">// growth</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>        );</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    }</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>}</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    <span class="co">// Enable individual subject predictions / quantities e.g.</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    <span class="co">// `GridFixed()` / `GridObservation()` / `GridGrouped()` / `GridEven</span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>    <span class="dt">matrix</span>[n_subjects, <span class="dv">3</span>] long_gq_parameters;</span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">1</span>] = baseline_idv;</span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">2</span>] = shrinkage_idv;</span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>    long_gq_parameters[, <span class="dv">3</span>] = growth_idv;</span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a>    <span class="co">// Enable Population level predictions / quantities by taking the median of the</span></span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a>    <span class="co">// hierarchical distribution e.g. `GridPopulation()`</span></span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a>    <span class="dt">matrix</span>[gq_n_quant, <span class="dv">3</span>] long_gq_pop_parameters;</span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">1</span>] = rep_vector(mu_baseline, gq_n_quant);</span>
+<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">2</span>] = rep_vector(mu_shrinkage, gq_n_quant);</span>
+<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a>    long_gq_pop_parameters[, <span class="dv">3</span>] = rep_vector(mu_growth, gq_n_quant);</span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a>}</span></code></pre></div>
+<p>With the above in place we are now able to generate quantities as
+needed; this can be done at the subject level via:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">selected_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat_os</span><span class="op">$</span><span class="va">subject</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">long_quantities_idv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">model_samples</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>subjects <span class="op">=</span> <span class="va">selected_subjects</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities_idv</span><span class="op">)</span></span></code></pre></div>
-<p><img src="custom-model_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="custom-model_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>Or at the population level via:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">long_quantities_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">model_samples</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridPopulation</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities_pop</span><span class="op">)</span></span></code></pre></div>
-<p><img src="custom-model_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="custom-model_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
