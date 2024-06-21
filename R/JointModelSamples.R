@@ -52,9 +52,13 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
         ) |>
         StanModule()
 
-    stanobj <- merge(
-        as.StanModule(object@model, include_gq = TRUE),
-        quant_stanobj
+    stanobj <- Reduce(
+        merge,
+        list(
+            as.StanModule(object@model),
+            enableGQ(object@model),
+            quant_stanobj
+        )
     )
 
     model <- compileStanModel(stanobj)

@@ -126,6 +126,13 @@ LongitudinalGSF <- function(
 }
 
 
+
+#' @export
+enableGQ.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/quantities.stan")
+}
+
+
 #' @export
 enableLink.LongitudinalGSF <- function(object, ...) {
     object@stan <- merge(

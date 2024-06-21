@@ -61,6 +61,11 @@ LongitudinalRandomSlope <- function(
 
 
 #' @export
+enableGQ.LongitudinalRandomSlope <- function(object, ...) {
+    StanModule("lm-random-slope/quantities.stan")
+}
+
+#' @export
 enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object@stan <- merge(
         object@stan,
