@@ -250,12 +250,16 @@ that users can change them without having to re-compile the Stan model.
 
 ## Custom Generated Quantities
 
-In order to avoid unnecessary processing, code that is only used for generated quantities is
-only included into the Stan model when explicitly trying to extract the quantities via the
-`LongitidunalQuantities` and `SurvivalQuantities` constructors.
+In order to avoid unnecessary processing, code that is solely used for generation of post sampling
+quantities is
+excluded from the Stan program when initially sampling from the joint model. Instead this code
+is only included when generating quantities via the `LongitidunalQuantities` or `SurvivalQuantities`
+constructors.
 
-To facilitate this, when using `LongitidunalQuantities` or `SurvivalQuantities` 
-a dedicated model method `enableGQ()` is called on the longitudinal model. This model specific
+To facilitate this, when using `LongitidunalQuantities` or `SurvivalQuantities`,
+a dedicated model method `enableGQ()` is called on the user provided longitudinal and
+survival models.
+This model specific
 method is responsible for returning a `StanModule` object that contains all the relevant
 code required to generate the quantities for that given model. The following is a rough
 implementation of this method for the Random-Slope model which implements both feature (2) and (3)
@@ -285,6 +289,10 @@ enableGQ.LongitudinalRandomSlope <- function() {
     ")
 }
 ```
+
+Note that whilst it is possible to provide a `enableGQ()` method for the survival model it is not
+required. This is because the underlying framework for creating survival quantities
+is distribution agnostic and does not require any model specific code.
 
 
 ## Custom Link Functions
