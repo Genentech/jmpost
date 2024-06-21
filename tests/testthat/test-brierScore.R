@@ -121,6 +121,17 @@ test_that("brier score weight matrix is correctly calculated", {
 })
 
 
+test_that("match_order() works as expected", {
+    # Let v = 8 7 9 7
+    # if we order v we get: 7 7 8 9
+    # to re-construct back to v we'd need index vector: 3 1 4 2
+    expect_equal(
+        match_order(c(8, 7, 9, 7)),
+        c(3, 1, 4, 2)
+    )
+})
+
+
 test_that("bs_get_squared_dist() works as expected", {
     t <- c(5, 11)
     ti <- c(1, 5, 11, 13)
