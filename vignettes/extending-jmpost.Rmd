@@ -290,7 +290,7 @@ enableGQ.LongitudinalRandomSlope <- function() {
 }
 ```
 
-Note that whilst it is possible to provide a `enableGQ()` method for the survival model it is not
+Note that whilst it is possible to provide an `enableGQ()` method for the survival model it is not
 required. This is because the underlying framework for creating survival quantities
 is distribution agnostic and does not require any model specific code.
 
