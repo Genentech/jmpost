@@ -126,7 +126,7 @@ sampleSubjects.SimWang <- function(object, subjects_df) {
     subjects_df
 }
 
-# Method to generate observations for each indiviudal subject
+# Method to generate observations for each individual subject
 sampleObservations.SimWang <- function(object, times_df) {
     nobs <- nrow(times_df)
     calc_mu <- function(time, b, s, g) b * exp(-s * time) + g * time
@@ -327,12 +327,26 @@ as.CmdStanMCMC(model_samples)$summary(vars)
 
 ## Generating Quantities of Interest
 
-If you look at the Stan code for the above model you will notice that several of the
-requirement elements for the generated quantities have been defined thus enabling us to
-generate quantities both at a population and individual subject level.
+In order to enable the generation of both population and individual level quantities of interest
+we need to implement the required
+generated quantity objects and functions as outlined in the "Extending jmpost" vignette.
 
+This can be done as follows:
 
-This can be done at the subject level via:
+```{R}
+enableGQ.WangModel <- function(object, ...) {
+    StanModule("custom-model-gq.stan")
+}
+```
+
+Where the Stan code for the `custom-model-gq.stan` file is as follows:
+```{R, results='asis', echo=FALSE}
+x <- readLines("./custom-model-gq.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+With the above in place we are now able to generate quantities as needed;
+this can be done at the subject level via:
 
 ```{R}
 selected_subjects <- head(dat_os$subject, 4)

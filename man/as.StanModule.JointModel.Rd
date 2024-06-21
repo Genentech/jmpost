@@ -4,12 +4,10 @@
 \alias{as.StanModule.JointModel}
 \title{\code{JointModel} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{JointModel}(object, include_gq = FALSE, ...)
+\method{as.StanModule}{JointModel}(object, ...)
 }
 \arguments{
 \item{object}{(\code{\link{JointModel}}) \cr Joint model specification.}
-
-\item{include_gq}{(\code{logical})\cr whether to include the generated quantities block.}
 
 \item{...}{Not Used.}
 }

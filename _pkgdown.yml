@@ -170,6 +170,7 @@ reference:
       - sampleObservations
       - sampleSubjects
       - enableLink
+      - enableGQ
       - as_formula
       - getPredictionNames
   

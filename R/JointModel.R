@@ -80,16 +80,24 @@ JointModel <- function(
 }
 
 
+#' @export
+enableGQ.JointModel <- function(object, ...) {
+    merge(
+        enableGQ(object@survival),
+        enableGQ(object@longitudinal)
+    )
+}
+
+
 #' `JointModel` -> `StanModule`
 #'
 #' Converts a [`JointModel`] object to a [`StanModule`] object
 #'
 #' @inheritParams JointModel-Shared
-#' @param include_gq (`logical`)\cr whether to include the generated quantities block.
 #' @family JointModel
 #' @family as.StanModule
 #' @export
-as.StanModule.JointModel <- function(object, include_gq = FALSE, ...) {
+as.StanModule.JointModel <- function(object, ...) {
 
     base_model <- read_stan("base/base.stan")
 
@@ -113,9 +121,6 @@ as.StanModule.JointModel <- function(object, include_gq = FALSE, ...) {
         StanModule(stan_full)
     )
 
-    if (!include_gq) {
-        x@generated_quantities <- ""
-    }
     return(x)
 }
 
