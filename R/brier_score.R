@@ -105,7 +105,7 @@ reverse_km_cen_first <- function(t, times, events) {
         survival::Surv(times, cen_events) ~ 1,
         data = dat
     )
-    preds <- summary(mod, times = t, extend = TRUE)$surv
+    preds <- summary(mod, times = t[order(t)], extend = TRUE)$surv
 
     assert_that(
         length(preds) == length(t)
