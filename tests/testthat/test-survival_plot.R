@@ -61,14 +61,16 @@ test_that("survival_plot works as expected", {
         get_data(3, "C")
     )
 
-    p1 <- survival_plot(
-        res,
-        add_ci = TRUE,
-        add_wrap = TRUE,
-        kmdf = NULL,
-        y_label = expression(frac(1, 2) + S(t^2)),
-        x_label = expression(thd[3])
-    )
+    testthat::expect_no_error({
+        p1 <- survival_plot(
+            res,
+            add_ci = TRUE,
+            add_wrap = TRUE,
+            kmdf = NULL,
+            y_label = expression(frac(1, 2) + S(t^2)),
+            x_label = expression(thd[3])
+        )
+    })
 
 
     announce_snapshot_file(file.path(snap_dir, "wrap-ci.svg"))
@@ -79,15 +81,16 @@ test_that("survival_plot works as expected", {
         )
     }
 
-
-    p2 <- survival_plot(
-        res,
-        add_ci = FALSE,
-        add_wrap = FALSE,
-        kmdf = NULL,
-        y_label = expression(frac(1, 2) + S(t^2)),
-        x_label = expression(thd[3])
-    )
+    testthat::expect_no_error({
+        p2 <- survival_plot(
+            res,
+            add_ci = FALSE,
+            add_wrap = FALSE,
+            kmdf = NULL,
+            y_label = expression(frac(1, 2) + S(t^2)),
+            x_label = expression(thd[3])
+        )
+    })
 
     announce_snapshot_file(file.path(snap_dir, "nowrap-noci.svg"))
     if (is_graph_snapshot_enabled()) {
@@ -97,17 +100,18 @@ test_that("survival_plot works as expected", {
         )
     }
 
-
-    p3 <- survival_plot(
-        res,
-        add_ci = FALSE,
-        add_wrap = FALSE,
-        kmdf = dat,
-        y_label = expression(frac(1, 2) + S(t^2)),
-        x_label = expression(thd[3])
-    ) +
-        theme(legend.position = "bottom") +
-        scale_y_continuous(trans = "sqrt")
+    testthat::expect_no_error({
+        p3 <- survival_plot(
+            res,
+            add_ci = FALSE,
+            add_wrap = FALSE,
+            kmdf = dat,
+            y_label = expression(frac(1, 2) + S(t^2)),
+            x_label = expression(thd[3])
+        ) +
+            theme(legend.position = "bottom") +
+            scale_y_continuous(trans = "sqrt")
+    })
 
     announce_snapshot_file(file.path(snap_dir, "nowrap-noci-km-ggplot2.svg"))
     if (is_graph_snapshot_enabled()) {
@@ -116,8 +120,4 @@ test_that("survival_plot works as expected", {
             p3
         )
     }
-
-    # Null test so that its not considered as an empty test if the "JMPOST_GRAPH_SNAPSHOT"
-    # variable is not set
-    expect_equal(1, 1)
 })
