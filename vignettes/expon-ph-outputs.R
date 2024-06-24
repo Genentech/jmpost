@@ -14,37 +14,50 @@
 #' #############################################################################
 
 
-
 #' ===========================================================
 #'
 #' INSTALL AND LOAD NECESSARY LIBRARIES
 #'
 #' ===========================================================
 
-library(tidyverse)
+library(survstan)
+library(here)
+install.packages("cmdstanr",
+                 repos = c("https://stan-dev.r-universe.dev/", getOption("repos")))
+if (!require("remotes")) {
+    install.packages("remotes")
+}
+remotes::install_github("genentech/jmpost")
 
+library(tidyverse)
 library(flexsurv)
 library(cmdstanr)
-
-#' install.packages("tidybayes")
 library(posterior)
 library(bayesplot)
 library(tidybayes)
-#' install.packages("bayestestR")
-library(distributional)
 library(ggdist)
 library(bayestestR)
-#' install.packages("hexbin")
-library(hexbin)
 library(loo)
-
 library(jmpost)
 
+library(cmdstanr)
+check_cmdstan_toolchain()
+cmdstan_path()
+file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")
+mod <- cmdstan_model(file)
+mod$print()
+mod$exe_file()
+data_list <- list(N = 10, y = c(0,1,0,0,0,0,0,0,0,1))
 
-#' install.packages("simsurv")
-#' install.packages("ggsurvfit")
-library(simsurv)
-library(ggsurvfit)
+fit <- mod$sample(
+    data = data_list,
+    seed = 123,
+    chains = 4,
+    parallel_chains = 4,
+    refresh = 500 # print update every 500 iters
+)
+fit$summary()
+
 
 #' ===========================================================
 #'
