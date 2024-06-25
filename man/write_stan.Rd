@@ -5,14 +5,16 @@
 \alias{write_stan.JointModel}
 \title{\code{write_stan}}
 \usage{
-write_stan(object, file_path)
+write_stan(object, destination, ...)
 
-\method{write_stan}{JointModel}(object, file_path)
+\method{write_stan}{JointModel}(object, destination)
 }
 \arguments{
 \item{object}{the module.}
 
-\item{file_path}{(\code{string})\cr output file.}
+\item{destination}{(\code{character} or  \code{connection})\cr Where to write stan code to.}
+
+\item{...}{Additional arguements}
 }
 \description{
 Write the Stan code for a Stan module.

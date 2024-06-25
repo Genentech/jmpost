@@ -329,3 +329,8 @@ decompose_subjects <- function(subjects, all_subjects) {
 is_cmdstanr_available <- function() {
     requireNamespace("cmdstanr", quietly = TRUE)
 }
+
+
+is_connection <- function(obj) {
+    inherits(obj, "connection")
+}

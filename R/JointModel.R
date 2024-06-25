@@ -142,8 +142,11 @@ as.character.JointModel <- function(x, ...) {
 
 #' @rdname write_stan
 #' @export
-write_stan.JointModel <- function(object, file_path) {
-    fi <- file(file_path, open = "w")
+write_stan.JointModel <- function(object, destination) {
+    if (is_connection(destination)) {
+        return(writeLines(as.character(object), fi))
+    }
+    fi <- file(destination, open = "w")
     writeLines(as.character(object), fi)
     close(fi)
 }

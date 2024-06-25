@@ -237,9 +237,10 @@ It is always possible to read out the Stan code that is contained in the
 
 ```{r debug_stan}
 tmp <- tempfile()
-write_stan(simple_model, file_path = tmp)
+write_stan(simple_model, destination = tmp)
 first_part <- head(readLines(tmp), 10)
 cat(paste(first_part, collapse = "\n"))
+close(tmp)
 ```
 
 ## Sampling Parameters
