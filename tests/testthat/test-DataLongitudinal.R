@@ -1,8 +1,8 @@
 test_that("DataLongitudinal being rendered to list is as expected for simple inputs", {
 
     expected_vars <- c(
-        "Nta_total", "Nta_obs_y", "Nta_cens_y", "ind_index", "obs_y_index",
-        "cens_y_index", "Yobs", "Tobs", "Ythreshold",
+        "n_tumour_all", "n_tumour_obs", "n_tumour_cens", "subject_tumour_index", "subject_tumour_index_obs",
+        "subject_tumour_index_cens", "tumour_value", "tumour_time", "tumour_value_lloq",
         "n_mat_inds_obs_y", "w_mat_inds_obs_y", "v_mat_inds_obs_y", "u_mat_inds_obs_y",
         "n_mat_inds_cens_y", "w_mat_inds_cens_y", "v_mat_inds_cens_y", "u_mat_inds_cens_y",
         "n_mat_inds_all_y", "w_mat_inds_all_y", "v_mat_inds_all_y", "u_mat_inds_all_y"
@@ -26,15 +26,15 @@ test_that("DataLongitudinal being rendered to list is as expected for simple inp
     )
 
     expect_equal(names(li), expected_vars)
-    expect_equal(li$Nta_total, 6)
-    expect_equal(li$Nta_obs_y, 3)
-    expect_equal(li$Nta_cens_y, 3)
-    expect_equal(li$ind_index, c(1, 3, 3, 1, 2, 3))
-    expect_equal(li$obs_y_index, c(3, 4, 5))
-    expect_equal(li$cens_y_index, c(1, 2, 6))
-    expect_equal(li$Yobs, x$voutcome)
-    expect_equal(li$Tobs, x$vtime)
-    expect_equal(li$Ythreshold, 3)
+    expect_equal(li$n_tumour_all, 6)
+    expect_equal(li$n_tumour_obs, 3)
+    expect_equal(li$n_tumour_cens, 3)
+    expect_equal(li$subject_tumour_index, c(1, 3, 3, 1, 2, 3))
+    expect_equal(li$subject_tumour_index_obs, c(3, 4, 5))
+    expect_equal(li$subject_tumour_index_cens, c(1, 2, 6))
+    expect_equal(li$tumour_value, x$voutcome)
+    expect_equal(li$tumour_time, x$vtime)
+    expect_equal(li$tumour_value_lloq, 3)
 })
 
 

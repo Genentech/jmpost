@@ -81,13 +81,13 @@ reference:
   
   - title: Link Specification
     contents:
-      - link_dsld
-      - link_ttg
-      - link_identity
-      - link_none
+      - linkDSLD
+      - linkTTG
+      - linkIdentity
+      - linkNone
       - Link
       - LinkComponent
-      - standard-link-methods
+      - standard-link-user
   
   - title: Joint Model Specification
     contents:
@@ -104,6 +104,7 @@ reference:
       - LongitudinalQuantities
       - SurvivalQuantities
       - generateQuantities
+      - Grid-Functions
       - summary.LongitudinalQuantities
       - summary.SurvivalQuantities
       - autoplot
@@ -123,6 +124,7 @@ reference:
       - StanModel
       - StanModule
       - write_stan
+      - getParameters
   
   - title: Convenience Functions
     contents:
@@ -165,6 +167,19 @@ reference:
       - hazardWindows
       - sampleObservations
       - sampleSubjects
+      - enableLink
+      - enableGQ
+      - as_formula
+      - getPredictionNames
+  
+  - title: Promises
+    contents:
+      - Promise
+      - PromiseLinkComponent
+      - PromiseLongitudinalModel
+      - resolvePromise
+      - resolvePromise.Link
+      - resolvePromise.PromiseLinkComponent
   
   - title: Miscellaneous 
     contents:

@@ -9,7 +9,7 @@
 ---
 
     Code
-      print(Link(link_dsld()))
+      print(Link(linkDSLD()))
     Output
       
       Link with the following components/parameters:
@@ -18,7 +18,29 @@
 ---
 
     Code
-      print(Link(link_dsld(), link_identity()))
+      print(Link(linkDSLD(), linkIdentity()))
+    Output
+      
+      Link with the following components/parameters:
+          link_dsld ~ normal(mu = 0, sigma = 2)
+          link_identity ~ normal(mu = 0, sigma = 2)
+
+---
+
+    Code
+      link <- resolvePromise(Link(linkDSLD(), linkIdentity()), LongitudinalGSF())
+      print(link)
+    Output
+      
+      Link with the following components/parameters:
+          link_dsld ~ normal(mu = 0, sigma = 2)
+          link_identity ~ normal(mu = 0, sigma = 2)
+
+---
+
+    Code
+      link <- resolvePromise(Link(linkDSLD(), linkIdentity()), LongitudinalGSF())
+      print(link)
     Output
       
       Link with the following components/parameters:

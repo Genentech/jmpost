@@ -7,23 +7,18 @@
 \usage{
 generateQuantities(object, ...)
 
-\method{generateQuantities}{JointModelSamples}(object, patients, time_grid_lm, time_grid_sm, ...)
+\method{generateQuantities}{JointModelSamples}(object, generator, type, ...)
 }
 \arguments{
 \item{object}{object to obtain generated quantities from}
 
 \item{...}{additional options.}
 
-\item{patients}{(\code{character})\cr explicit vector of patient IDs for whom the
-generated quantities should be extracted}
+\item{generator}{(\code{QuantityGenerator})\cr object that specifies which subjects and time points
+to calculate the quantities at}
 
-\item{time_grid_lm}{(\code{numeric})\cr grid of time points to use for providing samples
-of the longitudinal model fit functions. If \code{NULL}, will be taken as a sequence of
-201 values from 0 to the maximum observed event time.}
-
-\item{time_grid_sm}{(\code{numeric})\cr grid of time points to use for providing samples
-of the survival model fit functions. If \code{NULL}, will be taken as a sequence of
-201 values from 0 to the maximum observed event time.}
+\item{type}{(\code{character})\cr type of quantities to be generated, must be either "survival" or
+"longitudinal".}
 }
 \description{
 Obtain the generated quantities from a Stan Model.

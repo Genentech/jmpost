@@ -69,7 +69,7 @@ as.list.StanModel <- function(x, ...) {
 
 #' @rdname getParameters
 #' @export
-getParameters.StanModel <- function(object) object@parameters
+getParameters.StanModel <- function(object, ...) object@parameters
 
 
 #' @export

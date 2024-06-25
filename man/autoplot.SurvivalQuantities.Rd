@@ -13,10 +13,10 @@
 \code{NULL} or \code{0} are provided then confidence regions will not be added to the plot}
 
 \item{add_km}{(\code{logical}) \cr if \code{TRUE} Kaplan-Meier curves will be added to the plot for
-each group/patient.}
+each group/subject.}
 
 \item{add_wrap}{(\code{logical}) \cr if \code{TRUE} will apply a \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} to the plot
-by each group/patient.}
+by each group/subject.}
 
 \item{...}{not used.}
 }
@@ -27,7 +27,6 @@ Automatic Plotting for `SurvivalQuantities``
 Other SurvivalQuantities: 
 \code{\link{SurvivalQuantities-class}},
 \code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}
 

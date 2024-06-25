@@ -22,16 +22,16 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "Nind_dead", "dead_ind_index", "Times", "p_os_cov_design",
+            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
             "os_cov_design", "n_nodes", "nodes", "weights"
         ),
         names(res)
     )
-    expect_equal(res$Nind_dead, 3)
+    expect_equal(res$n_subject_event, 3)
     expect_equal(res$p_os_cov_design, 3)
     expect_equal(res$os_cov_design, covmat)
-    expect_equal(res$dead_ind_index, c(1, 2, 4))
-    expect_equal(res$Times, c(10, 20, 30, 25, 15))
+    expect_equal(res$subject_event_index, c(1, 2, 4))
+    expect_equal(res$event_times, c(10, 20, 30, 25, 15))
 
 
     ## Dropped rows works as expected
@@ -61,16 +61,16 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "Nind_dead", "dead_ind_index", "Times", "p_os_cov_design",
+            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
             "os_cov_design", "n_nodes", "nodes", "weights"
         ),
         names(res)
     )
-    expect_equal(res$Nind_dead, 2)
+    expect_equal(res$n_subject_event, 2)
     expect_equal(res$p_os_cov_design, 3)
     expect_equal(res$os_cov_design, covmat)
-    expect_equal(res$dead_ind_index, c(1, 2))
-    expect_equal(res$Times, c(10, 20, 30, 15))
+    expect_equal(res$subject_event_index, c(1, 2))
+    expect_equal(res$event_times, c(10, 20, 30, 15))
 })
 
 
@@ -93,4 +93,111 @@ test_that("DataSurvival print method works as expected", {
         print(df)
     })
 
+})
+
+
+test_that("mirror_design_matrix() works as expected", {
+    set.seed(3102)
+    N <- 50
+    beta_trt <- c("A" = 0, "B" = 3)
+    beta_sex <- c("M" = 0, "F" = 0.8)
+    sample_cat <- function(lvls, n) {
+        factor(sample(lvls, size = N, replace = TRUE), levels = lvls)
+    }
+    dat <- dplyr::tibble(
+        trt = sample_cat(c("A", "B"), N),
+        sex = sample_cat(c("M", "F"), N),
+        covar1 = rnorm(N),
+        covar2 = rnorm(N),
+        lp =  0.6 * covar1 + -0.4 * covar2 + beta_trt[trt] + beta_sex[sex],
+        lambda = 1 / 200 * exp(lp),
+        time_real = flexsurv::rweibullPH(N, 0.95, lambda),
+        cnsr = rexp(N, 1 / 300),
+        event = ifelse(cnsr < time_real, 0, 1),
+        time = ifelse(cnsr < time_real, cnsr, time_real)
+    )
+
+    x1 <- DataSurvival(
+        dat,
+        Surv(time, event) ~ trt * sex + covar1 * covar2 + covar1 * sex
+    )
+    x2 <- DataSurvival(
+        dat,
+        survival::Surv(time, event) ~ trt * sex + covar1 * covar2 + covar1 * sex
+    )
+    expect_equal(as_stan_list(x1), as_stan_list(x2))
+
+    new_data <- dat |>
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M"))
+
+    new_design <- mirror_design_matrix(x2, new_data)
+    old_design <- as_stan_list(x2)$os_cov_design
+
+    expect_equal(
+        names(new_design),
+        names(old_design)
+    )
+    expect_equal(
+        attributes(new_design)$dimnames,
+        attributes(old_design)$dimnames
+    )
+
+    expected <- matrix(
+        c(
+            1, 1,                                # trtB
+            1, 0,                                # sexF
+            new_data$covar1,                     # covar1
+            new_data$covar2,                     # covar2
+            1, 0,                                # trtB:sexF
+            new_data$covar1 * new_data$covar2,   # covar1:covar2
+            new_data$covar1 * c(1, 0)            # covar1:sex
+        ),
+        ncol = 7,
+        nrow = 2,
+        byrow = FALSE
+    )
+
+    dimnames(new_design) <- NULL
+    expect_equal(
+        new_design,
+        expected
+    )
+
+    ###########
+    #
+    # Error handling
+    #
+
+    # New factor level
+    new_data <- dat |>
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "C", sex = c("F", "M"))
+
+    expect_error(
+        mirror_design_matrix(x1, new_data),
+        regex = "trt has new level C"
+    )
+
+    # Missing variable
+    new_data <- dat |>
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M")) |>
+        dplyr::select(-covar1)
+
+    expect_error(
+        mirror_design_matrix(x1, new_data),
+        regex = "'covar1' not found"
+    )
+
+    # Change of data type
+    new_data <- dat |>
+        dplyr::slice(5, 10) |>
+        dplyr::mutate(trt = "B", sex = c("F", "M")) |>
+        dplyr::mutate(covar1 = c("A"))
+
+    expect_error(
+        mirror_design_matrix(x1, new_data),
+        regex = "'covar1' was fitted with type \"numeric\" but type \"character\""
+    )
 })

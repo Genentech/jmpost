@@ -10,15 +10,16 @@
 SimLongitudinalSteinFojo(
   times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
   sigma = 0.01,
-  mu_s = c(0.6, 0.4),
-  mu_g = c(0.25, 0.35),
-  mu_b = 60,
+  mu_s = log(c(0.6, 0.4)),
+  mu_g = log(c(0.25, 0.35)),
+  mu_b = log(60),
   omega_b = 0.2,
   omega_s = 0.2,
   omega_g = 0.2,
   link_dsld = 0,
   link_ttg = 0,
-  link_identity = 0
+  link_identity = 0,
+  link_growth = 0
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ SimLongitudinalSteinFojo(
 \item{link_ttg}{(\code{number})\cr the link coefficient for the time-to-growth contribution.}
 
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
+
+\item{link_growth}{(\code{number})\cr the link coefficient for the growth parameter contribution.}
 }
 \description{
 Simulate Longitudinal Data from a Stein-Fojo Model
@@ -69,6 +72,8 @@ Simulate Longitudinal Data from a Stein-Fojo Model
 \item{\code{link_ttg}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_growth}}{(\code{numeric})\cr See arguments.}
 }}
 
 \seealso{

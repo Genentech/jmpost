@@ -7,22 +7,13 @@
 \alias{SurvivalQuantities}
 \title{\code{SurvivalQuantities} Object & Constructor Function}
 \usage{
-SurvivalQuantities(
-  object,
-  groups = NULL,
-  time_grid = NULL,
-  type = c("surv", "haz", "loghaz", "cumhaz")
-)
+SurvivalQuantities(object, grid, type = c("surv", "haz", "loghaz", "cumhaz"))
 }
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{groups}{(\code{character} or \code{list} or \code{NULL})\cr which patients to calculate the desired
-quantities for.
-See "Group Specification" for more details.}
-
-\item{time_grid}{(\code{numeric} or \code{NULL})\cr vector of time points to calculate the desired
-quantity at. If \code{NULL} will be set to \code{seq(0, max_survival_time, length = 201)}.}
+\item{grid}{(\code{Grid}) \cr object that specifies which subjects and time points to calculate the
+quantities for. See \link{Grid-Functions}.}
 
 \item{type}{(\code{character})\cr quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
@@ -53,9 +44,9 @@ only be calculated for those specific subjects.
 
 If \code{groups} is a list then any elements with more than 1 subject ID will be grouped together
 and their quantities will be calculated by taking a point-wise average.
-For example: \code{groups = list("g1" = c("pt1", "pt2"), "g2" = c("pt3", "pt4"))} would result
+For example: \code{groups = list("g1" = c("sub1", "sub2"), "g2" = c("sub3", "sub4"))} would result
 in 2 groups being created whose values are the pointwise average
-of \code{c("pt1", "pt2")} and \code{c("pt3", "pt4")} respectively.
+of \code{c("sub1", "sub2")} and \code{c("sub3", "sub4")} respectively.
 
 If \code{groups=NULL} then all subjects from original dataset will be selected
 }
@@ -63,7 +54,6 @@ If \code{groups=NULL} then all subjects from original dataset will be selected
 \seealso{
 Other SurvivalQuantities: 
 \code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{as_print_string.SurvivalQuantities}()},
 \code{\link{autoplot.SurvivalQuantities}()},
 \code{\link{brierScore.SurvivalQuantities}()},
 \code{\link{summary.SurvivalQuantities}()}

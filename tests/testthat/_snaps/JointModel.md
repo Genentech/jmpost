@@ -2,7 +2,7 @@
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = link_dsld())
+      link = linkDSLD())
       print(x)
     Output
       
@@ -12,7 +12,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:
@@ -30,7 +30,7 @@
 
     Code
       x <- JointModel(longitudinal = LongitudinalRandomSlope(), survival = SurvivalWeibullPH(),
-      link = Link(link_dsld(), link_identity()))
+      link = Link(linkDSLD(), linkIdentity()))
       print(x)
     Output
       
@@ -40,7 +40,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:
@@ -68,7 +68,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:
            Not Specified
@@ -121,7 +121,7 @@
            Weibull-PH Survival Model with parameters:
                sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5)
                sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5)
-               beta_os_cov ~ normal(mu = 0, sigma = 5)
+               beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
            Random Slope Longitudinal Model with parameters:

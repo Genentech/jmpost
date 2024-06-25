@@ -49,7 +49,7 @@ test_that("LongitudinalRandomSlope correctly generates an intercept per study", 
     jdat <- DataJoint(
         subject = DataSubject(
             data = sim_data@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -132,7 +132,7 @@ test_that("Random Slope Model can recover known parameter values", {
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -176,7 +176,7 @@ test_that("Random Slope Model can recover known parameter values", {
         as.CmdStanMCMC(mp)$summary("lm_rs_ind_rnd_slope")$mean
     })
 
-    ## Extract real random effects per patient
+    ## Extract real random effects per subject
     ## We store them as (random effect + mean)
     ## thus need to subtract mean for comparison
     ## to nle4
@@ -184,11 +184,11 @@ test_that("Random Slope Model can recover known parameter values", {
 
     ## Check for consistency of random effects with lmer
     mod <- lme4::lmer(
-        sld ~ time:arm + (time - 1 | pt),
+        sld ~ time:arm + (time - 1 | subject),
         jlist@longitudinal
     )
     lmer_cor <- cor(
-        lme4::ranef(mod)$pt$time,
+        lme4::ranef(mod)$subject$time,
         pars - group_mean[as.numeric(jlist@survival$arm)]
     )
     expect_gt(lmer_cor, 0.99)
@@ -234,7 +234,7 @@ test_that("Random Slope Model left-censoring works as expected", {
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -249,7 +249,7 @@ test_that("Random Slope Model left-censoring works as expected", {
         sampleStanModel(
             jm,
             data = jdat,
-            iter_sampling = 200,
+            iter_sampling = 300,
             iter_warmup = 400,
             chains = 1,
             refresh = 0,
@@ -278,7 +278,7 @@ test_that("Random Slope Model left-censoring works as expected", {
         mp@results$summary("lm_rs_ind_rnd_slope")$mean
     })
 
-    ## Extract real random effects per patient
+    ## Extract real random effects per subject
     ## We store them as (random effect + mean)
     ## thus need to subtract mean for comparison
     ## to nle4
@@ -286,11 +286,11 @@ test_that("Random Slope Model left-censoring works as expected", {
 
     ## Check for consistency of random effects with lmer
     mod <- lme4::lmer(
-        sld ~ time:arm + (time - 1 | pt),
+        sld ~ time:arm + (time - 1 | subject),
         jlist@longitudinal
     )
     lmer_cor <- cor(
-        lme4::ranef(mod)$pt$time,
+        lme4::ranef(mod)$subject$time,
         pars - group_mean[as.numeric(jlist@survival$arm)]
     )
     expect_gt(lmer_cor, 0.99)

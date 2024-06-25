@@ -25,11 +25,8 @@ NULL
 #'
 #' @slot quantities (`Quantities`)\cr The sampled quantities. Should contain 1 element per
 #' element of `group`
-#' @slot groups (`list`)\cr See argument section for details
-#' @slot time_grid (`numeric`)\cr See argument section for details
-#' @slot data ([`DataJoint`])\cr The data that the Joint Model was fitted to to produce
-#' the samples/quantities
 #'
+#' @slot data (`DataJoint`)\cr Survival and Longitudinal Data.
 #'
 #' @family LongitudinalQuantities
 #' @name LongitudinalQuantities-class
@@ -38,55 +35,54 @@ NULL
     "LongitudinalQuantities",
     slots = c(
         "quantities" = "Quantities",
-        "data" = "DataJoint",
-        "groups" = "list",
-        "time_grid" = "numeric"
+        "data" = "DataJoint"
     )
 )
 
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #'
-#' @param groups (`character`, `NULL`)\cr which patients to calculate the desired
-#' quantities for.
-#'
-#' @param time_grid (`numeric` or `NULL`)\cr a vector of time points to calculate the desired
-#' quantity at. If `NULL` will be set to `seq(0, max_longitudinal_time, length = 201)`.
+#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
+#' quantities for. See [Grid-Functions].
 #' @rdname LongitudinalQuantities-class
 LongitudinalQuantities <- function(
     object,
-    groups = NULL,
-    time_grid = NULL
+    grid
 ) {
     assert_class(object, "JointModelSamples")
-    assert_character(groups, null.ok = TRUE)
-    data <- as.list(object@data)
-    patients <- decompose_patients(groups, names(data$pt_to_ind))
-    time_grid <- expand_time_grid(time_grid, max(data[["Tobs"]]))
+    assert_class(grid, "Grid")
+    assert_that(
+        !is(grid, "GridPrediction"),
+        msg = "`GridPrediction` objects are not supported for `LongitudinalQuantities`"
+    )
+
+    time_grid <- seq(
+        from = 0,
+        to = max(as.list(object@data)[["tumour_time"]]),
+        length = 201
+    )
+
+    grid <- coalesceGridTime(grid, time_grid)
 
     gq <- generateQuantities(
         object,
-        patients = patients$unique_values,
-        time_grid_lm = time_grid,
-        time_grid_sm = numeric(0)
+        generator = as.QuantityGenerator(grid, object@data),
+        type = "longitudinal"
     )
 
     quantities_raw <- extract_quantities(gq, type = "lm_identity")
 
-    quantities <- lapply(
-        patients$indexes,
-        average_samples_by_index,
-        time_index = seq_along(time_grid),
-        quantities = quantities_raw
-    )
+    collapser <- as.QuantityCollapser(grid, object@data)
+    quantities <- collapse_quantities(quantities_raw, collapser)
 
     .LongitudinalQuantities(
-        quantities = Quantities(quantities),
-        data = object@data,
-        groups = patients$groups,
-        time_grid = time_grid
+        quantities = Quantities(
+            quantities,
+            groups = collapser@groups,
+            times = collapser@times
+        ),
+        data = object@data
     )
 }
-
 
 
 
@@ -97,14 +93,7 @@ LongitudinalQuantities <- function(
 #' @family LongitudinalQuantities
 #' @export
 as.data.frame.LongitudinalQuantities <- function(x, ...) {
-    res <- as.data.frame(
-        x@quantities,
-        time_grid = x@time_grid,
-        groups = x@groups,
-        type = "na"
-    )
-    res["type"] <- NULL
-    return(res)
+    as.data.frame(x@quantities)
 }
 
 
@@ -125,15 +114,7 @@ summary.LongitudinalQuantities <- function(
     conf.level = 0.95,
     ...
 ) {
-    res <- summary(
-        object@quantities,
-        time_grid = object@time_grid,
-        groups = object@groups,
-        type = "na",
-        conf.level = conf.level
-    )
-    res["type"] <- NULL
-    return(res)
+    summary(object@quantities, conf.level = conf.level)
 }
 
 
@@ -221,28 +202,7 @@ autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
     )
 }
 
-#' `LongitudinalQuantities` -> Printable `Character`
-#'
-#' Converts [`LongitudinalQuantities`] object into a printable string.
-#' @inheritParams LongitudinalQuantities-Shared
-#' @family LongitudinalQuantities
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
-#' @keywords internal
-#' @export
-as_print_string.LongitudinalQuantities <- function(object, indent = 1, ...) {
-    template <- c(
-        "LongitudinalQuantities Object:",
-        "    # of Subjects     = %d",
-        "    # of Time Points  = %d"
-    )
-    pad <- rep(" ", indent) |> paste(collapse = "")
-    template_padded <- paste(pad, template)
-    sprintf(
-        paste(template_padded, collapse = "\n"),
-        length(object@groups),
-        length(object@time_grid)
-    )
-}
+
 
 #' @rdname show-object
 #' @export
@@ -250,7 +210,16 @@ setMethod(
     f = "show",
     signature = "LongitudinalQuantities",
     definition = function(object) {
-        string <- as_print_string(object)
+        template <- c(
+            "LongitudinalQuantities Object:",
+            "    # of samples    = %d",
+            "    # of quantities = %d"
+        )
+        string <- sprintf(
+            paste(template, collapse = "\n"),
+            nrow(object@quantities),
+            ncol(object@quantities)
+        )
         cat("\n", string, "\n\n")
     }
 )

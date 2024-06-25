@@ -4,12 +4,10 @@
 \alias{as.StanModule.LinkComponent}
 \title{\code{LinkComponent} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{LinkComponent}(object, model = NULL, ...)
+\method{as.StanModule}{LinkComponent}(object, ...)
 }
 \arguments{
 \item{object}{(\code{\link{LinkComponent}})\cr a link component.}
-
-\item{model}{(\code{LongitudinalModel})\cr The longitudinal model.}
 
 \item{...}{Not Used.}
 }

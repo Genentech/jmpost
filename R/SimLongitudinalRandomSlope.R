@@ -1,4 +1,8 @@
 
+#' @include SimLongitudinal.R
+#' @include generics.R
+NULL
+
 #' Simulate Longitudinal Data from a Random Slope Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.
@@ -92,7 +96,7 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     )
 
     assert_that(
-        nrow(subjects_df) == length(unique(subjects_df[["pt"]])),
+        nrow(subjects_df) == length(unique(subjects_df[["subject"]])),
         msg = "The number of rows in `subjects_df` should be equal to the number of unique subjects"
     )
 

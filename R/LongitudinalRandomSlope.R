@@ -9,6 +9,9 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' random slope linear model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkIdentity()`]
 #' @exportClass LongitudinalRandomSlope
 .LongitudinalRandomSlope <- setClass(
     Class = "LongitudinalRandomSlope",
@@ -49,7 +52,7 @@ LongitudinalRandomSlope <- function(
                 Parameter(
                     name = "lm_rs_ind_rnd_slope",
                     prior = prior_init_only(prior_normal(slope_mu@init, slope_sigma@init)),
-                    size = "Nind"
+                    size = "n_subjects"
                 )
             )
         )
@@ -57,7 +60,11 @@ LongitudinalRandomSlope <- function(
 }
 
 
-#' @rdname standard-link-methods
+#' @export
+enableGQ.LongitudinalRandomSlope <- function(object, ...) {
+    StanModule("lm-random-slope/quantities.stan")
+}
+
 #' @export
 enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object@stan <- merge(
@@ -67,15 +74,36 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
+
 #' @export
-linkDSLD.LongitudinalRandomSlope <- function(object, ...) {
-    StanModule("lm-random-slope/link_dsld.stan")
+linkDSLD.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-random-slope/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalRandomSlope <- function(object, ...) {
-    StanModule("lm-random-slope/link_identity.stan")
+linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-random-slope/link_identity.stan"),
+        prior = prior
+    )
+}
+
+#' @export
+linkGrowth.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-random-slope/link_growth.stan"),
+        prior = prior
+    )
+}
+
+#' @rdname getPredictionNames
+#' @export
+getPredictionNames.LongitudinalRandomSlope <- function(object, ...) {
+    c("intercept", "slope")
 }

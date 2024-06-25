@@ -7,7 +7,7 @@
 \alias{JointModel}
 \title{Joint Model Object and Constructor Function}
 \usage{
-JointModel(longitudinal = NULL, survival = NULL, link = link_none())
+JointModel(longitudinal = NULL, survival = NULL, link = Link())
 }
 \arguments{
 \item{longitudinal}{(\code{\link{LongitudinalModel}} or \code{NULL})\cr the longitudinal model.}
@@ -27,8 +27,6 @@ Joint Model Object and Constructor Function
 \item{\code{survival}}{(\code{\link{SurvivalModel}} or \code{NULL})\cr the survival model.}
 
 \item{\code{link}}{(\code{Link})\cr the link.}
-
-\item{\code{stan}}{(\code{StanModule})\cr code containing the joint model specification.}
 
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
 }}

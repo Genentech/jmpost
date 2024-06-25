@@ -10,6 +10,10 @@ is_full_test <- function() {
     toupper(Sys.getenv("JMPOST_FULL_TEST")) == "TRUE"
 }
 
+is_graph_snapshot_enabled <- function() {
+    toupper(Sys.getenv("JMPOST_GRAPH_SNAPSHOT")) == "TRUE"
+}
+
 
 # Runs stans syntax parser and will throw an error if stan detects an
 # issue that would prevent compilation

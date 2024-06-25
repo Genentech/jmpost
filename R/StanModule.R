@@ -47,8 +47,6 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
 #'
 #' @param x (`string`)\cr file path to a Stan program or a character vector
 #' of Stan code to be parsed.
-#' @param priors (`list`)\cr the prior specifications.
-#' @param inits (`list`)\cr the initial values.
 #' @param ... additional arguments passed to the constructor.
 #'
 #' @slot functions (`character`)\cr the `functions` block.
@@ -58,8 +56,6 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
 #' @slot transformed_parameters (`character`)\cr the `transformed_parameters` block.
 #' @slot model (`character`)\cr the `model` block.
 #' @slot generated_quantities (`character`)\cr the `generated_quantities` block.
-#' @slot priors (`list`)\cr the prior specifications.
-#' @slot inits (`list`)\cr the initial values.
 #'
 #' @exportClass StanModule
 #' @export StanModule
@@ -73,9 +69,7 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
         parameters = "character",
         transformed_parameters = "character",
         model = "character",
-        generated_quantities = "character",
-        priors = "list",
-        inits = "list"
+        generated_quantities = "character"
     )
 )
 
@@ -84,8 +78,6 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
 #' @rdname StanModule-class
 StanModule <- function(
     x = "",
-    priors = list(),
-    inits = list(),
     ...
 ) {
     assert_that(
@@ -95,6 +87,11 @@ StanModule <- function(
     )
     code <- read_stan(x)
     code_fragments <- as_stan_fragments(code)
+
+    if (paste0(unlist(code_fragments), collapse = "") == "" && paste0(x, collaspe = "") != "") {
+        warning("Non-empty input resulted in an empty StanModule object. Is the input correct?")
+    }
+
     .StanModule(
         functions = code_fragments$functions,
         data = code_fragments$data,
@@ -103,8 +100,6 @@ StanModule <- function(
         transformed_parameters = code_fragments$transformed_parameters,
         model = code_fragments$model,
         generated_quantities = code_fragments$generated_quantities,
-        priors = priors,
-        inits = inits,
         ...
     )
 }
@@ -156,9 +151,7 @@ setMethod(
         names(stan_fragments) <- names(stan_blocks)
         stan_code <- do.call(as_stan_file, stan_fragments)
         StanModule(
-            x = stan_code,
-            priors = append(x@priors, y@priors),
-            inits = append(x@inits, y@inits)
+            x = stan_code
         )
     }
 )
@@ -438,7 +431,6 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' @export
 as_print_string.StanModule <- function(object, indent = 1, ...) {
     slots <- names(getSlots("StanModule"))
-    slots <- slots[!slots %in% c("priors", "inits")]
     components <- Filter(\(block) paste(slot(object, block), collapse = "") != "", slots)
     template <- c(
         "StanModule Object with components:",

@@ -27,38 +27,46 @@ setOldClass("CmdStanMCMC")
 
 
 #' @rdname generateQuantities
-#' @param patients (`character`)\cr explicit vector of patient IDs for whom the
-#' generated quantities should be extracted
-#' @param time_grid_lm (`numeric`)\cr grid of time points to use for providing samples
-#'   of the longitudinal model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed event time.
-#' @param time_grid_sm (`numeric`)\cr grid of time points to use for providing samples
-#'   of the survival model fit functions. If `NULL`, will be taken as a sequence of
-#'   201 values from 0 to the maximum observed event time.
+#' @param generator (`QuantityGenerator`)\cr object that specifies which subjects and time points
+#' to calculate the quantities at
+#' @param type (`character`)\cr type of quantities to be generated, must be either "survival" or
+#' "longitudinal".
 #' @export
-generateQuantities.JointModelSamples <- function(object, patients, time_grid_lm, time_grid_sm, ...) {
-    data <- append(
-        as_stan_list(object@data),
-        as_stan_list(object@model@parameters)
-    )
-    data[["n_lm_time_grid"]] <- length(time_grid_lm)
-    data[["lm_time_grid"]] <- time_grid_lm
-    data[["n_sm_time_grid"]] <- length(time_grid_sm)
-    data[["sm_time_grid"]] <- time_grid_sm
-    data[["n_pt_select_index"]] <- length(patients)
-    data[["pt_select_index"]] <- data$pt_to_ind[patients]
-    stanObject <- object@model@stan
-    stanObject_data <- merge(
-        stanObject,
-        StanModule("base/generated_quantities_data.stan")
+generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
+
+    data <- as_stan_list(object@data) |>
+        append(as_stan_list(object@model@parameters)) |>
+        append(as_stan_list(generator, data = object@data, model = object@model))
+
+    assert_that(
+        length(type) == 1,
+        type %in% c("survival", "longitudinal")
     )
 
-    model <- compileStanModel(stanObject_data)
+    quant_stanobj <- read_stan("base/quantities.stan") |>
+        decorated_render(
+            include_gq_longitudinal_idv = (type == "longitudinal") & is(generator, "QuantityGeneratorSubject"),
+            include_gq_longitudinal_pop = (type == "longitudinal") & is(generator, "QuantityGeneratorPopulation"),
+            include_gq_survival_idv = (type == "survival") & is(generator, "QuantityGeneratorSubject"),
+            include_gq_survival_pred = (type == "survival") & is(generator, "QuantityGeneratorPrediction")
+        ) |>
+        StanModule()
+
+    stanobj <- Reduce(
+        merge,
+        list(
+            as.StanModule(object@model),
+            enableGQ(object@model),
+            quant_stanobj
+        )
+    )
+
+    model <- compileStanModel(stanobj)
 
     devnull <- utils::capture.output(
         results <- model$generate_quantities(
             data = data,
-            fitted_params = as.CmdStanMCMC(object)$draws()
+            fitted_params = object@results
         )
     )
     return(results)
@@ -100,7 +108,7 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sprintf(
         paste(template_padded, collapse = "\n"),
         as.CmdStanMCMC(object)$metadata()$iter_sampling,
-        as.CmdStanMCMC(object)$metadata()$num_chains
+        as.CmdStanMCMC(object)$num_chains()
     )
 }
 

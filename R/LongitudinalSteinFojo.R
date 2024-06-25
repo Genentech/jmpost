@@ -12,6 +12,10 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' Stein-Fojo model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkTTG()`]
+#' - [`linkIdentity()`]
 #' @exportClass LongitudinalSteinFojo
 .LongitudinalSteinFojo <- setClass(
     Class = "LongitudinalSteinFojo",
@@ -72,24 +76,24 @@ LongitudinalSteinFojo <- function(
             Parameter(
                 name = "lm_sf_psi_bsld",
                 prior = prior_init_only(prior_lognormal(mu_bsld@init, omega_bsld@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_ks",
                 prior = prior_init_only(prior_lognormal(mu_ks@init, omega_ks@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_kg",
                 prior = prior_init_only(prior_lognormal(mu_kg@init, omega_kg@init)),
-                size = "Nind"
+                size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_sf_eta_tilde_bsld", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_sf_eta_tilde_ks", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_sf_eta_tilde_kg", prior = prior_std_normal(), size = "Nind")
+            Parameter(name = "lm_sf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_sf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_sf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects")
         )
     }
     parameters <- append(parameters, parameters_extra)
@@ -107,7 +111,11 @@ LongitudinalSteinFojo <- function(
 
 
 
-#' @rdname standard-link-methods
+#' @export
+enableGQ.LongitudinalSteinFojo <- function(object, ...) {
+    StanModule("lm-stein-fojo/quantities.stan")
+}
+
 #' @export
 enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object@stan <- merge(
@@ -117,20 +125,44 @@ enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkDSLD.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_dsld.stan")
+linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-stein-fojo/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkTTG.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_ttg.stan")
+linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_ttg",
+        stan = StanModule("lm-stein-fojo/link_ttg.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalSteinFojo <- function(object, ...) {
-    StanModule("lm-stein-fojo/link_identity.stan")
+linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-stein-fojo/link_identity.stan"),
+        prior = prior
+    )
+}
+
+#' @export
+linkGrowth.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-stein-fojo/link_growth.stan"),
+        prior = prior
+    )
+}
+
+#' @rdname getPredictionNames
+#' @export
+getPredictionNames.LongitudinalSteinFojo <- function(object, ...) {
+    c("b", "s", "g")
 }

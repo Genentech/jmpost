@@ -6,7 +6,7 @@ test_that("JointModel smoke tests", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalWeibullPH(),
-        link = link_dsld()
+        link = linkDSLD()
     )
 
     jm_char <- as.character(jm)
@@ -20,7 +20,7 @@ test_that("JointModel print method works as expected", {
         x <- JointModel(
             longitudinal = LongitudinalRandomSlope(),
             survival = SurvivalWeibullPH(),
-            link = link_dsld()
+            link = linkDSLD()
         )
         print(x)
     })
@@ -31,8 +31,8 @@ test_that("JointModel print method works as expected", {
             longitudinal = LongitudinalRandomSlope(),
             survival = SurvivalWeibullPH(),
             link = Link(
-                link_dsld(),
-                link_identity()
+                linkDSLD(),
+                linkIdentity()
             )
         )
         print(x)

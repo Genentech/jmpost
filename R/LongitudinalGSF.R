@@ -13,6 +13,10 @@ NULL
 #' This class extends the general [`LongitudinalModel`] class for using the
 #' Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkTTG()`]
+#' - [`linkIdentity()`]
 #' @exportClass LongitudinalGSF
 .LongitudinalGSF <- setClass(
     Class = "LongitudinalGSF",
@@ -76,7 +80,7 @@ LongitudinalGSF <- function(
         Parameter(
             name = "lm_gsf_psi_phi",
             prior = prior_init_only(prior_beta(a_phi@init, b_phi@init)),
-            size = "Nind"
+            size = "n_subjects"
         ),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
@@ -88,24 +92,24 @@ LongitudinalGSF <- function(
             Parameter(
                 name = "lm_gsf_psi_bsld",
                 prior = prior_init_only(prior_lognormal(mu_bsld@init, omega_bsld@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_ks",
                 prior = prior_init_only(prior_lognormal(mu_ks@init, omega_ks@init)),
-                size = "Nind"
+                size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_kg",
                 prior = prior_init_only(prior_lognormal(mu_kg@init, omega_kg@init)),
-                size = "Nind"
+                size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "Nind"),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "Nind")
+            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects")
         )
     }
     parameters <- append(parameters, parameters_extra)
@@ -122,7 +126,13 @@ LongitudinalGSF <- function(
 }
 
 
-#' @rdname standard-link-methods
+
+#' @export
+enableGQ.LongitudinalGSF <- function(object, ...) {
+    StanModule("lm-gsf/quantities.stan")
+}
+
+
 #' @export
 enableLink.LongitudinalGSF <- function(object, ...) {
     object@stan <- merge(
@@ -132,20 +142,45 @@ enableLink.LongitudinalGSF <- function(object, ...) {
     object
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkDSLD.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_dsld.stan")
+linkDSLD.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_dsld",
+        stan = StanModule("lm-gsf/link_dsld.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkTTG.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_ttg.stan")
+linkTTG.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_ttg",
+        stan = StanModule("lm-gsf/link_ttg.stan"),
+        prior = prior
+    )
 }
 
-#' @rdname standard-link-methods
 #' @export
-linkIdentity.LongitudinalGSF <- function(object, ...) {
-    StanModule("lm-gsf/link_identity.stan")
+linkIdentity.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_identity",
+        stan = StanModule("lm-gsf/link_identity.stan"),
+        prior = prior
+    )
+}
+
+#' @export
+linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_growth",
+        stan = StanModule("lm-gsf/link_growth.stan"),
+        prior = prior
+    )
+}
+
+
+#' @rdname getPredictionNames
+#' @export
+getPredictionNames.LongitudinalGSF <- function(object, ...) {
+    c("b", "s", "g", "phi")
 }

@@ -46,7 +46,7 @@ ensure_test_data_1 <- function() {
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_os,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -67,7 +67,7 @@ ensure_test_data_1 <- function() {
             data = jdat,
             iter_sampling = 100,
             iter_warmup = 150,
-            chains = 1,
+            chains = 2,
             refresh = 0,
             parallel_chains = 1
         )

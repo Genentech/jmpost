@@ -12,7 +12,6 @@ NULL
 #' @keywords internal
 NULL
 
-setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 
 # DataLongitudinal-class ----
 
@@ -140,7 +139,7 @@ as.data.frame.DataLongitudinal <- function(x, ...) {
 #'
 #' @returns
 #' A list with the following named elements:
-#' - `pt` (`character`)\cr The name of the variable containing the subject identifier
+#' - `subject` (`character`)\cr The name of the variable containing the subject identifier
 #' - `frm` (`formula`)\cr of the form `outcome ~ time`
 #' - `time` (`character`)\cr The name of the variable containing the outcome time
 #' - `outcome` (`character`)\cr The name of the variable containing the outcome values
@@ -188,20 +187,20 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[, index_cen])
 
     model_data <- list(
-        Nta_total = nrow(df),
+        n_tumour_all = nrow(df),
 
         # Number of individuals and tumour assessments.
-        Nta_obs_y = length(index_obs),
-        Nta_cens_y = length(index_cen),
+        n_tumour_obs = length(index_obs),
+        n_tumour_cens = length(index_cen),
 
         # Index vectors
-        ind_index = as.numeric(df[[subject_var]]),
-        obs_y_index = index_obs,
-        cens_y_index = index_cen,
+        subject_tumour_index = as.numeric(df[[subject_var]]),
+        subject_tumour_index_obs = index_obs,
+        subject_tumour_index_cens = index_cen,
 
-        Yobs = df[[vars$outcome]],
-        Tobs = df[[vars$time]],
-        Ythreshold = adj_threshold,
+        tumour_value = df[[vars$outcome]],
+        tumour_time = df[[vars$time]],
+        tumour_value_lloq = adj_threshold,
 
         # Sparse matrix parameters
         # Matrix of individuals x observed tumour assessments.

@@ -93,12 +93,12 @@ sim_data <- SimJointData(
         gamma = 0.97
     )
 )
-#> INFO: 1 patients did not die before max(times)
+#> INFO: 1 subject did not die before max(times)
 
 joint_data <- DataJoint(
     subject = DataSubject(
         data = sim_data@survival,
-        subject = "pt",
+        subject = "subject",
         arm = "arm",
         study = "study"
     ),
@@ -124,8 +124,8 @@ joint_model <- JointModel(
     longitudinal = LongitudinalGSF(),
     survival = SurvivalWeibullPH(),
     link = Link(
-        link_dsld(),
-        link_ttg()
+        linkDSLD(),
+        linkTTG()
     )
 )
 ```

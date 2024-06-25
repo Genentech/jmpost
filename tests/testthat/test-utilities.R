@@ -146,83 +146,86 @@ test_that("samples_median_ci works with a custom credibility level", {
 
 
 
-test_that("expand_time_grid() works as expected", {
+test_that("validate_time_grid() works as expected", {
 
-    ## Smoke test of basic usage
     expect_equal(
-        expand_time_grid(NULL, 5),
-        seq(0, 5, length.out = 201)
-    )
-    expect_equal(
-        expand_time_grid(c(1, 2, 3), 5),
+        validate_time_grid(c(1, 2, 3)),
         c(1, 2, 3)
     )
     expect_equal(
-        expand_time_grid(c(1, 2, 3)),
-        c(1, 2, 3)
+        validate_time_grid(c(1)),
+        c(1)
+    )
+    expect_equal(
+        validate_time_grid(c(1, 2, 30000.3)),
+        c(1, 2, 30000.3)
+    )
+    expect_equal(
+        validate_time_grid(c(1L, 2L, 4L)),
+        c(1L, 2L, 4L)
     )
 
 
     ## Error handling
     expect_error(
-        expand_time_grid(c(1, 1, 2)),
+        validate_time_grid(c(1, 1, 2)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(2, 1, 3)),
+        validate_time_grid(c(2, 1, 3)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(1, 3, NA)),
+        validate_time_grid(c(1, 3, NA)),
         regexp = "`time_grid`"
     )
     expect_error(
-        expand_time_grid(c(1, 3, -Inf)),
+        validate_time_grid(c(1, 3, -Inf)),
         regexp = "`time_grid`"
     )
 })
 
 
-test_that("expand_patients() works as expected", {
+test_that("expand_subjects() works as expected", {
 
     ## Smoke tests of basic usage
     expect_equal(
-        expand_patients(c("A", "B"), c("A", "B", "C", "D")),
+        expand_subjects(c("A", "B"), c("A", "B", "C", "D")),
         c("A", "B")
     )
     expect_equal(
-        expand_patients(c("B"), c("A", "B", "C", "D")),
+        expand_subjects(c("B"), c("A", "B", "C", "D")),
         c("B")
     )
     expect_equal(
-        expand_patients(NULL, c("A", "B", "C", "D")),
+        expand_subjects(NULL, c("A", "B", "C", "D")),
         c("A", "B", "C", "D")
     )
     expect_equal(
-        expand_patients(NULL, c("A", "B", "C", "D", "D")),
+        expand_subjects(NULL, c("A", "B", "C", "D", "D")),
         c("A", "B", "C", "D")
     )
 
     ## Error handling
     expect_error(
-        expand_patients("E", c("A", "B", "C", "D")),
-        regex = "`patients`"
+        expand_subjects("E", c("A", "B", "C", "D")),
+        regex = "`subjects`"
     )
     expect_error(
-        expand_patients(c("A", "A"), c("A", "B", "C", "D")),
-        regex = "`patients`"
+        expand_subjects(c("A", "A"), c("A", "B", "C", "D")),
+        regex = "`subjects`"
     )
     expect_error(
-        expand_patients(c(1, 2), c("A", "B", "C", "D")),
-        regex = "`patients`"
+        expand_subjects(c(1, 2), c("A", "B", "C", "D")),
+        regex = "`subjects`"
     )
 })
 
 
-test_that("decompose_patients() works as expected", {
+test_that("decompose_subjects() works as expected", {
 
     # Basic vector format
-    actual <- decompose_patients(c("a", "b", "d"), c("a", "b", "c", "d"))
+    actual <- decompose_subjects(c("a", "b", "d"), c("a", "b", "c", "d"))
     expected <- list(
         groups = list(
             "a" = "a",
@@ -241,7 +244,7 @@ test_that("decompose_patients() works as expected", {
 
 
     # list format
-    actual <- decompose_patients(
+    actual <- decompose_subjects(
         list("g1" = c("b", "a"), "g2" = c("a", "d")),
         c("a", "b", "c", "d")
     )
@@ -260,7 +263,7 @@ test_that("decompose_patients() works as expected", {
 
 
     # NULL is correctly expanded
-    actual <- decompose_patients(
+    actual <- decompose_subjects(
         NULL,
         c("a", "d", "c", "b", "b", "b", "a")
     )
@@ -275,15 +278,15 @@ test_that("decompose_patients() works as expected", {
     )
     expect_equal(actual, expected)
 
-    # errors if patient doesn't exist
+    # errors if subject doesn't exist
     expect_error(
-        decompose_patients("e", c("a", "d", "c", "b", "b")),
-        regexp = "`patients`"
+        decompose_subjects("e", c("a", "d", "c", "b", "b")),
+        regexp = "`subjects`"
     )
-    # errors if group has same patient twice
+    # errors if group has same subject twice
     expect_error(
-        decompose_patients(list("g1" = c("a", "a")), c("a", "d", "c", "b", "b")),
-        regexp = "`patients`"
+        decompose_subjects(list("g1" = c("a", "a")), c("a", "d", "c", "b", "b")),
+        regexp = "`subjects`"
     )
 
 })

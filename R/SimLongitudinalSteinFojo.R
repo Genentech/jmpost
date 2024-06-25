@@ -1,4 +1,8 @@
 
+#' @include SimLongitudinal.R
+#' @include generics.R
+NULL
+
 #' Simulate Longitudinal Data from a Stein-Fojo Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.
@@ -12,6 +16,7 @@
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
+#' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -23,6 +28,7 @@
 #' @slot link_dsld (`numeric`)\cr See arguments.
 #' @slot link_ttg (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
+#' @slot link_growth (`numeric`)\cr See arguments.
 #'
 #' @family SimLongitudinal
 #' @name SimLongitudinalSteinFojo-class
@@ -40,7 +46,8 @@
         omega_g = "numeric",
         link_dsld = "numeric",
         link_ttg = "numeric",
-        link_identity = "numeric"
+        link_identity = "numeric",
+        link_growth = "numeric"
     )
 )
 
@@ -49,15 +56,16 @@
 SimLongitudinalSteinFojo <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
     sigma = 0.01,
-    mu_s = c(0.6, 0.4),
-    mu_g = c(0.25, 0.35),
-    mu_b = 60,
+    mu_s = log(c(0.6, 0.4)),
+    mu_g = log(c(0.25, 0.35)),
+    mu_b = log(60),
     omega_b = 0.2,
     omega_s = 0.2,
     omega_g = 0.2,
     link_dsld = 0,
     link_ttg = 0,
-    link_identity = 0
+    link_identity = 0,
+    link_growth = 0
 ) {
     .SimLongitudinalSteinFojo(
         times = times,
@@ -70,7 +78,8 @@ SimLongitudinalSteinFojo <- function(
         omega_g = omega_g,
         link_dsld = link_dsld,
         link_ttg = link_ttg,
-        link_identity = link_identity
+        link_identity = link_identity,
+        link_growth = link_growth
     )
 }
 
@@ -85,14 +94,15 @@ setValidity(
         if (length(unique(par_lengths)) != 1) {
             return("The parameters `mu_s` and `mu_g` must have the same length.")
         }
-        if (length(object@sigma) != 1) {
-            return("The parameter `sigma` must have length 1.")
-        }
-        if (length(c(object@omega_b, object@omega_s, object@omega_g)) != 3) {
-            return("The parameters `omega_b`, `omega_s`, and `omega_g` must be length 1.")
-        }
-        if (length(c(object@link_dsld, object@link_ttg, object@link_identity)) != 3) {
-            return("The parameters `link_dsld`, `link_ttg`, and `link_identity` must be length 1.")
+        len_1_pars <- c(
+            "sigma", "omega_b", "omega_s", "omega_g",
+            "link_dsld", "link_ttg", "link_identity",
+            "link_growth"
+        )
+        for (par in len_1_pars) {
+            if (length(slot(object, par)) != 1) {
+                return(sprintf("The `%s` parameter must be a length 1 numeric.", par))
+            }
         }
         return(TRUE)
     }
@@ -115,7 +125,8 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
-                (object@link_identity * .data$mu_sld)
+                (object@link_identity * .data$mu_sld) +
+                (object@link_growth * log(.data$psi_g))
         )
 }
 
@@ -131,14 +142,14 @@ sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
     )
 
     res <- subjects_df |>
-        dplyr::distinct(.data$pt, .data$arm, .data$study) |>
+        dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), log(object@mu_b[.data$study_idx]), object@omega_b)) |>
-        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), log(object@mu_s[.data$arm_idx]), object@omega_s)) |>
-        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), log(object@mu_g[.data$arm_idx]), object@omega_g))
+        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
+        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), object@mu_s[.data$arm_idx], object@omega_s)) |>
+        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g))
 
-    res[, c("pt", "arm", "study", "psi_b", "psi_s", "psi_g")]
+    res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g")]
 }
 
 

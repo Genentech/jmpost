@@ -15,7 +15,7 @@ devtools::load_all()
 
 dat <- flexsurv::bc |>
     as_tibble() |>
-    mutate(arm = "A", study = "S", pt = sprintf("pt-%05d", 1:n()))
+    mutate(arm = "A", study = "S", pt = sprintf("pt-%05d", seq_len(n())))
 
 
 #
@@ -300,10 +300,11 @@ vars <- c(
     "beta_os_cov"
 )
 
-mp@results$summary(vars)
+stanobj <- as.CmdStanMCMC(mp)
+stanobj$summary(vars)
 
 # Log Likelihood
-log_lik <- mp@results$draws("log_lik", format = "draws_matrix") |>
+log_lik <- stanobj$draws("log_lik", format = "draws_matrix") |>
     apply(1, sum) |>
     mean()
 log_lik
@@ -316,7 +317,7 @@ k <- 2
 (4 * log(nrow(dat))) + (-2 * log_lik)
 
 # Leave one out CV
-mp@results$loo()
+stanobj$loo()
 
 
 #### Extract Desired Quantities
@@ -324,11 +325,14 @@ mp@results$loo()
 prediction_times <- seq(min(dat$recyrs), max(dat$recyrs), length.out = 20)
 selected_patients <- c("pt-00681", "pt-00002")
 
+
 # Survival plots
 sq_surv <- SurvivalQuantities(
     mp,
-    time_grid = prediction_times,
-    groups = selected_patients,
+    grid = GridFixed(
+        subjects = selected_patients,
+        times = prediction_times
+    ),
     type = "surv"
 )
 autoplot(sq_surv, add_km = FALSE, add_wrap = FALSE)
@@ -338,8 +342,10 @@ summary(sq_surv)
 # Hazard
 sq_haz <- SurvivalQuantities(
     mp,
-    time_grid = prediction_times,
-    groups = selected_patients,
+    grid = GridFixed(
+        subjects = selected_patients,
+        times = prediction_times
+    ),
     type = "haz"
 )
 autoplot(sq_haz, add_km = FALSE, add_wrap = FALSE)

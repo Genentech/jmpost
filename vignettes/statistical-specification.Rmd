@@ -111,13 +111,13 @@ where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 
-### Derivative of the SLD Trajectory Link 
+### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
 $$
 G(t \mid \mu_0, s_i) = s_i
 $$
 
-Accessible via `link_dsld()`
+Accessible via `linkDSLD()` & `linkGrowth()`
 
 
 ### Identity Link
@@ -128,7 +128,7 @@ G(t \mid \mu_0, s_i) = \mu_0 + s_i t
 \end{align*}
 $$
 
-Accessible via `link_identity()`
+Accessible via `linkIdentity()`
 
 
 ## Stein-Fojo Model 
@@ -193,7 +193,7 @@ b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
 \end{cases}
 $$
 
-Accessible via `link_dsld()`
+Accessible via `linkDSLD()`
 
 
 
@@ -211,7 +211,7 @@ G(t \mid b_i, s_i, g_i) = \max \left(
 \right)
 $$
 
-Accessible via `link_ttg()`
+Accessible via `linkTTG()`
 
 
 ### Identity Link
@@ -222,9 +222,26 @@ G(t \mid b_i, s_i, g_i) &= SLD_{ij}
 \end{align*}
 $$
 
-Accessible via `link_identity()`
+Accessible via `linkIdentity()`
 
 
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i) &= log(g_i)
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
+
+
+### Population Quantities
+
+Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0. For the $\phi$ parameter
+the mean of the distribution is used.
 
 
 ## Generalized Stein-Fojo (GSF) Model
@@ -289,7 +306,7 @@ b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
 \end{cases}
 $$
 
-Accessible via `link_dsld()`
+Accessible via `linkDSLD()`
 
 
 
@@ -306,7 +323,7 @@ G(t \mid b_i, s_i, g_i, \phi_i) = \max \left(
 \right)
 $$
 
-Accessible via `link_ttg()`
+Accessible via `linkTTG()`
 
 
 ### Identity Link
@@ -317,8 +334,24 @@ G(t \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
 \end{align*}
 $$
 
-Accessible via `link_identity()`
+Accessible via `linkIdentity()`
 
+
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
+
+### Population Quantities
+
+Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0.
 
 
 # Post-Processing

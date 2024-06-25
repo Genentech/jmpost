@@ -57,8 +57,11 @@ Suggests:
     flexsurv,
     purrr,
     vdiffr,
-    prodlim
+    prodlim,
+    loo
+Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Collate:
     'DataSubject.R'
     'utilities.R'
@@ -66,6 +69,15 @@ Collate:
     'DataLongitudinal.R'
     'DataSurvival.R'
     'DataJoint.R'
+    'Grid.R'
+    'GridEven.R'
+    'GridEvent.R'
+    'GridFixed.R'
+    'GridGrouped.R'
+    'GridManual.R'
+    'GridObserved.R'
+    'GridPopulation.R'
+    'GridPrediction.R'
     'constants.R'
     'StanModule.R'
     'Prior.R'
@@ -84,6 +96,10 @@ Collate:
     'LongitudinalQuantities.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSteinFojo.R'
+    'Promise.R'
+    'QuantityGeneratorPopulation.R'
+    'QuantityGeneratorPrediction.R'
+    'QuantityGeneratorSubject.R'
     'SimGroup.R'
     'SimJointData.R'
     'SimLongitudinal.R'
@@ -98,6 +114,7 @@ Collate:
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'
+    'link_generics.R'
     'settings.R'
     'zzz.R'
 VignetteBuilder: knitr

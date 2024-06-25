@@ -59,17 +59,20 @@ setValidity(
         if (length(x$frm) != 3) {
             return("`formula` should be a 2 sided formula")
         }
-        if (as.character(x$frm[[2]][[1]]) != "Surv") {
+        LHS <- as.character(x$frm[[2]][[1]])
+        if (!(identical(LHS, "Surv") || identical(LHS, c("::", "survival", "Surv")))) {
             return("The LHS of `formula` should be a call to survival::Surv()")
         }
         for (v in c(x$time, x$event)) {
             if (! v %in% dnames) {
-                return(sprintf("Variable %s is not in `data`", x$pt))
+                return(sprintf("Variable %s is not in `data`", x$subject))
             }
         }
         return(TRUE)
     }
 )
+
+
 
 
 
@@ -127,13 +130,13 @@ as_stan_list.DataSurvival <- function(object, ...) {
     # Parameters for efficient integration of hazard function -> survival function
     gh_parameters <- statmod::gauss.quad(
         n = getOption("jmpost.gauss_quad_n"),
-        kind = getOption("jmpost.gauss_quad_kind")
+        kind = "legendre"
     )
 
     model_data <- list(
-        Nind_dead = sum(df[[vars$event]]),
-        dead_ind_index = which(df[[vars$event]] == 1),
-        Times = df[[vars$time]],
+        n_subject_event = sum(df[[vars$event]]),
+        subject_event_index = which(df[[vars$event]] == 1),
+        event_times = df[[vars$time]],
         p_os_cov_design = ncol(design_mat),
         os_cov_design = design_mat,
         n_nodes = length(gh_parameters$nodes),
@@ -222,3 +225,51 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
+
+#' Build design matrix for prediction data
+#'
+#' @description
+#' This function takes a `DataSurvival` object and a `data.frame` object and generates
+#' a design matrix for the `data.frame` that has the identical structure to the
+#' design matrix of the `DataSurvival` object.
+#'
+#' This is used for predicting new data using a model that was trained on a different
+#' original data source
+#'
+#' @param olddata ([`DataSurvival`]) \cr The original data to be used as a template for the new data
+#' @param newdata ([`data.frame`]) \cr The new data to be used to generate the design matrix
+#' @importFrom stats .checkMFClasses terms delete.response model.frame model.matrix
+#' @importFrom survival coxph
+#' @keywords internal
+mirror_design_matrix <- function(olddata, newdata) {
+    frm <- as_formula(olddata)
+    # Dummy model to generate a bunch of meta information that we can use to
+    # re-construct the design matrix
+    model <- coxph(data = as.data.frame(olddata), formula = frm)
+    model_terms <- delete.response(terms(model))
+    model_frame <- model.frame(
+        model_terms,
+        newdata,
+        xlev = model$xlevels
+    )
+    if (
+        !is.null(data_classes <- attr(model_terms, "dataClasses"))) {
+        .checkMFClasses(data_classes, model_frame)
+    }
+    design_mat <- model.matrix(
+        model_terms,
+        model_frame,
+        contrasts.arg = model$contrasts
+    )
+    remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
+    design_mat <- design_mat[, -remove_index, drop = FALSE]
+    rownames(design_mat) <- NULL
+    design_mat
+}
+
+
+#' @export
+as_formula.DataSurvival <- function(x, ...) {
+    vars <- extractVariableNames(x)
+    vars$frm
+}

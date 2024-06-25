@@ -7,16 +7,33 @@
 \alias{Quantities}
 \title{Generated Quantities Container}
 \usage{
-Quantities(x)
+Quantities(quantities, times, groups)
 }
 \arguments{
-\item{x}{(\code{list})\cr a \code{list} of \code{matrix} objects. Each matrix must have the exact
-same dimensions.}
+\item{quantities}{(\code{matrix})\cr of generated quantities.}
+
+\item{times}{(\code{numeric})\cr labels specifying which time point the quantity was generated at.}
+
+\item{groups}{(\code{character})\cr labels for which group the quantity belongs to.}
 }
 \description{
-A simple wrapper around a \code{list} to ensure each element complies
-to specific formatting rules
+A simple wrapper around a \code{matrix} to store required metadata
 }
+\details{
+Each row of the matrix represents a sample and each column represents a distinct quantity.
+As such the number of columns in the matrix should equal the length of \code{times} and \code{groups}
+which provide metadata for who the quantity belongs to and at what time point it was generated at.
+}
+\section{Slots}{
+
+\describe{
+\item{\code{quantities}}{(\code{matrix})\cr See Arguments for details.}
+
+\item{\code{times}}{(\code{numeric})\cr See Arguments for details.}
+
+\item{\code{groups}}{(\code{character})\cr See Arguments for details.}
+}}
+
 \seealso{
 Other Quantities: 
 \code{\link{as.data.frame.Quantities}()},

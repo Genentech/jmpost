@@ -31,9 +31,12 @@ jobs:
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
         CMDSTANR_NO_VER_CHECK=true
-        JMPOST_CACHE_DIR=${{ github.workspace }}/.cache
-      additional-caches: |
-        ${{ github.workspace }}/.cache
+        NOT_CRAN=TRUE
+        JMPOST_GRAPH_SNAPSHOT=TRUE
+      ### Temporarily removed due to cache bug (#345)
+      #   JMPOST_CACHE_DIR=${{ github.workspace }}/.cache
+      # additional-caches: |
+      #   ${{ github.workspace }}/.cache
   coverage:
     name: Coverage 📔
     uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
@@ -66,6 +69,10 @@ jobs:
     if: github.event_name == 'pull_request'
     name: Check URLs 🌐
     uses: insightsengineering/r.pkg.template/.github/workflows/links.yaml@main
+    with:
+      link-checking-method: lychee
+      lychee-additional-args: "" # override the default of excluding private links
+      lychee-fail: true
   version:
     name: Version Check 🏁
     uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main

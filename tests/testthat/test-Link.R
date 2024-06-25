@@ -4,7 +4,7 @@
 test_that("link_none() works as expected", {
     expect_equal(
         Link(),
-        link_none()
+        linkNone()
     )
 
     expect_equal(
@@ -29,7 +29,7 @@ test_that("link_none() works as expected", {
     )
     expect_true(
         grepl(
-            "matrix[Nind, 0] link_function_inputs = rep_matrix(0, Nind, 0);",
+            "matrix[n_subjects, 0] link_function_inputs = rep_matrix(0, n_subjects, 0);",
             as.character(x),
             fixed = TRUE
         )
@@ -39,9 +39,11 @@ test_that("link_none() works as expected", {
 
 test_that("Link works as expected", {
     x <- Link(
-        link_dsld(prior_gamma(8, 2)),
-        link_identity()
+        linkDSLD(prior_gamma(8, 2)),
+        linkIdentity()
     )
+
+    x <- resolvePromise(x, LongitudinalGSF())
 
     expect_equal(
         length(x),
@@ -60,14 +62,14 @@ test_that("Link works as expected", {
     expect_stan_syntax(
         merge(
             load_with_base_stan("lm-gsf/functions.stan"),
-            as.StanModule(x, model = LongitudinalGSF())
+            as.StanModule(x)
         )
     )
 
     # Check that function is idempotant
     expect_equal(
-        Link(Link(link_dsld())),
-        Link(link_dsld())
+        Link(Link(linkDSLD())),
+        Link(linkDSLD())
     )
 })
 
@@ -76,9 +78,27 @@ test_that("Link prints as expected", {
         print(Link())
     )
     expect_snapshot(
-        print(Link(link_dsld()))
+        print(Link(linkDSLD()))
     )
     expect_snapshot(
-        print(Link(link_dsld(), link_identity()))
+        print(Link(linkDSLD(), linkIdentity()))
     )
+
+
+    expect_snapshot({
+        link <- resolvePromise(
+            Link(linkDSLD(), linkIdentity()),
+            LongitudinalGSF()
+        )
+        print(link)
+    })
+
+    expect_snapshot({
+        link <- resolvePromise(
+            Link(linkDSLD(), linkIdentity()),
+            LongitudinalGSF()
+        )
+        print(link)
+    })
+
 })

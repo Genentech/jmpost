@@ -25,7 +25,11 @@ test_that("Print method for LongitudinalGSF works as expected", {
 
 
 test_that("Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centred = TRUE))
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = TRUE),
+        survival = SurvivalWeibullPH(),
+        link = Link(linkTTG(), linkDSLD(), linkGrowth())
+    )
     expect_false(any(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -34,12 +38,16 @@ test_that("Centralised parameterisation compiles without issues", {
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
-    expect_stan_syntax(as.character(x))
+    expect_stan_syntax(x)
 })
 
 
 test_that("Non-Centralised parameterisation compiles without issues", {
-    jm <- JointModel(longitudinal = LongitudinalGSF(centred = FALSE))
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = linkDSLD()
+    )
     expect_true(all(
         c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
     ))
@@ -48,7 +56,7 @@ test_that("Non-Centralised parameterisation compiles without issues", {
     ))
     x <- as.StanModule(jm)
     x@generated_quantities <- ""
-    expect_stan_syntax(as.character(x))
+    expect_stan_syntax(x)
 })
 
 
@@ -77,9 +85,9 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         longitudinal = SimLongitudinalGSF(
             times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
             sigma = 0.01,
-            mu_s = c(0.6, 0.4),
-            mu_g = c(0.25, 0.35),
-            mu_b = 60,
+            mu_s = log(c(0.6, 0.4)),
+            mu_g = log(c(0.25, 0.35)),
+            mu_b = log(60),
             a_phi = c(20, 15),
             b_phi = c(15, 20),
             omega_b = 0.2,
@@ -95,7 +103,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     jdat <- DataJoint(
         subject = DataSubject(
             data = jlist@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),
@@ -126,8 +134,8 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)
         ),
         link = Link(
-            link_dsld(),
-            link_ttg()
+            linkDSLD(),
+            linkTTG()
         )
     )
 

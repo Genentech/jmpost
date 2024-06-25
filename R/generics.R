@@ -1,6 +1,8 @@
 # "missing" = no argument provided
 # "NULL" = explicit NULL
 setClassUnion("empty", c("missing", "NULL"))
+setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
+setClassUnion("character_or_NULL", c("character", "NULL"))
 
 # merge ----
 
@@ -100,9 +102,10 @@ as.StanModule <- function(object, ...) {
 #' from a model.
 #'
 #' @param object where to obtain the parameters from.
+#' @param ... additional options.
 #'
-#' @keywords internal
-getParameters <- function(object) {
+#' @export
+getParameters <- function(object, ...) {
     UseMethod("getParameters")
 }
 
@@ -276,59 +279,6 @@ brierScore <- function(object, ...) {
 
 
 
-
-
-
-#' Standard Link Methods
-#'
-#' @param object ([`StanModel`]) \cr A [`StanModel`] object.
-#' @param ... Not used.
-#'
-#' @description
-#' These generic functions enable [`LongitudinalModel`] objects to provide
-#' their own implementations for the most common link functions.
-#'
-#' @details
-#' Each of these methods should return a [`StanModule`] argument that implements
-#' the models corresponding version of that link type.
-#' For `enableLink` this is called once for a model regardless of how many links
-#' are used and its purpose is to provide the stan code to initialise any
-#' link specific objects (to avoid clashes with each individual link function declaring
-#' the same required stan objects).
-#'
-#' For further details on how to use these methods please see
-#' \code{vignette("extending-jmpost", package = "jmpost")}.
-#'
-#' @name standard-link-methods
-NULL
-
-
-#' @describeIn standard-link-methods hook to include any common link code to be shared across all
-#' link functions
-#' @export
-enableLink <- function(object, ...) {
-    UseMethod("enableLink")
-}
-
-#' @describeIn standard-link-methods Time to growth link
-#' @export
-linkTTG <- function(object, ...) {
-    UseMethod("linkTTG")
-}
-
-#' @describeIn standard-link-methods Derivative of the SLD over time link
-#' @export
-linkDSLD <- function(object, ...) {
-    UseMethod("linkDSLD")
-}
-
-#' @describeIn standard-link-methods Current SLD link
-#' @export
-linkIdentity <- function(object, ...) {
-    UseMethod("linkIdentity")
-}
-
-
 #' Generate Simulated Observations
 #'
 #' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate observations from.
@@ -362,7 +312,7 @@ sampleObservations <- function(object, times_df) {
 #' with the following columns:
 #' - `study` (`factor`) the study identifier.
 #' - `arm` (`factor`) the treatment arm identifier.
-#' - `pt` (`character`) the subject identifier.
+#' - `subject` (`character`) the subject identifier.
 #'
 #' This method takes care of generating all the individual subject data required for the
 #' [`sampleObservations`] method to generate the observations.
@@ -393,4 +343,129 @@ hazardWindows <- function(object, ...) {
 #' @export
 as.CmdStanMCMC <- function(object, ...) {
     UseMethod("as.CmdStanMCMC")
+}
+
+#' @rdname Quant-Dev
+#' @export
+as.QuantityGenerator <- function(object, ...) {
+    UseMethod("as.QuantityGenerator")
+}
+
+#' @rdname Quant-Dev
+#' @export
+as.QuantityCollapser <- function(object, ...) {
+    UseMethod("as.QuantityCollapser")
+}
+
+
+#' Coalesce Time
+#'
+#' @param object ([`Grid`]) \cr object to coalesce time for.
+#' @param times (`numeric`) \cr the times to coalesce to.
+#' @param ... Not used
+#'
+#' Method used to replace NULL times on grid objects (if appropriate)
+#'
+#' @keywords internal
+coalesceGridTime <- function(object, times, ...) {
+    UseMethod("coalesceGridTime")
+}
+#' @export
+coalesceGridTime.default <- function(object, times, ...) {
+    object
+}
+
+
+#' Resolve a Promise
+#'
+#' @param object (`ANY`)\cr an object to resolve.
+#' @param ... (`ANY`)\cr additional arguments.
+#'
+#' If `object` is not a promise will just return itself else will resolve the promise
+#' and return the promised object.
+#'
+#' @export
+resolvePromise <- function(object, ...) {
+    UseMethod("resolvePromise")
+}
+
+#' @rdname resolvePromise
+#' @export
+resolvePromise.default <- function(object, ...) {
+    object
+}
+
+#' Enable Link Generic
+#'
+#' @param object ([`LongitudinalModel`])\cr to enable link for.
+#' @param ... Not used.
+#'
+#' Optional hook method that is called on a [`LongitudinalModel`] only if a link method
+#' is provided to [`JointModel`]. This can be used to allow the model to include any
+#' optional stan code that is only required if there are links present.
+#'
+#' @return [`LongitudinalModel`] object
+#'
+#' @export
+enableLink <- function(object, ...) {
+    UseMethod("enableLink")
+}
+#' @export
+enableLink.default <- function(object, ...) {
+    object
+}
+
+
+#' Enable Generated Quantities Generic
+#'
+#' @param object ([`StanModel`])\cr to enable generated quantities for.
+#' @param ... Not used.
+#'
+#' Optional hook method that is called on a [`StanModel`] if attempting to use
+#' either [`LongitudinalQuantities`] or [`SurvivalQuantities`]
+#'
+#' @return [`StanModule`] object
+#'
+#' @export
+enableGQ <- function(object, ...) {
+    UseMethod("enableGQ")
+}
+#' @export
+enableGQ.default <- function(object, ...) {
+    StanModule()
+}
+
+
+
+#' Get Prediction Names
+#'
+#' Utility function that returns the names of the required parameters for predicting
+#' survival quantities with [`GridPrediction`].
+#'
+#' @param object (`LongitudinalModel`) \cr A longitudinal model object
+#' @param ... Not used.
+#' @export
+getPredictionNames <- function(object, ...) {
+    UseMethod("getPredictionNames")
+}
+
+#' @rdname getPredictionNames
+getPredictionNames.default <- function(object, ...) {
+    NULL
+}
+
+#' As Formula
+#'
+#' Utility wrapper function to convert an object to a formula.
+#' @param x (`ANY`) \cr object to convert to a formula.
+#' @param ... Not used.
+#' @export
+as_formula <- function(x, ...) {
+    UseMethod("as_formula")
+}
+
+#' @importFrom stats as.formula
+#' @export
+as_formula.default <- function(x, ...) {
+    as.formula(x, ...)
 }

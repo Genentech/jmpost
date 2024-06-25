@@ -4,62 +4,66 @@
 test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected", {
     ensure_test_data_1()
 
-    expected_column_names <- c("median", "lower", "upper", "time", "group", "type")
+    expected_column_names <- c("group", "time", "median", "lower", "upper")
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        list("a" = c("pt_001", "pt_002")),
-        c(10, 20, 200, 300)
+        grid = GridGrouped(
+            groups = list("a" = c("subject_0001", "subject_0002")),
+            times = c(10, 20, 200, 300)
+        )
     )
     preds <- summary(survsamps)
     expect_equal(nrow(preds), 4)
     expect_equal(length(unique(preds$group)), 1)
     expect_equal(names(preds), expected_column_names)
-    expect_equal(unique(preds$type), "surv")
+    expect_equal(survsamps@type, "surv")
 
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        time_grid = c(10, 20, 200, 300)
+        grid = GridFixed(times = c(10, 20, 200, 300))
     )
     preds <- summary(survsamps)
     expect_equal(nrow(preds), 4 * nrow(test_data_1$dat_os)) # 4 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
-    expect_equal(unique(preds$group), test_data_1$dat_os$pt)
+    expect_equal(unique(preds$group), test_data_1$dat_os$subject)
 
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        c("pt_001", "pt_003")
+        grid = GridGrouped(groups = list("subject_0001" = "subject_0001", "subject_0003" = "subject_0003"))
     )
-    preds <- preds <- summary(survsamps)
+    preds <- summary(survsamps)
     expect_equal(nrow(preds), 2 * 201) # 201 default time points for 2 subjects
     expect_equal(names(preds), expected_column_names)
-
+    expect_equal(max(preds$time), max(test_data_1$dat_os$time))
 
     # Check that the relationship between the quantitites is preservered e.g.
     # that `surv = exp(-cumhaz)`
+    time_vec <- c(0, 1, 10, 30, 40, 200, 300, 400)
     preds1 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_001", c(200, 300)
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec)
     ) |> summary()
     preds2 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_001", c(200, 300),
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "cumhaz"
     ) |> summary()
     preds3 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_001", c(200, 300),
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "haz"
     ) |> summary()
     preds4 <- SurvivalQuantities(
-        test_data_1$jsamples, "pt_001", c(200, 300),
+        test_data_1$jsamples,
+        grid = GridFixed(subjects = "subject_0001",  times = time_vec),
         type = "loghaz"
     ) |> summary()
-    expect_equal(unique(preds1$type), "surv")
-    expect_equal(unique(preds2$type), "cumhaz")
-    expect_equal(unique(preds3$type), "haz")
-    expect_equal(unique(preds4$type), "loghaz")
-    expect_equal(round(preds1$median, 5), round(exp(-preds2$median), 5))
-    expect_equal(round(preds3$median, 5), round(exp(preds4$median), 5))
+
+    expect_equal(preds1$median, exp(-preds2$median), tolerance = 0.00001)
+    expect_equal(preds3$median, exp(preds4$median), tolerance = 0.00001)
     expect_true(all(preds1$median != preds3$median))
 })
 
@@ -68,7 +72,7 @@ test_that("SurvivalQuantities and autoplot.SurvivalQuantities works as expected"
 test_that("autoplot.SurvivalSamples works as expected", {
     samps <- SurvivalQuantities(
         test_data_1$jsamples,
-        c("pt_011", "pt_061")
+        grid = GridFixed(subjects = c("subject_0011", "subject_0061"))
     )
     p <- autoplot(
         samps,
@@ -85,9 +89,11 @@ test_that("autoplot.SurvivalSamples works as expected", {
 
     samps <- SurvivalQuantities(
         test_data_1$jsamples,
-        groups = list("a" = c("pt_011", "pt_061"), "b" = c("pt_001", "pt_002")),
-        type = "loghaz",
-        time_grid = c(10, 20, 50, 200)
+        grid = GridGrouped(
+            groups = list("a" = c("subject_0011", "subject_0061"), "b" = c("subject_0001", "subject_0002")),
+            times = c(10, 20, 50, 200)
+        ),
+        type = "loghaz"
     )
     p <- autoplot(samps, add_wrap = TRUE)
     dat <- summary(samps)
@@ -100,13 +106,20 @@ test_that("autoplot.SurvivalSamples works as expected", {
 
 
     set.seed(39130)
-    ptgroups <- list(
-        gtpt1 = sample(test_data_1$dat_os$pt, 20),
-        gtpt2 = sample(test_data_1$dat_os$pt, 20),
-        gtpt3 = sample(test_data_1$dat_os$pt, 20)
+    subjectgroups <- list(
+        gtsubject1 = sample(test_data_1$dat_os$subject, 20),
+        gtsubject2 = sample(test_data_1$dat_os$subject, 20),
+        gtsubject3 = sample(test_data_1$dat_os$subject, 20)
     )
     times <- seq(0, 100, by = 10)
-    samps <- SurvivalQuantities(test_data_1$jsamples, ptgroups, times, type = "surv")
+    samps <- SurvivalQuantities(
+        test_data_1$jsamples,
+        grid = GridGrouped(
+            groups = subjectgroups,
+            times = times
+        ),
+        type = "surv"
+    )
     p <- autoplot(
         samps,
         conf.level = NULL,
@@ -128,16 +141,18 @@ test_that("autoplot.SurvivalSamples works as expected", {
 test_that("SurvivalQuantities print method works as expected", {
     expect_snapshot({
         set.seed(3219)
-        ptgroups <- list(
-            gtpt1 = sample(test_data_1$dat_os$pt, 20),
-            gtpt2 = sample(test_data_1$dat_os$pt, 20),
-            gtpt3 = sample(test_data_1$dat_os$pt, 20)
+        subjectgroups <- list(
+            gtsubject1 = sample(test_data_1$dat_os$subject, 20),
+            gtsubject2 = sample(test_data_1$dat_os$subject, 20),
+            gtsubject3 = sample(test_data_1$dat_os$subject, 20)
         )
         times <- seq(0, 100, by = 10)
         samps_p1 <- SurvivalQuantities(
             test_data_1$jsamples,
-            ptgroups,
-            times,
+            grid = GridGrouped(
+                groups = subjectgroups,
+                times = times
+            ),
             type = "surv"
         )
         print(samps_p1)
@@ -147,7 +162,9 @@ test_that("SurvivalQuantities print method works as expected", {
         times <- seq(0, 100, by = 10)
         samps_p2 <- SurvivalQuantities(
             test_data_1$jsamples,
-            time_grid = times,
+            grid = GridFixed(
+                times = times
+            ),
             type = "loghaz"
         )
         print(samps_p2)
@@ -162,17 +179,21 @@ test_that("SurvivalQuantities() works with time = 0", {
         {
             SurvivalQuantities(
                 test_data_1$jsamples,
-                list("a" = c("pt_001", "pt_002")),
-                c(-10, 0, 10, 20, 200, 300)
+                grid = GridGrouped(
+                    groups = list("a" = c("subject_0001", "subject_0002")),
+                    times = c(-10, 0, 10, 20, 200, 300)
+                )
             )
         },
-        regexp = "must be >= 0"
+        regexp = "must be greater than or equal to 0"
     )
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        list("a" = c("pt_001", "pt_002")),
-        c(0, 10, 20)
+        grid = GridGrouped(
+            groups = list("a" = c("subject_0001", "subject_0002")),
+            times = c(0, 10, 20)
+        )
     )
     preds <- summary(survsamps)
     # Time 0 should result in certainty of survival = 1
@@ -183,8 +204,10 @@ test_that("SurvivalQuantities() works with time = 0", {
 
     survsamps <- SurvivalQuantities(
         test_data_1$jsamples,
-        list("a" = c("pt_001", "pt_002")),
-        c(0, 10, 20),
+        grid = GridGrouped(
+            groups = list("a" = c("subject_0001", "subject_0002")),
+            times = c(0, 10, 20)
+        ),
         type = "cumhaz"
     )
     preds <- summary(survsamps)

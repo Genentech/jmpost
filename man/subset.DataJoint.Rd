@@ -4,29 +4,29 @@
 \alias{subset.DataJoint}
 \title{Subsetting \code{DataJoint} as a \code{data.frame}}
 \usage{
-\method{subset}{DataJoint}(x, patients, ...)
+\method{subset}{DataJoint}(x, subjects, ...)
 }
 \arguments{
 \item{x}{(\code{DataJoint}) \cr object created by \code{\link[=DataJoint]{DataJoint()}}.}
 
-\item{patients}{(\code{character} or \code{list})\cr patients that you wish to subset the \code{data.frame}
+\item{subjects}{(\code{character} or \code{list})\cr subjects that you wish to subset the \code{data.frame}
 to contain. See details.}
 
 \item{...}{Not used.}
 }
 \description{
 Coerces the object into a \code{data.frame} containing just event times and status
-filtering for specific patients. If \code{patients} is a list then an additional variable \code{group} will be added
+filtering for specific subjects If \code{subjects} is a list then an additional variable \code{group} will be added
 onto the dataset specifying which group the row belongs to.
 }
 \examples{
 \dontrun{
-pts <- c("PT1", "PT3", "PT4")
-subset(x, pts)
+subjects <- c("SUB1", "SUB2", "SUB3", "SUB4")
+subset(x, subjects)
 
 groups <- list(
-    "g1" = c("PT1", "PT3", "PT4"),
-    "g2" = c("PT2", "PT3")
+    "g1" = c("SUB1", "SUB3", "SUB4"),
+    "g2" = c("SUB2", "SUB3")
 )
 subset(x, groups)
 }

@@ -43,7 +43,7 @@ Let's first specify a very simple joint model with:
 simple_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
-    link = link_dsld()
+    link = linkDSLD()
 )
 ```
 
@@ -81,13 +81,13 @@ the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
-the special `link_none()` link specification. For example, 
+the special `linkNone()` link specification. For example, 
 
 ```{r simple_model_no_link}
 simple_model_no_link <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
-    link = link_none()
+    link = linkNone()
 )
 ```
 
@@ -115,7 +115,7 @@ Before we can fit the models, we need to prepare the data in the right format.
 
 Here we start from a simulated data set. 
 
-- We assign 50 patients each to the two treatment arms.
+- We assign 50 subjects each to the two treatment arms.
 - We use a time grid from 1 to 2000, e.g. specifying the days after randomization.
 - We use an exponentially distributed censoring time with mean of 9000 days.
 - We use a categorical covariate with three levels A, B and C in the overall survival model, drawn uniformly from the three levels. (Note that this is hardcoded at the moment, so the levels need to be A, B, C.)
@@ -156,7 +156,7 @@ sim_data <- SimJointData(
 )
 ```
 
-We might get a message here that a few patients did not die before the day 2000, but 
+We might get a message here that a few subjects did not die before the day 2000, but 
 this is not of concern. Basically it just gives us a feeling of how many survival
 events are included in the data set.
 
@@ -176,7 +176,7 @@ Let's have a quick look at the format:
 
 The survival data has:
 
-- patient ID
+- subject ID
 - time point
 - continuous covariate value
 - categorical covariate level
@@ -190,7 +190,7 @@ head(os_data)
 
 The longitudinal data has:
 
-- patient ID
+- subject ID
 - time point
 - sum of longest diameters (SLD)
 - study ID
@@ -210,7 +210,7 @@ names and then apply the mapping here.
 joint_data <- DataJoint(
     subject = DataSubject(
         data = os_data,
-        subject = "pt",
+        subject = "subject",
         arm = "arm",
         study = "study"
     ),
@@ -315,15 +315,17 @@ mcmc_trace(vars_draws)
 ## Longitudinal fit plots
 
 Using the `longitudinal()` method we can extract the longitudinal fit
-samples from the result, and then plot them for all patients or those
+samples from the result, and then plot them for all subjects or those
 that we are interested in. For illustration, we will plot here the first
-10 patients:
+10 subjects:
 
 ```{r fig.width=6}
-selected_patients <- head(os_data$pt, 10)
+selected_subjects <- head(os_data$subject, 10)
 long_quantities <- LongitudinalQuantities(
     mcmc_results,
-    groups = selected_patients
+    grid = GridFixed(
+        subjects = selected_subjects
+    )
 )
 as.data.frame(long_quantities) |> head()
 summary(long_quantities) |> head()
@@ -338,25 +340,60 @@ functions.
 ```{r fig.width=6}
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
-    groups = selected_patients
+    grid = GridFixed(
+        subjects = selected_subjects
+    )
 )
 as.data.frame(surv_quantities) |> head()
 summary(surv_quantities) |> head()
 autoplot(surv_quantities)
 ```
 
-We can also aggregate the estimated survival curves from groups of patients, 
+We can also aggregate the estimated survival curves from groups of subjects, 
 using the corresponding method.
 
 ```{r, warning=FALSE, fig.width=6}
-groups <- split(os_data$pt, os_data$arm)
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
-    groups = groups
+    grid = GridGrouped(
+        groups = split(os_data$subject, os_data$arm)
+    )
 )
 autoplot(surv_quantities, add_km = TRUE)
 ```
 
+
+## Predicting Survival Quantities for Hypothetical Subjects
+
+The `SurvivalQuantities()` method can also be used to predict survival quantities for hypothetical
+subjects with any arbitrary covariate and longitudinal model parameter values. This is done via passing a
+`GridPrediction()` object to the method where the `newdata` and `params` arguments are used to
+specify the desired values for the covariates and longitudinal model parameters respectively.
+For example below we use these functions to predict the survival distribution for a hypothetical
+subject:
+```{r}
+surv_quantities <- SurvivalQuantities(
+    mcmc_results,
+    grid = GridPrediction(
+        times = seq(1, 800, by = 50),
+        newdata = dplyr::tibble(
+            cov_cat = c("A", "B"),
+            cov_cont = c(1.2, 2)
+        ),
+        params = list(
+            intercept = 40,
+            slope = 0.05
+        )
+    )
+)
+autoplot(surv_quantities)
+```
+
+The exact names that are required for the `params` argument (i.e. the longitudinal model parameters) can be
+found by running `getPredictionNames()` on the longitudinal model object. For example:
+```{r}
+getPredictionNames(LongitudinalGSF())
+```
 
 
 ## Brier Score
@@ -365,10 +402,9 @@ The `brierScore()` method can be used to extract the Brier Scores (predictive pe
 from our `SurvivalQuantities` object.
 
 ```{R}
-prediction_times <- c(1, 50, 100, 400, 800)
 sq <- SurvivalQuantities(
     mcmc_results,
-    time_grid = prediction_times,
+    grid = GridFixed(times = c(1, 50, 100, 400, 800)),
     type = "surv"
 )
 brierScore(sq)
@@ -399,7 +435,7 @@ For example:
 joint_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalExponential(),
-    link = link_none()
+    link = linkNone()
 )
 initial_values <- initialValues(joint_model, n_chains = 2)
 

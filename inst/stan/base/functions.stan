@@ -84,19 +84,19 @@ functions {
 
     // Replaces the values of `y` with `replacement` if the corresponding value
     // of `x` is less than 0.
-    matrix if_lt0_else(matrix x, matrix y, real replacement) {
+    matrix if_gte0_else(matrix x, matrix y, real replacement) {
         matrix[rows(x), cols(x)] result;
         for (i in 1:rows(x)) {
             for (j in 1:cols(x)) {
-                result[i, j] = x[i, j] < 0 ? replacement : y[i, j];
+                result[i, j] = x[i, j] >= 0 ?  y[i, j] : replacement;
             }
         }
         return result;
     }
-    vector if_lt0_else(vector x, vector y, real replacement) {
+    vector if_gte0_else(vector x, vector y, real replacement) {
         vector[rows(x)] result;
         for (i in 1:rows(x)) {
-            result[i] = x[i] < 0 ? replacement : y[i];
+            result[i] = x[i] >= 0 ? y[i] : replacement;
         }
         return result;
     }

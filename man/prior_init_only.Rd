@@ -2,7 +2,7 @@
 % Please edit documentation in R/Prior.R
 \name{prior_init_only}
 \alias{prior_init_only}
-\title{Only Initial Values Specification}
+\title{Initial Values Specification}
 \usage{
 prior_init_only(dist)
 }

@@ -36,21 +36,21 @@ test_that("DataJoint basic usage", {
     )
 
     li <- as.list(d_joint)
-    expect_equal(li$Nind, 3)
-    expect_equal(li$Nta_total, 6)
-    expect_equal(li$pt_to_ind, c("C" = 1, "B" = 2, "A" = 3))
+    expect_equal(li$n_subjects, 3)
+    expect_equal(li$n_tumour_all, 6)
+    expect_equal(li$subject_to_index, c("C" = 1, "B" = 2, "A" = 3))
     expect_equal(li$n_arms, 3)
-    expect_equal(li$pt_study_index, c(2, 1, 1))
+    expect_equal(li$subject_study_index, c(2, 1, 1))
     expect_equal(li$n_studies, 2)
-    expect_equal(li$pt_arm_index, c(3, 2, 1))
-    expect_equal(li$Times, c(150, 200, 100))
-    expect_equal(li$ind_index, c(1, 2, 2, 2, 3, 3))
-    expect_equal(li$obs_y_index, c(1:6))
-    expect_equal(li$cens_y_index, integer(0))
-    expect_equal(li$Yobs, c(5, 3, 4, 6, 1, 2))
-    expect_equal(li$dead_ind_index, c(1, 2))
+    expect_equal(li$subject_arm_index, c(3, 2, 1))
+    expect_equal(li$event_times, c(150, 200, 100))
+    expect_equal(li$subject_tumour_index, c(1, 2, 2, 2, 3, 3))
+    expect_equal(li$subject_tumour_index_obs, c(1:6))
+    expect_equal(li$subject_tumour_index_cens, integer(0))
+    expect_equal(li$tumour_value, c(5, 3, 4, 6, 1, 2))
+    expect_equal(li$subject_event_index, c(1, 2))
     expect_equal(li$os_cov_design, matrix(c(4, 2, 5), ncol = 1), ignore_attr = TRUE)
-    expect_equal(li$Ythreshold, -999999)
+    expect_equal(li$tumour_value_lloq, -999999)
 })
 
 
@@ -359,7 +359,7 @@ test_that("DataJoint sorts handles character-to-factor levels correctly", {
 test_that("subset(DataJoint) works as expected", {
 
     dat <- dplyr::tribble(
-        ~patient, ~time, ~event,
+        ~subject, ~time, ~event,
            "a",     1,      1,
            "b",     1,      0,
            "c",     2,      1,
@@ -374,7 +374,7 @@ test_that("subset(DataJoint) works as expected", {
         "g3" = "d"
     )
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "a",     1,      1,    "g1",
            "e",     3,      1,    "g1",
            "f",     3,      0,    "g1",
@@ -389,7 +389,7 @@ test_that("subset(DataJoint) works as expected", {
 
     pts <- c("b", "d", "a")
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "b",     1,      0,    "b",
            "d",     2,      0,    "d",
            "a",     1,      1,    "a"
@@ -405,7 +405,7 @@ test_that("subset(DataJoint) works as expected", {
         "g2" = c("a", "b", "c")
     )
     expected <- dplyr::tribble(
-        ~patient, ~time, ~event, ~group,
+        ~subject, ~time, ~event, ~group,
            "a",     1,      1,    "g1",
            "b",     1,      0,    "g1",
            "c",     2,      1,    "g1",
@@ -419,23 +419,23 @@ test_that("subset(DataJoint) works as expected", {
     )
 
 
-    # Should error for patients that dosn't exist in vector mode
+    # Should error for subjects that dosn't exist in vector mode
     pts <- c("b", "d", "a", "z")
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
-    # Should error for patients that don't exist in list mode
+    # Should error for subjects that don't exist in list mode
     pts <- list("g1" = c("a", "z", "b"))
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
-    # Should error if we ask for the same patient multiple times
+    # Should error if we ask for the same subject multiple times
     pts <- c("b", "d", "a", "a")
     expect_error(
         subset_and_add_grouping(dat, pts),
-        regexp = "`patients`"
+        regexp = "`subjects`"
     )
 
 
@@ -474,7 +474,7 @@ test_that("subset(DataJoint) works as expected", {
     expected <- data.frame(
         time = c(150, 100),
         event = c(1, 0),
-        patient = c("C", "A"),
+        subject = c("C", "A"),
         group = c("C", "A"),
         row.names = NULL
     )

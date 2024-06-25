@@ -18,9 +18,9 @@ test_that("SimJointData works as expected", {
             ),
             longitudinal = SimLongitudinalGSF(
                 sigma = 0.003,
-                mu_s = c(0.2, 0.25),
-                mu_g = c(0.15, 0.2),
-                mu_b = 60,
+                mu_s = log(c(0.2, 0.25)),
+                mu_g = log(c(0.15, 0.2)),
+                mu_b = log(60),
                 omega_b = 0.1,
                 omega_s = 0.1,
                 omega_g = 0.1,
@@ -38,7 +38,7 @@ test_that("SimJointData works as expected", {
     expect_s3_class(result@survival, "tbl_df")
     expect_identical(
         names(result@survival),
-        c("pt", "study", "arm", "time", "event", "cov_cont", "cov_cat")
+        c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
     )
     expect_equal(nrow(result@survival), 50 + 80)
 
@@ -46,15 +46,15 @@ test_that("SimJointData works as expected", {
     expect_s3_class(result@longitudinal, "tbl_df")
     expect_identical(
         names(result@longitudinal),
-        c("pt", "arm", "study", "time", "sld", "observed")
+        c("subject", "arm", "study", "time", "sld", "observed")
     )
 
     lm_observed_after_death <- result@longitudinal |>
         dplyr::filter(.data$observed) |>
-        dplyr::select(pt, time) |>
+        dplyr::select(subject, time) |>
         dplyr::left_join(
-            dplyr::select(result@survival, pt, stime = time),
-            by = "pt"
+            dplyr::select(result@survival, subject, stime = time),
+            by = "subject"
         ) |>
         dplyr::filter(.data$time > .data$stime)
 
@@ -73,7 +73,7 @@ test_that("SimJointData leads to valid DataJoint with almost only default argume
     joint_data <- DataJoint(
         subject = DataSubject(
             data = sim_data@survival,
-            subject = "pt",
+            subject = "subject",
             arm = "arm",
             study = "study"
         ),

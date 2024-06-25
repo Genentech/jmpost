@@ -105,16 +105,34 @@ extractVariableNames.DataSubject <- function(object) {
 as_stan_list.DataSubject <- function(object, ...) {
     df <- as.data.frame(harmonise(object))
     vars <- extractVariableNames(object)
+
+    unique_arm_study_combos <- unique(
+        data.frame(
+            arm = as.numeric(df[[vars$arm]]),
+            study = as.numeric(df[[vars$study]])
+        )
+    )
+
     list(
-        Nind = nrow(df),
+        n_subjects = nrow(df),
         n_studies = length(unique(df[[vars$study]])),
         n_arms = length(unique(df[[vars$arm]])),
-        pt_study_index = as.numeric(df[[vars$study]]),
-        pt_arm_index = as.numeric(df[[vars$arm]]),
-        pt_to_ind = stats::setNames(
+        subject_study_index = as.numeric(df[[vars$study]]),
+        subject_arm_index = as.numeric(df[[vars$arm]]),
+        subject_to_index = stats::setNames(
             seq_len(nlevels(df[[vars$subject]])),
             levels(df[[vars$subject]])
-        )
+        ),
+        arm_to_index = stats::setNames(
+            seq_len(nlevels(df[[vars$arm]])),
+            levels(df[[vars$arm]])
+        ),
+        study_to_index = stats::setNames(
+            seq_len(nlevels(df[[vars$study]])),
+            levels(df[[vars$study]])
+        ),
+        pop_arm_index = unique_arm_study_combos$arm,
+        pop_study_index = unique_arm_study_combos$study
     )
 }
 

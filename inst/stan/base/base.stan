@@ -11,11 +11,13 @@ data{
     //
     // Source - base/base.stan
     //
-    int<lower=1> Nind;                 // Number of individuals.
+    int<lower=1> n_subjects;           // Number of individuals.
     int<lower=1> n_studies;            // Number of studies.
     int<lower=1> n_arms;               // Number of treatment arms.
-    array[Nind] int<lower=1,upper=n_studies> pt_study_index;  // Index of study per pt (PT index sorted)
-    array[Nind] int<lower=1,upper=n_arms> pt_arm_index;       // Index of treatment arm per pt (PT index sorted)
+    // Index of study per subject (sorted by subject factor level)
+    array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;
+    // Index of treatment arm per subject (sorted by subject factor level)
+    array[n_subjects] int<lower=1,upper=n_arms> subject_arm_index;
 
 {{ survival.data }}
 {{ link.data }}
@@ -48,7 +50,7 @@ transformed parameters{
     //
 
     // Log-likelihood values for using the loo package.
-    vector[Nind] log_lik = rep_vector(0.0, Nind);
+    vector[n_subjects] log_lik = rep_vector(0.0, n_subjects);
 
 {{ longitudinal.transformed_parameters }}
 {{ link.transformed_parameters }}
@@ -71,11 +73,9 @@ model{
 }
 
 generated quantities{
-
 {{ longitudinal.generated_quantities }}
 {{ link.generated_quantities }}
 {{ survival.generated_quantities }}
-
 }
 
 

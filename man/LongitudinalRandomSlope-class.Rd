@@ -27,3 +27,11 @@ LongitudinalRandomSlope(
 This class extends the general \code{\link{LongitudinalModel}} class for using the
 random slope linear model for the longitudinal outcome.
 }
+\section{Available Links}{
+
+\itemize{
+\item \code{\link[=linkDSLD]{linkDSLD()}}
+\item \code{\link[=linkIdentity]{linkIdentity()}}
+}
+}
+
