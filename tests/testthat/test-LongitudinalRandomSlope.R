@@ -317,4 +317,3 @@ test_that("Quantity models pass the parser", {
     )
     expect_stan_syntax(stanmod)
 })
-
