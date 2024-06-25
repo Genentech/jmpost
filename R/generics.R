@@ -45,7 +45,7 @@ NULL
 #'
 #' @param object the module.
 #' @param destination (`character` or  `connection`)\cr Where to write stan code to.
-#' @param ... Additional arguements
+#' @param ... Additional arguments
 #'
 #' @export
 write_stan <- function(object, destination, ...) {

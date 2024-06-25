@@ -14,7 +14,7 @@ write_stan(object, destination, ...)
 
 \item{destination}{(\code{character} or  \code{connection})\cr Where to write stan code to.}
 
-\item{...}{Additional arguements}
+\item{...}{Additional arguments}
 }
 \description{
 Write the Stan code for a Stan module.

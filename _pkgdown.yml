@@ -141,6 +141,7 @@ reference:
       - as.StanModule.JointModel
       - as.StanModule.Link
       - as.StanModule.LinkComponent
+      - as.StanModule.JointModelSamples
       - as.character.Parameter
       - as.character.Prior
       - show-object
