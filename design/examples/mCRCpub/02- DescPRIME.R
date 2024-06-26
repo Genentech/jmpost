@@ -11,7 +11,7 @@
 
 #' sessionInfo()
 
-ads<-readRDS("./design/examples/PRIMEstudy/data/PRIMEads.rds")
+ads<-readRDS("./design/examples/mCRCpub/data/PRIMEads.rds")
 
 #' ===============================================
 #' Visualize SLD

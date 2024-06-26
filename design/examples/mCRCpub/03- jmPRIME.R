@@ -11,7 +11,7 @@
 
 #' sessionInfo()
 
-ads<-readRDS("./design/examples/PRIMEstudy/data/PRIMEads.rds")
+ads<-readRDS("./design/examples/mCRCpub/data/PRIMEads.rds")
 
 #' ===============================================
 #' Model SLD
@@ -41,7 +41,7 @@ tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat,
 tgi.out<-as.CmdStanMCMC(tgi.samples)
 print(tgi.out)
 
-#' saveRDS(tgi.out, file="./design/examples/PRIMEstudy/PRIMEtgiout.rds")
+#' saveRDS(tgi.out, file="./design/examples/mCRCpub/PRIMEtgiout.rds")
 
 #' Problems here:
 #' iPred vs. Obs
