@@ -142,7 +142,7 @@ as.character.JointModel <- function(x, ...) {
 
 #' @rdname write_stan
 #' @export
-write_stan.JointModel <- function(object, destination) {
+write_stan.JointModel <- function(object, destination, ...) {
     if (is_connection(destination)) {
         return(writeLines(as.character(object), con = destination))
     }

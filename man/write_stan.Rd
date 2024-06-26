@@ -7,7 +7,7 @@
 \usage{
 write_stan(object, destination, ...)
 
-\method{write_stan}{JointModel}(object, destination)
+\method{write_stan}{JointModel}(object, destination, ...)
 }
 \arguments{
 \item{object}{the module.}

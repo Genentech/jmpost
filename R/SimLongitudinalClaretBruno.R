@@ -175,7 +175,7 @@ sampleSubjects.SimLongitudinalClaretBruno <- function(object, subjects_df) {
 
 #' Claret-Bruno Functionals
 #'
-#' @param time (`numeric`)\cr time grid.
+#' @param t (`numeric`)\cr time grid.
 #' @param b (`number`)\cr baseline sld.
 #' @param g (`number`)\cr growth rate.
 #' @param c (`number`)\cr resistance rate.
