@@ -240,7 +240,6 @@ tmp <- tempfile()
 write_stan(simple_model, destination = tmp)
 first_part <- head(readLines(tmp), 10)
 cat(paste(first_part, collapse = "\n"))
-close(tmp)
 ```
 
 ## Sampling Parameters
