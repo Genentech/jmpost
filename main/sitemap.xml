@@ -85,6 +85,9 @@
     <loc>https://genentech.github.io/jmpost/reference/Local_Sample.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.html</loc>
   </url>
   <url>
@@ -158,6 +161,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/SimLongitudinal-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.html</loc>
@@ -352,6 +358,9 @@
     <loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/jmpost/reference/clbr_sld.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc>
   </url>
   <url>
@@ -443,6 +452,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/longitudinal_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/jmpost/reference/match_order.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/jmpost/reference/merge.html</loc>
