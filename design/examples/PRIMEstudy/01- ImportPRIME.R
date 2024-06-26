@@ -18,10 +18,10 @@
 #' UID values
 #' ---------------------------------
 
-kras<-haven::read_sas("./vignettes/PRIMEstudy/data/biomark_pds2019.sas7bdat")
+kras<-haven::read_sas("./design/examples/PRIMEstudy/data/biomark_pds2019.sas7bdat")
 kras0<-kras |> select("SUBJID", "BMMTR1")
 
-adsl<-haven::read_sas("./vignettes/PRIMEstudy/data/adsl_pds2019.sas7bdat")
+adsl<-haven::read_sas("./design/examples/PRIMEstudy/data/adsl_pds2019.sas7bdat")
 adsl0<-adsl |>
   select("SUBJID", "ATRT", "DTHDY", "DTH") |>
   mutate(STUDY="1", DTHYR=DTHDY/365.25) |>
@@ -31,7 +31,7 @@ UIDlist<-unique(adsl0$SUBJID)
 #' length(UIDlist)
 #' 514
 
-adtr<-haven::read_sas("./vignettes/PRIMEstudy/data/adls_pds2019.sas7bdat")
+adtr<-haven::read_sas("./design/examples/PRIMEstudy/data/adls_pds2019.sas7bdat")
 keepinadtr0<-c("SUBJID", "VISITDY", "VISIT", "LSSLD")
 
 adtr0<-adtr |>
@@ -46,7 +46,7 @@ adtr0<-adtr |>
 #' length(unique(adtr0$SUBJID))
 #' 263
 
-saveRDS(adtr0, file="./vignettes/PRIMEstudy/data/PRIMEads.rds")
+saveRDS(adtr0, file="./design/examples/PRIMEstudy/data/PRIMEads.rds")
 
 
 

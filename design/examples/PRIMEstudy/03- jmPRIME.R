@@ -11,7 +11,7 @@
 
 #' sessionInfo()
 
-ads<-readRDS("./vignettes/PRIMEstudy/data/PRIMEads.rds")
+ads<-readRDS("./design/examples/PRIMEstudy/data/PRIMEads.rds")
 
 #' ===============================================
 #' Model SLD
@@ -24,14 +24,24 @@ tgi.dat<-DataJoint(
   longi   = DataLongitudinal(data=ads, threshold=5, formula= LSSLD~VISITYR)
   )
 
-tgi.in<-JointModel(longitudinal=LongitudinalSteinFojo())
+tgi.in<-JointModel(longitudinal=LongitudinalSteinFojo(
+    mu_bsld = prior_lognormal(log(70), .1),
+    mu_ks = prior_lognormal(log(1.8), .1),
+    mu_kg = prior_lognormal(log(0.15), .1),
+    omega_bsld = prior_lognormal(log(0.1), .1),
+    omega_ks = prior_lognormal(log(0.1), .5),
+    omega_kg = prior_lognormal(log(0.1), .5),
+    sigma = prior_lognormal(log(0.18), .5),
+))
 
-tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat, iter_warmup=2000,
-  iter_sampling=1000, chains=2, refresh=500)
+tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat,
+                             iter_sampling = 1000,
+                             iter_warmup = 2000,
+                             chains = 3, parallel_chains = 3)
 tgi.out<-as.CmdStanMCMC(tgi.samples)
 print(tgi.out)
 
-#' saveRDS(tgi.out, file="../PRIME/PRIMEtgiout.rds")
+#' saveRDS(tgi.out, file="./design/examples/PRIMEstudy/PRIMEtgiout.rds")
 
 #' Problems here:
 #' iPred vs. Obs
@@ -52,8 +62,10 @@ surv.dat<-DataJoint(
 
 surv.in<-JointModel(survival=SurvivalWeibullPH())
 
-surv.samples<-sampleStanModel(surv.in, data=surv.dat, iter_warmup=2000,
-                             iter_sampling=1000, chains=2, refresh=500)
+surv.samples<-sampleStanModel(surv.in, data=surv.dat,
+                              iter_sampling = 1000,
+                              iter_warmup = 2000,
+                              chains = 3, parallel_chains = 3)
 surv.out<-as.CmdStanMCMC(surv.samples)
 print(surv.out)
 
@@ -61,7 +73,14 @@ print(surv.out)
 expected.surv<-SurvivalQuantities(surv.samples, type="surv",
   grid=GridGrouped(times=seq(from=0, to=5, by=0.1),
                    groups=split(adsuni$SUBJID, adsuni$ATRT)))
-autoplot(expected.surv, add_km=T, add_wrap=F)+theme_minimal()
+
+mycols<-c(rev(ghibli::ghibli_palettes$YesterdayMedium)[c(2,4)])
+g3<-autoplot(expected.surv, add_km=T, add_wrap=F)+
+    scale_fill_manual(values=mycols)+
+    scale_colour_manual(values=mycols)+
+    theme_minimal()+
+    theme(panel.grid.minor=element_blank())
+g3
 
 
 #' ===============================================
@@ -75,35 +94,29 @@ jm.dat<-DataJoint(
 )
 
 jm.in<-JointModel(
-  longitudinal=LongitudinalGSF(
-    mu_bsld = prior_lognormal(log(60), 0.5),
-    mu_ks = prior_lognormal(log(0.55), 0.5),
-    mu_kg = prior_lognormal(log(0.15), 0.5),
-    a_phi = prior_beta(5, 20),
-
-    omega_bsld = prior_lognormal(log(0.1), 0.5),
-    omega_ks = prior_lognormal(log(0.1), 0.5),
-    omega_kg = prior_lognormal(log(0.1), 0.5),
-    b_phi = prior_lognormal(log(0.1), 0.5),
-
-    sigma = prior_lognormal(log(0.18), 0.5)
+  longitudinal=LongitudinalSteinFojo(
+    mu_bsld = prior_lognormal(log(70), .1),
+    mu_ks = prior_lognormal(log(1.8), .1),
+    mu_kg = prior_lognormal(log(0.15), .1),
+    omega_bsld = prior_lognormal(log(0.1), .1),
+    omega_ks = prior_lognormal(log(0.1), .5),
+    omega_kg = prior_lognormal(log(0.1), .5),
+    sigma = prior_lognormal(log(0.18), .5),
   ),
   survival = SurvivalWeibullPH(),
-  link = Link(linkIdentity(prior_normal(0.002, 0.2)))
+  link = Link(linkTTG(prior_normal(0.01, 3)))
 )
 
 jm.samples<-sampleStanModel(jm.in,
   data = jm.dat,
-  iter_sampling = 500,
-  iter_warmup = 1000,
-  chains = 1,
-  parallel_chains = 1
-)
+  iter_sampling = 1000,
+  iter_warmup = 2000,
+  chains = 3, parallel_chains = 3)
 
 jm.out<-as.CmdStanMCMC(jm.samples)
 #' print(jm.out)
 
-#' saveRDS(jm.out, file="../PRIME/PRIMEjm.out.rds")
+#' saveRDS(jm.out, file="./design/examples/PRIMEjm.out.rds")
 
 
 expected.surv<-SurvivalQuantities(jm.samples, type="surv",

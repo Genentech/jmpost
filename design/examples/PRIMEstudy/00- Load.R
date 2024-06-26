@@ -1,24 +1,25 @@
 #' ####################################################
-#'   
+#'
 #'   2stgTGIOS
 #'   Loading the required R libraries
-#'   
+#'
 #'   Q1-2022
-#'   Francois Mercier 
-#'   
+#'   Francois Mercier
+#'
 #' ####################################################
 
 
-if (!require("remotes")) {
-  install.packages("remotes")
-}
+#' if (!require("remotes")) {
+#'   install.packages("remotes")
+#' }
 #' remotes::install_github("genentech/jmpost")
-#' install.packages("jmpost")
+#' install.packages("ghibli")
 
 #' General purpose
 #' =================
 library(tidyverse)
 library(tidyselect)
+library(ghibli)
 
 #' Data import/export
 #' =================
