@@ -144,7 +144,7 @@ as.character.JointModel <- function(x, ...) {
 #' @export
 write_stan.JointModel <- function(object, destination) {
     if (is_connection(destination)) {
-        return(writeLines(as.character(object), fi))
+        return(writeLines(as.character(object), con = destination))
     }
     fi <- file(destination, open = "w")
     writeLines(as.character(object), fi)
