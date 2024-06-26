@@ -64,11 +64,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     skip_if_not(is_full_test())
 
-    set.seed(7143)
+    set.seed(7743)
     jlist <- SimJointData(
         design = list(
-            SimGroup(80, "Arm-A", "Study-X"),
-            SimGroup(100, "Arm-B", "Study-X")
+            SimGroup(120, "Arm-A", "Study-X"),
+            SimGroup(140, "Arm-B", "Study-X")
         ),
         survival = SimSurvivalExponential(
             lambda = 1 / (400 / 365),

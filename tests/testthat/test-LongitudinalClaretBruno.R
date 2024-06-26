@@ -1,0 +1,275 @@
+
+
+test_that("LongitudinalClaretBruno works as expected with default arguments", {
+    result <- expect_silent(LongitudinalClaretBruno())
+    expect_s4_class(result, "LongitudinalClaretBruno")
+})
+
+
+
+test_that("Print method for LongitudinalClaretBruno works as expected", {
+
+    expect_snapshot({
+        x <- LongitudinalClaretBruno()
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- LongitudinalClaretBruno(
+            sigma = prior_normal(0, 1),
+            mu_g = prior_gamma(2, 1)
+        )
+        print(x)
+    })
+})
+
+
+test_that("Centralised parameterisation compiles without issues", {
+    jm <- JointModel(longitudinal = LongitudinalClaretBruno(centred = TRUE))
+    expect_false(any(
+        c("lm_clbr_eta_c", "lm_clbr_eta_p") %in% names(jm@parameters)
+    ))
+    expect_true(all(
+        c("lm_clbr_ind_b", "lm_clbr_ind_g") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(as.character(x))
+})
+
+
+test_that("Non-Centralised parameterisation compiles without issues", {
+    jm <- JointModel(longitudinal = LongitudinalClaretBruno(centred = FALSE))
+    expect_true(all(
+        c("lm_clbr_eta_g", "lm_clbr_eta_b") %in% names(jm@parameters)
+    ))
+    expect_false(any(
+        c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(as.character(x))
+})
+
+
+
+test_that("Centralised parameterisation compiles without issues", {
+    jm <- JointModel(
+        longitudinal = LongitudinalClaretBruno(centred = TRUE),
+        survival = SurvivalExponential(),
+        link = Link(linkTTG(), linkDSLD(), linkGrowth())
+    )
+    expect_false(any(
+        c("lm_clbr_eta_g", "lm_clbr_eta_b") %in% names(jm@parameters)
+    ))
+    expect_true(all(
+        c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(x)
+})
+
+
+test_that("Non-Centralised parameterisation compiles without issues", {
+    jm <- JointModel(
+        longitudinal = LongitudinalClaretBruno(centred = FALSE),
+        survival = SurvivalWeibullPH(),
+        link = Link()
+    )
+    expect_true(all(
+        c("lm_clbr_eta_g", "lm_clbr_eta_b") %in% names(jm@parameters)
+    ))
+    expect_false(any(
+        c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
+    ))
+    x <- as.StanModule(jm)
+    x@generated_quantities <- ""
+    expect_stan_syntax(x)
+})
+
+
+
+test_that("Can recover known distributional parameters from a SF joint model", {
+
+    skip_if_not(is_full_test())
+
+
+    sim_params <- list(
+        sigma = 0.005,
+        mu_b = log(60),
+        mu_g = log(c(0.9, 1.1)),
+        mu_c = log(c(0.45, 0.35)),
+        mu_p = log(c(2.4, 1.8)),
+        omega_b = 0.12,
+        omega_g = 0.12,
+        omega_c = 0.12,
+        omega_p = 0.12,
+        link_ttg = 0.3,
+        link_dsld = -0.02,
+        link_identity = 0,
+        link_growth = 0,
+        lambda = 0.5,
+        lambda_cen = 1 / 9000,
+        beta_cat_b = -0.1,
+        beta_cat_c = 0.5,
+        beta_cont = 0.3
+    )
+
+    set.seed(38)
+    ## Generate Test data with known parameters
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(125, "Arm-A", "Study-X"),
+            SimGroup(125, "Arm-B", "Study-X")
+        ),
+        longitudinal = SimLongitudinalClaretBruno(
+            times = c(
+                1, 100, 200, 300, 400, 500,
+                600, 700, 800, 900, 1000
+            ) / 365,
+            sigma = sim_params$sigma,
+            mu_b = sim_params$mu_b,
+            mu_g = sim_params$mu_g,
+            mu_c = sim_params$mu_c,
+            mu_p = sim_params$mu_p,
+            omega_b = sim_params$omega_b,
+            omega_g = sim_params$omega_g,
+            omega_c = sim_params$omega_c,
+            omega_p = sim_params$omega_p,
+            link_ttg = sim_params$link_ttg,
+            link_dsld = sim_params$link_dsld,
+            link_identity = sim_params$link_identity,
+            link_growth = sim_params$link_growth
+        ),
+        survival = SimSurvivalExponential(
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda = sim_params$lambda,
+            lambda_cen = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = sim_params$beta_cat_b,
+                "C" = sim_params$beta_cat_c
+            ),
+            beta_cont = sim_params$beta_cont
+        ),
+        .silent = TRUE
+    )
+
+
+    # nolint start⁠
+    ### Diagnostics helpers
+    # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
+    # median(jlist@survival$time)
+    # nolint end
+
+
+    jm <- JointModel(
+        longitudinal = LongitudinalClaretBruno(
+
+            mu_b = prior_normal(log(60), 0.4),
+            mu_g = prior_normal(log(1), 0.4),
+            mu_c = prior_normal(log(0.4), 0.4),
+            mu_p = prior_normal(log(2), 0.4),
+
+            omega_b = prior_lognormal(log(0.1), 0.4),
+            omega_g = prior_lognormal(log(0.1), 0.4),
+            omega_c = prior_lognormal(log(0.1), 0.4),
+            omega_p = prior_lognormal(log(0.1), 0.4),
+
+            sigma = prior_lognormal(log(0.05), 0.4),
+            centred = TRUE
+
+        ),
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(0.5), 0.4),
+            beta = prior_normal(0, 2)
+        ),
+        link = Link(
+            linkDSLD(prior_normal(0, 0.5)),
+            linkTTG(prior_normal(0, 0.5)),
+            linkGrowth(prior_normal(10, 3))
+        )
+    )
+
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = jlist@survival,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = jlist@survival,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
+        longitudinal = DataLongitudinal(
+            data = jlist@longitudinal,
+            formula = sld ~ time,
+            threshold = 5
+        )
+    )
+
+    ## Sample from JointModel
+    set.seed(663)
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 1000,
+            iter_warmup = 1000,
+            chains = 2,
+            parallel_chains = 2
+        )
+    })
+
+    summary_post <- function(model, vars, exp = FALSE) {
+        dat <- model$summary(
+            vars,
+            mean = mean,
+            q01 = \(x) purrr::set_names(quantile(x, 0.01), ""),
+            q99 = \(x) purrr::set_names(quantile(x, 0.99), ""),
+            rhat = posterior::rhat,
+            ess_bulk = posterior::ess_bulk,
+            ess_tail = posterior::ess_tail
+        )
+        if (exp) {
+            dat$q01 <- dat$q01 |> exp()
+            dat$q99 <- dat$q99 |> exp()
+            dat$mean <- dat$mean |> exp()
+        }
+        dat
+    }
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c("lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p"),
+        TRUE
+    )
+    true_values <- exp(c(
+        sim_params$mu_b, sim_params$mu_g, sim_params$mu_c, sim_params$mu_p
+    ))
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
+
+
+
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c("beta_os_cov", "sm_exp_lambda", "link_dsld", "link_growth", "link_ttg")
+    )
+    true_values <- c(
+        sim_params$beta_cat_b, sim_params$beta_cat_c, sim_params$beta_cont,
+        sim_params$lambda,
+        sim_params$link_dsld,
+        sim_params$link_growth,
+        sim_params$link_ttg
+    )
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
+})

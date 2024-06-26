@@ -9,7 +9,8 @@
                 "devtools::test()"
             ],
             "env": {
-                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache"
+                "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
+                "JMPOST_GRAPH_SNAPSHOT" : "TRUE"
             },
             "problemMatcher": [
                 "$testthat"
@@ -36,7 +37,8 @@
             ],
             "env": {
                 "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
-                "JMPOST_FULL_TEST": "TRUE"
+                "JMPOST_FULL_TEST": "TRUE",
+                "JMPOST_GRAPH_SNAPSHOT" : "TRUE"
             },
             "problemMatcher": [
                 "$testthat"
@@ -65,7 +67,8 @@
             ],
             "env": {
                 "JMPOST_CACHE_DIR": "${workspaceFolder}/local/test_cache",
-                "NOT_CRAN": "TRUE"
+                "NOT_CRAN": "TRUE",
+                "JMPOST_GRAPH_SNAPSHOT" : "TRUE"
             },
             "problemMatcher": [
                 "$testthat"
