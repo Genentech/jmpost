@@ -41,11 +41,7 @@ tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat,
 tgi.out<-as.CmdStanMCMC(tgi.samples)
 print(tgi.out)
 
-#' saveRDS(tgi.out, file="./design/examples/mCRCpub/PRIMEtgiout.rds")
-
 #' Problems here:
-#' iPred vs. Obs
-#' see https://github.com/Genentech/jmpost/blob/fe04d4aa049f5244f7e6e76f97901ef3c7536146/design/examples/quantity_plots.R#L139
 longquant_obs<-LongitudinalQuantities(tgi.samples, grid = GridObserved())
 
 
