@@ -273,3 +273,25 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 })
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalClaretBruno()),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+})
