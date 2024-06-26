@@ -54,6 +54,7 @@ Simulate Longitudinal Data from a Random Slope Model
 \seealso{
 Other SimLongitudinal: 
 \code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalGSF-class}},
 \code{\link{SimLongitudinalSteinFojo-class}}
 }

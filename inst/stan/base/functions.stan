@@ -82,21 +82,51 @@ functions {
         return ret;
     }
 
-    // Replaces the values of `y` with `replacement` if the corresponding value
-    // of `x` is less than 0.
-    matrix if_gte0_else(matrix x, matrix y, real replacement) {
-        matrix[rows(x), cols(x)] result;
-        for (i in 1:rows(x)) {
-            for (j in 1:cols(x)) {
-                result[i, j] = x[i, j] >= 0 ?  y[i, j] : replacement;
+    // Element wise "if greater than 0 return y, else return y"
+    //
+    // Input:
+    //     item: a matrix or vector
+    //     x: an object of the same type and dimensionality of `item`
+    //     y: an object of the same type and dimensionality of `item` or a `real`
+    //
+    // Description:
+    //     The following overloaded functions take an object "item"
+    //     and loop over each element returning the corresponding element
+    //     of `x` if the element is >= 0 else returning the corresponding
+    //     element of `y` (or just `y` if why is a single real)
+    //
+    // Returns:
+    //     an object of the same type and dimensionality of `item`
+    //     but with the values of either `x` or `y`. 
+    vector if_gte0_else(vector item, vector x, real y) {
+        vector[rows(item)] result;
+        for (i in 1:rows(item)) {
+            result[i] = item[i] >= 0 ? x[i] : y;
+        }
+        return result;
+    }
+    vector if_gte0_else(vector item, vector x, vector y) {
+        vector[rows(item)] result;
+        for (i in 1:rows(item)) {
+            result[i] = item[i] >= 0 ? x[i] : y[i];
+        }
+        return result;
+    }
+    matrix if_gte0_else(matrix item, matrix x, real y) {
+        matrix[rows(item), cols(item)] result;
+        for (i in 1:rows(item)) {
+            for (j in 1:cols(item)) {
+                result[i, j] = item[i, j] >= 0 ?  x[i, j] : y;
             }
         }
         return result;
     }
-    vector if_gte0_else(vector x, vector y, real replacement) {
-        vector[rows(x)] result;
-        for (i in 1:rows(x)) {
-            result[i] = x[i] >= 0 ? y[i] : replacement;
+    matrix if_gte0_else(matrix item, matrix x, matrix y) {
+        matrix[rows(item), cols(item)] result;
+        for (i in 1:rows(item)) {
+            for (j in 1:cols(item)) {
+                result[i, j] = item[i, j] >= 0 ? x[i, j] : y[i, j];
+            }
         }
         return result;
     }
