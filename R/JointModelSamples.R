@@ -38,7 +38,30 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
         append(as_stan_list(object@model@parameters)) |>
         append(as_stan_list(generator, data = object@data, model = object@model))
 
+    stanobj <- as.StanModule(object, generator = generator, type = type)
+    model <- compileStanModel(stanobj)
+
+    devnull <- utils::capture.output(
+        results <- model$generate_quantities(
+            data = data,
+            fitted_params = object@results
+        )
+    )
+    return(results)
+}
+
+
+#' `JointModelSamples` -> `StanModule`
+#'
+#' Converts a `JointModelSamples` object into a `StanModule` object ensuring
+#' that the resulting `StanModule` object is able to generate post sampling
+#' quantities.
+#'
+#' @inheritParams generateQuantities
+#' @export
+as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
     assert_that(
+        is(generator, "QuantityGenerator"),
         length(type) == 1,
         type %in% c("survival", "longitudinal")
     )
@@ -60,17 +83,10 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
             quant_stanobj
         )
     )
-
-    model <- compileStanModel(stanobj)
-
-    devnull <- utils::capture.output(
-        results <- model$generate_quantities(
-            data = data,
-            fitted_params = object@results
-        )
-    )
-    return(results)
+    stanobj
 }
+
+
 
 #' `JointModelSamples` -> Printable `Character`
 #'

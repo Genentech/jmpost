@@ -13,6 +13,8 @@ clbr_ttg(t, b, g, c, p)
 clbr_dsld(t, b, g, c, p)
 }
 \arguments{
+\item{t}{(\code{numeric})\cr time grid.}
+
 \item{b}{(\code{number})\cr baseline sld.}
 
 \item{g}{(\code{number})\cr growth rate.}
@@ -20,8 +22,6 @@ clbr_dsld(t, b, g, c, p)
 \item{c}{(\code{number})\cr resistance rate.}
 
 \item{p}{(\code{number})\cr growth inhibition.}
-
-\item{time}{(\code{numeric})\cr time grid.}
 }
 \value{
 The function results.

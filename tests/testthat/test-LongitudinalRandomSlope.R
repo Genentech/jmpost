@@ -295,3 +295,25 @@ test_that("Random Slope Model left-censoring works as expected", {
     )
     expect_gt(lmer_cor, 0.99)
 })
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalRandomSlope()),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+})

@@ -44,10 +44,11 @@ NULL
 #' Write the Stan code for a Stan module.
 #'
 #' @param object the module.
-#' @param file_path (`string`)\cr output file.
+#' @param destination (`character` or  `connection`)\cr Where to write stan code to.
+#' @param ... Additional arguments
 #'
 #' @export
-write_stan <- function(object, file_path) {
+write_stan <- function(object, destination, ...) {
     UseMethod("write_stan")
 }
 

@@ -1,5 +1,4 @@
 
-
 test_that("LongitudinalSteinFojo works as expected with default arguments", {
     result <- expect_silent(LongitudinalSteinFojo())
     expect_s4_class(result, "LongitudinalSteinFojo")
@@ -87,6 +86,7 @@ test_that("Non-Centralised parameterisation compiles without issues", {
     x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
+
 
 
 
@@ -387,4 +387,27 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
+})
+
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE)),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
 })
