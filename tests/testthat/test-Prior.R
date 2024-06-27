@@ -186,3 +186,31 @@ test_that("jmpost.prior_shrinkage works as expected", {
         local_rnorm = \(...) 4
     )
 })
+
+
+
+test_that("Limits work as expected", {
+    x <- prior_normal(0, 1)
+    x <- set_limits(x, lower = 0, upper = 1)
+    ivs <- replicate(
+        n = 100,
+        initialValues(x)
+    )
+    expect_true(all(ivs > 0))
+    expect_true(all(ivs < 1))
+
+
+    x <- prior_cauchy(-200, 150)
+    x <- set_limits(x, lower = 0)
+    ivs <- replicate(
+        n = 100,
+        initialValues(x)
+    )
+    expect_true(all(ivs > 0))
+
+
+    ## Put an impossible constraint on the distribution
+    x <- prior_lognormal(0, 1)
+    x <- set_limits(x, upper = 0)
+    expect_error(initialValues(x), regex = "Unable to generate")
+})

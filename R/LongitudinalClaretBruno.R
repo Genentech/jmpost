@@ -63,6 +63,14 @@ LongitudinalClaretBruno <- function(
         centred = centred
     ))
 
+    # Apply constraints
+    omega_b <- set_limits(omega_b, lower = 0)
+    omega_g <- set_limits(omega_g, lower = 0)
+    omega_c <- set_limits(omega_c, lower = 0)
+    omega_p <- set_limits(omega_p, lower = 0)
+    sigma <- set_limits(sigma, lower = 0)
+
+
     parameters <- list(
         Parameter(name = "lm_clbr_mu_b", prior = mu_b, size = "n_studies"),
         Parameter(name = "lm_clbr_mu_g", prior = mu_g, size = "n_arms"),
@@ -82,22 +90,22 @@ LongitudinalClaretBruno <- function(
         list(
             Parameter(
                 name = "lm_clbr_ind_b",
-                prior = prior_init_only(prior_lognormal(mu_b@init, omega_b@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_b), median(omega_b))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_g",
-                prior = prior_init_only(prior_lognormal(mu_g@init, omega_g@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_g), median(omega_g))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_c",
-                prior = prior_init_only(prior_lognormal(mu_c@init, omega_c@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_c), median(omega_c))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_p",
-                prior = prior_init_only(prior_lognormal(mu_p@init, omega_p@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_p), median(omega_p))),
                 size = "n_subjects"
             )
         )

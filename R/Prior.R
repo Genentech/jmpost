@@ -7,7 +7,7 @@ NULL
 #' The documentation lists all the conventional arguments for [`Prior`]
 #' constructors.
 #'
-#' @param init (`number`)\cr initial value.
+#' @param centre (`number`)\cr the central point of distribution to shrink sampled values towards
 #' @param x ([`Prior`])\cr a prior Distribution
 #' @param object ([`Prior`])\cr a prior Distribution
 #' @param name (`character`)\cr the name of the parameter the prior distribution is for
@@ -26,10 +26,11 @@ NULL
 #' @slot parameters (`list`)\cr See arguments.
 #' @slot repr_model (`string`)\cr See arguments.
 #' @slot repr_data (`string`)\cr See arguments.
-#' @slot init (`numeric`)\cr See arguments.
+#' @slot centre (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #' @slot display (`string`)\cr See arguments.
 #' @slot sample (`function`)\cr See arguments.
+#' @slot limits (`numeric`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior
@@ -41,9 +42,10 @@ NULL
         "display" = "character",
         "repr_model" = "character",
         "repr_data" = "character",
-        "init" = "numeric",
+        "centre" = "numeric",
         "validation" = "list",
-        "sample" = "function"
+        "sample" = "function",
+        "limits" = "numeric"
     )
 )
 
@@ -52,28 +54,31 @@ NULL
 #' @param repr_model (`string`)\cr the Stan code representation for the model block.
 #' @param repr_data (`string`)\cr the Stan code representation for the data block.
 #' @param display (`string`)\cr the string to display when object is printed.
-#' @param init (`numeric`)\cr the initial value.
+#' @param centre (`numeric`)\cr the central point of distribution to shrink sampled values towards
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
 #' @param sample (`function`)\cr a function to sample from the prior distribution.
+#' @param limits (`numeric`)\cr TODO
 #' @rdname Prior-class
 Prior <- function(
     parameters,
     display,
     repr_model,
     repr_data,
-    init,
+    centre,
     validation,
-    sample
+    sample,
+    limits = c(-Inf, Inf)
 ) {
     .Prior(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
-        init = init,
+        centre = centre,
         display = display,
         validation = validation,
-        sample = sample
+        sample = sample,
+        limits = limits
     )
 }
 
@@ -97,6 +102,15 @@ setValidity(
         return(TRUE)
     }
 )
+
+
+
+#' @rdname set_limits
+#' @export
+set_limits.Prior <- function(object, lower = -Inf, upper = Inf) {
+    object@limits <- c(lower, upper)
+    return(object)
+}
 
 
 #' `Prior` -> `Character`
@@ -188,8 +202,18 @@ NULL
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
 initialValues.Prior <- function(object, ...) {
-    getOption("jmpost.prior_shrinkage") * object@init +
-        (1 - getOption("jmpost.prior_shrinkage")) * object@sample(1)
+    samples <- getOption("jmpost.prior_shrinkage") * object@centre +
+        (1 - getOption("jmpost.prior_shrinkage")) * object@sample(100)
+
+    valid_samples <- samples[samples >= min(object@limits) & samples <= max(object@limits)]
+    assert_that(
+        length(valid_samples) >= 1,
+        msg = "Unable to generate an initial value that meets the required constraints"
+    )
+    if (length(valid_samples) == 1) {
+        return(valid_samples)
+    }
+    return(sample(valid_samples, 1))
 }
 
 
@@ -210,7 +234,7 @@ prior_normal <- function(mu, sigma) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = mu,
+        centre = mu,
         sample = \(n) local_rnorm(n, mu, sigma),
         validation = list(
             mu = is.numeric,
@@ -231,7 +255,7 @@ prior_std_normal <- function() {
         display = "std_normal()",
         repr_model = "{name} ~ std_normal();",
         repr_data = "",
-        init = 0,
+        centre = 0,
         sample = \(n) local_rnorm(n),
         validation = list()
     )
@@ -253,7 +277,7 @@ prior_cauchy <- function(mu, sigma) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = mu,
+        centre = mu,
         sample = \(n) local_rcauchy(n, mu, sigma),
         validation = list(
             mu = is.numeric,
@@ -261,6 +285,7 @@ prior_cauchy <- function(mu, sigma) {
         )
     )
 }
+
 
 #' Gamma Prior Distribution
 #'
@@ -278,7 +303,7 @@ prior_gamma <- function(alpha, beta) {
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = alpha / beta,
+        centre = alpha / beta,
         sample = \(n) local_rgamma(n, shape = alpha, rate = beta),
         validation = list(
             alpha = \(x) x > 0,
@@ -303,7 +328,7 @@ prior_lognormal <- function(mu, sigma) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = exp(mu + (sigma^2) / 2),
+        centre = exp(mu + (sigma^2) / 2),
         sample = \(n) local_rlnorm(n, mu, sigma),
         validation = list(
             mu = is.numeric,
@@ -328,7 +353,7 @@ prior_beta <- function(a, b) {
             "real<lower=0> prior_a_{name};",
             "real<lower=0> prior_b_{name};"
         ),
-        init = a / (a + b),
+        centre = a / (a + b),
         sample = \(n) local_rbeta(n, a, b),
         validation = list(
             a = \(x) x > 0,
@@ -356,7 +381,7 @@ prior_init_only <- function(dist) {
         sample = \(n) {
             dist@sample(n)
         },
-        init = dist@init,
+        centre = dist@centre,
         validation = list()
     )
 }
@@ -384,7 +409,7 @@ prior_uniform <- function(alpha, beta) {
             "real prior_alpha_{name};",
             "real prior_beta_{name};"
         ),
-        init = 0.5 * (alpha + beta),
+        centre = 0.5 * (alpha + beta),
         sample = \(n) local_runif(n, alpha, beta),
         validation = list(
             alpha = is.numeric,
@@ -416,7 +441,7 @@ prior_student_t <- function(nu, mu, sigma) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = mu,
+        centre = mu,
         sample = \(n) local_rt(n, nu, mu, sigma),
         validation = list(
             nu = \(x) x > 0,
@@ -447,7 +472,7 @@ prior_logistic <- function(mu, sigma) {
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
         ),
-        init = mu,
+        centre = mu,
         sample = \(n) local_rlogis(n, mu, sigma),
         validation = list(
             mu = is.numeric,
@@ -476,7 +501,7 @@ prior_loglogistic <- function(alpha, beta) {
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = alpha * pi / (beta * sin(pi / beta)),
+        centre = alpha * pi / (beta * sin(pi / beta)),
         sample = \(n) {
             local_rloglogis(n, alpha, beta)
         },
@@ -507,7 +532,7 @@ prior_invgamma <- function(alpha, beta) {
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
         ),
-        init = beta / (alpha - 1),
+        centre = beta / (alpha - 1),
         sample = \(n) local_rinvgamma(n, alpha, beta),
         validation = list(
             alpha = \(x) x > 0,
@@ -516,6 +541,38 @@ prior_invgamma <- function(alpha, beta) {
     )
 }
 
+
+# nolint start
+#
+# Developer Notes
+#
+# The `median.Prior` function is a rough workaround to help generate initial values for
+# hierarchical distributions. The original implementation involved sampling initial values
+# for the random effects using the medians of the parent distribution e.g.
+# ```
+# random_effect ~ beta(a_prior@centre,  b_prior@centre)
+# ```
+# A problem came up though when we implemented support for constrained distributions
+# as there was no longer any guarantee that the median/centre of the distribution is
+# a valid value e.g.  `a_prior ~ prior_normal(-200, 400)`.
+#
+# To resolve this issue the `median.Prior` method was created which simply samples
+# multiple observations from the constrained distribution and then takes the median
+# of those constrained observations; this then ensures that the value being used
+# for the parameters is a valid value
+#
+# nolint end
+#' @importFrom stats median
+#' @export
+median.Prior <- function(object) {
+    x <- replicate(
+        n = 250,
+        initialValues(object),
+        simplify = FALSE
+    ) |>
+        unlist()
+    median(x)
+}
 
 
 

@@ -4,7 +4,7 @@
 \alias{Prior-Shared}
 \title{\code{Prior} Function Arguments}
 \arguments{
-\item{init}{(\code{number})\cr initial value.}
+\item{centre}{(\code{number})\cr the central point of distribution to shrink sampled values towards}
 
 \item{x}{(\code{\link{Prior}})\cr a prior Distribution}
 

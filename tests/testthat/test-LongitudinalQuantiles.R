@@ -1,7 +1,7 @@
 
+test_data_1 <- ensure_test_data_1()
 
 test_that("Test that LongitudinalQuantities works as expected", {
-    ensure_test_data_1()
 
     expected_column_names <- c("group", "time", "median", "lower", "upper")
 
@@ -82,7 +82,7 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 
 
 test_that("LongitudinalQuantities print method works as expected", {
-    ensure_test_data_1()
+
     expect_snapshot({
         subjectgroups <- c("subject_0011", "subject_0061", "subject_0001", "subject_0002")
         times <- seq(0, 100, by = 10)
@@ -118,7 +118,6 @@ test_that("LongitudinalQuantities print method works as expected", {
 test_that("LongitudinalQuantities can recover known results", {
 
     set.seed(101)
-    ensure_test_data_1()
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
         grid = GridFixed(
@@ -141,7 +140,6 @@ test_that("LongitudinalQuantities can recover known results", {
 
 test_that("LongitudinalQuantities correctly subsets subjects and rebuilds correct value for each sample", {
     set.seed(101)
-    ensure_test_data_1()
     times <- c(-100, 0, 1, 100, 200)
 
     longsamps <- LongitudinalQuantities(
