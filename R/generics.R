@@ -479,7 +479,7 @@ as_formula.default <- function(x, ...) {
 #'
 #' @param object (`Prior`)\cr a prior distribution to apply constraints to
 #' @param lower (`numeric`)\cr lower constraint boundary
-#' @param lower (`numeric`)\cr upper constraint boundary
+#' @param upper (`numeric`)\cr upper constraint boundary
 #'
 #' @export
 set_limits <- function(object, lower = -Inf, upper = Inf) {

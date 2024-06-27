@@ -564,14 +564,14 @@ prior_invgamma <- function(alpha, beta) {
 # nolint end
 #' @importFrom stats median
 #' @export
-median.Prior <- function(object) {
-    x <- replicate(
+median.Prior <- function(x, na.rm, ...) {
+    vals <- replicate(
         n = 250,
-        initialValues(object),
+        initialValues(x),
         simplify = FALSE
     ) |>
         unlist()
-    median(x)
+    median(vals)
 }
 
 
