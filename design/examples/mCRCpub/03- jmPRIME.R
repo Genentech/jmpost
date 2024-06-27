@@ -11,17 +11,21 @@
 
 #' sessionInfo()
 
-ads<-readRDS("./design/examples/mCRCpub/data/PRIMEads.rds")
+
+#' biom.df<-readRDS("./design/examples/mCRCpub/data/PRIME/PRIMETGIads.rds")
+#' summary(biom.df)
+
+#' event.df<-readRDS("./design/examples/mCRCpub/data/PRIME/PRIMEOSads.rds")
+#' summary(event.df)
+
 
 #' ===============================================
 #' Model SLD
 #' ===============================================
 
-adsuni<-ads[!duplicated(ads$SUBJID), ]
-
 tgi.dat<-DataJoint(
-  subject = DataSubject(data=adsuni, subject="SUBJID", arm="ATRT", study="STUDY"),
-  longi   = DataLongitudinal(data=ads, threshold=5, formula= LSSLD~VISITYR)
+  subject = DataSubject(data=event.df, subject="SUBJID", arm="ATRT", study="STUDY"),
+  longi   = DataLongitudinal(data=biom.df, threshold=3, formula= BIOMVAL~BIOMYR)
   )
 
 tgi.in<-JointModel(longitudinal=LongitudinalSteinFojo(
@@ -39,10 +43,10 @@ tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat,
                              iter_warmup = 2000,
                              chains = 3, parallel_chains = 3)
 tgi.out<-as.CmdStanMCMC(tgi.samples)
-print(tgi.out)
+print(tgi.out, max_rows=500, digits=5)
 
-#' Problems here:
-selected_subjects<-head(adsuni$SUBJID, 10)
+#' Display profiles OBS vs IPRED for 10 random individuals
+selected_subjects<-head(event.df$SUBJID, 10)
 longquant_obs<-LongitudinalQuantities(tgi.samples, grid=GridObserved(subjects=selected_subjects))
 autoplot(longquant_obs)
 
@@ -51,11 +55,9 @@ autoplot(longquant_obs)
 #' Model OS
 #' ===============================================
 
-adsuni<-ads[!duplicated(ads$SUBJID), ]
-
 surv.dat<-DataJoint(
-  subject  = DataSubject(data=adsuni, subject="SUBJID", arm="ATRT", study="STUDY"),
-  survival = DataSurvival(data=adsuni, formula=Surv(DTHYR, DTH)~ATRT)
+  subject  = DataSubject(data=event.df, subject="SUBJID", arm="ATRT", study="STUDY"),
+  survival = DataSurvival(data=event.df, formula=Surv(EVENTYR, EVENTFL)~ATRT)
 )
 
 surv.in<-JointModel(survival=SurvivalWeibullPH())
@@ -65,12 +67,12 @@ surv.samples<-sampleStanModel(surv.in, data=surv.dat,
                               iter_warmup = 2000,
                               chains = 3, parallel_chains = 3)
 surv.out<-as.CmdStanMCMC(surv.samples)
-print(surv.out)
+print(surv.out, max_rows=500, digits=5)
 
-
+#' Display PRED vs OBS surv curves
 expected.surv<-SurvivalQuantities(surv.samples, type="surv",
-  grid=GridGrouped(times=seq(from=0, to=5, by=0.1),
-                   groups=split(adsuni$SUBJID, adsuni$ATRT)))
+  grid=GridGrouped(times=seq(from=0, to=4, by=0.1),
+  groups=split(event.df$SUBJID, event.df$ATRT)))
 
 mycols<-c(rev(ghibli::ghibli_palettes$YesterdayMedium)[c(2,4)])
 g3<-autoplot(expected.surv, add_km=T, add_wrap=F)+
@@ -86,9 +88,9 @@ g3
 #' ===============================================
 
 jm.dat<-DataJoint(
-  subject  = DataSubject(data=adsuni, subject="SUBJID", arm="ATRT", study="STUDY"),
-  longitudinal = DataLongitudinal(data=ads, threshold=5, formula= LSSLD~VISITYR),
-  survival = DataSurvival(data=adsuni, formula=Surv(DTHYR, DTH)~ATRT)
+  subject  = DataSubject(data=event.df, subject="SUBJID", arm="ATRT", study="STUDY"),
+  longitudinal = DataLongitudinal(data=biom.df, threshold=3, formula= BIOMVAL~BIOMYR),
+  survival = DataSurvival(data=event.df, formula=Surv(EVENTYR, EVENTFL)~ATRT)
 )
 
 jm.in<-JointModel(
@@ -112,18 +114,15 @@ jm.samples<-sampleStanModel(jm.in,
   chains = 3, parallel_chains = 3)
 
 jm.out<-as.CmdStanMCMC(jm.samples)
-#' print(jm.out)
+print(jm.out, max_rows=500, digits=5)
 
-#' saveRDS(jm.out, file="./design/examples/PRIMEjm.out.rds")
-
-
+#' Display PRED vs OBS surv curves
 expected.surv<-SurvivalQuantities(jm.samples, type="surv",
-                                  grid=GridGrouped(times=seq(from=0, to=5, by=0.1),
-                                                   groups=split(adsuni$SUBJID, adsuni$ATRT)))
-#' Compiling Stan program...
-#' Warning: Chain 1 finished unexpectedly!
-#'
-#'  Error: Generating quantities for all MCMC chains failed. Unable to retrieve the generated quantities.
-
-autoplot(expected.surv, add_km=T, add_wrap=F)+theme_minimal()
+       grid=GridGrouped(times=seq(from=0, to=4, by=0.1),
+       groups=split(event.df$SUBJID, event.df$ATRT)))
+autoplot(expected.surv, add_km=T, add_wrap=F)+
+    scale_fill_manual(values=mycols)+
+    scale_colour_manual(values=mycols)+
+    theme_minimal()+
+    theme(panel.grid.minor=element_blank())
 

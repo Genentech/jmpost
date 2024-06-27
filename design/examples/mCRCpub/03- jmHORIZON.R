@@ -1,29 +1,40 @@
 #' ####################################################
-#'   
+#'
 #'   Joint models
 #'   HORIZONIII study (from PDS)
-#'   
+#'
 #'   Q3-2024
-#'   Francois Mercier 
-#'   
+#'   Francois Mercier
+#'
 #' ####################################################
 
 
 #' sessionInfo()
 
-os1<-readRDS("data/HORIZONIII/HorizOSads.rds")
-tk1<-readRDS("data/HORIZONIII/HorizTGIads.rds")
+
+#' biom.df<-readRDS("./design/examples/mCRCpub/data/PRIME/HorizTGIads.rds")
+#' summary(biom.df)
+
+#' event.df<-readRDS("./design/examples/mCRCpub/data/PRIME/HorizOSads.rds")
+#' summary(event.df)
+
 
 #' ===============================================
 #' Model SLD
 #' ===============================================
 
-ads<-biom.df |> filter(SUBJID %in% retainIDsub)
-adsuni1<-ads[!duplicated(ads$SUBJID), ]
+######
+#' !!!!!!!!!!!
+######
+event.subset.for.test<-event.df |> filter(SUBJID %in% retainIDsub)
+biom.subset.for.test<-biom.df |> filter(SUBJID %in% retainIDsub)
+######
+#' !!!!!!!!!!!
+######
 
 tgi.dat<-DataJoint(
-  subject = DataSubject(data=adsuni1, subject="SUBJID", arm="ATRT", study="STUDY"),
-  longi   = DataLongitudinal(data=ads, threshold=5, formula= VALUE~VISITYR)
+  subject = DataSubject(data=event.subset.for.test, subject="SUBJID", arm="ATRT", study="STUDY"),
+  longi   = DataLongitudinal(data=biom.subset.for.test, threshold=3, formula= BIOMVAL~BIOMYR)
   )
 
 tgi.in<-JointModel(longitudinal=LongitudinalSteinFojo(
@@ -40,9 +51,13 @@ tgi.samples<-sampleStanModel(tgi.in, data=tgi.dat, iter_warmup=2000,
 tgi.out<-as.CmdStanMCMC(tgi.samples)
 print(tgi.out, max_rows=500, digits=5)
 
-selected_subjects<-sample(adsuni1$SUBJID, 10)
+#' Display profiles OBS vs IPRED for 10 random individuals
+selected_subjects<-sample(event.subset.for.test$SUBJID, 10)
 longquant_obs<-LongitudinalQuantities(tgi.samples, grid=GridObserved(subjects=selected_subjects))
-autoplot(longquant_obs)
+g2<-autoplot(longquant_obs)+
+    theme_minimal()+
+    theme(panel.grid.minor=element_blank())
+g2
 summary(longquant_obs)
 
 #' mu_BSLD: hist(rlnorm(1000, log(70), .2))
@@ -51,13 +66,14 @@ summary(longquant_obs)
 #' om_ks: hist(rlnorm(1000, log(0.7), 0.3))
 #' om_sigma: hist(rlnorm(1000, log(0.2), 0.1))
 
+
 #' ===============================================
 #' Model OS
 #' ===============================================
 
 surv.dat<-DataJoint(
-  subject  = DataSubject(data=os1, subject="SUBJID", arm="ATRT", study="STUDY"),
-  survival = DataSurvival(data=os1, formula=Surv(EVENTYR, EVENTFL)~1)
+  subject  = DataSubject(data=event.df, subject="SUBJID", arm="ATRT", study="STUDY"),
+  survival = DataSurvival(data=event.df, formula=Surv(EVENTYR, EVENTFL)~1)
 )
 
 surv.in<-JointModel(survival=SurvivalWeibullPH())
@@ -67,10 +83,18 @@ surv.samples<-sampleStanModel(surv.in, data=surv.dat, iter_warmup=2000,
 surv.out<-as.CmdStanMCMC(surv.samples)
 print(surv.out, max_rows=500, digits=5)
 
+#' Display PRED vs OBS surv curves
 expected.surv<-SurvivalQuantities(surv.samples, type="surv",
-  grid=GridGrouped(times=seq(from=0, to=3, by=0.1), 
-                   groups=split(os1$SUBJID, os1$ATRT)))
-autoplot(expected.surv, add_km=T, add_wrap=F)+theme_minimal()
+  grid=GridGrouped(times=seq(from=0, to=3, by=0.1),
+                   groups=split(event.df$SUBJID, event.df$ATRT)))
+
+mycols<-c(rev(ghibli::ghibli_palettes$YesterdayMedium)[c(2,4)])
+g3<-autoplot(expected.surv, add_km=T, add_wrap=F)+
+    scale_fill_manual(values=mycols)+
+    scale_colour_manual(values=mycols)+
+    theme_minimal()+
+    theme(panel.grid.minor=element_blank())
+g3
 
 
 #' ===============================================
@@ -78,9 +102,9 @@ autoplot(expected.surv, add_km=T, add_wrap=F)+theme_minimal()
 #' ===============================================
 
 jm.dat<-DataJoint(
-  subject  = DataSubject(data=os1, subject="SUBJID", arm="ATRT", study="STUDY"),
-  longitudinal = DataLongitudinal(data=tk1, threshold=2, formula= VALUE~VISITYR),
-  survival = DataSurvival(data=os1, formula=Surv(EVENTYR, EVENTFL)~1)
+  subject  = DataSubject(data=event.df, subject="SUBJID", arm="ATRT", study="STUDY"),
+  longitudinal = DataLongitudinal(data=biom.df, threshold=2, formula= BIOMVAL~BIOMYR),
+  survival = DataSurvival(data=event.df, formula=Surv(EVENTYR, EVENTFL)~1)
 )
 
 jm.in<-JointModel(
@@ -100,10 +124,16 @@ jm.samples<-sampleStanModel(jm.in, data=jm.dat,
     iter_sampling=1000, iter_warmup=2000, chains=3, parallel_chains=3)
 
 jm.out<-as.CmdStanMCMC(jm.samples)
-#' print(jm.out, max_rows=500, digits=5)
+print(jm.out, max_rows=500, digits=5)
 
+#' Display PRED vs OBS surv curves
 expected.surv<-SurvivalQuantities(jm.samples, type="surv",
-                                  grid=GridGrouped(times=seq(from=0, to=3, by=0.1),
-                                                   groups=split(os1$SUBJID, os1$ATRT)))
-autoplot(expected.surv, add_km=T, add_wrap=F)+theme_minimal()
+    grid=GridGrouped(times=seq(from=0, to=3, by=0.1),
+    groups=split(event.df$SUBJID, event.df$ATRT)))
 
+g4<-autoplot(expected.surv, add_km=T, add_wrap=F)+
+    scale_fill_manual(values=mycols)+
+    scale_colour_manual(values=mycols)+
+    theme_minimal()+
+    theme(panel.grid.minor=element_blank())
+g4
