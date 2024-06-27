@@ -42,7 +42,9 @@ tgi.out<-as.CmdStanMCMC(tgi.samples)
 print(tgi.out)
 
 #' Problems here:
-longquant_obs<-LongitudinalQuantities(tgi.samples, grid = GridObserved())
+selected_subjects<-head(adsuni$SUBJID, 10)
+longquant_obs<-LongitudinalQuantities(tgi.samples, grid=GridObserved(subjects=selected_subjects))
+autoplot(longquant_obs)
 
 
 #' ===============================================
