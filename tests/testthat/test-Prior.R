@@ -214,3 +214,30 @@ test_that("Limits work as expected", {
     x <- set_limits(x, upper = 0)
     expect_error(initialValues(x), regex = "Unable to generate")
 })
+
+
+
+test_that("median(Prior) works as expected", {
+    set.seed(2410)
+
+    # Unrestricted
+    p1 <- prior_normal(-200, 400)
+    expect_equal(
+        median(p1),
+        -200,
+        tolerance = 0.15
+    )
+
+
+    # Constrained
+    p2 <- set_limits(p1, lower = 0)
+
+    actual <- rnorm(6000, -200, 400) * 0.5 + -200 * 0.5
+    actual_red <- actual[actual >= 0]
+
+    expect_equal(
+        median(p2),
+        median(actual_red),
+        tolerance = 0.15
+    )
+})

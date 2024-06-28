@@ -566,7 +566,7 @@ prior_invgamma <- function(alpha, beta) {
 #' @export
 median.Prior <- function(x, na.rm, ...) {
     vals <- replicate(
-        n = 250,
+        n = 500,
         initialValues(x),
         simplify = FALSE
     ) |>
