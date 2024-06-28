@@ -258,7 +258,7 @@ b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-\phi &\sim \text{Beta}(a_{\phi k(i)}, b_{\phi k(i)})
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_\phi)
 \end{align*}
 $$
 
@@ -285,10 +285,12 @@ $$
 b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
 s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
 g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\phi_i &= \text{logistic}(\mu_{gk(i)} + \omega_\phi * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
 \eta_{g i} &\sim   N(0, 1)  \\
+\eta_{\phi i} &\sim   N(0, 1)  \\
 \end{align*}
 $$
 
@@ -349,7 +351,7 @@ Accessible via `linkGrowth()`
 
 ### Population Quantities
 
-Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+Note that when generating population quantities for the $b$, $s$, $g$ and $\phi$ parameters the median
 of the distribution is used. This is because this has the same interpretation as using a 
 non-centred parameterisation and setting the "random effects" term to be 0.
 

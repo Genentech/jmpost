@@ -21,11 +21,11 @@ test_that("SimJointData works as expected", {
                 mu_s = log(c(0.2, 0.25)),
                 mu_g = log(c(0.15, 0.2)),
                 mu_b = log(60),
+                mu_phi = qlogis(c(0.4, 0.6)),
                 omega_b = 0.1,
                 omega_s = 0.1,
                 omega_g = 0.1,
-                a_phi = c(4, 6),
-                b_phi = c(4, 6),
+                omega_phi = 0.1,
                 link_dsld = 0,
                 link_ttg = 0
             ),

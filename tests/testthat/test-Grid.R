@@ -29,11 +29,11 @@ set_fixtures_gsf <- function() {
             mu_s = log(c(0.6, 0.4)),
             mu_g = log(c(0.25, 0.35)),
             mu_b = log(c(60, 50)),
-            a_phi = c(15, 15),
-            b_phi = c(15, 15),
+            mu_phi = qlogis(c(0.4, 0.6)),
             omega_b = 0.2,
             omega_s = 0.2,
-            omega_g = 0.2
+            omega_g = 0.2,
+            omega_phi = 0.2
         ),
         .silent = TRUE
     )
@@ -53,11 +53,11 @@ set_fixtures_gsf <- function() {
             mu_bsld = prior_normal(log(60), 0.5),
             mu_ks = prior_normal(log(0.6), 0.5),
             mu_kg = prior_normal(log(0.3), 0.5),
+            mu_phi = prior_normal(plogis(0.5), 0.5),
             omega_bsld = prior_lognormal(log(0.2), 0.5),
             omega_ks = prior_lognormal(log(0.2), 0.5),
             omega_kg = prior_lognormal(log(0.2), 0.5),
-            a_phi = prior_lognormal(log(15), 0.5),
-            b_phi = prior_lognormal(log(15), 0.5),
+            omega_phi = prior_lognormal(log(0.2), 0.5),
             sigma = prior_lognormal(log(0.01), 0.5),
             centred = TRUE
         ),
@@ -637,7 +637,7 @@ test_that("GridPopulation() works as expected for GSF models", {
     }
 
     samples_df <- as.CmdStanMCMC(fixtures_gsf$mp)$draws(
-        c("lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_bsld", "lm_gsf_a_phi", "lm_gsf_b_phi"),
+        c("lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_bsld", "lm_gsf_mu_phi"),
         format = "draws_df"
     ) |>
         dplyr::as_tibble(.name_repair = make.names) |>
@@ -649,16 +649,14 @@ test_that("GridPopulation() works as expected for GSF models", {
         time = selected_times
     ) |>
         dplyr::mutate(
-            lm_gsf_phi_1 = lm_gsf_a_phi.1. / (lm_gsf_a_phi.1. + lm_gsf_b_phi.1.),
-            lm_gsf_phi_2 = lm_gsf_a_phi.2. / (lm_gsf_a_phi.2. + lm_gsf_b_phi.2.),
             esld_g1 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), lm_gsf_phi_1
+                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), plogis(lm_gsf_mu_phi.1.)
             ),
             esld_g2 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
+                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), plogis(lm_gsf_mu_phi.2.)
             ),
             esld_g3 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.2.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), lm_gsf_phi_2
+                time, exp(lm_gsf_mu_bsld.2.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), plogis(lm_gsf_mu_phi.2.)
             ),
         ) |>
         dplyr::select(time, esld_g1, esld_g2, esld_g3, sample_id) |>
