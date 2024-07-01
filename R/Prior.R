@@ -8,6 +8,7 @@ NULL
 #' constructors.
 #'
 #' @param centre (`number`)\cr the central point of distribution to shrink sampled values towards
+#' (for most distributions this is the mean or median if the mean is undefined)
 #' @param x ([`Prior`])\cr a prior Distribution
 #' @param object ([`Prior`])\cr a prior Distribution
 #' @param name (`character`)\cr the name of the parameter the prior distribution is for
@@ -58,7 +59,7 @@ NULL
 #' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
 #' the same names as the `paramaters` slot.
 #' @param sample (`function`)\cr a function to sample from the prior distribution.
-#' @param limits (`numeric`)\cr TODO
+#' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
 #' @rdname Prior-class
 Prior <- function(
     parameters,

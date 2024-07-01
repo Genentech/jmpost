@@ -34,7 +34,7 @@ the same names as the \code{paramaters} slot.}
 
 \item{sample}{(\code{function})\cr a function to sample from the prior distribution.}
 
-\item{limits}{(\code{numeric})\cr TODO}
+\item{limits}{(\code{numeric})\cr the lower and upper limits for a truncated distribution}
 }
 \description{
 Specifies the prior distribution in a Stan Model

@@ -4,7 +4,8 @@
 \alias{Prior-Shared}
 \title{\code{Prior} Function Arguments}
 \arguments{
-\item{centre}{(\code{number})\cr the central point of distribution to shrink sampled values towards}
+\item{centre}{(\code{number})\cr the central point of distribution to shrink sampled values towards
+(for most distributions this is the mean or median if the mean is undefined)}
 
 \item{x}{(\code{\link{Prior}})\cr a prior Distribution}
 
