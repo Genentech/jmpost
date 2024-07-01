@@ -15,7 +15,8 @@ NULL
 #' @param omega_b (`number`)\cr the baseline value standard deviation.
 #' @param omega_s (`number`)\cr the shrinkage rate standard deviation.
 #' @param omega_g (`number`)\cr the growth rate standard deviation.
-#' @param omega_phi (`number`)\cr the proportion of cells affected by the treatment standard deviation.
+#' @param omega_phi (`number`)\cr for the standard deviation of the proportion of cells
+#' affected by the treatment `omega_phi`.
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.

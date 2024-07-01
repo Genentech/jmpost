@@ -35,8 +35,8 @@ LongitudinalGSF(
 
 \item{omega_kg}{(\code{Prior})\cr for the growth rate standard deviation \code{omega_kg}.}
 
-\item{omega_phi}{(\code{Prior})\cr for the proportion of cells affected by the
-treatment standard deviation \code{omega_phi}.}
+\item{omega_phi}{(\code{Prior})\cr for the standard deviation of the proportion of cells
+affected by the treatment \code{omega_phi}.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
 

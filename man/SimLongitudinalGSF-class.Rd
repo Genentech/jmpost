@@ -43,7 +43,8 @@ SimLongitudinalGSF(
 
 \item{omega_g}{(\code{number})\cr the growth rate standard deviation.}
 
-\item{omega_phi}{(\code{number})\cr the proportion of cells affected by the treatment standard deviation.}
+\item{omega_phi}{(\code{number})\cr for the standard deviation of the proportion of cells
+affected by the treatment \code{omega_phi}.}
 
 \item{link_dsld}{(\code{number})\cr the link coefficient for the derivative contribution.}
 

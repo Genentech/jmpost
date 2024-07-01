@@ -36,8 +36,8 @@ NULL
 #' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
 #' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
 #' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
-#' @param omega_phi (`Prior`)\cr for the proportion of cells affected by the
-#' treatment standard deviation `omega_phi`.
+#' @param omega_phi (`Prior`)\cr for the standard deviation of the proportion of cells
+#' affected by the treatment `omega_phi`.
 #'
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
 #'
