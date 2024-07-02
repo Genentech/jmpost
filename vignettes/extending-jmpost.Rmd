@@ -577,11 +577,11 @@ the `SimLongitudinalGSF` class is implemented:
         mu_s = "numeric",
         mu_g = "numeric",
         mu_b = "numeric",
-        a_phi = "numeric",
-        b_phi = "numeric",
+        mu_phi = "numeric",
         omega_b = "numeric",
         omega_s = "numeric",
         omega_g = "numeric",
+        omega_phi = "numeric",
         link_dsld = "numeric",
         link_ttg = "numeric",
         link_identity = "numeric"
@@ -595,11 +595,11 @@ SimLongitudinalGSF <- function(
     mu_s = log(c(0.6, 0.4)),
     mu_g = log(c(0.25, 0.35)),
     mu_b = log(60),
-    a_phi = c(4, 6),
-    b_phi = c(4, 6),
+    mu_phi = qlogis(c(0.4, 0.6)),
     omega_b = 0.2,
     omega_s = 0.2,
     omega_g = 0.2,
+    omega_phi = 0.2,
     link_dsld = 0,
     link_ttg = 0,
     link_identity = 0
@@ -610,11 +610,11 @@ SimLongitudinalGSF <- function(
         mu_s = mu_s,
         mu_g = mu_g,
         mu_b = mu_b,
-        a_phi = a_phi,
-        b_phi = b_phi,
+        mu_phi = mu_phi,
         omega_b = omega_b,
         omega_s = omega_s,
         omega_g = omega_g,
+        omega_phi = omega_phi,
         link_dsld = link_dsld,
         link_ttg = link_ttg,
         link_identity = link_identity
@@ -628,7 +628,12 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
         dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), object@mu_s[.data$arm_idx], object@omega_s)) |>
         dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g)) |>
-        dplyr::mutate(psi_phi = stats::rbeta(dplyr::n(), object@a_phi[.data$arm_idx], object@b_phi[.data$arm_idx]))
+        dplyr::mutate(psi_phi_logit = stats::rnorm(
+            dplyr::n(),
+            object@mu_phi[.data$arm_idx],
+            object@omega_phi
+        )) |>
+        dplyr::mutate(psi_phi = stats::plogis(psi_phi_logit))
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
 

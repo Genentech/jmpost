@@ -6,11 +6,11 @@ test_that("SimLongitudinalGSF works as expected", {
         mu_b = log(c(60, 90)),
         mu_s = log(c(0.6, 0.4)),
         mu_g = log(c(0.25, 0.35)),
+        mu_phi = qlogis(c(0.4, 0.6)),
         omega_b = 0.000000001,
         omega_s = 0.000000001,
         omega_g = 0.000000001,
-        a_phi = c(99999999, 11111111),
-        b_phi = c(11111111, 99999999),
+        omega_phi = 0.000000001,
         link_dsld = 0,
         link_ttg = 0,
         link_identity = 0
@@ -29,7 +29,7 @@ test_that("SimLongitudinalGSF works as expected", {
     expect_equal(res_subs$psi_b, c(60, 60, 90), tolerance = 0.00001)
     expect_equal(res_subs$psi_s, c(0.6, 0.4, 0.6), tolerance = 0.00001)
     expect_equal(res_subs$psi_g, c(0.25, 0.35, 0.25), tolerance = 0.0001)
-    expect_equal(res_subs$psi_phi, c(0.9, 0.1, 0.9), tolerance = 0.01)
+    expect_equal(res_subs$psi_phi, c(0.4, 0.6, 0.4), tolerance = 0.01)
     expect_equal(nrow(res_subs), nrow(subs))
     expect_equal(
         names(res_subs),
