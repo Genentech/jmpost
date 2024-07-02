@@ -57,12 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -402,7 +396,7 @@ b_i e^{g_i t_{ij}} &amp; \text{if } t_{ij}\lt 0
 b_i &amp;\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &amp;\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &amp;\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-\phi &amp;\sim \text{Beta}(a_{\phi k(i)}, b_{\phi k(i)})
+\phi_i &amp;\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_\phi)
 \end{align*}
 \]</span></p>
 <p>Where:</p>
@@ -458,10 +452,13 @@ alternative formulation is used: <span class="math display">\[
 b_i &amp;= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
 s_i &amp;= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
 g_i &amp;= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\phi_i &amp;= \text{logistic}(\mu_{gk(i)} + \omega_\phi * \eta_{\phi i})
+\\
 \\
 \eta_{b i} &amp;\sim  N(0, 1)\\
 \eta_{s i} &amp;\sim   N(0, 1)  \\
 \eta_{g i} &amp;\sim   N(0, 1)  \\
+\eta_{\phi i} &amp;\sim   N(0, 1)  \\
 \end{align*}
 \]</span></p>
 <p>Where: * <span class="math inline">\(\eta_{\theta i}\)</span> is a
@@ -515,11 +512,11 @@ G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &amp;= log(g_i)
 <div class="section level4">
 <h4 id="population-quantities-1">Population Quantities<a class="anchor" aria-label="anchor" href="#population-quantities-1"></a>
 </h4>
-<p>Note that when generating population quantities for the <span class="math inline">\(b\)</span>, <span class="math inline">\(s\)</span>
-and <span class="math inline">\(g\)</span> parameters the median of the
-distribution is used. This is because this has the same interpretation
-as using a non-centred parameterisation and setting the “random effects”
-term to be 0.</p>
+<p>Note that when generating population quantities for the <span class="math inline">\(b\)</span>, <span class="math inline">\(s\)</span>, <span class="math inline">\(g\)</span>
+and <span class="math inline">\(\phi\)</span> parameters the median of
+the distribution is used. This is because this has the same
+interpretation as using a non-centred parameterisation and setting the
+“random effects” term to be 0.</p>
 </div>
 </div>
 <div class="section level3">

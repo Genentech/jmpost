@@ -35,12 +35,6 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome."><meta property
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -80,11 +74,11 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.</p>
 <span>  mu_bsld <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  mu_ks <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  mu_kg <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.3</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  mu_phi <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">qlogis</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  omega_bsld <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  omega_ks <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  omega_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  a_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  b_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  omega_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  sigma <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  centred <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -104,6 +98,10 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.</p>
 <dd><p>(<code>Prior</code>)<br> for the mean growth rate <code>mu_kg</code>.</p></dd>
 
 
+<dt>mu_phi</dt>
+<dd><p>(<code>Prior</code>)<br> for the mean proportion of cells affected by the treatment <code>mu_phi</code>.</p></dd>
+
+
 <dt>omega_bsld</dt>
 <dd><p>(<code>Prior</code>)<br> for the baseline value standard deviation <code>omega_bsld</code>.</p></dd>
 
@@ -116,12 +114,9 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.</p>
 <dd><p>(<code>Prior</code>)<br> for the growth rate standard deviation <code>omega_kg</code>.</p></dd>
 
 
-<dt>a_phi</dt>
-<dd><p>(<code>Prior</code>)<br> for the alpha parameter for the fraction of cells that respond to treatment.</p></dd>
-
-
-<dt>b_phi</dt>
-<dd><p>(<code>Prior</code>)<br> for the beta parameter for the fraction of cells that respond to treatment.</p></dd>
+<dt>omega_phi</dt>
+<dd><p>(<code>Prior</code>)<br> for the standard deviation of the proportion of cells
+affected by the treatment <code>omega_phi</code>.</p></dd>
 
 
 <dt>sigma</dt>

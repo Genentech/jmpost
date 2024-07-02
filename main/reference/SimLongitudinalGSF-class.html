@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -79,11 +73,11 @@
 <span>  mu_s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  mu_g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.35</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  mu_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span>
-<span>  a_phi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span>  b_phi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  mu_phi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">qlogis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  omega_b <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  omega_s <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  omega_g <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  omega_phi <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  link_dsld <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  link_ttg <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  link_identity <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -102,23 +96,19 @@
 
 
 <dt>mu_s</dt>
-<dd><p>(<code>numeric</code>)<br> the mean shrinkage rates for the two treatment arms.</p></dd>
+<dd><p>(<code>numeric</code>)<br> the mean shrinkage rates.</p></dd>
 
 
 <dt>mu_g</dt>
-<dd><p>(<code>numeric</code>)<br> the mean growth rates for the two treatment arms.</p></dd>
+<dd><p>(<code>numeric</code>)<br> the mean growth rates.</p></dd>
 
 
 <dt>mu_b</dt>
-<dd><p>(<code>numeric</code>)<br> the mean baseline values for the two treatment arms.</p></dd>
+<dd><p>(<code>numeric</code>)<br> the mean baseline values.</p></dd>
 
 
-<dt>a_phi</dt>
-<dd><p>(<code>number</code>)<br> the alpha parameter for the fraction of cells that respond to treatment.</p></dd>
-
-
-<dt>b_phi</dt>
-<dd><p>(<code>number</code>)<br> the beta parameter for the fraction of cells that respond to treatment.</p></dd>
+<dt>mu_phi</dt>
+<dd><p>(<code>numeric</code>)<br> the mean proportion of cells affected by the treatment</p></dd>
 
 
 <dt>omega_b</dt>
@@ -131,6 +121,11 @@
 
 <dt>omega_g</dt>
 <dd><p>(<code>number</code>)<br> the growth rate standard deviation.</p></dd>
+
+
+<dt>omega_phi</dt>
+<dd><p>(<code>number</code>)<br> for the standard deviation of the proportion of cells
+affected by the treatment <code>omega_phi</code>.</p></dd>
 
 
 <dt>link_dsld</dt>
@@ -169,6 +164,10 @@
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 
+<dt><code>mu_phi</code></dt>
+<dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
+
+
 <dt><code>omega_b</code></dt>
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
@@ -181,11 +180,7 @@
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 
-<dt><code>a_phi</code></dt>
-<dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
-
-
-<dt><code>b_phi</code></dt>
+<dt><code>omega_phi</code></dt>
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 
