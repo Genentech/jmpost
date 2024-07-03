@@ -90,7 +90,7 @@ test_that("intial values for fixed distributions gives valid values", {
     ivs <- initialValues(gsfmodel, n_chains = 100)
 
     for (values in ivs) {
-        expect_true(values$lm_gsf_psi_phi > 0 & values$lm_gsf_psi_phi < 1)
+        expect_true(plogis(values$lm_gsf_psi_phi_logit) > 0 & plogis(values$lm_gsf_psi_phi_logit) < 1)
         expect_true(values$lm_gsf_psi_bsld > 0)
         expect_true(values$lm_gsf_psi_ks > 0)
         expect_true(values$lm_gsf_psi_kg > 0)

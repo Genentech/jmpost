@@ -31,15 +31,15 @@ NULL
 #' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
 #' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
 #' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
+#' @param mu_phi (`Prior`)\cr for the mean proportion of cells affected by the treatment `mu_phi`.
 #'
 #' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
 #' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
 #' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
+#' @param omega_phi (`Prior`)\cr for the standard deviation of the proportion of cells
+#' affected by the treatment `omega_phi`.
 #'
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
-#'
-#' @param a_phi (`Prior`)\cr for the alpha parameter for the fraction of cells that respond to treatment.
-#' @param b_phi (`Prior`)\cr for the beta parameter for the fraction of cells that respond to treatment.
 #'
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
 #'
@@ -49,13 +49,12 @@ LongitudinalGSF <- function(
     mu_bsld = prior_normal(log(60), 1),
     mu_ks = prior_normal(log(0.5), 1),
     mu_kg = prior_normal(log(0.3), 1),
+    mu_phi = prior_normal(qlogis(0.5), 1),
 
     omega_bsld = prior_lognormal(log(0.2), 1),
     omega_ks = prior_lognormal(log(0.2), 1),
     omega_kg = prior_lognormal(log(0.2), 1),
-
-    a_phi = prior_lognormal(log(5), 1),
-    b_phi = prior_lognormal(log(5), 1),
+    omega_phi = prior_lognormal(log(0.2), 1),
 
     sigma = prior_lognormal(log(0.1), 1),
 
@@ -71,8 +70,7 @@ LongitudinalGSF <- function(
     omega_bsld <- set_limits(omega_bsld, lower = 0)
     omega_ks <- set_limits(omega_ks, lower = 0)
     omega_kg <- set_limits(omega_kg, lower = 0)
-    a_phi <- set_limits(a_phi, lower = 0)
-    b_phi <- set_limits(b_phi, lower = 0)
+    omega_phi <- set_limits(omega_phi, lower = 0)
     sigma <- set_limits(sigma, lower = 0)
 
 
@@ -80,19 +78,12 @@ LongitudinalGSF <- function(
         Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
         Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
         Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
+        Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
 
         Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
         Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
         Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
-
-        Parameter(name = "lm_gsf_a_phi", prior = a_phi, size = "n_arms"),
-        Parameter(name = "lm_gsf_b_phi", prior = b_phi, size = "n_arms"),
-
-        Parameter(
-            name = "lm_gsf_psi_phi",
-            prior = prior_init_only(prior_beta(median(a_phi), median(b_phi))),
-            size = "n_subjects"
-        ),
+        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
@@ -114,13 +105,19 @@ LongitudinalGSF <- function(
                 name = "lm_gsf_psi_kg",
                 prior = prior_init_only(prior_lognormal(median(mu_kg), median(omega_kg))),
                 size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_gsf_psi_phi_logit",
+                prior = prior_init_only(prior_normal(median(mu_phi), median(omega_phi))),
+                size = "n_subjects"
             )
         )
     } else {
         list(
             Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
             Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects")
+            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects"),
+            Parameter(name = "lm_gsf_eta_tilde_phi", prior = prior_std_normal(), size = "n_subjects")
         )
     }
     parameters <- append(parameters, parameters_extra)
