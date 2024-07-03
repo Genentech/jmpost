@@ -33,12 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -73,7 +67,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Prior</span><span class="op">(</span><span class="va">parameters</span>, <span class="va">display</span>, <span class="va">repr_model</span>, <span class="va">repr_data</span>, <span class="va">init</span>, <span class="va">validation</span>, <span class="va">sample</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Prior</span><span class="op">(</span></span>
+<span>  <span class="va">parameters</span>,</span>
+<span>  <span class="va">display</span>,</span>
+<span>  <span class="va">repr_model</span>,</span>
+<span>  <span class="va">repr_data</span>,</span>
+<span>  <span class="va">centre</span>,</span>
+<span>  <span class="va">validation</span>,</span>
+<span>  <span class="va">sample</span>,</span>
+<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="cn">Inf</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,8 +97,8 @@
 <dd><p>(<code>string</code>)<br> the Stan code representation for the data block.</p></dd>
 
 
-<dt>init</dt>
-<dd><p>(<code>numeric</code>)<br> the initial value.</p></dd>
+<dt>centre</dt>
+<dd><p>(<code>numeric</code>)<br> the central point of distribution to shrink sampled values towards</p></dd>
 
 
 <dt>validation</dt>
@@ -105,6 +108,10 @@ the same names as the <code>paramaters</code> slot.</p></dd>
 
 <dt>sample</dt>
 <dd><p>(<code>function</code>)<br> a function to sample from the prior distribution.</p></dd>
+
+
+<dt>limits</dt>
+<dd><p>(<code>numeric</code>)<br> the lower and upper limits for a truncated distribution</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -123,7 +130,7 @@ the same names as the <code>paramaters</code> slot.</p></dd>
 <dd><p>(<code>string</code>)<br> See arguments.</p></dd>
 
 
-<dt><code>init</code></dt>
+<dt><code>centre</code></dt>
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 
@@ -137,6 +144,10 @@ the same names as the <code>paramaters</code> slot.</p></dd>
 
 <dt><code>sample</code></dt>
 <dd><p>(<code>function</code>)<br> See arguments.</p></dd>
+
+
+<dt><code>limits</code></dt>
+<dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 
 </dl></div>
