@@ -1,4 +1,7 @@
 
+test_data_1 <- ensure_test_data_1()
+
+
 test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
 
     #
@@ -11,7 +14,6 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     # related to extracting the predicted values & the time & event data are working
     # as expected.
     #
-    ensure_test_data_1()
 
     dat_os <- test_data_1$dat_os
     mp <- test_data_1$jsamples

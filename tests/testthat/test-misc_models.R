@@ -1,10 +1,10 @@
 
+test_data_1 <- ensure_test_data_1()
 
 test_that("Longitudinal Model doesn't print sampler rejection messages", {
     # These rejections typically happen when the sampler samples a
     # 0 value for the variance parameter. Sensible initial values +
     # setting near 0 limits (as opposed to 0) should avoid this
-    ensure_test_data_1()
 
     mp <- capture_messages({
         devnull_out <- capture.output({

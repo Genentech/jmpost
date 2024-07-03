@@ -31,7 +31,7 @@ NULL
 #' @export
 LongitudinalRandomSlope <- function(
     intercept = prior_normal(30, 10),
-    slope_mu = prior_normal(0, 15),
+    slope_mu = prior_normal(1, 3),
     slope_sigma = prior_lognormal(0, 1.5),
     sigma = prior_lognormal(0, 1.5)
 ) {
@@ -39,6 +39,10 @@ LongitudinalRandomSlope <- function(
     stan <- StanModule(
         x = "lm-random-slope/model.stan"
     )
+
+    # Apply constriants
+    sigma <- set_limits(sigma, lower = 0)
+    slope_sigma <- set_limits(slope_sigma, lower = 0)
 
     .LongitudinalRandomSlope(
         LongitudinalModel(
@@ -51,7 +55,7 @@ LongitudinalRandomSlope <- function(
                 Parameter(name = "lm_rs_sigma", prior = sigma, size = 1),
                 Parameter(
                     name = "lm_rs_ind_rnd_slope",
-                    prior = prior_init_only(prior_normal(slope_mu@init, slope_sigma@init)),
+                    prior = prior_init_only(prior_normal(median(slope_mu), median(slope_sigma))),
                     size = "n_subjects"
                 )
             )

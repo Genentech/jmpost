@@ -295,3 +295,53 @@ test_that("Quantity models pass the parser", {
     )
     expect_stan_syntax(stanmod)
 })
+
+
+test_that("Can generate valid initial values", {
+
+    pars <- c(
+        "lm_clbr_omega_b", "lm_clbr_omega_g", "lm_clbr_omega_c",
+        "lm_clbr_omega_p", "lm_clbr_sigma", "lm_gsf_sigma"
+    )
+
+    # Defaults work as expected
+    mod <- LongitudinalClaretBruno()
+    vals <- initialValues(mod, n_chains = 1)
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
+
+    # Test all individual parameters throw error if given prior that can't sample
+    # valid value
+    args <- list(
+        omega_b = prior_normal(-200, 1),
+        omega_g = prior_normal(-200, 1),
+        omega_c = prior_normal(-200, 1),
+        omega_p = prior_normal(-200, 1),
+        sigma = prior_normal(-200, 1)
+    )
+    for (n_arg in names(args)) {
+        arg <- args[n_arg]
+        expect_error(
+            {
+                mod <- do.call(LongitudinalClaretBruno, arg)
+                initialValues(mod, n_chains = 1)
+            },
+            regexp = "Unable to generate"
+        )
+    }
+
+    # Test initial values can be found for weird priors that do overlap the valid region
+    mod <- LongitudinalClaretBruno(
+        omega_b = prior_normal(-200, 400),
+        omega_g = prior_gamma(2, 5),
+        omega_c = prior_uniform(-200, 400),
+        omega_p = prior_lognormal(-200, 2),
+        sigma = prior_cauchy(-200, 400)
+    )
+    set.seed(1001)
+    vals <- unlist(initialValues(mod, n_chains = 200))
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
+})

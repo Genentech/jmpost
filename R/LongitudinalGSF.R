@@ -66,6 +66,14 @@ LongitudinalGSF <- function(
         centred = centred
     ))
 
+    # Apply constraints
+    omega_bsld <- set_limits(omega_bsld, lower = 0)
+    omega_ks <- set_limits(omega_ks, lower = 0)
+    omega_kg <- set_limits(omega_kg, lower = 0)
+    omega_phi <- set_limits(omega_phi, lower = 0)
+    sigma <- set_limits(sigma, lower = 0)
+
+
     parameters <- list(
         Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
         Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
@@ -85,22 +93,22 @@ LongitudinalGSF <- function(
         list(
             Parameter(
                 name = "lm_gsf_psi_bsld",
-                prior = prior_init_only(prior_lognormal(mu_bsld@init, omega_bsld@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_bsld), median(omega_bsld))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_ks",
-                prior = prior_init_only(prior_lognormal(mu_ks@init, omega_ks@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_ks), median(omega_ks))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_kg",
-                prior = prior_init_only(prior_lognormal(mu_kg@init, omega_kg@init)),
+                prior = prior_init_only(prior_lognormal(median(mu_kg), median(omega_kg))),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_phi_logit",
-                prior = prior_init_only(prior_normal(mu_phi@init, omega_phi@init)),
+                prior = prior_init_only(prior_normal(median(mu_phi), median(omega_phi))),
                 size = "n_subjects"
             )
         )

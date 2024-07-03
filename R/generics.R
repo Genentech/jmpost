@@ -470,3 +470,18 @@ as_formula <- function(x, ...) {
 as_formula.default <- function(x, ...) {
     as.formula(x, ...)
 }
+
+
+#' Set Constraints
+#'
+#' Applies constraints to a prior distribution to ensure any sampled numbers
+#' from the distribution fall within the constraints
+#'
+#' @param object (`Prior`)\cr a prior distribution to apply constraints to
+#' @param lower (`numeric`)\cr lower constraint boundary
+#' @param upper (`numeric`)\cr upper constraint boundary
+#'
+#' @export
+set_limits <- function(object, lower = -Inf, upper = Inf) {
+    UseMethod("set_limits")
+}
