@@ -42,6 +42,7 @@ reference:
       - SimLongitudinal
       - SimLongitudinalGSF
       - SimLongitudinalSteinFojo
+      - SimLongitudinalClaretBruno
       - SimLongitudinalRandomSlope
       - SimSurvival
       - SimSurvivalLogLogistic
@@ -69,6 +70,7 @@ reference:
       - LongitudinalRandomSlope
       - LongitudinalGSF
       - LongitudinalSteinFojo
+      - LongitudinalClaretBruno
       - LongitudinalModel
   
   - title: Survival Model Specification
@@ -141,6 +143,7 @@ reference:
       - as.StanModule.JointModel
       - as.StanModule.Link
       - as.StanModule.LinkComponent
+      - as.StanModule.JointModelSamples
       - as.character.Parameter
       - as.character.Prior
       - show-object
@@ -171,6 +174,7 @@ reference:
       - enableGQ
       - as_formula
       - getPredictionNames
+      - set_limits
   
   - title: Promises
     contents:

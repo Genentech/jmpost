@@ -11,11 +11,11 @@ LongitudinalGSF(
   mu_bsld = prior_normal(log(60), 1),
   mu_ks = prior_normal(log(0.5), 1),
   mu_kg = prior_normal(log(0.3), 1),
+  mu_phi = prior_normal(qlogis(0.5), 1),
   omega_bsld = prior_lognormal(log(0.2), 1),
   omega_ks = prior_lognormal(log(0.2), 1),
   omega_kg = prior_lognormal(log(0.2), 1),
-  a_phi = prior_lognormal(log(5), 1),
-  b_phi = prior_lognormal(log(5), 1),
+  omega_phi = prior_lognormal(log(0.2), 1),
   sigma = prior_lognormal(log(0.1), 1),
   centred = FALSE
 )
@@ -27,15 +27,16 @@ LongitudinalGSF(
 
 \item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{mu_kg}.}
 
+\item{mu_phi}{(\code{Prior})\cr for the mean proportion of cells affected by the treatment \code{mu_phi}.}
+
 \item{omega_bsld}{(\code{Prior})\cr for the baseline value standard deviation \code{omega_bsld}.}
 
 \item{omega_ks}{(\code{Prior})\cr for the shrinkage rate standard deviation \code{omega_ks}.}
 
 \item{omega_kg}{(\code{Prior})\cr for the growth rate standard deviation \code{omega_kg}.}
 
-\item{a_phi}{(\code{Prior})\cr for the alpha parameter for the fraction of cells that respond to treatment.}
-
-\item{b_phi}{(\code{Prior})\cr for the beta parameter for the fraction of cells that respond to treatment.}
+\item{omega_phi}{(\code{Prior})\cr for the standard deviation of the proportion of cells
+affected by the treatment \code{omega_phi}.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
 
@@ -51,6 +52,7 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.
 \item \code{\link[=linkDSLD]{linkDSLD()}}
 \item \code{\link[=linkTTG]{linkTTG()}}
 \item \code{\link[=linkIdentity]{linkIdentity()}}
+\item \code{\link[=linkGrowth]{linkGrowth()}}
 }
 }
 

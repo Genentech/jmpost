@@ -44,10 +44,11 @@ NULL
 #' Write the Stan code for a Stan module.
 #'
 #' @param object the module.
-#' @param file_path (`string`)\cr output file.
+#' @param destination (`character` or  `connection`)\cr Where to write stan code to.
+#' @param ... Additional arguments
 #'
 #' @export
-write_stan <- function(object, file_path) {
+write_stan <- function(object, destination, ...) {
     UseMethod("write_stan")
 }
 
@@ -468,4 +469,19 @@ as_formula <- function(x, ...) {
 #' @export
 as_formula.default <- function(x, ...) {
     as.formula(x, ...)
+}
+
+
+#' Set Constraints
+#'
+#' Applies constraints to a prior distribution to ensure any sampled numbers
+#' from the distribution fall within the constraints
+#'
+#' @param object (`Prior`)\cr a prior distribution to apply constraints to
+#' @param lower (`numeric`)\cr lower constraint boundary
+#' @param upper (`numeric`)\cr upper constraint boundary
+#'
+#' @export
+set_limits <- function(object, lower = -Inf, upper = Inf) {
+    UseMethod("set_limits")
 }

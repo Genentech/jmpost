@@ -64,11 +64,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     skip_if_not(is_full_test())
 
-    set.seed(7143)
+    set.seed(7743)
     jlist <- SimJointData(
         design = list(
-            SimGroup(80, "Arm-A", "Study-X"),
-            SimGroup(100, "Arm-B", "Study-X")
+            SimGroup(120, "Arm-A", "Study-X"),
+            SimGroup(140, "Arm-B", "Study-X")
         ),
         survival = SimSurvivalExponential(
             lambda = 1 / (400 / 365),
@@ -88,11 +88,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             mu_s = log(c(0.6, 0.4)),
             mu_g = log(c(0.25, 0.35)),
             mu_b = log(60),
-            a_phi = c(20, 15),
-            b_phi = c(15, 20),
+            mu_phi = qlogis(c(0.4, 0.6)),
             omega_b = 0.2,
             omega_s = 0.2,
             omega_g = 0.2,
+            omega_phi = 0.2,
             link_dsld = 0.1,
             link_ttg = 0.2,
             link_identity = 0
@@ -122,11 +122,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             mu_bsld = prior_normal(log(60), 1),
             mu_ks = prior_normal(log(0.6), 1),
             mu_kg = prior_normal(log(0.3), 1),
+            mu_phi = prior_normal(qlogis(0.5), 0.5),
             omega_bsld = prior_lognormal(log(0.2), 1),
             omega_ks = prior_lognormal(log(0.2), 1),
             omega_kg = prior_lognormal(log(0.2), 1),
-            a_phi = prior_lognormal(log(18), 1),
-            b_phi = prior_lognormal(log(18), 1),
+            omega_phi = prior_lognormal(log(0.2), 1),
             sigma = prior_lognormal(log(0.01), 1),
             centred = TRUE
         ),
@@ -147,7 +147,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
                 iter_warmup = 400,
                 iter_sampling = 800,
                 chains = 2,
-                refresh = 0,
+                refresh = 200,
                 parallel_chains = 2
             )
         })
@@ -189,11 +189,84 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "lm_gsf_a_phi", "lm_gsf_b_phi", "sm_exp_lambda")
+        c("link_dsld", "link_ttg", "sm_exp_lambda", "lm_gsf_mu_phi")
     )
 
-    true_values <- c(0.1, 0.2, 20, 15, 15, 20, 1 / (1 / (400 / 365)))
+    true_values <- c(0.1, 0.2, 1 / (1 / (400 / 365)), qlogis(c(0.4, 0.6)))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
+})
+
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalGSF(centred = FALSE)),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+})
+
+
+test_that("Can generate valid initial values", {
+
+    pars <- c(
+        "lm_gsf_omega_bsld", "lm_gsf_omega_ks", "lm_gsf_omega_kg",
+        "lm_gsf_a_phi", "lm_gsf_b_phi", "lm_gsf_sigma"
+    )
+
+    # Defaults work as expected
+    mod <- LongitudinalGSF()
+    vals <- initialValues(mod, n_chains = 1)
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
+
+    # Test all individual parameters throw error if given prior that can't sample
+    # valid value
+    args <- list(
+        omega_bsld = prior_normal(-200, 1),
+        omega_ks = prior_normal(-200, 1),
+        omega_kg = prior_normal(-200, 1),
+        omega_phi = prior_normal(-200, 1),
+        sigma = prior_normal(-200, 1)
+    )
+    for (n_arg in names(args)) {
+        arg <- args[n_arg]
+        expect_error(
+            {
+                mod <- do.call(LongitudinalGSF, arg)
+                initialValues(mod, n_chains = 1)
+            },
+            regexp = "Unable to generate"
+        )
+    }
+
+    # Test initial values can be found for weird priors that do overlap the valid region
+    mod <- LongitudinalGSF(
+        omega_bsld = prior_normal(-200, 400),
+        omega_ks = prior_gamma(2, 5),
+        omega_kg = prior_uniform(-200, 400),
+        omega_phi = prior_lognormal(-200, 2),
+        sigma = prior_cauchy(-200, 400)
+    )
+    set.seed(1001)
+    vals <- unlist(initialValues(mod, n_chains = 200))
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
 })

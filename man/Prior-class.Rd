@@ -7,7 +7,16 @@
 \alias{Prior}
 \title{Prior Object and Constructor Function}
 \usage{
-Prior(parameters, display, repr_model, repr_data, init, validation, sample)
+Prior(
+  parameters,
+  display,
+  repr_model,
+  repr_data,
+  centre,
+  validation,
+  sample,
+  limits = c(-Inf, Inf)
+)
 }
 \arguments{
 \item{parameters}{(\code{list})\cr the prior distribution parameters.}
@@ -18,12 +27,14 @@ Prior(parameters, display, repr_model, repr_data, init, validation, sample)
 
 \item{repr_data}{(\code{string})\cr the Stan code representation for the data block.}
 
-\item{init}{(\code{numeric})\cr the initial value.}
+\item{centre}{(\code{numeric})\cr the central point of distribution to shrink sampled values towards}
 
 \item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
 
 \item{sample}{(\code{function})\cr a function to sample from the prior distribution.}
+
+\item{limits}{(\code{numeric})\cr the lower and upper limits for a truncated distribution}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -37,13 +48,15 @@ Specifies the prior distribution in a Stan Model
 
 \item{\code{repr_data}}{(\code{string})\cr See arguments.}
 
-\item{\code{init}}{(\code{numeric})\cr See arguments.}
+\item{\code{centre}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{validation}}{(\code{list})\cr See arguments.}
 
 \item{\code{display}}{(\code{string})\cr See arguments.}
 
 \item{\code{sample}}{(\code{function})\cr See arguments.}
+
+\item{\code{limits}}{(\code{numeric})\cr See arguments.}
 }}
 
 \seealso{

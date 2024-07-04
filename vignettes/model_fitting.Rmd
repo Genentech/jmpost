@@ -237,7 +237,7 @@ It is always possible to read out the Stan code that is contained in the
 
 ```{r debug_stan}
 tmp <- tempfile()
-write_stan(simple_model, file_path = tmp)
+write_stan(simple_model, destination = tmp)
 first_part <- head(readLines(tmp), 10)
 cat(paste(first_part, collapse = "\n"))
 ```
@@ -462,3 +462,6 @@ in a vector of the same length as the number of covariates.
 That is, if you are using a `prior_cauchy(0, 1)` prior for a parameter that should be `>0`
 then you will need to manually set the initial value (as described above) to ensure that it is a
 valid value.
+- For constrained parameters (e.g. variance parameters that must be $> 0$) `initialValues()`
+will continuously sample and discard initial values until it generates one that meet the constraints.
+If after 100 attempts no valid initial value has been found then it will throw an error. 

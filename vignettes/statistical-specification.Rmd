@@ -114,7 +114,7 @@ where:
 ### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
 $$
-G(t \mid \mu_0, s_i) = s_i
+G(t_{ij} \mid \mu_0, s_i) = s_i
 $$
 
 Accessible via `linkDSLD()` & `linkGrowth()`
@@ -124,7 +124,7 @@ Accessible via `linkDSLD()` & `linkGrowth()`
 
 $$
 \begin{align*}
-G(t \mid \mu_0, s_i) = \mu_0 + s_i t
+G(t_{ij} \mid \mu_0, s_i) = \mu_0 + s_i t_{ij}
 \end{align*}
 $$
 
@@ -139,8 +139,8 @@ y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
 \\
 SLD_{ij} &=
 \begin{cases}
-b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t\geq 0 \\
-b_i e^{g_i t_{ij}} & \text{if } t\lt 0
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\\\
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
@@ -187,9 +187,9 @@ Where:
 
 
 $$
-G(t \mid b_i, s_i, g_i) = \begin{cases}
-b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) & \text{if } t\geq 0 \\
-b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
+G(t_{ij} \mid b_i, s_i, g_i) = \begin{cases}
+b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) & \text{if } t_{ij}\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}
 $$
 
@@ -201,7 +201,7 @@ Accessible via `linkDSLD()`
 
 
 $$
-G(t \mid b_i, s_i, g_i) = \max \left(
+G(t_{ij} \mid b_i, s_i, g_i) = \max \left(
     \frac{
         \text{log}(s_i) - \text{log}(g_i)
     }{
@@ -218,7 +218,7 @@ Accessible via `linkTTG()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &= SLD_{ij}
+G(t_{ij} \mid b_i, s_i, g_i) &= SLD_{ij}
 \end{align*}
 $$
 
@@ -229,7 +229,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i) &= log(g_i)
+G(t_{ij} \mid b_i, s_i, g_i) &= log(g_i)
 \end{align*}
 $$
 
@@ -251,14 +251,14 @@ $$
 y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &= 
 \begin{cases}
-b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t\geq 0 \\
-b_i e^{g_i t_{ij}} & \text{if } t\lt 0
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\
 \\
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
 s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
 g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-\phi &\sim \text{Beta}(a_{\phi k(i)}, b_{\phi k(i)})
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_\phi)
 \end{align*}
 $$
 
@@ -285,10 +285,12 @@ $$
 b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
 s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
 g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+\phi_i &= \text{logistic}(\mu_{gk(i)} + \omega_\phi * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
 \eta_{g i} &\sim   N(0, 1)  \\
+\eta_{\phi i} &\sim   N(0, 1)  \\
 \end{align*}
 $$
 
@@ -300,9 +302,9 @@ Where:
 
 
 $$
-G(t \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
-b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) & \text{if } t\geq 0 \\
-b_i g_i e^{g_i t_{ij}} & \text{if } t\lt 0
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
+b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) & \text{if } t_{ij}\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}
 $$
 
@@ -314,7 +316,7 @@ Accessible via `linkDSLD()`
 
 
 $$
-G(t \mid b_i, s_i, g_i, \phi_i) = \max \left(
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \max \left(
     \frac{
         \log(s_i) + \log(\phi_i) - \log(g_i) - \log(1-\phi_i)
     }{
@@ -330,7 +332,7 @@ Accessible via `linkTTG()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
 \end{align*}
 $$
 
@@ -341,7 +343,7 @@ Accessible via `linkIdentity()`
 
 $$
 \begin{align*}
-G(t \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
 \end{align*}
 $$
 
@@ -349,7 +351,101 @@ Accessible via `linkGrowth()`
 
 ### Population Quantities
 
-Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
+Note that when generating population quantities for the $b$, $s$, $g$ and $\phi$ parameters the median
+of the distribution is used. This is because this has the same interpretation as using a 
+non-centred parameterisation and setting the "random effects" term to be 0.
+
+
+
+
+## Claret-Bruno Model
+
+
+$$
+\begin{align*}
+y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases} b_i e^{g_i t_{ij}} & 
+\text{if } t_{ij} < 0, \\ 
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+\text{if } t_{ij} \geq 0. \end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_c) \\
+p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_p) \\
+\end{align*}
+$$
+
+Where:
+
+* $i$ is the subject index
+* $j$ is the visit index
+* $y_{ij}$ is the observed tumour measurements
+* $SLD_{ij}$ is the expected sum of longest diameter for subject $i$ at time point $j$
+* $t_{ij}$ is the time since first treatment for subject $i$ at visit $j$
+* $b_i$ is the subject baseline SLD value.
+* $g_i$ is the subject tumour growth rate.
+* $c_i$ is the subject treatment resistance rate.
+* $p_i$ is the subject treatment growth inhibition response.
+* $k(i)$ is the treatment arm index for subject $i$
+* $l(i)$ is the study index for subject $i$
+* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+
+
+### Derivative of the SLD Trajectory Link 
+
+
+$$
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \begin{cases}
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0 \\
+\left(
+    g_i - p_i e^{-c_i t_{ij}} 
+\right)
+SLD_{ij}
+ & \text{if } t_{ij}\geq 0
+\end{cases}
+$$
+
+Accessible via `linkDSLD()`
+
+
+### Time to Growth Link
+
+
+$$
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \max \left(
+    \frac{ln(\frac{p_i}{g_i})}{c_i}, 0
+\right)
+$$
+
+Accessible via `linkTTG()`
+
+
+### Identity Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= SLD_{ij}
+\end{align*}
+$$
+
+Accessible via `linkIdentity()`
+
+### Growth Parameter Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= log(g_i)
+\end{align*}
+$$
+
+Accessible via `linkGrowth()`
+
+### Population Quantities
+
+When generating population quantities for the $b$, $g$, $c$ and $$ parameters the median
 of the distribution is used. This is because this has the same interpretation as using a 
 non-centred parameterisation and setting the "random effects" term to be 0.
 

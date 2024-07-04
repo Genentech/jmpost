@@ -1,4 +1,7 @@
 
+test_data_1 <- ensure_test_data_1()
+
+
 test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
 
     #
@@ -11,7 +14,6 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
     # related to extracting the predicted values & the time & event data are working
     # as expected.
     #
-    ensure_test_data_1()
 
     dat_os <- test_data_1$dat_os
     mp <- test_data_1$jsamples
@@ -118,6 +120,17 @@ test_that("brier score weight matrix is correctly calculated", {
         reverse_km_cen_first = replacefun
     )
     expect_equal(actual, expected)
+})
+
+
+test_that("match_order() works as expected", {
+    # Let v = 8 7 9 7
+    # if we order v we get: 7 7 8 9
+    # to re-construct back to v we'd need index vector: 3 1 4 2
+    expect_equal(
+        match_order(c(8, 7, 9, 7)),
+        c(3, 1, 4, 2)
+    )
 })
 
 

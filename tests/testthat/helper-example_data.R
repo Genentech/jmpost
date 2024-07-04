@@ -1,11 +1,5 @@
 
-test_data_1 <- new.env()
-
 ensure_test_data_1 <- function() {
-
-    if (!is.null(test_data_1$jsamples)) {
-        return(invisible(test_data_1))
-    }
 
     set.seed(739)
     simjdat <- SimJointData(
@@ -74,10 +68,12 @@ ensure_test_data_1 <- function() {
     })
 
 
-    test_data_1$dat_os <- dat_os
-    test_data_1$dat_lm <- dat_lm
-    test_data_1$jmodel <- jm
-    test_data_1$jdata <- jdat
-    test_data_1$jsamples <- mp
-    return(invisible(test_data_1))
+    results <- list(
+        dat_os = dat_os,
+        dat_lm = dat_lm,
+        jmodel = jm,
+        jdata = jdat,
+        jsamples = mp
+    )
+    return(invisible(results))
 }

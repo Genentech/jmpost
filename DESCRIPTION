@@ -25,7 +25,7 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -92,6 +92,7 @@ Collate:
     'Quantities.R'
     'SurvivalQuantities.R'
     'JointModelSamples.R'
+    'LongitudinalClaretBruno.R'
     'LongitudinalGSF.R'
     'LongitudinalQuantities.R'
     'LongitudinalRandomSlope.R'
@@ -103,6 +104,7 @@ Collate:
     'SimGroup.R'
     'SimJointData.R'
     'SimLongitudinal.R'
+    'SimLongitudinalClaretBruno.R'
     'SimLongitudinalGSF.R'
     'SimLongitudinalRandomSlope.R'
     'SimLongitudinalSteinFojo.R'

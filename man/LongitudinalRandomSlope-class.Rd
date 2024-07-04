@@ -9,7 +9,7 @@
 \usage{
 LongitudinalRandomSlope(
   intercept = prior_normal(30, 10),
-  slope_mu = prior_normal(0, 15),
+  slope_mu = prior_normal(1, 3),
   slope_sigma = prior_lognormal(0, 1.5),
   sigma = prior_lognormal(0, 1.5)
 )

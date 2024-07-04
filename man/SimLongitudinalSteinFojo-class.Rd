@@ -79,6 +79,7 @@ Simulate Longitudinal Data from a Stein-Fojo Model
 \seealso{
 Other SimLongitudinal: 
 \code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalGSF-class}},
 \code{\link{SimLongitudinalRandomSlope-class}}
 }

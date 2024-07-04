@@ -1,5 +1,4 @@
 
-
 test_that("LongitudinalSteinFojo works as expected with default arguments", {
     result <- expect_silent(LongitudinalSteinFojo())
     expect_s4_class(result, "LongitudinalSteinFojo")
@@ -87,6 +86,7 @@ test_that("Non-Centralised parameterisation compiles without issues", {
     x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
+
 
 
 
@@ -387,4 +387,76 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
+})
+
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE)),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+})
+
+
+
+test_that("Can generate valid initial values", {
+
+    pars <- c(
+        "lm_gsf_omega_bsld", "lm_gsf_omega_ks", "lm_gsf_omega_kg",
+        "lm_gsf_sigma"
+    )
+
+    # Defaults work as expected
+    mod <- LongitudinalSteinFojo()
+    vals <- initialValues(mod, n_chains = 1)
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
+
+    # Test all individual parameters throw error if given prior that can't sample
+    # valid value
+    args <- list(
+        omega_bsld = prior_normal(-200, 1),
+        omega_ks = prior_normal(-200, 1),
+        omega_kg = prior_normal(-200, 1),
+        sigma = prior_normal(-200, 1)
+    )
+    for (n_arg in names(args)) {
+        arg <- args[n_arg]
+        expect_error(
+            {
+                mod <- do.call(LongitudinalSteinFojo, arg)
+                initialValues(mod, n_chains = 1)
+            },
+            regexp = "Unable to generate"
+        )
+    }
+
+    # Test initial values can be found for weird priors that do overlap the valid region
+    mod <- LongitudinalSteinFojo(
+        omega_bsld = prior_normal(-200, 400),
+        omega_ks = prior_gamma(2, 5),
+        omega_kg = prior_uniform(-200, 400),
+        sigma = prior_cauchy(-200, 400)
+    )
+    set.seed(1001)
+    vals <- unlist(initialValues(mod, n_chains = 200))
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
 })

@@ -13,11 +13,11 @@ SimLongitudinalGSF(
   mu_s = log(c(0.6, 0.4)),
   mu_g = log(c(0.25, 0.35)),
   mu_b = log(60),
-  a_phi = c(4, 6),
-  b_phi = c(4, 6),
+  mu_phi = qlogis(c(0.4, 0.6)),
   omega_b = 0.2,
   omega_s = 0.2,
   omega_g = 0.2,
+  omega_phi = 0.2,
   link_dsld = 0,
   link_ttg = 0,
   link_identity = 0,
@@ -29,21 +29,22 @@ SimLongitudinalGSF(
 
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
-\item{mu_s}{(\code{numeric})\cr the mean shrinkage rates for the two treatment arms.}
+\item{mu_s}{(\code{numeric})\cr the mean shrinkage rates.}
 
-\item{mu_g}{(\code{numeric})\cr the mean growth rates for the two treatment arms.}
+\item{mu_g}{(\code{numeric})\cr the mean growth rates.}
 
-\item{mu_b}{(\code{numeric})\cr the mean baseline values for the two treatment arms.}
+\item{mu_b}{(\code{numeric})\cr the mean baseline values.}
 
-\item{a_phi}{(\code{number})\cr the alpha parameter for the fraction of cells that respond to treatment.}
-
-\item{b_phi}{(\code{number})\cr the beta parameter for the fraction of cells that respond to treatment.}
+\item{mu_phi}{(\code{numeric})\cr the mean proportion of cells affected by the treatment}
 
 \item{omega_b}{(\code{number})\cr the baseline value standard deviation.}
 
 \item{omega_s}{(\code{number})\cr the shrinkage rate standard deviation.}
 
 \item{omega_g}{(\code{number})\cr the growth rate standard deviation.}
+
+\item{omega_phi}{(\code{number})\cr for the standard deviation of the proportion of cells
+affected by the treatment \code{omega_phi}.}
 
 \item{link_dsld}{(\code{number})\cr the link coefficient for the derivative contribution.}
 
@@ -67,15 +68,15 @@ Simulate Longitudinal Data from a GSF Model
 
 \item{\code{mu_b}}{(\code{numeric})\cr See arguments.}
 
+\item{\code{mu_phi}}{(\code{numeric})\cr See arguments.}
+
 \item{\code{omega_b}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{omega_s}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{omega_g}}{(\code{numeric})\cr See arguments.}
 
-\item{\code{a_phi}}{(\code{numeric})\cr See arguments.}
-
-\item{\code{b_phi}}{(\code{numeric})\cr See arguments.}
+\item{\code{omega_phi}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_dsld}}{(\code{numeric})\cr See arguments.}
 
@@ -89,6 +90,7 @@ Simulate Longitudinal Data from a GSF Model
 \seealso{
 Other SimLongitudinal: 
 \code{\link{SimLongitudinal-class}},
+\code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalRandomSlope-class}},
 \code{\link{SimLongitudinalSteinFojo-class}}
 }

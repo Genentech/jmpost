@@ -226,6 +226,7 @@ test_that("Random Slope Model left-censoring works as expected", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(
             intercept = prior_normal(30, 2),
+            slope_mu = prior_normal(1, 2),
             slope_sigma = prior_lognormal(log(0.2), sigma = 0.5),
             sigma = prior_lognormal(log(3), sigma = 0.5)
         )
@@ -294,4 +295,70 @@ test_that("Random Slope Model left-censoring works as expected", {
         pars - group_mean[as.numeric(jlist@survival$arm)]
     )
     expect_gt(lmer_cor, 0.99)
+})
+
+
+test_that("Quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalRandomSlope()),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(1, "A", "B"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+
+    stanmod <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(stanmod)
+})
+
+
+
+test_that("Can generate valid initial values", {
+
+    pars <- c(
+        "lm_rs_slope_sigma", "lm_rs_sigma"
+    )
+
+    # Defaults work as expected
+    mod <- LongitudinalRandomSlope()
+    vals <- initialValues(mod, n_chains = 1)
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
+
+    # Test all individual parameters throw error if given prior that can't sample
+    # valid value
+    args <- list(
+        slope_sigma = prior_normal(-200, 1),
+        sigma = prior_normal(-200, 1)
+    )
+    for (n_arg in names(args)) {
+        arg <- args[n_arg]
+        expect_error(
+            {
+                mod <- do.call(LongitudinalRandomSlope, arg)
+                initialValues(mod, n_chains = 1)
+            },
+            regexp = "Unable to generate"
+        )
+    }
+
+    # Test initial values can be found for weird priors that do overlap the valid region
+    mod <- LongitudinalRandomSlope(
+        slope_sigma = prior_normal(-200, 400),
+        sigma = prior_normal(-200, 400)
+    )
+    set.seed(1001)
+    vals <- unlist(initialValues(mod, n_chains = 200))
+    vals <- vals[names(vals) %in% pars]
+    expect_true(all(vals > 0))
+
 })
