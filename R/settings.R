@@ -18,7 +18,7 @@
 #' By default all initial values are drawn as random sample from the respective prior
 #' distribution with a shrinkage factor towards the mean. That is:
 #' ```
-#' initial_value = prior_sample * prior_shrinkage + (1 - prior_shrinkage) * prior_mean
+#' initial_value = prior_mean * prior_shrinkage + (1 - prior_shrinkage) * prior_sample
 #' ```
 #' This setting controls the shrinkage factor. A value of 0 means no shrinkage (i.e.
 #' pure random draw) whilst a value of 1 means the initial value is just the mean.
