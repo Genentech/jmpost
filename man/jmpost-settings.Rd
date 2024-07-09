@@ -21,7 +21,7 @@ Default = \code{0.5}
 By default all initial values are drawn as random sample from the respective prior
 distribution with a shrinkage factor towards the mean. That is:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{initial_value = prior_sample * prior_shrinkage + (1 - prior_shrinkage) * prior_mean
+\if{html}{\out{<div class="sourceCode">}}\preformatted{initial_value = prior_mean * prior_shrinkage + (1 - prior_shrinkage) * prior_sample
 }\if{html}{\out{</div>}}
 
 This setting controls the shrinkage factor. A value of 0 means no shrinkage (i.e.
