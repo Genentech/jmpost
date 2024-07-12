@@ -182,3 +182,8 @@ linkGrowth.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model
 getPredictionNames.LongitudinalClaretBruno <- function(object, ...) {
     c("b", "g", "c", "p")
 }
+
+#' @export
+enableGQ.LongitudinalClaretBruno <- function(object, ...) {
+    StanModule("lm-claret-bruno/quantities.stan")
+}

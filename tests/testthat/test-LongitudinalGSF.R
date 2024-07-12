@@ -37,7 +37,6 @@ test_that("Centralised parameterisation compiles without issues", {
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
@@ -55,7 +54,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
@@ -119,23 +117,23 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     jm <- JointModel(
         longitudinal = LongitudinalGSF(
-            mu_bsld = prior_normal(log(60), 1),
-            mu_ks = prior_normal(log(0.6), 1),
-            mu_kg = prior_normal(log(0.3), 1),
+            mu_bsld = prior_normal(log(60), 0.4),
+            mu_ks = prior_normal(log(0.6), 0.4),
+            mu_kg = prior_normal(log(0.3), 0.4),
             mu_phi = prior_normal(qlogis(0.5), 0.5),
-            omega_bsld = prior_lognormal(log(0.2), 1),
-            omega_ks = prior_lognormal(log(0.2), 1),
-            omega_kg = prior_lognormal(log(0.2), 1),
-            omega_phi = prior_lognormal(log(0.2), 1),
-            sigma = prior_lognormal(log(0.01), 1),
+            omega_bsld = prior_lognormal(log(0.2), 0.4),
+            omega_ks = prior_lognormal(log(0.2), 0.4),
+            omega_kg = prior_lognormal(log(0.2), 0.4),
+            omega_phi = prior_lognormal(log(0.2), 0.4),
+            sigma = prior_lognormal(log(0.01), 0.4),
             centred = TRUE
         ),
         survival = SurvivalExponential(
-            lambda = prior_lognormal(log(1 / (400 / 365)), 1)
+            lambda = prior_lognormal(log(1 / (400 / 365)), 0.4)
         ),
         link = Link(
-            linkDSLD(),
-            linkTTG()
+            linkDSLD(prior = prior_normal(0.1, 0.2)),
+            linkTTG(prior = prior_normal(0.2, 0.2))
         )
     )
 

@@ -32,7 +32,6 @@ test_that("Centralised parameterisation compiles without issues", {
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(as.character(x))
 })
 
@@ -46,7 +45,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(as.character(x))
 })
 
@@ -65,7 +63,6 @@ test_that("Centralised parameterisation compiles without issues", {
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
@@ -83,7 +80,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
