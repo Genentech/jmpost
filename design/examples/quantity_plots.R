@@ -40,14 +40,14 @@ jlist <- SimJointData(
             1000, 1100
         ) / 365,
         sigma = 0.01,
-        mu_s = c(0.6, 0.4),
-        mu_g = c(0.25, 0.35),
-        mu_b = 60,
-        a_phi = c(20, 15),
-        b_phi = c(15, 20),
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
+        mu_b = log(60),
+        mu_phi = qlogis(c(0.4, 0.6)),
         omega_b = 0.2,
         omega_s = 0.2,
         omega_g = 0.2,
+        omega_phi = 0.2,
         link_dsld = 0,
         link_ttg = 0,
         link_identity = 0
@@ -84,7 +84,7 @@ dat_os <- jlist@survival |>
 jdat <- DataJoint(
     subject = DataSubject(
         data = jlist@survival,
-        subject = "pt",
+        subject = "subject",
         arm = "arm",
         study = "study"
     ),
@@ -101,14 +101,14 @@ jdat <- DataJoint(
 # Define the required model
 jm <- JointModel(
     longitudinal = LongitudinalGSF(
-        mu_bsld = prior_normal(log(60), 1),
-        mu_ks = prior_normal(log(0.6), 1),
-        mu_kg = prior_normal(log(0.3), 1),
-        omega_bsld = prior_lognormal(log(0.2), 1),
-        omega_ks = prior_lognormal(log(0.2), 1),
-        omega_kg = prior_lognormal(log(0.2), 1),
-        a_phi = prior_lognormal(log(18), 1),
-        b_phi = prior_lognormal(log(18), 1),
+        mu_bsld = prior_normal(log(60), 0.5),
+        mu_ks = prior_normal(log(0.6), 0.5),
+        mu_kg = prior_normal(log(0.3), 0.5),
+        mu_phi = prior_normal(0, 0.5),
+        omega_bsld = prior_lognormal(log(0.2), 0.5),
+        omega_ks = prior_lognormal(log(0.2), 0.5),
+        omega_kg = prior_lognormal(log(0.2), 0.5),
+        omega_phi = prior_lognormal(log(0.2), 0.5),
         sigma = prior_lognormal(log(0.01), 1),
         centred = FALSE
     ),
