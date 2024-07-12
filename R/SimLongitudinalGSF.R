@@ -168,7 +168,7 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
             object@mu_phi[.data$arm_idx],
             object@omega_phi
         )) |>
-        dplyr::mutate(psi_phi = stats::plogis(psi_phi_logit))
+        dplyr::mutate(psi_phi = stats::plogis(.data$psi_phi_logit))
 
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
