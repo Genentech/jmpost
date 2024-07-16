@@ -33,7 +33,6 @@ test_that("Centralised parameterisation compiles without issues", {
         c("lm_clbr_ind_b", "lm_clbr_ind_g") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(as.character(x))
 })
 
@@ -47,7 +46,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(as.character(x))
 })
 
@@ -66,7 +64,6 @@ test_that("Centralised parameterisation compiles without issues", {
         c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
@@ -84,7 +81,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         c("lm_clbr_ind_g", "lm_clbr_ind_b") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
-    x@generated_quantities <- ""
     expect_stan_syntax(x)
 })
 
@@ -215,14 +211,16 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     ## Sample from JointModel
     set.seed(663)
     mp <- run_quietly({
-        sampleStanModel(
-            jm,
-            data = jdat,
-            iter_sampling = 1000,
-            iter_warmup = 1000,
-            chains = 2,
-            parallel_chains = 2
-        )
+        suppressWarnings({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_sampling = 1000,
+                iter_warmup = 1000,
+                chains = 2,
+                parallel_chains = 2
+            )
+        })
     })
 
     summary_post <- function(model, vars, exp = FALSE) {

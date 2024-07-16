@@ -43,6 +43,7 @@ NULL
 #'
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
 #'
+#' @importFrom stats qlogis
 #' @export
 LongitudinalGSF <- function(
 
