@@ -1,6 +1,6 @@
 Package: jmpost
 Title: Joint Models for Predicting Overall Survival Trajectories
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
     person("Craig", "Gower-Page", email = "craig.gower-page@roche.com", role = c("aut", "cre")),
     person("Georgios", "Kazantzidis", email = "georgios.kazantzidis@roche.com", role = c("aut")),
