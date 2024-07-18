@@ -87,6 +87,8 @@ reference:
       - linkTTG
       - linkIdentity
       - linkNone
+      - linkGrowth
+      - linkShrinkage
       - Link
       - LinkComponent
       - standard-link-user

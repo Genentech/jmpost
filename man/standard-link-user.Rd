@@ -7,6 +7,7 @@
 \alias{linkDSLD}
 \alias{linkIdentity}
 \alias{linkGrowth}
+\alias{linkShrinkage}
 \title{Standard Links}
 \usage{
 linkNone()
@@ -18,6 +19,8 @@ linkDSLD(prior, model = PromiseLongitudinalModel(), ...)
 linkIdentity(prior, model = PromiseLongitudinalModel(), ...)
 
 linkGrowth(prior, model = PromiseLongitudinalModel(), ...)
+
+linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 }
 \arguments{
 \item{prior}{(\code{\link{Prior}}) \cr A \code{\link{Prior}} object.}
@@ -43,5 +46,7 @@ of the link function is model specific, see
 \item \code{linkIdentity()}: Current SLD value link
 
 \item \code{linkGrowth()}: Growth Parameter link
+
+\item \code{linkShrinkage()}: Shrinkage Parameter link
 
 }}

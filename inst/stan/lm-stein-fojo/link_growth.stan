@@ -2,7 +2,7 @@
 
 functions {
     //
-    // Source - lm-stein/link_growth.stan
+    // Source - lm-stein-fojo/link_growth.stan
     //
     matrix link_growth_contrib(
         matrix time,

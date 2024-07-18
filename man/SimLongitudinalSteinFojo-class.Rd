@@ -19,7 +19,8 @@ SimLongitudinalSteinFojo(
   link_dsld = 0,
   link_ttg = 0,
   link_identity = 0,
-  link_growth = 0
+  link_growth = 0,
+  link_shrinkage = 0
 )
 }
 \arguments{
@@ -45,7 +46,9 @@ SimLongitudinalSteinFojo(
 
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 
-\item{link_growth}{(\code{number})\cr the link coefficient for the growth parameter contribution.}
+\item{link_growth}{(\code{number})\cr the link coefficient for the log-growth parameter contribution.}
+
+\item{link_shrinkage}{(\code{number})\cr the link coefficient for the log-shrinkage parameter contribution.}
 }
 \description{
 Simulate Longitudinal Data from a Stein-Fojo Model
@@ -74,6 +77,8 @@ Simulate Longitudinal Data from a Stein-Fojo Model
 \item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_growth}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{link_shrinkage}}{(\code{numeric})\cr See arguments.}
 }}
 
 \seealso{

@@ -84,6 +84,25 @@ test_that("Non-Centralised parameterisation compiles without issues", {
 })
 
 
+test_that("Can load and compile growth + shrinkage links", {
+    jm <- JointModel(
+        longitudinal = LongitudinalSteinFojo(centred = FALSE),
+        survival = SurvivalWeibullPH(),
+        link = Link(linkShrinkage(), linkGrowth())
+    )
+    expect_true(all(
+        c("link_growth", "link_shrinkage") %in% names(jm@parameters)
+    ))
+    expect_true(
+        grepl("// Source - lm-stein-fojo/link_shrinkage.stan", as.character(jm))
+    )
+    expect_true(
+        grepl("// Source - lm-stein-fojo/link_growth.stan", as.character(jm))
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
+
 
 
 test_that("Can recover known distributional parameters from a SF joint model", {

@@ -20,7 +20,8 @@ NULL
 #' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
 #' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
-#' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
+#' @param link_growth (`number`)\cr the link coefficient for the log-growth parameter contribution.
+#' @param link_shrinkage (`number`)\cr the link coefficient for the log-shrinkage parameter contribution.
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -35,6 +36,7 @@ NULL
 #' @slot link_ttg (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
+#' @slot link_shrinkage (`numeric`)\cr See arguments.
 #' @family SimLongitudinal
 #' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
@@ -54,7 +56,8 @@ NULL
         link_dsld = "numeric",
         link_ttg = "numeric",
         link_identity = "numeric",
-        link_growth = "numeric"
+        link_growth = "numeric",
+        link_shrinkage = "numeric"
     )
 )
 
@@ -74,7 +77,8 @@ SimLongitudinalGSF <- function(
     link_dsld = 0,
     link_ttg = 0,
     link_identity = 0,
-    link_growth = 0
+    link_growth = 0,
+    link_shrinkage = 0
 ) {
     .SimLongitudinalGSF(
         times = times,
@@ -90,7 +94,8 @@ SimLongitudinalGSF <- function(
         link_dsld = link_dsld,
         link_ttg = link_ttg,
         link_identity = link_identity,
-        link_growth = link_growth
+        link_growth = link_growth,
+        link_shrinkage = link_shrinkage
     )
 }
 
@@ -109,7 +114,8 @@ setValidity(
 
         len_1_pars <- c(
             "sigma", "omega_b", "omega_s", "omega_g", "omega_phi",
-            "link_dsld", "link_ttg", "link_identity", "link_growth"
+            "link_dsld", "link_ttg", "link_identity", "link_growth",
+            "link_shrinkage"
         )
         for (par in len_1_pars) {
             if (length(slot(object, par)) != 1) {
@@ -139,7 +145,8 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
                 (object@link_identity * .data$mu_sld) +
-                (object@link_growth * log(.data$psi_g))
+                (object@link_growth * log(.data$psi_g)) +
+                (object@link_shrinkage * log(.data$psi_s))
         )
 }
 

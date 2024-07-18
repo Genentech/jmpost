@@ -188,6 +188,15 @@ linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 }
 
 
+#' @export
+linkShrinkage.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+    LinkComponent(
+        key = "link_shrinkage",
+        stan = StanModule("lm-gsf/link_shrinkage.stan"),
+        prior = prior
+    )
+}
+
 #' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalGSF <- function(object, ...) {
