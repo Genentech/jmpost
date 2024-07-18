@@ -105,4 +105,3 @@ linkShrinkage.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), m
 linkShrinkage.default <- function(prior, model, ...) {
     stop(sprintf("Method `linkShrinkage` is not available for `%s`", class(model)[[1]]))
 }
-
