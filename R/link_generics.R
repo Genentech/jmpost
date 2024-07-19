@@ -90,3 +90,18 @@ linkGrowth.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), mode
 linkGrowth.default <- function(prior, model, ...) {
     stop(sprintf("Method `linkGrowth` is not available for `%s`", class(model)[[1]]))
 }
+
+
+#' @describeIn standard-link-user Shrinkage Parameter link
+#' @export
+linkShrinkage <- function(prior, model = PromiseLongitudinalModel(), ...) {
+    UseMethod("linkShrinkage", model)
+}
+#' @export
+linkShrinkage.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+    PromiseLinkComponent(fun = linkShrinkage, prior = prior, key = "link_shrinkage")
+}
+#' @export
+linkShrinkage.default <- function(prior, model, ...) {
+    stop(sprintf("Method `linkShrinkage` is not available for `%s`", class(model)[[1]]))
+}

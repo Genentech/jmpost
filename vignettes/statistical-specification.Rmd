@@ -236,6 +236,17 @@ $$
 Accessible via `linkGrowth()`
 
 
+### Shrinkage Parameter Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i) &= log(s_i)
+\end{align*}
+$$
+
+Accessible via `linkShrinkage()`
+
+
 ### Population Quantities
 
 Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
@@ -348,6 +359,18 @@ G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
 $$
 
 Accessible via `linkGrowth()`
+
+
+### Shrinkage Parameter Link
+
+$$
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(s_i)
+\end{align*}
+$$
+
+Accessible via `linkShrinkage()`
+
 
 ### Population Quantities
 
