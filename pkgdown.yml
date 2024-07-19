@@ -6,8 +6,8 @@ articles:
   extending-jmpost: extending-jmpost.html
   model_fitting: model_fitting.html
   statistical-specification: statistical-specification.html
-last_built: 2024-07-18T14:51Z
+last_built: 2024-07-19T09:38Z
 urls:
-  reference: https://genentech.github.io/jmpost/latest-tag/reference
-  article: https://genentech.github.io/jmpost/latest-tag/articles
+  reference: https://genentech.github.io/jmpost/main/reference
+  article: https://genentech.github.io/jmpost/main/articles
 
