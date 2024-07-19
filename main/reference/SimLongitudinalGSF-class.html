@@ -33,14 +33,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -89,7 +81,8 @@
 <span>  link_dsld <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  link_ttg <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  link_identity <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  link_growth <span class="op">=</span> <span class="fl">0</span></span>
+<span>  link_growth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  link_shrinkage <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,7 +142,11 @@ affected by the treatment <code>omega_phi</code>.</p></dd>
 
 
 <dt>link_growth</dt>
-<dd><p>(<code>number</code>)<br> the link coefficient for the growth parameter contribution.</p></dd>
+<dd><p>(<code>number</code>)<br> the link coefficient for the log-growth parameter contribution.</p></dd>
+
+
+<dt>link_shrinkage</dt>
+<dd><p>(<code>number</code>)<br> the link coefficient for the log-shrinkage parameter contribution.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -205,6 +202,10 @@ affected by the treatment <code>omega_phi</code>.</p></dd>
 
 
 <dt><code>link_growth</code></dt>
+<dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
+
+
+<dt><code>link_shrinkage</code></dt>
 <dd><p>(<code>numeric</code>)<br> See arguments.</p></dd>
 
 

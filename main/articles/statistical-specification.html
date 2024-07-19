@@ -57,14 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -378,6 +370,16 @@ G(t_{ij} \mid b_i, s_i, g_i) &amp;= log(g_i)
 <p>Accessible via <code><a href="../reference/standard-link-user.html">linkGrowth()</a></code></p>
 </div>
 <div class="section level4">
+<h4 id="shrinkage-parameter-link">Shrinkage Parameter Link<a class="anchor" aria-label="anchor" href="#shrinkage-parameter-link"></a>
+</h4>
+<p><span class="math display">\[
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i) &amp;= log(s_i)
+\end{align*}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-link-user.html">linkShrinkage()</a></code></p>
+</div>
+<div class="section level4">
 <h4 id="population-quantities">Population Quantities<a class="anchor" aria-label="anchor" href="#population-quantities"></a>
 </h4>
 <p>Note that when generating population quantities for the <span class="math inline">\(b\)</span>, <span class="math inline">\(s\)</span>
@@ -516,6 +518,16 @@ G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &amp;= log(g_i)
 \end{align*}
 \]</span></p>
 <p>Accessible via <code><a href="../reference/standard-link-user.html">linkGrowth()</a></code></p>
+</div>
+<div class="section level4">
+<h4 id="shrinkage-parameter-link-1">Shrinkage Parameter Link<a class="anchor" aria-label="anchor" href="#shrinkage-parameter-link-1"></a>
+</h4>
+<p><span class="math display">\[
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &amp;= log(s_i)
+\end{align*}
+\]</span></p>
+<p>Accessible via <code><a href="../reference/standard-link-user.html">linkShrinkage()</a></code></p>
 </div>
 <div class="section level4">
 <h4 id="population-quantities-1">Population Quantities<a class="anchor" aria-label="anchor" href="#population-quantities-1"></a>
