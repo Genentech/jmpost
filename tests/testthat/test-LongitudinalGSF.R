@@ -214,21 +214,29 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg"),
-        TRUE
+        c("lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi")
     )
-
-    true_values <- c(60, 0.6, 0.4, 0.25, 0.35)
+    true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g, pars$mu_phi)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
+
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "sm_exp_lambda", "lm_gsf_mu_phi")
+        c("lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks", "lm_gsf_omega_phi")
     )
+    true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s, pars$omega_phi)
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
 
-    true_values <- c(0.1, 0.2, 1 / (1 / (400 / 365)), qlogis(c(0.4, 0.6)))
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
+    )
+    true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))

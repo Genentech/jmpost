@@ -135,7 +135,7 @@ Accessible via `linkIdentity()`
 
 
 $$\begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
 \\
 SLD_{ij} &=
 \begin{cases}
@@ -259,17 +259,17 @@ the mean of the distribution is used.
 
 $$
 \begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &= 
 \begin{cases}
 b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
 b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\
 \\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_\phi)
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_{\phi k(i)})
 \end{align*}
 $$
 
@@ -287,16 +287,16 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
-\phi_i &= \text{logistic}(\mu_{gk(i)} + \omega_\phi * \eta_{\phi i}) \\
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+\phi_i &= \text{logistic}(\mu_{gk(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
@@ -386,7 +386,7 @@ non-centred parameterisation and setting the "random effects" term to be 0.
 
 $$
 \begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &= 
 \begin{cases} b_i e^{g_i t_{ij}} & 
 \text{if } t_{ij} < 0, \\ 
