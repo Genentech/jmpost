@@ -16,8 +16,8 @@ test_that("sim_os_loglogistic() is consistant with flexsurv", {
 
 test_that("SurvivalLogLogistic can recover known values", {
 
-    true_a <- 400
-    true_b <- 2
+    true_a <- 300
+    true_b <- 3
     true_beta <- c(0.5, -0.2, 0.1)
     set.seed(837)
 
@@ -38,8 +38,8 @@ test_that("SurvivalLogLogistic can recover known values", {
 
     jm <- JointModel(
         survival = SurvivalLogLogistic(
-            a = prior_lognormal(log(400), 1),
-            b = prior_lognormal(log(2), 1)
+            a = prior_lognormal(log(true_a), 1),
+            b = prior_lognormal(log(true_b), 1)
         )
     )
 
@@ -60,8 +60,8 @@ test_that("SurvivalLogLogistic can recover known values", {
         sampleStanModel(
             jm,
             data = jdat,
-            iter_warmup = 300,
-            iter_sampling = 400,
+            iter_warmup = 350,
+            iter_sampling = 450,
             chains = 1,
             refresh = 0,
             parallel_chains = 1
