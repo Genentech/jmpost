@@ -3,11 +3,11 @@ Title: Joint Models for Predicting Overall Survival Trajectories
 Version: 0.0.1
 Authors@R: c(
     person("Craig", "Gower-Page", email = "craig.gower-page@roche.com", role = c("aut", "cre")),
-    person("Georgios", "Kazantzidis", email = "georgios.kazantzidis@roche.com", role = c("aut")),
-    person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
-    person("Xiaoyan", "Fang", email = "xiaoyan.fang@roche.com", role = "aut"),
     person("Francois", "Mercier", email = "francois.mercier@roche.com", role = "aut"),
+    person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
+    person("Georgios", "Kazantzidis", email = "georgios.kazantzidis@roche.com", role = c("aut")),
     person("Isaac", "Gravestock", email = "isaac.gravestock@roche.com", role = "aut"),
+    person("Xiaoyan", "Fang", email = "xiaoyan.fang@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
     )
 Description: Implements joint models combining a non-linear mixed effects model for

@@ -15,11 +15,11 @@ Implements joint models combining a non-linear mixed effects model for longitudi
 
 Authors:
 \itemize{
-  \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
-  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
-  \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
   \item Francois Mercier \email{francois.mercier@roche.com}
+  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
   \item Isaac Gravestock \email{isaac.gravestock@roche.com}
+  \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
 }
 
 Other contributors:
