@@ -12,10 +12,10 @@ parameters{
     vector[n_arms] lm_gsf_mu_kg;
     vector[n_arms] lm_gsf_mu_phi;
 
-    real<lower={{ machine_double_eps }}> lm_gsf_omega_bsld;
-    real<lower={{ machine_double_eps }}> lm_gsf_omega_ks;
-    real<lower={{ machine_double_eps }}> lm_gsf_omega_kg;
-    real<lower={{ machine_double_eps }}> lm_gsf_omega_phi;
+    vector<lower={{ machine_double_eps }}>[n_studies] lm_gsf_omega_bsld;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_ks;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_kg;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_phi;
 
 {% if centred -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_bsld;
@@ -45,16 +45,16 @@ transformed parameters{
 
 {% if not centred -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_bsld = exp(
-        lm_gsf_mu_bsld[subject_study_index] + (lm_gsf_eta_tilde_bsld * lm_gsf_omega_bsld)
+        lm_gsf_mu_bsld[subject_study_index] + (lm_gsf_eta_tilde_bsld .* lm_gsf_omega_bsld[subject_study_index])
     );
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_ks = exp(
-        lm_gsf_mu_ks[subject_arm_index] + (lm_gsf_eta_tilde_ks * lm_gsf_omega_ks)
+        lm_gsf_mu_ks[subject_arm_index] + (lm_gsf_eta_tilde_ks .* lm_gsf_omega_ks[subject_arm_index])
     );
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_kg = exp(
-        lm_gsf_mu_kg[subject_arm_index] + (lm_gsf_eta_tilde_kg * lm_gsf_omega_kg)
+        lm_gsf_mu_kg[subject_arm_index] + (lm_gsf_eta_tilde_kg .* lm_gsf_omega_kg[subject_arm_index])
     );
     vector[n_subjects] lm_gsf_psi_phi_logit = (
-        lm_gsf_mu_phi[subject_arm_index] + (lm_gsf_eta_tilde_phi * lm_gsf_omega_phi)
+        lm_gsf_mu_phi[subject_arm_index] + (lm_gsf_eta_tilde_phi .* lm_gsf_omega_phi[subject_arm_index])
     );
 {%- endif -%}
     vector<
@@ -93,10 +93,10 @@ model {
     // Source - lm-gsf/model.stan
     //
 {% if centred %}
-    lm_gsf_psi_bsld ~ lognormal(lm_gsf_mu_bsld[subject_study_index], lm_gsf_omega_bsld);
-    lm_gsf_psi_ks ~ lognormal(lm_gsf_mu_ks[subject_arm_index], lm_gsf_omega_ks);
-    lm_gsf_psi_kg ~ lognormal(lm_gsf_mu_kg[subject_arm_index], lm_gsf_omega_kg);
-    lm_gsf_psi_phi_logit ~ normal(lm_gsf_mu_phi[subject_arm_index], lm_gsf_omega_phi);
+    lm_gsf_psi_bsld ~ lognormal(lm_gsf_mu_bsld[subject_study_index], lm_gsf_omega_bsld[subject_study_index]);
+    lm_gsf_psi_ks ~ lognormal(lm_gsf_mu_ks[subject_arm_index], lm_gsf_omega_ks[subject_arm_index]);
+    lm_gsf_psi_kg ~ lognormal(lm_gsf_mu_kg[subject_arm_index], lm_gsf_omega_kg[subject_arm_index]);
+    lm_gsf_psi_phi_logit ~ normal(lm_gsf_mu_phi[subject_arm_index], lm_gsf_omega_phi[subject_arm_index]);
 {%- endif -%}
 }
 

@@ -81,6 +81,24 @@ test_that("Can load and compile growth + shrinkage links", {
 test_that("Can recover known distributional parameters from a full GSF joint model", {
 
     skip_if_not(is_full_test())
+    pars <- list(
+        sigma = 0.01,
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
+        mu_b = log(60),
+        mu_phi = qlogis(c(0.4, 0.6)),
+        omega_b = c(0.2),
+        omega_s = c(0.3, 0.1),
+        omega_g = c(0.1, 0.3),
+        omega_phi = c(0.3, 0.1),
+        link_dsld = 0.1,
+        link_ttg = 0.2,
+        link_identity = 0,
+        beta_cat_B = 0.5,
+        beta_cat_C = -0.1,
+        beta_cont = 0.3,
+        lambda = 1 / (400 / 365)
+    )
 
     set.seed(7743)
     jlist <- SimJointData(
@@ -89,31 +107,31 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             SimGroup(140, "Arm-B", "Study-X")
         ),
         survival = SimSurvivalExponential(
-            lambda = 1 / (400 / 365),
-            time_max = 3,
+            lambda = pars$lambda,
+            time_max = 4,
             time_step = 1 / 365,
             lambda_censor = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
-                "B" = -0.1,
-                "C" = 0.5
+                "B" = pars$beta_cat_B,
+                "C" = pars$beta_cat_C
             ),
-            beta_cont = 0.3
+            beta_cont = pars$beta_cont
         ),
         longitudinal = SimLongitudinalGSF(
             times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
-            sigma = 0.01,
-            mu_s = log(c(0.6, 0.4)),
-            mu_g = log(c(0.25, 0.35)),
-            mu_b = log(60),
-            mu_phi = qlogis(c(0.4, 0.6)),
-            omega_b = 0.2,
-            omega_s = 0.2,
-            omega_g = 0.2,
-            omega_phi = 0.2,
-            link_dsld = 0.1,
-            link_ttg = 0.2,
-            link_identity = 0
+            sigma = pars$sigma,
+            mu_s = pars$mu_s,
+            mu_g = pars$mu_g,
+            mu_b = pars$mu_b,
+            mu_phi = pars$mu_phi,
+            omega_b = pars$omega_b,
+            omega_s = pars$omega_s,
+            omega_g = pars$omega_g,
+            omega_phi = pars$omega_phi,
+            link_dsld = pars$link_dsld,
+            link_ttg = pars$link_ttg,
+            link_identity = pars$link_identity
         ),
         .silent = TRUE
     )
