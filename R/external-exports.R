@@ -30,3 +30,18 @@ NULL
 #' @export autoplot
 #' @family autoplot
 NULL
+
+
+#' Coerce to `CmdStanMCMC`
+#'
+#' @param object to be converted
+#' @param ... additional options
+#'
+#' @description
+#' Coerces an object to a [`cmdstanr::CmdStanMCMC`] object
+#'
+#' @name as.CmdStanMCMC
+#'
+#' @importFrom cmdstanr as.CmdStanMCMC
+#' @export as.CmdStanMCMC
+NULL

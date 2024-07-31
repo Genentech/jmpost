@@ -332,20 +332,6 @@ hazardWindows <- function(object, ...) {
     UseMethod("hazardWindows")
 }
 
-
-#' Coerce to `CmdStanMCMC`
-#'
-#' @param object to be converted
-#' @param ... additional options
-#'
-#' @description
-#' Coerces an object to a [`cmdstanr::CmdStanMCMC`] object
-#'
-#' @export
-as.CmdStanMCMC <- function(object, ...) {
-    UseMethod("as.CmdStanMCMC")
-}
-
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator <- function(object, ...) {
