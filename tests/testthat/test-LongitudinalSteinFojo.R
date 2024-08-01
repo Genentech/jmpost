@@ -108,38 +108,54 @@ test_that("Can load and compile growth + shrinkage links", {
 test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
-
-    set.seed(9438)
+    pars <- list(
+        sigma = 0.01,
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
+        mu_b = log(60),
+        omega_b = c(0.2),
+        omega_s = c(0.3, 0.1),
+        omega_g = c(0.1, 0.3),
+        omega_phi = c(0.3, 0.1),
+        link_dsld = 0.1,
+        link_ttg = 0.2,
+        link_identity = 0,
+        beta_cat_B = 0.5,
+        beta_cat_C = -0.1,
+        beta_cont = 0.3,
+        lambda = 1 / (400 / 365)
+    )
+    set.seed(9898)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(120, "Arm-A", "Study-X"),
-            SimGroup(120, "Arm-B", "Study-X")
+            SimGroup(180, "Arm-A", "Study-X"),
+            SimGroup(190, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalSteinFojo(
             times = c(-100, -50, -10, 1, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900) * (1 / 365),
-            sigma = 0.005,
-            mu_s = log(c(0.2, 0.25)),
-            mu_g = log(c(0.15, 0.2)),
-            mu_b = log(60),
-            omega_b = 0.1,
-            omega_s = 0.1,
-            omega_g = 0.1,
-            link_ttg = -0.2,
-            link_dsld = 0.2
+            sigma = pars$sigma,
+            mu_s = pars$mu_s,
+            mu_g = pars$mu_g,
+            mu_b = pars$mu_b,
+            omega_b = pars$omega_b,
+            omega_s = pars$omega_s,
+            omega_g = pars$omega_g,
+            link_ttg = pars$link_ttg,
+            link_dsld = pars$link_dsld,
+            link_identity = pars$link_identity
         ),
-        survival = SimSurvivalWeibullPH(
+        survival = SimSurvivalExponential(
             time_max = 4,
             time_step = 1 / 365,
-            lambda = 1,
-            gamma = 1,
+            lambda = pars$lambda,
             lambda_cen = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
-                "B" = -0.1,
-                "C" = 0.5
+                "B" = pars$beta_cat_B,
+                "C" = pars$beta_cat_C
             ),
-            beta_cont = 0.3
+            beta_cont = pars$beta_cont
         ),
         .silent = TRUE
     )
@@ -221,20 +237,29 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
-        TRUE
+        c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg")
     )
-    true_values <- c(60, 0.2, 0.25, 0.15, 0.2)
+    true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
+
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "sm_exp_lambda")
+        c("lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks")
     )
+    true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s)
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
 
-    true_values <- c(0.2, -0.2, 1)
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
+    )
+    true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
