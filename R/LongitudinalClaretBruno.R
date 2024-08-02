@@ -77,10 +77,10 @@ LongitudinalClaretBruno <- function(
         Parameter(name = "lm_clbr_mu_c", prior = mu_c, size = "n_arms"),
         Parameter(name = "lm_clbr_mu_p", prior = mu_p, size = "n_arms"),
 
-        Parameter(name = "lm_clbr_omega_b", prior = omega_b, size = 1),
-        Parameter(name = "lm_clbr_omega_g", prior = omega_g, size = 1),
-        Parameter(name = "lm_clbr_omega_c", prior = omega_c, size = 1),
-        Parameter(name = "lm_clbr_omega_p", prior = omega_p, size = 1),
+        Parameter(name = "lm_clbr_omega_b", prior = omega_b, size = "n_studies"),
+        Parameter(name = "lm_clbr_omega_g", prior = omega_g, size = "n_arms"),
+        Parameter(name = "lm_clbr_omega_c", prior = omega_c, size = "n_arms"),
+        Parameter(name = "lm_clbr_omega_p", prior = omega_p, size = "n_arms"),
 
         Parameter(name = "lm_clbr_sigma", prior = sigma, size = 1)
     )

@@ -81,6 +81,12 @@ SimLongitudinalClaretBruno <- function(
     link_identity = 0,
     link_growth = 0
 ) {
+
+    if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
+    if (length(omega_g) == 1) omega_g <- rep(omega_g, length(mu_g))
+    if (length(omega_c) == 1) omega_c <- rep(omega_c, length(mu_c))
+    if (length(omega_p) == 1) omega_p <- rep(omega_p, length(mu_p))
+
     .SimLongitudinalClaretBruno(
         times = times,
         sigma = sigma,
@@ -111,8 +117,23 @@ setValidity(
         if (length(unique(par_lengths)) != 1) {
             return("The parameters `mu_g`, `mu_c` & `mu_p` must have the same length.")
         }
+        pairs <- list(
+            "omega_b" = "mu_b",
+            "omega_g" = "mu_g",
+            "omega_c" = "mu_c",
+            "omega_p" = "mu_p"
+        )
+        for (i in seq_along(pairs)) {
+            omega <- slot(object, names(pairs)[[i]])
+            mu <- slot(object, pairs[[i]])
+            if (!(length(omega) == length(mu))) {
+                return(
+                    sprintf("`%s` must be length 1 or the same length as `%s`", omega, mu)
+                )
+            }
+        }
         len_1_pars <- c(
-            "sigma", "omega_b", "omega_g", "omega_c", "omega_p",
+            "sigma",
             "link_dsld", "link_ttg", "link_identity",
             "link_growth"
         )
@@ -164,10 +185,26 @@ sampleSubjects.SimLongitudinalClaretBruno <- function(object, subjects_df) {
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(ind_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
-        dplyr::mutate(ind_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g)) |>
-        dplyr::mutate(ind_c = stats::rlnorm(dplyr::n(), object@mu_c[.data$arm_idx], object@omega_c)) |>
-        dplyr::mutate(ind_p = stats::rlnorm(dplyr::n(), object@mu_p[.data$arm_idx], object@omega_p))
+        dplyr::mutate(ind_b = stats::rlnorm(
+            dplyr::n(),
+            object@mu_b[.data$study_idx],
+            object@omega_b[.data$study_idx]
+        )) |>
+        dplyr::mutate(ind_g = stats::rlnorm(
+            dplyr::n(),
+            object@mu_g[.data$arm_idx],
+            object@omega_g[.data$arm_idx]
+        )) |>
+        dplyr::mutate(ind_c = stats::rlnorm(
+            dplyr::n(),
+            object@mu_c[.data$arm_idx],
+            object@omega_c[.data$arm_idx]
+        )) |>
+        dplyr::mutate(ind_p = stats::rlnorm(
+            dplyr::n(),
+            object@mu_p[.data$arm_idx],
+            object@omega_p[.data$arm_idx]
+        ))
 
     res[, c("subject", "arm", "study", "ind_b", "ind_g", "ind_c", "ind_p")]
 }
