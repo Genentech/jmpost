@@ -194,8 +194,8 @@ samples_median_ci <- function(samples, level = 0.95) {
 decorated_render <- function(...) {
     jinjar::render(
         ...,
-        machine_double_eps = sqrt(.Machine$double.eps),
-        machine_double_neg_eps = sqrt(.Machine$double.neg.eps)
+        machine_double_eps = 0,
+        machine_double_neg_eps = 0
     )
 }
 
