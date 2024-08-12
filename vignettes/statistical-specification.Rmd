@@ -393,10 +393,10 @@ SLD_{ij} &=
 b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
 \text{if } t_{ij} \geq 0. \end{cases}\\
 \\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_c) \\
-p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_p) \\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_{c k(i)}) \\
+p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_{p k(i)}) \\
 \end{align*}
 $$
 
@@ -414,7 +414,23 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$
+
+
+If using the non-centred parameterisation then the following alternative formulation is used:
+$$
+\begin{align*}
+b_i &= exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+g_i &= exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+c_i &= exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
+p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{g i} &\sim  N(0, 1)  \\
+\eta_{c i} &\sim  N(0, 1)  \\
+\eta_{p i} &\sim  N(0, 1)  \\
+\end{align*}
+$$
 
 
 ### Derivative of the SLD Trajectory Link 

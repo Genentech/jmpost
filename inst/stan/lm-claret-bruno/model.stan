@@ -12,10 +12,10 @@ parameters{
     vector[n_arms] lm_clbr_mu_c;
     vector[n_arms] lm_clbr_mu_p;
 
-    real<lower={{ machine_double_eps }}> lm_clbr_omega_b;
-    real<lower={{ machine_double_eps }}> lm_clbr_omega_g;
-    real<lower={{ machine_double_eps }}> lm_clbr_omega_c;
-    real<lower={{ machine_double_eps }}> lm_clbr_omega_p;
+    vector<lower={{ machine_double_eps }}>[n_studies] lm_clbr_omega_b;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_g;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_c;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_p;
 
 {% if centred -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_b;
@@ -45,16 +45,16 @@ transformed parameters{
 
 {% if not centred -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_b = exp(
-        lm_clbr_mu_b[subject_study_index] + (lm_clbr_eta_b * lm_clbr_omega_b)
+        lm_clbr_mu_b[subject_study_index] + (lm_clbr_eta_b .* lm_clbr_omega_b[subject_study_index])
     );
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_g = exp(
-        lm_clbr_mu_g[subject_arm_index] + (lm_clbr_eta_g * lm_clbr_omega_g)
+        lm_clbr_mu_g[subject_arm_index] + (lm_clbr_eta_g .* lm_clbr_omega_g[subject_arm_index])
     );
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_c = exp(
-        lm_clbr_mu_c[subject_arm_index] + (lm_clbr_eta_c * lm_clbr_omega_c)
+        lm_clbr_mu_c[subject_arm_index] + (lm_clbr_eta_c .* lm_clbr_omega_c[subject_arm_index])
     );
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_p = exp(
-        lm_clbr_mu_p[subject_arm_index] + (lm_clbr_eta_p * lm_clbr_omega_p)
+        lm_clbr_mu_p[subject_arm_index] + (lm_clbr_eta_p .* lm_clbr_omega_p[subject_arm_index])
     );
 {%- endif -%}
 
@@ -89,10 +89,10 @@ model {
     // Source - lm-claret-bruno/model.stan
     //
 {% if centred %}
-    lm_clbr_ind_b ~ lognormal(lm_clbr_mu_b[subject_study_index], lm_clbr_omega_b);
-    lm_clbr_ind_g ~ lognormal(lm_clbr_mu_g[subject_arm_index], lm_clbr_omega_g);
-    lm_clbr_ind_c ~ lognormal(lm_clbr_mu_c[subject_arm_index], lm_clbr_omega_c);
-    lm_clbr_ind_p ~ lognormal(lm_clbr_mu_p[subject_arm_index], lm_clbr_omega_p);
+    lm_clbr_ind_b ~ lognormal(lm_clbr_mu_b[subject_study_index], lm_clbr_omega_b[subject_study_index]);
+    lm_clbr_ind_g ~ lognormal(lm_clbr_mu_g[subject_arm_index], lm_clbr_omega_g[subject_arm_index]);
+    lm_clbr_ind_c ~ lognormal(lm_clbr_mu_c[subject_arm_index], lm_clbr_omega_c[subject_arm_index]);
+    lm_clbr_ind_p ~ lognormal(lm_clbr_mu_p[subject_arm_index], lm_clbr_omega_p[subject_arm_index]);
 {%- endif -%}
 
 }
