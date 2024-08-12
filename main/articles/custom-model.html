@@ -41,14 +41,6 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -490,7 +482,27 @@ from the full joint model.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 1 chain...</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpIIToi0/model-18bc118dd8f1.stan', line 501, column 4 to column 63)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpjH1dtc/model-18bb1e3401dc.stan', line 517, column 4 to column 79)</span></span>
+<span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
+<span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
+<span><span class="co">#&gt; Chain 1</span></span>
+<span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpjH1dtc/model-18bb1e3401dc.stan', line 517, column 4 to column 79)</span></span>
+<span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
+<span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
+<span><span class="co">#&gt; Chain 1</span></span>
+<span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpjH1dtc/model-18bb1e3401dc.stan', line 517, column 4 to column 79)</span></span>
+<span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
+<span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
+<span><span class="co">#&gt; Chain 1</span></span>
+<span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpjH1dtc/model-18bb1e3401dc.stan', line 501, column 4 to column 63)</span></span>
+<span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
+<span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
+<span><span class="co">#&gt; Chain 1</span></span>
+<span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpjH1dtc/model-18bb1e3401dc.stan', line 517, column 4 to column 79)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -504,12 +516,12 @@ from the full joint model.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
 <span><span class="co">#&gt;   variable       mean median     sd    mad     q5    q95  rhat ess_bulk ess_tail</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> mu_baseline  61.6   61.6   2.14   2.10   58.3   65.0   0.999    <span style="text-decoration: underline;">1</span>976.     778.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mu_shrinkage  2.04   2.04  0.068<span style="text-decoration: underline;">1</span> 0.071<span style="text-decoration: underline;">3</span>  1.92   2.15  1.00     <span style="text-decoration: underline;">2</span>142.     616.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mu_growth    10.2   10.2   0.320  0.317   9.70  10.7   1.01     <span style="text-decoration: underline;">1</span>830.     566.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> sigma         1.52   1.52  0.042<span style="text-decoration: underline;">7</span> 0.043<span style="text-decoration: underline;">0</span>  1.45   1.59  1.00      923.     820.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> link_dsld     0.220  0.220 0.025<span style="text-decoration: underline;">8</span> 0.024<span style="text-decoration: underline;">7</span>  0.179  0.262 0.999    <span style="text-decoration: underline;">1</span>455.     769.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> sm_exp_lamb…  1.01   0.992 0.209  0.212   0.704  1.36  1.00      870.     635.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> mu_baseline  61.7   61.7   2.16   2.09   58.2   65.3    1.00    <span style="text-decoration: underline;">1</span>609.     844.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mu_shrinkage  2.04   2.04  0.067<span style="text-decoration: underline;">2</span> 0.064<span style="text-decoration: underline;">3</span>  1.93   2.15   1.01    <span style="text-decoration: underline;">1</span>211.     551.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mu_growth    10.2   10.2   0.309  0.300   9.71  10.7    1.00    <span style="text-decoration: underline;">1</span>190.     850.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> sigma         1.52   1.52  0.041<span style="text-decoration: underline;">1</span> 0.040<span style="text-decoration: underline;">2</span>  1.45   1.59   1.00    <span style="text-decoration: underline;">1</span>071.     907.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> link_dsld     0.218  0.217 0.026<span style="text-decoration: underline;">7</span> 0.027<span style="text-decoration: underline;">6</span>  0.176  0.264  1.00    <span style="text-decoration: underline;">1</span>189.     672.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> sm_exp_lamb…  1.02   1.00  0.203  0.210   0.693  1.36   1.00     757.     721.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="generating-quantities-of-interest">Generating Quantities of Interest<a class="anchor" aria-label="anchor" href="#generating-quantities-of-interest"></a>
