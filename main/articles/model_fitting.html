@@ -5,89 +5,58 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="jmpost">
 <title>Model Fitting • jmpost</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Model Fitting">
-<meta property="og:description" content="jmpost">
-<meta property="og:image" content="https://genentech.github.io/jmpost/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Model Fitting">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">jmpost</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/custom-model.html">Fitting a Custom Longitudinal Model</a>
-    <a class="dropdown-item" href="../articles/extending-jmpost.html">Extending jmpost</a>
-    <a class="dropdown-item" href="../articles/model_fitting.html">Model Fitting</a>
-    <a class="dropdown-item" href="../articles/statistical-specification.html">Statistical Specifications</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/custom-model.html">Fitting a Custom Longitudinal Model</a></li>
+    <li><a class="dropdown-item" href="../articles/extending-jmpost.html">Extending jmpost</a></li>
+    <li><a class="dropdown-item" href="../articles/model_fitting.html">Model Fitting</a></li>
+    <li><a class="dropdown-item" href="../articles/statistical-specification.html">Statistical Specifications</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
-    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
-    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
+<li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
+    <li><a class="dropdown-item" href="../unit-test-report/">Unit test report</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/genentech/jmpost/">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/genentech/jmpost/"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -99,7 +68,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Model Fitting</h1>
             
       
-      
+
       <div class="d-none name"><code>model_fitting.Rmd</code></div>
     </div>
 
@@ -168,8 +137,12 @@ e.g. say:</p>
 <span>    intercept <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>    slope_mu <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>This sets the prior for the <code>intercept</code> to be a <span class="math inline">\(N(40, 5)\)</span> distribution and the prior for
-the <code>slope_mu</code> parameter to be a <span class="math inline">\(N(10, 2)\)</span> distribution.</p>
+<p>This sets the prior for the <code>intercept</code> to be a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>40</mn><mo>,</mo><mn>5</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(40, 5)</annotation></semantics></math>
+distribution and the prior for the <code>slope_mu</code> parameter to be
+a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>10</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(10, 2)</annotation></semantics></math>
+distribution.</p>
 </div>
 <div class="section level3">
 <h3 id="separate-models">Separate Models<a class="anchor" aria-label="anchor" href="#separate-models"></a>
@@ -383,7 +356,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/Rtmp8To3sl/model-19a3224690ee.stan', line 507, column 4 to column 100)</span></span>
+<span><span class="co">#&gt; Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpCn6SCM/model-1a0311422c27.stan', line 507, column 4 to column 100)</span></span>
 <span><span class="co">#&gt; Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 1</span></span>
@@ -398,7 +371,7 @@ you would increase the number of warm-up and sampling iterations.</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 23.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Chain 1 finished in 23.9 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="convergence-checks">Convergence checks<a class="anchor" aria-label="anchor" href="#convergence-checks"></a>
@@ -466,9 +439,8 @@ element, we can extract the samples in a format that is understood by
 <span><span class="co">#&gt; - Online documentation and vignettes at mc-stan.org/bayesplot</span></span>
 <span><span class="co">#&gt; - bayesplot theme set to bayesplot::theme_default()</span></span>
 <span><span class="co">#&gt;    * Does _not_ affect other ggplot2 plots</span></span>
-<span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="va">vars_draws</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span>
+<span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="va">vars_draws</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-1-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -478,7 +450,7 @@ element, we can extract the samples in a format that is understood by
 longitudinal fit samples from the result, and then plot them for all
 subjects or those that we are interested in. For illustration, we will
 plot here the first 10 subjects:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">selected_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">os_data</span><span class="op">$</span><span class="va">subject</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">long_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LongitudinalQuantities-class.html">LongitudinalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
@@ -493,18 +465,16 @@ plot here the first 10 subjects:</p>
 <span><span class="co">#&gt; 3 subject_001    0 26.4398</span></span>
 <span><span class="co">#&gt; 4 subject_001    0 26.6774</span></span>
 <span><span class="co">#&gt; 5 subject_001    0 28.1050</span></span>
-<span><span class="co">#&gt; 6 subject_001    0 26.0869</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6 subject_001    0 26.0869</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         group time   median    lower    upper</span></span>
 <span><span class="co">#&gt; 1 subject_001    0 27.69405 25.14073 30.12683</span></span>
 <span><span class="co">#&gt; 2 subject_002    0 27.69405 25.14073 30.12683</span></span>
 <span><span class="co">#&gt; 3 subject_003    0 27.69405 25.14073 30.12683</span></span>
 <span><span class="co">#&gt; 4 subject_004    0 27.69405 25.14073 30.12683</span></span>
 <span><span class="co">#&gt; 5 subject_005    0 27.69405 25.14073 30.12683</span></span>
-<span><span class="co">#&gt; 6 subject_006    0 27.69405 25.14073 30.12683</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 subject_006    0 27.69405 25.14073 30.12683</span></span>
+<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">long_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -512,7 +482,7 @@ plot here the first 10 subjects:</p>
 </h3>
 <p>And using the <code><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities()</a></code> method we can do the
 same for the estimated survival functions.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span></span>
@@ -526,22 +496,20 @@ same for the estimated survival functions.</p>
 <span><span class="co">#&gt; 3 subject_001    0      1</span></span>
 <span><span class="co">#&gt; 4 subject_001    0      1</span></span>
 <span><span class="co">#&gt; 5 subject_001    0      1</span></span>
-<span><span class="co">#&gt; 6 subject_001    0      1</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6 subject_001    0      1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         group time median lower upper</span></span>
 <span><span class="co">#&gt; 1 subject_001    0      1     1     1</span></span>
 <span><span class="co">#&gt; 2 subject_002    0      1     1     1</span></span>
 <span><span class="co">#&gt; 3 subject_003    0      1     1     1</span></span>
 <span><span class="co">#&gt; 4 subject_004    0      1     1     1</span></span>
 <span><span class="co">#&gt; 5 subject_005    0      1     1     1</span></span>
-<span><span class="co">#&gt; 6 subject_006    0      1     1     1</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 subject_006    0      1     1     1</span></span>
+<span><span class="fu"><a href="../reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">surv_quantities</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model_fitting_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p>We can also aggregate the estimated survival curves from groups of
 subjects, using the corresponding method.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridGrouped</a></span><span class="op">(</span></span>
@@ -562,7 +530,7 @@ passing a <code><a href="../reference/Grid-Functions.html">GridPrediction()</a><
 specify the desired values for the covariates and longitudinal model
 parameters respectively. For example below we use these functions to
 predict the survival distribution for a hypothetical subject:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surv_quantities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridPrediction</a></span><span class="op">(</span></span>
@@ -583,7 +551,7 @@ predict the survival distribution for a hypothetical subject:</p>
 argument (i.e. the longitudinal model parameters) can be found by
 running <code><a href="../reference/getPredictionNames.html">getPredictionNames()</a></code> on the longitudinal model
 object. For example:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/getPredictionNames.html">getPredictionNames</a></span><span class="op">(</span><span class="fu"><a href="../reference/LongitudinalGSF-class.html">LongitudinalGSF</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "b"   "s"   "g"   "phi"</span></span></code></pre></div>
 </div>
@@ -593,7 +561,7 @@ object. For example:</p>
 <p>The <code><a href="../reference/brierScore.html">brierScore()</a></code> method can be used to extract the Brier
 Scores (predictive performance measure) from our
 <code>SurvivalQuantities</code> object.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurvivalQuantities-class.html">SurvivalQuantities</a></span><span class="op">(</span></span>
 <span>    <span class="va">mcmc_results</span>,</span>
 <span>    grid <span class="op">=</span> <span class="fu"><a href="../reference/Grid-Functions.html">GridFixed</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">400</span>, <span class="fl">800</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -617,7 +585,7 @@ changed via the <code>jmpost.prior_shrinkage</code> option e.g.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"jmpost.prior_shrinkage"</span> <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre>
 <p>If you wish to manually specify the initial values you can do so via
 the <code><a href="../reference/initialValues.html">initialValues()</a></code> function. For example:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joint_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/JointModel-class.html">JointModel</a></span><span class="op">(</span></span>
 <span>    longitudinal <span class="op">=</span> <span class="fu"><a href="../reference/LongitudinalRandomSlope-class.html">LongitudinalRandomSlope</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    survival <span class="op">=</span> <span class="fu"><a href="../reference/SurvivalExponential-class.html">SurvivalExponential</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -648,32 +616,34 @@ the proposed values are valid for constrained parameters. That is, if
 you are using a <code>prior_cauchy(0, 1)</code> prior for a parameter
 that should be <code>&gt;0</code> then you will need to manually set the
 initial value (as described above) to ensure that it is a valid value. -
-For constrained parameters (e.g. variance parameters that must be <span class="math inline">\(&gt; 0\)</span>) <code><a href="../reference/initialValues.html">initialValues()</a></code> will
-continuously sample and discard initial values until it generates one
-that meet the constraints. If after 100 attempts no valid initial value
-has been found then it will throw an error.</p>
+For constrained parameters (e.g. variance parameters that must be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt; 0</annotation></semantics></math>)
+<code><a href="../reference/initialValues.html">initialValues()</a></code> will continuously sample and discard
+initial values until it generates one that meet the constraints. If
+after 100 attempts no valid initial value has been found then it will
+throw an error.</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Craig Gower-Page, Georgios Kazantzidis, Daniel Sabanes Bove, Xiaoyan Fang, Francois Mercier, Isaac Gravestock, F. Hoffmann-La Roche AG.</p>
+  <p>Developed by Craig Gower-Page, Francois Mercier, Daniel Sabanes Bove, Georgios Kazantzidis, Isaac Gravestock, Xiaoyan Fang, F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

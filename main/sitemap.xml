@@ -1,585 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://genentech.github.io/jmpost/404.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/articles/custom-model.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/articles/extending-jmpost.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/articles/model_fitting.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/articles/statistical-specification.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Brier-Score-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataJoint-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataJoint-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataSubject-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataSubject-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataSurvival-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/DataSurvival-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Grid-Dev.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Grid-Functions.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/JointModel-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/JointModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/JointModelSamples-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Link-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Link-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LinkComponent-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LinkComponent-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Local_Sample.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Parameter-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Parameter-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/ParameterList-Getter-Methods.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/ParameterList-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/ParameterList-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Prior-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Promise-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Quant-Dev.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Quantities-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Quantities-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/STAN_BLOCKS.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimGroup-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimJointData-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinal-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimSurvival-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimSurvival-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalExponential.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/StanModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/StanModule-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/Surv.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalExponential-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalLogLogistic-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-Shared.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.CmdStanMCMC.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModelSamples.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Link.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.Prior.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.JointModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.Parameter.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.Prior.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.character.StanModule.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataLongitudinal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSubject.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.Quantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.Link.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.LinkComponent.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.ParameterList.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.StanModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as.list.StanModule.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataLongitudinal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSubject.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSurvival.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.Quantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.StanModule.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_print_string.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_file.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.Parameter.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.ParameterList.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.Prior.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.QuantityGenerator.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/as_stan_list.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/brierScore.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/clbr_sld.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/decompose_subjects.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/enableGQ.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/enableLink.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/ensure_initial_values.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/expand_subjects.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSubject.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSurvival.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extract_observed_values.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/extract_quantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/getPredictionNames.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/harmonise.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/hazardWindows.SimSurvival.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/hazardWindows.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/initialValues.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/is_file.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/jmpost-package.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/jmpost-settings.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/length.Link.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/longitudinal_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/match_order.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/merge.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/mirror_design_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_cauchy.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_init_only.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_invgamma.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_logistic.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_loglogistic.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_lognormal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_normal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_std_normal.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_student_t.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/prior_uniform.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/remove_missing_rows.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.Link.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.PromiseLinkComponent.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/resolvePromise.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/reverse_km.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sampleObservations.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sampleStanModel.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sampleSubjects.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/set_limits.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/sf_sld.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/show-object.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/show.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/size.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/subjects_to_list.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/subset.DataJoint.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/summary.Quantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/validate_time_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://genentech.github.io/jmpost/404.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/custom-model.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/extending-jmpost.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/index.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/model_fitting.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/statistical-specification.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/authors.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/index.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/news/index.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Brier-Score-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataJoint-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataJoint-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataLongitudinal-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataSubject-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataSubject-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataSurvival-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/DataSurvival-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Grid-Dev.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Grid-Functions.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/JointModel-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/JointModel-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/JointModelSamples-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Link-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Link-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LinkComponent-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LinkComponent-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Local_Sample.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalModel-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Parameter-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Parameter-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/ParameterList-Getter-Methods.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/ParameterList-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/ParameterList-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Prior-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Prior-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Promise-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Quant-Dev.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Quantities-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Quantities-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/STAN_BLOCKS.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimGroup-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimJointData-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimLongitudinal-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimSurvival-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimSurvival-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimSurvivalExponential.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/StanModel-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/StanModule-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/Surv.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalExponential-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalLogLogistic-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalModel-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.CmdStanMCMC.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModelSamples.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Link.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Prior.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.character.JointModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.character.Parameter.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.character.Prior.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.character.StanModule.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataLongitudinal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSubject.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.list.Link.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.list.LinkComponent.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.list.ParameterList.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.list.StanModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.list.StanModule.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_formula.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.DataLongitudinal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSubject.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.DataSurvival.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.StanModule.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_file.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_fragments.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.Parameter.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.ParameterList.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.Prior.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.QuantityGenerator.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_stan_list.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/brierScore.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/clbr_sld.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/decompose_subjects.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/enableGQ.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/enableLink.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/ensure_initial_values.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/expand_initial_values.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/expand_subjects.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSubject.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extractVariableNames.DataSurvival.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extractVariableNames.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extract_observed_values.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/extract_quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/getPredictionNames.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/harmonise.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/hazardWindows.SimSurvival.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/hazardWindows.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/index.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/initialValues.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/is_file.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/jmpost-package.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/jmpost-settings.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/length.Link.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/longitudinal_plot.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/match_order.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/merge.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/mirror_design_matrix.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_cauchy.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_init_only.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_invgamma.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_logistic.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_loglogistic.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_lognormal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_normal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_std_normal.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_student_t.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_uniform.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/remove_missing_rows.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/resolvePromise.Link.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/resolvePromise.PromiseLinkComponent.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/resolvePromise.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/reverse_km.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/sampleObservations.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/sampleStanModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/sampleSubjects.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/samples_median_ci.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/set_limits.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/sf_sld.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/show-object.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/show.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/size.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/subjects_to_list.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/subset.DataJoint.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/summary.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/validate_time_grid.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc></url>
 </urlset>
+
