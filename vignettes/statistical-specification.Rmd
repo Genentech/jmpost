@@ -142,9 +142,9 @@ SLD_{ij} &=
 b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
 b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\\\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
 \end{align*}
 $$
 
@@ -162,19 +162,19 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
-\eta_{s i} &\sim   N(0, 1)  \\
-\eta_{g i} &\sim   N(0, 1)  \\
+\eta_{s i} &\sim  N(0, 1) \\
+\eta_{g i} &\sim  N(0, 1) \\
 \end{align*}
 $$
 
