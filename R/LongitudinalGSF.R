@@ -81,10 +81,10 @@ LongitudinalGSF <- function(
         Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
         Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
 
-        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
-        Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
-        Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
-        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
+        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = "n_studies"),
+        Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = "n_arms"),
+        Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = "n_arms"),
+        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = "n_arms"),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
