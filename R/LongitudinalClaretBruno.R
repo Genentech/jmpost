@@ -39,6 +39,8 @@ NULL
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values.
 #'
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #'
 #' @export
 LongitudinalClaretBruno <- function(
@@ -55,11 +57,13 @@ LongitudinalClaretBruno <- function(
 
     sigma = prior_lognormal(log(0.1), 0.5),
 
+    scaled_variance = TRUE,
     centred = FALSE
 ) {
 
     sf_model <- StanModule(decorated_render(
         .x = read_stan("lm-claret-bruno/model.stan"),
+        scaled_variance = scaled_variance,
         centred = centred
     ))
 

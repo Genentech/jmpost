@@ -343,3 +343,178 @@ test_that("Can generate valid initial values", {
     expect_true(all(vals > 0))
 
 })
+
+
+
+test_that("Unscaled variance pass the parser", {
+    jm <- JointModel(
+        longitudinal = LongitudinalClaretBruno(centred = FALSE, scaled_variance = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = linkDSLD()
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
+
+
+
+
+test_that("Can recover known distributional parameters from unscaled variance ClaretBruno model", {
+
+    skip_if_not(is_full_test())
+
+
+    sim_params <- list(
+        sigma = 1,
+        mu_b = log(60),
+        mu_g = log(c(0.9, 1.1)),
+        mu_c = log(c(0.45, 0.35)),
+        mu_p = log(c(2.4, 1.8)),
+        omega_b = 0.1,
+        omega_g = c(0.3, 0.1),
+        omega_c = c(0.1, 0.3),
+        omega_p = c(0.3, 0.1),
+        link_ttg = 0,
+        link_dsld = 0,
+        link_identity = 0,
+        link_growth = 0,
+        lambda = 0.5,
+        lambda_cen = 1 / 9000,
+        beta_cat_b = -0.1,
+        beta_cat_c = 0.5,
+        beta_cont = 0.3
+    )
+
+    set.seed(628)
+    ## Generate Test data with known parameters
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(140, "Arm-A", "Study-X"),
+            SimGroup(140, "Arm-B", "Study-X")
+        ),
+        longitudinal = SimLongitudinalClaretBruno(
+            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800) / 365,
+            sigma = sim_params$sigma,
+            mu_b = sim_params$mu_b,
+            mu_g = sim_params$mu_g,
+            mu_c = sim_params$mu_c,
+            mu_p = sim_params$mu_p,
+            omega_b = sim_params$omega_b,
+            omega_g = sim_params$omega_g,
+            omega_c = sim_params$omega_c,
+            omega_p = sim_params$omega_p,
+            link_ttg = sim_params$link_ttg,
+            link_dsld = sim_params$link_dsld,
+            link_identity = sim_params$link_identity,
+            link_growth = sim_params$link_growth,
+            scaled_variance = FALSE
+        ),
+        survival = SimSurvivalExponential(
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda = sim_params$lambda,
+            lambda_cen = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = sim_params$beta_cat_b,
+                "C" = sim_params$beta_cat_c
+            ),
+            beta_cont = sim_params$beta_cont
+        ),
+        .silent = TRUE
+    )
+
+
+    # nolint start⁠
+    ### Diagnostics helpers
+    # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
+    # median(jlist@survival$time)
+    # pdat <- jlist@longitudinal |> dplyr::filter(subject %in% sample(jlist@survival$subject, 5))
+    # ggplot2::ggplot(pdat, aes(x = time, y = sld, col = subject, group = subject)) +
+    #     geom_point() +
+    #     geom_line()
+    # nolint end
+
+
+    jm <- JointModel(
+        longitudinal = LongitudinalClaretBruno(
+            mu_b = prior_normal(log(60), 0.4),
+            mu_g = prior_normal(log(1), 0.4),
+            mu_c = prior_normal(log(0.4), 0.4),
+            mu_p = prior_normal(log(2), 0.4),
+            omega_b = prior_lognormal(log(0.1), 0.4),
+            omega_g = prior_lognormal(log(0.1), 0.4),
+            omega_c = prior_lognormal(log(0.1), 0.4),
+            omega_p = prior_lognormal(log(0.1), 0.4),
+            sigma = prior_lognormal(log(1), 0.4),
+            centred = TRUE,
+            scaled_variance = FALSE
+        )
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = jlist@survival,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        longitudinal = DataLongitudinal(
+            data = jlist@longitudinal,
+            formula = sld ~ time,
+            threshold = 5
+        )
+    )
+
+    ## Sample from JointModel
+    set.seed(2363)
+    mp <- run_quietly({
+        suppressWarnings({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_sampling = 1250,
+                iter_warmup = 750,
+                chains = 2,
+                parallel_chains = 2
+            )
+        })
+    })
+
+
+    summary_post <- function(model, vars, exp = FALSE) {
+        dat <- model$summary(
+            vars,
+            mean = mean,
+            q01 = \(x) purrr::set_names(quantile(x, 0.01), ""),
+            q99 = \(x) purrr::set_names(quantile(x, 0.99), ""),
+            rhat = posterior::rhat,
+            ess_bulk = posterior::ess_bulk,
+            ess_tail = posterior::ess_tail
+        )
+        if (exp) {
+            dat$q01 <- dat$q01 |> exp()
+            dat$q99 <- dat$q99 |> exp()
+            dat$mean <- dat$mean |> exp()
+        }
+        dat
+    }
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c(
+            "lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p",
+            "lm_clbr_omega_b", "lm_clbr_omega_g", "lm_clbr_omega_c", "lm_clbr_omega_p",
+            "lm_clbr_sigma"
+        )
+    )
+    true_values <- sim_params[c(
+        "mu_b", "mu_g", "mu_c", "mu_p",
+        "omega_b", "omega_g", "omega_c", "omega_p",
+        "sigma"
+    )] |> unlist()
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
+
+})

@@ -17,6 +17,7 @@ LongitudinalClaretBruno(
   omega_c = prior_lognormal(log(0.2), 0.5),
   omega_p = prior_lognormal(log(0.2), 0.5),
   sigma = prior_lognormal(log(0.1), 0.5),
+  scaled_variance = TRUE,
   centred = FALSE
 )
 }
@@ -38,6 +39,9 @@ LongitudinalClaretBruno(
 \item{omega_p}{(\code{Prior})\cr for the population standard deviation for the growth inhibition.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values.}
+
+\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)}
 
 \item{centred}{(\code{logical})\cr whether to use the centred parameterization.}
 }

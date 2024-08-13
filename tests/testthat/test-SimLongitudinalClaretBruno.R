@@ -56,7 +56,7 @@ test_that("SimLongitudinalClaretBruno works as expected", {
         names(res_obvs),
         c(
             "subject", "arm", "study", "ind_b", "ind_g", "ind_c", "ind_p", "time",
-            "mu_sld", "dsld", "ttg", "sld", "log_haz_link"
+            "mu_sld", "dsld", "ttg", "variance", "sld", "log_haz_link"
         )
     )
 })

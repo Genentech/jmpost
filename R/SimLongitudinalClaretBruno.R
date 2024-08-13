@@ -23,6 +23,9 @@ NULL
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
 #'
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
+#'
 #' @slot sigma (`numeric`)\cr See arguments.
 #'
 #' @slot mu_b (`numeric`)\cr See arguments.
@@ -39,6 +42,8 @@ NULL
 #' @slot link_ttg (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
+#'
+#' @slot scaled_variance (`logical`)\cr See arguments.
 #'
 #' @family SimLongitudinal
 #' @name SimLongitudinalClaretBruno-class
@@ -59,7 +64,8 @@ NULL
         link_dsld = "numeric",
         link_ttg = "numeric",
         link_identity = "numeric",
-        link_growth = "numeric"
+        link_growth = "numeric",
+        scaled_variance = "logical"
     )
 )
 
@@ -79,7 +85,8 @@ SimLongitudinalClaretBruno <- function(
     link_dsld = 0,
     link_ttg = 0,
     link_identity = 0,
-    link_growth = 0
+    link_growth = 0,
+    scaled_variance = TRUE
 ) {
 
     if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
@@ -101,7 +108,8 @@ SimLongitudinalClaretBruno <- function(
         link_dsld = link_dsld,
         link_ttg = link_ttg,
         link_identity = link_identity,
-        link_growth = link_growth
+        link_growth = link_growth,
+        scaled_variance = scaled_variance
     )
 }
 
@@ -158,7 +166,8 @@ sampleObservations.SimLongitudinalClaretBruno <- function(object, times_df) {
         dplyr::mutate(mu_sld = clbr_sld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(dsld = clbr_dsld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(ttg = clbr_ttg(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * object@sigma)) |>
+        dplyr::mutate(variance = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, variance)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
