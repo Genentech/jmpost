@@ -55,7 +55,7 @@ test_that("SimLongitudinalGSF works as expected", {
         names(res_obvs),
         c(
             "subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi", "time",
-            "mu_sld", "dsld", "ttg", "sld", "log_haz_link"
+            "mu_sld", "dsld", "ttg", "variance", "sld", "log_haz_link"
         )
     )
 })
