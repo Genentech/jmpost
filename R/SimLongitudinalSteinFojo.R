@@ -18,6 +18,8 @@ NULL
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #' @param link_growth (`number`)\cr the link coefficient for the log-growth parameter contribution.
 #' @param link_shrinkage (`number`)\cr the link coefficient for the log-shrinkage parameter contribution.
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -31,6 +33,7 @@ NULL
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
 #' @slot link_shrinkage (`numeric`)\cr See arguments.
+#' @slot scaled_variance (`logical`)\cr See arguments.
 #'
 #' @family SimLongitudinal
 #' @name SimLongitudinalSteinFojo-class
@@ -50,7 +53,8 @@ NULL
         link_ttg = "numeric",
         link_identity = "numeric",
         link_growth = "numeric",
-        link_shrinkage = "numeric"
+        link_shrinkage = "numeric",
+        scaled_variance = "logical"
     )
 )
 
@@ -69,7 +73,8 @@ SimLongitudinalSteinFojo <- function(
     link_ttg = 0,
     link_identity = 0,
     link_growth = 0,
-    link_shrinkage = 0
+    link_shrinkage = 0,
+    scaled_variance = TRUE
 ) {
 
     if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
@@ -89,7 +94,8 @@ SimLongitudinalSteinFojo <- function(
         link_ttg = link_ttg,
         link_identity = link_identity,
         link_growth = link_growth,
-        link_shrinkage = link_shrinkage
+        link_shrinkage = link_shrinkage,
+        scaled_variance = scaled_variance
     )
 }
 
@@ -144,7 +150,8 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
         dplyr::mutate(mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
         dplyr::mutate(dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
         dplyr::mutate(ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * object@sigma)) |>
+        dplyr::mutate(variance = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, variance)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
