@@ -5,7 +5,7 @@
 \alias{as.CmdStanMCMC}
 \title{Coerce to \code{CmdStanMCMC}}
 \usage{
-\method{as.CmdStanMCMC}{JointModelSamples}(object, ...)
+as.CmdStanMCMC.JointModelSamples(object, ...)
 }
 \arguments{
 \item{object}{to be converted}

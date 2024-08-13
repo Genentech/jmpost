@@ -42,6 +42,4 @@ NULL
 #'
 #' @name as.CmdStanMCMC
 #'
-#' @importFrom cmdstanr as.CmdStanMCMC
-#' @export as.CmdStanMCMC
 NULL
