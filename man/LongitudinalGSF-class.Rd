@@ -17,6 +17,7 @@ LongitudinalGSF(
   omega_kg = prior_lognormal(log(0.2), 1),
   omega_phi = prior_lognormal(log(0.2), 1),
   sigma = prior_lognormal(log(0.1), 1),
+  scaled_variance = TRUE,
   centred = FALSE
 )
 }
@@ -39,6 +40,9 @@ LongitudinalGSF(
 affected by the treatment \code{omega_phi}.}
 
 \item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
+
+\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)}
 
 \item{centred}{(\code{logical})\cr whether to use the centred parameterization.}
 }
