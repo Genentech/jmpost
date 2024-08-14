@@ -473,8 +473,8 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             sampleStanModel(
                 jm,
                 data = jdat,
-                iter_sampling = 1250,
-                iter_warmup = 750,
+                iter_sampling = 2000,
+                iter_warmup = 1000,
                 chains = 2,
                 parallel_chains = 2
             )
@@ -492,11 +492,6 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             ess_bulk = posterior::ess_bulk,
             ess_tail = posterior::ess_tail
         )
-        if (exp) {
-            dat$q01 <- dat$q01 |> exp()
-            dat$q99 <- dat$q99 |> exp()
-            dat$mean <- dat$mean |> exp()
-        }
         dat
     }
 
