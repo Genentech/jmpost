@@ -53,7 +53,7 @@ test_that("SimLongitudinalSteinFojo works as expected", {
         names(res_obvs),
         c(
             "subject", "arm", "study", "psi_b", "psi_s", "psi_g", "time",
-            "mu_sld", "dsld", "ttg", "variance", "sld", "log_haz_link"
+            "mu_sld", "dsld", "ttg", "sld_sd", "sld", "log_haz_link"
         )
     )
 })

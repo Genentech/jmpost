@@ -150,8 +150,8 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
         dplyr::mutate(mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
         dplyr::mutate(dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
         dplyr::mutate(ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-        dplyr::mutate(variance = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, variance)) |>
+        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
