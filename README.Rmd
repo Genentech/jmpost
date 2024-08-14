@@ -84,7 +84,7 @@ sim_data <- SimJointData(
 joint_data <- DataJoint(
     subject = DataSubject(
         data = sim_data@survival,
-        subject = "pt",
+        subject = "subject",
         arm = "arm",
         study = "study"
     ),

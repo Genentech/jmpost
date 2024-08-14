@@ -28,6 +28,10 @@ SurvivalWeibullPH <- function(
     gamma = prior_gamma(2, 0.5),
     beta = prior_normal(0, 2)
 ) {
+
+    lambda <- set_limits(lambda, lower = 0)
+    gamma <- set_limits(gamma, lower = 0)
+
     .SurvivalWeibullPH(
         SurvivalModel(
             name = "Weibull-PH",

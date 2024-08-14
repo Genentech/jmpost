@@ -58,6 +58,7 @@ Suggests:
     purrr,
     vdiffr,
     prodlim,
+    tidyr,
     loo
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
@@ -110,6 +111,7 @@ Collate:
     'SimLongitudinalSteinFojo.R'
     'SimSurvival.R'
     'SurvivalExponential.R'
+    'SurvivalGamma.R'
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
     'brier_score.R'
