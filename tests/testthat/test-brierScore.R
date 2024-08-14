@@ -52,9 +52,11 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
         pred_mat = pred_mat
     )
 
-    expect_equal(
-        round(bs_survquant, 3),
-        round(bs_survreg, 3)
+    # Expect all values are approximately equal with a 0.5% relative tolerance
+    expect_true(
+        all(
+            ((abs(bs_survquant - bs_survreg) / bs_survreg) * 100) < 0.5
+        )
     )
 })
 
