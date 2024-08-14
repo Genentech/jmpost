@@ -1,5 +1,6 @@
 
 <!-- markdownlint-disable-file -->
+
 <!-- README.md needs to be generated from README.Rmd. Please edit that file -->
 
 # jmpost <a href="https://genentech.github.io/jmpost/"><img src="man/figures/logo.png" align="right" height="139" /></a>
@@ -93,7 +94,7 @@ sim_data <- SimJointData(
         gamma = 0.97
     )
 )
-#> INFO: 1 subject did not die before max(times)
+#> INFO: 1 subjects did not die before max(times)
 
 joint_data <- DataJoint(
     subject = DataSubject(

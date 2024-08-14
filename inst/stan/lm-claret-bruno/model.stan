@@ -69,13 +69,13 @@ transformed parameters{
     );
 
 
-    Ypred_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(
+    long_obvs_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(
         tumour_value[subject_tumour_index_obs],
         Ypred[subject_tumour_index_obs],
         Ypred[subject_tumour_index_obs] * lm_clbr_sigma
     );
     if (n_tumour_cens > 0 ) {
-        Ypred_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(
+        long_obvs_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(
             tumour_value_lloq,
             Ypred[subject_tumour_index_cens],
             Ypred[subject_tumour_index_cens] * lm_clbr_sigma
