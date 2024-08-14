@@ -311,7 +311,8 @@ SimSurvivalGamma <- function(
     time_step = 1,
     lambda_censor = 1 / 3000,
     beta_cont = 0.2,
-    beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2)) {
+    beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2)
+) {
     SimSurvival(
         time_max = time_max,
         time_step = time_step,
