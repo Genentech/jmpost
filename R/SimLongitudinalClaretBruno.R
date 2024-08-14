@@ -166,8 +166,8 @@ sampleObservations.SimLongitudinalClaretBruno <- function(object, times_df) {
         dplyr::mutate(mu_sld = clbr_sld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(dsld = clbr_dsld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(ttg = clbr_ttg(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(variance = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, variance)) |>
+        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
