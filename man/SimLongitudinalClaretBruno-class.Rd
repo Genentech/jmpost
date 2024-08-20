@@ -21,7 +21,8 @@ SimLongitudinalClaretBruno(
   link_dsld = 0,
   link_ttg = 0,
   link_identity = 0,
-  link_growth = 0
+  link_growth = 0,
+  scaled_variance = TRUE
 )
 }
 \arguments{
@@ -52,6 +53,9 @@ SimLongitudinalClaretBruno(
 \item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
 
 \item{link_growth}{(\code{number})\cr the link coefficient for the growth parameter contribution.}
+
+\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)}
 }
 \description{
 Simulate Longitudinal Data from a Claret-Bruno Model
@@ -84,6 +88,8 @@ Simulate Longitudinal Data from a Claret-Bruno Model
 \item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_growth}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{

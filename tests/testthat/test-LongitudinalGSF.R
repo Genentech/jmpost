@@ -314,3 +314,165 @@ test_that("Can generate valid initial values", {
     expect_true(all(vals > 0))
 
 })
+
+
+
+
+test_that("Unscaled variance GSF mode pass the parser", {
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = FALSE, scaled_variance = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = linkDSLD()
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
+
+
+test_that("Can recover known distributional parameters from unscaled variance GSF model", {
+
+    skip_if_not(is_full_test())
+    pars <- list(
+        sigma = 0.4,
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
+        mu_b = log(60),
+        mu_phi = qlogis(c(0.4, 0.6)),
+        omega_b = c(0.2),
+        omega_s = c(0.3, 0.1),
+        omega_g = c(0.1, 0.3),
+        omega_phi = c(0.3, 0.1),
+        link_dsld = 0,
+        link_ttg = 0,
+        link_identity = 0,
+        beta_cat_B = 0.5,
+        beta_cat_C = -0.1,
+        beta_cont = 0.3,
+        lambda = 1 / (400 / 365)
+    )
+
+    set.seed(7743)
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(120, "Arm-A", "Study-X"),
+            SimGroup(140, "Arm-B", "Study-X")
+        ),
+        survival = SimSurvivalExponential(
+            lambda = pars$lambda,
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda_censor = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = pars$beta_cat_B,
+                "C" = pars$beta_cat_C
+            ),
+            beta_cont = pars$beta_cont
+        ),
+        longitudinal = SimLongitudinalGSF(
+            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
+            sigma = pars$sigma,
+            mu_s = pars$mu_s,
+            mu_g = pars$mu_g,
+            mu_b = pars$mu_b,
+            mu_phi = pars$mu_phi,
+            omega_b = pars$omega_b,
+            omega_s = pars$omega_s,
+            omega_g = pars$omega_g,
+            omega_phi = pars$omega_phi,
+            link_dsld = pars$link_dsld,
+            link_ttg = pars$link_ttg,
+            link_identity = pars$link_identity,
+            scaled_variance = FALSE
+        ),
+        .silent = TRUE
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = jlist@survival,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = jlist@survival,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        ),
+        longitudinal = DataLongitudinal(
+            data = jlist@longitudinal,
+            formula = sld ~ time
+        )
+    )
+
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(
+            mu_bsld = prior_normal(log(60), 0.4),
+            mu_ks = prior_normal(log(0.6), 0.4),
+            mu_kg = prior_normal(log(0.3), 0.4),
+            mu_phi = prior_normal(qlogis(0.5), 0.5),
+            omega_bsld = prior_lognormal(log(0.2), 0.4),
+            omega_ks = prior_lognormal(log(0.2), 0.4),
+            omega_kg = prior_lognormal(log(0.2), 0.4),
+            omega_phi = prior_lognormal(log(0.2), 0.4),
+            sigma = prior_lognormal(log(0.01), 0.4),
+            centred = TRUE,
+            scaled_variance = FALSE
+        )
+    )
+
+    suppressWarnings({
+        mp <- run_quietly({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_warmup = 400,
+                iter_sampling = 800,
+                chains = 2,
+                refresh = 200,
+                parallel_chains = 2
+            )
+        })
+    })
+
+    summary_post <- function(model, vars, exp = FALSE) {
+        no_name_quant <- \(...) {
+            x <- quantile(...)
+            names(x) <- NULL
+            x
+        }
+        dat <- model$summary(
+            vars,
+            mean = mean,
+            q01 = \(x) no_name_quant(x, 0.01),
+            q99 = \(x) no_name_quant(x, 0.99),
+            rhat = posterior::rhat,
+            ess_bulk = posterior::ess_bulk,
+            ess_tail = posterior::ess_tail
+        )
+        if (exp) {
+            dat$q01 <- dat$q01 |> exp()
+            dat$q99 <- dat$q99 |> exp()
+            dat$mean <- dat$mean |> exp()
+        }
+        dat
+    }
+
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c(
+            "lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi",
+            "lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks",
+            "lm_gsf_omega_phi"
+        )
+    )
+    true_values <- c(
+        pars$mu_b, pars$mu_s, pars$mu_g, pars$mu_phi,
+        pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s,
+        pars$omega_phi
+    )
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
+})
