@@ -445,6 +445,11 @@ p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
 \end{align*}
 $$
 
+If using the unscaled variance parameterisation then the following alternative formulation is used:
+$$
+y_{ij} &\sim N(SLD_{ij},\ \sigma^2)
+$$
+
 
 ### Derivative of the SLD Trajectory Link 
 
