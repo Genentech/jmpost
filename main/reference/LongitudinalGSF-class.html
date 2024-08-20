@@ -27,14 +27,6 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome."><meta property
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports"><li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
     <li><a class="dropdown-item" href="../unit-test-report/">Unit test report</a></li>
@@ -71,6 +63,7 @@ Generalized Stein-Fojo (GSF) model for the longitudinal outcome.</p>
 <span>  omega_kg <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  omega_phi <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.2</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  sigma <span class="op">=</span> <span class="fu"><a href="prior_lognormal.html">prior_lognormal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  scaled_variance <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  centred <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -114,6 +107,11 @@ affected by the treatment <code>omega_phi</code>.</p></dd>
 
 <dt id="arg-sigma">sigma<a class="anchor" aria-label="anchor" href="#arg-sigma"></a></dt>
 <dd><p>(<code>Prior</code>)<br> for the variance of the longitudinal values <code>sigma</code>.</p></dd>
+
+
+<dt id="arg-scaled-variance">scaled_variance<a class="anchor" aria-label="anchor" href="#arg-scaled-variance"></a></dt>
+<dd><p>(<code>logical</code>)<br> whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)</p></dd>
 
 
 <dt id="arg-centred">centred<a class="anchor" aria-label="anchor" href="#arg-centred"></a></dt>
