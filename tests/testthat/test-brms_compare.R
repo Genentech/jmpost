@@ -40,10 +40,12 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         dplyr::select(pt, value, time)
 
 
+    # nolint start
     # DEBUG
     # ggplot(data = filter(dat, pt %in% sample(dat$pt, 5)), aes(x = time, y = value, col = pt, group = pt)) +
     #     geom_point() +
     #     geom_line()
+    # nolint end
 
     dat2 <- dat |>
         dplyr::mutate(arm = "A") |>
