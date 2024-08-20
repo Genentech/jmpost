@@ -315,6 +315,12 @@ Where:
 * $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
 
 
+If using the unscaled variance parameterisation then the following alternative formulation is used:
+$$
+y_{ij} &\sim N(SLD_{ij},\ \sigma^2)
+$$
+
+
 ### Derivative of the SLD Trajectory Link 
 
 
