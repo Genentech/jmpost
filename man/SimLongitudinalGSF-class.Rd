@@ -22,7 +22,8 @@ SimLongitudinalGSF(
   link_ttg = 0,
   link_identity = 0,
   link_growth = 0,
-  link_shrinkage = 0
+  link_shrinkage = 0,
+  scaled_variance = TRUE
 )
 }
 \arguments{
@@ -56,6 +57,9 @@ affected by the treatment \code{omega_phi}.}
 \item{link_growth}{(\code{number})\cr the link coefficient for the log-growth parameter contribution.}
 
 \item{link_shrinkage}{(\code{number})\cr the link coefficient for the log-shrinkage parameter contribution.}
+
+\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)}
 }
 \description{
 Simulate Longitudinal Data from a GSF Model
@@ -90,6 +94,8 @@ Simulate Longitudinal Data from a GSF Model
 \item{\code{link_growth}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_shrinkage}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{scaled_variance}}{(\code{numeric})\cr See arguments.}
 }}
 
 \seealso{
