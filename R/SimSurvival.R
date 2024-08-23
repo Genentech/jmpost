@@ -176,7 +176,7 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(event = 0)
 
     if (!(nrow(os_had_censor) == 0)) {
-        message(sprintf("INFO: %i subjects did not die before max(times)", nrow(os_had_censor)))
+        message(sprintf("INFO: %i subject(s) did not die before max(times)", nrow(os_had_censor)))
     }
 
     os_dat_complete <- os_had_event |>
