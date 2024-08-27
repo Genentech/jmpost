@@ -94,7 +94,7 @@ sim_data <- SimJointData(
         gamma = 0.97
     )
 )
-#> INFO: 1 subjects did not die before max(times)
+#> INFO: 1 subject(s) did not die before max(times)
 
 joint_data <- DataJoint(
     subject = DataSubject(

@@ -92,6 +92,22 @@ Where:
 - $b > 0$ is the shape parameter
 
 
+## Gamma Distribution
+
+$$
+h(t \mid k, \theta) = \frac{
+    t^{k - 1} e^{-t/\theta}
+} {
+    \theta ^ k ( \Gamma(k) - \gamma(k, t/\theta) )
+}
+$$
+
+Where:
+
+- $k > 0 $ is the shape parameter
+- $\theta > 0$ is the scale parameter
+- $\Gamma(.)$ is the complete gamma function
+- $\gamma(., .)$ is the lower incomplete gamma function
 
 
 # Longitudinal Model Specification

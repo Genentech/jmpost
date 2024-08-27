@@ -51,6 +51,7 @@ increased computation time.
 Other SimSurvival: 
 \code{\link{SimSurvival-class}},
 \code{\link{SimSurvivalExponential}()},
+\code{\link{SimSurvivalGamma}()},
 \code{\link{SimSurvivalLogLogistic}()}
 }
 \concept{SimSurvival}

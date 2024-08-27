@@ -176,7 +176,7 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(event = 0)
 
     if (!(nrow(os_had_censor) == 0)) {
-        message(sprintf("INFO: %i subjects did not die before max(times)", nrow(os_had_censor)))
+        message(sprintf("INFO: %i subject(s) did not die before max(times)", nrow(os_had_censor)))
     }
 
     os_dat_complete <- os_had_event |>
@@ -287,5 +287,42 @@ SimSurvivalExponential <- function(
             log(lambda)
         },
         name = "SimSurvivalExponential"
+    )
+}
+
+
+#' Simulate Survival Data from a Gamma Proportional Hazard Model
+#'
+#' @param k (`number`)\cr the shape parameter.
+#' @param theta (`number`)\cr the scale parameter.
+#'
+#' @inheritParams SimSurvival-Shared
+#' @inheritSection SimSurvival-Shared Hazard Evaluation
+#'
+#' @family SimSurvival
+#'
+#' @importFrom stats dgamma pgamma
+#'
+#' @export
+SimSurvivalGamma <- function(
+    k,
+    theta,
+    time_max = 2000,
+    time_step = 1,
+    lambda_censor = 1 / 3000,
+    beta_cont = 0.2,
+    beta_cat = c("A" = 0, "B" = -0.4, "C" = 0.2)
+) {
+    SimSurvival(
+        time_max = time_max,
+        time_step = time_step,
+        lambda_censor = lambda_censor,
+        beta_cont = beta_cont,
+        beta_cat = beta_cat,
+        loghazard = function(time) {
+            dgamma(time, k, scale = theta, log = TRUE) -
+                pgamma(time, k, scale = theta, lower.tail = FALSE, log.p = TRUE)
+        },
+        name = "SimSurvivalGamma"
     )
 }
