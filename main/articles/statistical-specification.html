@@ -41,14 +41,6 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -76,7 +68,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Statistical Specifications</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/Genentech/jmpost/blob/main/vignettes/statistical-specification.Rmd" class="external-link"><code>vignettes/statistical-specification.Rmd</code></a></small>
       <div class="d-none name"><code>statistical-specification.Rmd</code></div>
     </div>
 
@@ -177,6 +169,30 @@ is the scale parameter</li>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b &gt; 0</annotation></semantics></math>
 is the shape parameter</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="gamma-distribution">Gamma Distribution<a class="anchor" aria-label="anchor" href="#gamma-distribution"></a>
+</h3>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>∣</mo><mi>k</mi><mo>,</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msup><mi>t</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi><mi>/</mi><mi>θ</mi></mrow></msup></mrow><mrow><msup><mi>θ</mi><mi>k</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>Γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>t</mi><mi>/</mi><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+h(t \mid k, \theta) = \frac{
+    t^{k - 1} e^{-t/\theta}
+} {
+    \theta ^ k ( \Gamma(k) - \gamma(k, t/\theta) )
+}
+</annotation></semantics></math></p>
+<p>Where:</p>
+<ul>
+<li>$k &gt; 0 $ is the shape parameter</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta &gt; 0</annotation></semantics></math>
+is the scale parameter</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>.</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Gamma(.)</annotation></semantics></math>
+is the complete gamma function</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>.</mi><mo>,</mo><mi>.</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\gamma(., .)</annotation></semantics></math>
+is the lower incomplete gamma function</li>
 </ul>
 </div>
 </div>
