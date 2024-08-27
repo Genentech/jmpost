@@ -1,7 +1,23 @@
 
 
 
+test_that("Can load and compile SurvivalLogLogistic() model", {
+    # Full joint model
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = Link(linkShrinkage(), linkGrowth())
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
 
+    # Survival only submodel
+    jm <- JointModel(
+        survival = SurvivalLogLogistic()
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
 
 
 test_that("sim_os_loglogistic() is consistant with flexsurv", {
@@ -15,6 +31,8 @@ test_that("sim_os_loglogistic() is consistant with flexsurv", {
 
 
 test_that("SurvivalLogLogistic can recover known values", {
+
+    skip_if_not(is_full_test())
 
     true_a <- 300
     true_b <- 3
@@ -80,7 +98,7 @@ test_that("SurvivalLogLogistic can recover known values", {
 
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
-
+    expect_true(all(results_summary$ess_bulk > 100))
 })
 
 

@@ -48,6 +48,7 @@ reference:
       - SimSurvivalLogLogistic
       - SimSurvivalExponential
       - SimSurvivalWeibullPH
+      - SimSurvivalGamma
       - SimGroup
   - title: Prior Distributions
     contents:
@@ -79,6 +80,7 @@ reference:
       - SurvivalLogLogistic
       - SurvivalModel
       - SurvivalWeibullPH
+      - SurvivalGamma
   
   
   - title: Link Specification
