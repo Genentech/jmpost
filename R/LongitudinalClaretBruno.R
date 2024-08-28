@@ -39,6 +39,8 @@ NULL
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values.
 #'
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #'
 #' @export
 LongitudinalClaretBruno <- function(
@@ -55,11 +57,13 @@ LongitudinalClaretBruno <- function(
 
     sigma = prior_lognormal(log(0.1), 0.5),
 
+    scaled_variance = TRUE,
     centred = FALSE
 ) {
 
     sf_model <- StanModule(decorated_render(
         .x = read_stan("lm-claret-bruno/model.stan"),
+        scaled_variance = scaled_variance,
         centred = centred
     ))
 
@@ -77,10 +81,10 @@ LongitudinalClaretBruno <- function(
         Parameter(name = "lm_clbr_mu_c", prior = mu_c, size = "n_arms"),
         Parameter(name = "lm_clbr_mu_p", prior = mu_p, size = "n_arms"),
 
-        Parameter(name = "lm_clbr_omega_b", prior = omega_b, size = 1),
-        Parameter(name = "lm_clbr_omega_g", prior = omega_g, size = 1),
-        Parameter(name = "lm_clbr_omega_c", prior = omega_c, size = 1),
-        Parameter(name = "lm_clbr_omega_p", prior = omega_p, size = 1),
+        Parameter(name = "lm_clbr_omega_b", prior = omega_b, size = "n_studies"),
+        Parameter(name = "lm_clbr_omega_g", prior = omega_g, size = "n_arms"),
+        Parameter(name = "lm_clbr_omega_c", prior = omega_c, size = "n_arms"),
+        Parameter(name = "lm_clbr_omega_p", prior = omega_p, size = "n_arms"),
 
         Parameter(name = "lm_clbr_sigma", prior = sigma, size = 1)
     )

@@ -47,6 +47,7 @@ increased computation time.
 \seealso{
 Other SimSurvival: 
 \code{\link{SimSurvival-class}},
+\code{\link{SimSurvivalGamma}()},
 \code{\link{SimSurvivalLogLogistic}()},
 \code{\link{SimSurvivalWeibullPH}()}
 }

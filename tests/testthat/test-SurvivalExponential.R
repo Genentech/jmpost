@@ -1,5 +1,27 @@
 
+test_that("Can load and compile SurvivalExponential() model", {
+    # Full joint model
+    jm <- JointModel(
+        longitudinal = LongitudinalGSF(centred = FALSE),
+        survival = SurvivalExponential(),
+        link = Link(linkShrinkage(), linkGrowth())
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+
+    # Survival only submodel
+    jm <- JointModel(
+        survival = SurvivalExponential()
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
+
+
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
+
+    skip_if_not(is_full_test())
+
     true_lambda <- 1 / 100
     true_beta <- c(0.5, -0.2, 0.1)
     set.seed(2034)
@@ -55,6 +77,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
 
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
+    expect_true(all(results_summary$ess_bulk > 100))
 })
 
 

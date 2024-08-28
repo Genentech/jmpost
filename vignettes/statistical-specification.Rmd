@@ -76,6 +76,8 @@ Where:
 - $\lambda > 0$ is the rate parameter
 - $\gamma > 0$ is the shape parameter
 Note that with $\gamma = 1$ we obtain the exponential distribution as a special case.
+
+
 ## Log-Logistic Distribution
 
 $$
@@ -90,6 +92,22 @@ Where:
 - $b > 0$ is the shape parameter
 
 
+## Gamma Distribution
+
+$$
+h(t \mid k, \theta) = \frac{
+    t^{k - 1} e^{-t/\theta}
+} {
+    \theta ^ k ( \Gamma(k) - \gamma(k, t/\theta) )
+}
+$$
+
+Where:
+
+- $k > 0 $ is the shape parameter
+- $\theta > 0$ is the scale parameter
+- $\Gamma(.)$ is the complete gamma function
+- $\gamma(., .)$ is the lower incomplete gamma function
 
 
 # Longitudinal Model Specification
@@ -135,16 +153,16 @@ Accessible via `linkIdentity()`
 
 
 $$\begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
 \\
 SLD_{ij} &=
 \begin{cases}
 b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
 b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\\\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
 \end{align*}
 $$
 
@@ -162,26 +180,31 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
+
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
-\eta_{s i} &\sim   N(0, 1)  \\
-\eta_{g i} &\sim   N(0, 1)  \\
+\eta_{s i} &\sim  N(0, 1) \\
+\eta_{g i} &\sim  N(0, 1) \\
 \end{align*}
 $$
 
 Where:
+
 * $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
 
-
+If using the unscaled variance parameterisation then the following alternative formulation is used:
+$$
+y_{ij} &\sim N(SLD_{ij},\ \sigma^2)
+$$
 
 ### Derivative of the SLD Trajectory Link 
 
@@ -259,17 +282,17 @@ the mean of the distribution is used.
 
 $$
 \begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &= 
 \begin{cases}
 b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
 b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
 \end{cases}\\
 \\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_s) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_\phi)
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_{\phi k(i)})
 \end{align*}
 $$
 
@@ -287,16 +310,17 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
+
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_b * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_s * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
-\phi_i &= \text{logistic}(\mu_{gk(i)} + \omega_\phi * \eta_{\phi i}) \\
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+\phi_i &= \text{logistic}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
@@ -306,7 +330,14 @@ g_i &= exp(\mu_{gk(i)} + \omega_g * \eta_{g i}) \\
 $$
 
 Where:
+
 * $\eta_{\theta i}$ is a random effects offset on parameter $\theta$ for subject $i$
+
+
+If using the unscaled variance parameterisation then the following alternative formulation is used:
+$$
+y_{ij} &\sim N(SLD_{ij},\ \sigma^2)
+$$
 
 
 ### Derivative of the SLD Trajectory Link 
@@ -386,17 +417,17 @@ non-centred parameterisation and setting the "random effects" term to be 0.
 
 $$
 \begin{align*}
-y_{ij} &\sim \mathcal{N}(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
 SLD_{ij} &= 
 \begin{cases} b_i e^{g_i t_{ij}} & 
 \text{if } t_{ij} < 0, \\ 
 b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
 \text{if } t_{ij} \geq 0. \end{cases}\\
 \\
-b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_b) \\
-g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_g) \\
-c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_c) \\
-p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_p) \\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_{c k(i)}) \\
+p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_{p k(i)}) \\
 \end{align*}
 $$
 
@@ -414,7 +445,29 @@ Where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta}$ is the population variance for parameter $\theta$.
+* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$
+
+
+If using the non-centred parameterisation then the following alternative formulation is used:
+
+$$
+\begin{align*}
+b_i &= exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+g_i &= exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+c_i &= exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
+p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{g i} &\sim  N(0, 1)  \\
+\eta_{c i} &\sim  N(0, 1)  \\
+\eta_{p i} &\sim  N(0, 1)  \\
+\end{align*}
+$$
+
+If using the unscaled variance parameterisation then the following alternative formulation is used:
+$$
+y_{ij} &\sim N(SLD_{ij},\ \sigma^2)
+$$
 
 
 ### Derivative of the SLD Trajectory Link 

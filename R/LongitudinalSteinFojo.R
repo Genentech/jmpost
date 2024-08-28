@@ -36,6 +36,8 @@ NULL
 #'
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
 #'
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
 #'
 #' @export
@@ -51,12 +53,14 @@ LongitudinalSteinFojo <- function(
 
     sigma = prior_lognormal(log(0.1), 1),
 
+    scaled_variance = TRUE,
     centred = FALSE
 ) {
 
     sf_model <- StanModule(decorated_render(
         .x = read_stan("lm-stein-fojo/model.stan"),
-        centred = centred
+        centred = centred,
+        scaled_variance = scaled_variance
     ))
 
     # Apply constriants
@@ -70,9 +74,9 @@ LongitudinalSteinFojo <- function(
         Parameter(name = "lm_sf_mu_ks", prior = mu_ks, size = "n_arms"),
         Parameter(name = "lm_sf_mu_kg", prior = mu_kg, size = "n_arms"),
 
-        Parameter(name = "lm_sf_omega_bsld", prior = omega_bsld, size = 1),
-        Parameter(name = "lm_sf_omega_ks", prior = omega_ks, size = 1),
-        Parameter(name = "lm_sf_omega_kg", prior = omega_kg, size = 1),
+        Parameter(name = "lm_sf_omega_bsld", prior = omega_bsld, size = "n_studies"),
+        Parameter(name = "lm_sf_omega_ks", prior = omega_ks, size = "n_arms"),
+        Parameter(name = "lm_sf_omega_kg", prior = omega_kg, size = "n_arms"),
 
         Parameter(name = "lm_sf_sigma", prior = sigma, size = 1)
     )

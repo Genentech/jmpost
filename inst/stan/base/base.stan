@@ -22,9 +22,7 @@ data{
 {{ survival.data }}
 {{ link.data }}
 {{ longitudinal.data }}
-
 {{ priors.data }}
-
 }
 
 
@@ -45,17 +43,18 @@ parameters{
 
 
 transformed parameters{
-    //
-    // Source - base/base.stan
-    //
-
-    // Log-likelihood values for using the loo package.
-    vector[n_subjects] log_lik = rep_vector(0.0, n_subjects);
-
 {{ longitudinal.transformed_parameters }}
 {{ link.transformed_parameters }}
 {{ survival.transformed_parameters }}
 
+    //
+    // Source - base/base.stan
+    //
+    {% if has_os_submodel and not has_long_submodel -%}
+        vector[n_subjects] log_lik = os_subj_log_lik;
+    {% else if has_long_submodel and not has_os_submodel -%}
+        vector[n_tumour_all] log_lik = long_obvs_log_lik;
+    {%- endif -%}
 }
 
 
@@ -63,13 +62,7 @@ model{
 {{ longitudinal.model }}
 {{ link.model }}
 {{ survival.model }}
-
 {{ priors.model }}
-
-    //
-    // Source - base/base.stan
-    //
-    target += sum(log_lik);
 }
 
 generated quantities{

@@ -1,6 +1,6 @@
 
 functions {
-    {{ stan.functions }}
+{{ stan.functions }}
 }
 
 
@@ -43,42 +43,35 @@ data{
     array[n_mat_inds_all_y[2]] int v_mat_inds_all_y;
     array[n_mat_inds_all_y[3]] int u_mat_inds_all_y;
 
-    {{ stan.data }}
+{{ stan.data }}
 }
 
 transformed data {
-   {{ stan.transformed_data }}
+{{ stan.transformed_data }}
 }
 
 parameters {
-    {{ stan.parameters }}
+{{ stan.parameters }}
 }
 
 transformed parameters {
     //
     // Source - base/longitudinal.stan
     //
-    vector[n_tumour_all] Ypred_log_lik = rep_vector(0, n_tumour_all);
+    // Vector to store per observation log-likelihood values
+    vector[n_tumour_all] long_obvs_log_lik = rep_vector(0, n_tumour_all);
 
     {{ stan.transformed_parameters }}
-
-    //
-    // Source - base/longitudinal.stan
-    //
-    log_lik += csr_matrix_times_vector(
-        n_subjects,
-        n_tumour_all,
-        w_mat_inds_all_y,
-        v_mat_inds_all_y,
-        u_mat_inds_all_y,
-        Ypred_log_lik
-    );
 }
 
 model {
-    {{ stan.model }}
+{{ stan.model }}
+    //
+    // Source - base/longitudinal.stan
+    //
+    target += sum(long_obvs_log_lik);
 }
 
 generated quantities {
-    {{ stan.generated_quantities }}
+{{ stan.generated_quantities }}
 }

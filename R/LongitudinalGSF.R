@@ -42,6 +42,8 @@ NULL
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
 #'
 #' @param centred (`logical`)\cr whether to use the centred parameterization.
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #'
 #' @importFrom stats qlogis
 #' @export
@@ -59,12 +61,14 @@ LongitudinalGSF <- function(
 
     sigma = prior_lognormal(log(0.1), 1),
 
+    scaled_variance = TRUE,
     centred = FALSE
 ) {
 
     gsf_model <- StanModule(decorated_render(
         .x = read_stan("lm-gsf/model.stan"),
-        centred = centred
+        centred = centred,
+        scaled_variance = scaled_variance
     ))
 
     # Apply constraints
@@ -81,10 +85,10 @@ LongitudinalGSF <- function(
         Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
         Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
 
-        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = 1),
-        Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = 1),
-        Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = 1),
-        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = 1),
+        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = "n_studies"),
+        Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = "n_arms"),
+        Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = "n_arms"),
+        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = "n_arms"),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )

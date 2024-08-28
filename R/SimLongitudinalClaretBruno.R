@@ -23,6 +23,9 @@ NULL
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
 #'
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
+#'
 #' @slot sigma (`numeric`)\cr See arguments.
 #'
 #' @slot mu_b (`numeric`)\cr See arguments.
@@ -39,6 +42,8 @@ NULL
 #' @slot link_ttg (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
+#'
+#' @slot scaled_variance (`logical`)\cr See arguments.
 #'
 #' @family SimLongitudinal
 #' @name SimLongitudinalClaretBruno-class
@@ -59,7 +64,8 @@ NULL
         link_dsld = "numeric",
         link_ttg = "numeric",
         link_identity = "numeric",
-        link_growth = "numeric"
+        link_growth = "numeric",
+        scaled_variance = "logical"
     )
 )
 
@@ -79,8 +85,15 @@ SimLongitudinalClaretBruno <- function(
     link_dsld = 0,
     link_ttg = 0,
     link_identity = 0,
-    link_growth = 0
+    link_growth = 0,
+    scaled_variance = TRUE
 ) {
+
+    if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
+    if (length(omega_g) == 1) omega_g <- rep(omega_g, length(mu_g))
+    if (length(omega_c) == 1) omega_c <- rep(omega_c, length(mu_c))
+    if (length(omega_p) == 1) omega_p <- rep(omega_p, length(mu_p))
+
     .SimLongitudinalClaretBruno(
         times = times,
         sigma = sigma,
@@ -95,7 +108,8 @@ SimLongitudinalClaretBruno <- function(
         link_dsld = link_dsld,
         link_ttg = link_ttg,
         link_identity = link_identity,
-        link_growth = link_growth
+        link_growth = link_growth,
+        scaled_variance = scaled_variance
     )
 }
 
@@ -111,8 +125,23 @@ setValidity(
         if (length(unique(par_lengths)) != 1) {
             return("The parameters `mu_g`, `mu_c` & `mu_p` must have the same length.")
         }
+        pairs <- list(
+            "omega_b" = "mu_b",
+            "omega_g" = "mu_g",
+            "omega_c" = "mu_c",
+            "omega_p" = "mu_p"
+        )
+        for (i in seq_along(pairs)) {
+            omega <- slot(object, names(pairs)[[i]])
+            mu <- slot(object, pairs[[i]])
+            if (!(length(omega) == length(mu))) {
+                return(
+                    sprintf("`%s` must be length 1 or the same length as `%s`", omega, mu)
+                )
+            }
+        }
         len_1_pars <- c(
-            "sigma", "omega_b", "omega_g", "omega_c", "omega_p",
+            "sigma",
             "link_dsld", "link_ttg", "link_identity",
             "link_growth"
         )
@@ -137,7 +166,8 @@ sampleObservations.SimLongitudinalClaretBruno <- function(object, times_df) {
         dplyr::mutate(mu_sld = clbr_sld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(dsld = clbr_dsld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
         dplyr::mutate(ttg = clbr_ttg(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * object@sigma)) |>
+        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
@@ -164,10 +194,26 @@ sampleSubjects.SimLongitudinalClaretBruno <- function(object, subjects_df) {
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(ind_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
-        dplyr::mutate(ind_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g)) |>
-        dplyr::mutate(ind_c = stats::rlnorm(dplyr::n(), object@mu_c[.data$arm_idx], object@omega_c)) |>
-        dplyr::mutate(ind_p = stats::rlnorm(dplyr::n(), object@mu_p[.data$arm_idx], object@omega_p))
+        dplyr::mutate(ind_b = stats::rlnorm(
+            dplyr::n(),
+            object@mu_b[.data$study_idx],
+            object@omega_b[.data$study_idx]
+        )) |>
+        dplyr::mutate(ind_g = stats::rlnorm(
+            dplyr::n(),
+            object@mu_g[.data$arm_idx],
+            object@omega_g[.data$arm_idx]
+        )) |>
+        dplyr::mutate(ind_c = stats::rlnorm(
+            dplyr::n(),
+            object@mu_c[.data$arm_idx],
+            object@omega_c[.data$arm_idx]
+        )) |>
+        dplyr::mutate(ind_p = stats::rlnorm(
+            dplyr::n(),
+            object@mu_p[.data$arm_idx],
+            object@omega_p[.data$arm_idx]
+        ))
 
     res[, c("subject", "arm", "study", "ind_b", "ind_g", "ind_c", "ind_p")]
 }

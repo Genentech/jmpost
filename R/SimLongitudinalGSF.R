@@ -22,6 +22,8 @@ NULL
 #' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
 #' @param link_growth (`number`)\cr the link coefficient for the log-growth parameter contribution.
 #' @param link_shrinkage (`number`)\cr the link coefficient for the log-shrinkage parameter contribution.
+#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
+#' (see the "Statistical Specifications" vignette for more details)
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -37,6 +39,7 @@ NULL
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
 #' @slot link_shrinkage (`numeric`)\cr See arguments.
+#' @slot scaled_variance (`numeric`)\cr See arguments.
 #' @family SimLongitudinal
 #' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
@@ -57,7 +60,8 @@ NULL
         link_ttg = "numeric",
         link_identity = "numeric",
         link_growth = "numeric",
-        link_shrinkage = "numeric"
+        link_shrinkage = "numeric",
+        scaled_variance = "logical"
     )
 )
 
@@ -78,8 +82,15 @@ SimLongitudinalGSF <- function(
     link_ttg = 0,
     link_identity = 0,
     link_growth = 0,
-    link_shrinkage = 0
+    link_shrinkage = 0,
+    scaled_variance = TRUE
 ) {
+
+    if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
+    if (length(omega_s) == 1) omega_s <- rep(omega_s, length(mu_s))
+    if (length(omega_g) == 1) omega_g <- rep(omega_g, length(mu_g))
+    if (length(omega_phi) == 1) omega_phi <- rep(omega_phi, length(mu_phi))
+
     .SimLongitudinalGSF(
         times = times,
         sigma = sigma,
@@ -95,7 +106,8 @@ SimLongitudinalGSF <- function(
         link_ttg = link_ttg,
         link_identity = link_identity,
         link_growth = link_growth,
-        link_shrinkage = link_shrinkage
+        link_shrinkage = link_shrinkage,
+        scaled_variance = scaled_variance
     )
 }
 
@@ -112,8 +124,24 @@ setValidity(
             return("The parameters `mu_s`, `mu_g` and `mu_phi` must have the same length.")
         }
 
+        pairs <- list(
+            "omega_b" = "mu_b",
+            "omega_s" = "mu_s",
+            "omega_g" = "mu_g",
+            "omega_phi" = "mu_phi"
+        )
+        for (i in seq_along(pairs)) {
+            omega <- slot(object, names(pairs)[[i]])
+            mu <- slot(object, pairs[[i]])
+            if (!(length(omega) == length(mu))) {
+                return(
+                    sprintf("`%s` must be length 1 or the same length as `%s`", omega, mu)
+                )
+            }
+        }
+
         len_1_pars <- c(
-            "sigma", "omega_b", "omega_s", "omega_g", "omega_phi",
+            "sigma",
             "link_dsld", "link_ttg", "link_identity", "link_growth",
             "link_shrinkage"
         )
@@ -139,7 +167,8 @@ sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
         dplyr::mutate(mu_sld = gsf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
         dplyr::mutate(dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
         dplyr::mutate(ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$mu_sld * object@sigma)) |>
+        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
+        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
@@ -167,13 +196,25 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(study_idx = as.numeric(.data$study)) |>
         dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(psi_b = stats::rlnorm(dplyr::n(), object@mu_b[.data$study_idx], object@omega_b)) |>
-        dplyr::mutate(psi_s = stats::rlnorm(dplyr::n(), object@mu_s[.data$arm_idx], object@omega_s)) |>
-        dplyr::mutate(psi_g = stats::rlnorm(dplyr::n(), object@mu_g[.data$arm_idx], object@omega_g)) |>
+        dplyr::mutate(psi_b = stats::rlnorm(
+            dplyr::n(),
+            object@mu_b[.data$study_idx],
+            object@omega_b[.data$study_idx]
+        )) |>
+        dplyr::mutate(psi_s = stats::rlnorm(
+            dplyr::n(),
+            object@mu_s[.data$arm_idx],
+            object@omega_s[.data$arm_idx]
+        )) |>
+        dplyr::mutate(psi_g = stats::rlnorm(
+            dplyr::n(),
+            object@mu_g[.data$arm_idx],
+            object@omega_g[.data$arm_idx]
+        )) |>
         dplyr::mutate(psi_phi_logit = stats::rnorm(
             dplyr::n(),
             object@mu_phi[.data$arm_idx],
-            object@omega_phi
+            object@omega_phi[.data$arm_idx]
         )) |>
         dplyr::mutate(psi_phi = stats::plogis(.data$psi_phi_logit))
 

@@ -39,7 +39,7 @@ transformed parameters{
 
     // Calculate per observation log-likelihood for {loo} integration
     // These values are automatically added to the target for you
-    Ypred_log_lik = vect_normal_log_dens(
+    long_obvs_log_lik = vect_normal_log_dens(
         tumour_value,
         Ypred,
         rep_vector(sigma, n_tumour_all) // broadcast sigma to the length of Ypred

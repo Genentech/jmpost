@@ -108,38 +108,54 @@ test_that("Can load and compile growth + shrinkage links", {
 test_that("Can recover known distributional parameters from a SF joint model", {
 
     skip_if_not(is_full_test())
-
-    set.seed(9438)
+    pars <- list(
+        sigma = 0.01,
+        mu_s = log(c(0.6, 0.4)),
+        mu_g = log(c(0.25, 0.35)),
+        mu_b = log(60),
+        omega_b = c(0.2),
+        omega_s = c(0.3, 0.1),
+        omega_g = c(0.1, 0.3),
+        omega_phi = c(0.3, 0.1),
+        link_dsld = 0.1,
+        link_ttg = 0.2,
+        link_identity = 0,
+        beta_cat_B = 0.5,
+        beta_cat_C = -0.1,
+        beta_cont = 0.3,
+        lambda = 1 / (400 / 365)
+    )
+    set.seed(9898)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(120, "Arm-A", "Study-X"),
-            SimGroup(120, "Arm-B", "Study-X")
+            SimGroup(180, "Arm-A", "Study-X"),
+            SimGroup(190, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalSteinFojo(
             times = c(-100, -50, -10, 1, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900) * (1 / 365),
-            sigma = 0.005,
-            mu_s = log(c(0.2, 0.25)),
-            mu_g = log(c(0.15, 0.2)),
-            mu_b = log(60),
-            omega_b = 0.1,
-            omega_s = 0.1,
-            omega_g = 0.1,
-            link_ttg = -0.2,
-            link_dsld = 0.2
+            sigma = pars$sigma,
+            mu_s = pars$mu_s,
+            mu_g = pars$mu_g,
+            mu_b = pars$mu_b,
+            omega_b = pars$omega_b,
+            omega_s = pars$omega_s,
+            omega_g = pars$omega_g,
+            link_ttg = pars$link_ttg,
+            link_dsld = pars$link_dsld,
+            link_identity = pars$link_identity
         ),
-        survival = SimSurvivalWeibullPH(
+        survival = SimSurvivalExponential(
             time_max = 4,
             time_step = 1 / 365,
-            lambda = 1,
-            gamma = 1,
+            lambda = pars$lambda,
             lambda_cen = 1 / 9000,
             beta_cat = c(
                 "A" = 0,
-                "B" = -0.1,
-                "C" = 0.5
+                "B" = pars$beta_cat_B,
+                "C" = pars$beta_cat_C
             ),
-            beta_cont = 0.3
+            beta_cont = pars$beta_cont
         ),
         .silent = TRUE
     )
@@ -221,24 +237,38 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
-        TRUE
+        c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg")
     )
-    true_values <- c(60, 0.2, 0.25, 0.15, 0.2)
+    true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
+
     dat <- summary_post(
         as.CmdStanMCMC(mp),
-        c("link_dsld", "link_ttg", "sm_exp_lambda")
+        c("lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks")
     )
+    true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s)
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
 
-    true_values <- c(0.2, -0.2, 1)
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
+    )
+    true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 })
+
+
+
+
+
 
 test_that("Can recover known distributional parameters from a SF joint model with growth link", {
 
@@ -406,6 +436,9 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 
 
 
+
+
+
 test_that("Quantity models pass the parser", {
     mock_samples <- .JointModelSamples(
         model = JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE)),
@@ -426,6 +459,11 @@ test_that("Quantity models pass the parser", {
     )
     expect_stan_syntax(stanmod)
 })
+
+
+
+
+
 
 
 
@@ -474,4 +512,164 @@ test_that("Can generate valid initial values", {
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
 
+})
+
+
+
+
+
+
+test_that("Unscaled variance SF mode pass the parser", {
+    jm <- JointModel(
+        longitudinal = LongitudinalSteinFojo(centred = FALSE, scaled_variance = FALSE),
+        survival = SurvivalLogLogistic(),
+        link = linkDSLD()
+    )
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+})
+
+
+
+
+
+
+test_that("Can recover known distributional parameters from unscaled variance SF model", {
+
+    skip_if_not(is_full_test())
+
+    sim_params <- list(
+        sigma = 0.4,
+        mu_s = log(c(0.15, 0.3)),
+        mu_g = log(c(0.4, 0.25)),
+        mu_b = log(60),
+        omega_b = 0.1,
+        omega_s = c(0.1, 0.1),
+        omega_g = c(0.2, 0.2),
+        link_ttg = 0,
+        link_dsld = 0,
+        link_growth = 0,
+        lambda = 2,
+        lambda_cen = 1 / 9000,
+        beta_cat_b = -0.1,
+        beta_cat_c = 0.5,
+        beta_cont = 0.3
+    )
+
+    set.seed(2338)
+    ## Generate Test data with known parameters
+    jlist <- SimJointData(
+        design = list(
+            SimGroup(200, "Arm-A", "Study-X"),
+            SimGroup(200, "Arm-B", "Study-X")
+        ),
+        longitudinal = SimLongitudinalSteinFojo(
+            times = c(1, 50, 100, 150, 200, 300, 400, 500, 600, 700) / 365,
+            sigma = sim_params$sigma,
+            mu_s = sim_params$mu_s,
+            mu_g = sim_params$mu_g,
+            mu_b = sim_params$mu_b,
+            omega_b = sim_params$omega_b,
+            omega_s = sim_params$omega_s,
+            omega_g = sim_params$omega_g,
+            link_ttg = sim_params$link_ttg,
+            link_dsld = sim_params$link_dsld,
+            link_growth = sim_params$link_growth,
+            scaled_variance = FALSE
+        ),
+        survival = SimSurvivalExponential(
+            time_max = 4,
+            time_step = 1 / 365,
+            lambda = sim_params$lambda,
+            lambda_cen = 1 / 9000,
+            beta_cat = c(
+                "A" = 0,
+                "B" = sim_params$beta_cat_b,
+                "C" = sim_params$beta_cat_c
+            ),
+            beta_cont = sim_params$beta_cont
+        ),
+        .silent = TRUE
+    )
+
+    # nolint start⁠
+    ### Diagnostics helpers
+    # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
+    # median(jlist@survival$time)
+    # nolint end
+
+
+    jm <- JointModel(
+        longitudinal = LongitudinalSteinFojo(
+            mu_bsld = prior_normal(log(60), 0.5),
+            mu_ks = prior_normal(log(0.2), 0.5),
+            mu_kg = prior_normal(log(0.3), 0.5),
+            omega_bsld = prior_lognormal(log(0.1), 0.5),
+            omega_ks = prior_lognormal(log(0.1), 0.5),
+            omega_kg = prior_lognormal(log(0.1), 0.5),
+            sigma = prior_lognormal(log(0.5), 0.5),
+            centred = TRUE,
+            scaled_variance = FALSE
+        )
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = jlist@survival,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        longitudinal = DataLongitudinal(
+            data = jlist@longitudinal,
+            formula = sld ~ time,
+            threshold = 5
+        )
+    )
+
+
+    set.seed(2213)
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_warmup = 750,
+            iter_sampling = 750,
+            chains = 2,
+            parallel_chains = 2
+        )
+    })
+
+    summary_post <- function(model, vars, exp = FALSE) {
+        dat <- model$summary(
+            vars,
+            mean = mean,
+            q01 = \(x) purrr::set_names(quantile(x, 0.01), ""),
+            q99 = \(x) purrr::set_names(quantile(x, 0.99), ""),
+            rhat = posterior::rhat,
+            ess_bulk = posterior::ess_bulk,
+            ess_tail = posterior::ess_tail
+        )
+        if (exp) {
+            dat$q01 <- dat$q01 |> exp()
+            dat$q99 <- dat$q99 |> exp()
+            dat$mean <- dat$mean |> exp()
+        }
+        dat
+    }
+
+    dat <- summary_post(
+        as.CmdStanMCMC(mp),
+        c(
+            "lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg",
+            "lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks"
+        )
+    )
+    true_values <- c(
+        sim_params$mu_b, sim_params$mu_s, sim_params$mu_g,
+        sim_params$sigma, sim_params$omega_b, sim_params$omega_g, sim_params$omega_s
+    )
+    expect_true(all(dat$q01 <= true_values))
+    expect_true(all(dat$q99 >= true_values))
+    expect_true(all(dat$ess_bulk > 100))
 })

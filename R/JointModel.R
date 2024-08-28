@@ -106,7 +106,9 @@ as.StanModule.JointModel <- function(object, ...) {
         longitudinal = add_missing_stan_blocks(as.list(object@longitudinal)),
         survival = add_missing_stan_blocks(as.list(object@survival)),
         link = add_missing_stan_blocks(as.list(object@link)),
-        priors = add_missing_stan_blocks(as.list(object@parameters))
+        priors = add_missing_stan_blocks(as.list(object@parameters)),
+        has_os_submodel = !is.null(object@survival),
+        has_long_submodel = !is.null(object@longitudinal)
     )
     # Unresolved Jinja code within the longitudinal / Survival / Link
     # models won't be resolved by the above call to `decorated_render`.

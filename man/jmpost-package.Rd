@@ -10,16 +10,24 @@
 
 Implements joint models combining a non-linear mixed effects model for longitudinal measurements with a time-to-event model for the survival outcome. The acronym 'jmpost' stands for Joint Models for Predicting Overall Survival Trajectories, which refers to the application. In phase 1 studies patients are followed until progression only. Thus, reliable overall survival data and hence estimates are not available. However, we can use additional information from previous clinical trials or real-world data - we can correlate the tumour response data, that are longitudinal measurements, with the overall survival of the patients or their hazard ratios. Thereby we can predict the overall survival from our phase 1 study data and therefore make better decisions.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://genentech.github.io/jmpost/}
+  \item Report bugs at \url{https://github.com/Genentech/jmpost/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Craig Gower-Page \email{craig.gower-page@roche.com}
 
 Authors:
 \itemize{
-  \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
-  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
-  \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
   \item Francois Mercier \email{francois.mercier@roche.com}
+  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
   \item Isaac Gravestock \email{isaac.gravestock@roche.com}
+  \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
 }
 
 Other contributors:
