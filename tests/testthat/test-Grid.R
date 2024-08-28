@@ -471,7 +471,7 @@ test_that("GridObservered + Constructs correct quantities", {
 
 
 
-    pred_mat <- as.CmdStanMCMC(fixtures_gsf$mp)$draws("Ypred", format = "draws_matrix")
+    pred_mat <- cmdstanr::as.CmdStanMCMC(fixtures_gsf$mp)$draws("Ypred", format = "draws_matrix")
 
     fdat <- fixtures_gsf$dat_lm |>
         dplyr::arrange(subject, time, sld) |>
@@ -512,7 +512,7 @@ test_that("GridObservered + Constructs correct quantities", {
     #
     design <- model.matrix(~ cov_cat + cov_cont, data = fixtures_gsf$dat_os)
 
-    beta_coefs <- as.CmdStanMCMC(fixtures_gsf$mp)$draws(
+    beta_coefs <- cmdstanr::as.CmdStanMCMC(fixtures_gsf$mp)$draws(
         c("sm_exp_lambda", "beta_os_cov"),
         format = "draws_matrix"
     )
@@ -636,7 +636,7 @@ test_that("GridPopulation() works as expected for GSF models", {
         b * (phi * exp(-s * time) + (1 - phi) * exp(g * time))
     }
 
-    samples_df <- as.CmdStanMCMC(fixtures_gsf$mp)$draws(
+    samples_df <- cmdstanr::as.CmdStanMCMC(fixtures_gsf$mp)$draws(
         c("lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_bsld", "lm_gsf_mu_phi"),
         format = "draws_df"
     ) |>
@@ -705,7 +705,7 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     #
     # Derive values by hand
     #
-    samples_df <- as.CmdStanMCMC(fixtures_rs$mp)$draws(
+    samples_df <- cmdstanr::as.CmdStanMCMC(fixtures_rs$mp)$draws(
         c("lm_rs_intercept", "lm_rs_slope_mu"),
         format = "draws_df"
     ) |>

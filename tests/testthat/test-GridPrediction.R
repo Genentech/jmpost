@@ -225,7 +225,7 @@ test_that("GridPrediction() works as expected for Survival models", {
     #
     # Derive values by hand
     #
-    samples_df <- as.CmdStanMCMC(fixtures_gsf_link$mp)$draws(
+    samples_df <- cmdstanr::as.CmdStanMCMC(fixtures_gsf_link$mp)$draws(
         c("beta_os_cov", "link_dsld", "link_ttg", "sm_exp_lambda"),
         format = "draws_df"
     ) |>
@@ -399,7 +399,7 @@ test_that("GridPrediction() works for survival only models", {
         dplyr::as_tibble()
 
     # Calculate expected values by hand
-    pars_dat <- as.CmdStanMCMC(fixtures_weibull_only$mp)$draws(
+    pars_dat <- cmdstanr::as.CmdStanMCMC(fixtures_weibull_only$mp)$draws(
         c("beta_os_cov", "sm_weibull_ph_lambda", "sm_weibull_ph_gamma"),
         format = "draws_df"
     ) |>

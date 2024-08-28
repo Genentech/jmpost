@@ -213,7 +213,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi")
     )
     true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g, pars$mu_phi)
@@ -223,7 +223,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks", "lm_gsf_omega_phi")
     )
     true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s, pars$omega_phi)
@@ -233,7 +233,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
     )
     true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
@@ -460,7 +460,7 @@ test_that("Can recover known distributional parameters from unscaled variance GS
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c(
             "lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi",
             "lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks",

@@ -67,7 +67,7 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
 
     # Variables to extract (order important)
     vars <- c("sm_exp_lambda", "beta_os_cov")
-    results_summary <- as.CmdStanMCMC(mp)$summary(vars)
+    results_summary <- cmdstanr::as.CmdStanMCMC(mp)$summary(vars)
 
     # calculate Z-scores
     par_mean <- results_summary$mean
