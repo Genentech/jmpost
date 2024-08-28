@@ -23,13 +23,13 @@ transformed parameters {
 
     vector[n_tumour_all] Ypred = lm_rs_ind_intercept[subject_tumour_index] + lm_rs_rslope_ind .* tumour_time;
 
-    Ypred_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(
+    long_obvs_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(
         tumour_value[subject_tumour_index_obs],
         Ypred[subject_tumour_index_obs],
         rep_vector(lm_rs_sigma, n_tumour_obs)
     );
     if (n_tumour_cens > 0 ) {
-        Ypred_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(
+        long_obvs_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(
             tumour_value_lloq,
             Ypred[subject_tumour_index_cens],
             rep_vector(lm_rs_sigma, n_tumour_cens)

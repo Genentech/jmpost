@@ -122,12 +122,12 @@ interfaces if you want to enable them for your model.
 ### 1) `loo` integration
 
 If you want to use the `loo` package to calculate the leave-one-out cross-validation
-then you need to populate the `Ypred_log_lik` vector. This vector should contain the log-likelihood
+then you need to populate the `long_obvs_log_lik` vector. This vector should contain the log-likelihood
 contribution for each individual tumour observation. This vector
 is automatically 0-initialised, thus all your code needs to do is populate it.
 ```stan
 transformed parameters {
-    Ypred_log_lik = vect_normal_log_dens(
+    long_obvs_log_lik = vect_normal_log_dens(
         tumour_value,
         expected_tumour_value,
         rep_vector(lm_rs_sigma, n_tumour_obs)

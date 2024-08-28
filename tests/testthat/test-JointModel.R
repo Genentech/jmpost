@@ -61,3 +61,35 @@ test_that("JointModel print method works as expected", {
         print(x)
     })
 })
+
+
+
+test_that("Log_Lik variables are produced correctly", {
+    x <- JointModel(
+        longitudinal = LongitudinalRandomSlope(),
+        survival = SurvivalWeibullPH()
+    )
+    stan_code <- as.character(x)
+    expect_true(grepl("target \\+= sum\\(long_obvs_log_lik\\)", stan_code))
+    expect_true(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
+    expect_false(grepl("log_lik = long_obvs_log_lik", stan_code))
+    expect_false(grepl("log_lik = os_subj_log_lik", stan_code))
+
+    x <- JointModel(
+        longitudinal = LongitudinalRandomSlope()
+    )
+    stan_code <- as.character(x)
+    expect_true(grepl("target \\+= sum\\(long_obvs_log_lik\\)", stan_code))
+    expect_false(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
+    expect_true(grepl("log_lik = long_obvs_log_lik", stan_code))
+    expect_false(grepl("log_lik = os_subj_log_lik", stan_code))
+
+    x <- JointModel(
+        survival = SurvivalWeibullPH()
+    )
+    stan_code <- as.character(x)
+    expect_false(grepl("target \\+=sum\\(long_obvs_log_lik\\)", stan_code))
+    expect_true(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
+    expect_false(grepl("log_lik = long_obvs_log_lik", stan_code))
+    expect_true(grepl("log_lik = os_subj_log_lik", stan_code))
+})

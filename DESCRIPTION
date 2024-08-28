@@ -60,6 +60,7 @@ Suggests:
     purrr,
     vdiffr,
     prodlim,
+    brms,
     tidyr,
     loo
 Additional_repositories: https://stan-dev.r-universe.dev

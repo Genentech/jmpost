@@ -123,11 +123,8 @@ parameters {
     //
     // Source - base/survival.stan
     //
-
     // Covariate coefficients.
-    
     vector[p_os_cov_design] beta_os_cov;
-    
 {{ stan.parameters }}
 }
 
@@ -139,6 +136,9 @@ transformed parameters {
     //
     // Source - base/survival.stan
     //
+
+    // Vector to store per subject log-likelihood values
+    vector[n_subjects] os_subj_log_lik = rep_vector(0, n_subjects);
 
     // Calculate covariate contributions to log hazard function
     vector[n_subjects] os_cov_contribution = get_os_cov_contribution(
@@ -166,10 +166,10 @@ transformed parameters {
     );
 
     // We always add the log-survival to the log-likelihood.
-    log_lik += log_surv_fit_at_obs_times;
+    os_subj_log_lik += log_surv_fit_at_obs_times;
 
     // In case of death we add the log-hazard on top.
-    log_lik[subject_event_index] += to_vector(
+    os_subj_log_lik[subject_event_index] += to_vector(
         log_hazard(
             to_matrix(event_times[subject_event_index]),
             pars_os,
@@ -182,9 +182,13 @@ transformed parameters {
 
 
 model{
-    {{ stan.model }}
+{{ stan.model }}
+    //
+    // Source - base/survival.stan
+    //
+    target += sum(os_subj_log_lik);
 }
 
 generated quantities {
-    {{ stan.generated_quantities }}
+{{ stan.generated_quantities }}
 }
