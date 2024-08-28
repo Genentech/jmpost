@@ -18,7 +18,7 @@
 
         if (length(possible_paths)) {
             for (try_path in possible_paths) {
-                new_path <- tryCatch( 
+                new_path <- tryCatch(
                     suppressMessages(cmdstanr::set_cmdstan_path(try_path)),
                     warning = function(w) NULL,
                     error = function(e) NULL
