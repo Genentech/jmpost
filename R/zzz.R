@@ -1,9 +1,6 @@
 
-.onLoad <- function(libname, pkgname) {
-    set_options()
-}
-
 .onAttach <- function(libname, pkgname) {
+    set_options()
     if (!is_cmdstanr_available()) {
         packageStartupMessage(
             "jmpost uses cmdstanr for compiling and sampling from models, but it does not seem to be installed.\n",
@@ -38,6 +35,9 @@
     return(invisible(NULL))
 }
 
+.onLoad <- function(...) {
+    s3_register("cmdstanr::as.CmdStanMCMC", "JointModelSamples")
+}
 
 # This only exists to silence the false positive R CMD CHECK warning about
 # importing but not using the posterior package. posterior is a dependency

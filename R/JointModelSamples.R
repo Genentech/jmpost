@@ -141,7 +141,6 @@ setMethod(
 
 
 #' @rdname as.CmdStanMCMC
-#' @exportS3Method cmdstanr::as.CmdStanMCMC JointModelSamples
 as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
     return(object@results)
 }
