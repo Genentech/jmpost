@@ -120,10 +120,10 @@ Collate:
     'brier_score.R'
     'defaults.R'
     'external-exports.R'
+    'import-standalone-s3-register.R'
     'jmpost-package.R'
     'link_generics.R'
     'settings.R'
-    'standalone-s3-register.R'
     'zzz.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack
