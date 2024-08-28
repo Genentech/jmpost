@@ -1,6 +1,5 @@
 
 .onAttach <- function(libname, pkgname) {
-    set_options()
     if (!is_cmdstanr_available()) {
         packageStartupMessage(
             "jmpost uses cmdstanr for compiling and sampling from models, but it does not seem to be installed.\n",
@@ -36,6 +35,7 @@
 }
 
 .onLoad <- function(...) {
+    set_options()
     s3_register("cmdstanr::as.CmdStanMCMC", "JointModelSamples")
 }
 
