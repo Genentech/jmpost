@@ -41,14 +41,6 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/jmpost/v0.0.1">v0.0.1</a> </div></li>
-<!-- end dropdown for versions -->
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -184,12 +176,12 @@ you want to enable them for your model.</p>
 </h4>
 <p>If you want to use the <code>loo</code> package to calculate the
 leave-one-out cross-validation then you need to populate the
-<code>Ypred_log_lik</code> vector. This vector should contain the
+<code>long_obvs_log_lik</code> vector. This vector should contain the
 log-likelihood contribution for each individual tumour observation. This
 vector is automatically 0-initialised, thus all your code needs to do is
 populate it.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    Ypred_log_lik = vect_normal_log_dens(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    long_obvs_log_lik = vect_normal_log_dens(</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>        tumour_value,</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>        expected_tumour_value,</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>        rep_vector(lm_rs_sigma, n_tumour_obs)</span>
