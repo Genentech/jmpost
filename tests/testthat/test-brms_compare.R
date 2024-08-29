@@ -98,7 +98,7 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     )
 
 
-    stanmod <- as.CmdStanMCMC(mp)
+    stanmod <- cmdstanr::as.CmdStanMCMC(mp)
 
 
     mp_brms <- brms::brm(
@@ -235,7 +235,7 @@ test_that("jmpost and brms get similar loo for survival models", {
         parallel_chains = 2
     )
 
-    stanmod <- as.CmdStanMCMC(mp)
+    stanmod <- cmdstanr::as.CmdStanMCMC(mp)
 
 
     #

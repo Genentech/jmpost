@@ -321,7 +321,7 @@ vars <- c(
     "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
     "link_dsld", "sm_exp_lambda"
 )
-as.CmdStanMCMC(model_samples)$summary(vars)
+cmdstanr::as.CmdStanMCMC(model_samples)$summary(vars)
 ```
 
 

@@ -88,7 +88,7 @@ test_that("SurvivalLogLogistic can recover known values", {
 
     # Variables to extract (order important)
     vars <- c("sm_loglogis_a", "sm_loglogis_b", "beta_os_cov")
-    results_summary <- as.CmdStanMCMC(mp)$summary(vars)
+    results_summary <- cmdstanr::as.CmdStanMCMC(mp)$summary(vars)
 
     # calculate Z-scores
     par_mean <- results_summary$mean

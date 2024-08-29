@@ -1,8 +1,4 @@
 
-.onLoad <- function(libname, pkgname) {
-    set_options()
-}
-
 .onAttach <- function(libname, pkgname) {
     if (!is_cmdstanr_available()) {
         packageStartupMessage(
@@ -38,6 +34,10 @@
     return(invisible(NULL))
 }
 
+.onLoad <- function(...) {
+    set_options()
+    s3_register("cmdstanr::as.CmdStanMCMC", "JointModelSamples")
+}
 
 # This only exists to silence the false positive R CMD CHECK warning about
 # importing but not using the posterior package. posterior is a dependency

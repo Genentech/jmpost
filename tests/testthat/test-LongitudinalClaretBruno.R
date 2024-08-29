@@ -242,7 +242,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p"),
         TRUE
     )
@@ -257,7 +257,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("beta_os_cov", "sm_exp_lambda", "link_dsld", "link_growth", "link_ttg")
     )
     true_values <- c(
@@ -496,7 +496,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c(
             "lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p",
             "lm_clbr_omega_b", "lm_clbr_omega_g", "lm_clbr_omega_c", "lm_clbr_omega_p",

@@ -98,7 +98,7 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
 #' @export
 as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sizes <- vapply(
-        as.CmdStanMCMC(object)$metadata()[["stan_variable_sizes"]],
+        cmdstanr::as.CmdStanMCMC(object)$metadata()[["stan_variable_sizes"]],
         \(x) {
             if (length(x) == 1 && x == 1) return("")
             paste0("[", paste(x, collapse = ", "), "]")
@@ -107,7 +107,7 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     )
     variable_string <- paste0(
         "        ",
-        as.CmdStanMCMC(object)$metadata()[["stan_variables"]],
+        cmdstanr::as.CmdStanMCMC(object)$metadata()[["stan_variables"]],
         sizes
     )
     template <- c(
@@ -123,8 +123,8 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     template_padded <- paste(pad, template)
     sprintf(
         paste(template_padded, collapse = "\n"),
-        as.CmdStanMCMC(object)$metadata()$iter_sampling,
-        as.CmdStanMCMC(object)$num_chains()
+        cmdstanr::as.CmdStanMCMC(object)$metadata()$iter_sampling,
+        cmdstanr::as.CmdStanMCMC(object)$num_chains()
     )
 }
 
@@ -141,7 +141,6 @@ setMethod(
 
 
 #' @rdname as.CmdStanMCMC
-#' @export
 as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
     return(object@results)
 }

@@ -236,7 +236,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg")
     )
     true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g)
@@ -246,7 +246,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks")
     )
     true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s)
@@ -256,7 +256,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
     )
     true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
@@ -412,7 +412,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"),
         TRUE
     )
@@ -422,7 +422,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     expect_true(all(dat$ess_bulk > 100))
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c("link_growth", "sm_exp_lambda", "beta_os_cov")
     )
     true_values <- c(
@@ -659,7 +659,7 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     }
 
     dat <- summary_post(
-        as.CmdStanMCMC(mp),
+        cmdstanr::as.CmdStanMCMC(mp),
         c(
             "lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg",
             "lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks"
