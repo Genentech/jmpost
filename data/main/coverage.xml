@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.961180622393327" branch-rate="0" lines-covered="2996" lines-valid="3117" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-28 10:05:48.496943">
+<coverage line-rate="0.960859801090792" branch-rate="0" lines-covered="2995" lines-valid="3117" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-29 08:15:09.744719">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
   <packages>
-    <package name="jmpost" line-rate="0.961180622393327" branch-rate="0" complexity="0">
+    <package name="jmpost" line-rate="0.960859801090792" branch-rate="0" complexity="0">
       <classes>
         <class name="brier_score.R" filename="R/brier_score.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -1325,7 +1325,7 @@
             <line number="84" hits="0" branch="false"/>
           </lines>
         </class>
-        <class name="generics.R" filename="R/generics.R" line-rate="0.882352941176471" branch-rate="0" complexity="0">
+        <class name="generics.R" filename="R/generics.R" line-rate="0.878787878787879" branch-rate="0" complexity="0">
           <methods>
             <method name="write_stan" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
@@ -1417,84 +1417,79 @@
                 <line number="332" hits="19" branch="false"/>
               </lines>
             </method>
-            <method name="as.CmdStanMCMC" signature="" line-rate="1" branch-rate="0" complexity="0">
-              <lines>
-                <line number="346" hits="66" branch="false"/>
-              </lines>
-            </method>
             <method name="as.QuantityGenerator" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="352" hits="98" branch="false"/>
+                <line number="338" hits="98" branch="false"/>
               </lines>
             </method>
             <method name="as.QuantityCollapser" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="358" hits="37" branch="false"/>
+                <line number="344" hits="37" branch="false"/>
               </lines>
             </method>
             <method name="coalesceGridTime" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="372" hits="37" branch="false"/>
+                <line number="358" hits="37" branch="false"/>
               </lines>
             </method>
             <method name="coalesceGridTime.default" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="376" hits="2" branch="false"/>
+                <line number="362" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="resolvePromise" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="390" hits="90" branch="false"/>
+                <line number="376" hits="90" branch="false"/>
               </lines>
             </method>
             <method name="resolvePromise.default" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="396" hits="0" branch="false"/>
+                <line number="382" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="enableLink" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="412" hits="20" branch="false"/>
+                <line number="398" hits="20" branch="false"/>
               </lines>
             </method>
             <method name="enableLink.default" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="416" hits="0" branch="false"/>
+                <line number="402" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="enableGQ" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="432" hits="114" branch="false"/>
+                <line number="418" hits="114" branch="false"/>
               </lines>
             </method>
             <method name="enableGQ.default" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="436" hits="39" branch="false"/>
+                <line number="422" hits="39" branch="false"/>
               </lines>
             </method>
             <method name="getPredictionNames" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="450" hits="6" branch="false"/>
+                <line number="436" hits="6" branch="false"/>
               </lines>
             </method>
             <method name="getPredictionNames.default" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="455" hits="1" branch="false"/>
+                <line number="441" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="as_formula" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="465" hits="7" branch="false"/>
+                <line number="451" hits="7" branch="false"/>
               </lines>
             </method>
             <method name="as_formula.default" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="471" hits="0" branch="false"/>
+                <line number="457" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="set_limits" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="486" hits="370" branch="false"/>
+                <line number="472" hits="370" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1517,22 +1512,21 @@
             <line number="302" hits="61" branch="false"/>
             <line number="322" hits="42" branch="false"/>
             <line number="332" hits="19" branch="false"/>
-            <line number="346" hits="66" branch="false"/>
-            <line number="352" hits="98" branch="false"/>
+            <line number="338" hits="98" branch="false"/>
+            <line number="344" hits="37" branch="false"/>
             <line number="358" hits="37" branch="false"/>
-            <line number="372" hits="37" branch="false"/>
-            <line number="376" hits="2" branch="false"/>
-            <line number="390" hits="90" branch="false"/>
-            <line number="396" hits="0" branch="false"/>
-            <line number="412" hits="20" branch="false"/>
-            <line number="416" hits="0" branch="false"/>
-            <line number="432" hits="114" branch="false"/>
-            <line number="436" hits="39" branch="false"/>
-            <line number="450" hits="6" branch="false"/>
-            <line number="455" hits="1" branch="false"/>
-            <line number="465" hits="7" branch="false"/>
-            <line number="471" hits="0" branch="false"/>
-            <line number="486" hits="370" branch="false"/>
+            <line number="362" hits="2" branch="false"/>
+            <line number="376" hits="90" branch="false"/>
+            <line number="382" hits="0" branch="false"/>
+            <line number="398" hits="20" branch="false"/>
+            <line number="402" hits="0" branch="false"/>
+            <line number="418" hits="114" branch="false"/>
+            <line number="422" hits="39" branch="false"/>
+            <line number="436" hits="6" branch="false"/>
+            <line number="441" hits="1" branch="false"/>
+            <line number="451" hits="7" branch="false"/>
+            <line number="457" hits="0" branch="false"/>
+            <line number="472" hits="370" branch="false"/>
           </lines>
         </class>
         <class name="Grid.R" filename="R/Grid.R" line-rate="0.962962962962963" branch-rate="0" complexity="0">
@@ -2684,7 +2678,7 @@
             </method>
             <method name="as.CmdStanMCMC.JointModelSamples" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="146" hits="66" branch="false"/>
+                <line number="145" hits="66" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2754,7 +2748,7 @@
             <line number="128" hits="14" branch="false"/>
             <line number="137" hits="14" branch="false"/>
             <line number="138" hits="14" branch="false"/>
-            <line number="146" hits="66" branch="false"/>
+            <line number="145" hits="66" branch="false"/>
           </lines>
         </class>
         <class name="link_generics.R" filename="R/link_generics.R" line-rate="0.75" branch-rate="0" complexity="0">
@@ -7879,41 +7873,42 @@
             <line number="335" hits="0" branch="false"/>
           </lines>
         </class>
-        <class name="zzz.R" filename="R/zzz.R" line-rate="0.107142857142857" branch-rate="0" complexity="0">
+        <class name="zzz.R" filename="R/zzz.R" line-rate="0.103448275862069" branch-rate="0" complexity="0">
           <methods>
-            <method name=".onLoad" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="3" hits="0" branch="false"/>
-              </lines>
-            </method>
             <method name=".onAttach" signature="" line-rate="0.115384615384615" branch-rate="0" complexity="0">
               <lines>
-                <line number="7" hits="4" branch="false"/>
+                <line number="3" hits="4" branch="false"/>
+                <line number="4" hits="0" branch="false"/>
+                <line number="5" hits="0" branch="false"/>
+                <line number="6" hits="0" branch="false"/>
+                <line number="7" hits="0" branch="false"/>
                 <line number="8" hits="0" branch="false"/>
-                <line number="9" hits="0" branch="false"/>
+                <line number="9" hits="4" branch="false"/>
                 <line number="10" hits="0" branch="false"/>
                 <line number="11" hits="0" branch="false"/>
                 <line number="12" hits="0" branch="false"/>
-                <line number="13" hits="4" branch="false"/>
+                <line number="13" hits="0" branch="false"/>
                 <line number="14" hits="0" branch="false"/>
                 <line number="15" hits="0" branch="false"/>
                 <line number="16" hits="0" branch="false"/>
                 <line number="17" hits="0" branch="false"/>
-                <line number="18" hits="0" branch="false"/>
                 <line number="19" hits="0" branch="false"/>
                 <line number="20" hits="0" branch="false"/>
                 <line number="21" hits="0" branch="false"/>
+                <line number="22" hits="0" branch="false"/>
                 <line number="23" hits="0" branch="false"/>
                 <line number="24" hits="0" branch="false"/>
                 <line number="25" hits="0" branch="false"/>
-                <line number="26" hits="0" branch="false"/>
                 <line number="27" hits="0" branch="false"/>
                 <line number="28" hits="0" branch="false"/>
-                <line number="29" hits="0" branch="false"/>
                 <line number="31" hits="0" branch="false"/>
-                <line number="32" hits="0" branch="false"/>
-                <line number="35" hits="0" branch="false"/>
-                <line number="38" hits="4" branch="false"/>
+                <line number="34" hits="4" branch="false"/>
+              </lines>
+            </method>
+            <method name=".onLoad" signature="" line-rate="0" branch-rate="0" complexity="0">
+              <lines>
+                <line number="38" hits="0" branch="false"/>
+                <line number="39" hits="0" branch="false"/>
               </lines>
             </method>
             <method name=".never_run" signature="" line-rate="0" branch-rate="0" complexity="0">
@@ -7923,33 +7918,34 @@
             </method>
           </methods>
           <lines>
-            <line number="3" hits="0" branch="false"/>
-            <line number="7" hits="4" branch="false"/>
+            <line number="3" hits="4" branch="false"/>
+            <line number="4" hits="0" branch="false"/>
+            <line number="5" hits="0" branch="false"/>
+            <line number="6" hits="0" branch="false"/>
+            <line number="7" hits="0" branch="false"/>
             <line number="8" hits="0" branch="false"/>
-            <line number="9" hits="0" branch="false"/>
+            <line number="9" hits="4" branch="false"/>
             <line number="10" hits="0" branch="false"/>
             <line number="11" hits="0" branch="false"/>
             <line number="12" hits="0" branch="false"/>
-            <line number="13" hits="4" branch="false"/>
+            <line number="13" hits="0" branch="false"/>
             <line number="14" hits="0" branch="false"/>
             <line number="15" hits="0" branch="false"/>
             <line number="16" hits="0" branch="false"/>
             <line number="17" hits="0" branch="false"/>
-            <line number="18" hits="0" branch="false"/>
             <line number="19" hits="0" branch="false"/>
             <line number="20" hits="0" branch="false"/>
             <line number="21" hits="0" branch="false"/>
+            <line number="22" hits="0" branch="false"/>
             <line number="23" hits="0" branch="false"/>
             <line number="24" hits="0" branch="false"/>
             <line number="25" hits="0" branch="false"/>
-            <line number="26" hits="0" branch="false"/>
             <line number="27" hits="0" branch="false"/>
             <line number="28" hits="0" branch="false"/>
-            <line number="29" hits="0" branch="false"/>
             <line number="31" hits="0" branch="false"/>
-            <line number="32" hits="0" branch="false"/>
-            <line number="35" hits="0" branch="false"/>
-            <line number="38" hits="4" branch="false"/>
+            <line number="34" hits="4" branch="false"/>
+            <line number="38" hits="0" branch="false"/>
+            <line number="39" hits="0" branch="false"/>
             <line number="47" hits="0" branch="false"/>
           </lines>
         </class>
