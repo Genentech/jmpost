@@ -111,13 +111,13 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         ),
         data = dat,
         prior = c(
-            prior("normal(log(60), 0.6)", nlpar = "b"),
-            prior("normal(log(0.5), 0.6)", nlpar = "s"),
-            prior("normal(log(0.2), 0.6)", nlpar = "g"),
-            prior("lognormal(log(0.1), 0.6)", nlpar = "b", class = "sd"),
-            prior("lognormal(log(0.1), 0.6)", nlpar = "s", class = "sd"),
-            prior("lognormal(log(0.1), 0.6)", nlpar = "g", class = "sd"),
-            prior("lognormal(log(1.5), 0.6)", class = "sigma")
+            brms::prior("normal(log(60), 0.6)", nlpar = "b"),
+            brms::prior("normal(log(0.5), 0.6)", nlpar = "s"),
+            brms::prior("normal(log(0.2), 0.6)", nlpar = "g"),
+            brms::prior("lognormal(log(0.1), 0.6)", nlpar = "b", class = "sd"),
+            brms::prior("lognormal(log(0.1), 0.6)", nlpar = "s", class = "sd"),
+            brms::prior("lognormal(log(0.1), 0.6)", nlpar = "g", class = "sd"),
+            brms::prior("lognormal(log(1.5), 0.6)", class = "sigma")
         ),
         warmup = 1400,
         iter = 2600,
@@ -130,8 +130,19 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     #
     # Assert that loo scores are similar
     #
-    b_est <- brms::loo(mp_brms)
-    j_est <- stanmod$loo()
+    withCallingHandlers(
+        b_est <- brms::loo(mp_brms),
+        warning = function(w) {
+            if (grepl("moment match", as.character(w))) invokeRestart("muffleWarning") else w
+        }
+    )
+
+    withCallingHandlers(
+        j_est <- stanmod$loo(),
+        warning = function(w) {
+            if (grepl("Pareto k diagnostic", as.character(w))) invokeRestart("muffleWarning") else w
+        }
+    )
 
     z_score <- abs(b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]) / b_est$estimates[, "SE"]
     expect_true(all(z_score < qnorm(0.99)))
