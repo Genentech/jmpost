@@ -130,8 +130,23 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     #
     # Assert that loo scores are similar
     #
-    expect_warning(b_est <- brms::loo(mp_brms), "moment match")
-    expect_warning(j_est <- stanmod$loo(), "Pareto k diagnostic")
+    withCallingHandlers(
+        b_est <- brms::loo(mp_brms),
+        warning = function(w) {
+            if (grepl("moment match", as.character(w))) { invokeRestart("muffleWarning") }
+            # Else re-raise
+            warning(w)
+        }
+    )
+
+    withCallingHandlers(
+        j_est <- stanmod$loo(),
+        warning = function(w) {
+            if (grepl("Pareto k diagnostic", as.character(w))) { invokeRestart("muffleWarning") }
+            # Else re-raise
+            warning(w)
+        }
+    )
 
     z_score <- abs(b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]) / b_est$estimates[, "SE"]
     expect_true(all(z_score < qnorm(0.99)))
