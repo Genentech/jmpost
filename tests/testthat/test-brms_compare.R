@@ -133,18 +133,14 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     withCallingHandlers(
         b_est <- brms::loo(mp_brms),
         warning = function(w) {
-            if (grepl("moment match", as.character(w))) { invokeRestart("muffleWarning") }
-            # Else re-raise
-            warning(w)
+            if (grepl("moment match", as.character(w))) invokeRestart("muffleWarning") else w
         }
     )
 
     withCallingHandlers(
         j_est <- stanmod$loo(),
         warning = function(w) {
-            if (grepl("Pareto k diagnostic", as.character(w))) { invokeRestart("muffleWarning") }
-            # Else re-raise
-            warning(w)
+            if (grepl("Pareto k diagnostic", as.character(w))) invokeRestart("muffleWarning") else w
         }
     )
 
