@@ -371,9 +371,9 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         mu_c = log(c(0.45, 0.35)),
         mu_p = log(c(2.4, 1.8)),
         omega_b = 0.1,
-        omega_g = c(0.3, 0.1),
-        omega_c = c(0.1, 0.3),
-        omega_p = c(0.3, 0.1),
+        omega_g = c(0.1, 0.2),
+        omega_c = c(0.3, 0.1),
+        omega_p = c(0.1, 0.2),
         link_ttg = 0,
         link_dsld = 0,
         link_identity = 0,
@@ -385,15 +385,15 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         beta_cont = 0.3
     )
 
-    set.seed(628)
+    set.seed(6128)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(140, "Arm-A", "Study-X"),
-            SimGroup(140, "Arm-B", "Study-X")
+            SimGroup(150, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
-            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800) / 365,
+            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
             sigma = sim_params$sigma,
             mu_b = sim_params$mu_b,
             mu_g = sim_params$mu_g,
@@ -410,7 +410,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             scaled_variance = FALSE
         ),
         survival = SimSurvivalExponential(
-            time_max = 4,
+            time_max = 5,
             time_step = 1 / 365,
             lambda = sim_params$lambda,
             lambda_cen = 1 / 9000,
@@ -438,15 +438,15 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
-            mu_b = prior_normal(log(60), 0.4),
-            mu_g = prior_normal(log(1), 0.4),
-            mu_c = prior_normal(log(0.4), 0.4),
-            mu_p = prior_normal(log(2), 0.4),
-            omega_b = prior_lognormal(log(0.1), 0.4),
-            omega_g = prior_lognormal(log(0.1), 0.4),
-            omega_c = prior_lognormal(log(0.1), 0.4),
-            omega_p = prior_lognormal(log(0.1), 0.4),
-            sigma = prior_lognormal(log(1), 0.4),
+            mu_b = prior_normal(sim_params$mu_b, 0.4),
+            mu_g = prior_normal(mean(sim_params$mu_g), 0.4),
+            mu_c = prior_normal(mean(sim_params$mu_c), 0.4),
+            mu_p = prior_normal(mean(sim_params$mu_p), 0.4),
+            omega_b = prior_lognormal(log(mean(sim_params$omega_b)), 0.4),
+            omega_g = prior_lognormal(log(mean(sim_params$omega_g)), 0.4),
+            omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.4),
+            omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.4),
+            sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.4),
             centred = TRUE,
             scaled_variance = FALSE
         )
@@ -462,21 +462,21 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         longitudinal = DataLongitudinal(
             data = jlist@longitudinal,
             formula = sld ~ time,
-            threshold = 5
+            threshold = 2
         )
     )
 
     ## Sample from JointModel
-    set.seed(2363)
+    set.seed(9553)
     mp <- run_quietly({
         suppressWarnings({
             sampleStanModel(
                 jm,
                 data = jdat,
-                iter_sampling = 2000,
-                iter_warmup = 1000,
-                chains = 2,
-                parallel_chains = 2
+                iter_sampling = 3000,
+                iter_warmup = 1200,
+                chains = 3,
+                parallel_chains = 3
             )
         })
     })
