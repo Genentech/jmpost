@@ -241,3 +241,26 @@ test_that("median(Prior) works as expected", {
         tolerance = 0.15
     )
 })
+
+
+test_that("Parameters in priors must be length 1 #422", {
+    expect_error(
+        prior_normal(c(1, 2), 1),
+        "Parameter `mu`"
+    )
+
+    expect_error(
+        prior_normal(1, c(1, 2)),
+        "Parameter `sigma`"
+    )
+
+    expect_error(
+        prior_normal(c(1, 2), c(1, 2)),
+        "Parameter `mu`"
+    )
+
+    expect_error(
+        prior_gamma(c(1, 2), 2),
+        "Parameter `alpha`"
+    )
+})
