@@ -91,6 +91,9 @@ setValidity(
             if (!param %in% names(object@validation)) {
                 return(sprintf("Parameter `%s` does not have a validation method", param))
             }
+            if (length(object@parameters[[param]]) != 1) {
+                return(sprintf("Parameter `%s` must be a single value", param))
+            }
             if (!object@validation[[param]](object@parameters[[param]])) {
                 return_message <- sprintf(
                     "Invalid value of `%d` for parameter `%s`",
