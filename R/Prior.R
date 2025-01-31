@@ -103,6 +103,15 @@ setValidity(
                 return(return_message)
             }
         }
+        if (length(object@limits) != 2) {
+            return("Limits must be a vector of length 2")
+        }
+        if (object@limits[1] >= object@limits[2]) {
+            return("Lower limit must be less than upper limit")
+        }
+        if (length(object@repr_model) != 1 || !is.character(object@repr_model)) {
+            return("Model representation must be length 1 string")
+        }
         return(TRUE)
     }
 )
@@ -113,6 +122,7 @@ setValidity(
 #' @export
 set_limits.Prior <- function(object, lower = -Inf, upper = Inf) {
     object@limits <- c(lower, upper)
+    validObject(object)
     return(object)
 }
 
@@ -127,10 +137,27 @@ as.character.Prior <- function(x, ...) {
 
     parameters_rounded <- lapply(x@parameters, round, 5)
 
-    do.call(
+    display_string <- do.call(
         glue::glue,
         append(x@display, parameters_rounded)
     )
+    paste0(display_string, " ", render_stan_limits(x@limits))
+}
+
+
+#' Creates Stan Syntax for Truncated distributions
+#' @description
+#' This function creates the Stan syntax for truncated distributions
+#' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
+#' @return (`character`)\cr the Stan syntax for truncated distributions
+render_stan_limits <- function(limits) {
+    l_bound <- if (limits[[1]] > -Inf) limits[[1]] else ""
+    u_bound <- if (limits[[2]] < Inf) limits[[2]] else ""
+    string <- ""
+    if (l_bound != "" || u_bound != "") {
+        string <- glue::glue("T[{l_bound}, {u_bound}]", l_bound = l_bound, u_bound = u_bound)
+    }
+    return(string)
 }
 
 
@@ -157,12 +184,17 @@ setMethod(
 #' @family as.StanModule
 #' @export
 as.StanModule.Prior <- function(object, name, ...) {
+    trunctation <- if (object@repr_model != "") {
+        paste0(" ", render_stan_limits(object@limits), ";")
+    } else {
+        ""
+    }
     string <- paste(
         "data {{",
         paste0("    ", object@repr_data, collapse = "\n"),
         "}}",
         "model {{",
-        paste0("    ", object@repr_model, collapse = "\n"),
+        paste0("    ", object@repr_model, trunctation),
         "}}",
         sep = "\n"
     )
@@ -233,7 +265,7 @@ prior_normal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "normal(mu = {mu}, sigma = {sigma})",
-        repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name})",
         repr_data = c(
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
@@ -257,7 +289,7 @@ prior_std_normal <- function() {
     Prior(
         parameters = list(),
         display = "std_normal()",
-        repr_model = "{name} ~ std_normal();",
+        repr_model = "{name} ~ std_normal()",
         repr_data = "",
         centre = 0,
         sample = \(n) local_rnorm(n),
@@ -276,7 +308,7 @@ prior_cauchy <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "cauchy(mu = {mu}, sigma = {sigma})",
-        repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name})",
         repr_data = c(
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
@@ -301,7 +333,7 @@ prior_cauchy <- function(mu, sigma) {
 prior_gamma <- function(alpha, beta) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
-        repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name});",
+        repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name})",
         display = "gamma(alpha = {alpha}, beta = {beta})",
         repr_data = c(
             "real<lower=0> prior_alpha_{name};",
@@ -327,7 +359,7 @@ prior_lognormal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
         display = "lognormal(mu = {mu}, sigma = {sigma})",
-        repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name})",
         repr_data = c(
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
@@ -352,7 +384,7 @@ prior_beta <- function(a, b) {
     Prior(
         parameters = list(a = a, b = b),
         display = "beta(a = {a}, b = {b})",
-        repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name});",
+        repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name})",
         repr_data = c(
             "real<lower=0> prior_a_{name};",
             "real<lower=0> prior_b_{name};"
@@ -408,7 +440,7 @@ prior_uniform <- function(alpha, beta) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
-        repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name});",
+        repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name})",
         repr_data = c(
             "real prior_alpha_{name};",
             "real prior_beta_{name};"
@@ -439,7 +471,7 @@ prior_student_t <- function(nu, mu, sigma) {
             sigma = sigma
         ),
         display = "student_t(nu = {nu}, mu = {mu}, sigma = {sigma})",
-        repr_model = "{name} ~ student_t(prior_nu_{name}, prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ student_t(prior_nu_{name}, prior_mu_{name}, prior_sigma_{name})",
         repr_data = c(
             "real<lower=0> prior_nu_{name};",
             "real prior_mu_{name};",
@@ -471,7 +503,7 @@ prior_logistic <- function(mu, sigma) {
             sigma = sigma
         ),
         display = "logistic(mu = {mu}, sigma = {sigma})",
-        repr_model = "{name} ~ logistic(prior_mu_{name}, prior_sigma_{name});",
+        repr_model = "{name} ~ logistic(prior_mu_{name}, prior_sigma_{name})",
         repr_data = c(
             "real prior_mu_{name};",
             "real<lower=0> prior_sigma_{name};"
@@ -500,7 +532,7 @@ prior_loglogistic <- function(alpha, beta) {
             beta = beta
         ),
         display = "loglogistic(alpha = {alpha}, beta = {beta})",
-        repr_model = "{name} ~ loglogistic(prior_alpha_{name}, prior_beta_{name});",
+        repr_model = "{name} ~ loglogistic(prior_alpha_{name}, prior_beta_{name})",
         repr_data = c(
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
@@ -531,7 +563,7 @@ prior_invgamma <- function(alpha, beta) {
             beta = beta
         ),
         display = "inv_gamma(alpha = {alpha}, beta = {beta})",
-        repr_model = "{name} ~ inv_gamma(prior_alpha_{name}, prior_beta_{name});",
+        repr_model = "{name} ~ inv_gamma(prior_alpha_{name}, prior_beta_{name})",
         repr_data = c(
             "real<lower=0> prior_alpha_{name};",
             "real<lower=0> prior_beta_{name};"
