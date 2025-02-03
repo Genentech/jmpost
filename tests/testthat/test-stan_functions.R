@@ -22,6 +22,7 @@ run_stan_function <- function(stan_data, fun_files, dir, basename) {
             )
         )
     )
+
     # Completely silence call to STAN as we aren't fitting a real model
     devnull <- capture.output({
         suppressMessages({
@@ -38,6 +39,7 @@ run_stan_function <- function(stan_data, fun_files, dir, basename) {
         })
     })
     return(fit)
+    mod$stan_file()
 }
 
 
