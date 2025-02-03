@@ -277,6 +277,3 @@ test_that("Parameters in priors must be length 1 #422", {
         "Parameter `alpha`"
     )
 })
-
-
-
