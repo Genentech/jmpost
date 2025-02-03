@@ -141,7 +141,11 @@ as.character.Prior <- function(x, ...) {
         glue::glue,
         append(x@display, parameters_rounded)
     )
-    paste0(display_string, " ", render_stan_limits(x@limits))
+    display_limits <- render_stan_limits(x@limits)
+    if (display_limits != "" && display_string != "" && display_string != "<None>") {
+        display_string <- paste0(display_string, display_limits)
+    }
+    return(display_string)
 }
 
 
@@ -155,7 +159,7 @@ render_stan_limits <- function(limits) {
     u_bound <- if (limits[[2]] < Inf) limits[[2]] else ""
     string <- ""
     if (l_bound != "" || u_bound != "") {
-        string <- glue::glue("T[{l_bound}, {u_bound}]", l_bound = l_bound, u_bound = u_bound)
+        string <- glue::glue(" T[{l_bound}, {u_bound}]", l_bound = l_bound, u_bound = u_bound)
     }
     return(string)
 }
@@ -185,7 +189,7 @@ setMethod(
 #' @export
 as.StanModule.Prior <- function(object, name, ...) {
     trunctation <- if (object@repr_model != "") {
-        paste0(" ", render_stan_limits(object@limits), ";")
+        paste0(render_stan_limits(object@limits), ";")
     } else {
         ""
     }
