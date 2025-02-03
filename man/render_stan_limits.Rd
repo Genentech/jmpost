@@ -15,3 +15,4 @@ render_stan_limits(limits)
 \description{
 This function creates the Stan syntax for truncated distributions
 }
+\keyword{internal}

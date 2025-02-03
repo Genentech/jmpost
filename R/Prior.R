@@ -150,9 +150,10 @@ as.character.Prior <- function(x, ...) {
 
 
 #' Creates Stan Syntax for Truncated distributions
-#' @description
+#' @description 
 #' This function creates the Stan syntax for truncated distributions
 #' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
+#' @keywords internal
 #' @return (`character`)\cr the Stan syntax for truncated distributions
 render_stan_limits <- function(limits) {
     l_bound <- if (limits[[1]] > -Inf) limits[[1]] else ""
