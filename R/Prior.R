@@ -150,7 +150,7 @@ as.character.Prior <- function(x, ...) {
 
 
 #' Creates Stan Syntax for Truncated distributions
-#' @description 
+#' @description
 #' This function creates the Stan syntax for truncated distributions
 #' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
 #' @keywords internal
