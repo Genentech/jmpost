@@ -60,7 +60,7 @@ jlist <- SimJointData(
 # random number of post baseline observations
 dat_lm_bl <- jlist@longitudinal |>
     filter(time <= 10 / 365) |>
-    group_by(pt) |>
+    group_by(subject) |>
     sample_n(1) |>
     ungroup()
 
@@ -68,10 +68,10 @@ dat_lm <- jlist@longitudinal |>
     filter(time > 10 / 365, observed) |>
     sample_frac(0.25) |>
     bind_rows(dat_lm_bl) |>
-    arrange(pt, time)
+    arrange(subject, time)
 
 dat_os <- jlist@survival |>
-    filter(pt %in% dat_lm$pt)
+    filter(subject %in% dat_lm$subject)
 
 
 
@@ -147,7 +147,7 @@ longquant_obvs <- LongitudinalQuantities(
 
 dat_quant_obvs <- summary(longquant_obvs) |>
     as_tibble() |>
-    left_join(dat_lm, by = c("group" = "pt", "time"))
+    left_join(dat_lm, by = c("group" = "subject", "time"))
 
 
 ggplot(
@@ -168,7 +168,7 @@ ggplot(
 #
 #
 
-sampled_subjects <- sample(dat_lm$pt, 4)
+sampled_subjects <- sample(dat_lm$subject, 4)
 
 longquant_fixed <- LongitudinalQuantities(
     mp,
@@ -178,10 +178,13 @@ longquant_fixed <- LongitudinalQuantities(
     )
 )
 
+# Note that autoplot just returns a regular ggplot2 object thus we can
+# manipulate it in anyway that makes sense. The following shows how to change the labels
+# and also how to get each pane to have their own "scale" (i.e. different xy-axis limits)
 autoplot(longquant_fixed) +
     ylab("Observed SLD (mm)") +
-    xlab("Time (years)")
-
+    xlab("Time (years)") +
+    facet_wrap(~group, scales = "free")
 
 ## Alternative if you want more customisation
 
@@ -189,8 +192,8 @@ dat_quant_fixed <- summary(longquant_fixed) |>
     as_tibble()
 
 dat_os_plot <- dat_os |>
-    mutate(group = pt) |>
-    filter(pt %in% sampled_subjects) |>
+    mutate(group = subject) |>
+    filter(subject %in% sampled_subjects) |>
     mutate(event_chr = ifelse(event == 1, "Event", "Censored")) |>
     mutate(event_chr = factor(
         event_chr,
@@ -211,8 +214,8 @@ ggplot() +
         col = "#81d681"
     ) +
     geom_point(
-        data = dat_lm |> mutate(group = pt) |> filter(pt %in% sampled_subjects),
-        aes(x = time, y = sld, group = pt),
+        data = dat_lm |> mutate(group = subject) |> filter(subject %in% sampled_subjects),
+        aes(x = time, y = sld, group = subject),
         col = "#9c3abf"
     ) +
     geom_vline(
@@ -339,7 +342,7 @@ ggplot() +
     ) +
     geom_line(
         data = dat_lm,
-        aes(x = time, y = sld, group = pt),
+        aes(x = time, y = sld, group = subject),
         alpha = 0.7,
         size = 0.2
     ) +
