@@ -171,7 +171,14 @@ ggplot(dat_plot, aes(x = est_value, y = value)) +
 
 set.seed(283)
 
-# Care is needed, seems super unstable with regard to starting values
+#
+#
+# WARNING - Note that the brms model seems to be very sensitive to starting values
+#           / priors. It is not uncommon for the model to produce non-sense results
+#           if the chain gets stuck in a bad region of the parameter space.
+#           Please check usual diagnostics to make sure the model is working as expected.
+#           See an example of a bad fit here: https://github.com/Genentech/jmpost/pull/425
+# 
 bfit <- brm(
     bf(
         value ~ exp(b) * (exp(-exp(s) * time) + exp(exp(g) * time) - 1),
