@@ -168,6 +168,8 @@ reference:
       - as.list.StanModule
       - as.list.Link
       - as.list.LinkComponent
+      - saveObject
+      - saveObject.JointModelSamples
       - length.Link
       - subset.DataJoint
       - extractVariableNames.DataLongitudinal

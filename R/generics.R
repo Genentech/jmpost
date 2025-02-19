@@ -471,3 +471,17 @@ as_formula.default <- function(x, ...) {
 set_limits <- function(object, lower = -Inf, upper = Inf) {
     UseMethod("set_limits")
 }
+
+
+
+#' Save Object to File
+#'
+#' @param object (`ANY`) \cr object to save.
+#' @param file (`character`) \cr file to save object to.
+#' @param ... (`ANY`) \cr additional arguments.
+#'
+#' @family saveObject
+#' @export
+saveObject <- function(object, file, ...) {
+    UseMethod("saveObject")
+}

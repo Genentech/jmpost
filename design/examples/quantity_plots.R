@@ -3,6 +3,7 @@ library(jmpost)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(cmdstanr)
 
 
 ############################
@@ -132,6 +133,10 @@ mp <- sampleStanModel(
 # get the raw stan object for subsequent processing
 stanobj <- as.CmdStanMCMC(mp)
 
+stanobj$save_object("local/mod.Rds")
+x <- readRDS("local/mod.Rds")
+x
+str(x)
 
 
 ############################

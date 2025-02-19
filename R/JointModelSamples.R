@@ -144,3 +144,26 @@ setMethod(
 as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
     return(object@results)
 }
+
+
+#' Save a `JointModelSamples` object to a file.
+#'
+#' This function is just a wrapper around `saveRDS` that saves the object to a file
+#' ensuring that all of the Stan samples are correctly stored. Note that as
+#' CmdStanR objects store their samples as a csv file the samples may be lost
+#' if you call `saveRDS` directly on the object.
+#'
+#' @param object ([`JointModelSamples`])\cr the object to save.
+#' @param file (`character`)\cr the file to save the object to.
+#' @param ... (`ANY`)\cr additional arguments to [`saveRDS`].
+#'
+#' @family saveObject
+#'
+#' @export
+saveObject.JointModelSamples <- function(object, file, ...) {
+    object@results$draws()
+    try(object@results$sampler_diagnostics(), silent = TRUE)
+    try(object@results$init(), silent = TRUE)
+    try(object@results$profiles(), silent = TRUE)
+    saveRDS(object, file, ...)
+}
