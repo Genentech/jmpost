@@ -16,7 +16,7 @@
 \description{
 This function is just a wrapper around \code{saveRDS} that saves the object to a file
 ensuring that all of the Stan samples are correctly stored. Note that as
-CmdStanR objects store their samples as a csv file the samples may be lost
+\code{cmdstanr} objects store their samples as a csv file the samples may be lost
 if you call \code{saveRDS} directly on the object.
 }
 \seealso{

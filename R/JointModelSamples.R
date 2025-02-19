@@ -150,7 +150,7 @@ as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
 #'
 #' This function is just a wrapper around `saveRDS` that saves the object to a file
 #' ensuring that all of the Stan samples are correctly stored. Note that as
-#' CmdStanR objects store their samples as a csv file the samples may be lost
+#' `cmdstanr` objects store their samples as a csv file the samples may be lost
 #' if you call `saveRDS` directly on the object.
 #'
 #' @param object ([`JointModelSamples`])\cr the object to save.
