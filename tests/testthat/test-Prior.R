@@ -199,6 +199,11 @@ test_that("Limits work as expected", {
     expect_true(all(ivs > 0))
     expect_true(all(ivs < 1))
 
+    expect_equal(
+        as.StanModule(x, name = "bob")@model,
+        "    bob ~ normal(prior_mu_bob, prior_sigma_bob) T[0, 1];"
+    )
+
 
     x <- prior_cauchy(-200, 150)
     x <- set_limits(x, lower = 0)
@@ -207,12 +212,20 @@ test_that("Limits work as expected", {
         initialValues(x)
     )
     expect_true(all(ivs > 0))
+    expect_equal(
+        as.StanModule(x, name = "tim")@model,
+        "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim) T[0, ];"
+    )
 
 
     ## Put an impossible constraint on the distribution
     x <- prior_lognormal(0, 1)
     x <- set_limits(x, upper = 0)
     expect_error(initialValues(x), regex = "Unable to generate")
+    expect_equal(
+        as.StanModule(x, name = "phil")@model,
+        "    phil ~ lognormal(prior_mu_phil, prior_sigma_phil) T[, 0];"
+    )
 })
 
 
@@ -239,5 +252,28 @@ test_that("median(Prior) works as expected", {
         median(p2),
         median(actual_red),
         tolerance = 0.15
+    )
+})
+
+
+test_that("Parameters in priors must be length 1 #422", {
+    expect_error(
+        prior_normal(c(1, 2), 1),
+        "Parameter `mu`"
+    )
+
+    expect_error(
+        prior_normal(1, c(1, 2)),
+        "Parameter `sigma`"
+    )
+
+    expect_error(
+        prior_normal(c(1, 2), c(1, 2)),
+        "Parameter `mu`"
+    )
+
+    expect_error(
+        prior_gamma(c(1, 2), 2),
+        "Parameter `alpha`"
     )
 })
