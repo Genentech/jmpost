@@ -16,4 +16,8 @@ saveObject(object, file, ...)
 \description{
 Save Object to File
 }
+\seealso{
+Other saveObject: 
+\code{\link{saveObject.JointModelSamples}()}
+}
 \concept{saveObject}
