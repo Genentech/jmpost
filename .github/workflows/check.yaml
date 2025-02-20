@@ -73,9 +73,9 @@ jobs:
       link-checking-method: lychee
       lychee-additional-args: "" # override the default of excluding private links
       lychee-fail: true
-  # version:
-  #   name: Version Check 🏁
-  #   uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main
+  version:
+    name: Version Check 🏁
+    uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main
   licenses:
     name: License Check 🃏
     uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
