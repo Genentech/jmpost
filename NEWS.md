@@ -1,5 +1,5 @@
 
-# jmpost Development Version
+# jmpost (development version)
 
 - Introduced the `saveObject()` method for `JointModelSample` objects in order to serialise them to disk (#431).
 - Added support for truncated prior distributions e.g. you can now apply a normal prior to a strictly positive parameter and jmpost will take care of adjusting the density accordingly (#429).
