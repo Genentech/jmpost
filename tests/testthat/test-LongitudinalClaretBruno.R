@@ -438,16 +438,16 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
-            mu_b = prior_normal(sim_params$mu_b, 0.4),
-            mu_g = prior_normal(mean(sim_params$mu_g), 0.4),
-            mu_c = prior_normal(mean(sim_params$mu_c), 0.4),
-            mu_p = prior_normal(mean(sim_params$mu_p), 0.4),
-            omega_b = prior_lognormal(log(mean(sim_params$omega_b)), 0.4),
-            omega_g = prior_lognormal(log(mean(sim_params$omega_g)), 0.4),
-            omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.4),
-            omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.4),
-            sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.4),
-            centred = TRUE,
+            mu_b = prior_normal(sim_params$mu_b, 0.2),
+            mu_g = prior_normal(mean(sim_params$mu_g), 0.2),
+            mu_c = prior_normal(mean(sim_params$mu_c), 0.2),
+            mu_p = prior_normal(mean(sim_params$mu_p), 0.2),
+            omega_b = prior_lognormal(log(mean(sim_params$omega_b)), 0.2),
+            omega_g = prior_lognormal(log(mean(sim_params$omega_g)), 0.2),
+            omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.2),
+            omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.2),
+            sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.2),
+            centred = FALSE,
             scaled_variance = FALSE
         )
     )
