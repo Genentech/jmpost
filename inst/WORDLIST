@@ -144,3 +144,5 @@ pk
 LogitNormal
 csv
 saveObject
+submodel
+serialise
