@@ -371,7 +371,7 @@ brierScore.SurvivalQuantities <- function(
     event_col <- extractVariableNames(object@data@survival)$event
     groups <- as.character(object@data@survival@data[[subject_col]])
     orig_times <- object@data@survival@data[[time_col]]
-    events <- object@data@survival@data[[event_col]]
+    events <- as.numeric(object@data@survival@data[[event_col]])
 
     pred_mat <- matrix(
         ncol = length(times),

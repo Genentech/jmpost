@@ -238,3 +238,70 @@ test_that("reverse_km_event_first() and reverse_km_cen_first() work as expected"
         extract_prodlim(mod, new_times)
     )
 })
+
+
+
+test_that("brierScore() works on logical events #438", {
+    set.seed(739)
+    simjdat <- SimJointData(
+        design = list(
+            SimGroup(75, "Arm-A", "Study-X"),
+            SimGroup(75, "Arm-B", "Study-X")
+        ),
+        survival = SimSurvivalExponential(
+            lambda = 1 / 100,
+            time_max = 2000
+        ),
+        longitudinal = SimLongitudinalRandomSlope(
+            times = c(0, 1, 100, 200, 250, 300, 350),
+            intercept = 30,
+            sigma = 3,
+            slope_mu = c(1, 3),
+            slope_sigma = 0.2,
+            link_dsld = 0
+        ),
+        .silent = TRUE
+    )
+    dat_os <- simjdat@survival
+    dat_lm <- simjdat@longitudinal
+
+    jm <- JointModel(
+        survival = SurvivalExponential(
+            lambda = prior_lognormal(log(1 / 100), 1 / 100)
+        )
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = dat_os,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        )
+    )
+
+    mp <- sampleStanModel(
+        jm,
+        data = jdat,
+        iter_sampling = 100,
+        iter_warmup = 150,
+        chains = 2,
+        refresh = 0,
+        parallel_chains = 1
+    )
+
+    t_grid <- c(1, 30, 45, 60, 425, 750)
+    sq <- SurvivalQuantities(
+        mp,
+        grid = GridFixed(times = t_grid),
+        type = "surv"
+    )
+    expected <- brierScore(sq)
+    sq@data@survival@data$event <- as.logical(sq@data@survival@data$event)
+    actual <- brierScore(sq)
+    expect_equal(actual, expected)
+})
