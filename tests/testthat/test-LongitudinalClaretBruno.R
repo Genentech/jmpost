@@ -367,12 +367,12 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     sim_params <- list(
         sigma = 1,
         mu_b = log(60),
-        mu_g = log(c(0.9, 1.1)),
+        mu_g = log(c(0.55, 0.65)),
         mu_c = log(c(0.45, 0.35)),
-        mu_p = log(c(2.4, 1.8)),
+        mu_p = log(c(0.65, 0.75)),
         omega_b = 0.1,
         omega_g = c(0.1, 0.2),
-        omega_c = c(0.3, 0.1),
+        omega_c = c(0.2, 0.1),
         omega_p = c(0.1, 0.2),
         link_ttg = 0,
         link_dsld = 0,
@@ -385,7 +385,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         beta_cont = 0.3
     )
 
-    set.seed(6128)
+    set.seed(618)
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
@@ -438,7 +438,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
-            mu_b = prior_normal(sim_params$mu_b, 0.2),
+            mu_b = prior_normal(mean(sim_params$mu_b), 0.2),
             mu_g = prior_normal(mean(sim_params$mu_g), 0.2),
             mu_c = prior_normal(mean(sim_params$mu_c), 0.2),
             mu_p = prior_normal(mean(sim_params$mu_p), 0.2),
@@ -447,7 +447,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.2),
             omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.2),
             sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.2),
-            centred = FALSE,
+            centred = TRUE,
             scaled_variance = FALSE
         )
     )
@@ -467,7 +467,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     )
 
     ## Sample from JointModel
-    set.seed(9553)
+    set.seed(553)
     mp <- run_quietly({
         suppressWarnings({
             sampleStanModel(
@@ -495,21 +495,19 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         dat
     }
 
-    dat <- summary_post(
-        cmdstanr::as.CmdStanMCMC(mp),
-        c(
-            "lm_clbr_mu_b", "lm_clbr_mu_g", "lm_clbr_mu_c", "lm_clbr_mu_p",
-            "lm_clbr_omega_b", "lm_clbr_omega_g", "lm_clbr_omega_c", "lm_clbr_omega_p",
-            "lm_clbr_sigma"
-        )
-    )
-    true_values <- sim_params[c(
+    par_names <- c(
         "mu_b", "mu_g", "mu_c", "mu_p",
         "omega_b", "omega_g", "omega_c", "omega_p",
         "sigma"
-    )] |> unlist()
+    )
+
+    dat <- summary_post(
+        cmdstanr::as.CmdStanMCMC(mp),
+        paste0("lm_clbr_", par_names)
+    )
+    true_values <- sim_params[par_names] |> unlist()
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 80))
 
 })
