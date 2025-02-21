@@ -438,15 +438,15 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
-            mu_b = prior_normal(mean(sim_params$mu_b), 0.2),
-            mu_g = prior_normal(mean(sim_params$mu_g), 0.2),
-            mu_c = prior_normal(mean(sim_params$mu_c), 0.2),
-            mu_p = prior_normal(mean(sim_params$mu_p), 0.2),
-            omega_b = prior_lognormal(log(mean(sim_params$omega_b)), 0.2),
-            omega_g = prior_lognormal(log(mean(sim_params$omega_g)), 0.2),
-            omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.2),
-            omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.2),
-            sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.2),
+            mu_b = prior_normal(mean(sim_params$mu_b), 0.25),
+            mu_g = prior_normal(mean(sim_params$mu_g), 0.25),
+            mu_c = prior_normal(mean(sim_params$mu_c), 0.25),
+            mu_p = prior_normal(mean(sim_params$mu_p), 0.25),
+            omega_b = prior_lognormal(log(mean(sim_params$omega_b)), 0.25),
+            omega_g = prior_lognormal(log(mean(sim_params$omega_g)), 0.25),
+            omega_c = prior_lognormal(log(mean(sim_params$omega_c)), 0.25),
+            omega_p = prior_lognormal(log(mean(sim_params$omega_p)), 0.25),
+            sigma = prior_lognormal(log(mean(sim_params$sigma)), 0.25),
             centred = TRUE,
             scaled_variance = FALSE
         )
@@ -473,8 +473,8 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             sampleStanModel(
                 jm,
                 data = jdat,
-                iter_sampling = 3000,
-                iter_warmup = 1200,
+                iter_sampling = 2500,
+                iter_warmup = 1000,
                 chains = 3,
                 parallel_chains = 3
             )
@@ -505,9 +505,17 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         cmdstanr::as.CmdStanMCMC(mp),
         paste0("lm_clbr_", par_names)
     )
+
     true_values <- sim_params[par_names] |> unlist()
+    #### debug
+    # dat$true_values <- true_values
+    # dat$gt_q01 <- dat$q01 <= true_values
+    # dat$lt_q99 <- dat$q99 >= true_values
+    # dat[, c("variable", "true_values", "mean", "q01", "q99", "rhat", "ess_bulk", "ess_tail", "gt_q01", "lt_q99")] |> print()
+    # 
+
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 80))
+    expect_true(all(dat$ess_bulk > 100))
 
 })
