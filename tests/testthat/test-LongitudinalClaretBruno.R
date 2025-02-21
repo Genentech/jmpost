@@ -389,11 +389,11 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(150, "Arm-A", "Study-X"),
-            SimGroup(150, "Arm-B", "Study-X")
+            SimGroup(8000, "Arm-A", "Study-X"),
+            SimGroup(8000, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
-            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
+            times = seq(1, 3000, length.out = 1000) / 365,
             sigma = sim_params$sigma,
             mu_b = sim_params$mu_b,
             mu_g = sim_params$mu_g,
@@ -507,15 +507,17 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     )
 
     true_values <- sim_params[par_names] |> unlist()
+
+    # nolint start
     #### debug
     # dat$true_values <- true_values
     # dat$gt_q01 <- dat$q01 <= true_values
     # dat$lt_q99 <- dat$q99 >= true_values
     # dat[, c("variable", "true_values", "mean", "q01", "q99", "rhat", "ess_bulk", "ess_tail", "gt_q01", "lt_q99")] |> print()
     # 
+    # nolint end
 
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
-
 })
