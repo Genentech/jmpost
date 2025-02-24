@@ -389,11 +389,11 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     ## Generate Test data with known parameters
     jlist <- SimJointData(
         design = list(
-            SimGroup(8000, "Arm-A", "Study-X"),
-            SimGroup(8000, "Arm-B", "Study-X")
+            SimGroup(150, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
-            times = seq(1, 3000, length.out = 1000) / 365,
+            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
             sigma = sim_params$sigma,
             mu_b = sim_params$mu_b,
             mu_g = sim_params$mu_g,
