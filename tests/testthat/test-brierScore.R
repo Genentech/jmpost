@@ -284,15 +284,21 @@ test_that("brierScore() works on logical events #438", {
         )
     )
 
-    mp <- sampleStanModel(
-        jm,
-        data = jdat,
-        iter_sampling = 100,
-        iter_warmup = 150,
-        chains = 2,
-        refresh = 0,
-        parallel_chains = 1
-    )
+    set.seed(553)
+    mp <- run_quietly({
+        suppressWarnings({
+            sampleStanModel(
+                jm,
+                data = jdat,
+                iter_sampling = 100,
+                iter_warmup = 150,
+                chains = 2,
+                refresh = 0,
+                parallel_chains = 1
+            )
+        })
+    })
+
 
     t_grid <- c(1, 30, 45, 60, 425, 750)
     sq <- SurvivalQuantities(
