@@ -1,9 +1,9 @@
 ---
-title: "Model Fitting"
+title: "jmpost Quickstart"
 package: jmpost
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Model Fitting}
+  %\VignetteIndexEntry{jmpost Quickstart}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -18,7 +18,27 @@ knitr::opts_chunk$set(
 library(jmpost)
 ```
 
-Here we describe the basic steps of joint model fitting with `{jmpost}`.
+
+# IMPORTANT
+
+Please note that this document is currently a work-in-progress and does not
+contain complete information for this package yet. 
+
+
+# Introduction
+
+The `jmpost` package is used to fit joint models of time-to-event endpoints with an association term
+parameterised from a longitudinal submodel. The package was originally designed for the context of
+fitting tumour growth inhibition models to inform overall survival but is not limited to this application.
+
+It is important to note that `jmpost` is just a wrapper on top of the Stan programming language and
+leans heavily on the wider Stan ecosystem. For example no model diagnostics are provided by `jmpost` with
+users being recommended to use packages like `bayesplot` for this functionality.
+
+This vignette provides a basic outline of how to fit a joint model using `jmpost`. For more detailed
+information on the package and its functions please refer to the package documentation.
+
+
 
 # Model Specification
 

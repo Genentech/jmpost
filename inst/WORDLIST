@@ -142,6 +142,8 @@ du
 int
 pk
 LogitNormal
+parameterised
+Quickstart
 csv
 saveObject
 submodel

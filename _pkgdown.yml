@@ -194,3 +194,13 @@ reference:
   - title: Miscellaneous 
     contents:
       - STAN_BLOCKS
+
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+        - quickstart
+        - '`statistical-specification`'
+        - '`custom-model`'
+        - '`extending-jmpost`'
+
