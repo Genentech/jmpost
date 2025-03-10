@@ -1,0 +1,378 @@
+---
+title: "01. Survival models"
+subtitle: "Part 1. Statistical specifications"
+package: jmpost
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Fitting}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+## Scope of this document
+
+This document describes how to analyze survival data using parametric
+survival models implemented in the `jmpost` R package. It is organized
+in 4 sections:
+
+-   Introduction
+
+-   Modeling framework
+
+-   Implementation
+
+## 1. Introduction
+
+Survival analysis, also referred to as time-to-event or failure time
+analysis, investigates the duration until one or more events of interest
+occur and the factors influencing these durations. Comprehensive
+introductions to survival analysis are provided by Kalbfleisch and
+Prentice (2002), Collett (2003), and Hosmer et al. (2008).
+
+Three predominant approaches to modeling survival data are commonly
+employed:
+
+1.  Hazard Rate Models: These models describe the instantaneous rate of
+    the event (the hazard) as a function of time, treated as a
+    continuous variable. This category includes the widely used class of
+    proportional hazards (PH) regression models.
+
+2.  Event Time Models: These models directly analyze the event time
+    itself, also treating time as a continuous variable. The accelerated
+    failure time (AFT) models fall under this category.
+
+3.  Discrete Time Models: These models analyze the occurrence of events
+    when time is considered as a discrete variable, with the additive
+    hazard regression (AHR) model being a specific example.
+
+In the current version of the `jmpost` package, we focus on the first
+approach, specifically on PH models within a Bayesian framework.
+
+Proportional hazards (PH) models are pivotal in survival analysis and
+rely on the key assumption that the hazard ratio (HR) comparing any two
+levels of a covariate remains constant over time. The Cox PH model is
+the most popular among these models for two primary reasons: (a) it does
+not require assumptions about the probability distribution of survival
+times, and (b) it generally fits data well across various parametric
+models.
+
+In contrast, fully parametric PH models require a distributional
+assumption (Kalbfleisch and Prentice 2002; Lawless 2002). When the
+appropriate distribution is selected, parametric models can provide more
+efficient estimates, reflected in smaller standard errors compared to
+the Cox model (Collett 2003). Moreover, using the Cox PH model in joint
+modeling of time-to-event and longitudinal data (Wulfsohn and Tsiatis
+1997) often leads to underestimation of standard errors of parameter
+estimates (Hsieh et al. 2006; Rizopoulos 2012). Consequently, most joint
+modeling methods are based on parametric response distributions (Hwang
+and Pennell 2014).
+
+Furthermore, the application of Cox proportional hazards (PH) models in
+joint modeling of time-to-event and longitudinal data often results in
+the underestimation of the standard errors of parameter estimates
+(Wulfsohn and Tsiatis 1997; Hsieh et al. 2006; Rizopoulos 2012). As a
+result, many methods for joint modeling are predicated on parametric
+response distributions (Hwang and Pennell 2014).
+
+Bayesian inference offers several advantages:
+
+-   The ability to make probability statements about parameters.
+
+-   Natural handling of hierarchical structures.
+
+-   Robust statistical properties, particularly with small sample sizes.
+
+-   The capacity to easily quantify uncertainty in predicted quantities.
+
+These properties are highly advantageous for joint models and are
+equally beneficial when applied to survival models independently.
+
+`jmpost` is developed in Stan, a high-level language (itself implemented
+in C++) designed for Bayesian modeling and inference. Stan primarily
+utilizes a variant of the No-U-Turn sampler (NUTS) (Hoffman & Gelman,
+2014) to generate posterior samples based on a user-specified model and
+data.
+
+While Stan is an exceptionally flexible and powerful tool for
+statistical modeling, it can be challenging to learn and is not
+inherently user-friendly. To address this barrier, we introduce `jmpost`
+as an additional layer atop Stan, simplifying the encoding of
+proportional hazards (PH) models. This includes both stand-alone PH
+models and those integrated within joint models.
+
+## 2. Modeling framework
+
+### 2.1. Distribution of time-to-event data
+
+Let $T$ denote a continuous non-negative random variable representing
+survival time. This variable can be specified by its density function
+$f(t)$ and cumulative distribution function $F(t)$. The hazard function,
+defined as
+
+$$
+h(t) = \lim_{\Delta \to 0} \frac{P(t < T \leq t + \Delta \mid T > t)}{\Delta}
+$$
+
+plays a central role in modeling the time to event. The hazard function
+represents the risk of an event occurring immediately after time $t$,
+given that no event has occurred up to time $t$. From this definition,
+we can derive that $h(t) = \frac{f(t)}{S(t)}$, where $S(t) = 1 - F(t)$
+is the survival function, representing the probability of no event
+occurring until time $t$.
+
+From the hazard function, we can define the cumulative hazard function
+as
+
+$$
+H(t) = \int_0^t h(\tau) \, d\tau
+$$
+
+which is related to the survival function by $S(t) = \exp(-H(t))$. The
+relationships between $h(t)$, $H(t)$, $f(t)$, and $S(t)$ constitute the
+fundamental formulas that represent key concepts in survival modeling.
+
+In practice, the exact event time may not be observed due to right
+censoring, such as when the event occurs after the conclusion of a
+clinical trial. Formally, let $T_i^*$ be the true event time and $C_i$
+be the censoring time (e.g., the end of the study). We observe
+$T_i = \min(T_i^*, C_i)$. To distinguish censored observations, we use
+an event indicator $d_i$, which is 0 for right censoring ($T_i^* > C_i$)
+and 1 if the event is observed ($T_i = T_i^*$). Thus, the observed
+outcome is defined by the pair $\{T_i, d_i\}$, where $T_i > 0$.
+
+### 2.2. Parametric model
+
+Parametric time-to-event models are constructed by specifying the
+outcome distribution. For instance, suppose $T$ follows an exponential
+distribution:
+
+$$ T \sim \text{exp}(\lambda) \quad \text{with} \; \lambda > 0, $$
+
+with
+
+$$ f(t) = \lambda \cdot \exp(-\lambda t) \quad \text{and} \quad F(t) = 1 - \exp(-\lambda t). $$
+
+This leads to
+
+$$ S(t) = 1 - F(t) = \exp(-\lambda t). $$
+
+Using $h(t) = \frac{f(t)}{S(t)}$, we get $h(t) = \lambda$. The hazard
+function for the exponential distribution is constant.
+
+However, the exponential distribution is often too restrictive. In
+principle, any positive continuous distribution (or transformation to
+obtain such) can be used for the outcome. One of the most commonly used
+distributions is the Weibull distribution, a two-parameter model
+flexible enough to characterize both monotonic increasing and decreasing
+hazard rates over time. Different parameterizations exist for this
+distribution. Within `jmpost`, the survival and hazard functions are
+implemented using the following parameterization:
+
+$$ S(t) = \exp(-(\lambda t)^\gamma) $$
+
+$$ h(t) = \lambda \gamma \cdot t^{\gamma-1} $$
+
+where $\gamma > 0$ is the shape parameter and $\lambda > 0$ is the scale
+parameter. The density function can be derived from
+$f(t) = h(t) \cdot S(t)$.
+
+Additionally, a log-logistic distribution can also be considered. Its
+hazard and survival functions are:
+
+$$ S(t) = \frac{1}{1 + (t/b)^a} $$
+
+$$ h(t) = \frac{(a/b) \cdot (t/b)^{a-1}}{1 + (t/b)^a} $$
+
+where $a$ is the shape parameter and $b$ is the scale parameter.
+
+To summarize, the parameters involved in each type of parametric
+survival model are recapitulated in [Table 1](#table1).
+
+<a name="table1"> Table 1. Parameters associated with each survival
+model </a>
+
+| Model        | Parameter | Variable name          | Interpretation             | Default prior |
+|---------------|---------------|---------------|---------------|---------------|
+| Exponential  | $\lambda$ | `sm_exp_lambda`        | Time invariant hazard rate | xxx           |
+| Weibull      | $\gamma$  | `sm_weibull_ph_gamma`  | Shape                      | xxx           |
+|              | $\lambda$ | `sm_weibull_ph_lambda` | Scale                      | xxx           |
+| Log-logistic | $a$       | `sm_loglogis_a`        | Shape                      | xxx           |
+|              | $b$       | `sm_loglogis_b`        | Scale                      | xxx           |
+
+### 2.3. Covariate model
+
+In many cases, additional characteristics of the individuals, such as
+age, sex, tumor stage, etc., are known. These characteristics are
+referred to as covariates. Let $X_i$ denote the $p \times 1$ vector of
+values from the covariate matrix $X$ for individual $i$, and let $\beta$
+be a $p \times 1$ vector of regression coefficients. It is plausible to
+assume that $X$ influences the shape, scale, or both parameters of the
+model. However, a common approach is to assume that $X$ affects only the
+scale parameter. The typical formulation for this relationship is:
+
+$$
+\log(\mu_i) = X_i^T \beta
+$$
+
+To ensure identifiability, we assume that the design vector $X_i$ does
+not include a constant term; that is, no intercept is included in the
+above equation.
+
+Various regression models can be fitted, such as proportional hazard
+(PH) models, accelerated failure time (AFT) models, proportional odds
+(PO) models, etc. Currently, `jmpost` implements only PH regression
+models. PH models are defined as:
+
+$$
+h_i(t) = h_0(t) \cdot \exp(X_i^T \beta)
+$$
+
+where $h_0(t)$ is the baseline hazard function.
+
+The hazard ratio (HR) quantifies the relative increase in the hazard
+associated with a unit increase in the relevant covariate, $X_i$, while
+holding all other covariates in the model constant.
+
+### 2.4. Log-likelihood
+
+We can specify the relevant parameter(s) as $\theta$. In the case of the
+exponential distribution, $\theta = \lambda$. For other distributions,
+$\theta = (\mu, \alpha)$, where $\mu$ represents the location or scale
+parameter, and $\alpha$ describes the shape or variance of the
+distribution. The objective of the statistical analysis is the
+estimation of $\theta$, which can then be used to obtain estimates for
+all relevant quantities (e.g., the survival function).
+
+Based on the observed outcomes $\{T_i, d_i\}$ for $i = 1, \ldots, n$,
+the likelihood function can be written as:
+
+$$
+L(\theta) = \prod_{i=1}^{n} f(T_i)^{d_i} \cdot S(T_i)^{1 - d_i} \cdot g(d_i)
+$$
+
+where $g(d_i)$ is the density function of $d_i$. We assume that $C_i$
+and consequently $d_i$ are independent of $T_i$. This type of censoring
+is known as non-informative censoring. Hence, we will ignore the
+$g(d_i)$ part afterwards.
+
+The maximum likelihood estimator maximizes the above log-likelihood
+function. Given that $f(t) = h(t) \cdot S(t)$, the log-likelihood can
+therefore be expressed as:
+
+$$
+\log L(\theta) = \sum_{i=1}^{n} \left[ d_i \cdot \log h(T_i) + \log S(T_i) \right]
+$$
+
+Since $H(t) = -\log S(t)$, the log-likelihood can also be expressed as:
+
+$$
+\log L(\theta) = \sum_{i=1}^{n} \left[ d_i \cdot \log h(T_i) - H(T_i) \right]
+$$
+
+### 2.5. Bayesian inference
+
+In a full Bayesian setting, the parameters are modeled directly using a
+prior probability distribution, which is updated by the observed data
+into a posterior distribution. The posterior distribution is the focus
+of the inferential process. Therefore, when using a Bayesian framework,
+the model must be completed by specifying suitable prior distributions
+for the $\theta$ parameters.
+
+Within `jmpost`, all parameters have default priors assigned to them,
+but users can explicitly specify the priors if they wish. The default
+choice of prior distribution for the regression coefficients is
+$N(\mu_\beta = 0, \sigma_\beta = 2)$, defined on the log scale. This
+amounts to specifying a "minimally informative" prior on the regression
+coefficients that determine the location parameter---in other words, we
+are not including strong prior information in this aspect of our model.
+The observed data (and the censoring structure) will primarily drive the
+update to the posterior distribution.
+
+There are several choices of prior distributions for the model
+parameters related to the baseline hazard (see [Table 1](#table1)). In
+theory, any distribution defined in the $(0, +\infty)$ domain would be
+viable as a prior distribution; however, the most common choices
+include:
+
+-   A half-normal, half-t, half-Cauchy, or exponential prior
+    distribution for the Weibull shape parameter.
+-   A half-normal, half-t, half-Cauchy, or exponential prior
+    distribution for the log-logistic scale parameter.
+
+### 2.6. Estimation
+
+The `jmpost` package is built on top of the `cmdstanr` R package (Stan
+Development Team, 2019), the most advanced R interface for Stan. Stan, a
+C++ library, provides a powerful platform for statistical modeling
+(Carpenter et al., 2017) and uses the No-U-Turn Sampler (NUTS), a
+specific implementation of Hamiltonian Monte Carlo (HMC) (Hoffman and
+Gelman, 2014). Models in `jmpost` are written in the Stan programming
+language, translated into C++ code, and compiled at runtime.
+
+Estimation in `jmpost` relies on full Bayesian inference. HMC, a form of
+Markov chain Monte Carlo (MCMC), uses gradient information of the log
+posterior to efficiently sample from the posterior space.
+
+Leveraging `cmdstanr`, `jmpost` allows users to control various aspects
+of the estimation process, including the number of MCMC chains, the
+number of warm-up and sampling iterations, and the number of computing
+cores used.
+
+## 3. Implementation
+
+The design of `jmpost` is modular, with distinct sets of functions
+tailored to specific objectives. These functions can be broadly
+categorized into three main groups: **Data Preparation**, **Model
+Fitting and Assessment**, and **Sensitivity Analysis and Predictions**,
+as illustrated schematically in Figure 1.
+
+![Figure 1.](path/to/figure1.png)
+
+## 4. References
+
+### References
+
+-   Baio, G. (2020). survHE: Survival analysis for health economic
+    evaluation and cost-effectiveness modeling. *Journal of Statistical
+    Software*, doi:
+    [10.18637/jss.v095.i14](https://doi.org/10.18637/jss.v095.i14).
+-   Carpenter, B., Gelman, A., Hoffman, M. D., et al. (2017). Stan: A
+    probabilistic programming language. *Journal of Statistical
+    Software*, doi:
+    [10.18637/jss.v076.i01](https://doi.org/10.18637/jss.v076.i01).
+-   Collett, D. (2003). *Modelling Survival Data in Medical Research*.
+    Chapman and Hall/CRC, Florida.
+-   Hoffman, M. D., & Gelman, A. (2014). The No-U-turn sampler:
+    Adaptively setting path lengths in Hamiltonian Monte Carlo. *Journal
+    of Machine Learning Research*, 15, 1593-1623.
+-   Hosmer, D. W., Lemeshow, S., & May, S. (2008). *Applied Survival
+    Analysis: Regression Modeling of Time-to-Event Data*. John Wiley &
+    Sons, New Jersey.
+-   Hsieh, F., Tseng, Y.-K., & Wang, J.-L. (2006). Joint modeling of
+    survival and longitudinal data: Likelihood approach revisited.
+    *Biometrics*, 62, 1037-1043.
+-   Hwang, W., & Pennell, M. L. (2014). Semiparametric Bayesian joint
+    modeling of a binary and continuous outcome with applications in
+    toxicological risk assessment. *Statistics in Medicine*, 33,
+    1162-1175.
+-   Jackson, C. (2016). flexsurv: A platform for parametric survival
+    modeling in R. *Journal of Statistical Software*, doi:
+    [10.18637/jss.v070.i08](https://doi.org/10.18637/jss.v070.i08).
+-   Kalbfleisch, J. D., & Prentice, R. L. (2002). *The Statistical
+    Analysis of Failure Time Data*. John Wiley & Sons, New Jersey.
+-   Lawless, J. F. (2002). *Statistical Models and Methods for Lifetime
+    Data*. John Wiley & Sons, New Jersey.
+-   Rizopoulos, D. (2012). *Joint Models for Longitudinal and
+    Time-to-Event Data With Applications in R*. Chapman and Hall/CRC,
+    Florida.
+-   Wulfsohn, M. S., & Tsiatis, A. A. (1997). A joint model for survival
+    and longitudinal data measured with error. *Biometrics*, 53,
+    330-339.

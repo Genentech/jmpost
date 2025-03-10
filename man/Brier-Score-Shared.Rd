@@ -2,7 +2,8 @@
 % Please edit documentation in R/brier_score.R
 \name{Brier-Score-Shared}
 \alias{Brier-Score-Shared}
-\title{Re-used documentation for Brier Score components}
+\title{Test
+Re-used documentation for Brier Score components}
 \arguments{
 \item{t}{(\code{numeric})\cr timepoints to calculate the desired quantity at.}
 
@@ -22,6 +23,7 @@ package.}
 \item{...}{not used.}
 }
 \description{
+Test
 Re-used documentation for Brier Score components
 }
 \keyword{internal}

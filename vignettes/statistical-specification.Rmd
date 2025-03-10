@@ -9,8 +9,8 @@ output:
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Statistical Specifications}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
 ---
