@@ -206,3 +206,14 @@ linkShrinkage.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...
 getPredictionNames.LongitudinalGSF <- function(object, ...) {
     c("b", "s", "g", "phi")
 }
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.LongitudinalGSF <- function(object, ...) {
+    c(
+        "b" = "lm_gsf_psi_bsld",
+        "s" = "lm_gsf_psi_ks",
+        "g" = "lm_gsf_psi_kg",
+        "phi" = "lm_gsf_psi_phi"
+    )
+}

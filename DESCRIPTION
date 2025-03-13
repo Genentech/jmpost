@@ -99,6 +99,7 @@ Collate:
     'LongitudinalClaretBruno.R'
     'LongitudinalGSF.R'
     'LongitudinalQuantities.R'
+    'LongitudinalRandomEffects.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSteinFojo.R'
     'Promise.R'

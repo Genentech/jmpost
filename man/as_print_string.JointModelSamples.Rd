@@ -14,5 +14,9 @@
 \description{
 Converts \code{\link{JointModelSamples}} object into a printable string.
 }
+\seealso{
+Other JointModelSamples: 
+\code{\link{LongitudinalRandomEffects}()}
+}
 \concept{JointModelSamples}
 \keyword{internal}

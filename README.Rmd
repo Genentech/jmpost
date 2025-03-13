@@ -58,7 +58,7 @@ This package has not been published to CRAN yet.
 
 ## Getting Started
 
-See also the [model fitting](https://genentech.github.io/jmpost/main/articles/model_fitting.html)
+See also the [model fitting](https://genentech.github.io/jmpost/main/articles/quickstart.html)
 vignette for more details. Here we present a very basic example here.
 
 First we simulate a data set. In practice you want to follow a similar structure

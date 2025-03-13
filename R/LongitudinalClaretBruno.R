@@ -191,3 +191,15 @@ getPredictionNames.LongitudinalClaretBruno <- function(object, ...) {
 enableGQ.LongitudinalClaretBruno <- function(object, ...) {
     StanModule("lm-claret-bruno/quantities.stan")
 }
+
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.LongitudinalGSF <- function(object, ...) {
+    c(
+        "b" = "lm_clbr_ind_b",
+        "g" = "lm_clbr_ind_g",
+        "c" = "lm_clbr_ind_c",
+        "p" = "lm_clbr_ind_p"
+    )
+}
