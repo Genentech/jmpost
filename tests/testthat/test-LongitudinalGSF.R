@@ -82,15 +82,15 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     skip_if_not(is_full_test())
     pars <- list(
-        sigma = 0.01,
-        mu_s = log(c(0.6, 0.4)),
-        mu_g = log(c(0.25, 0.35)),
+        sigma = 0.015,
+        mu_s = log(c(0.6, 0.5)),
+        mu_g = log(c(0.25, 0.3)),
         mu_b = log(60),
-        mu_phi = qlogis(c(0.4, 0.6)),
+        mu_phi = qlogis(c(0.4, 0.5)),
         omega_b = c(0.2),
-        omega_s = c(0.3, 0.1),
-        omega_g = c(0.1, 0.3),
-        omega_phi = c(0.3, 0.1),
+        omega_s = c(0.3, 0.3),
+        omega_g = c(0.2, 0.2),
+        omega_phi = c(0.1, 0.1),
         link_dsld = 0.1,
         link_ttg = 0.2,
         link_identity = 0,
@@ -100,11 +100,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         lambda = 1 / (400 / 365)
     )
 
-    set.seed(7743)
+    set.seed(233)
     jlist <- SimJointData(
         design = list(
-            SimGroup(120, "Arm-A", "Study-X"),
-            SimGroup(140, "Arm-B", "Study-X")
+            SimGroup(150, "Arm-A", "Study-X"),
+            SimGroup(150, "Arm-B", "Study-X")
         ),
         survival = SimSurvivalExponential(
             lambda = pars$lambda,
@@ -119,7 +119,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             beta_cont = pars$beta_cont
         ),
         longitudinal = SimLongitudinalGSF(
-            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
+            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
             sigma = pars$sigma,
             mu_s = pars$mu_s,
             mu_g = pars$mu_g,
@@ -155,23 +155,23 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
 
     jm <- JointModel(
         longitudinal = LongitudinalGSF(
-            mu_bsld = prior_normal(log(60), 0.4),
-            mu_ks = prior_normal(log(0.6), 0.4),
-            mu_kg = prior_normal(log(0.3), 0.4),
-            mu_phi = prior_normal(qlogis(0.5), 0.5),
-            omega_bsld = prior_lognormal(log(0.2), 0.4),
-            omega_ks = prior_lognormal(log(0.2), 0.4),
-            omega_kg = prior_lognormal(log(0.2), 0.4),
-            omega_phi = prior_lognormal(log(0.2), 0.4),
-            sigma = prior_lognormal(log(0.01), 0.4),
+            mu_bsld = prior_normal(mean(pars$mu_b), 0.25),
+            mu_ks = prior_normal(mean(pars$mu_s), 0.25),
+            mu_kg = prior_normal(mean(pars$mu_g), 0.25),
+            mu_phi = prior_normal(mean(pars$mu_phi), 0.25),
+            omega_bsld = prior_lognormal(mean(pars$omega_b) |> log(), 0.25),
+            omega_ks = prior_lognormal(mean(pars$omega_s) |> log(), 0.25),
+            omega_kg = prior_lognormal(mean(pars$omega_g) |> log(), 0.25),
+            omega_phi = prior_lognormal(mean(pars$omega_phi) |> log(), 0.25),
+            sigma = prior_lognormal(mean(pars$sigma) |> log(), 0.25),
             centred = TRUE
         ),
         survival = SurvivalExponential(
-            lambda = prior_lognormal(log(1 / (400 / 365)), 0.4)
+            lambda = prior_lognormal(mean(pars$lambda) |> log(), 0.25)
         ),
         link = Link(
-            linkDSLD(prior = prior_normal(0.1, 0.2)),
-            linkTTG(prior = prior_normal(0.2, 0.2))
+            linkDSLD(prior = prior_normal(mean(pars$link_dsld), 0.25)),
+            linkTTG(prior = prior_normal(mean(pars$link_ttg), 0.25))
         )
     )
 
@@ -180,11 +180,11 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             sampleStanModel(
                 jm,
                 data = jdat,
-                iter_warmup = 400,
-                iter_sampling = 800,
-                chains = 2,
+                iter_warmup = 900,
+                iter_sampling = 1600,
+                chains = 3,
                 refresh = 200,
-                parallel_chains = 2
+                parallel_chains = 3
             )
         })
     })
@@ -217,6 +217,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         c("lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi")
     )
     true_values <- c(pars$mu_b, pars$mu_s, pars$mu_g, pars$mu_phi)
+    dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
@@ -227,6 +228,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         c("lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks", "lm_gsf_omega_phi")
     )
     true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s, pars$omega_phi)
+    dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
@@ -237,6 +239,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
         c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
     )
     true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
+    dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
