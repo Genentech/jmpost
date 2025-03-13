@@ -314,3 +314,14 @@ setMethod(
         ))
     }
 )
+
+
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.JointModel <- function(object, ...) {
+    if (is.null(object@longitudinal)) {
+        return(NULL)
+    }
+    return(getRandomEffectsNames(object@longitudinal))
+}

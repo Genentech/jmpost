@@ -111,3 +111,10 @@ linkGrowth.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model
 getPredictionNames.LongitudinalRandomSlope <- function(object, ...) {
     c("intercept", "slope")
 }
+
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.LongitudinalRandomSlope <- function(object, ...) {
+    c("slope" = "lm_rs_ind_rnd_slope")
+}

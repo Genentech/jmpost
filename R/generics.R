@@ -437,9 +437,33 @@ getPredictionNames <- function(object, ...) {
 }
 
 #' @rdname getPredictionNames
+#' @export
 getPredictionNames.default <- function(object, ...) {
     NULL
 }
+
+
+
+#' Get Random Effects Names
+#'
+#' Utility function that returns the names of the random effects parameters.
+#' The main use for this is to allow the [`LongitudinalRandomEffects`] function
+#' to know which parameters it needs to extract and to what common names
+#' it should map the parameters to.
+#'
+#' @param object (`LongitudinalModel`) \cr A longitudinal model object
+#' @param ... Not used.
+#' @export
+getRandomEffectsNames <- function(object, ...) {
+    UseMethod("getRandomEffectsNames")
+}
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.default <- function(object, ...) {
+    NULL
+}
+
 
 #' As Formula
 #'
