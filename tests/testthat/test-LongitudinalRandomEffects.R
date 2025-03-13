@@ -93,9 +93,11 @@ test_that("LongitudinalRandomEffects() works as expected", {
         dplyr::left_join(s_requant, by = c("pt" = "subject", "parameter"))
 
     # Sensitivity check, showing that if ~3 values are slightly wrong the check fails
+    # nolint start
     # combined$real[1] <- 50
     # combined$real[2] <- 80
     # combined$real[3] <- 40
+    # nolint end
     expect_true(cor(combined$real, combined$median) > 0.9997)
 
 

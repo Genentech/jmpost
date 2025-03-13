@@ -323,5 +323,5 @@ getRandomEffectsNames.JointModel <- function(object, ...) {
     if (is.null(object@longitudinal)) {
         return(NULL)
     }
-    return(getRandomEffectsNames(object@longitudinal))
+    getRandomEffectsNames(object@longitudinal)
 }

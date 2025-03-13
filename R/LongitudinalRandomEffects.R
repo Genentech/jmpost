@@ -63,7 +63,7 @@ setValidity(
         if (length(object@parameter) != ncol(object@quantities)) {
             return("Length of `parameter` must be equal to the number of columns in `quantities`")
         }
-        return(TRUE)
+        TRUE
     }
 )
 
@@ -77,7 +77,7 @@ setValidity(
 #' @keywords internal
 #' @export
 as_print_string.RandomEffectQuantities <- function(object, indent = 1, ...) {
-    parameter_string <- paste0( "        ", unique(object@parameter))
+    parameter_string <- paste0("        ", unique(object@parameter))
     template <- c(
         "RandomEffectQuantities Object:",
         "    # of samples         = %d",
@@ -157,9 +157,9 @@ summary.RandomEffectQuantities <- function(object, conf.level = 0.95, ...) {
 
 
 #' Extract Random Effects Samples from a Longitudinal Model
-#' 
+#'
 #' Helper function to extract subject-level random effects samples from the longitudinal
-#' sub-model of a joint model samples object. 
+#' sub-model of a joint model samples object.
 #'
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
 #' @family RandomEffectQuantities
@@ -188,4 +188,3 @@ LongitudinalRandomEffects <- function(object) {
         parameter = expanded$parameter
     )
 }
- 
