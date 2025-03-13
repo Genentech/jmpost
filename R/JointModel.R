@@ -118,12 +118,10 @@ as.StanModule.JointModel <- function(object, ...) {
     # use the `decorated_render` constants `machine_double_eps`.
     stan_full <- decorated_render(.x = stan_full)
 
-    x <- merge(
+    merge(
         StanModule("base/functions.stan"),
         StanModule(stan_full)
     )
-
-    return(x)
 }
 
 
