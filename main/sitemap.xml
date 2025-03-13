@@ -32,6 +32,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/LongitudinalModel-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-Shared.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.html</loc></url>
@@ -49,6 +50,8 @@
 <url><loc>https://genentech.github.io/jmpost/reference/Quant-Dev.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/Quantities-Shared.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/Quantities-class.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/RandomEffectQuantities-Shared.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/RandomEffectQuantities-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/STAN_BLOCKS.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/SimGroup-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/SimJointData-class.html</loc></url>
@@ -92,6 +95,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.RandomEffectQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.list.Link.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.list.LinkComponent.html</loc></url>
@@ -105,6 +109,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as_print_string.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as_print_string.RandomEffectQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as_print_string.StanModule.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as_print_string.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as_stan_file.html</loc></url>
@@ -141,6 +146,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/generateQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/getParameters.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/getPredictionNames.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/getRandomEffectsNames.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/get_missing_rownumbers.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/gsf_sld.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/harmonise.html</loc></url>
@@ -194,6 +200,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/subset_and_add_grouping.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/summary.Quantities.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/summary.RandomEffectQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/validate_time_grid.html</loc></url>
