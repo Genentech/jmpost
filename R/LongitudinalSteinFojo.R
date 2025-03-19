@@ -186,3 +186,14 @@ linkShrinkage.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), mode
 getPredictionNames.LongitudinalSteinFojo <- function(object, ...) {
     c("b", "s", "g")
 }
+
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.LongitudinalSteinFojo <- function(object, ...) {
+    c(
+        "b" = "lm_sf_psi_bsld",
+        "s" = "lm_sf_psi_ks",
+        "g" = "lm_sf_psi_kg"
+    )
+}

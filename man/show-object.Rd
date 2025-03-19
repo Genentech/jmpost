@@ -4,7 +4,8 @@
 %   R/Prior.R, R/Parameter.R, R/ParameterList.R, R/StanModel.R,
 %   R/LinkComponent.R, R/Link.R, R/JointModel.R, R/Quantities.R,
 %   R/SurvivalQuantities.R, R/JointModelSamples.R, R/LongitudinalQuantities.R,
-%   R/SimJointData.R, R/SimLongitudinal.R, R/SimSurvival.R
+%   R/LongitudinalRandomEffects.R, R/SimJointData.R, R/SimLongitudinal.R,
+%   R/SimSurvival.R
 \name{show,DataSubject-method}
 \alias{show,DataSubject-method}
 \alias{show-object}
@@ -23,6 +24,7 @@
 \alias{show,SurvivalQuantities-method}
 \alias{show,JointModelSamples-method}
 \alias{show,LongitudinalQuantities-method}
+\alias{show,RandomEffectQuantities-method}
 \alias{show,SimJointData-method}
 \alias{show,SimLongitudinal-method}
 \alias{show,SimSurvival-method}
@@ -59,6 +61,8 @@
 \S4method{show}{JointModelSamples}(object)
 
 \S4method{show}{LongitudinalQuantities}(object)
+
+\S4method{show}{RandomEffectQuantities}(object)
 
 \S4method{show}{SimJointData}(object)
 

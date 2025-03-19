@@ -110,6 +110,7 @@ reference:
       - LongitudinalQuantities
       - SurvivalQuantities
       - generateQuantities
+      - LongitudinalRandomEffects
       - Grid-Functions
       - summary.LongitudinalQuantities
       - summary.SurvivalQuantities
@@ -131,6 +132,7 @@ reference:
       - StanModule
       - write_stan
       - getParameters
+      - getRandomEffectsNames
   
   - title: Convenience Functions
     contents:
@@ -160,6 +162,8 @@ reference:
       - as.data.frame.DataSurvival
       - as.data.frame.LongitudinalQuantities
       - as.data.frame.SurvivalQuantities
+      - summary.RandomEffectQuantities
+      - as.data.frame.RandomEffectQuantities
       - as.list.DataJoint
       - as.list.DataLongitudinal
       - as.list.DataSurvival
