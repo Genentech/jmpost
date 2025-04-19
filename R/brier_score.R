@@ -1,4 +1,5 @@
 
+#' Test
 
 #' Re-used documentation for Brier Score components
 #'
