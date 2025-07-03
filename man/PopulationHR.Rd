@@ -6,7 +6,7 @@
 \usage{
 PopulationHR(
   object,
-  terms = terms(object@data@survival@formula),
+  HR_terms = attr(terms(object@data@survival@formula), "term.labels"),
   arm = TRUE,
   baseline = "bs(time, df=10)"
 )
@@ -14,7 +14,7 @@ PopulationHR(
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{terms}{(\code{character}) \cr to include in the hazard ratio calculation.
+\item{HR_terms}{(\code{character}) \cr to include in the hazard ratio calculation.
 By default this include the terms used in the survival model.
 Set to \code{NULL} not include any terms}
 
