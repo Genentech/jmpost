@@ -46,7 +46,8 @@ Imports:
     methods,
     digest,
     posterior,
-    stats
+    stats,
+    splines
 Suggests:
     cmdstanr,
     bayesplot,
@@ -102,6 +103,7 @@ Collate:
     'LongitudinalRandomEffects.R'
     'LongitudinalRandomSlope.R'
     'LongitudinalSteinFojo.R'
+    'PopulationHR.R'
     'Promise.R'
     'QuantityGeneratorPopulation.R'
     'QuantityGeneratorPrediction.R'
