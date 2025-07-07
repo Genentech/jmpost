@@ -6,26 +6,31 @@
 \usage{
 PopulationHR(
   object,
-  HR_terms = attr(terms(object@data@survival@formula), "term.labels"),
-  arm = TRUE,
-  baseline = "bs(time, df=10)"
+  HR_formula = object@data@survival@formula,
+  baseline = ~bs(time, df = 10),
+  quantiles = c(0.025, 0.975)
 )
 }
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{HR_terms}{(\code{character}) \cr to include in the hazard ratio calculation.
-By default this include the terms used in the survival model.
+\item{HR_formula}{(\code{formula}) \cr defines the terms to include in the hazard ratio calculation.
+By default this uses the right side of the formula used in the survival model.
 Set to \code{NULL} not include any terms}
 
-\item{arm}{(\code{logical}) \cr calculate hazard ratio for \code{arm}.}
+\item{baseline}{(\code{formula}) \cr terms to model baseline hazard using variable \code{time}.
+Default is a B-spline from \link{splines}: \code{~bs(time, df = 10)}}
 
-\item{baseline}{(\code{string}) \cr terms to model baseline hazard using variable \code{"time"}.
-Default is a B-spline from \link{splines}: \code{"bs(time, df=10)"}}
+\item{quantiles}{(\code{numeric}) \cr vector of two values in (0, 1) for calculating quantiles from log hazard ratio
+distributions.}
 }
 \value{
 A matrix
 }
 \description{
-Calculates hazard ratios marginalised over subject specific random effects
+Calculates hazard ratios marginalised over subject specific random effects using the
+approach proposed by \insertCite{oudenhoven2020marginal}{jmpost}.
+}
+\references{
+\insertAllCited{}
 }
