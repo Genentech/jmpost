@@ -3,7 +3,7 @@ test_data_1 <- ensure_test_data_1()
 
 test_that("populationHR works as expected for default parameters", {
     mp <- test_data_1$jsamples
-
+    set.seed(1231)
     result <- suppressWarnings(PopulationHR(object = mp))
 
     expect_matrix(
@@ -46,7 +46,7 @@ test_that("populationHR fails for bad input", {
 
 test_that("populationHR works as expected for alternative specfications", {
     mp <- test_data_1$jsamples
-
+    set.seed(1231)
     # Arm + continuous covariate
     result_arm_cont <- PopulationHR(
         object = mp,
@@ -72,6 +72,7 @@ test_that("populationHR works as expected for alternative specfications", {
 
 
     # Arm HR only
+    set.seed(1231)
     result_arm <- PopulationHR(
         object = mp,
         baseline = ~splines::ns(time, df = 5),

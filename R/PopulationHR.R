@@ -44,15 +44,14 @@ PopulationHR <- function(object,
         attr(terms(HR_formula), "term.labels")
     ))
 
-    # Get the survival quantities at the observed longitudinal times
-    # and survival event times for each patient:
+    # Get the survival quantities at the observed longitudinal and survival times for each patient:
     times_df <- rbind(
         stats::setNames(object@data@longitudinal@data[, c(subject_var, long_time_var)], c("subject", "time")),
         stats::setNames(object@data@survival@data[, c(subject_var, surv_time_var)], c("subject", "time"))
-    ) #|>
-      #  dplyr::arrange(subject, time)
-
-    times_df <- times_df[!duplicated(times_df) & times_df$time > 0, ]
+    )
+    times_df <- times_df[order(times_df$subject, times_df$time), ]
+    times_df <- times_df[times_df$time > 0, ]
+    times_df <- times_df[!duplicated.data.frame(times_df), ]
 
     # Generate samples of the log hazard log h_i(t) for each patient i at these time points t.
     grid_spec <- split(times_df$time, times_df$subject)
@@ -63,14 +62,13 @@ PopulationHR <- function(object,
     )@quantities@quantities |> t()
 
     # Construct \tilde{X} in paper's notation with one row per patient's time
-
     W_df <- dplyr::left_join(
         times_df,
         stats::setNames(object@data@survival@data[, c(subject_var, surv_covs)], c("subject", surv_covs)),
         by = "subject"
     )
-
     W_mat <- model.matrix(marginal_formula, W_df)
+
     # As model matrix contains baseline and covariates, we don't need the intercept term
     # but we want factor variables encoded relative to the intercept
     W_mat <- W_mat[, colnames(W_mat) != "(Intercept)", drop = FALSE]
