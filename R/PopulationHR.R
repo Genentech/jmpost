@@ -4,7 +4,7 @@
 #' approach proposed by \insertCite{oudenhoven2020marginal}{jmpost}.
 #'
 #' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
-#' @param HR_formula (`formula`) \cr defines the terms to include in the hazard ratio calculation.
+#' @param hr_formula (`formula`) \cr defines the terms to include in the hazard ratio calculation.
 #' By default this uses the right side of the formula used in the survival model.
 #' Set to `NULL` not include any terms
 #' @param baseline (`formula`) \cr terms to model baseline hazard using variable `time`.
@@ -14,17 +14,18 @@
 #'
 #' @references \insertAllCited{}
 #'
-#' @returns A matrix
+#' @returns A list containing a summary of parameter distributions as a `data.frame` and a
+#' matrix containing the parameter estimates for each sample.
 #' @export
 #' @importFrom splines bs
 populationHR <- function(
     object,
-    HR_formula = object@data@survival@formula,
+    hr_formula = object@data@survival@formula,
     baseline = ~ bs(time, df = 10),
     quantiles = c(0.025, 0.975)
 ) {
     assert_class(object, "JointModelSamples")
-    assert_formula(HR_formula)
+    assert_formula(hr_formula)
     assert_formula(baseline)
     assert_numeric(quantiles, lower = 0, upper = 1, any.missing = FALSE, unique = TRUE)
     if (!"time" %in% all.vars(baseline)) stop("baseline formula should include a time term.")
@@ -34,15 +35,15 @@ populationHR <- function(
     arm_var <- object@data@subject@arm
     long_time_var <- all.vars(delete.response(terms(object@data@longitudinal@formula)))
     surv_time_var <- all.vars(object@data@survival@formula[[2]][[2]])
-    surv_covs <- all.vars(delete.response(terms(HR_formula)))
+    surv_covs <- all.vars(delete.response(terms(hr_formula)))
     if (!all(surv_covs %in% colnames(object@data@survival@data))) {
-        stop("All variables in HR_formula must be in survival data")
+        stop("All variables in hr_formula must be in survival data")
     }
 
 
     marginal_formula <- stats::reformulate(c(
         attr(terms(baseline), "term.labels"),
-        attr(terms(HR_formula), "term.labels")
+        attr(terms(hr_formula), "term.labels")
     ))
 
     # Get the survival quantities at the observed longitudinal and survival times for each patient:
@@ -79,7 +80,7 @@ populationHR <- function(
         quantiles <- stats::quantile(x, probs = quantiles)
         c(mean = mean(x), median = median(x), quantiles)
     }) |>
-        t()
+        t() |> data.frame()
 
-    list(tidy_res, estimates)
+    list(summary = tidy_res, estimates)
 }

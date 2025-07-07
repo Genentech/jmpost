@@ -6,7 +6,7 @@
 \usage{
 populationHR(
   object,
-  HR_formula = object@data@survival@formula,
+  hr_formula = object@data@survival@formula,
   baseline = ~bs(time, df = 10),
   quantiles = c(0.025, 0.975)
 )
@@ -14,7 +14,7 @@ populationHR(
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
 
-\item{HR_formula}{(\code{formula}) \cr defines the terms to include in the hazard ratio calculation.
+\item{hr_formula}{(\code{formula}) \cr defines the terms to include in the hazard ratio calculation.
 By default this uses the right side of the formula used in the survival model.
 Set to \code{NULL} not include any terms}
 
@@ -25,7 +25,8 @@ Default is a B-spline from \link{splines}: \code{~bs(time, df = 10)}}
 distributions.}
 }
 \value{
-A matrix
+A list containing a summary of parameter distributions as a \code{data.frame} and a
+matrix containing the parameter estimates for each sample.
 }
 \description{
 Calculates hazard ratios marginalised over subject specific random effects using the

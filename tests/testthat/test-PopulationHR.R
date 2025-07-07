@@ -63,7 +63,7 @@ test_that("populationHR works as expected for alternative specfications", {
     )
 
 
-    ### Summary calculations are match expectations
+    ### Summary calculations match expectations
     summary_stats <- apply(result_arm_cont[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95))))
     expect_equal(
         unname(t(summary_stats)),
@@ -87,7 +87,7 @@ test_that("populationHR works as expected for alternative specfications", {
         nrows = 6 # 5 baseline spline + 1 covariates
     )
 
-    # Summary calculations are match expectations
+    # Summary calculations match expectations
     summary_stats <- apply(result_arm[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95))))
     expect_equal(
         unname(t(summary_stats)),
