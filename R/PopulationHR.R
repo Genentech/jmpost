@@ -15,13 +15,14 @@
 #' @references \insertAllCited{}
 #'
 #' @returns A matrix
-#'
+#' @export
 #' @importFrom splines bs
-PopulationHR <- function(object,
-                         HR_formula = object@data@survival@formula,
-                         baseline = ~ bs(time, df=10),
-                         quantiles = c(0.025, 0.975)
-                         ) {
+populationHR <- function(
+    object,
+    HR_formula = object@data@survival@formula,
+    baseline = ~ bs(time, df = 10),
+    quantiles = c(0.025, 0.975)
+) {
     assert_class(object, "JointModelSamples")
     assert_formula(HR_formula)
     assert_formula(baseline)
@@ -75,12 +76,10 @@ PopulationHR <- function(object,
 
     estimates <- stats::lm.fit(x = W_mat, y = log_haz_samples)$coefficients
     tidy_res <- apply(estimates, 1, function(x) {
-        c(mean = mean(x),
-          median = median(x),
-          stats::quantile(x, probs = quantiles)
-        )
-        }) |> t()
+        quantiles <- stats::quantile(x, probs = quantiles)
+        c(mean = mean(x), median = median(x), quantiles)
+    }) |>
+        t()
 
     list(tidy_res, estimates)
 }
-

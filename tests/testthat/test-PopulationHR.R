@@ -4,7 +4,7 @@ test_data_1 <- ensure_test_data_1()
 test_that("populationHR works as expected for default parameters", {
     mp <- test_data_1$jsamples
     set.seed(1231)
-    result <- suppressWarnings(PopulationHR(object = mp))
+    result <- suppressWarnings(populationHR(object = mp))
 
     expect_matrix(
         result[[2]],
@@ -36,11 +36,11 @@ test_that("populationHR works as expected for default parameters", {
 
 test_that("populationHR fails for bad input", {
     mp <- test_data_1$jsamples
-    expect_error(PopulationHR(object = mp@data), "inherit from class")
-    expect_error(PopulationHR(object = mp, HR_formula = "arm"), "formula")
-    expect_error(PopulationHR(object = mp, baseline = ~arm), "time term")
-    expect_error(PopulationHR(object = mp, HR_formula = ~XX), "All variables")
-    expect_error(PopulationHR(object = mp, quantiles = c(-0.3, NA, 2)), "quantiles")
+    expect_error(populationHR(object = mp@data), "inherit from class")
+    expect_error(populationHR(object = mp, HR_formula = "arm"), "formula")
+    expect_error(populationHR(object = mp, baseline = ~arm), "time term")
+    expect_error(populationHR(object = mp, HR_formula = ~XX), "All variables")
+    expect_error(populationHR(object = mp, quantiles = c(-0.3, NA, 2)), "quantiles")
 })
 
 
@@ -48,7 +48,7 @@ test_that("populationHR works as expected for alternative specfications", {
     mp <- test_data_1$jsamples
     set.seed(1231)
     # Arm + continuous covariate
-    result_arm_cont <- PopulationHR(
+    result_arm_cont <- populationHR(
         object = mp,
         baseline = ~splines::ns(time, df = 5),
         HR_formula = ~arm + cov_cont,
@@ -73,9 +73,9 @@ test_that("populationHR works as expected for alternative specfications", {
 
     # Arm HR only
     set.seed(1231)
-    result_arm <- PopulationHR(
+    result_arm <- populationHR(
         object = mp,
-        baseline = ~splines::ns(time, df = 5),
+        baseline = ~splines::ns(time, df = 10),
         HR_formula = ~arm,
         quantiles = c(0.05, 0.95)
     )
