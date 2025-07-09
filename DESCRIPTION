@@ -46,7 +46,8 @@ Imports:
     methods,
     digest,
     posterior,
-    stats
+    stats,
+    splines
 Suggests:
     cmdstanr,
     bayesplot,
@@ -123,6 +124,7 @@ Collate:
     'external-exports.R'
     'jmpost-package.R'
     'link_generics.R'
+    'populationHR.R'
     'settings.R'
     'standalone-s3-register.R'
     'zzz.R'

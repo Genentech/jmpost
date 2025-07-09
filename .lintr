@@ -5,7 +5,8 @@ linters: linters_with_defaults(
     object_usage_linter = NULL,    # Stops spurious warnings over imported functions
     cyclocomp_linter = NULL,
     indentation_linter = indentation_linter(4),
-    object_length_linter = object_length_linter(40)
+    object_length_linter = object_length_linter(40),
+    return_linter = NULL
     )
 exclusions: list(
     "design/tests",
