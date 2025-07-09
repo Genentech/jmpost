@@ -27,9 +27,11 @@ test_that("populationHR works as expected for default parameters", {
     )
 
     # Summary calculations are match expectations
-    summary_stats <- apply(result[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.025, 0.975))))
+    summary_stats <- apply(result[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.025, 0.975)))) |>
+        t() |>
+        as.data.frame()
     expect_equal(
-        unname(t(summary_stats)),
+        unname(summary_stats),
         unname(result[[1]])
     )
 })
@@ -37,9 +39,9 @@ test_that("populationHR works as expected for default parameters", {
 test_that("populationHR fails for bad input", {
     mp <- test_data_1$jsamples
     expect_error(populationHR(object = mp@data), "inherit from class")
-    expect_error(populationHR(object = mp, HR_formula = "arm"), "formula")
+    expect_error(populationHR(object = mp, hr_formula = "arm"), "formula")
     expect_error(populationHR(object = mp, baseline = ~arm), "time term")
-    expect_error(populationHR(object = mp, HR_formula = ~XX), "All variables")
+    expect_error(populationHR(object = mp, hr_formula = ~XX), "All variables")
     expect_error(populationHR(object = mp, quantiles = c(-0.3, NA, 2)), "quantiles")
 })
 
@@ -51,7 +53,7 @@ test_that("populationHR works as expected for alternative specfications", {
     result_arm_cont <- populationHR(
         object = mp,
         baseline = ~splines::ns(time, df = 5),
-        HR_formula = ~arm + cov_cont,
+        hr_formula = ~arm + cov_cont,
         quantiles = c(0.05, 0.95)
     )
 
@@ -64,9 +66,12 @@ test_that("populationHR works as expected for alternative specfications", {
 
 
     ### Summary calculations match expectations
-    summary_stats <- apply(result_arm_cont[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95))))
+    summary_stats <- apply(result_arm_cont[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95)))) |>
+        t() |>
+        as.data.frame()
+
     expect_equal(
-        unname(t(summary_stats)),
+        unname(summary_stats),
         unname(result_arm_cont[[1]])
     )
 
@@ -76,7 +81,7 @@ test_that("populationHR works as expected for alternative specfications", {
     result_arm <- populationHR(
         object = mp,
         baseline = ~splines::ns(time, df = 10),
-        HR_formula = ~arm,
+        hr_formula = ~arm,
         quantiles = c(0.05, 0.95)
     )
 
@@ -88,9 +93,11 @@ test_that("populationHR works as expected for alternative specfications", {
     )
 
     # Summary calculations match expectations
-    summary_stats <- apply(result_arm[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95))))
+    summary_stats <- apply(result_arm[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95)))) |>
+        t() |>
+        as.data.frame()
     expect_equal(
-        unname(t(summary_stats)),
-        unname(result_arm[[1]])
+        unname(summary_stats),
+        unname(result[[1]])
     )
 })

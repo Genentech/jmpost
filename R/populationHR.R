@@ -80,7 +80,8 @@ populationHR <- function(
         quantiles <- stats::quantile(x, probs = quantiles)
         c(mean = mean(x), median = median(x), quantiles)
     }) |>
-        t() |> data.frame()
+        t() |>
+        data.frame()
 
     list(summary = tidy_res, estimates)
 }
