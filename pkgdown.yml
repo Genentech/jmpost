@@ -1,12 +1,12 @@
-pandoc: 3.6.3
-pkgdown: 2.1.1
+pandoc: 3.7.0.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   custom-model: custom-model.html
   extending-jmpost: extending-jmpost.html
   quickstart: quickstart.html
   statistical-specification: statistical-specification.html
-last_built: 2025-03-18T09:57Z
+last_built: 2025-07-09T09:59Z
 urls:
   reference: https://genentech.github.io/jmpost/main/reference
   article: https://genentech.github.io/jmpost/main/articles
