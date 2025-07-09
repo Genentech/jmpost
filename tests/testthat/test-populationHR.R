@@ -80,7 +80,7 @@ test_that("populationHR works as expected for alternative specfications", {
     set.seed(1231)
     result_arm <- populationHR(
         object = mp,
-        baseline = ~splines::ns(time, df = 10),
+        baseline = ~splines::ns(time, df = 5),
         hr_formula = ~arm,
         quantiles = c(0.05, 0.95)
     )
@@ -93,11 +93,11 @@ test_that("populationHR works as expected for alternative specfications", {
     )
 
     # Summary calculations match expectations
-    summary_stats <- apply(result_arm[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95)))) |>
+    summary_stats_arm <- apply(result_arm[[2]], 1, function(x) c(mean(x), quantile(x, c(0.5, 0.05, 0.95)))) |>
         t() |>
         as.data.frame()
     expect_equal(
-        unname(summary_stats),
-        unname(result[[1]])
+        unname(summary_stats_arm),
+        unname(result_arm[[1]])
     )
 })
