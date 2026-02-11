@@ -12,7 +12,9 @@
   time_max = 2000,
   time_step = 1,
   lambda_censor = 1/3000,
-  scaled_variance = TRUE
+  scaled_variance = TRUE,
+  seed = NULL,
+  nsim = NULL
 )
 }
 \arguments{
@@ -21,8 +23,11 @@
 \item{newdata}{A data frame containing data in the same format as
 the \code{object@data@survival@data}. Importantly, it should contain the same covariates and factor levels
 as the variables used in the survival formula \code{object@data@survival@formula} and
-the same columns used for \code{study}, \code{id}, and \code{arm}.
-@param ... Unused.}
+the same columns used for \code{study}, \code{id}, and \code{arm}.}
+
+\item{...}{Unused.}
+
+\item{times}{Times to simulate SLD.}
 
 \item{time_max}{(\code{number})\cr the maximum time to simulate to.}
 
@@ -32,6 +37,10 @@ the same columns used for \code{study}, \code{id}, and \code{arm}.
 
 \item{scaled_variance}{Should variance be scaled by the expected value. Must be set the same as was used for
 model fitting.}
+
+\item{seed}{Ignored.}
+
+\item{nsim}{Ignored.}
 }
 \description{
 Simulate Patients from Posterior Predictive Distribution

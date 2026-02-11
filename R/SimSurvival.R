@@ -43,6 +43,7 @@ NULL
 #' @slot beta_cat (`numeric`)\cr See arguments.
 #' @slot loghazard (`function`)\cr See arguments.
 #' @slot name (`character`)\cr See arguments.
+#' @slot beta_os_cov (`numeric`) Additional regression coefficients for survival models.
 #'
 #' @family SimSurvival
 #' @exportClass SimSurvival

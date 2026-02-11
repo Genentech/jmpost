@@ -4,19 +4,20 @@
 #'  the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
 #'  as the variables used in the survival formula `object@data@survival@formula` and
 #'  the same columns used for `study`, `id`, and `arm`.
-#'  @param ... Unused.
-
+#' @param ... Unused.
+#' @param times Times to simulate SLD.
 #' @param time_max (`number`)\cr the maximum time to simulate to.
 #' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
 #' @param lambda_censor (`number`)\cr the censoring rate, as the parameter of an exponential distribution.
 #' @param scaled_variance Should variance be scaled by the expected value. Must be set the same as was used for
 #' model fitting.
-#'
+#' @param seed Ignored.
+#' @param nsim Ignored.
 #' @details Simulates a set of patients based on the covariates of those
 #' used in the model fit or from `newdata`, which must contain the
 #' same column names and factor levels.
 #'
-#' @export
+#' @exportS3Method stats::simulate
 simulate.JointModelSamples <- function(object,
                                        newdata = NULL,
                                        ...,
@@ -24,7 +25,9 @@ simulate.JointModelSamples <- function(object,
                                        time_max = 2000,
                                        time_step = 1,
                                        lambda_censor = 1 / 3000,
-                                       scaled_variance = TRUE) {
+                                       scaled_variance = TRUE,
+                                       seed = NULL,
+                                       nsim = NULL) {
     subj_data <- if (is.null(newdata)) {
         dplyr::left_join(
             object@data@subject@data[, c(

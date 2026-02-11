@@ -51,6 +51,8 @@ Abstract Simulation Class for Survival Data
 \item{\code{loghazard}}{(\code{function})\cr See arguments.}
 
 \item{\code{name}}{(\code{character})\cr See arguments.}
+
+\item{\code{beta_os_cov}}{(\code{numeric}) Additional regression coefficients for survival models.}
 }}
 
 \section{Hazard Evaluation}{
