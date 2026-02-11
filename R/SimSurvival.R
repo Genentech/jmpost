@@ -55,6 +55,7 @@ NULL
         lambda_censor = "numeric",
         beta_cont = "numeric",
         beta_cat = "numeric",
+        beta_os_cov = "numeric",
         loghazard = "function",
         name = "character"
     )
@@ -186,7 +187,8 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
         dplyr::arrange(.data$subject)
 
-    os_dat_complete[, c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")]
+    keep_cols <- colnames(os_dat_complete) %in% c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
+    os_dat_complete[, keep_cols]
 }
 
 

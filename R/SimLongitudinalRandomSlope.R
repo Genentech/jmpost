@@ -86,13 +86,13 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     )
 
     assert_that(
-        length(object@slope_mu) == length(unique(subjects_df[["arm"]])),
-        msg = "`length(slope_mu)` should be equal to the number of unique arms"
+        length(object@slope_mu) == nlevels(subjects_df[["arm"]]),
+        msg = "`length(slope_mu)` should be equal to the number of arms"
     )
 
     assert_that(
-        length(object@intercept) == length(unique(subjects_df[["study"]])),
-        msg = "`length(intercept)` should be equal to the number of unique studies"
+        length(object@intercept) == nlevels(subjects_df[["study"]]),
+        msg = "`length(intercept)` should be equal to the number of studies"
     )
 
     assert_that(
