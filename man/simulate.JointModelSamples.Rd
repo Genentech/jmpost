@@ -8,24 +8,30 @@
   object,
   newdata = NULL,
   ...,
-  times,
-  time_max,
-  time_step,
-  lambda_censor
+  times = c(0, 10, 50, 100),
+  time_max = 2000,
+  time_step = 1,
+  lambda_censor = 1/3000,
+  scaled_variance = TRUE
 )
 }
 \arguments{
 \item{object}{A \link{JointModelSamples} object}
 
 \item{newdata}{A data frame containing data in the same format as
-the survival data.
+the \code{object@data@survival@data}. Importantly, it should contain the same covariates and factor levels
+as the variables used in the survival formula \code{object@data@survival@formula} and
+the same columns used for \code{study}, \code{id}, and \code{arm}.
 @param ... Unused.}
 
 \item{time_max}{(\code{number})\cr the maximum time to simulate to.}
 
 \item{time_step}{(\code{number})\cr the time interval between evaluating the log-hazard function.}
 
-\item{lambda_censor}{(\code{number})\cr the censoring rate.}
+\item{lambda_censor}{(\code{number})\cr the censoring rate, as the parameter of an exponential distribution.}
+
+\item{scaled_variance}{Should variance be scaled by the expected value. Must be set the same as was used for
+model fitting.}
 }
 \description{
 Simulate Patients from Posterior Predictive Distribution

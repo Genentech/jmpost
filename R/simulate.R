@@ -1,39 +1,54 @@
 #' Simulate Patients from Posterior Predictive Distribution
 #' @param object A [JointModelSamples] object
 #' @param newdata A data frame containing data in the same format as
-#'  the `object@data@subject@data`. Importantly, it should contain the same covariates and factor levels
-#'  as the variables used in the survival formula `object@data@survival@formula`.
+#'  the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
+#'  as the variables used in the survival formula `object@data@survival@formula` and
+#'  the same columns used for `study`, `id`, and `arm`.
 #'  @param ... Unused.
 
 #' @param time_max (`number`)\cr the maximum time to simulate to.
 #' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
 #' @param lambda_censor (`number`)\cr the censoring rate, as the parameter of an exponential distribution.
+#' @param scaled_variance Should variance be scaled by the expected value. Must be set the same as was used for
+#' model fitting.
 #'
 #' @details Simulates a set of patients based on the covariates of those
 #' used in the model fit or from `newdata`, which must contain the
 #' same column names and factor levels.
 #'
 #' @export
-simulate.JointModelSamples <- function(
-        object,
-        newdata = NULL,
-        ...,
-        times = c(0, 10, 50, 100),
-        time_max = 2000,
-        time_step = 1,
-        lambda_censor = 1 / 3000
-) {
-
-    subject_data <- if (is.null(newdata)) {
-        object@data@subject
-    } else {
-        DataSubject(
-            newdata,
-            subject = mcmc_results@data@subject@subject,
-            arm = mcmc_results@data@subject@arm,
-            study = mcmc_results@data@subject@study
+simulate.JointModelSamples <- function(object,
+                                       newdata = NULL,
+                                       ...,
+                                       times = c(0, 10, 50, 100),
+                                       time_max = 2000,
+                                       time_step = 1,
+                                       lambda_censor = 1 / 3000,
+                                       scaled_variance = TRUE) {
+    subj_data <- if (is.null(newdata)) {
+        dplyr::left_join(
+            object@data@subject@data[, c(
+                object@data@subject@subject,
+                object@data@subject@arm,
+                object@data@subject@study
+            )],
+            object@data@survival@data[, c(
+                object@data@subject@subject,
+                all.vars(delete.response(terms(object@data@survival@formula)))
+            )],
+            by = object@data@subject@subject
         )
+    } else {
+        newdata
     }
+
+    subject_data <- DataSubject(
+        subj_data,
+        subject = object@data@subject@subject,
+        arm = object@data@subject@arm,
+        study = object@data@subject@study
+    )
+
 
     n_patients <- nrow(subject_data@data)
 
@@ -50,8 +65,14 @@ simulate.JointModelSamples <- function(
     surv_models <- list()
     for (i in seq.int(n_patients)) {
         draw <- draws[draw_id[i], ]
-        long_models[[i]] <- createLongitudinalSimObject(object@model@longitudinal, draw, times = times)
-        surv_models[[i]] <- createSurvivalSimObject(object@model@survival, draw, lambda_censor = lambda_censor)
+        long_models[[i]] <- createLongitudinalSimObject(object@model@longitudinal,
+            draw,
+            times = times,
+            scaled_variance = scaled_variance
+        )
+        surv_models[[i]] <- createSurvivalSimObject(object@model@survival, draw,
+            lambda_censor = lambda_censor
+        )
     }
 
     SimJointDataResults(
@@ -59,12 +80,11 @@ simulate.JointModelSamples <- function(
         surv_formula = object@data@survival@formula,
         longitudinal = long_models,
         survival = surv_models
-    ) -> res
-
-    res
+    )
 }
 
 # Longitudinal Sim Object constructors --------
+#' @noRd
 createLongitudinalSimObject <- function(object, draw, ...) {
     UseMethod("createLongitudinalSimObject")
 }
@@ -73,6 +93,7 @@ createLongitudinalSimObject <- function(object, draw, ...) {
 #' @param draws matrix
 #' @param name character to match column names of `draws` with [startsWith]
 #' @return A vector of matching values or `NULL` if no match.
+#' @noRd
 get_vars <- function(draws, name) {
     result <- as.numeric(draws[, startsWith(colnames(draws), name)])
     if (length(result) == 0) {
@@ -82,7 +103,7 @@ get_vars <- function(draws, name) {
     }
 }
 
-## "Random Slope" = SimLongitudinalRandomSlope
+#' @exportS3Method
 createLongitudinalSimObject.LongitudinalRandomSlope <- function(object, draw, ...) {
     args <- list(...)
 
@@ -92,89 +113,79 @@ createLongitudinalSimObject.LongitudinalRandomSlope <- function(object, draw, ..
     args$sigma <- get_vars(draw, "lm_rs_sigma")
     args$link_dsld <- get_vars(draw, "link_dsld")
     args$link_identity <- get_vars(draw, "link_identity")
-
+    args$scaled_variance <- NULL # not defined for random slope
     do.call(SimLongitudinalRandomSlope, args)
 }
 
-## "Stein-Fojo" = SimLongitudinalSteinFojo,
+#' @exportS3Method
 createLongitudinalSimObject.LongitudinalSteinFojo <- function(object, draw, ...) {
-    lapply(object@model@survival@parameters@parameters, function(x) x@name)
-    lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$sigma
-    args$mu_s
-    args$mu_g
-    args$mu_b
-    args$omega_s
-    args$omega_g
-    args$omega_b
-    args$link_dsld
-    args$link_ttg
-    args$link_identity
-    args$link_growth
-    args$link_shrinkage
-    args$scaled_variance
-
+    args$sigma <- get_vars(draw, "lm_sf_sigma")
+    args$mu_s <- get_vars(draw, "lm_sf_mu_ks")
+    args$mu_g <- get_vars(draw, "lm_sf_mu_kg")
+    args$mu_b <- get_vars(draw, "lm_sf_mu_bsld")
+    args$omega_s <- get_vars(draw, "lm_sf_omega_ks")
+    args$omega_g <- get_vars(draw, "lm_sf_omega_kg")
+    args$omega_b <- get_vars(draw, "lm_sf_omega_bsld")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_ttg <- get_vars(draw, "link_ttg")
+    args$link_identity <- get_vars(draw, "link_identity")
+    args$link_growth <- get_vars(draw, "link_growth")
+    args$link_shrinkage <- get_vars(draw, "link_shrinkage")
     do.call(SimLongitudinalSteinFojo, args)
 }
 
-## "Generalized Stein-Fojo" = SimLongitudinalGSF,
+#' @exportS3Method
 createLongitudinalSimObject.LongitudinalGSF <- function(object, draw, ...) {
-    lapply(object@model@survival@parameters@parameters, function(x) x@name)
-    lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$sigma
-    args$mu_s
-    args$mu_g
-    args$mu_b
-    args$mu_phi
-    args$omega_s
-    args$omega_g
-    args$omega_b
-    args$omega_phi
-    args$link_dsld
-    args$link_ttg
-    args$link_identity
-    args$link_growth
-    args$link_shrinkage
-    args$scaled_variance
+    args$sigma <- get_vars(draw, "lm_gsf_sigma")
+    args$mu_s <- get_vars(draw, "lm_gsf_mu_ks")
+    args$mu_g <- get_vars(draw, "lm_gsf_mu_kg")
+    args$mu_b <- get_vars(draw, "lm_gsf_mu_bsld")
+    args$mu_phi <- get_vars(draw, "lm_gsf_mu_phi")
+    args$omega_s <- get_vars(draw, "lm_gsf_omega_ks")
+    args$omega_g <- get_vars(draw, "lm_gsf_omega_kg")
+    args$omega_b <- get_vars(draw, "lm_gsf_omega_bsld")
+    args$omega_phi <- get_vars(draw, "lm_gsf_omega_phi")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_ttg <- get_vars(draw, "link_ttg")
+    args$link_identity <- get_vars(draw, "link_identity")
+    args$link_growth <- get_vars(draw, "link_growth")
+    args$link_shrinkage <- get_vars(draw, "link_shrinkage")
 
     do.call(SimLongitudinalGSF, args)
 }
 
-## "Claret-Bruno" = SimLongitudinalClaretBruno,
-
+#' @exportS3Method
 createLongitudinalSimObject.LongitudinalClaretBruno <- function(object, draw, ...) {
-    lapply(object@model@survival@parameters@parameters, function(x) x@name)
-    lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$sigma
-    args$mu_b
-    args$mu_g
-    args$mu_c
-    args$mu_p
-    args$omega_b
-    args$omega_g
-    args$omega_c
-    args$omega_p
-    args$link_dsld
-    args$link_ttg
-    args$link_identity
-    args$link_growth
-    args$scaled_variance
+    args$sigma <- get_vars(draw, "lm_clbr_sigma")
+    args$mu_b <- get_vars(draw, "lm_clbr_mu_b")
+    args$mu_g <- get_vars(draw, "lm_clbr_mu_g")
+    args$mu_c <- get_vars(draw, "lm_clbr_mu_c")
+    args$mu_p <- get_vars(draw, "lm_clbr_mu_p")
+    args$omega_b <- get_vars(draw, "lm_clbr_omega_b")
+    args$omega_g <- get_vars(draw, "lm_clbr_omega_g")
+    args$omega_c <- get_vars(draw, "lm_clbr_omega_c")
+    args$omega_p <- get_vars(draw, "lm_clbr_omega_p")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_ttg <- get_vars(draw, "link_ttg")
+    args$link_identity <- get_vars(draw, "link_identity")
+    args$link_growth <- get_vars(draw, "link_growth")
+    args$link_shrinkage <- get_vars(draw, "link_shrinkage")
     do.call(SimLongitudinalClaretBruno, args)
 }
 
 
 # Survival Sim Object constructors --------
 
+#' @noRd
 createSurvivalSimObject <- function(object, draw, ...) {
     UseMethod("createSurvivalSimObject")
 }
-## "Weibull-PH" = SurvivalWeibullPH
+
+#' @exportS3Method
 createSurvivalSimObject.SurvivalWeibullPH <- function(object, draw, ...) {
-    # lapply(object@parameters@parameters, function(x) x@name)
-    # lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
     args$lambda <- get_vars(draw, "sm_weibull_ph_lambda")
     args$gamma <- get_vars(draw, "sm_weibull_ph_gamma")
@@ -184,57 +195,57 @@ createSurvivalSimObject.SurvivalWeibullPH <- function(object, draw, ...) {
     result
 }
 
-## "Exponential" = SurvivalExponential
+#' @exportS3Method
 createSurvivalSimObject.SurvivalExponential <- function(object, draw, ...) {
-    lapply(object@model@survival@parameters@parameters, function(x) x@name)
-    lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$lambda
-    args$beta_cont
-    args$beta_cat
+    args$lambda <- get_vars(draw, "sm_exp_lambda")
 
     result <- do.call(SimSurvivalExponential, args)
     result@beta_os_cov <- get_vars(draw, "beta_os_cov")
     result
 }
-## "Gamma" = SurvivalGamma
+
+#' @exportS3Method
 createSurvivalSimObject.SurvivalGamma <- function(object, draw, ...) {
     lapply(object@model@survival@parameters@parameters, function(x) x@name)
     lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$k
-    args$theta
-    args$beta_cont
-    args$beta_cat
+    args$k <- get_vars(draw, "sm_gamma_k")
+    args$theta <- get_vars(draw, "sm_gamma_theta")
 
     result <- do.call(SimSurvivalGamma, args)
     result@beta_os_cov <- get_vars(draw, "beta_os_cov")
     result
 }
 
-## "Log-Logistic" = SurvivalLogLogistic
+#' @exportS3Method
 createSurvivalSimObject.SurvivalLogLogistic <- function(object, draw, ...) {
     lapply(object@model@survival@parameters@parameters, function(x) x@name)
     lapply(object@model@link@components, function(x) x@key)
     args <- list(...)
-    args$a
-    args$b
-    args$beta_cont
-    args$beta_cat
+    args$a <- get_vars(draw, "sm_loglogis_a")
+    args$b <- get_vars(draw, "sm_loglogis_b")
 
     result <- do.call(SimSurvivalLogLogistic, args)
     result@beta_os_cov <- get_vars(draw, "beta_os_cov")
     result
 }
 
+
+sampleSubjectsFromObs <- function(object, subjects_df, covs_matrix) {
+    subjects_df$log_haz_cov <- rowSums(covs_matrix[, -1] * t(sapply(object, function(x) x@beta_os_cov)))
+    subjects_df |>
+        dplyr::mutate(survival = stats::runif(dplyr::n())) |>
+        dplyr::mutate(chazard_limit = -log(.data$survival)) |>
+        dplyr::mutate(time_cen = stats::rexp(dplyr::n(), sapply(object, function(x) x@lambda_censor)))
+}
+
 # Simulate patient function ------
-SimJointDataResults <- function(
-        subject,
-        surv_formula,
-        longitudinal,
-        survival,
-        .silent = FALSE
-) {
+SimJointDataResults <- function(subject,
+                                surv_formula,
+                                longitudinal,
+                                survival,
+                                .silent = FALSE) {
     # take hazard windows from first element. All have the same
     # @time_step and @time_max parameters
     hazard_evaluation_info <- hazardWindows(survival[[1]])
@@ -247,8 +258,6 @@ SimJointDataResults <- function(
     n_subjects <- sum(n_group)
     n_times <- length(hazard_evaluation_info$midpoint)
 
-    sprintf_string <- paste0("subject_%0", ceiling(log(n_subjects, 10)) + 1, "i")
-
     baseline <- data.frame(
         subject = subject@data[[subject@subject]],
         study = subject@data[[subject@study]],
@@ -260,17 +269,11 @@ SimJointDataResults <- function(
         subject@data[, all.vars(delete.response(terms(surv_formula)))]
     )
 
-    sampleSubjectsFromObs <- function(object, subjects_df, covs_matrix) {
-        subjects_df$log_haz_cov <- rowSums(covs_matrix[, -1] * t(sapply(object, function(x) x@beta_os_cov)))
-        subjects_df |>
-            dplyr::mutate(survival = stats::runif(dplyr::n())) |>
-            dplyr::mutate(chazard_limit = -log(.data$survival)) |>
-            dplyr::mutate(time_cen = stats::rexp(dplyr::n(), sapply(object, function(x) x@lambda_censor)))
-    }
+
     os_baseline <- sampleSubjectsFromObs(
         survival,
         subjects_df = baseline,
-        model.matrix(surv_formula, subject@data)
+        model.matrix(delete.response(terms(surv_formula)), subject@data)
     )
 
 
@@ -312,7 +315,8 @@ SimJointDataResults <- function(
                     dplyr::left_join(hazard_eval_df, lm_baseline, by = c("subject", "study", "arm")),
                     ~subject
                 ),
-                object = longitudinal),
+                object = longitudinal
+            ),
             MoreArgs = NULL
         )
     )
@@ -322,7 +326,7 @@ SimJointDataResults <- function(
         dplyr::left_join(os_baseline, by = c("subject", "study", "arm"))
 
     withCallingHandlers(
-       os_dat <- .mapply(
+        os_dat <- .mapply(
             sampleObservations,
             dots = list(times_df = split(os_eval_df, ~subject), object = survival),
             MoreArgs = NULL
@@ -353,6 +357,7 @@ SimJointDataResults <- function(
         msg = "Assumptions for the Longitudinal data are not met (please report this issue)"
     )
 
+    # TODO rename study/arm/subject back to originals
     return(
         .SimJointData(
             survival = os_dat,
