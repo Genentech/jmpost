@@ -5,7 +5,10 @@
 #'  as the variables used in the survival formula `object@data@survival@formula` and
 #'  the same columns used for `study`, `id`, and `arm`.
 #' @param ... Unused.
-#' @param times Times to simulate SLD.
+#' @param times Vector of times to simulate SLD for all patients.
+#' @param jitter_var Vector of variances to add noise to the observed SLD `times`. The first value is for any times
+#'   less than 0 and the second for any times after 0. All non-zero positive and negative times will remain strictly bounded
+#'   away from 0. Jitter values are generated from a normal distribution with mean 0 and the given variances.
 #' @param time_max (`number`)\cr the maximum time to simulate to.
 #' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
 #' @param lambda_censor (`number`)\cr the censoring rate, as the parameter of an exponential distribution.
@@ -22,7 +25,8 @@
 simulate.JointModelSamples <- function(object,
                                        newdata = NULL,
                                        ...,
-                                       times = c(0, 10, 50, 100),
+                                       times = c(-2, 0, 10, 50, 100),
+                                       jitter_var = c(0, 0),
                                        time_max = 2000,
                                        time_step = 1,
                                        lambda_censor = 1 / 3000,
@@ -71,7 +75,7 @@ simulate.JointModelSamples <- function(object,
         draw <- draws[draw_id[i], ]
         long_models[[i]] <- createLongitudinalSimObject(object@model@longitudinal,
             draw,
-            times = times,
+            times = add_jitter(times, jitter_var = jitter_var),
             scaled_variance = scaled_variance
         )
         surv_models[[i]] <- createSurvivalSimObject(
@@ -90,6 +94,27 @@ simulate.JointModelSamples <- function(object,
         survival = surv_models
     )
 }
+
+
+add_jitter <- function(times, jitter_var = c(0, 0)) {
+    stopifnot(all(jitter_var >= 0))
+    if (jitter_var[1] > 0) {
+        neg_times <- times < 0
+        times[neg_times] <- pmax(
+            times[neg_times] + rnorm(sum(neg_times), sd = sqrt(jitter_var[1])),
+            .Machine$double.eps / 2
+            )
+    }
+    if (jitter_var[2] > 0) {
+        pos_times <- times > 0
+        times[pos_times] <- pmin(
+            times[pos_times] + rnorm(sum(pos_times), sd = sqrt(jitter_var[2])),
+            -.Machine$double.eps / 2
+            )
+    }
+    times
+}
+
 
 # Longitudinal Sim Object constructors --------
 #' @noRd
