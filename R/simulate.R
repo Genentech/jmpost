@@ -18,6 +18,7 @@
 #' same column names and factor levels.
 #'
 #' @exportS3Method stats::simulate
+#' @export
 simulate.JointModelSamples <- function(object,
                                        newdata = NULL,
                                        ...,
@@ -73,8 +74,12 @@ simulate.JointModelSamples <- function(object,
             times = times,
             scaled_variance = scaled_variance
         )
-        surv_models[[i]] <- createSurvivalSimObject(object@model@survival, draw,
-            lambda_censor = lambda_censor
+        surv_models[[i]] <- createSurvivalSimObject(
+            object@model@survival,
+            draw,
+            lambda_censor = lambda_censor,
+            time_step = time_step,
+            time_max = time_max
         )
     }
 
