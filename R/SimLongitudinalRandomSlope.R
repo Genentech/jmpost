@@ -67,10 +67,10 @@ as_print_string.SimLongitudinalRandomSlope <- function(object) {
 #' @export
 sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
     times_df |>
-        dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, object@sigma)) |>
-        dplyr::mutate(sld_mu = .data$intercept + .data$slope_ind * .data$time) |>
-        dplyr::mutate(sld = .data$sld_mu + .data$err) |>
         dplyr::mutate(
+            err = stats::rnorm(dplyr::n(), 0, object@sigma),
+            sld_mu = .data$intercept + .data$slope_ind * .data$time,
+            sld = .data$sld_mu + .data$err,
             log_haz_link =
                 object@link_dsld * .data$slope_ind +
                 object@link_identity * .data$sld_mu

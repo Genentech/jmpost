@@ -8,7 +8,8 @@
   object,
   newdata = NULL,
   ...,
-  times = c(0, 10, 50, 100),
+  times = c(-2, 0, 10, 50, 100),
+  jitter_var = c(0, 0),
   time_max = 2000,
   time_step = 1,
   lambda_censor = 1/3000,
@@ -27,7 +28,11 @@ the same columns used for \code{study}, \code{id}, and \code{arm}.}
 
 \item{...}{Unused.}
 
-\item{times}{Times to simulate SLD.}
+\item{times}{Vector of times to simulate SLD for all patients.}
+
+\item{jitter_var}{Vector of variances to add noise to the observed SLD \code{times}. The first value is for any times
+less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
+Jitter values are generated from a normal distribution with mean 0 and the given variances.}
 
 \item{time_max}{(\code{number})\cr the maximum time to simulate to.}
 

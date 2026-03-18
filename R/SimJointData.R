@@ -143,3 +143,96 @@ setMethod(
         return(object)
     }
 )
+
+
+#' Sets PFS event at Tumour Progression
+#' @param object A [SimJointData] object
+#' @param relative_threshold (`number`)\cr a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
+#'  Default is 1.2 meaning a 20% increase.
+#' @param absolute_threshold (`number`)\cr an absolute threshold for the change in SLD compared to the minimum.
+#'   Default is 5.
+#' @param from_time (`number`)\cr Ignore observations before this time for determining SLD minimum.
+#' @param observed_after (`logical`)\cr If `FALSE` set longitudinal observations after the progression time to
+#'   `observed = FALSE`
+#' @details
+#' Both thresholds must be met for a progression to be declared.
+#'
+#' @export
+#' @examples
+#' add_pfs(sim_data)
+add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, from_time = 0, observed_after = FALSE) {
+    assert_class(sim_data, "SimJointData")
+
+    pd_times <- object@longitudinal |>
+        dplyr::filter(time >= from_time) |>
+        dplyr::mutate(
+            min_sld = cummin(sld),
+            is_pd = sld >= pmax(min_sld * relative_threshold, min_sld + absolute_threshold) & observed,
+            pd_time = min(time[is_pd], Inf),
+            .by = subject
+        ) |>
+        dplyr::select(subject, pd_time) |>
+        dplyr::slice_head(by = "subject")
+
+    if (isFALSE(observed_after)) {
+        object@longitudinal <- object@longitudinal |>
+            dplyr::left_join(pd_times, by = "subject") |>
+            dplyr::mutate(
+                observed = dplyr::if_else(time > pd_time, FALSE, observed),
+                pd_time = NULL
+            )
+    }
+
+    object@survival <-
+        object@survival |>
+        dplyr::left_join(pd_times, by = "subject") |>
+        dplyr::mutate(
+                pfs_time = pmin(time, pd_time),
+                pfs_event = dplyr::if_else(pd_time < time, 1, event),
+                pd_time = NULL
+            )
+    object
+}
+
+
+#' Cut Study Data
+#' @param object A [SimJointData] object
+#' @param cut_time (`numeric`)\cr A vector of cut off times, either length 1 for all patients or
+#'   `nrow(object@survival)` for a time per patient.
+#' @details
+#'   All observations after this time are remove. Survival is censored at this time and any longitudinal
+#'   values are removed.
+#' @export
+cut_data <- function(object, cut_time) {
+    assert_class(sim_data, "SimJointData")
+    assert_numeric(cut_time, lower = 0)
+    stopifnot(
+        length(cut_time) %in% c(1, nrow(object@survival))
+    )
+    object@survival <- object@survival |>
+        dplyr::mutate(
+            cut_time = cut_time,
+            event = dplyr::if_else(time < cut_time, event, 0),
+            time = pmin(cut_time, time)
+        )
+    if (all(c("pfs_event", "pfs_time") %in% colnames(object@survival))) {
+        object@survival <- object@survival |>
+            dplyr::mutate(
+                pfs_event = dplyr::if_else(pfs_time < cut_time, pfs_event, 0),
+                pfs_time = pmin(cut_time, pfs_time)
+            )
+    }
+
+    object@longitudinal <- object@longitudinal |>
+        dplyr::left_join(
+            dplyr::select(object@survival, subject, cut_time),
+            by = "subject"
+        ) |>
+        dplyr::filter(time <= cut_time) |>
+        dplyr::mutate(cut_time = NULL)
+
+    object@survival$cut_time <- NULL
+
+    object
+}
+

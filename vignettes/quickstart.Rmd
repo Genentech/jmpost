@@ -153,7 +153,7 @@ sim_data <- SimJointData(
         SimGroup(50, "Arm-B", "Study-X")
     ),
     longitudinal = SimLongitudinalRandomSlope(
-        times = c(1, 50, 100, 150, 200, 250, 300),
+        times = c(1, 2, 3, 4, 5, 10, 12, 20, 50, 100, 150, 200, 250, 300),
         intercept = 30,
         slope_mu = c(1, 2),
         slope_sigma = 0.2,

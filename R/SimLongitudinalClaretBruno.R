@@ -163,12 +163,13 @@ as_print_string.SimLongitudinalClaretBruno <- function(object) {
 #' @export
 sampleObservations.SimLongitudinalClaretBruno <- function(object, times_df) {
     times_df |>
-        dplyr::mutate(mu_sld = clbr_sld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(dsld = clbr_dsld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(ttg = clbr_ttg(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p)) |>
-        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
+            mu_sld = clbr_sld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p),
+            dsld = clbr_dsld(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p),
+            ttg = clbr_ttg(.data$time, .data$ind_b, .data$ind_g, .data$ind_c, .data$ind_p),
+            sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma),
+            sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd),
+
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +

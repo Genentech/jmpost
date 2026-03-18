@@ -7,8 +7,8 @@
 #' @param ... Unused.
 #' @param times Vector of times to simulate SLD for all patients.
 #' @param jitter_var Vector of variances to add noise to the observed SLD `times`. The first value is for any times
-#'   less than 0 and the second for any times after 0. All non-zero positive and negative times will remain strictly bounded
-#'   away from 0. Jitter values are generated from a normal distribution with mean 0 and the given variances.
+#'   less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
+#'    Jitter values are generated from a normal distribution with mean 0 and the given variances.
 #' @param time_max (`number`)\cr the maximum time to simulate to.
 #' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
 #' @param lambda_censor (`number`)\cr the censoring rate, as the parameter of an exponential distribution.
@@ -73,7 +73,8 @@ simulate.JointModelSamples <- function(object,
     surv_models <- list()
     for (i in seq.int(n_patients)) {
         draw <- draws[draw_id[i], ]
-        long_models[[i]] <- createLongitudinalSimObject(object@model@longitudinal,
+        long_models[[i]] <- createLongitudinalSimObject(
+            object@model@longitudinal,
             draw,
             times = add_jitter(times, jitter_var = jitter_var),
             scaled_variance = scaled_variance
@@ -335,11 +336,6 @@ SimJointDataResults <- function(subject,
         width = rep(as.double(hazard_evaluation_info$width), times = n_subjects)
     )
 
-    lm_link_dat <- sampleObservations(
-        longitudinal[[1]],
-        dplyr::left_join(hazard_eval_df, lm_baseline, by = c("subject", "study", "arm"))
-    )[, c("subject", "study", "arm", "log_haz_link", "time", "width", "midpoint")]
-
     lm_link_dat <- dplyr::bind_rows(
         .mapply(
             sampleObservations,
@@ -352,12 +348,14 @@ SimJointDataResults <- function(subject,
             ),
             MoreArgs = NULL
         )
-    )
+    )[, c("subject", "study", "arm", "log_haz_link", "time", "width", "midpoint")]
 
 
     os_eval_df <- lm_link_dat |>
         dplyr::left_join(os_baseline, by = c("subject", "study", "arm"))
 
+    if (FALSE){
+        # existing code
     withCallingHandlers(
         os_dat <- .mapply(
             sampleObservations,
@@ -369,6 +367,21 @@ SimJointDataResults <- function(subject,
             invokeRestart("muffleMessage")
         }
     )
+    } else if (FALSE) {
+        times_df <- split(os_eval_df, ~subject)
+        os_data_list <- list()
+        for (i in seq_along(times_df)) {
+            os_data_list[[i]] <- sampleObservations(times_df = times_df[[i]], survival[[i]])
+        }
+        os_dat <- dplyr::bind_rows(os_data_list)
+    } else if (TRUE) {
+        times_df <- split(os_eval_df, ~subject)
+        os_data_list <- list()
+        for (i in seq_along(times_df)) {
+            times_df[[i]]$log_bl_haz <- survival[[i]]@loghazard(times_df[[i]]$midpoint)
+        }
+        os_dat <- sampleObservations2(dplyr::bind_rows(times_df))
+    }
     os_dat <- dplyr::left_join(os_dat, cov_cols, by = "subject")
 
     lm_dat2 <- lm_dat |>
@@ -397,4 +410,53 @@ SimJointDataResults <- function(subject,
             longitudinal = lm_dat2[, c("subject", "arm", "study", "time", "sld", "observed")]
         )
     )
+}
+
+
+# adapted from sampleObservations so that $midpoint and $log_bl_haz are already in times_df.
+sampleObservations2 <- function(times_df) {
+
+    assert_that(
+        all(times_df$time >= 0),
+        msg = "All time points must be greater than or equal to 0"
+    )
+
+    os_dat_chaz <- times_df |>
+        # Fix to avoid issue with log(0) = NaN values
+        dplyr::mutate(
+            log_bl_haz = dplyr::if_else(.data$midpoint == 0, -999, .data$log_bl_haz),
+            hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link),
+            # Reset Inf values to large number to avoid NaN issues downstream
+            # This is suitable as Hazard limits tend to be in the range of -10 to 10 so large numbers
+            # are essentially equivalent to infinity for simulation purposes
+            hazard_instant = dplyr::if_else(.data$hazard_instant == Inf, 999, .data$hazard_instant),
+            hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant),
+            hazard_interval = .data$hazard_instant * .data$width) |>
+        dplyr::mutate(chazard = cumsum(.data$hazard_interval), .by = .data$subject)
+
+
+    os_had_event <- os_dat_chaz |>
+        dplyr::filter(.data$chazard >= .data$chazard_limit) |>
+        dplyr::slice_head(by = .data$subject) |>
+        dplyr::mutate(event = 1)
+
+    os_had_censor <- os_dat_chaz |>
+        dplyr::filter(!.data$subject %in% os_had_event$subject) |>
+        dplyr::slice_tail(by = .data$subject) |>
+        dplyr::mutate(event = 0)
+
+    if (!(nrow(os_had_censor) == 0)) {
+        message(sprintf("INFO: %i subject(s) did not die before max(times)", nrow(os_had_censor)))
+    }
+
+    os_dat_complete <- os_had_event |>
+        dplyr::bind_rows(os_had_censor) |>
+        dplyr::mutate(
+            real_time = .data$time,
+            event = dplyr::if_else(.data$real_time <= .data$time_cen, .data$event, 0),
+            time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
+        dplyr::arrange(.data$subject)
+
+    keep_cols <- colnames(os_dat_complete) %in% c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
+    os_dat_complete[, keep_cols]
 }

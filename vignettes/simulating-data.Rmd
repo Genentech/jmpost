@@ -1,0 +1,233 @@
+---
+title: "Simulating Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulating Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(jmpost)
+```
+
+The `jmpost` package include comprehensive data simulation functionality for the included joint models.
+The data simulation is based on specifying the longitudinal model including link parameters, and the survival model.
+
+
+## Example
+
+
+```{r simulate_data}
+set.seed(129)
+sim_data <- SimJointData(
+    design = list(
+        SimGroup(50, "Arm-A", "Study-X"),
+        SimGroup(50, "Arm-B", "Study-X")
+    ),
+    longitudinal = SimLongitudinalSteinFojo(
+        times = c(-2, 1,30, 90, 150, 210),
+        mu_g = log(c(0.005, 0.005)),
+        mu_s = log(c(0.06, 0.007)),
+        omega_g = 0.2,
+        link_dsld = 0.1,
+    ),
+    survival = SimSurvivalWeibullPH(
+        lambda = 1 / 300,
+        gamma = 0.97,
+        time_max = 2000,
+        time_step = 1,
+        lambda_cen = 1 / 9000,
+        beta_cat = c(
+            "A" = 0,
+            "B" = -0.1,
+            "C" = 0.5
+        ),
+        beta_cont = 0.3
+    )
+)
+```
+
+This object has `survival` and `longitudinal` components.
+```{r}
+head(sim_data@survival)
+head(sim_data@longitudinal)
+```
+
+We can see the trajectory of the tumour size.
+
+```{r}
+library(ggplot2)
+ggplot(
+    sim_data@longitudinal,
+    aes(x = time, y = sld, group = subject)) +
+    geom_line(alpha = 0.1) +
+    geom_point() +
+    facet_wrap(~arm)
+
+```
+
+We can also visualise the Kaplan-Meier survival curves.
+
+```{r}
+library(survival)
+plot(
+    survfit(Surv(time, event) ~ arm, data = sim_data@survival),
+    col = 1:2,
+    lwd = 2,
+    main = "Overall Survival"
+)
+legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
+```
+
+## Administrative Cut Off
+
+We may wish to have a fixed maximum study duration and remove any simulated values after that time.
+This can be specified as a single fixed value or as a vector if we additionally wish to consider
+enrollment time.
+
+```{r}
+sim_data_end <- cut_data(sim_data, 1200)
+plot(
+    survfit(Surv(time, event) ~ arm, data = sim_data_end@survival),
+    col = 1:2,
+    lwd = 2,
+    main = "Overall Survival (truncated at time=1200)"
+)
+```
+
+
+## Progression
+
+We might also be interested in time to progression defined as an increase in tumour size over a threshold.
+The threshold is based on the minimum observed SLD up to the given time and the relative and absolute growth.
+For example we might require the SLD to increase at least 20% and at least 5mm.
+We don't include any observations before time 0 in the calculation of the minimum and we don't observe any SLD values 
+after progression.
+```{r}
+sim_data_pd <- add_pfs(
+    sim_data_end,
+    relative_threshold = 1.2,
+    absolute_threshold = 5,
+    from_time = 0,
+    observed_after = FALSE
+)
+```
+
+Let's look at the plots again up to progression.
+
+```{r}
+ggplot(
+    sim_data_pd@longitudinal |> dplyr::filter(observed), # here we only include observed values
+    aes(x = time, y = sld, group = subject)) +
+    geom_line(alpha = 0.1) +
+    geom_point() +
+    facet_wrap(~arm)
+
+```
+
+```{r}
+plot(
+    survfit(Surv(pfs_time, pfs_event) ~ arm, data = sim_data_pd@survival),
+    col = 1:2,
+    lwd = 2,
+    main = "Progression Free Survival"
+)
+legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
+```
+
+## Model Fitting from Simulated Data
+
+As already descried in the quickstart vignette, we can use this data to fit a joint model.
+
+```{r}
+os_data <- sim_data_end@survival
+long_data <- sim_data_end@longitudinal
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = os_data,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = os_data,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
+    longitudinal = DataLongitudinal(
+        data = long_data,
+        formula = sld ~ time,
+        threshold = 5
+    )
+)
+
+sf_model <- JointModel(
+    longitudinal = LongitudinalSteinFojo(
+        # mu_bsld = prior_normal(log(60), 0.25),
+        # mu_ks = prior_normal(log(0.01), 0.25),
+        # mu_kg = prior_normal(log(0.005), 0.25),
+    ),
+    survival = SurvivalWeibullPH(),
+    link = linkDSLD()
+)
+
+
+mcmc_results <- sampleStanModel(
+    sf_model,
+    data = joint_data,
+    iter_sampling = 500,
+    iter_warmup = 1000,
+    init_buffer = 200,
+    term_buffer = 200,
+    chains = 4,
+    parallel_chains = 4
+)
+```
+
+## Simulating from a Fitted Model
+
+The package also have the functionality to generate new data based on the fitted model.
+We use the [simulate.JointModelSamples] function.
+
+```{r}
+?simulate.JointModelSamples
+new_model_data <- simulate(
+    mcmc_results,
+    times = c(-2, 1, 30, 60, 90, 120, 150, 180)
+)
+```
+
+
+```{r}
+head(new_model_data@longitudinal)
+head(new_model_data@survival)
+```
+
+
+```{r}
+ggplot(
+    new_model_data@longitudinal,
+    aes(x = time, y = sld, group = subject)) +
+    geom_line(alpha = 0.1) +
+    geom_point() +
+    facet_wrap(~arm) +
+    ggtitle("Simulated from model")
+
+```
+
+```{r}
+plot(
+    survfit(Surv(time, event) ~ arm, data = new_model_data@survival),
+    col = 1:2,
+    lwd = 2,
+    main = "Overall Survival (simulated from model)"
+)
+legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
+```
