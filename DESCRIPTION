@@ -131,3 +131,4 @@ Collate:
     'zzz.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack
+LazyData: true

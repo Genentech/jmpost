@@ -1,0 +1,239 @@
+We will again use the OAK study data. 
+
+For the tumor growth data, we are using the [S1 data set](https://doi.org/10.1371/journal.pcbi.1009822.s006) from [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009822). For simplicity, we have copied the data set in this GitHub repository.
+
+```{r}
+#| label: load_tumor_data
+
+tumor_data <- here("data/journal.pcbi.1009822.s006.xlsx") |> 
+    read_excel(sheet = "Study4") |> 
+    clean_names() |> 
+    mutate(
+        id = factor(as.character(patient_anonmyized)),
+        day = as.integer(treatment_day),
+        year = day / 365.25,
+        target_lesion_long_diam_mm = case_match(
+            target_lesion_long_diam_mm,
+            "TOO SMALL TO MEASURE" ~ "2",
+            "NOT EVALUABLE" ~ NA_character_,
+            .default = target_lesion_long_diam_mm
+        ),
+        sld = as.numeric(target_lesion_long_diam_mm),
+        sld = ifelse(sld == 0, 2, sld),
+        study = factor(gsub("^Study_(\\d+)_Arm_\\d+$", "\\1", study_arm)),
+        arm = factor(gsub("^Study_\\d+_Arm_(\\d+)$", "\\1", study_arm)),
+        arm = fct_recode(arm, "Docetaxel" = "1", "MPDL3280A" = "2")
+    ) |> 
+    select(id, year, sld, arm)
+
+head(tumor_data)
+summary(tumor_data)
+```
+
+Here we have `r length(unique(tumor_data$id))` patients, and we know from Fig. 1 in the publication that this is the subset of patients with at least 3 tumor size measurements. We have guessed from the second Excel sheet with parameter estimates that arm 1 means docetaxel and arm 2 means MPDL3280A. This also seems reasonable given the larger number of measurements per patient:
+
+```{r}
+# make a table
+tumor_data |> 
+    group_by(id) |> 
+    summarize(arm = arm[1], n = n())  |> 
+    group_by(arm) |> 
+    summarize(mean_n = mean(n))
+```
+
+For the OS data, we will be using the [Supplementary Table 8](https://static-content.springer.com/esm/art%3A10.1038%2Fs41591-018-0134-3/MediaObjects/41591_2018_134_MOESM3_ESM.xlsx) from [here](https://doi.org/10.1038/s41591-018-0134-3). Again, we have copied the data set in this GitHub repository.
+
+From the supplementary material, we know that:
+
+- `PFS/OS`: time in months
+- `PFS.CNSR/OS.CNSR`: 1 for censor, 0 for event
+
+Therefore we will convert the time to years and the censoring to a logical variable:
+
+```{r}
+#| label: load_os_data
+
+os_data <- here("data/41591_2018_134_MOESM3_ESM.xlsx") |> 
+    read_excel(sheet = "OAK_Clinical_Data") |> 
+    clean_names() |> 
+    rename(
+        age = bage,
+        race = race2,
+        ecog = ecoggr,
+        arm = trt01p,
+        response = bcor
+    ) |> 
+    mutate(
+        id = factor(as.character(pt_id)),
+        sld = as.numeric(na_if(bl_sld, ".")),
+        pfs_time = as.numeric(pfs) / 12,
+        pfs_event = as.numeric(pfs_cnsr) == 0,
+        os_time = as.numeric(os) / 12,
+        os_event = as.numeric(os_cnsr) == 0,
+        race = factor(race),
+        ecog = factor(ecog),
+        arm = factor(arm),
+        response = factor(
+          response, 
+          levels = c("CR", "PR", "SD", "PD", "NE")
+        ),
+        sex = factor(sex)
+    ) |> 
+    select(
+      id,
+      arm,
+      ecog,
+      age,
+      race,
+      sex,
+      sld,
+      response,
+      pfs_time,
+      pfs_event,
+      os_time,
+      os_event
+    )
+
+head(os_data)
+summary(os_data)
+```
+
+Now we would like to join the two data sets, i.e. know which tumor growth data belongs to which baseline covariates and overall survival time and event indicator. Unfortunately we cannot use the `id` variable as it is not consistent between the two data sets, because both were anonymized. Instead, we will use the `sld` variable in combination with the treatment arm. We can also double check with the best overall response variable, because that is closely related to the tumor growth.
+
+First, we will summarize the patient information int he tumor data set. We will calculate the baseline SLD, determine the time of the last tumor measurement and approximate the best overall response by looking at the change from baseline:
+
+```{r}
+#| label: summarize_tumor_data
+get_baseline <- function(sld, year) {
+    which_base <- tail(which(year <= 0), 1L)
+    if (length(which_base) == 0) {
+      which_base <- which.min(year)
+    }
+    sld[which_base]
+}
+
+get_contig_below_thresh <- function(sld, year, bsld, thresh) {
+    rle_res <- with(
+        rle(((sld[year > 0] - bsld) / bsld) < 0.2), 
+        lengths[values]
+    )
+    if (length(rle_res) == 0) {
+      0
+    } else {
+      max(rle_res)
+    }
+}
+
+tumor_data_summary <- tumor_data |> 
+    group_by(id) |> 
+    arrange(year) |>
+    summarize(
+      arm = arm[1L],
+      bsld = get_baseline(sld, year),
+      last_year = tail(year, 1L),
+      nadir = min(sld[year >= 0], na.rm = TRUE),
+      max_cfn = max((sld[year >= 0] - nadir) / nadir, na.rm = TRUE),
+      min_cfb = min((sld[year >= 0] - bsld) / bsld, na.rm = TRUE),
+      contig_below_0.2 = get_contig_below_thresh(sld, year, bsld, thresh = 0.2),
+      approx_response = case_when(
+        min_cfb <= -0.3 ~ "PR",
+        contig_below_0.2 >= 2 ~ "SD",
+        max_cfn >= 0.2 ~ "PD",        
+        .default = "NE"
+      )   
+    )
+head(tumor_data_summary)
+```
+
+Now let's try to fuzzy join this with the OS data set, based on the baseline SLD and the treatment arm. In addition, we know that the last time point in the tumor data needs to be before the OS time point. We will also check that the best overall response is the same in both data sets. There will be some errors here: For example, we don't know whether there were new lesions leading to a progression assessment, or whether the patient had later better results. So we need to expect that the matching will not be perfect.
+
+```{r}
+#| label: match_os_data
+
+os_data_keys <- os_data |> 
+    select(id, arm, sld, pfs_time, os_time, response)
+head(os_data_keys)
+
+dist_match <- function(v1, v2) {
+    dist <- abs(v1 - v2)
+    data.frame(include = (dist <= 0.05))
+}
+
+less_match <- function(lower, upper) {
+    data.frame(include = lower <= upper)
+}
+
+tumor_os_data_joined <- tumor_data_summary |> 
+    fuzzy_left_join(
+        os_data_keys,
+        by = c(
+          "arm" = "arm", 
+          "bsld" = "sld",          
+          "last_year" = "os_time",
+          "approx_response" = "response"
+        ),
+        match_fun = list(
+          `==`, 
+          dist_match, 
+          less_match,
+          `==`
+        )
+    )
+nrow(tumor_os_data_joined)
+```
+
+We see that we cannot match the two data sets exactly:
+
+- We have less patients to start with in the tumor size data set.
+- We have patients in the tumor size data set which match multiple patients in the OS data set based on the treatment arm and the baseline SLD, and also the last measurement time point cannot disambiguate them.
+- We have patients in the tumor size data set which do not match any patient in the OS data set.
+
+However, for the purpose of this training we don't need to be able to recover the true full data set. Therefore we will just subset the matched data set to a reasonable combination of the two data sets:
+
+```{r}
+#| label: subset_matched_data
+
+tumor_os_data_joined_subset <- tumor_os_data_joined |> 
+    na.omit() |> 
+    filter(!duplicated(id.y)) |>
+    filter(!duplicated(id.x))
+nrow(tumor_os_data_joined_subset)
+```
+
+Now let's save the joining information:
+
+```{r}
+#| label: tgi_os_join_keys
+
+tgi_os_join_keys <- tumor_os_data_joined_subset |> 
+    select(id.x, id.y, arm.x) |> 
+    rename(
+        id_tgi = id.x,
+        id_os = id.y,
+        arm = arm.x
+    )
+table(tgi_os_join_keys$arm)
+```
+
+So we have about 100 patients in each arm.
+
+We subset the two data sets accordingly:
+
+```{r}
+#| label: subset_data
+
+tumor_data <- tumor_data |> 
+    inner_join(
+      tgi_os_join_keys, 
+      by = c("id" = "id_tgi", "arm" = "arm")
+    ) |> 
+    select(-id) |> 
+    rename(id = id_os)
+
+os_data <- os_data |>
+    inner_join(
+      tgi_os_join_keys, 
+      by = c("id" = "id_os", "arm" = "arm")
+    ) |> 
+    select(-id_tgi)
+```
