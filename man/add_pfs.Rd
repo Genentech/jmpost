@@ -2,7 +2,7 @@
 % Please edit documentation in R/SimJointData.R
 \name{add_pfs}
 \alias{add_pfs}
-\title{Sets PFS event at Tumour Progression}
+\title{Add PFS events at Tumour Progression to Data}
 \usage{
 add_pfs(
   object,
@@ -27,7 +27,7 @@ Default is 5.}
 \code{observed = FALSE}}
 }
 \description{
-Sets PFS event at Tumour Progression
+Adds new columns \code{pfs_time} and \code{pfs_event} based on observed changes to SLD.
 }
 \details{
 Both thresholds must be met for a progression to be declared.

@@ -18,8 +18,8 @@ knitr::opts_chunk$set(
 library(jmpost)
 ```
 
-The `jmpost` package include comprehensive data simulation functionality for the included joint models.
-The data simulation is based on specifying the longitudinal model including link parameters, and the survival model.
+The `jmpost` package includes data simulation functionality for the included joint models.
+The data simulation is based on specifying the longitudinal model and the survival model including link parameters.
 
 
 ## Example
@@ -36,7 +36,7 @@ sim_data <- SimJointData(
         times = c(-2, 1,30, 90, 150, 210),
         mu_g = log(c(0.005, 0.005)),
         mu_s = log(c(0.06, 0.007)),
-        omega_g = 0.2,
+        omega_g = 0.3,
         link_dsld = 0.1,
     ),
     survival = SimSurvivalWeibullPH(
@@ -94,12 +94,12 @@ This can be specified as a single fixed value or as a vector if we additionally 
 enrollment time.
 
 ```{r}
-sim_data_end <- cut_data(sim_data, 1200)
+sim_data_end <- cut_data(sim_data, 700)
 plot(
     survfit(Surv(time, event) ~ arm, data = sim_data_end@survival),
     col = 1:2,
     lwd = 2,
-    main = "Overall Survival (truncated at time=1200)"
+    main = "Overall Survival (truncated at time=700)"
 )
 ```
 
@@ -184,8 +184,6 @@ mcmc_results <- sampleStanModel(
     data = joint_data,
     iter_sampling = 500,
     iter_warmup = 1000,
-    init_buffer = 200,
-    term_buffer = 200,
     chains = 4,
     parallel_chains = 4
 )
@@ -200,10 +198,21 @@ We use the [simulate.JointModelSamples] function.
 ?simulate.JointModelSamples
 new_model_data <- simulate(
     mcmc_results,
-    times = c(-2, 1, 30, 60, 90, 120, 150, 180)
+    times = c(-2, 1, 30, 60, 90, 120, 150, 180),
+    jitter_var = c(0, 2)
 )
 ```
 
+For this simulation we set 
+
+- the times we wish to have longitudinal observations
+- variance for jitter around those observation times
+- time_max and time_step for numerical integration
+- lambda parameter for exponential censoring times
+- scaled_variance which should be set to the same as the fitted model. This is described more in 
+  the statistical specifications vignette.
+
+Now we can inspect the new simulated data.
 
 ```{r}
 head(new_model_data@longitudinal)
@@ -213,12 +222,16 @@ head(new_model_data@survival)
 
 ```{r}
 ggplot(
-    new_model_data@longitudinal,
+    dplyr::bind_rows(
+        "model sim" = new_model_data@longitudinal,
+        "original data" = sim_data@longitudinal,
+        .id = "sim"
+    ),
     aes(x = time, y = sld, group = subject)) +
     geom_line(alpha = 0.1) +
     geom_point() +
-    facet_wrap(~arm) +
-    ggtitle("Simulated from model")
+    facet_wrap(~arm + sim) +
+    ggtitle("Original Data versus Model Simulated Data")
 
 ```
 
@@ -229,5 +242,13 @@ plot(
     lwd = 2,
     main = "Overall Survival (simulated from model)"
 )
-legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
+lines(
+    survfit(Surv(time, event) ~ arm, data = sim_data@survival),
+    col = 1:2,
+    lwd = 2,
+    lty = 2
+    )
+legend("topright", col = c(1, 2, 1, 2), lwd = 2, lty = c(1, 1, 2, 2),
+       legend = c("Arm-A from model", "Arm-B from model", "Arm-A original", "Arm-B original"))
 ```
+

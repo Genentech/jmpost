@@ -145,7 +145,10 @@ setMethod(
 )
 
 
-#' Sets PFS event at Tumour Progression
+#' Add PFS events at Tumour Progression to Data
+#'
+#' Adds new columns `pfs_time` and `pfs_event` based on observed changes to SLD.
+#'
 #' @param object A [SimJointData] object
 #' @param relative_threshold (`number`)\cr a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
 #'  Default is 1.2 meaning a 20% increase.
