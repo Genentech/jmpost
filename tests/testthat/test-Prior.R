@@ -55,7 +55,7 @@ test_that("Priors work as expected", {
     kim_sm <- as.StanModule(kim, name = "kim")
 
     full_sm <- list(header, tom_sm, dave_sm, jim_sm, ben_sm, kim_sm) |>
-        Reduce(merge, .)
+        Reduce(f = merge)
     expect_equal(
         full_sm,
         StanModule(test_path("models", "Prior_3.stan"))
