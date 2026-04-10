@@ -10,7 +10,10 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  dpi = 96,
+  fig.width=6,
+  fig.height=6
 )
 ```
 
@@ -180,18 +183,28 @@ sf_model <- JointModel(
     survival = SurvivalWeibullPH(),
     link = linkDSLD()
 )
+```
 
-set.seed(2026)
+
+```{r, message = FALSE, results='hide'}
+set.seed(202671)
 mcmc_results <- sampleStanModel(
     sf_model,
     data = joint_data,
-    iter_sampling = 500,
+    iter_sampling = 1000,
     iter_warmup = 500,
     chains = 4,
     parallel_chains = 4,
-    step_size = 0.05
+    step_size = 0.01
 )
-mcmc_results@results
+```
+
+
+```{r, results='asis'}
+knitr::kable(
+    mcmc_results@results$summary(c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg", "lm_sf_omega_bsld", "lm_sf_omega_ks", "lm_sf_omega_ks")),
+    digits = 3
+)
 ```
 
 ## Simulating from a Fitted Model
@@ -201,6 +214,7 @@ We use the [simulate.JointModelSamples] function.
 
 ```{r}
 ?simulate.JointModelSamples
+set.seed(198802)
 new_model_data <- simulate(
     mcmc_results,
     times = c(-2, 1, 30, 60, 90, 120, 150, 180),
@@ -236,6 +250,7 @@ ggplot(
     geom_line(alpha = 0.1) +
     geom_point() +
     facet_wrap(~arm + sim) +
+    coord_cartesian(ylim=c(0, 400)) +
     ggtitle("Original Data versus Model Simulated Data")
 
 ```
