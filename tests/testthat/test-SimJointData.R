@@ -127,6 +127,18 @@ test_that("add_pfs works as expected", {
     )
 })
 
+test_that("add_pfs works with large from_time", {
+    set.seed(5433)
+    sim_data <- SimJointData(
+        longitudinal = SimLongitudinalGSF(mu_g = log(c(0.5, 0.35)), mu_s = log(c(0.001, 0.35))),
+        survival = SimSurvivalExponential(time_max = 4, lambda = 365 / 100, time_step = 1 / 365),
+        .silent = TRUE
+    )
+    result <- add_pfs(sim_data, from_time = 1000)
+    expect_equal(result@survival$time, result@survival$pfs_time)
+})
+
+
 test_that("cut_data works as expected", {
     set.seed(123)
     sim_data <- SimJointData(

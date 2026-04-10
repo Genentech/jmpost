@@ -169,12 +169,12 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
     assert_class(object, "SimJointData")
 
     pd_times <- object@longitudinal |>
-        dplyr::filter(.data$time >= .data$from_time) |>
+        dplyr::filter(.data$time >= from_time) |>
         dplyr::mutate(
             min_sld = cummin(.data$sld),
             is_pd = .data$sld >= pmax(
-                .data$min_sld * .data$relative_threshold,
-                .data$min_sld + .data$absolute_threshold
+                .data$min_sld * relative_threshold,
+                .data$min_sld + absolute_threshold
                 ) & .data$observed,
             pd_time = min(.data$time[.data$is_pd], Inf),
             .by = subject
@@ -195,8 +195,8 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
         object@survival |>
         dplyr::left_join(pd_times, by = "subject") |>
         dplyr::mutate(
-            pfs_time = pmin(.data$time, .data$pd_time),
-            pfs_event = dplyr::if_else(.data$pd_time < .data$time, 1, .data$event),
+            pfs_time = pmin(.data$time, .data$pd_time, na.rm = TRUE),
+            pfs_event = dplyr::if_else(.data$pfs_time < .data$time, 1, .data$event),
             pd_time = NULL
         )
     object
