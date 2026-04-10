@@ -119,7 +119,7 @@ test_that("simulate works with jitter and times", {
 test_that("simulate works with lambda_censor", {
     skip_if_not(is_full_test())
     set.seed(12345)
-    results <- simulate(joint_results, times = (1:10), lambda_censor = 1/6, time_step = 0.5)
+    results <- simulate(joint_results, times = (1:10), lambda_censor = 1 / 6, time_step = 0.5)
     expect_data_frame(
         results@survival,
         nrow = 203,
@@ -128,8 +128,8 @@ test_that("simulate works with lambda_censor", {
 
     expect_equal(mean(results@survival$event), 0.65517241)
     expect_equal(mean(results@survival$time), 1.74296455)
-    expect_equal(mean(results@survival$time[results@survival$event==0]), 1.597454352)
-    expect_equal(mean(results@survival$time[results@survival$event==1]), 1.819548872)
+    expect_equal(mean(results@survival$time[results@survival$event == 0]), 1.597454352)
+    expect_equal(mean(results@survival$time[results@survival$event == 1]), 1.819548872)
 
     joined <- dplyr::left_join(
         results@survival[, c("subject", "time", "event")],

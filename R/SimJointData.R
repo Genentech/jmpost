@@ -162,26 +162,31 @@ setMethod(
 #'
 #' @export
 #' @examples
-#' add_pfs(sim_data)
+#' data <- SimJointData(survival = SimSurvivalExponential(lambda = 1/10), longitudinal = SimLongitudinalSteinFojo())
+#' data <- add_pfs(data)
+#' data@survival # now has pfs_time and pfs_event columns
 add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, from_time = 0, observed_after = FALSE) {
     assert_class(object, "SimJointData")
 
     pd_times <- object@longitudinal |>
-        dplyr::filter(time >= from_time) |>
+        dplyr::filter(.data$time >= .data$from_time) |>
         dplyr::mutate(
-            min_sld = cummin(sld),
-            is_pd = sld >= pmax(min_sld * relative_threshold, min_sld + absolute_threshold) & observed,
-            pd_time = min(time[is_pd], Inf),
+            min_sld = cummin(.data$sld),
+            is_pd = .data$sld >= pmax(
+                .data$min_sld * .data$relative_threshold,
+                .data$min_sld + .data$absolute_threshold
+                ) & .data$observed,
+            pd_time = min(.data$time[.data$is_pd], Inf),
             .by = subject
         ) |>
-        dplyr::select(subject, pd_time) |>
+        dplyr::select("subject", "pd_time") |>
         dplyr::slice_head(by = "subject")
 
     if (isFALSE(observed_after)) {
         object@longitudinal <- object@longitudinal |>
             dplyr::left_join(pd_times, by = "subject") |>
             dplyr::mutate(
-                observed = dplyr::if_else(time > pd_time, FALSE, observed),
+                observed = dplyr::if_else(.data$time > .data$pd_time, FALSE, .data$observed),
                 pd_time = NULL
             )
     }
@@ -190,10 +195,10 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
         object@survival |>
         dplyr::left_join(pd_times, by = "subject") |>
         dplyr::mutate(
-                pfs_time = pmin(time, pd_time),
-                pfs_event = dplyr::if_else(pd_time < time, 1, event),
-                pd_time = NULL
-            )
+            pfs_time = pmin(.data$time, .data$pd_time),
+            pfs_event = dplyr::if_else(.data$pd_time < .data$time, 1, .data$event),
+            pd_time = NULL
+        )
     object
 }
 
@@ -206,6 +211,12 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
 #'   All observations after this time are remove. Survival is censored at this time and any longitudinal
 #'   values are removed.
 #' @export
+#' @examples
+#' data <- SimJointData(survival = SimSurvivalExponential(lambda = 1/10), longitudinal = SimLongitudinalSteinFojo())
+#' data <- cut_data(data, 5)
+#' data@survival
+#' # Now max time is 5
+#' max(data@survival$time)
 cut_data <- function(object, cut_time) {
     assert_class(object, "SimJointData")
     check_len <- if (length(cut_time) > 1) nrow(object@survival) else 1
@@ -237,4 +248,3 @@ cut_data <- function(object, cut_time) {
 
     object
 }
-

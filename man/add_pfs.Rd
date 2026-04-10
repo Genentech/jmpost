@@ -33,5 +33,7 @@ Adds new columns \code{pfs_time} and \code{pfs_event} based on observed changes 
 Both thresholds must be met for a progression to be declared.
 }
 \examples{
-add_pfs(sim_data)
+data <- SimJointData(survival = SimSurvivalExponential(lambda = 1/10), longitudinal = SimLongitudinalSteinFojo())
+data <- add_pfs(data)
+data@survival # now has pfs_time and pfs_event columns
 }

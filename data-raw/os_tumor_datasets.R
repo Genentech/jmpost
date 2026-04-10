@@ -1,6 +1,7 @@
 ## Code to prepare datasets based on training code presented at https://rconis.github.io/tgi-os-training/
 ## Extracted from _load_data.dm
-## Downloaded from https://github.com/RCONIS/tgi-os-training/blob/5591861acdebc4f70c5747316b6c684b6c5ea8eb/session-os/_load_data.qmd
+## Downloaded from
+### https://github.com/RCONIS/tgi-os-training/blob/5591861acdebc4f70c5747316b6c684b6c5ea8eb/session-os/_load_data.qmd
 ## Created by Daniel Sabanes Bove and Francois Mercier
 
 ## Datasets were published as supplment to:

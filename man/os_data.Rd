@@ -5,7 +5,7 @@
 \alias{os_data}
 \title{OAK Study Overall Survival Data}
 \format{
-A tibble with one row per patient and 12 columns:
+A \code{tibble} with one row per patient and 12 columns:
 \describe{
 \item{id}{Patient identifier (factor), matched to \link{tumor_data}}
 \item{arm}{Treatment arm (factor): \code{"Docetaxel"} or \code{"MPDL3280A"}}

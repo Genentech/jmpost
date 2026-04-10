@@ -5,7 +5,7 @@
 \alias{tumor_data}
 \title{OAK Study Tumor Growth Data}
 \format{
-A tibble with one row per tumor measurement and 4 columns:
+A \code{tibble} with one row per tumor measurement and 4 columns:
 \describe{
 \item{id}{Patient identifier (factor), matched to \link{os_data}}
 \item{year}{Time of measurement in years from treatment start (numeric)}

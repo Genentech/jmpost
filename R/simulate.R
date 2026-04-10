@@ -20,7 +20,7 @@
 #' used in the model fit or from `newdata`, which must contain the
 #' same column names and factor levels.
 #'
-#' @exportS3Method stats::simulate
+#' @importFrom stats simulate
 #' @export
 simulate.JointModelSamples <- function(object,
                                        newdata = NULL,
@@ -104,14 +104,14 @@ add_jitter <- function(times, jitter_var = c(0, 0)) {
         times[neg_times] <- pmin(
             times[neg_times] + rnorm(sum(neg_times), sd = sqrt(jitter_var[1])),
             -.Machine$double.eps / 2
-            )
+        )
     }
     if (jitter_var[2] > 0) {
         pos_times <- times > 0
         times[pos_times] <- pmax(
             times[pos_times] + rnorm(sum(pos_times), sd = sqrt(jitter_var[2])),
             .Machine$double.eps / 2
-            )
+        )
     }
     times
 }
@@ -323,7 +323,7 @@ SimJointDataResults <- function(subject,
         cbind(
             baseline[rep(seq.int(nrow(baseline)), times = lengths(lm_times)), ],
             time = unlist(lm_times)
-            ) |>
+        ) |>
         dplyr::left_join(lm_baseline, by = c("subject", "study", "arm"))
 
 
@@ -362,34 +362,14 @@ SimJointDataResults <- function(subject,
     os_eval_df <- lm_link_dat |>
         dplyr::left_join(os_baseline, by = c("subject", "study", "arm"))
 
-    if (FALSE){
-        # existing code
-    withCallingHandlers(
-        os_dat <- .mapply(
-            sampleObservations,
-            dots = list(times_df = split(os_eval_df, ~subject), object = survival),
-            MoreArgs = NULL
-        ) |> dplyr::bind_rows(),
-        message = function(e) {
-            if (!.silent) message(e)
-            invokeRestart("muffleMessage")
-        }
-    )
-    } else if (FALSE) {
-        times_df <- split(os_eval_df, ~subject)
-        os_data_list <- list()
-        for (i in seq_along(times_df)) {
-            os_data_list[[i]] <- sampleObservations(times_df = times_df[[i]], survival[[i]])
-        }
-        os_dat <- dplyr::bind_rows(os_data_list)
-    } else if (TRUE) {
-        times_df <- split(os_eval_df, ~subject)
-        os_data_list <- list()
-        for (i in seq_along(times_df)) {
-            times_df[[i]]$log_bl_haz <- survival[[i]]@loghazard(times_df[[i]]$midpoint)
-        }
-        os_dat <- sampleObservations2(dplyr::bind_rows(times_df))
+
+    times_df <- split(os_eval_df, ~subject)
+    os_data_list <- list()
+    for (i in seq_along(times_df)) {
+        times_df[[i]]$log_bl_haz <- survival[[i]]@loghazard(times_df[[i]]$midpoint)
     }
+    os_dat <- sampleObservations2(dplyr::bind_rows(times_df))
+
     os_dat <- dplyr::left_join(os_dat, cov_cols, by = "subject")
 
     lm_dat2 <- lm_dat |>
@@ -439,7 +419,8 @@ sampleObservations2 <- function(times_df) {
             # are essentially equivalent to infinity for simulation purposes
             hazard_instant = dplyr::if_else(.data$hazard_instant == Inf, 999, .data$hazard_instant),
             hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant),
-            hazard_interval = .data$hazard_instant * .data$width) |>
+            hazard_interval = .data$hazard_instant * .data$width
+        ) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval), .by = .data$subject)
 
 
@@ -462,7 +443,8 @@ sampleObservations2 <- function(times_df) {
         dplyr::mutate(
             real_time = .data$time,
             event = dplyr::if_else(.data$real_time <= .data$time_cen, .data$event, 0),
-            time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
+            time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)
+        ) |>
         dplyr::arrange(.data$subject)
 
     keep_cols <- colnames(os_dat_complete) %in% c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")

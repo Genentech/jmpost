@@ -9,11 +9,11 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  dpi = 96,
-  fig.width=6,
-  fig.height=6
+    collapse = TRUE,
+    comment = "#>",
+    dpi = 96,
+    fig.width = 6,
+    fig.height = 6
 )
 ```
 
@@ -36,7 +36,7 @@ sim_data <- SimJointData(
         SimGroup(50, "Arm-B", "Study-X")
     ),
     longitudinal = SimLongitudinalSteinFojo(
-        times = c(-2, 1,30, 90, 150, 210),
+        times = c(-2, 1, 30, 90, 150, 210),
         mu_g = log(c(0.005, 0.005)),
         mu_s = log(c(0.06, 0.007)),
         omega_g = 0.3,
@@ -70,11 +70,11 @@ We can see the trajectory of the tumour size.
 library(ggplot2)
 ggplot(
     sim_data@longitudinal,
-    aes(x = time, y = sld, group = subject)) +
+    aes(x = time, y = sld, group = subject)
+) +
     geom_line(alpha = 0.1) +
     geom_point() +
     facet_wrap(~arm)
-
 ```
 
 We can also visualise the Kaplan-Meier survival curves.
@@ -94,7 +94,7 @@ legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
 
 We may wish to have a fixed maximum study duration and remove any simulated values after that time.
 This can be specified as a single fixed value or as a vector if we additionally wish to consider
-enrollment time.
+enrolment time.
 
 ```{r}
 sim_data_end <- cut_data(sim_data, 700)
@@ -129,11 +129,11 @@ Let's look at the plots again up to progression.
 ```{r}
 ggplot(
     sim_data_pd@longitudinal |> dplyr::filter(observed), # here we only include observed values
-    aes(x = time, y = sld, group = subject)) +
+    aes(x = time, y = sld, group = subject)
+) +
     geom_line(alpha = 0.1) +
     geom_point() +
     facet_wrap(~arm)
-
 ```
 
 ```{r}
@@ -148,7 +148,7 @@ legend("topright", col = 1:2, lwd = 2, legend = c("Arm-A", "Arm-B"))
 
 ## Model Fitting from Simulated Data
 
-As already descried in the quickstart vignette, we can use this data to fit a joint model.
+As already descried in the quick start vignette, we can use this data to fit a joint model.
 
 ```{r}
 os_data <- sim_data_end@survival
@@ -170,7 +170,6 @@ joint_data <- DataJoint(
         threshold = 5
     )
 )
-
 
 
 sf_model <- JointModel(
@@ -202,7 +201,9 @@ mcmc_results <- sampleStanModel(
 
 ```{r, results='asis'}
 knitr::kable(
-    mcmc_results@results$summary(c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg", "lm_sf_omega_bsld", "lm_sf_omega_ks", "lm_sf_omega_ks")),
+    mcmc_results@results$summary(
+        c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg", "lm_sf_omega_bsld", "lm_sf_omega_ks", "lm_sf_omega_ks")
+    ),
     digits = 3
 )
 ```
@@ -246,13 +247,13 @@ ggplot(
         "original data" = sim_data@longitudinal,
         .id = "sim"
     ),
-    aes(x = time, y = sld, group = subject)) +
+    aes(x = time, y = sld, group = subject)
+) +
     geom_line(alpha = 0.1) +
     geom_point() +
-    facet_wrap(~arm + sim) +
-    coord_cartesian(ylim=c(0, 400)) +
+    facet_wrap(~ arm + sim) +
+    coord_cartesian(ylim = c(0, 400)) +
     ggtitle("Original Data versus Model Simulated Data")
-
 ```
 
 ```{r}
@@ -267,8 +268,10 @@ lines(
     col = 1:2,
     lwd = 2,
     lty = 2
-    )
-legend("topright", col = c(1, 2, 1, 2), lwd = 2, lty = c(1, 1, 2, 2),
-       legend = c("Arm-A from model", "Arm-B from model", "Arm-A original", "Arm-B original"))
+)
+legend("topright",
+    col = c(1, 2, 1, 2), lwd = 2, lty = c(1, 1, 2, 2),
+    legend = c("Arm-A from model", "Arm-B from model", "Arm-A original", "Arm-B original")
+)
 ```
 

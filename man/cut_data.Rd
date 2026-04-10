@@ -19,3 +19,10 @@ Cut Study Data
 All observations after this time are remove. Survival is censored at this time and any longitudinal
 values are removed.
 }
+\examples{
+data <- SimJointData(survival = SimSurvivalExponential(lambda = 1/10), longitudinal = SimLongitudinalSteinFojo())
+data <- cut_data(data, 5)
+data@survival
+# Now max time is 5
+max(data@survival$time)
+}

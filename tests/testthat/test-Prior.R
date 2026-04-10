@@ -54,7 +54,7 @@ test_that("Priors work as expected", {
     ben_sm <- as.StanModule(ben, name = "ben")
     kim_sm <- as.StanModule(kim, name = "kim")
 
-    full_sm <- list(header, tom_sm, dave_sm, jim_sm, ben_sm, kim_sm) %>%
+    full_sm <- list(header, tom_sm, dave_sm, jim_sm, ben_sm, kim_sm) |>
         Reduce(merge, .)
     expect_equal(
         full_sm,

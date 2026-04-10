@@ -7,7 +7,7 @@
 #' arm, and best overall response. Only patients with at least 3 tumor size
 #' measurements are included.
 #'
-#' @format A tibble with one row per tumor measurement and 4 columns:
+#' @format A `tibble` with one row per tumor measurement and 4 columns:
 #' \describe{
 #'   \item{id}{Patient identifier (factor), matched to [os_data]}
 #'   \item{year}{Time of measurement in years from treatment start (numeric)}
@@ -35,7 +35,7 @@
 #' Patients were matched to those in [tumor_data] using baseline SLD, treatment
 #' arm, and best overall response.
 #'
-#' @format A tibble with one row per patient and 12 columns:
+#' @format A `tibble` with one row per patient and 12 columns:
 #' \describe{
 #'   \item{id}{Patient identifier (factor), matched to [tumor_data]}
 #'   \item{arm}{Treatment arm (factor): `"Docetaxel"` or `"MPDL3280A"`}
