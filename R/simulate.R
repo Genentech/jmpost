@@ -101,16 +101,16 @@ add_jitter <- function(times, jitter_var = c(0, 0)) {
     stopifnot(all(jitter_var >= 0))
     if (jitter_var[1] > 0) {
         neg_times <- times < 0
-        times[neg_times] <- pmax(
+        times[neg_times] <- pmin(
             times[neg_times] + rnorm(sum(neg_times), sd = sqrt(jitter_var[1])),
-            .Machine$double.eps / 2
+            -.Machine$double.eps / 2
             )
     }
     if (jitter_var[2] > 0) {
         pos_times <- times > 0
-        times[pos_times] <- pmin(
+        times[pos_times] <- pmax(
             times[pos_times] + rnorm(sum(pos_times), sd = sqrt(jitter_var[2])),
-            -.Machine$double.eps / 2
+            .Machine$double.eps / 2
             )
     }
     times
