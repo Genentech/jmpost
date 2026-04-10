@@ -164,7 +164,7 @@ setMethod(
 #' @examples
 #' add_pfs(sim_data)
 add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, from_time = 0, observed_after = FALSE) {
-    assert_class(sim_data, "SimJointData")
+    assert_class(object, "SimJointData")
 
     pd_times <- object@longitudinal |>
         dplyr::filter(time >= from_time) |>
@@ -207,11 +207,10 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
 #'   values are removed.
 #' @export
 cut_data <- function(object, cut_time) {
-    assert_class(sim_data, "SimJointData")
-    assert_numeric(cut_time, lower = 0)
-    stopifnot(
-        length(cut_time) %in% c(1, nrow(object@survival))
-    )
+    assert_class(object, "SimJointData")
+    check_len <- if (length(cut_time) > 1) nrow(object@survival) else 1
+    assert_numeric(cut_time, lower = 0, len = check_len)
+
     object@survival <- object@survival |>
         dplyr::mutate(
             cut_time = cut_time,
