@@ -312,10 +312,18 @@ SimJointDataResults <- function(subject,
 
 
     lm_baseline <- dplyr::bind_rows(
-        lapply(seq.int(longitudinal), function(i) sampleSubjects(longitudinal[[i]], subjects_df = baseline[i, ]))
+        lapply(seq.int(longitudinal), function(i) {
+            sampleSubjects(longitudinal[[i]], subjects_df = baseline[i, ])
+        })
     )
 
-    lm_dat_no_obvs <- dplyr::cross_join(baseline, data.frame(time = longitudinal[[1]]@times)) |>
+    lm_times <- lapply(seq.int(longitudinal), function(i) longitudinal[[i]]@times)
+
+    lm_dat_no_obvs <-
+        cbind(
+            baseline[rep(seq.int(nrow(baseline)), times = lengths(lm_times)), ],
+            time = unlist(lm_times)
+            ) |>
         dplyr::left_join(lm_baseline, by = c("subject", "study", "arm"))
 
 
