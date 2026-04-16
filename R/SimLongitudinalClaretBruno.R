@@ -155,7 +155,7 @@ setValidity(
 )
 
 #' @rdname as_print_string
-as_print_string.SimLongitudinalClaretBruno <- function(object) {
+as_print_string.SimLongitudinalClaretBruno <- function(object, ...) {
     return("SimLongitudinalClaretBruno")
 }
 

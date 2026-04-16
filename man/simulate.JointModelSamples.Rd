@@ -6,27 +6,29 @@
 \usage{
 \method{simulate}{JointModelSamples}(
   object,
+  nsim = NULL,
+  seed = NULL,
   newdata = NULL,
-  ...,
   times = c(-2, 0, 10, 50, 100),
   jitter_var = c(0, 0),
   time_max = 2000,
   time_step = 1,
   lambda_censor = 1/3000,
   scaled_variance = TRUE,
-  seed = NULL,
-  nsim = NULL
+  ...
 )
 }
 \arguments{
 \item{object}{A \link{JointModelSamples} object}
 
+\item{nsim}{Ignored.}
+
+\item{seed}{Ignored.}
+
 \item{newdata}{A data frame containing data in the same format as
 the \code{object@data@survival@data}. Importantly, it should contain the same covariates and factor levels
 as the variables used in the survival formula \code{object@data@survival@formula} and
 the same columns used for \code{study}, \code{id}, and \code{arm}.}
-
-\item{...}{Unused.}
 
 \item{times}{Vector of times to simulate SLD for all patients.}
 
@@ -43,9 +45,7 @@ Jitter values are generated from a normal distribution with mean 0 and the given
 \item{scaled_variance}{Should variance be scaled by the expected value. Must be set the same as was used for
 model fitting.}
 
-\item{seed}{Ignored.}
-
-\item{nsim}{Ignored.}
+\item{...}{Unused.}
 }
 \description{
 Simulate Patients from Posterior Predictive Distribution

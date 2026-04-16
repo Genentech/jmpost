@@ -98,7 +98,7 @@ setMethod(
 )
 
 #' @rdname as_print_string
-as_print_string.SimSurvival <- function(object) {
+as_print_string.SimSurvival <- function(object, ...) {
     return(object@name)
 }
 
@@ -106,10 +106,11 @@ as_print_string.SimSurvival <- function(object) {
 #' Construct Time Intervals
 #'
 #' @param object (`SimSurvival`)\cr the survival simulation object to create evaluation points for.
+#' @param ... Not Used.
 #'
 #' @return A `tibble` with `lower`, `upper`, `time`, `eval` and `width`.
 #' @keywords internal
-hazardWindows.SimSurvival <- function(object) {
+hazardWindows.SimSurvival <- function(object, ...) {
     times <- seq(0, object@time_max, object@time_step)
     bound_lower <- times[-length(times)]
     bound_upper <- times[-1]

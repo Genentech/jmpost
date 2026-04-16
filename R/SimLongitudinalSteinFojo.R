@@ -139,7 +139,7 @@ setValidity(
 )
 
 #' @rdname as_print_string
-as_print_string.SimLongitudinalSteinFojo <- function(object) {
+as_print_string.SimLongitudinalSteinFojo <- function(object, ...) {
     return("SimLongitudinalSteinFojo")
 }
 
@@ -147,12 +147,12 @@ as_print_string.SimLongitudinalSteinFojo <- function(object) {
 #' @export
 sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
     times_df |>
-        dplyr::mutate(mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-        dplyr::mutate(dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-        dplyr::mutate(ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g)) |>
-        dplyr::mutate(sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma)) |>
-        dplyr::mutate(sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd)) |>
         dplyr::mutate(
+            mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
+            dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
+            ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
+            sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma),
+            sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd),
             log_haz_link =
                 (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
@@ -175,23 +175,24 @@ sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
 
     res <- subjects_df |>
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
-        dplyr::mutate(study_idx = as.numeric(.data$study)) |>
-        dplyr::mutate(arm_idx = as.numeric(.data$arm)) |>
-        dplyr::mutate(psi_b = stats::rlnorm(
-            dplyr::n(),
-            object@mu_b[.data$study_idx],
-            object@omega_b[.data$study_idx]
-        )) |>
-        dplyr::mutate(psi_s = stats::rlnorm(
-            dplyr::n(),
-            object@mu_s[.data$arm_idx],
-            object@omega_s[.data$arm_idx]
-        )) |>
-        dplyr::mutate(psi_g = stats::rlnorm(
-            dplyr::n(),
-            object@mu_g[.data$arm_idx],
-            object@omega_g[.data$arm_idx]
-        ))
+        dplyr::mutate(
+            study_idx = as.numeric(.data$study),
+            psi_b = stats::rlnorm(
+                dplyr::n(),
+                object@mu_b[.data$study_idx],
+                object@omega_b[.data$study_idx]
+            ),
+            psi_s = stats::rlnorm(
+                dplyr::n(),
+                object@mu_s[.data$arm_idx],
+                object@omega_s[.data$arm_idx]
+            ),
+            psi_g = stats::rlnorm(
+                dplyr::n(),
+                object@mu_g[.data$arm_idx],
+                object@omega_g[.data$arm_idx]
+            )
+        )
 
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g")]
 }

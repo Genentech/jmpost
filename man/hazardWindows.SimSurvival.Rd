@@ -4,10 +4,12 @@
 \alias{hazardWindows.SimSurvival}
 \title{Construct Time Intervals}
 \usage{
-\method{hazardWindows}{SimSurvival}(object)
+\method{hazardWindows}{SimSurvival}(object, ...)
 }
 \arguments{
 \item{object}{(\code{SimSurvival})\cr the survival simulation object to create evaluation points for.}
+
+\item{...}{Not Used.}
 }
 \value{
 A \code{tibble} with \code{lower}, \code{upper}, \code{time}, \code{eval} and \code{width}.

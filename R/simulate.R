@@ -23,16 +23,16 @@
 #' @importFrom stats simulate
 #' @export
 simulate.JointModelSamples <- function(object,
+                                       nsim = NULL,
+                                       seed = NULL,
                                        newdata = NULL,
-                                       ...,
                                        times = c(-2, 0, 10, 50, 100),
                                        jitter_var = c(0, 0),
                                        time_max = 2000,
                                        time_step = 1,
                                        lambda_censor = 1 / 3000,
                                        scaled_variance = TRUE,
-                                       seed = NULL,
-                                       nsim = NULL) {
+                                       ...) {
     subj_data <- if (is.null(newdata)) {
         dplyr::left_join(
             object@data@subject@data[, c(
