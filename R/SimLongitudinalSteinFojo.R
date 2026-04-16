@@ -177,6 +177,7 @@ sampleSubjects.SimLongitudinalSteinFojo <- function(object, subjects_df) {
         dplyr::distinct(.data$subject, .data$arm, .data$study) |>
         dplyr::mutate(
             study_idx = as.numeric(.data$study),
+            arm_idx = as.numeric(.data$arm),
             psi_b = stats::rlnorm(
                 dplyr::n(),
                 object@mu_b[.data$study_idx],
