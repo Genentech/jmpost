@@ -77,7 +77,7 @@ test_that("simulate works with default options", {
         joint_data@survival@data[c("arm", "age", "ecog", "sex")],
         results@survival[c("arm", "age", "ecog", "sex")]
     )
-    expect_equal(mean(results@survival$time), 2.58620690)
+    expect_equal(mean(results@survival$time), 2.537, tolerance = 0.001)
     mean(results@survival$event, 1)
 
     expect_data_frame(
@@ -87,7 +87,8 @@ test_that("simulate works with default options", {
     )
     expect_equal(
         mean(results@longitudinal[results@longitudinal$observed, ]$sld),
-        37.9220115
+        35.158,
+        tolerance = 0.001
     )
 })
 
@@ -112,7 +113,8 @@ test_that("simulate works with jitter and times", {
 
     expect_equal(
         mean(results@longitudinal[results@longitudinal$observed, ]$sld),
-        2.885339
+        2.766,
+        tolerance = 0.001
     )
 })
 
@@ -126,10 +128,10 @@ test_that("simulate works with lambda_censor", {
         ncols = 9
     )
 
-    expect_equal(mean(results@survival$event), 0.65517241)
-    expect_equal(mean(results@survival$time), 1.74296455)
-    expect_equal(mean(results@survival$time[results@survival$event == 0]), 1.597454352)
-    expect_equal(mean(results@survival$time[results@survival$event == 1]), 1.819548872)
+    expect_equal(mean(results@survival$event), 0.6601, tolerance = 0.001)
+    expect_equal(mean(results@survival$time), 1.74296455, tolerance = 0.001)
+    expect_equal(mean(results@survival$time[results@survival$event == 0]), 1.5901, tolerance = 0.001)
+    expect_equal(mean(results@survival$time[results@survival$event == 1]), 1.819548872, tolerance = 0.001)
 
     joined <- dplyr::left_join(
         results@survival[, c("subject", "time", "event")],

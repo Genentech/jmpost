@@ -421,17 +421,18 @@ sampleObservations2 <- function(times_df) {
             hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant),
             hazard_interval = .data$hazard_instant * .data$width
         ) |>
-        dplyr::mutate(chazard = cumsum(.data$hazard_interval), .by = .data$subject)
+        dplyr::mutate(chazard = cumsum(.data$hazard_interval), .by = "subject")
 
 
     os_had_event <- os_dat_chaz |>
         dplyr::filter(.data$chazard >= .data$chazard_limit) |>
-        dplyr::slice_head(by = .data$subject) |>
+        dplyr::slice_head(by = "subject") |>
         dplyr::mutate(event = 1)
 
     os_had_censor <- os_dat_chaz |>
         dplyr::filter(!.data$subject %in% os_had_event$subject) |>
-        dplyr::slice_tail(by = .data$subject) |>
+        dplyr::slice_tail(by = "subject") |>
+
         dplyr::mutate(event = 0)
 
     if (!(nrow(os_had_censor) == 0)) {
