@@ -74,8 +74,8 @@ test_that("simulate works with default options", {
     )
 
     expect_equal(
-        joint_data@survival@data[c("arm", "age", "ecog", "sex")],
-        results@survival[c("arm", "age", "ecog", "sex")]
+        joint_data@survival@data[c("id", "arm", "age", "ecog", "sex")],
+        results@survival[c("id", "arm", "age", "ecog", "sex")]
     )
     expect_equal(mean(results@survival$time), 2.537, tolerance = 0.001)
     mean(results@survival$event, 1)

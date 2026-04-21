@@ -391,11 +391,15 @@ SimJointDataResults <- function(subject,
         msg = "Assumptions for the Longitudinal data are not met (please report this issue)"
     )
 
-    # TODO rename study/arm/subject back to originals
+    original_names <- c("subject", "arm", "study")
+    names(original_names) <- c(subject@subject, subject@arm, subject@study)
+    
+    
     return(
         .SimJointData(
-            survival = os_dat,
-            longitudinal = lm_dat2[, c("subject", "arm", "study", "time", "sld", "observed")]
+            survival = os_dat |> dplyr::rename(all_of(original_names)),
+            longitudinal = lm_dat2[, c("subject", "arm", "study", "time", "sld", "observed")] |> 
+                dplyr::rename(all_of(original_names))
         )
     )
 }
