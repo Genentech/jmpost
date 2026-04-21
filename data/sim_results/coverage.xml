@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.879833101529903" branch-rate="0" lines-covered="3163" lines-valid="3595" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-04-21 11:54:26.357554">
+<coverage line-rate="0.879833101529903" branch-rate="0" lines-covered="3163" lines-valid="3595" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-04-21 13:24:52.940818">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -7320,10 +7320,9 @@
                 <line number="432" hits="0" branch="false"/>
                 <line number="433" hits="0" branch="false"/>
                 <line number="434" hits="0" branch="false"/>
-                <line number="435" hits="0" branch="false"/>
-                <line number="437" hits="0" branch="false"/>
+                <line number="436" hits="0" branch="false"/>
                 <line number="438" hits="0" branch="false"/>
-                <line number="441" hits="0" branch="false"/>
+                <line number="439" hits="0" branch="false"/>
                 <line number="442" hits="0" branch="false"/>
                 <line number="443" hits="0" branch="false"/>
                 <line number="444" hits="0" branch="false"/>
@@ -7331,8 +7330,9 @@
                 <line number="446" hits="0" branch="false"/>
                 <line number="447" hits="0" branch="false"/>
                 <line number="448" hits="0" branch="false"/>
-                <line number="450" hits="0" branch="false"/>
+                <line number="449" hits="0" branch="false"/>
                 <line number="451" hits="0" branch="false"/>
+                <line number="452" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -7608,10 +7608,9 @@
             <line number="432" hits="0" branch="false"/>
             <line number="433" hits="0" branch="false"/>
             <line number="434" hits="0" branch="false"/>
-            <line number="435" hits="0" branch="false"/>
-            <line number="437" hits="0" branch="false"/>
+            <line number="436" hits="0" branch="false"/>
             <line number="438" hits="0" branch="false"/>
-            <line number="441" hits="0" branch="false"/>
+            <line number="439" hits="0" branch="false"/>
             <line number="442" hits="0" branch="false"/>
             <line number="443" hits="0" branch="false"/>
             <line number="444" hits="0" branch="false"/>
@@ -7619,8 +7618,9 @@
             <line number="446" hits="0" branch="false"/>
             <line number="447" hits="0" branch="false"/>
             <line number="448" hits="0" branch="false"/>
-            <line number="450" hits="0" branch="false"/>
+            <line number="449" hits="0" branch="false"/>
             <line number="451" hits="0" branch="false"/>
+            <line number="452" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="StanModel.R" filename="R/StanModel.R" line-rate="1" branch-rate="0" complexity="0">
