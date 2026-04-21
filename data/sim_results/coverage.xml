@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.879833101529903" branch-rate="0" lines-covered="3163" lines-valid="3595" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-04-16 14:39:17.206012">
+<coverage line-rate="0.879833101529903" branch-rate="0" lines-covered="3163" lines-valid="3595" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-04-21 11:54:26.357554">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -6295,6 +6295,7 @@
                 <line number="197" hits="10" branch="false"/>
                 <line number="198" hits="10" branch="false"/>
                 <line number="199" hits="10" branch="false"/>
+                <line number="200" hits="10" branch="false"/>
                 <line number="201" hits="10" branch="false"/>
                 <line number="202" hits="10" branch="false"/>
                 <line number="203" hits="10" branch="false"/>
@@ -6317,28 +6318,27 @@
                 <line number="220" hits="10" branch="false"/>
                 <line number="221" hits="10" branch="false"/>
                 <line number="222" hits="10" branch="false"/>
-                <line number="224" hits="10" branch="false"/>
               </lines>
             </method>
             <method name="gsf_sld" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="244" hits="25" branch="false"/>
-                <line number="245" hits="25" branch="false"/>
+                <line number="242" hits="25" branch="false"/>
+                <line number="243" hits="25" branch="false"/>
               </lines>
             </method>
             <method name="gsf_ttg" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="249" hits="22" branch="false"/>
+                <line number="250" hits="22" branch="false"/>
                 <line number="251" hits="22" branch="false"/>
-                <line number="252" hits="22" branch="false"/>
-                <line number="253" hits="22" branch="false"/>
               </lines>
             </method>
             <method name="gsf_dsld" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="257" hits="22" branch="false"/>
+                <line number="258" hits="22" branch="false"/>
                 <line number="259" hits="22" branch="false"/>
                 <line number="260" hits="22" branch="false"/>
-                <line number="261" hits="22" branch="false"/>
-                <line number="262" hits="22" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -6393,6 +6393,7 @@
             <line number="197" hits="10" branch="false"/>
             <line number="198" hits="10" branch="false"/>
             <line number="199" hits="10" branch="false"/>
+            <line number="200" hits="10" branch="false"/>
             <line number="201" hits="10" branch="false"/>
             <line number="202" hits="10" branch="false"/>
             <line number="203" hits="10" branch="false"/>
@@ -6415,16 +6416,15 @@
             <line number="220" hits="10" branch="false"/>
             <line number="221" hits="10" branch="false"/>
             <line number="222" hits="10" branch="false"/>
-            <line number="224" hits="10" branch="false"/>
-            <line number="244" hits="25" branch="false"/>
-            <line number="245" hits="25" branch="false"/>
+            <line number="242" hits="25" branch="false"/>
+            <line number="243" hits="25" branch="false"/>
+            <line number="249" hits="22" branch="false"/>
+            <line number="250" hits="22" branch="false"/>
             <line number="251" hits="22" branch="false"/>
-            <line number="252" hits="22" branch="false"/>
-            <line number="253" hits="22" branch="false"/>
+            <line number="257" hits="22" branch="false"/>
+            <line number="258" hits="22" branch="false"/>
             <line number="259" hits="22" branch="false"/>
             <line number="260" hits="22" branch="false"/>
-            <line number="261" hits="22" branch="false"/>
-            <line number="262" hits="22" branch="false"/>
           </lines>
         </class>
         <class name="SimLongitudinalRandomSlope.R" filename="R/SimLongitudinalRandomSlope.R" line-rate="1" branch-rate="0" complexity="0">
