@@ -197,7 +197,6 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         dplyr::mutate(
             study_idx = as.numeric(.data$study),
             arm_idx = as.numeric(.data$arm),
-        
             psi_b = stats::rlnorm(
                 dplyr::n(),
                 object@mu_b[.data$study_idx],
@@ -220,7 +219,6 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
             ),
             psi_phi = stats::plogis(.data$psi_phi_logit)
         )
-        
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
 

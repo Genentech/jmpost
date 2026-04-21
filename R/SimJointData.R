@@ -178,7 +178,7 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
             is_pd = .data$sld >= pmax(
                 .data$min_sld * relative_threshold,
                 .data$min_sld + absolute_threshold
-                ) & .data$observed,
+            ) & .data$observed,
             pd_time = min(.data$time[.data$is_pd], Inf),
             .by = "subject"
         ) |>

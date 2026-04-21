@@ -145,8 +145,8 @@ collapse_quantities <- function(quantities_raw, collapser) {
         nrow = nrow(quantities_raw),
         ncol = length(collapser)
     )
-
-    for (idx in seq_len(length(collapser))) {
+  
+    for (idx in seq_along(collapser)) {
         quantities[, idx] <- quantities_raw[
             ,
             collapser@indexes[[idx]],
