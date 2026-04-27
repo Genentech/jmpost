@@ -36,7 +36,7 @@ test_that("SimJointData works as expected", {
     expect_class(result, "SimJointData")
 
     expect_s3_class(result@survival, "tbl_df")
-    expect_identical(
+    expect_set_equal(
         names(result@survival),
         c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
     )
@@ -44,7 +44,7 @@ test_that("SimJointData works as expected", {
 
 
     expect_s3_class(result@longitudinal, "tbl_df")
-    expect_identical(
+    expect_set_equal(
         names(result@longitudinal),
         c("subject", "arm", "study", "time", "sld", "observed")
     )
@@ -100,4 +100,66 @@ test_that("print methods work as expected", {
         )
         print(sim_data)
     })
+})
+
+test_that("add_pfs works as expected", {
+    set.seed(5433)
+    sim_data <- SimJointData(
+        longitudinal = SimLongitudinalGSF(mu_g = log(c(0.5, 0.35)), mu_s = log(c(0.001, 0.35))),
+        survival = SimSurvivalExponential(time_max = 4, lambda = 365 / 100, time_step = 1 / 365),
+        .silent = TRUE
+    )
+    result <- add_pfs(sim_data)
+    expect_true(all(result@survival$pfs_time <= result@survival$time))
+    expect_true(all(result@survival$pfs_event >= result@survival$event))
+    expect_equal(mean(result@survival$time), 0.33969863)
+    expect_equal(mean(result@survival$pfs_time), 0.302575342)
+
+    expect_equal(
+        result@longitudinal$observed[result@longitudinal$subject == "subject_027"],
+        rep(c(TRUE, FALSE), times = c(7, 3))
+    )
+
+    result_obs_after <- add_pfs(sim_data, observed_after = TRUE)
+    expect_equal(
+        result_obs_after@longitudinal$observed[result_obs_after@longitudinal$subject == "subject_027"],
+        rep(c(TRUE, FALSE), times = c(10, 0))
+    )
+})
+
+test_that("add_pfs works with large from_time", {
+    set.seed(5433)
+    sim_data <- SimJointData(
+        longitudinal = SimLongitudinalGSF(mu_g = log(c(0.5, 0.35)), mu_s = log(c(0.001, 0.35))),
+        survival = SimSurvivalExponential(time_max = 4, lambda = 365 / 100, time_step = 1 / 365),
+        .silent = TRUE
+    )
+    result <- add_pfs(sim_data, from_time = 1000)
+    expect_equal(result@survival$time, result@survival$pfs_time)
+})
+
+
+test_that("cut_data works as expected", {
+    set.seed(123)
+    sim_data <- SimJointData(
+        longitudinal = SimLongitudinalGSF(),
+        survival = SimSurvivalExponential(time_max = 4, lambda = 365 / 100, time_step = 1 / 365),
+        .silent = TRUE
+    )
+
+    result <- cut_data(sim_data, cut_time = 1)
+
+    expect_equal(max(sim_data@longitudinal$time), 1.50684932)
+    expect_equal(max(result@longitudinal$time), 0.9589041)
+    # == max(result@longitudinal$time[result@longitudinal$time <= 1])
+
+    expect_error(
+        cut_data(sim_data, cut_time = 1:4),
+        "have length 100"
+    )
+
+    per_pat_cut <- seq(0.0001, 0.002, length = 100)
+    result_pat_cuts <- cut_data(sim_data, cut_time = per_pat_cut)
+    expect_equal(result_pat_cuts@survival$time, per_pat_cut)
+    expect_equal(result_pat_cuts@survival$event, rep(0, 100))
 })

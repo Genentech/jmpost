@@ -36,6 +36,6 @@ setMethod(
 )
 
 #' @rdname as_print_string
-as_print_string.SimLongitudinal <- function(object) {
+as_print_string.SimLongitudinal <- function(object, ...) {
     return("SimLongitudinal")
 }

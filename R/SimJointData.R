@@ -143,3 +143,114 @@ setMethod(
         return(object)
     }
 )
+
+
+#' Add PFS events at Tumour Progression to Data
+#'
+#' Adds new columns `pfs_time` and `pfs_event` based on observed changes to SLD.
+#'
+#' @param object A [SimJointData] object
+#' @param relative_threshold (`number`)\cr a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
+#'  Default is 1.2 meaning a 20% increase.
+#' @param absolute_threshold (`number`)\cr an absolute threshold for the change in SLD compared to the minimum.
+#'   Default is 5.
+#' @param from_time (`number`)\cr Ignore observations before this time for determining SLD minimum.
+#' @param observed_after (`logical`)\cr If `FALSE` set longitudinal observations after the progression time to
+#'   `observed = FALSE`
+#' @details
+#' Both thresholds must be met for a progression to be declared.
+#'
+#' @export
+#' @examples
+#' data <- SimJointData(
+#'   survival = SimSurvivalExponential(lambda = 1/10),
+#'   longitudinal = SimLongitudinalSteinFojo()
+#' )
+#' data <- add_pfs(data)
+#' data@survival # now has pfs_time and pfs_event columns
+add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, from_time = 0, observed_after = FALSE) {
+    assert_class(object, "SimJointData")
+
+    pd_times <- object@longitudinal |>
+        dplyr::filter(.data$time >= from_time) |>
+        dplyr::mutate(
+            min_sld = cummin(.data$sld),
+            is_pd = .data$sld >= pmax(
+                .data$min_sld * relative_threshold,
+                .data$min_sld + absolute_threshold
+            ) & .data$observed,
+            pd_time = min(.data$time[.data$is_pd], Inf),
+            .by = "subject"
+        ) |>
+        dplyr::select("subject", "pd_time") |>
+        dplyr::slice_head(by = "subject")
+
+    if (isFALSE(observed_after)) {
+        object@longitudinal <- object@longitudinal |>
+            dplyr::left_join(pd_times, by = "subject") |>
+            dplyr::mutate(
+                observed = dplyr::if_else(.data$time > .data$pd_time, FALSE, .data$observed),
+                pd_time = NULL
+            )
+    }
+
+    object@survival <-
+        object@survival |>
+        dplyr::left_join(pd_times, by = "subject") |>
+        dplyr::mutate(
+            pfs_time = pmin(.data$time, .data$pd_time, na.rm = TRUE),
+            pfs_event = dplyr::if_else(.data$pfs_time < .data$time, 1, .data$event),
+            pd_time = NULL
+        )
+    object
+}
+
+
+#' Cut Study Data
+#' @param object A [SimJointData] object
+#' @param cut_time (`numeric`)\cr A vector of cut off times, either length 1 for all patients or
+#'   `nrow(object@survival)` for a time per patient.
+#' @details
+#'   All observations after this time are remove. Survival is censored at this time and any longitudinal
+#'   values are removed.
+#' @export
+#' @examples
+#' data <- SimJointData(
+#'   survival = SimSurvivalExponential(lambda = 1/10),
+#'   longitudinal = SimLongitudinalSteinFojo()
+#' )
+#' data <- cut_data(data, 5)
+#' data@survival
+#' # Now max time is 5
+#' max(data@survival$time)
+cut_data <- function(object, cut_time) {
+    assert_class(object, "SimJointData")
+    check_len <- if (length(cut_time) > 1) nrow(object@survival) else 1
+    assert_numeric(cut_time, lower = 0, len = check_len)
+
+    object@survival <- object@survival |>
+        dplyr::mutate(
+            cut_time = cut_time,
+            event = dplyr::if_else(.data$time < .data$cut_time, .data$event, 0),
+            time = pmin(.data$cut_time, .data$time)
+        )
+    if (all(c("pfs_event", "pfs_time") %in% colnames(object@survival))) {
+        object@survival <- object@survival |>
+            dplyr::mutate(
+                pfs_event = dplyr::if_else(.data$pfs_time < .data$cut_time, .data$pfs_event, 0),
+                pfs_time = pmin(.data$cut_time, .data$pfs_time)
+            )
+    }
+
+    object@longitudinal <- object@longitudinal |>
+        dplyr::left_join(
+            dplyr::select(object@survival, "subject", "cut_time"),
+            by = "subject"
+        ) |>
+        dplyr::filter(.data$time <= .data$cut_time) |>
+        dplyr::mutate(cut_time = NULL)
+
+    object@survival$cut_time <- NULL
+
+    object
+}

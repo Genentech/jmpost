@@ -27,7 +27,7 @@ Language: en-GB
 URL: https://genentech.github.io/jmpost/
 BugReports: https://github.com/Genentech/jmpost/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -120,13 +120,16 @@ Collate:
     'SurvivalLoglogistic.R'
     'SurvivalWeibullPH.R'
     'brier_score.R'
+    'data.R'
     'defaults.R'
     'external-exports.R'
     'jmpost-package.R'
     'link_generics.R'
     'populationHR.R'
     'settings.R'
+    'simulate.R'
     'standalone-s3-register.R'
     'zzz.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack
+LazyData: true

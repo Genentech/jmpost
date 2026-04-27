@@ -50,6 +50,9 @@ reference:
       - SimSurvivalWeibullPH
       - SimSurvivalGamma
       - SimGroup
+      - simulate.JointModelSamples
+      - add_pfs
+      - cut_data
   - title: Prior Distributions
     contents:
       - Prior
@@ -200,6 +203,14 @@ reference:
     contents:
       - STAN_BLOCKS
 
+
+  - title: Data Sets
+    contents:
+      - os_data
+      - tumor_data
+
+
+
 articles:
   - title: Articles
     navbar: ~
@@ -208,4 +219,5 @@ articles:
         - '`statistical-specification`'
         - '`custom-model`'
         - '`extending-jmpost`'
+        - '`simulating-data`'
 

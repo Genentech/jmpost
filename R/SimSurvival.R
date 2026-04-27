@@ -43,6 +43,7 @@ NULL
 #' @slot beta_cat (`numeric`)\cr See arguments.
 #' @slot loghazard (`function`)\cr See arguments.
 #' @slot name (`character`)\cr See arguments.
+#' @slot beta_os_cov (`numeric`) Additional regression coefficients for survival models.
 #'
 #' @family SimSurvival
 #' @exportClass SimSurvival
@@ -55,6 +56,7 @@ NULL
         lambda_censor = "numeric",
         beta_cont = "numeric",
         beta_cat = "numeric",
+        beta_os_cov = "numeric",
         loghazard = "function",
         name = "character"
     )
@@ -96,7 +98,7 @@ setMethod(
 )
 
 #' @rdname as_print_string
-as_print_string.SimSurvival <- function(object) {
+as_print_string.SimSurvival <- function(object, ...) {
     return(object@name)
 }
 
@@ -104,10 +106,11 @@ as_print_string.SimSurvival <- function(object) {
 #' Construct Time Intervals
 #'
 #' @param object (`SimSurvival`)\cr the survival simulation object to create evaluation points for.
+#' @param ... Not Used.
 #'
 #' @return A `tibble` with `lower`, `upper`, `time`, `eval` and `width`.
 #' @keywords internal
-hazardWindows.SimSurvival <- function(object) {
+hazardWindows.SimSurvival <- function(object, ...) {
     times <- seq(0, object@time_max, object@time_step)
     bound_lower <- times[-length(times)]
     bound_upper <- times[-1]
@@ -186,7 +189,8 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
         dplyr::arrange(.data$subject)
 
-    os_dat_complete[, c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")]
+    keep_cols <- colnames(os_dat_complete) %in% c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
+    os_dat_complete[, keep_cols]
 }
 
 

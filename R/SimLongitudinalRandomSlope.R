@@ -59,7 +59,7 @@ SimLongitudinalRandomSlope <- function(
 }
 
 #' @rdname as_print_string
-as_print_string.SimLongitudinalRandomSlope <- function(object) {
+as_print_string.SimLongitudinalRandomSlope <- function(object, ...) {
     return("SimLongitudinalRandomSlope")
 }
 
@@ -67,10 +67,10 @@ as_print_string.SimLongitudinalRandomSlope <- function(object) {
 #' @export
 sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
     times_df |>
-        dplyr::mutate(err = stats::rnorm(dplyr::n(), 0, object@sigma)) |>
-        dplyr::mutate(sld_mu = .data$intercept + .data$slope_ind * .data$time) |>
-        dplyr::mutate(sld = .data$sld_mu + .data$err) |>
         dplyr::mutate(
+            err = stats::rnorm(dplyr::n(), 0, object@sigma),
+            sld_mu = .data$intercept + .data$slope_ind * .data$time,
+            sld = .data$sld_mu + .data$err,
             log_haz_link =
                 object@link_dsld * .data$slope_ind +
                 object@link_identity * .data$sld_mu
@@ -86,13 +86,13 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     )
 
     assert_that(
-        length(object@slope_mu) == length(unique(subjects_df[["arm"]])),
-        msg = "`length(slope_mu)` should be equal to the number of unique arms"
+        length(object@slope_mu) == nlevels(subjects_df[["arm"]]),
+        msg = "`length(slope_mu)` should be equal to the number of arms"
     )
 
     assert_that(
-        length(object@intercept) == length(unique(subjects_df[["study"]])),
-        msg = "`length(intercept)` should be equal to the number of unique studies"
+        length(object@intercept) == nlevels(subjects_df[["study"]]),
+        msg = "`length(intercept)` should be equal to the number of studies"
     )
 
     assert_that(

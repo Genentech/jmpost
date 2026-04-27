@@ -15,17 +15,17 @@
 \usage{
 as_print_string(object, ...)
 
-\method{as_print_string}{SimLongitudinal}(object)
+\method{as_print_string}{SimLongitudinal}(object, ...)
 
-\method{as_print_string}{SimLongitudinalClaretBruno}(object)
+\method{as_print_string}{SimLongitudinalClaretBruno}(object, ...)
 
-\method{as_print_string}{SimLongitudinalGSF}(object)
+\method{as_print_string}{SimLongitudinalGSF}(object, ...)
 
-\method{as_print_string}{SimLongitudinalRandomSlope}(object)
+\method{as_print_string}{SimLongitudinalRandomSlope}(object, ...)
 
-\method{as_print_string}{SimLongitudinalSteinFojo}(object)
+\method{as_print_string}{SimLongitudinalSteinFojo}(object, ...)
 
-\method{as_print_string}{SimSurvival}(object)
+\method{as_print_string}{SimSurvival}(object, ...)
 }
 \arguments{
 \item{object}{to be converted to string.}
