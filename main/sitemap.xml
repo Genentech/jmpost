@@ -4,6 +4,7 @@
 <url><loc>https://genentech.github.io/jmpost/articles/extending-jmpost.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/index.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/quickstart.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/simulating-data.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/statistical-specification.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/authors.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/index.html</loc></url>
@@ -77,6 +78,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/add_missing_stan_blocks.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/add_pfs.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.CmdStanMCMC.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModel.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.JointModelSamples.html</loc></url>
@@ -130,6 +132,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/cut_data.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/decompose_subjects.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/enableGQ.html</loc></url>
@@ -162,6 +165,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/match_order.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/merge.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/mirror_design_matrix.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/os_data.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/populationHR.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_cauchy.html</loc></url>
@@ -193,6 +197,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/sf_sld.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/show-object.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/show.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/simulate.JointModelSamples.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/size.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc></url>
@@ -204,6 +209,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/summary.RandomEffectQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/survival_plot.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/tumor_data.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/validate_time_grid.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/write_stan.html</loc></url>
 </urlset>

@@ -1,0 +1,93 @@
+# `LongitudinalGSF`
+
+This class extends the general
+[`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
+class for using the Generalized Stein-Fojo (GSF) model for the
+longitudinal outcome.
+
+## Usage
+
+``` r
+LongitudinalGSF(
+  mu_bsld = prior_normal(log(60), 1),
+  mu_ks = prior_normal(log(0.5), 1),
+  mu_kg = prior_normal(log(0.3), 1),
+  mu_phi = prior_normal(qlogis(0.5), 1),
+  omega_bsld = prior_lognormal(log(0.2), 1),
+  omega_ks = prior_lognormal(log(0.2), 1),
+  omega_kg = prior_lognormal(log(0.2), 1),
+  omega_phi = prior_lognormal(log(0.2), 1),
+  sigma = prior_lognormal(log(0.1), 1),
+  scaled_variance = TRUE,
+  centred = FALSE
+)
+```
+
+## Arguments
+
+- mu_bsld:
+
+  (`Prior`)\
+  for the mean baseline value `mu_bsld`.
+
+- mu_ks:
+
+  (`Prior`)\
+  for the mean shrinkage rate `mu_ks`.
+
+- mu_kg:
+
+  (`Prior`)\
+  for the mean growth rate `mu_kg`.
+
+- mu_phi:
+
+  (`Prior`)\
+  for the mean proportion of cells affected by the treatment `mu_phi`.
+
+- omega_bsld:
+
+  (`Prior`)\
+  for the baseline value standard deviation `omega_bsld`.
+
+- omega_ks:
+
+  (`Prior`)\
+  for the shrinkage rate standard deviation `omega_ks`.
+
+- omega_kg:
+
+  (`Prior`)\
+  for the growth rate standard deviation `omega_kg`.
+
+- omega_phi:
+
+  (`Prior`)\
+  for the standard deviation of the proportion of cells affected by the
+  treatment `omega_phi`.
+
+- sigma:
+
+  (`Prior`)\
+  for the variance of the longitudinal values `sigma`.
+
+- scaled_variance:
+
+  (`logical`)\
+  whether the variance should be scaled by the expected value (see the
+  "Statistical Specifications" vignette for more details)
+
+- centred:
+
+  (`logical`)\
+  whether to use the centred parameterization.
+
+## Available Links
+
+- [`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+- [`linkTTG()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+- [`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+- [`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)

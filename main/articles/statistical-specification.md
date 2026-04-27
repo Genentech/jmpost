@@ -1,0 +1,564 @@
+# Statistical Specifications
+
+## IMPORTANT
+
+Please note that this document is currently a work-in-progress and does
+not contain complete information for this package yet.
+
+## Survival Model Specification
+
+This package can only be used to fit proportional hazards models of the
+form:
+
+``` math
+\log(h_i(t \mid \theta, \psi_i)) = \log(h_0(t \mid \theta)) + X_i \beta + \sum_j G_j(t \mid \psi_i) 
+```
+
+Where:
+
+- $`h_0(.)`$ is a parametric baseline hazard function
+- $`t`$ is the event time
+- $`\theta`$ is a vector of parameters that parameterise the baseline
+  hazard
+- $`\psi_i`$ is an arbitrary vector of parameters for subject $`i`$
+  specified by the longitudinal model
+- $`G_j(.)`$ is a link function that maps $`\psi_i`$ to a contribution
+  to the log-hazard function where $`j`$ simply indexes the given link
+  function
+- $`X_i`$ is the subjects covariate design matrix
+- $`\beta`$ is the corresponding coefficients to scale the design matrix
+  covariates contribution to the log-hazard function
+
+The following sections outline the available distributions to users
+which can be selected for the baseline hazard $`h_0(.)`$. Please note
+that some of these distributions do not have the proportional-hazards
+property meaning that the resulting survival model corresponding to the
+hazard $`h_i()`$ will not be of the same parametric family as the
+baseline distribution with the hazard $`h_0(.)`$.
+
+### Exponential Distribution
+
+``` math
+h(t \mid \lambda) = \lambda
+```
+
+Where: - $`\lambda > 0`$ is the rate parameter
+
+### Weibull Distribution (Proportional Hazard Parameterisation)
+
+``` math
+h(t \mid \lambda, \gamma) = \lambda \gamma t^{\gamma - 1 };
+```
+
+Where: - $`\lambda > 0`$ is the rate parameter - $`\gamma > 0`$ is the
+shape parameter Note that with $`\gamma = 1`$ we obtain the exponential
+distribution as a special case.
+
+### Log-Logistic Distribution
+
+``` math
+h(t \mid a, b) =  \frac
+{(b/a)(t/a)^{(b-1)}}
+{1 + (t/a)^b}
+```
+
+Where:
+
+- $`a > 0`$ is the scale parameter
+- $`b > 0`$ is the shape parameter
+
+### Gamma Distribution
+
+``` math
+h(t \mid k, \theta) = \frac{
+    t^{k - 1} e^{-t/\theta}
+} {
+    \theta ^ k ( \Gamma(k) - \gamma(k, t/\theta) )
+}
+```
+
+Where:
+
+- \$k \> 0 \$ is the shape parameter
+- $`\theta > 0`$ is the scale parameter
+- $`\Gamma(.)`$ is the complete gamma function
+- $`\gamma(., .)`$ is the lower incomplete gamma function
+
+## Longitudinal Model Specification
+
+### Random-Slope Model
+
+``` math
+y_{ij} = \mu_{l(i)} + s_i t_{ij} + \epsilon_{ij}
+```
+
+where:
+
+- $`y_{ij}`$ is the tumour size for subject $`i`$ at timepoint $`j`$
+- $`\mu_{l(i)}`$ is the intercept for subject $`i`$
+- $`s_i`$ is the random slope for subject $`i`$ with
+  $`s_i \sim N(\mu_{sk(i)}, \sigma_s)`$
+- $`\mu_{sk(i)}`$ is the mean for the random slope within treatment arm
+  $`k(i)`$
+- $`\sigma_s`$ is the variance term for the slopes
+- $`\epsilon_{ij}`$ is the error term with
+  $`\epsilon_{ij} \sim N(0, \sigma)`$
+- $`k(i)`$ is the treatment arm index for subject $`i`$
+- $`l(i)`$ is the study index for subject $`i`$
+
+#### Derivative of the SLD Trajectory Link / Growth Parameter Link
+
+``` math
+G(t_{ij} \mid \mu_0, s_i) = s_i
+```
+
+Accessible via
+[`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+&
+[`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Identity Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid \mu_0, s_i) = \mu_0 + s_i t_{ij}
+\end{align*}
+```
+
+Accessible via
+[`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+### Stein-Fojo Model
+
+``` math
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+\\
+SLD_{ij} &=
+\begin{cases}
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+\end{align*}
+```
+
+Where:
+
+- $`i`$ is the subject index
+- $`j`$ is the visit index
+- $`y_{ij}`$ is the observed tumour measurements
+- $`SLD_{ij}`$ is the expected sum of longest diameter for subject $`i`$
+  at time point $`j`$
+- $`t_{ij}`$ is the time since first treatment for subject $`i`$ at
+  visit $`j`$
+- $`b_i`$ is the subject baseline SLD measurement
+- $`s_i`$ is the subject kinetics shrinkage parameter
+- $`g_i`$ is the subject kinetics tumour growth parameter
+- $`\phi_i`$ is the subject proportion of cells affected by the
+  treatment
+- $`k(i)`$ is the treatment arm index for subject $`i`$
+- $`l(i)`$ is the study index for subject $`i`$
+- $`\mu_{\theta k(i)}`$ is the population mean for parameter $`\theta`$
+  in group $`k(i)`$
+- $`\omega_{\theta k(i)}`$ is the population variance for parameter
+  $`\theta`$.
+
+If using the non-centred parameterisation then the following alternative
+formulation is used:
+
+``` math
+\begin{align*}
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{s i} &\sim  N(0, 1) \\
+\eta_{g i} &\sim  N(0, 1) \\
+\end{align*}
+```
+
+Where:
+
+- $`\eta_{\theta i}`$ is a random effects offset on parameter $`\theta`$
+  for subject $`i`$
+
+If using the unscaled variance parameterisation then the following
+alternative formulation is used:
+``` math
+y_{ij} \sim N(SLD_{ij},\sigma^2)
+```
+
+#### Derivative of the SLD Trajectory Link
+
+``` math
+G(t_{ij} \mid b_i, s_i, g_i) = \begin{cases}
+b_i(g_i e^{g_i t_{ij}} -s_ie^{-s_it_{ij}} ) & \text{if } t_{ij}\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}
+```
+
+Accessible via
+[`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Time to Growth Link
+
+``` math
+G(t_{ij} \mid b_i, s_i, g_i) = \max \left(
+    \frac{
+        \text{log}(s_i) - \text{log}(g_i)
+    }{
+        s_i + g_i
+    },
+    0
+\right)
+```
+
+Accessible via
+[`linkTTG()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Identity Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i) &= SLD_{ij}
+\end{align*}
+```
+
+Accessible via
+[`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Growth Parameter Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i) &= log(g_i)
+\end{align*}
+```
+
+Accessible via
+[`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Shrinkage Parameter Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i) &= log(s_i)
+\end{align*}
+```
+
+Accessible via
+[`linkShrinkage()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Population Quantities
+
+Note that when generating population quantities for the $`b`$, $`s`$ and
+$`g`$ parameters the median of the distribution is used. This is because
+this has the same interpretation as using a non-centred parameterisation
+and setting the “random effects” term to be 0. For the $`\phi`$
+parameter the mean of the distribution is used.
+
+### Generalized Stein-Fojo (GSF) Model
+
+``` math
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases}
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+s_i &\sim \text{LogNormal}(\mu_{sk(i)}, \omega_{s k(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi k(i)}, \omega_{\phi k(i)})
+\end{align*}
+```
+
+Where:
+
+- $`i`$ is the subject index
+- $`j`$ is the visit index
+- $`y_{ij}`$ is the observed tumour measurements
+- $`SLD_{ij}`$ is the expected sum of longest diameter for subject $`i`$
+  at time point $`j`$
+- $`t_{ij}`$ is the time since first treatment for subject $`i`$ at
+  visit $`j`$
+- $`b_i`$ is the subject baseline SLD measurement
+- $`s_i`$ is the subject kinetics shrinkage parameter
+- $`g_i`$ is the subject kinetics tumour growth parameter
+- $`\phi_i`$ is the subject proportion of cells affected by the
+  treatment
+- $`k(i)`$ is the treatment arm index for subject $`i`$
+- $`l(i)`$ is the study index for subject $`i`$
+- $`\mu_{\theta k(i)}`$ is the population mean for parameter $`\theta`$
+  in group $`k(i)`$
+- $`\omega_{\theta k(i)}`$ is the population variance for parameter
+  $`\theta`$ in group $`k(i)`$.
+
+If using the non-centred parameterisation then the following alternative
+formulation is used:
+
+``` math
+\begin{align*}
+b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+\phi_i &= \text{logistic}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{s i} &\sim   N(0, 1)  \\
+\eta_{g i} &\sim   N(0, 1)  \\
+\eta_{\phi i} &\sim   N(0, 1)  \\
+\end{align*}
+```
+
+Where:
+
+- $`\eta_{\theta i}`$ is a random effects offset on parameter $`\theta`$
+  for subject $`i`$
+
+If using the unscaled variance parameterisation then the following
+alternative formulation is used:
+``` math
+y_{ij} \sim N(SLD_{ij}, \sigma^2)
+```
+
+#### Derivative of the SLD Trajectory Link
+
+``` math
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \begin{cases}
+b_i(-s_i\phi_ie^{-s_it_{ij}} + (1 - \phi_i)g_i e^{g_i t_{ij}}) & \text{if } t_{ij}\geq 0 \\
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}
+```
+
+Accessible via
+[`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Time to Growth Link
+
+``` math
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) = \max \left(
+    \frac{
+        \log(s_i) + \log(\phi_i) - \log(g_i) - \log(1-\phi_i)
+    }{
+        s_i + g_i
+    }, 0
+\right)
+```
+
+Accessible via
+[`linkTTG()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Identity Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= SLD_{ij}
+\end{align*}
+```
+
+Accessible via
+[`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Growth Parameter Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(g_i)
+\end{align*}
+```
+
+Accessible via
+[`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Shrinkage Parameter Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, s_i, g_i, \phi_i) &= log(s_i)
+\end{align*}
+```
+
+Accessible via
+[`linkShrinkage()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Population Quantities
+
+Note that when generating population quantities for the $`b`$, $`s`$,
+$`g`$ and $`\phi`$ parameters the median of the distribution is used.
+This is because this has the same interpretation as using a non-centred
+parameterisation and setting the “random effects” term to be 0.
+
+### Claret-Bruno Model
+
+``` math
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases} b_i e^{g_i t_{ij}} & 
+\text{if } t_{ij} < 0, \\ 
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+\text{if } t_{ij} \geq 0. \end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
+g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
+c_i &\sim \text{LogNormal}(\mu_{ck(i)}, \omega_{c k(i)}) \\
+p_i &\sim \text{LogNormal}(\mu_{pk(i)}, \omega_{p k(i)}) \\
+\end{align*}
+```
+
+Where:
+
+- $`i`$ is the subject index
+- $`j`$ is the visit index
+- $`y_{ij}`$ is the observed tumour measurements
+- $`SLD_{ij}`$ is the expected sum of longest diameter for subject $`i`$
+  at time point $`j`$
+- $`t_{ij}`$ is the time since first treatment for subject $`i`$ at
+  visit $`j`$
+- $`b_i`$ is the subject baseline SLD value.
+- $`g_i`$ is the subject tumour growth rate.
+- $`c_i`$ is the subject treatment resistance rate.
+- $`p_i`$ is the subject treatment growth inhibition response.
+- $`k(i)`$ is the treatment arm index for subject $`i`$
+- $`l(i)`$ is the study index for subject $`i`$
+- $`\mu_{\theta k(i)}`$ is the population mean for parameter $`\theta`$
+  in group $`k(i)`$
+- $`\omega_{\theta k(i)}`$ is the population variance for parameter
+  $`\theta`$ in group $`k(i)`$
+
+If using the non-centred parameterisation then the following alternative
+formulation is used:
+
+``` math
+\begin{align*}
+b_i &= exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+g_i &= exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+c_i &= exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
+p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
+\\
+\eta_{b i} &\sim  N(0, 1)\\
+\eta_{g i} &\sim  N(0, 1)  \\
+\eta_{c i} &\sim  N(0, 1)  \\
+\eta_{p i} &\sim  N(0, 1)  \\
+\end{align*}
+```
+
+If using the unscaled variance parameterisation then the following
+alternative formulation is used:
+``` math
+y_{ij} \sim N(SLD_{ij}, \sigma^2)
+```
+
+#### Derivative of the SLD Trajectory Link
+
+``` math
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \begin{cases}
+b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0 \\
+\left(
+    g_i - p_i e^{-c_i t_{ij}} 
+\right)
+SLD_{ij}
+ & \text{if } t_{ij}\geq 0
+\end{cases}
+```
+
+Accessible via
+[`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Time to Growth Link
+
+``` math
+G(t_{ij} \mid b_i, g_i, c_i, p_i) = \max \left(
+    \frac{ln(\frac{p_i}{g_i})}{c_i}, 0
+\right)
+```
+
+Accessible via
+[`linkTTG()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Identity Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= SLD_{ij}
+\end{align*}
+```
+
+Accessible via
+[`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Growth Parameter Link
+
+``` math
+\begin{align*}
+G(t_{ij} \mid b_i, g_i, c_i, p_i) &= log(g_i)
+\end{align*}
+```
+
+Accessible via
+[`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+#### Population Quantities
+
+When generating population quantities for the $`b`$, $`g`$, $`c`$ and
+$`p`$ parameters the median of the distribution is used. This is because
+this has the same interpretation as using a non-centred parameterisation
+and setting the “random effects” term to be 0.
+
+## Post-Processing
+
+### Brier Score
+
+The Brier Score is used to measure a models predictive performance. In
+the case of Survival Models it is the weighted squared difference
+between whether a subject died within a given time interval and the
+models estimated probability of them dying within said interval. Within
+`jmpost` the following formula (as described in Blanche et al.
+([2015](#ref-blanche2015))) has been implemented:
+
+``` math
+\hat{BS}(t) =  \frac{1}{n}\sum_{i=1}^{n} \hat{W}_i(t) \Big(D_i(t) - \pi_i(t)  \Big)^2
+```
+
+``` math
+\hat{W}_i(t) = 
+    \frac{\mathbb{1}_{(T_i \gt t)}}{\hat{G}(t)} + 
+    \frac{\mathbb{1}_{(T_i \le t)} \cdot \Delta_i}{\hat{G}(T_i)}
+```
+
+Where:
+
+- $`T_i`$ is the observed event/censor time for subject $`i`$
+- $`\Delta_i`$ is the event indicator which is 1 if $`T_i`$ is an event
+  and 0 if $`T_i`$ is censored
+- $`\mathbb{1}_{(.)}`$ is the indicator which is 1 if $`{(.)}`$ is true
+  else 0
+- $`D_i(t)`$ is the event indicator function for subject $`i`$
+  e.g. $`D_i(t) = \mathbb{1}_{(T_i \lt t,\ \delta_i = 1)}`$
+- $`\pi_i(t)`$ is a model predicted probability of subject $`i`$ dying
+  before time $`t`$
+- $`\hat{G}(u)`$ is the Kaplan-Meier estimator of survival function of
+  the censoring time at $`u`$
+
+Note that by default $`\hat{G}(T_i)`$ is estimated by $`\hat{G}(T_i-)`$
+and that in the case of ties event times are always considered to have
+occurred before censored times (this is in contrast to
+[`survival::survfit`](https://rdrr.io/pkg/survival/man/survfit.html)
+which regards censored times as coming before event times when
+estimating the censoring distribution). Both of these default options
+can be changed if required.
+
+## References
+
+Blanche P, Proust-Lima C, Loubère L, Berr C, Dartigues J-F,
+Jacqmin-Gadda H (2015). “Quantifying and Comparing Dynamic Predictive
+Accuracy of Joint Models for Longitudinal Marker and Time-to-Event in
+Presence of Censoring and Competing Risks.” *Biometrics*, **71**(1),
+102–113. https://doi.org/<https://doi.org/10.1111/biom.12232>.

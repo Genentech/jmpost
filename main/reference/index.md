@@ -1,0 +1,562 @@
+# Package index
+
+## Package
+
+- [`jmpost`](https://genentech.github.io/jmpost/reference/jmpost-package.md)
+  [`jmpost-package`](https://genentech.github.io/jmpost/reference/jmpost-package.md)
+  : jmpost: Joint Models for Predicting Overall Survival Trajectories
+- [`set_options()`](https://genentech.github.io/jmpost/reference/jmpost-settings.md)
+  : jmpost settings
+
+## Data Specification
+
+- [`DataJoint()`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)
+  : Joint Data Object and Constructor Function
+- [`DataSubject()`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)
+  : Subject Data Object and Constructor Function
+- [`DataLongitudinal()`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)
+  : Longitudinal Data Object and Constructor Function
+- [`DataSurvival()`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)
+  : Survival Data Object and Constructor Function
+
+## Data Simulation
+
+- [`SimJointData()`](https://genentech.github.io/jmpost/reference/SimJointData-class.md)
+  : Simulating Joint Longitudinal and Time-to-Event Data
+- [`SimLongitudinal()`](https://genentech.github.io/jmpost/reference/SimLongitudinal-class.md)
+  : Abstract Simulation Class for Longitudinal Data
+- [`SimLongitudinalGSF()`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md)
+  : Simulate Longitudinal Data from a GSF Model
+- [`SimLongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.md)
+  : Simulate Longitudinal Data from a Stein-Fojo Model
+- [`SimLongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.md)
+  : Simulate Longitudinal Data from a Claret-Bruno Model
+- [`SimLongitudinalRandomSlope()`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)
+  : Simulate Longitudinal Data from a Random Slope Model
+- [`SimSurvival()`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md)
+  : Abstract Simulation Class for Survival Data
+- [`SimSurvivalLogLogistic()`](https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.md)
+  : Simulate Survival Data from a Log-Logistic Proportional Hazard Model
+- [`SimSurvivalExponential()`](https://genentech.github.io/jmpost/reference/SimSurvivalExponential.md)
+  : Simulate Survival Data from a Exponential Proportional Hazard Model
+- [`SimSurvivalWeibullPH()`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)
+  : Simulate Survival Data from a Weibull Proportional Hazard Model
+- [`SimSurvivalGamma()`](https://genentech.github.io/jmpost/reference/SimSurvivalGamma.md)
+  : Simulate Survival Data from a Gamma Proportional Hazard Model
+- [`SimGroup()`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)
+  : Define Simulation Group
+- [`simulate(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/simulate.JointModelSamples.md)
+  : Simulate Patients from Posterior Predictive Distribution
+- [`add_pfs()`](https://genentech.github.io/jmpost/reference/add_pfs.md)
+  : Add PFS events at Tumour Progression to Data
+- [`cut_data()`](https://genentech.github.io/jmpost/reference/cut_data.md)
+  : Cut Study Data
+
+## Prior Distributions
+
+- [`Prior()`](https://genentech.github.io/jmpost/reference/Prior-class.md)
+  : Prior Object and Constructor Function
+- [`prior_beta()`](https://genentech.github.io/jmpost/reference/prior_beta.md)
+  : Beta Prior Distribution
+- [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md)
+  : Cauchy Prior Distribution
+- [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md)
+  : Gamma Prior Distribution
+- [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md)
+  : Inverse-Gamma Prior Distribution
+- [`prior_logistic()`](https://genentech.github.io/jmpost/reference/prior_logistic.md)
+  : Logistic Prior Distribution
+- [`prior_loglogistic()`](https://genentech.github.io/jmpost/reference/prior_loglogistic.md)
+  : Log-Logistic Prior Distribution
+- [`prior_lognormal()`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)
+  : Log-Normal Prior Distribution
+- [`prior_normal()`](https://genentech.github.io/jmpost/reference/prior_normal.md)
+  : Normal Prior Distribution
+- [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
+  : Uniform Prior Distribution
+- [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md)
+  : Standard Normal Prior Distribution
+- [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md)
+  : Student-t Prior Distribution
+- [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
+  : Initial Values Specification
+
+## Longitudinal Model Specification
+
+- [`LongitudinalRandomSlope()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.md)
+  :
+
+  `LongitudinalRandomSlope`
+
+- [`LongitudinalGSF()`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)
+  :
+
+  `LongitudinalGSF`
+
+- [`LongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.md)
+  :
+
+  `LongitudinalSteinFojo`
+
+- [`LongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.md)
+  :
+
+  `LongitudinalClaretBruno`
+
+- [`LongitudinalModel()`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
+  :
+
+  `LongitudinalModel`
+
+## Survival Model Specification
+
+- [`SurvivalExponential()`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)
+  :
+
+  `SurvivalExponential`
+
+- [`SurvivalLogLogistic()`](https://genentech.github.io/jmpost/reference/SurvivalLogLogistic-class.md)
+  :
+
+  `SurvivalLogLogistic`
+
+- [`SurvivalModel()`](https://genentech.github.io/jmpost/reference/SurvivalModel-class.md)
+  :
+
+  `SurvivalModel`
+
+- [`SurvivalWeibullPH()`](https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.md)
+  :
+
+  `SurvivalWeibullPH`
+
+- [`SurvivalGamma()`](https://genentech.github.io/jmpost/reference/SurvivalGamma-class.md)
+  :
+
+  `SurvivalGamma`
+
+## Link Specification
+
+- [`linkNone()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  [`linkTTG()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  [`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  [`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  [`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  [`linkShrinkage()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+  : Standard Links
+
+- [`Link()`](https://genentech.github.io/jmpost/reference/Link-class.md)
+  :
+
+  `Link`
+
+- [`LinkComponent()`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)
+  :
+
+  `LinkComponent`
+
+## Joint Model Specification
+
+- [`JointModel()`](https://genentech.github.io/jmpost/reference/JointModel-class.md)
+  : Joint Model Object and Constructor Function
+
+## Joint Model Fitting
+
+- [`compileStanModel()`](https://genentech.github.io/jmpost/reference/compileStanModel.md)
+  :
+
+  `compileStanModel`
+
+- [`sampleStanModel()`](https://genentech.github.io/jmpost/reference/sampleStanModel.md)
+  :
+
+  `sampleStanModel`
+
+## Postprocessing
+
+- [`JointModelSamples-class`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md)
+  [`.JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md)
+  [`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md)
+  :
+
+  `JointModelSamples`
+
+- [`LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md)
+  :
+
+  `LongitudinalQuantities` Object & Constructor Function
+
+- [`SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md)
+  :
+
+  `SurvivalQuantities` Object & Constructor Function
+
+- [`generateQuantities()`](https://genentech.github.io/jmpost/reference/generateQuantities.md)
+  :
+
+  `generateQuantities`
+
+- [`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md)
+  : Extract Random Effects Samples from a Longitudinal Model
+
+- [`GridEven()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridEvent()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridFixed()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridGrouped()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridManual()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridObserved()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridPopulation()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  [`GridPrediction()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  : Quantity Grid Specification
+
+- [`summary(`*`<LongitudinalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.md)
+  : summary
+
+- [`summary(`*`<SurvivalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.md)
+  : summary
+
+- [`autoplot`](https://genentech.github.io/jmpost/reference/autoplot.md)
+  :
+
+  Create a complete `ggplot` appropriate to a particular data type
+
+- [`autoplot(`*`<LongitudinalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.md)
+  :
+
+  Automatic Plotting for `LongitudinalQuantities`
+
+- [`autoplot(`*`<SurvivalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.md)
+  : Automatic Plotting for \`SurvivalQuantities“
+
+- [`brierScore()`](https://genentech.github.io/jmpost/reference/brierScore.md)
+  :
+
+  `brierScore`
+
+- [`brierScore(`*`<SurvivalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.md)
+  :
+
+  `brierScore`
+
+- [`populationHR()`](https://genentech.github.io/jmpost/reference/populationHR.md)
+  : Calculate Population Hazard Ratios
+
+## Stan Code
+
+- [`Parameter()`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
+  :
+
+  `Parameter`
+
+- [`names(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.md)
+  [`initialValues(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.md)
+  [`size(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/Parameter-Getter-Methods.md)
+  : Parameter Getter Functions
+
+- [`ParameterList()`](https://genentech.github.io/jmpost/reference/ParameterList-class.md)
+  :
+
+  `ParameterList`
+
+- [`names(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/ParameterList-Getter-Methods.md)
+  [`initialValues(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/ParameterList-Getter-Methods.md)
+  [`size(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/ParameterList-Getter-Methods.md)
+  : Parameter-List Getter Functions
+
+- [`initialValues(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.md)
+  : Prior Getter Functions
+
+- [`read_stan()`](https://genentech.github.io/jmpost/reference/read_stan.md)
+  : Stan Code as Character
+
+- [`StanModel()`](https://genentech.github.io/jmpost/reference/StanModel-class.md)
+  : Stan Model Object and Constructor Function
+
+- [`StanModule()`](https://genentech.github.io/jmpost/reference/StanModule-class.md)
+  :
+
+  `StanModule` Object and Constructor Function
+
+- [`write_stan()`](https://genentech.github.io/jmpost/reference/write_stan.md)
+  :
+
+  `write_stan`
+
+- [`getParameters()`](https://genentech.github.io/jmpost/reference/getParameters.md)
+  :
+
+  `getParameters`
+
+- [`getRandomEffectsNames()`](https://genentech.github.io/jmpost/reference/getRandomEffectsNames.md)
+  : Get Random Effects Names
+
+## Convenience Functions
+
+- [`initialValues()`](https://genentech.github.io/jmpost/reference/initialValues.md)
+  :
+
+  `initialValues`
+
+- [`merge()`](https://genentech.github.io/jmpost/reference/merge.md) :
+
+  `merge`
+
+- [`show`](https://genentech.github.io/jmpost/reference/show.md) :
+  Printing of Different Classes
+
+- [`as_stan_list()`](https://genentech.github.io/jmpost/reference/as_stan_list.md)
+  :
+
+  `as_stan_list`
+
+- [`as.CmdStanMCMC.JointModelSamples()`](https://genentech.github.io/jmpost/reference/as.CmdStanMCMC.md)
+  :
+
+  Coerce to `CmdStanMCMC`
+
+- [`as.character(`*`<JointModel>`*`)`](https://genentech.github.io/jmpost/reference/as.character.JointModel.md)
+  :
+
+  `JointModel` -\> `character`
+
+- [`as.StanModule(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.md)
+  :
+
+  `Parameter` -\> `StanModule`
+
+- [`as.StanModule(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.md)
+  :
+
+  `ParameterList` -\> `StanModule`
+
+- [`as.StanModule(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md)
+  :
+
+  `Prior` -\> `StanModule`
+
+- [`as.StanModule(`*`<JointModel>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.JointModel.md)
+  :
+
+  `JointModel` -\> `StanModule`
+
+- [`as.StanModule(`*`<Link>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Link.md)
+  :
+
+  `Link` -\> `StanModule`
+
+- [`as.StanModule(`*`<LinkComponent>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.md)
+  :
+
+  `LinkComponent` -\> `StanModule`
+
+- [`as.StanModule(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.JointModelSamples.md)
+  :
+
+  `JointModelSamples` -\> `StanModule`
+
+- [`as.character(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Parameter.md)
+  :
+
+  `Parameter` -\> `Character`
+
+- [`as.character(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Prior.md)
+  :
+
+  `Prior` -\> `Character`
+
+- [`show(`*`<DataSubject>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<DataJoint>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<StanModule>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<StanModel>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<LinkComponent>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<Link>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<JointModel>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<Quantities>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<SurvivalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<LongitudinalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<RandomEffectQuantities>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<SimJointData>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<SimLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  [`show(`*`<SimSurvival>`*`)`](https://genentech.github.io/jmpost/reference/show-object.md)
+  : Show an Object
+
+- [`as_stan_list(`*`<Parameter>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.Parameter.md)
+  :
+
+  `Parameter` -\> `list`
+
+- [`as_stan_list(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.ParameterList.md)
+  :
+
+  `ParameterList` -\> `list`
+
+- [`as_stan_list(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.Prior.md)
+  :
+
+  `Prior` -\> `list`
+
+- [`as.character(`*`<StanModule>`*`)`](https://genentech.github.io/jmpost/reference/as.character.StanModule.md)
+  :
+
+  `StanModule` -\> `character`
+
+- [`as.data.frame(`*`<DataSubject>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.DataSubject.md)
+  :
+
+  `DataSubject` -\> `data.frame`
+
+- [`as.data.frame(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.DataLongitudinal.md)
+  :
+
+  `DataLongitudinal` -\> `data.frame`
+
+- [`as.data.frame(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.DataSurvival.md)
+  :
+
+  `DataSurvival` -\> `data.frame`
+
+- [`as.data.frame(`*`<LongitudinalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.md)
+  :
+
+  `as.data.frame`
+
+- [`as.data.frame(`*`<SurvivalQuantities>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.SurvivalQuantities.md)
+  :
+
+  `as.data.frame`
+
+- [`summary(`*`<RandomEffectQuantities>`*`)`](https://genentech.github.io/jmpost/reference/summary.RandomEffectQuantities.md)
+  : summary
+
+- [`as.data.frame(`*`<RandomEffectQuantities>`*`)`](https://genentech.github.io/jmpost/reference/as.data.frame.RandomEffectQuantities.md)
+  :
+
+  `RandomEffectQuantities` -\> `data.frame`
+
+- [`as_stan_list(`*`<DataSubject>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as.list(`*`<DataSubject>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as_stan_list(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as.list(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as_stan_list(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as.list(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as_stan_list(`*`<DataJoint>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`as.list(`*`<DataJoint>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  :
+
+  Data Object -\> `list`
+
+- [`as.list(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/as.list.ParameterList.md)
+  :
+
+  `ParameterList` -\> `list`
+
+- [`as.list(`*`<StanModel>`*`)`](https://genentech.github.io/jmpost/reference/as.list.StanModel.md)
+  :
+
+  `StanModel` -\> `list`
+
+- [`as.list(`*`<StanModule>`*`)`](https://genentech.github.io/jmpost/reference/as.list.StanModule.md)
+  :
+
+  `StanModule` -\> `list`
+
+- [`as.list(`*`<Link>`*`)`](https://genentech.github.io/jmpost/reference/as.list.Link.md)
+  :
+
+  `Link` -\> `list`
+
+- [`as.list(`*`<LinkComponent>`*`)`](https://genentech.github.io/jmpost/reference/as.list.LinkComponent.md)
+  :
+
+  `LinkComponent` -\> `list`
+
+- [`saveObject()`](https://genentech.github.io/jmpost/reference/saveObject.md)
+  : Save Object to File
+
+- [`saveObject(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/saveObject.JointModelSamples.md)
+  :
+
+  Save a `JointModelSamples` object to a file.
+
+- [`length(`*`<Link>`*`)`](https://genentech.github.io/jmpost/reference/length.Link.md)
+  :
+
+  `Link` -\> `list`
+
+- [`subset(`*`<DataJoint>`*`)`](https://genentech.github.io/jmpost/reference/subset.DataJoint.md)
+  :
+
+  Subsetting `DataJoint` as a `data.frame`
+
+- [`extractVariableNames(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.md)
+  : Extract Mapping to Standardised Variable Names
+
+- [`hazardWindows()`](https://genentech.github.io/jmpost/reference/hazardWindows.md)
+  : Generate time windows for evaluating a hazard function
+
+- [`sampleObservations()`](https://genentech.github.io/jmpost/reference/sampleObservations.md)
+  : Generate Simulated Observations
+
+- [`sampleSubjects()`](https://genentech.github.io/jmpost/reference/sampleSubjects.md)
+  : Generate Simulated Subjects
+
+- [`enableLink()`](https://genentech.github.io/jmpost/reference/enableLink.md)
+  : Enable Link Generic
+
+- [`enableGQ()`](https://genentech.github.io/jmpost/reference/enableGQ.md)
+  : Enable Generated Quantities Generic
+
+- [`as_formula()`](https://genentech.github.io/jmpost/reference/as_formula.md)
+  : As Formula
+
+- [`getPredictionNames()`](https://genentech.github.io/jmpost/reference/getPredictionNames.md)
+  : Get Prediction Names
+
+- [`set_limits()`](https://genentech.github.io/jmpost/reference/set_limits.md)
+  : Set Constraints
+
+## Promises
+
+- [`Promise-class`](https://genentech.github.io/jmpost/reference/Promise-class.md)
+  [`.Promise`](https://genentech.github.io/jmpost/reference/Promise-class.md)
+  [`Promise`](https://genentech.github.io/jmpost/reference/Promise-class.md)
+  : Promise
+
+- [`PromiseLinkComponent()`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md)
+  :
+
+  Promise of a `LinkComponent`
+
+- [`PromiseLongitudinalModel()`](https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.md)
+  :
+
+  Promise of a `LongitudinalModel`
+
+- [`resolvePromise()`](https://genentech.github.io/jmpost/reference/resolvePromise.md)
+  : Resolve a Promise
+
+- [`resolvePromise(`*`<Link>`*`)`](https://genentech.github.io/jmpost/reference/resolvePromise.Link.md)
+  : Resolve any promises
+
+- [`resolvePromise(`*`<PromiseLinkComponent>`*`)`](https://genentech.github.io/jmpost/reference/resolvePromise.PromiseLinkComponent.md)
+  :
+
+  Resolve a `PromiseLinkComponent`
+
+## Miscellaneous
+
+- [`STAN_BLOCKS`](https://genentech.github.io/jmpost/reference/STAN_BLOCKS.md)
+  : List of Stan Blocks
+
+## Data Sets
+
+- [`os_data`](https://genentech.github.io/jmpost/reference/os_data.md) :
+  OAK Study Overall Survival Data
+- [`tumor_data`](https://genentech.github.io/jmpost/reference/tumor_data.md)
+  : OAK Study Tumor Growth Data
