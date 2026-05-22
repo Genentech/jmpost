@@ -18,7 +18,7 @@
                 lm_rs_rslope_ind[2800]
                 lm_rs_sigma
                 lm_rs_slope_mu[2]
-                lm_rs_slope_sigma
+                lm_rs_slope_sigma[2]
                 log_surv_fit_at_obs_times[400]
                 long_obvs_log_lik[2800]
                 lp__
