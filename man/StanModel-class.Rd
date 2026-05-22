@@ -30,7 +30,7 @@ Stan Model Object and Constructor Function
 }}
 
 \seealso{
-Other StanModel: 
-\code{\link{as.list.StanModel}()}
+Other StanModel:
+\code{\link[=as.list.StanModel]{as.list.StanModel()}}
 }
 \concept{StanModel}

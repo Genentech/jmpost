@@ -17,13 +17,13 @@
 This method returns a \code{data.frame} of the longitudinal quantities.
 }
 \seealso{
-Other LongitudinalQuantities: 
+Other LongitudinalQuantities:
 \code{\link{LongitudinalQuantities-class}},
-\code{\link{as.data.frame.LongitudinalQuantities}()},
-\code{\link{autoplot.LongitudinalQuantities}()}
+\code{\link[=as.data.frame.LongitudinalQuantities]{as.data.frame.LongitudinalQuantities()}},
+\code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}}
 
-Other summary: 
-\code{\link{summary.SurvivalQuantities}()}
+Other summary:
+\code{\link[=summary.SurvivalQuantities]{summary.SurvivalQuantities()}}
 }
 \concept{LongitudinalQuantities}
 \concept{summary}

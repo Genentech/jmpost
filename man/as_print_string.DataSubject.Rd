@@ -17,11 +17,11 @@
 Converts \code{\link{DataSubject}} object into a printable string.
 }
 \seealso{
-Other DataSubject: 
+Other DataSubject:
 \code{\link{DataSubject-class}},
-\code{\link{as.data.frame.DataSubject}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSubject}()}
+\code{\link[=as.data.frame.DataSubject]{as.data.frame.DataSubject()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}}
 }
 \concept{DataSubject}
 \keyword{internal}

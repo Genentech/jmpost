@@ -35,10 +35,10 @@ which provide metadata for who the quantity belongs to and at what time point it
 }}
 
 \seealso{
-Other Quantities: 
-\code{\link{as.data.frame.Quantities}()},
-\code{\link{as_print_string.Quantities}()},
-\code{\link{summary.Quantities}()}
+Other Quantities:
+\code{\link[=as.data.frame.Quantities]{as.data.frame.Quantities()}},
+\code{\link[=as_print_string.Quantities]{as_print_string.Quantities()}},
+\code{\link[=summary.Quantities]{summary.Quantities()}}
 }
 \concept{Quantities}
 \keyword{internal}

@@ -16,9 +16,9 @@ Returns a named list where each element of the list corresponds
 to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 }
 \seealso{
-Other Link: 
+Other Link:
 \code{\link{Link-class}},
-\code{\link{as.StanModule.Link}()},
-\code{\link{length.Link}()}
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=length.Link]{length.Link()}}
 }
 \concept{Link}

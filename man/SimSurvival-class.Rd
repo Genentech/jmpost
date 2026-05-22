@@ -71,10 +71,10 @@ increased computation time.
 }
 
 \seealso{
-Other SimSurvival: 
-\code{\link{SimSurvivalExponential}()},
-\code{\link{SimSurvivalGamma}()},
-\code{\link{SimSurvivalLogLogistic}()},
-\code{\link{SimSurvivalWeibullPH}()}
+Other SimSurvival:
+\code{\link[=SimSurvivalExponential]{SimSurvivalExponential()}},
+\code{\link[=SimSurvivalGamma]{SimSurvivalGamma()}},
+\code{\link[=SimSurvivalLogLogistic]{SimSurvivalLogLogistic()}},
+\code{\link[=SimSurvivalWeibullPH]{SimSurvivalWeibullPH()}}
 }
 \concept{SimSurvival}

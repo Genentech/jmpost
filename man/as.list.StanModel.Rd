@@ -16,7 +16,7 @@ Returns a named list where each element of the list corresponds
 to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 }
 \seealso{
-Other StanModel: 
+Other StanModel:
 \code{\link{StanModel-class}}
 }
 \concept{StanModel}

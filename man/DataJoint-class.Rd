@@ -31,14 +31,14 @@ The \code{DataJoint} class handles combining data from a \code{\link{DataSurviva
 }}
 
 \seealso{
-Other DataObjects: 
+Other DataObjects:
 \code{\link{DataLongitudinal-class}},
 \code{\link{DataSubject-class}},
 \code{\link{DataSurvival-class}}
 
-Other DataJoint: 
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{subset.DataJoint}()}
+Other DataJoint:
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=subset.DataJoint]{subset.DataJoint()}}
 }
 \concept{DataJoint}
 \concept{DataObjects}

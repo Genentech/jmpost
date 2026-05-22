@@ -17,11 +17,11 @@
 Converts \code{\link{DataLongitudinal}} object into a printable string.
 }
 \seealso{
-Other DataLongitudinal: 
+Other DataLongitudinal:
 \code{\link{DataLongitudinal-class}},
-\code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataLongitudinal}()}
+\code{\link[=as.data.frame.DataLongitudinal]{as.data.frame.DataLongitudinal()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}}
 }
 \concept{DataLongitudinal}
 \keyword{internal}

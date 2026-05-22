@@ -16,18 +16,18 @@ Converts a ParameterList object to a list of parameter data values
 for a Stan model.
 }
 \seealso{
-Other as_stan_list: 
-\code{\link{as_stan_list}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list.Prior}()}
+Other as_stan_list:
+\code{\link[=as_stan_list]{as_stan_list()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=as_stan_list.Parameter]{as_stan_list.Parameter()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 
-Other ParameterList: 
+Other ParameterList:
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
-\code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.list.ParameterList}()},
-\code{\link{as_print_string.ParameterList}()}
+\code{\link[=as.StanModule.ParameterList]{as.StanModule.ParameterList()}},
+\code{\link[=as.list.ParameterList]{as.list.ParameterList()}},
+\code{\link[=as_print_string.ParameterList]{as_print_string.ParameterList()}}
 }
 \concept{ParameterList}
 \concept{as_stan_list}

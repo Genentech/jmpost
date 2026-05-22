@@ -32,9 +32,9 @@ element of \code{group}}
 }}
 
 \seealso{
-Other LongitudinalQuantities: 
-\code{\link{as.data.frame.LongitudinalQuantities}()},
-\code{\link{autoplot.LongitudinalQuantities}()},
-\code{\link{summary.LongitudinalQuantities}()}
+Other LongitudinalQuantities:
+\code{\link[=as.data.frame.LongitudinalQuantities]{as.data.frame.LongitudinalQuantities()}},
+\code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}},
+\code{\link[=summary.LongitudinalQuantities]{summary.LongitudinalQuantities()}}
 }
 \concept{LongitudinalQuantities}

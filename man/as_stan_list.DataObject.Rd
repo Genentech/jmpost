@@ -46,33 +46,33 @@ Coerces a data object into a \code{list} of data components required
 for fitting a \code{\link{JointModel}}. See the "Extending jmpost" vignette for more details.
 }
 \seealso{
-Other DataSubject: 
+Other DataSubject:
 \code{\link{DataSubject-class}},
-\code{\link{as.data.frame.DataSubject}()},
-\code{\link{as_print_string.DataSubject}()},
-\code{\link{extractVariableNames.DataSubject}()}
+\code{\link[=as.data.frame.DataSubject]{as.data.frame.DataSubject()}},
+\code{\link[=as_print_string.DataSubject]{as_print_string.DataSubject()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}}
 
-Other DataLongitudinal: 
+Other DataLongitudinal:
 \code{\link{DataLongitudinal-class}},
-\code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as_print_string.DataLongitudinal}()},
-\code{\link{extractVariableNames.DataLongitudinal}()}
+\code{\link[=as.data.frame.DataLongitudinal]{as.data.frame.DataLongitudinal()}},
+\code{\link[=as_print_string.DataLongitudinal]{as_print_string.DataLongitudinal()}},
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}}
 
-Other DataSurvival: 
+Other DataSurvival:
 \code{\link{DataSurvival-class}},
-\code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as_print_string.DataSurvival}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+\code{\link[=as.data.frame.DataSurvival]{as.data.frame.DataSurvival()}},
+\code{\link[=as_print_string.DataSurvival]{as_print_string.DataSurvival()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 
-Other as_stan_list: 
-\code{\link{as_stan_list}()},
-\code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list.ParameterList}()},
-\code{\link{as_stan_list.Prior}()}
+Other as_stan_list:
+\code{\link[=as_stan_list]{as_stan_list()}},
+\code{\link[=as_stan_list.Parameter]{as_stan_list.Parameter()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 
-Other DataJoint: 
+Other DataJoint:
 \code{\link{DataJoint-class}},
-\code{\link{subset.DataJoint}()}
+\code{\link[=subset.DataJoint]{subset.DataJoint()}}
 }
 \concept{DataJoint}
 \concept{DataLongitudinal}

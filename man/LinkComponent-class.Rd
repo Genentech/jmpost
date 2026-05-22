@@ -42,10 +42,10 @@ For full details about the specification of a \code{LinkComponent} please see
 }}
 
 \seealso{
-Other LinkComponent: 
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.list.LinkComponent}()},
-\code{\link{getParameters}()},
-\code{\link{initialValues}()}
+Other LinkComponent:
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.list.LinkComponent]{as.list.LinkComponent()}},
+\code{\link[=getParameters]{getParameters()}},
+\code{\link[=initialValues]{initialValues()}}
 }
 \concept{LinkComponent}

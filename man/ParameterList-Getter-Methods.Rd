@@ -35,11 +35,11 @@ Getter functions for the slots of a \code{\link{ParameterList}} object
 
 }}
 \seealso{
-Other ParameterList: 
+Other ParameterList:
 \code{\link{ParameterList-class}},
-\code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.list.ParameterList}()},
-\code{\link{as_print_string.ParameterList}()},
-\code{\link{as_stan_list.ParameterList}()}
+\code{\link[=as.StanModule.ParameterList]{as.StanModule.ParameterList()}},
+\code{\link[=as.list.ParameterList]{as.list.ParameterList()}},
+\code{\link[=as_print_string.ParameterList]{as_print_string.ParameterList()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}}
 }
 \concept{ParameterList}

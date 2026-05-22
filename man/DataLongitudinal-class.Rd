@@ -32,16 +32,16 @@ observations that contain missing values in the required variables are removed.}
 }}
 
 \seealso{
-Other DataObjects: 
+Other DataObjects:
 \code{\link{DataJoint-class}},
 \code{\link{DataSubject-class}},
 \code{\link{DataSurvival-class}}
 
-Other DataLongitudinal: 
-\code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as_print_string.DataLongitudinal}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataLongitudinal}()}
+Other DataLongitudinal:
+\code{\link[=as.data.frame.DataLongitudinal]{as.data.frame.DataLongitudinal()}},
+\code{\link[=as_print_string.DataLongitudinal]{as_print_string.DataLongitudinal()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}}
 }
 \concept{DataLongitudinal}
 \concept{DataObjects}

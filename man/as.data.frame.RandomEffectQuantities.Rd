@@ -15,11 +15,11 @@
 Returns a \code{data.frame} of the subject-level random effect parameter samples.
 }
 \seealso{
-Other RandomEffectQuantities: 
-\code{\link{LongitudinalRandomEffects}()},
+Other RandomEffectQuantities:
+\code{\link[=LongitudinalRandomEffects]{LongitudinalRandomEffects()}},
 \code{\link{RandomEffectQuantities-class}},
-\code{\link{as_print_string.RandomEffectQuantities}()},
-\code{\link{summary.RandomEffectQuantities}()}
+\code{\link[=as_print_string.RandomEffectQuantities]{as_print_string.RandomEffectQuantities()}},
+\code{\link[=summary.RandomEffectQuantities]{summary.RandomEffectQuantities()}}
 }
 \concept{RandomEffectQuantities}
 \keyword{internal}

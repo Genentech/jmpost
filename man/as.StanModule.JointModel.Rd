@@ -15,17 +15,17 @@
 Converts a \code{\link{JointModel}} object to a \code{\link{StanModule}} object
 }
 \seealso{
-Other JointModel: 
+Other JointModel:
 \code{\link{JointModel-class}},
-\code{\link{as.character.JointModel}()}
+\code{\link[=as.character.JointModel]{as.character.JointModel()}}
 
-Other as.StanModule: 
-\code{\link{as.StanModule}()},
-\code{\link{as.StanModule.Link}()},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.StanModule.Prior}()}
+Other as.StanModule:
+\code{\link[=as.StanModule]{as.StanModule()}},
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.StanModule.Parameter]{as.StanModule.Parameter()}},
+\code{\link[=as.StanModule.ParameterList]{as.StanModule.ParameterList()}},
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}}
 }
 \concept{JointModel}
 \concept{as.StanModule}

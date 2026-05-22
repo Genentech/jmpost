@@ -17,19 +17,19 @@
 Converts a \code{\link{Prior}} object to a \code{\link{StanModule}} object
 }
 \seealso{
-Other Prior-internal: 
+Other Prior-internal:
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
-\code{\link{as.character.Prior}()},
-\code{\link{as_stan_list.Prior}()}
+\code{\link[=as.character.Prior]{as.character.Prior()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 
-Other as.StanModule: 
-\code{\link{as.StanModule}()},
-\code{\link{as.StanModule.JointModel}()},
-\code{\link{as.StanModule.Link}()},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule.ParameterList}()}
+Other as.StanModule:
+\code{\link[=as.StanModule]{as.StanModule()}},
+\code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}},
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.StanModule.Parameter]{as.StanModule.Parameter()}},
+\code{\link[=as.StanModule.ParameterList]{as.StanModule.ParameterList()}}
 }
 \concept{Prior-internal}
 \concept{as.StanModule}

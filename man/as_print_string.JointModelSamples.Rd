@@ -15,8 +15,8 @@
 Converts \code{\link{JointModelSamples}} object into a printable string.
 }
 \seealso{
-Other JointModelSamples: 
-\code{\link{LongitudinalRandomEffects}()}
+Other JointModelSamples:
+\code{\link[=LongitudinalRandomEffects]{LongitudinalRandomEffects()}}
 }
 \concept{JointModelSamples}
 \keyword{internal}

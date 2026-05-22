@@ -32,8 +32,8 @@ Joint Model Object and Constructor Function
 }}
 
 \seealso{
-Other JointModel: 
-\code{\link{as.StanModule.JointModel}()},
-\code{\link{as.character.JointModel}()}
+Other JointModel:
+\code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}},
+\code{\link[=as.character.JointModel]{as.character.JointModel()}}
 }
 \concept{JointModel}

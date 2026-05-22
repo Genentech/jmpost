@@ -15,10 +15,10 @@
 \code{Quantities} -> \code{data.frame}
 }
 \seealso{
-Other Quantities: 
+Other Quantities:
 \code{\link{Quantities-class}},
-\code{\link{as_print_string.Quantities}()},
-\code{\link{summary.Quantities}()}
+\code{\link[=as_print_string.Quantities]{as_print_string.Quantities()}},
+\code{\link[=summary.Quantities]{summary.Quantities()}}
 }
 \concept{Quantities}
 \keyword{internal}
