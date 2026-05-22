@@ -37,11 +37,11 @@ which provide metadata for who the parameter corresponds to as well as which par
 }}
 
 \seealso{
-Other RandomEffectQuantities: 
-\code{\link{LongitudinalRandomEffects}()},
-\code{\link{as.data.frame.RandomEffectQuantities}()},
-\code{\link{as_print_string.RandomEffectQuantities}()},
-\code{\link{summary.RandomEffectQuantities}()}
+Other RandomEffectQuantities:
+\code{\link[=LongitudinalRandomEffects]{LongitudinalRandomEffects()}},
+\code{\link[=as.data.frame.RandomEffectQuantities]{as.data.frame.RandomEffectQuantities()}},
+\code{\link[=as_print_string.RandomEffectQuantities]{as_print_string.RandomEffectQuantities()}},
+\code{\link[=summary.RandomEffectQuantities]{summary.RandomEffectQuantities()}}
 }
 \concept{RandomEffectQuantities}
 \keyword{internal}

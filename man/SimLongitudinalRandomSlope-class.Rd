@@ -11,7 +11,7 @@ SimLongitudinalRandomSlope(
   times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
   intercept = 50,
   slope_mu = c(0.01, 0.03),
-  slope_sigma = 0.5,
+  slope_sigma = c(0.5, 0.6),
   sigma = 2,
   link_dsld = 0,
   link_identity = 0
@@ -20,11 +20,11 @@ SimLongitudinalRandomSlope(
 \arguments{
 \item{times}{(\code{numeric})\cr the times to generate observations at.}
 
-\item{intercept}{(\code{number})\cr the mean baseline value for each study.}
+\item{intercept}{(\code{numeric})\cr the mean baseline value for each study.}
 
 \item{slope_mu}{(\code{numeric})\cr the population slope for each treatment arm.}
 
-\item{slope_sigma}{(\code{number})\cr the random slope standard deviation.}
+\item{slope_sigma}{(\code{numeric})\cr the random slope standard deviation for each treatment arm.}
 
 \item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
 
@@ -52,7 +52,7 @@ Simulate Longitudinal Data from a Random Slope Model
 }}
 
 \seealso{
-Other SimLongitudinal: 
+Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},
 \code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalGSF-class}},

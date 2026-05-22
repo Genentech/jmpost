@@ -17,14 +17,14 @@
 This method returns a \code{data.frame} of the longitudinal quantities.
 }
 \seealso{
-Other SurvivalQuantities: 
+Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
-\code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{autoplot.SurvivalQuantities}()},
-\code{\link{brierScore.SurvivalQuantities}()}
+\code{\link[=as.data.frame.SurvivalQuantities]{as.data.frame.SurvivalQuantities()}},
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}},
+\code{\link[=brierScore.SurvivalQuantities]{brierScore.SurvivalQuantities()}}
 
-Other summary: 
-\code{\link{summary.LongitudinalQuantities}()}
+Other summary:
+\code{\link[=summary.LongitudinalQuantities]{summary.LongitudinalQuantities()}}
 }
 \concept{SurvivalQuantities}
 \concept{summary}

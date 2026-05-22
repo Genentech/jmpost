@@ -22,16 +22,16 @@ Extract a \code{list} that maps the variable names in a user-defined
 \code{data.frame} to standardised values.
 }
 \seealso{
-Other DataSurvival: 
+Other DataSurvival:
 \code{\link{DataSurvival-class}},
-\code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as_print_string.DataSurvival}()},
-\code{\link{as_stan_list.DataSubject}()}
+\code{\link[=as.data.frame.DataSurvival]{as.data.frame.DataSurvival()}},
+\code{\link[=as_print_string.DataSurvival]{as_print_string.DataSurvival()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}}
 
-Other extractVariableNames: 
-\code{\link{extractVariableNames}()},
-\code{\link{extractVariableNames.DataLongitudinal}()},
-\code{\link{extractVariableNames.DataSubject}()}
+Other extractVariableNames:
+\code{\link[=extractVariableNames]{extractVariableNames()}},
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}}
 }
 \concept{DataSurvival}
 \concept{extractVariableNames}

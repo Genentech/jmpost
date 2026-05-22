@@ -27,7 +27,6 @@ Language: en-GB
 URL: https://genentech.github.io/jmpost/
 BugReports: https://github.com/Genentech/jmpost/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -133,3 +132,4 @@ Collate:
 VignetteBuilder: knitr
 RdMacros: Rdpack
 LazyData: true
+Config/roxygen2/version: 8.0.0

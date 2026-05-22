@@ -15,10 +15,10 @@
 \code{as.data.frame}
 }
 \seealso{
-Other SurvivalQuantities: 
+Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
-\code{\link{autoplot.SurvivalQuantities}()},
-\code{\link{brierScore.SurvivalQuantities}()},
-\code{\link{summary.SurvivalQuantities}()}
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}},
+\code{\link[=brierScore.SurvivalQuantities]{brierScore.SurvivalQuantities()}},
+\code{\link[=summary.SurvivalQuantities]{summary.SurvivalQuantities()}}
 }
 \concept{SurvivalQuantities}

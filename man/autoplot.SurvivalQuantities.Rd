@@ -24,15 +24,15 @@ by each group/subject.}
 Automatic Plotting for `SurvivalQuantities``
 }
 \seealso{
-Other SurvivalQuantities: 
+Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
-\code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{brierScore.SurvivalQuantities}()},
-\code{\link{summary.SurvivalQuantities}()}
+\code{\link[=as.data.frame.SurvivalQuantities]{as.data.frame.SurvivalQuantities()}},
+\code{\link[=brierScore.SurvivalQuantities]{brierScore.SurvivalQuantities()}},
+\code{\link[=summary.SurvivalQuantities]{summary.SurvivalQuantities()}}
 
-Other autoplot: 
-\code{\link{autoplot}()},
-\code{\link{autoplot.LongitudinalQuantities}()}
+Other autoplot:
+\code{\link{autoplot}},
+\code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}}
 }
 \concept{SurvivalQuantities}
 \concept{autoplot}

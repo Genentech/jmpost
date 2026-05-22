@@ -16,17 +16,17 @@ Converts a Parameter object to a list of parameter data values
 for a Stan model.
 }
 \seealso{
-Other as_stan_list: 
-\code{\link{as_stan_list}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{as_stan_list.ParameterList}()},
-\code{\link{as_stan_list.Prior}()}
+Other as_stan_list:
+\code{\link[=as_stan_list]{as_stan_list()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 
-Other Parameter: 
+Other Parameter:
 \code{\link{Parameter-Getter-Methods}},
 \code{\link{Parameter-class}},
-\code{\link{as.StanModule.Parameter}()},
-\code{\link{as.character.Parameter}()}
+\code{\link[=as.StanModule.Parameter]{as.StanModule.Parameter()}},
+\code{\link[=as.character.Parameter]{as.character.Parameter()}}
 }
 \concept{Parameter}
 \concept{as_stan_list}

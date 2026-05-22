@@ -25,16 +25,16 @@ Extract a \code{list} that maps the variable names in a user-defined
 \code{data.frame} to standardised values.
 }
 \seealso{
-Other DataLongitudinal: 
+Other DataLongitudinal:
 \code{\link{DataLongitudinal-class}},
-\code{\link{as.data.frame.DataLongitudinal}()},
-\code{\link{as_print_string.DataLongitudinal}()},
-\code{\link{as_stan_list.DataSubject}()}
+\code{\link[=as.data.frame.DataLongitudinal]{as.data.frame.DataLongitudinal()}},
+\code{\link[=as_print_string.DataLongitudinal]{as_print_string.DataLongitudinal()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}}
 
-Other extractVariableNames: 
-\code{\link{extractVariableNames}()},
-\code{\link{extractVariableNames.DataSubject}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+Other extractVariableNames:
+\code{\link[=extractVariableNames]{extractVariableNames()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 }
 \concept{DataLongitudinal}
 \concept{extractVariableNames}

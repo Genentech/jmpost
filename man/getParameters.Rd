@@ -29,10 +29,10 @@ Extract any modelling parameters as a \code{\link{ParameterList}} object
 from a model.
 }
 \seealso{
-Other LinkComponent: 
+Other LinkComponent:
 \code{\link{LinkComponent-class}},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.list.LinkComponent}()},
-\code{\link{initialValues}()}
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.list.LinkComponent]{as.list.LinkComponent()}},
+\code{\link[=initialValues]{initialValues()}}
 }
 \concept{LinkComponent}

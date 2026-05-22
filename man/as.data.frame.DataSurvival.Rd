@@ -16,10 +16,10 @@ Converts a \code{\link{DataSurvival}} object into a \code{data.frame}.
 The subject variable is cast to factor.
 }
 \seealso{
-Other DataSurvival: 
+Other DataSurvival:
 \code{\link{DataSurvival-class}},
-\code{\link{as_print_string.DataSurvival}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+\code{\link[=as_print_string.DataSurvival]{as_print_string.DataSurvival()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 }
 \concept{DataSurvival}

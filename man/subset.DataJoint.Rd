@@ -32,8 +32,8 @@ subset(x, groups)
 }
 }
 \seealso{
-Other DataJoint: 
+Other DataJoint:
 \code{\link{DataJoint-class}},
-\code{\link{as_stan_list.DataSubject}()}
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}}
 }
 \concept{DataJoint}

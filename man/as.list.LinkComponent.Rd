@@ -16,10 +16,10 @@ Returns a named list where each element of the list corresponds
 to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 }
 \seealso{
-Other LinkComponent: 
+Other LinkComponent:
 \code{\link{LinkComponent-class}},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{getParameters}()},
-\code{\link{initialValues}()}
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=getParameters]{getParameters()}},
+\code{\link[=initialValues]{initialValues()}}
 }
 \concept{LinkComponent}

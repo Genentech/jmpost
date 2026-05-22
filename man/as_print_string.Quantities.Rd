@@ -15,10 +15,10 @@
 Converts \code{\link{Quantities}} object into a printable string.
 }
 \seealso{
-Other Quantities: 
+Other Quantities:
 \code{\link{Quantities-class}},
-\code{\link{as.data.frame.Quantities}()},
-\code{\link{summary.Quantities}()}
+\code{\link[=as.data.frame.Quantities]{as.data.frame.Quantities()}},
+\code{\link[=summary.Quantities]{summary.Quantities()}}
 }
 \concept{Quantities}
 \keyword{internal}

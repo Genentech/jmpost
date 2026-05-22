@@ -17,11 +17,11 @@
 Converts \code{\link{DataSurvival}} object into a printable string.
 }
 \seealso{
-Other DataSurvival: 
+Other DataSurvival:
 \code{\link{DataSurvival-class}},
-\code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+\code{\link[=as.data.frame.DataSurvival]{as.data.frame.DataSurvival()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 }
 \concept{DataSurvival}
 \keyword{internal}

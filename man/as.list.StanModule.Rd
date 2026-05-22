@@ -18,9 +18,9 @@ Returns a named list where each element of the list corresponds
 to a Stan modelling block e.g. \code{data}, \code{model}, etc.
 }
 \seealso{
-Other StanModule: 
+Other StanModule:
 \code{\link{StanModule-class}},
-\code{\link{as.character.StanModule}()},
-\code{\link{as_print_string.StanModule}()}
+\code{\link[=as.character.StanModule]{as.character.StanModule()}},
+\code{\link[=as_print_string.StanModule]{as_print_string.StanModule()}}
 }
 \concept{StanModule}

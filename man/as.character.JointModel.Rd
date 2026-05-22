@@ -15,8 +15,8 @@
 Renders a \code{\link{JointModel}} object to a stan program
 }
 \seealso{
-Other JointModel: 
+Other JointModel:
 \code{\link{JointModel-class}},
-\code{\link{as.StanModule.JointModel}()}
+\code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}}
 }
 \concept{JointModel}

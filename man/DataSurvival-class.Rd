@@ -28,16 +28,16 @@ for fitting a \code{\link{JointModel}}.
 }}
 
 \seealso{
-Other DataObjects: 
+Other DataObjects:
 \code{\link{DataJoint-class}},
 \code{\link{DataLongitudinal-class}},
 \code{\link{DataSubject-class}}
 
-Other DataSurvival: 
-\code{\link{as.data.frame.DataSurvival}()},
-\code{\link{as_print_string.DataSurvival}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+Other DataSurvival:
+\code{\link[=as.data.frame.DataSurvival]{as.data.frame.DataSurvival()}},
+\code{\link[=as_print_string.DataSurvival]{as_print_string.DataSurvival()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 }
 \concept{DataObjects}
 \concept{DataSurvival}

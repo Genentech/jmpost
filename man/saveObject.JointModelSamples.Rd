@@ -20,7 +20,7 @@ ensuring that all of the Stan samples are correctly stored. Note that as
 if you call \code{saveRDS} directly on the object.
 }
 \seealso{
-Other saveObject: 
-\code{\link{saveObject}()}
+Other saveObject:
+\code{\link[=saveObject]{saveObject()}}
 }
 \concept{saveObject}

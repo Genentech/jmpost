@@ -18,17 +18,17 @@ Converts a Prior object to a list of parameter data values
 for a Stan model.
 }
 \seealso{
-Other as_stan_list: 
-\code{\link{as_stan_list}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list.ParameterList}()}
+Other as_stan_list:
+\code{\link[=as_stan_list]{as_stan_list()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=as_stan_list.Parameter]{as_stan_list.Parameter()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}}
 
-Other Prior-internal: 
+Other Prior-internal:
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
-\code{\link{as.StanModule.Prior}()},
-\code{\link{as.character.Prior}()}
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}},
+\code{\link[=as.character.Prior]{as.character.Prior()}}
 }
 \concept{Prior-internal}
 \concept{as_stan_list}

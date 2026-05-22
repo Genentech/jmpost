@@ -93,7 +93,7 @@ Simulate Longitudinal Data from a Claret-Bruno Model
 }}
 
 \seealso{
-Other SimLongitudinal: 
+Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},
 \code{\link{SimLongitudinalGSF-class}},
 \code{\link{SimLongitudinalRandomSlope-class}},

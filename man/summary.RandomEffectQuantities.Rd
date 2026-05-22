@@ -27,11 +27,11 @@ A \code{data.frame} with the following variables:
 This method returns a summary statistic \code{data.frame} of the random effect parameters
 }
 \seealso{
-Other RandomEffectQuantities: 
-\code{\link{LongitudinalRandomEffects}()},
+Other RandomEffectQuantities:
+\code{\link[=LongitudinalRandomEffects]{LongitudinalRandomEffects()}},
 \code{\link{RandomEffectQuantities-class}},
-\code{\link{as.data.frame.RandomEffectQuantities}()},
-\code{\link{as_print_string.RandomEffectQuantities}()}
+\code{\link[=as.data.frame.RandomEffectQuantities]{as.data.frame.RandomEffectQuantities()}},
+\code{\link[=as_print_string.RandomEffectQuantities]{as_print_string.RandomEffectQuantities()}}
 }
 \concept{RandomEffectQuantities}
 \keyword{internal}

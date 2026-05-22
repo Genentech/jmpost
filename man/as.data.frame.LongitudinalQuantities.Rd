@@ -15,9 +15,9 @@
 \code{as.data.frame}
 }
 \seealso{
-Other LongitudinalQuantities: 
+Other LongitudinalQuantities:
 \code{\link{LongitudinalQuantities-class}},
-\code{\link{autoplot.LongitudinalQuantities}()},
-\code{\link{summary.LongitudinalQuantities}()}
+\code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}},
+\code{\link[=summary.LongitudinalQuantities]{summary.LongitudinalQuantities()}}
 }
 \concept{LongitudinalQuantities}

@@ -14,10 +14,10 @@ Extract a \code{list} that maps the variable names in a user-defined
 \code{data.frame} to standardised values.
 }
 \seealso{
-Other extractVariableNames: 
-\code{\link{extractVariableNames.DataLongitudinal}()},
-\code{\link{extractVariableNames.DataSubject}()},
-\code{\link{extractVariableNames.DataSurvival}()}
+Other extractVariableNames:
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}},
+\code{\link[=extractVariableNames.DataSurvival]{extractVariableNames.DataSurvival()}}
 }
 \concept{extractVariableNames}
 \keyword{internal}

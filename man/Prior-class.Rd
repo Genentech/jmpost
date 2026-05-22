@@ -60,10 +60,10 @@ Specifies the prior distribution in a Stan Model
 }}
 
 \seealso{
-Other Prior-internal: 
+Other Prior-internal:
 \code{\link{Prior-Getter-Methods}},
-\code{\link{as.StanModule.Prior}()},
-\code{\link{as.character.Prior}()},
-\code{\link{as_stan_list.Prior}()}
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}},
+\code{\link[=as.character.Prior]{as.character.Prior()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 }
 \concept{Prior-internal}

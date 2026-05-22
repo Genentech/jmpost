@@ -88,7 +88,7 @@ Simulate Longitudinal Data from a Stein-Fojo Model
 }}
 
 \seealso{
-Other SimLongitudinal: 
+Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},
 \code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalGSF-class}},
