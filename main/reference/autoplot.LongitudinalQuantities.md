@@ -34,5 +34,5 @@ Other LongitudinalQuantities:
 [`summary.LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.md)
 
 Other autoplot:
-[`autoplot()`](https://genentech.github.io/jmpost/reference/autoplot.md),
+[`autoplot`](https://genentech.github.io/jmpost/reference/autoplot.md),
 [`autoplot.SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.md)

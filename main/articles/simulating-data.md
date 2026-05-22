@@ -7,7 +7,7 @@ library(jmpost)
 #>   method                  from   
 #>   heightDetails.titleGrob ggplot2
 #>   widthDetails.titleGrob  ggplot2
-#> CmdStan path set to: /root/.cmdstan/cmdstan-2.38.0
+#> CmdStan path set to: /root/.cmdstan/cmdstan-2.39.0
 ```
 
 The `jmpost` package includes data simulation functionality for the

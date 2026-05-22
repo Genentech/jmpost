@@ -26,6 +26,8 @@ Useful links:
 
 Authors:
 
+- Isaac Gravestock <isaac.gravestock@roche.com>
+
 - Craig Gower-Page <craig.gower-page@roche.com>
 
 - Francois Mercier <francois.mercier@roche.com>

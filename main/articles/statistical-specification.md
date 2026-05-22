@@ -97,10 +97,11 @@ where:
 - $`y_{ij}`$ is the tumour size for subject $`i`$ at timepoint $`j`$
 - $`\mu_{l(i)}`$ is the intercept for subject $`i`$
 - $`s_i`$ is the random slope for subject $`i`$ with
-  $`s_i \sim N(\mu_{sk(i)}, \sigma_s)`$
+  $`s_i \sim N(\mu_{sk(i)}, \sigma_{sk(i)})`$
 - $`\mu_{sk(i)}`$ is the mean for the random slope within treatment arm
   $`k(i)`$
-- $`\sigma_s`$ is the variance term for the slopes
+- $`\sigma_{sk(i)}`$ is the variance term for the slope in treatment arm
+  $`k(i)`$
 - $`\epsilon_{ij}`$ is the error term with
   $`\epsilon_{ij} \sim N(0, \sigma)`$
 - $`k(i)`$ is the treatment arm index for subject $`i`$

@@ -26,12 +26,12 @@ LongitudinalRandomSlope(
 - slope_mu:
 
   (`Prior`)\
-  for the population slope `slope_mu`.
+  for the population slope `slope_mu` (one per arm).
 
 - slope_sigma:
 
   (`Prior`)\
-  for the random slope standard deviation `slope_sigma`.
+  for the random slope standard deviation `slope_sigma` (one per arm).
 
 - sigma:
 

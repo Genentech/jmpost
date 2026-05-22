@@ -9,7 +9,7 @@ SimLongitudinalRandomSlope(
   times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
   intercept = 50,
   slope_mu = c(0.01, 0.03),
-  slope_sigma = 0.5,
+  slope_sigma = c(0.5, 0.6),
   sigma = 2,
   link_dsld = 0,
   link_identity = 0
@@ -25,7 +25,7 @@ SimLongitudinalRandomSlope(
 
 - intercept:
 
-  (`number`)\
+  (`numeric`)\
   the mean baseline value for each study.
 
 - slope_mu:
@@ -35,8 +35,8 @@ SimLongitudinalRandomSlope(
 
 - slope_sigma:
 
-  (`number`)\
-  the random slope standard deviation.
+  (`numeric`)\
+  the random slope standard deviation for each treatment arm.
 
 - sigma:
 

@@ -9,7 +9,3 @@ exist within a given Stan program.
 ``` r
 STAN_BLOCKS
 ```
-
-## Format
-
-An object of class `list` of length 7.
