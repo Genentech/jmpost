@@ -1,6 +1,4 @@
-
 test_that("Print method for LongitudinalRandomSlope works as expected", {
-
     expect_snapshot({
         x <- LongitudinalRandomSlope()
         print(x)
@@ -84,7 +82,12 @@ test_that("LongitudinalRandomSlope correctly generates an intercept per study", 
     })
 
     samples <- cmdstanr::as.CmdStanMCMC(mp)$draws(
-        c("lm_rs_intercept", "lm_rs_slope_mu", "lm_rs_slope_sigma", "lm_rs_sigma"),
+        c(
+            "lm_rs_intercept",
+            "lm_rs_slope_mu",
+            "lm_rs_slope_sigma",
+            "lm_rs_sigma"
+        ),
         format = "draws_matrix"
     )
 
@@ -116,7 +119,7 @@ test_that("Random Slope Model can recover known parameter values", {
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
-            slope_sigma = 0.2
+            slope_sigma = c(0.2, 0.3)
         ),
         .silent = TRUE
     )
@@ -155,21 +158,18 @@ test_that("Random Slope Model can recover known parameter values", {
         )
     })
 
-
     vars <- c(
-        "lm_rs_intercept",       # 30
-        "lm_rs_slope_mu",        # 1 , 3
-        "lm_rs_slope_sigma",     # 0.2
-        "lm_rs_sigma"            # 3
+        "lm_rs_intercept", # 30
+        "lm_rs_slope_mu", # 1 , 3
+        "lm_rs_slope_sigma", # 0.2, 0.3
+        "lm_rs_sigma" # 3
     )
 
     pars <- cmdstanr::as.CmdStanMCMC(mp)$summary(vars)
 
-
     ## Check that we can recover main effects parameters
-    z_score <- (c(30, 1, 3, 0.2, 3) - pars$mean) / pars$sd
+    z_score <- (c(30, 1, 3, 0.2, 0.3, 3) - pars$mean) / pars$sd
     expect_true(all(abs(z_score) < qnorm(0.95)))
-
 
     ## Check that we can recover random effects parameters
     pars <- suppressWarnings({
@@ -195,7 +195,6 @@ test_that("Random Slope Model can recover known parameter values", {
 })
 
 
-
 test_that("Random Slope Model left-censoring works as expected", {
     ## Generate data with known parameters
     set.seed(739)
@@ -207,15 +206,29 @@ test_that("Random Slope Model left-censoring works as expected", {
         ),
         survival = SimSurvivalExponential(1 / 100),
         longitudinal = SimLongitudinalRandomSlope(
-            times = c(-200, -150, -100, -50, 0, 1, 100, 125, 200, 300, 350, 400, 500, 600),
+            times = c(
+                -200,
+                -150,
+                -100,
+                -50,
+                0,
+                1,
+                100,
+                125,
+                200,
+                300,
+                350,
+                400,
+                500,
+                600
+            ),
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
-            slope_sigma = 0.2
+            slope_sigma = c(0.2, 0.4)
         ),
         .silent = TRUE
     )
-
 
     # Trash the data for negative values
     # As the data is censored this shouldn't impact the sampled predictions
@@ -258,21 +271,18 @@ test_that("Random Slope Model left-censoring works as expected", {
         )
     })
 
-
     vars <- c(
-        "lm_rs_intercept",       # 30
-        "lm_rs_slope_mu",        # 1 , 3
-        "lm_rs_slope_sigma",     # 0.2
-        "lm_rs_sigma"            # 3
+        "lm_rs_intercept", # 30
+        "lm_rs_slope_mu", # 1 , 3
+        "lm_rs_slope_sigma", # 0.2, 0.4
+        "lm_rs_sigma" # 3
     )
 
     pars <- mp@results$summary(vars)
 
-
     ## Check that we can recover main effects parameters
-    z_score <- (c(30, 1, 3, 0.2, 3) - pars$mean) / pars$sd
+    z_score <- (c(30, 1, 3, 0.2, 0.4, 3) - pars$mean) / pars$sd
     expect_true(all(abs(z_score) < qnorm(0.95)))
-
 
     ## Check that we can recover random effects parameters
     pars <- suppressWarnings({
@@ -320,11 +330,10 @@ test_that("Quantity models pass the parser", {
 })
 
 
-
 test_that("Can generate valid initial values", {
-
     pars <- c(
-        "lm_rs_slope_sigma", "lm_rs_sigma"
+        "lm_rs_slope_sigma",
+        "lm_rs_sigma"
     )
 
     # Defaults work as expected
@@ -332,7 +341,6 @@ test_that("Can generate valid initial values", {
     vals <- initialValues(mod, n_chains = 1)
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 
     # Test all individual parameters throw error if given prior that can't sample
     # valid value
@@ -360,5 +368,4 @@ test_that("Can generate valid initial values", {
     vals <- unlist(initialValues(mod, n_chains = 200))
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 })

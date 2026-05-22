@@ -35,7 +35,6 @@ LongitudinalRandomSlope <- function(
     slope_sigma = prior_lognormal(0, 1.5),
     sigma = prior_lognormal(0, 1.5)
 ) {
-
     stan <- StanModule(
         x = "lm-random-slope/model.stan"
     )
@@ -49,13 +48,28 @@ LongitudinalRandomSlope <- function(
             name = "Random Slope",
             stan = stan,
             parameters = ParameterList(
-                Parameter(name = "lm_rs_intercept", prior = intercept, size = "n_studies"),
-                Parameter(name = "lm_rs_slope_mu", prior = slope_mu, size = "n_arms"),
-                Parameter(name = "lm_rs_slope_sigma", prior = slope_sigma, size = 1),
+                Parameter(
+                    name = "lm_rs_intercept",
+                    prior = intercept,
+                    size = "n_studies"
+                ),
+                Parameter(
+                    name = "lm_rs_slope_mu",
+                    prior = slope_mu,
+                    size = "n_arms"
+                ),
+                Parameter(
+                    name = "lm_rs_slope_sigma",
+                    prior = slope_sigma,
+                    size = "n_arms"
+                ),
                 Parameter(name = "lm_rs_sigma", prior = sigma, size = 1),
                 Parameter(
                     name = "lm_rs_ind_rnd_slope",
-                    prior = prior_init_only(prior_normal(median(slope_mu), median(slope_sigma))),
+                    prior = prior_init_only(prior_normal(
+                        median(slope_mu),
+                        median(slope_sigma)
+                    )),
                     size = "n_subjects"
                 )
             )
@@ -80,7 +94,11 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
 
 
 #' @export
-linkDSLD.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+linkDSLD.LongitudinalRandomSlope <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_dsld",
         stan = StanModule("lm-random-slope/link_dsld.stan"),
@@ -89,7 +107,11 @@ linkDSLD.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, 
 }
 
 #' @export
-linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+linkIdentity.LongitudinalRandomSlope <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_identity",
         stan = StanModule("lm-random-slope/link_identity.stan"),
@@ -98,7 +120,11 @@ linkIdentity.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), mod
 }
 
 #' @export
-linkGrowth.LongitudinalRandomSlope <- function(prior = prior_normal(0, 2), model, ...) {
+linkGrowth.LongitudinalRandomSlope <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_growth",
         stan = StanModule("lm-random-slope/link_growth.stan"),
