@@ -24,8 +24,8 @@ NULL
 #' @rdname LongitudinalRandomSlope-class
 #'
 #' @param intercept (`Prior`)\cr for the `intercept`.
-#' @param slope_mu (`Prior`)\cr for the population slope `slope_mu`.
-#' @param slope_sigma (`Prior`)\cr for the random slope standard deviation `slope_sigma`.
+#' @param slope_mu (`Prior`)\cr for the population slope `slope_mu` (one per arm).
+#' @param slope_sigma (`Prior`)\cr for the random slope standard deviation `slope_sigma` (one per arm).
 #' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
 #'
 #' @export

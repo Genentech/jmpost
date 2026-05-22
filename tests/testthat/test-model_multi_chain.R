@@ -1,4 +1,3 @@
-
 test_that("Can recover known distribution parameters from random slope model when using multiple chains", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(
@@ -34,7 +33,7 @@ test_that("Can recover known distribution parameters from random slope model whe
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
-            slope_sigma = 0.2,
+            slope_sigma = c(0.2, 0.4),
             link_dsld = 0.1
         ),
         .silent = TRUE
@@ -69,7 +68,6 @@ test_that("Can recover known distribution parameters from random slope model whe
         )
     })
 
-
     vars <- c(
         "sm_exp_lambda" = 1 / 200,
         "beta_os_cov[1]" = -0.1,
@@ -78,7 +76,8 @@ test_that("Can recover known distribution parameters from random slope model whe
         "lm_rs_intercept" = 30,
         "lm_rs_slope_mu[1]" = 1,
         "lm_rs_slope_mu[2]" = 3,
-        "lm_rs_slope_sigma" = 0.2,
+        "lm_rs_slope_sigma[1]" = 0.2,
+        "lm_rs_slope_sigma[2]" = 0.4,
         "link_dsld" = 0.1
     )
 
