@@ -13,9 +13,9 @@
 Returns the number of link components within the \code{\link{Link}} object
 }
 \seealso{
-Other Link: 
+Other Link:
 \code{\link{Link-class}},
-\code{\link{as.StanModule.Link}()},
-\code{\link{as.list.Link}()}
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=as.list.Link]{as.list.Link()}}
 }
 \concept{Link}

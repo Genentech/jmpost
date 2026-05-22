@@ -30,10 +30,10 @@ is just an internal utility method in order to share common code between
 \link{LongitudinalQuantities} and \link{SurvivalQuantities}
 }
 \seealso{
-Other Quantities: 
+Other Quantities:
 \code{\link{Quantities-class}},
-\code{\link{as.data.frame.Quantities}()},
-\code{\link{as_print_string.Quantities}()}
+\code{\link[=as.data.frame.Quantities]{as.data.frame.Quantities()}},
+\code{\link[=as_print_string.Quantities]{as_print_string.Quantities()}}
 }
 \concept{Quantities}
 \keyword{internal}

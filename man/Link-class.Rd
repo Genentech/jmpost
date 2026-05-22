@@ -33,9 +33,9 @@ Link(
 
 }
 \seealso{
-Other Link: 
-\code{\link{as.StanModule.Link}()},
-\code{\link{as.list.Link}()},
-\code{\link{length.Link}()}
+Other Link:
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=as.list.Link]{as.list.Link()}},
+\code{\link[=length.Link]{length.Link()}}
 }
 \concept{Link}

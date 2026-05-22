@@ -15,10 +15,10 @@
 Converts a \code{\link{Prior}} object to a character vector
 }
 \seealso{
-Other Prior-internal: 
+Other Prior-internal:
 \code{\link{Prior-Getter-Methods}},
 \code{\link{Prior-class}},
-\code{\link{as.StanModule.Prior}()},
-\code{\link{as_stan_list.Prior}()}
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 }
 \concept{Prior-internal}

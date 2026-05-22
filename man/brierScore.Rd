@@ -15,7 +15,7 @@ brierScore(object, ...)
 Returns the Brier Score for a given model
 }
 \seealso{
-Other brierScore: 
-\code{\link{brierScore.SurvivalQuantities}()}
+Other brierScore:
+\code{\link[=brierScore.SurvivalQuantities]{brierScore.SurvivalQuantities()}}
 }
 \concept{brierScore}

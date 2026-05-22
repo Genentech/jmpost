@@ -14,14 +14,14 @@ Helper function to extract subject-level random effects samples from the longitu
 sub-model of a joint model samples object.
 }
 \seealso{
-Other RandomEffectQuantities: 
+Other RandomEffectQuantities:
 \code{\link{RandomEffectQuantities-class}},
-\code{\link{as.data.frame.RandomEffectQuantities}()},
-\code{\link{as_print_string.RandomEffectQuantities}()},
-\code{\link{summary.RandomEffectQuantities}()}
+\code{\link[=as.data.frame.RandomEffectQuantities]{as.data.frame.RandomEffectQuantities()}},
+\code{\link[=as_print_string.RandomEffectQuantities]{as_print_string.RandomEffectQuantities()}},
+\code{\link[=summary.RandomEffectQuantities]{summary.RandomEffectQuantities()}}
 
-Other JointModelSamples: 
-\code{\link{as_print_string.JointModelSamples}()}
+Other JointModelSamples:
+\code{\link[=as_print_string.JointModelSamples]{as_print_string.JointModelSamples()}}
 }
 \concept{JointModelSamples}
 \concept{RandomEffectQuantities}

@@ -1,6 +1,4 @@
-
 ensure_test_data_1 <- function() {
-
     set.seed(739)
     simjdat <- SimJointData(
         design = list(
@@ -16,7 +14,7 @@ ensure_test_data_1 <- function() {
             intercept = 30,
             sigma = 3,
             slope_mu = c(1, 3),
-            slope_sigma = 0.2,
+            slope_sigma = c(0.2, 0.4),
             link_dsld = 0
         ),
         .silent = TRUE
@@ -24,7 +22,6 @@ ensure_test_data_1 <- function() {
 
     dat_os <- simjdat@survival
     dat_lm <- simjdat@longitudinal
-
 
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(
@@ -66,7 +63,6 @@ ensure_test_data_1 <- function() {
             parallel_chains = 1
         )
     })
-
 
     results <- list(
         dat_os = dat_os,

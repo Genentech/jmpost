@@ -99,7 +99,7 @@ Simulate Longitudinal Data from a GSF Model
 }}
 
 \seealso{
-Other SimLongitudinal: 
+Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},
 \code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalRandomSlope-class}},

@@ -8,7 +8,7 @@ parameters {
 
     array [n_studies] real lm_rs_intercept;
     array [n_arms] real lm_rs_slope_mu;
-    real<lower={{ machine_double_eps }}> lm_rs_slope_sigma;
+    vector<lower={{ machine_double_eps }}>[n_arms] lm_rs_slope_sigma;
     real<lower={{ machine_double_eps }}> lm_rs_sigma;
     vector[n_subjects] lm_rs_ind_rnd_slope;
 }
@@ -45,7 +45,7 @@ model {
 
     lm_rs_ind_rnd_slope ~ normal(
         lm_rs_slope_mu[subject_arm_index],
-        lm_rs_slope_sigma
+        lm_rs_slope_sigma[subject_arm_index]
     );
 }
 

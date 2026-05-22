@@ -16,10 +16,10 @@ Converts a \code{\link{DataSubject}} object into a \code{data.frame}.
 The subject variable is cast to factor.
 }
 \seealso{
-Other DataSubject: 
+Other DataSubject:
 \code{\link{DataSubject-class}},
-\code{\link{as_print_string.DataSubject}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSubject}()}
+\code{\link[=as_print_string.DataSubject]{as_print_string.DataSubject()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}}
 }
 \concept{DataSubject}

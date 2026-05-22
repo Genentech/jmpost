@@ -15,10 +15,10 @@
 Converts \code{\link{StanModule}} object into a printable string.
 }
 \seealso{
-Other StanModule: 
+Other StanModule:
 \code{\link{StanModule-class}},
-\code{\link{as.character.StanModule}()},
-\code{\link{as.list.StanModule}()}
+\code{\link[=as.character.StanModule]{as.character.StanModule()}},
+\code{\link[=as.list.StanModule]{as.list.StanModule()}}
 }
 \concept{StanModule}
 \keyword{internal}

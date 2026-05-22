@@ -15,20 +15,20 @@
 Converts a \code{\link{ParameterList}} object to a \code{\link{StanModule}} object
 }
 \seealso{
-Other ParameterList: 
+Other ParameterList:
 \code{\link{ParameterList-Getter-Methods}},
 \code{\link{ParameterList-class}},
-\code{\link{as.list.ParameterList}()},
-\code{\link{as_print_string.ParameterList}()},
-\code{\link{as_stan_list.ParameterList}()}
+\code{\link[=as.list.ParameterList]{as.list.ParameterList()}},
+\code{\link[=as_print_string.ParameterList]{as_print_string.ParameterList()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}}
 
-Other as.StanModule: 
-\code{\link{as.StanModule}()},
-\code{\link{as.StanModule.JointModel}()},
-\code{\link{as.StanModule.Link}()},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule.Prior}()}
+Other as.StanModule:
+\code{\link[=as.StanModule]{as.StanModule()}},
+\code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}},
+\code{\link[=as.StanModule.Link]{as.StanModule.Link()}},
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.StanModule.Parameter]{as.StanModule.Parameter()}},
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}}
 }
 \concept{ParameterList}
 \concept{as.StanModule}

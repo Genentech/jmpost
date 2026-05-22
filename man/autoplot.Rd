@@ -7,8 +7,8 @@
 See \code{\link[ggplot2:autoplot]{ggplot2::autoplot()}} for details.
 }
 \seealso{
-Other autoplot: 
-\code{\link{autoplot.LongitudinalQuantities}()},
-\code{\link{autoplot.SurvivalQuantities}()}
+Other autoplot:
+\code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}},
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}}
 }
 \concept{autoplot}

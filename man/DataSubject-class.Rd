@@ -35,16 +35,16 @@ fitting a \code{\link{JointModel}}.
 }}
 
 \seealso{
-Other DataObjects: 
+Other DataObjects:
 \code{\link{DataJoint-class}},
 \code{\link{DataLongitudinal-class}},
 \code{\link{DataSurvival-class}}
 
-Other DataSubject: 
-\code{\link{as.data.frame.DataSubject}()},
-\code{\link{as_print_string.DataSubject}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataSubject}()}
+Other DataSubject:
+\code{\link[=as.data.frame.DataSubject]{as.data.frame.DataSubject()}},
+\code{\link[=as_print_string.DataSubject]{as_print_string.DataSubject()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataSubject]{extractVariableNames.DataSubject()}}
 }
 \concept{DataObjects}
 \concept{DataSubject}

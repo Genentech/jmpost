@@ -19,10 +19,10 @@ Extracts a list of data elements from an object to be used as input
 to a Stan Model
 }
 \seealso{
-Other as_stan_list: 
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{as_stan_list.Parameter}()},
-\code{\link{as_stan_list.ParameterList}()},
-\code{\link{as_stan_list.Prior}()}
+Other as_stan_list:
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=as_stan_list.Parameter]{as_stan_list.Parameter()}},
+\code{\link[=as_stan_list.ParameterList]{as_stan_list.ParameterList()}},
+\code{\link[=as_stan_list.Prior]{as_stan_list.Prior()}}
 }
 \concept{as_stan_list}

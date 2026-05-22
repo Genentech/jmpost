@@ -1,4 +1,3 @@
-
 #' @include SimLongitudinal.R
 #' @include generics.R
 NULL
@@ -6,9 +5,9 @@ NULL
 #' Simulate Longitudinal Data from a Random Slope Model
 #'
 #' @param times (`numeric`)\cr the times to generate observations at.
-#' @param intercept (`number`)\cr the mean baseline value for each study.
+#' @param intercept (`numeric`)\cr the mean baseline value for each study.
 #' @param slope_mu (`numeric`)\cr the population slope for each treatment arm.
-#' @param slope_sigma (`number`)\cr the random slope standard deviation.
+#' @param slope_sigma (`numeric`)\cr the random slope standard deviation for each treatment arm.
 #' @param sigma (`number`)\cr the variance of the longitudinal values.
 #' @param link_dsld (`number`)\cr the link coefficient for the DSLD contribution.
 #' @param link_identity (`number`)\cr the link coefficient for the identity contribution.
@@ -42,11 +41,15 @@ SimLongitudinalRandomSlope <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
     intercept = 50,
     slope_mu = c(0.01, 0.03),
-    slope_sigma = 0.5,
+    slope_sigma = c(0.5, 0.6),
     sigma = 2,
     link_dsld = 0,
     link_identity = 0
 ) {
+    if (length(slope_sigma) == 1) {
+        slope_sigma <- rep(slope_sigma, length(slope_mu))
+    }
+
     .SimLongitudinalRandomSlope(
         times = times,
         intercept = intercept,
@@ -71,8 +74,8 @@ sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
             err = stats::rnorm(dplyr::n(), 0, object@sigma),
             sld_mu = .data$intercept + .data$slope_ind * .data$time,
             sld = .data$sld_mu + .data$err,
-            log_haz_link =
-                object@link_dsld * .data$slope_ind +
+            log_haz_link = object@link_dsld *
+                .data$slope_ind +
                 object@link_identity * .data$sld_mu
         )
 }
@@ -91,6 +94,11 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
     )
 
     assert_that(
+        length(object@slope_sigma) == nlevels(subjects_df[["arm"]]),
+        msg = "`length(slope_sigma)` should be equal to the number of arms"
+    )
+
+    assert_that(
         length(object@intercept) == nlevels(subjects_df[["study"]]),
         msg = "`length(intercept)` should be equal to the number of studies"
     )
@@ -102,9 +110,11 @@ sampleSubjects.SimLongitudinalRandomSlope <- function(object, subjects_df) {
 
     subjects_df |>
         dplyr::mutate(intercept = object@intercept[as.numeric(.data$study)]) |>
-        dplyr::mutate(slope_ind = stats::rnorm(
-            n = dplyr::n(),
-            mean = object@slope_mu[as.numeric(.data$arm)],
-            sd = object@slope_sigma
-        ))
+        dplyr::mutate(
+            slope_ind = stats::rnorm(
+                n = dplyr::n(),
+                mean = object@slope_mu[as.numeric(.data$arm)],
+                sd = object@slope_sigma[as.numeric(.data$arm)]
+            )
+        )
 }

@@ -37,9 +37,9 @@ of Stan code to be parsed.}
 }}
 
 \seealso{
-Other StanModule: 
-\code{\link{as.character.StanModule}()},
-\code{\link{as.list.StanModule}()},
-\code{\link{as_print_string.StanModule}()}
+Other StanModule:
+\code{\link[=as.character.StanModule]{as.character.StanModule()}},
+\code{\link[=as.list.StanModule]{as.list.StanModule()}},
+\code{\link[=as_print_string.StanModule]{as_print_string.StanModule()}}
 }
 \concept{StanModule}

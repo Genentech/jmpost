@@ -28,14 +28,14 @@ for the Survival estimates as detailed in \insertCite{blanche2015}{jmpost}.
 \insertAllCited{}
 }
 \seealso{
-Other brierScore: 
-\code{\link{brierScore}()}
+Other brierScore:
+\code{\link[=brierScore]{brierScore()}}
 
-Other SurvivalQuantities: 
+Other SurvivalQuantities:
 \code{\link{SurvivalQuantities-class}},
-\code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{autoplot.SurvivalQuantities}()},
-\code{\link{summary.SurvivalQuantities}()}
+\code{\link[=as.data.frame.SurvivalQuantities]{as.data.frame.SurvivalQuantities()}},
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}},
+\code{\link[=summary.SurvivalQuantities]{summary.SurvivalQuantities()}}
 }
 \concept{SurvivalQuantities}
 \concept{brierScore}

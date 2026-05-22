@@ -39,10 +39,10 @@ to generate.
 See the Vignette for further details of how to specify initial values.
 }
 \seealso{
-Other LinkComponent: 
+Other LinkComponent:
 \code{\link{LinkComponent-class}},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.list.LinkComponent}()},
-\code{\link{getParameters}()}
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.list.LinkComponent]{as.list.LinkComponent()}},
+\code{\link[=getParameters]{getParameters()}}
 }
 \concept{LinkComponent}

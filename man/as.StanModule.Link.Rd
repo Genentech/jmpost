@@ -15,18 +15,18 @@
 Converts a \code{\link{Link}} object to a \code{\link{StanModule}} object
 }
 \seealso{
-Other Link: 
+Other Link:
 \code{\link{Link-class}},
-\code{\link{as.list.Link}()},
-\code{\link{length.Link}()}
+\code{\link[=as.list.Link]{as.list.Link()}},
+\code{\link[=length.Link]{length.Link()}}
 
-Other as.StanModule: 
-\code{\link{as.StanModule}()},
-\code{\link{as.StanModule.JointModel}()},
-\code{\link{as.StanModule.LinkComponent}()},
-\code{\link{as.StanModule.Parameter}()},
-\code{\link{as.StanModule.ParameterList}()},
-\code{\link{as.StanModule.Prior}()}
+Other as.StanModule:
+\code{\link[=as.StanModule]{as.StanModule()}},
+\code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}},
+\code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},
+\code{\link[=as.StanModule.Parameter]{as.StanModule.Parameter()}},
+\code{\link[=as.StanModule.ParameterList]{as.StanModule.ParameterList()}},
+\code{\link[=as.StanModule.Prior]{as.StanModule.Prior()}}
 }
 \concept{Link}
 \concept{as.StanModule}

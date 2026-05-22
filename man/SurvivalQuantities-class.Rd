@@ -52,10 +52,10 @@ If \code{groups=NULL} then all subjects from original dataset will be selected
 }
 
 \seealso{
-Other SurvivalQuantities: 
-\code{\link{as.data.frame.SurvivalQuantities}()},
-\code{\link{autoplot.SurvivalQuantities}()},
-\code{\link{brierScore.SurvivalQuantities}()},
-\code{\link{summary.SurvivalQuantities}()}
+Other SurvivalQuantities:
+\code{\link[=as.data.frame.SurvivalQuantities]{as.data.frame.SurvivalQuantities()}},
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}},
+\code{\link[=brierScore.SurvivalQuantities]{brierScore.SurvivalQuantities()}},
+\code{\link[=summary.SurvivalQuantities]{summary.SurvivalQuantities()}}
 }
 \concept{SurvivalQuantities}

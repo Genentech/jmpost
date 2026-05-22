@@ -17,11 +17,11 @@
 Converts \code{\link{RandomEffectQuantities}} object into a printable string.
 }
 \seealso{
-Other RandomEffectQuantities: 
-\code{\link{LongitudinalRandomEffects}()},
+Other RandomEffectQuantities:
+\code{\link[=LongitudinalRandomEffects]{LongitudinalRandomEffects()}},
 \code{\link{RandomEffectQuantities-class}},
-\code{\link{as.data.frame.RandomEffectQuantities}()},
-\code{\link{summary.RandomEffectQuantities}()}
+\code{\link[=as.data.frame.RandomEffectQuantities]{as.data.frame.RandomEffectQuantities()}},
+\code{\link[=summary.RandomEffectQuantities]{summary.RandomEffectQuantities()}}
 }
 \concept{RandomEffectQuantities}
 \keyword{internal}

@@ -16,10 +16,10 @@ Converts a \code{\link{DataLongitudinal}} object into a \code{data.frame}.
 The subject variable is cast to factor.
 }
 \seealso{
-Other DataLongitudinal: 
+Other DataLongitudinal:
 \code{\link{DataLongitudinal-class}},
-\code{\link{as_print_string.DataLongitudinal}()},
-\code{\link{as_stan_list.DataSubject}()},
-\code{\link{extractVariableNames.DataLongitudinal}()}
+\code{\link[=as_print_string.DataLongitudinal]{as_print_string.DataLongitudinal()}},
+\code{\link[=as_stan_list.DataSubject]{as_stan_list.DataSubject()}},
+\code{\link[=extractVariableNames.DataLongitudinal]{extractVariableNames.DataLongitudinal()}}
 }
 \concept{DataLongitudinal}

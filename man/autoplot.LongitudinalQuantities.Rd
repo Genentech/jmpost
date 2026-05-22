@@ -18,14 +18,14 @@
 Automatic Plotting for \code{LongitudinalQuantities}
 }
 \seealso{
-Other LongitudinalQuantities: 
+Other LongitudinalQuantities:
 \code{\link{LongitudinalQuantities-class}},
-\code{\link{as.data.frame.LongitudinalQuantities}()},
-\code{\link{summary.LongitudinalQuantities}()}
+\code{\link[=as.data.frame.LongitudinalQuantities]{as.data.frame.LongitudinalQuantities()}},
+\code{\link[=summary.LongitudinalQuantities]{summary.LongitudinalQuantities()}}
 
-Other autoplot: 
-\code{\link{autoplot}()},
-\code{\link{autoplot.SurvivalQuantities}()}
+Other autoplot:
+\code{\link{autoplot}},
+\code{\link[=autoplot.SurvivalQuantities]{autoplot.SurvivalQuantities()}}
 }
 \concept{LongitudinalQuantities}
 \concept{autoplot}

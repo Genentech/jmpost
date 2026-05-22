@@ -17,7 +17,7 @@ This class exists to be extended by other classes that simulate longitudinal dat
 It is not intended to be used directly.
 }
 \seealso{
-Other SimLongitudinal: 
+Other SimLongitudinal:
 \code{\link{SimLongitudinalClaretBruno-class}},
 \code{\link{SimLongitudinalGSF-class}},
 \code{\link{SimLongitudinalRandomSlope-class}},

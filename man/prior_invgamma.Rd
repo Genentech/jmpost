@@ -15,17 +15,17 @@ prior_invgamma(alpha, beta)
 Inverse-Gamma Prior Distribution
 }
 \seealso{
-Other Prior: 
-\code{\link{prior_beta}()},
-\code{\link{prior_cauchy}()},
-\code{\link{prior_gamma}()},
-\code{\link{prior_init_only}()},
-\code{\link{prior_logistic}()},
-\code{\link{prior_loglogistic}()},
-\code{\link{prior_lognormal}()},
-\code{\link{prior_normal}()},
-\code{\link{prior_std_normal}()},
-\code{\link{prior_student_t}()},
-\code{\link{prior_uniform}()}
+Other Prior:
+\code{\link[=prior_beta]{prior_beta()}},
+\code{\link[=prior_cauchy]{prior_cauchy()}},
+\code{\link[=prior_gamma]{prior_gamma()}},
+\code{\link[=prior_init_only]{prior_init_only()}},
+\code{\link[=prior_logistic]{prior_logistic()}},
+\code{\link[=prior_loglogistic]{prior_loglogistic()}},
+\code{\link[=prior_lognormal]{prior_lognormal()}},
+\code{\link[=prior_normal]{prior_normal()}},
+\code{\link[=prior_std_normal]{prior_std_normal()}},
+\code{\link[=prior_student_t]{prior_student_t()}},
+\code{\link[=prior_uniform]{prior_uniform()}}
 }
 \concept{Prior}
