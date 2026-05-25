@@ -13,13 +13,13 @@ sf_ttg(time, b, s, g)
 sf_dsld(time, b, s, g)
 }
 \arguments{
-\item{time}{(\code{numeric})\cr time grid.}
+\item{time}{(\code{numeric}) time grid.}
 
-\item{b}{(\code{number})\cr baseline.}
+\item{b}{(\code{number}) baseline.}
 
-\item{s}{(\code{number})\cr shrinkage.}
+\item{s}{(\code{number}) shrinkage.}
 
-\item{g}{(\code{number})\cr growth.}
+\item{g}{(\code{number}) growth.}
 }
 \value{
 The function results.

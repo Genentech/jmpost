@@ -26,7 +26,7 @@ getRandomEffectsNames(object, ...)
 \method{getRandomEffectsNames}{LongitudinalSteinFojo}(object, ...)
 }
 \arguments{
-\item{object}{(\code{LongitudinalModel}) \cr A longitudinal model object}
+\item{object}{(\code{LongitudinalModel}) A longitudinal model object}
 
 \item{...}{Not used.}
 }

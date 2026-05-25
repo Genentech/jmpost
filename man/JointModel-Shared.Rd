@@ -4,9 +4,9 @@
 \alias{JointModel-Shared}
 \title{Re-used documentation for \code{JointModel-Shared}}
 \arguments{
-\item{object}{(\code{\link{JointModel}}) \cr Joint model specification.}
+\item{object}{(\code{JointModel}) Joint model specification.}
 
-\item{x}{(\code{\link{JointModel}}) \cr Joint model specification.}
+\item{x}{(\code{JointModel}) Joint model specification.}
 
 \item{...}{Not Used.}
 }

@@ -14,11 +14,11 @@ SurvivalLogLogistic(
 )
 }
 \arguments{
-\item{a}{(\code{Prior})\cr Prior distribution for the scale parameter \code{a}.}
+\item{a}{(\code{Prior}) Prior distribution for the scale parameter \code{a}.}
 
-\item{b}{(\code{Prior})\cr Prior distribution for the shape parameter \code{b}.}
+\item{b}{(\code{Prior}) Prior distribution for the shape parameter \code{b}.}
 
-\item{beta}{(\code{Prior})\cr Prior distribution for covariates coefficients \code{beta}.}
+\item{beta}{(\code{Prior}) Prior distribution for covariates coefficients \code{beta}.}
 }
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the

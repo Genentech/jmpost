@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{(\code{\link{StanModule}})\cr A Stan Module}
 
-\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
+\item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 
 \item{...}{Not Used.}
 }

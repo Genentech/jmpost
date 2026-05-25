@@ -10,11 +10,11 @@
 Quantities(quantities, times, groups)
 }
 \arguments{
-\item{quantities}{(\code{matrix})\cr of generated quantities.}
+\item{quantities}{(\code{matrix}) of generated quantities.}
 
-\item{times}{(\code{numeric})\cr labels specifying which time point the quantity was generated at.}
+\item{times}{(\code{numeric}) labels specifying which time point the quantity was generated at.}
 
-\item{groups}{(\code{character})\cr labels for which group the quantity belongs to.}
+\item{groups}{(\code{character}) labels for which group the quantity belongs to.}
 }
 \description{
 A simple wrapper around a \code{matrix} to store required metadata

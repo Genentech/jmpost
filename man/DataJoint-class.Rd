@@ -10,11 +10,11 @@
 DataJoint(subject, survival = NULL, longitudinal = NULL)
 }
 \arguments{
-\item{subject}{(\code{DataSubject})\cr object created by \code{\link[=DataSubject]{DataSubject()}}.}
+\item{subject}{(\code{DataSubject}) object created by \code{\link[=DataSubject]{DataSubject()}}.}
 
-\item{survival}{(\code{DataSurvival})\cr object created by \code{\link[=DataSurvival]{DataSurvival()}}.}
+\item{survival}{(\code{DataSurvival}) object created by \code{\link[=DataSurvival]{DataSurvival()}}.}
 
-\item{longitudinal}{(\code{DataLongitudinal})\cr object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
+\item{longitudinal}{(\code{DataLongitudinal}) object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
 }
 \description{
 The \code{DataJoint} class handles combining data from a \code{\link{DataSurvival}} object and a

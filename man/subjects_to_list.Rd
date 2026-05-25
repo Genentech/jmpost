@@ -7,9 +7,9 @@
 subjects_to_list(subjects = NULL, data)
 }
 \arguments{
-\item{subjects}{(\code{character})\cr vector of subjects that should exist in \code{data}}
+\item{subjects}{(\code{character}) vector of subjects that should exist in \code{data}}
 
-\item{data}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
+\item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
 }
 \description{
 If \code{subjects} is \code{NULL} this will return a named list of all subjects in \code{data}.

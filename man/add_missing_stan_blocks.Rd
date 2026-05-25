@@ -7,9 +7,9 @@
 add_missing_stan_blocks(x, stan_blocks = STAN_BLOCKS)
 }
 \arguments{
-\item{x}{(\code{list})\cr list of Stan code blocks}
+\item{x}{(\code{list}) list of Stan code blocks}
 
-\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
+\item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 }
 \value{
 Amended list \code{x} such that all blocks in the global variable

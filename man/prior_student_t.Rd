@@ -7,11 +7,11 @@
 prior_student_t(nu, mu, sigma)
 }
 \arguments{
-\item{nu}{(\code{number})\cr Degrees of freedom parameter.}
+\item{nu}{(\code{number}) Degrees of freedom parameter.}
 
-\item{mu}{(\code{number})\cr Location parameter.}
+\item{mu}{(\code{number}) Location parameter.}
 
-\item{sigma}{(\code{number})\cr Scale parameter.}
+\item{sigma}{(\code{number}) Scale parameter.}
 }
 \description{
 Student-t Prior Distribution

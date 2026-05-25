@@ -7,7 +7,7 @@
 subset_and_add_grouping(dat, groupings)
 }
 \arguments{
-\item{dat}{(\code{data.frame}) \cr must have a column called \code{subject} which corresponds to the
+\item{dat}{(\code{data.frame}) must have a column called \code{subject} which corresponds to the
 values passed to \code{groupings}.}
 
 \item{groupings}{(\code{character} or \code{list})\cr subjects that you wish to subset the dataset

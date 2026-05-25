@@ -9,7 +9,7 @@ decompose_subjects(subjects, all_subjects)
 \arguments{
 \item{subjects}{(\code{character} or \code{list})\cr subject identifiers. If \code{NULL} will be set to \code{all_subjects}.}
 
-\item{all_subjects}{(\code{character})\cr the set of allowable subject identifiers.
+\item{all_subjects}{(\code{character}) the set of allowable subject identifiers.
 Will cause an error if any value of \code{subjects} is not in this vector.}
 }
 \value{

@@ -136,8 +136,8 @@ setValidity(
 
 #' Data Object -> `list`
 #'
-#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
-#' data object to convert to a `list`.
+#' @typed object: "`DataSubject` or `DataLongitudinal` or `DataSurvival`"
+#'   data object to convert to a `list`.
 #' @param x (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
 #' data object to convert to a `list`.
 #' @typed subject_var: character

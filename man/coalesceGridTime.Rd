@@ -20,9 +20,9 @@ coalesceGridTime(object, times, ...)
 \method{coalesceGridTime}{GridPrediction}(object, times, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Grid}}) \cr object to coalesce time for.}
+\item{object}{(\code{Grid}) object to coalesce time for.}
 
-\item{times}{(\code{numeric}) \cr the times to coalesce to.}
+\item{times}{(\code{numeric}) the times to coalesce to.}
 
 \item{...}{Not used
 

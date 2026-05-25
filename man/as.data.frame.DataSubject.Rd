@@ -7,7 +7,7 @@
 \method{as.data.frame}{DataSubject}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{DataSubject}}) \cr subject-level data.}
+\item{x}{(\code{DataSubject}) subject-level data.}
 
 \item{...}{Not Used.}
 }

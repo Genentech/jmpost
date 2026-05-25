@@ -14,11 +14,11 @@
 \method{size}{ParameterList}(object)
 }
 \arguments{
-\item{x}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+\item{x}{(\code{ParameterList}) A List of \code{\link{Parameter}} Objects.}
 
-\item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+\item{object}{(\code{ParameterList}) A List of \code{\link{Parameter}} Objects.}
 
-\item{n_chains}{(\code{integer}) \cr the number of chains.}
+\item{n_chains}{(\code{integer}) the number of chains.}
 
 \item{...}{Not Used.}
 }

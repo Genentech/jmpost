@@ -7,10 +7,10 @@
 ensure_initial_values(initial_values, data, parameters)
 }
 \arguments{
-\item{initial_values}{(\code{list})\cr A list of lists containing the initial values
+\item{initial_values}{(\code{list}) A list of lists containing the initial values
 must be 1 list per desired chain. All elements should have identical names}
 
-\item{data}{(\code{list})\cr specifies the size to expand each of our initial values to be.
+\item{data}{(\code{list}) specifies the size to expand each of our initial values to be.
 That is elements of size 1 in \code{initial_values} will be expanded to be the same
 size as the corresponding element in \code{data} by broadcasting the value.}
 

@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{JointModelSamples}})\cr the object to save.}
 
-\item{file}{(\code{character})\cr the file to save the object to.}
+\item{file}{(\code{character}) the file to save the object to.}
 
 \item{...}{(\code{ANY})\cr additional arguments to \code{\link{saveRDS}}.}
 }

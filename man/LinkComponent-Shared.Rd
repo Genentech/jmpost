@@ -4,7 +4,7 @@
 \alias{LinkComponent-Shared}
 \title{\code{LinkComponent} Function Arguments}
 \arguments{
-\item{stan}{(\code{StanModule})\cr Stan code.}
+\item{stan}{(\code{StanModule}) Stan code.}
 
 \item{x}{(\code{\link{LinkComponent}})\cr a link component.}
 

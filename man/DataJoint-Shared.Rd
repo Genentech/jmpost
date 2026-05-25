@@ -4,9 +4,9 @@
 \alias{DataJoint-Shared}
 \title{Re-used documentation for \code{DataJoint}}
 \arguments{
-\item{object}{(\code{\link{DataJoint}}) \cr Survival and Longitudinal Data.}
+\item{object}{(\code{DataJoint}) Survival and Longitudinal Data.}
 
-\item{x}{(\code{\link{DataJoint}}) \cr Survival and Longitudinal Data.}
+\item{x}{(\code{DataJoint}) Survival and Longitudinal Data.}
 
 \item{...}{Not Used.}
 }

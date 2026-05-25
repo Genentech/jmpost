@@ -7,7 +7,7 @@
 \method{as_print_string}{Quantities}(object, indent = 1, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
+\item{object}{(\code{Quantities}) generated quantities.}
 
 \item{...}{not used.}
 }

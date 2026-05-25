@@ -7,9 +7,9 @@
 prior_beta(a, b)
 }
 \arguments{
-\item{a}{(\code{number})\cr first parameter.}
+\item{a}{(\code{number}) first parameter.}
 
-\item{b}{(\code{number})\cr second parameter}
+\item{b}{(\code{number}) second parameter}
 }
 \description{
 Beta Prior Distribution

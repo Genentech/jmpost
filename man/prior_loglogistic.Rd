@@ -7,9 +7,9 @@
 prior_loglogistic(alpha, beta)
 }
 \arguments{
-\item{alpha}{(\code{number})\cr Scale parameter.}
+\item{alpha}{(\code{number}) Scale parameter.}
 
-\item{beta}{(\code{number})\cr Shape parameter.}
+\item{beta}{(\code{number}) Shape parameter.}
 }
 \description{
 Log-Logistic Prior Distribution

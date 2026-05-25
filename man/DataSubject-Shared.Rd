@@ -4,9 +4,9 @@
 \alias{DataSubject-Shared}
 \title{Re-used documentation for \code{DataSubject}}
 \arguments{
-\item{object}{(\code{\link{DataSubject}}) \cr subject-level data.}
+\item{object}{(\code{DataSubject}) subject-level data.}
 
-\item{x}{(\code{\link{DataSubject}}) \cr subject-level data.}
+\item{x}{(\code{DataSubject}) subject-level data.}
 
 \item{...}{Not Used.}
 }

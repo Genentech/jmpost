@@ -10,11 +10,11 @@
 StanModel(stan, parameters, name = "<Unnamed>")
 }
 \arguments{
-\item{stan}{(\code{StanModule})\cr code containing the Stan code specification.}
+\item{stan}{(\code{StanModule}) code containing the Stan code specification.}
 
-\item{parameters}{(\code{ParameterList})\cr the parameter specification.}
+\item{parameters}{(\code{ParameterList}) the parameter specification.}
 
-\item{name}{(\code{character})\cr display name for the model object.}
+\item{name}{(\code{character}) display name for the model object.}
 }
 \description{
 Stan Model Object and Constructor Function

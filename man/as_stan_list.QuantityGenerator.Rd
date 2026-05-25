@@ -17,9 +17,9 @@
 \method{as_stan_list}{QuantityGeneratorSubject}(object, data, ...)
 }
 \arguments{
-\item{object}{(\code{QuantityGenerator})\cr object to convert to a list.}
+\item{object}{(\code{QuantityGenerator}) object to convert to a list.}
 
-\item{data}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
+\item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
 
 \item{...}{Not currently used.}
 }

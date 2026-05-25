@@ -26,35 +26,35 @@ SimLongitudinalClaretBruno(
 )
 }
 \arguments{
-\item{times}{(\code{numeric})\cr the times to generate observations at.}
+\item{times}{(\code{numeric}) the times to generate observations at.}
 
-\item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
+\item{sigma}{(\code{number}) the variance of the longitudinal values.}
 
-\item{mu_b}{(\code{numeric})\cr the mean population baseline sld value.}
+\item{mu_b}{(\code{numeric}) the mean population baseline sld value.}
 
-\item{mu_g}{(\code{numeric})\cr the mean population growth rate.}
+\item{mu_g}{(\code{numeric}) the mean population growth rate.}
 
-\item{mu_c}{(\code{numeric})\cr the mean population resistance rate.}
+\item{mu_c}{(\code{numeric}) the mean population resistance rate.}
 
-\item{mu_p}{(\code{numeric})\cr the mean population growth inhibition.}
+\item{mu_p}{(\code{numeric}) the mean population growth inhibition.}
 
-\item{omega_b}{(\code{number})\cr the population standard deviation for the baseline sld value.}
+\item{omega_b}{(\code{number}) the population standard deviation for the baseline sld value.}
 
-\item{omega_g}{(\code{number})\cr the population standard deviation for the growth rate.}
+\item{omega_g}{(\code{number}) the population standard deviation for the growth rate.}
 
-\item{omega_c}{(\code{number})\cr the population standard deviation for the resistance rate.}
+\item{omega_c}{(\code{number}) the population standard deviation for the resistance rate.}
 
-\item{omega_p}{(\code{number})\cr the population standard deviation for the growth inhibition.}
+\item{omega_p}{(\code{number}) the population standard deviation for the growth inhibition.}
 
-\item{link_dsld}{(\code{number})\cr the link coefficient for the derivative contribution.}
+\item{link_dsld}{(\code{number}) the link coefficient for the derivative contribution.}
 
-\item{link_ttg}{(\code{number})\cr the link coefficient for the time-to-growth contribution.}
+\item{link_ttg}{(\code{number}) the link coefficient for the time-to-growth contribution.}
 
-\item{link_identity}{(\code{number})\cr the link coefficient for the SLD Identity contribution.}
+\item{link_identity}{(\code{number}) the link coefficient for the SLD Identity contribution.}
 
-\item{link_growth}{(\code{number})\cr the link coefficient for the growth parameter contribution.}
+\item{link_growth}{(\code{number}) the link coefficient for the growth parameter contribution.}
 
-\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 }
 \description{

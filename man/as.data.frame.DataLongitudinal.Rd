@@ -7,7 +7,7 @@
 \method{as.data.frame}{DataLongitudinal}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{DataLongitudinal}}) \cr Longitudinal Data.}
+\item{x}{(\code{DataLongitudinal}) Longitudinal Data.}
 
 \item{...}{Not Used.}
 }

@@ -10,9 +10,9 @@
 Parameter(prior, name, size = 1)
 }
 \arguments{
-\item{prior}{(\code{Prior})\cr for the parameter.}
+\item{prior}{(\code{Prior}) for the parameter.}
 
-\item{name}{(\code{string})\cr of the parameter.}
+\item{name}{(\code{string}) of the parameter.}
 
 \item{size}{(\code{numeric} or \code{string})\cr dimension of the parameter.}
 }

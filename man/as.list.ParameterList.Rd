@@ -7,7 +7,7 @@
 \method{as.list}{ParameterList}(x, ...)
 }
 \arguments{
-\item{x}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+\item{x}{(\code{ParameterList}) A List of \code{\link{Parameter}} Objects.}
 
 \item{...}{Not Used.}
 }

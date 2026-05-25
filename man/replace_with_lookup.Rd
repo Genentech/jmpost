@@ -7,10 +7,10 @@
 replace_with_lookup(sizes, data)
 }
 \arguments{
-\item{sizes}{(\code{list})\cr may include character elements that correspond to
+\item{sizes}{(\code{list}) may include character elements that correspond to
 names in the data list.}
 
-\item{data}{(\code{list})\cr data containing numeric values.}
+\item{data}{(\code{list}) data containing numeric values.}
 }
 \value{
 A list of sizes with character elements in \code{sizes}

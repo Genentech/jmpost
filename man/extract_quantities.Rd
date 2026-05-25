@@ -10,9 +10,9 @@ extract_quantities(
 )
 }
 \arguments{
-\item{gq}{(\code{CmdStanGQ}) \cr a \link[cmdstanr:CmdStanGQ]{cmdstanr::CmdStanGQ} object created by \code{\link[=generateQuantities]{generateQuantities()}}.}
+\item{gq}{(\code{CmdStanGQ}) a \link[cmdstanr:CmdStanGQ]{cmdstanr::CmdStanGQ} object created by \code{\link[=generateQuantities]{generateQuantities()}}.}
 
-\item{type}{(\code{character})\cr quantity to be generated.
+\item{type}{(\code{character}) quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}, \code{lm_identity}.}
 }
 \description{

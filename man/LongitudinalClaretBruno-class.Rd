@@ -22,28 +22,28 @@ LongitudinalClaretBruno(
 )
 }
 \arguments{
-\item{mu_b}{(\code{Prior})\cr for the mean population baseline sld value.}
+\item{mu_b}{(\code{Prior}) for the mean population baseline sld value.}
 
-\item{mu_g}{(\code{Prior})\cr for the mean population growth rate.}
+\item{mu_g}{(\code{Prior}) for the mean population growth rate.}
 
-\item{mu_c}{(\code{Prior})\cr for the mean population resistance rate.}
+\item{mu_c}{(\code{Prior}) for the mean population resistance rate.}
 
-\item{mu_p}{(\code{Prior})\cr for the mean population growth inhibition}
+\item{mu_p}{(\code{Prior}) for the mean population growth inhibition}
 
-\item{omega_b}{(\code{Prior})\cr for the population standard deviation for the baseline sld value.}
+\item{omega_b}{(\code{Prior}) for the population standard deviation for the baseline sld value.}
 
-\item{omega_g}{(\code{Prior})\cr for the population standard deviation for the growth rate.}
+\item{omega_g}{(\code{Prior}) for the population standard deviation for the growth rate.}
 
-\item{omega_c}{(\code{Prior})\cr for the population standard deviation for the resistance rate.}
+\item{omega_c}{(\code{Prior}) for the population standard deviation for the resistance rate.}
 
-\item{omega_p}{(\code{Prior})\cr for the population standard deviation for the growth inhibition.}
+\item{omega_p}{(\code{Prior}) for the population standard deviation for the growth inhibition.}
 
-\item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values.}
+\item{sigma}{(\code{Prior}) for the variance of the longitudinal values.}
 
-\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 
-\item{centred}{(\code{logical})\cr whether to use the centred parameterization.}
+\item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

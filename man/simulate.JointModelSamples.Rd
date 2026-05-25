@@ -36,11 +36,11 @@ the same columns used for \code{study}, \code{id}, and \code{arm}.}
 less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
 Jitter values are generated from a normal distribution with mean 0 and the given variances.}
 
-\item{time_max}{(\code{number})\cr the maximum time to simulate to.}
+\item{time_max}{(\code{number}) the maximum time to simulate to.}
 
-\item{time_step}{(\code{number})\cr the time interval between evaluating the log-hazard function.}
+\item{time_step}{(\code{number}) the time interval between evaluating the log-hazard function.}
 
-\item{lambda_censor}{(\code{number})\cr the censoring rate, as the parameter of an exponential distribution.}
+\item{lambda_censor}{(\code{number}) the censoring rate, as the parameter of an exponential distribution.}
 
 \item{scaled_variance}{Should variance be scaled by the expected value. Must be set the same as was used for
 model fitting.}

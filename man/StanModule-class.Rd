@@ -10,7 +10,7 @@
 StanModule(x = "", ...)
 }
 \arguments{
-\item{x}{(\code{string})\cr file path to a Stan program or a character vector
+\item{x}{(\code{string}) file path to a Stan program or a character vector
 of Stan code to be parsed.}
 
 \item{...}{additional arguments passed to the constructor.}

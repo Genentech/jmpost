@@ -14,12 +14,12 @@ survival_plot(
 )
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr summary statistics for a survival
+\item{data}{(\code{data.frame}) summary statistics for a survival
 curve to be plotted. See details.}
 
-\item{add_ci}{(\code{logical})\cr should confidence intervals be added? Default = \code{TRUE}.}
+\item{add_ci}{(\code{logical}) should confidence intervals be added? Default = \code{TRUE}.}
 
-\item{add_wrap}{(\code{logical})\cr should the plots be wrapped by \code{data$group}? Default = \code{TRUE}.}
+\item{add_wrap}{(\code{logical}) should the plots be wrapped by \code{data$group}? Default = \code{TRUE}.}
 
 \item{kmdf}{(\code{data.frame} or \code{NULL})\cr event times and status used to plot
 overlaying KM curves. If \code{NULL} no KM curve will be plotted. See details.}

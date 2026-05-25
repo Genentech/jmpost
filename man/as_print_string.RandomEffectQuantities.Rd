@@ -7,9 +7,9 @@
 \method{as_print_string}{RandomEffectQuantities}(object, indent = 1, ...)
 }
 \arguments{
-\item{object}{(\code{\link{RandomEffectQuantities}}) \cr generated quantities.}
+\item{object}{(\code{RandomEffectQuantities}) generated quantities.}
 
-\item{indent}{(\code{numeric}) \cr the number of spaces to indent the string by.}
+\item{indent}{(\code{numeric}) the number of spaces to indent the string by.}
 
 \item{...}{not used.}
 }

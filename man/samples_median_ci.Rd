@@ -7,9 +7,9 @@
 samples_median_ci(samples, level = 0.95)
 }
 \arguments{
-\item{samples}{(\code{matrix})\cr with samples in rows and parameters in columns.}
+\item{samples}{(\code{matrix}) with samples in rows and parameters in columns.}
 
-\item{level}{(\code{number})\cr credibility level to use for the credible intervals.}
+\item{level}{(\code{number}) credibility level to use for the credible intervals.}
 }
 \value{
 A \code{data.frame} with columns \code{median}, \code{lower} and \code{upper}.

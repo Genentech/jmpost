@@ -7,7 +7,7 @@
 \method{extractVariableNames}{DataSurvival}(object)
 }
 \arguments{
-\item{object}{(\code{\link{DataSurvival}}) \cr Survival Data.}
+\item{object}{(\code{DataSurvival}) Survival Data.}
 }
 \value{
 A list with the following named elements:

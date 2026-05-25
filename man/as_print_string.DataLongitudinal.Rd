@@ -7,9 +7,9 @@
 \method{as_print_string}{DataLongitudinal}(object, indent = 1, ...)
 }
 \arguments{
-\item{object}{(\code{\link{DataLongitudinal}}) \cr Longitudinal Data.}
+\item{object}{(\code{DataLongitudinal}) Longitudinal Data.}
 
-\item{indent}{(\code{numeric})\cr how much white space to prefix the print string with.}
+\item{indent}{(\code{numeric}) how much white space to prefix the print string with.}
 
 \item{...}{Not Used.}
 }
