@@ -10,12 +10,12 @@
 SurvivalQuantities(object, grid, type = c("surv", "haz", "loghaz", "cumhaz"))
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
+\item{object}{(\code{JointModelSamples}) samples as drawn from a Joint Model.}
 
-\item{grid}{(\code{Grid}) \cr object that specifies which subjects and time points to calculate the
+\item{grid}{(\code{Grid}) object that specifies which subjects and time points to calculate the
 quantities for. See \link{Grid-Functions}.}
 
-\item{type}{(\code{character})\cr quantity to be generated.
+\item{type}{(\code{character}) quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
 }
 \description{

@@ -7,7 +7,7 @@
 hazardWindows(object, ...)
 }
 \arguments{
-\item{object}{(\code{SurvivalModel}) \cr object to generate time windows for.}
+\item{object}{(\code{SurvivalModel}) object to generate time windows for.}
 
 \item{...}{Not used.}
 }

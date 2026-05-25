@@ -7,7 +7,7 @@
 \method{as.StanModule}{LinkComponent}(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{LinkComponent}})\cr a link component.}
+\item{object}{(\code{LinkComponent}) a link component.}
 
 \item{...}{Not Used.}
 }

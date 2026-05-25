@@ -7,9 +7,9 @@
 get_missing_rownumbers(df, formula = NULL)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr input data.}
+\item{df}{(\code{data.frame}) input data.}
 
-\item{formula}{(\code{formula} or \code{NULL})\cr which variables to inspect for missingness, if \code{NULL}
+\item{formula}{(\code{formula} or \code{NULL}) which variables to inspect for missingness, if \code{NULL}
 all variables are considered.}
 }
 \value{

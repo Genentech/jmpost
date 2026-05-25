@@ -44,12 +44,12 @@ which consist of the subjects \code{sub-1}, \code{sub-2} and \code{sub-3}, \code
 \if{html}{\out{<div class="sourceCode">}}\preformatted{QuantityGenerator(
     times = c(10, 10, 10, 10, 20, 20, 20, 20),
     subjects = c("sub-1" "sub-2", "sub-3", "sub-4", "sub-1" "sub-2", "sub-3", "sub-4")
-)
+  )
 QuantityCollapser(
     times = c(10, 20, 10 , 20),
     groups = c("Group-1", "Group-1", "Group-2", "Group-2"),
     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
-)
+  )
 }\if{html}{\out{</div>}}
 
 For population based quantities use the \code{arms} and \code{studies} arguments of \code{QuantityGenerator}
@@ -80,7 +80,7 @@ named \code{Group-1} and \code{Group-2} which are composed of the subjects \code
         "Group-1" = c("sub-1", "sub-2"),
         "Group-2" = c("sub-3", "sub-4")
     )
-)
+  )
 }\if{html}{\out{</div>}}
 }
 

@@ -7,7 +7,7 @@
 \method{as.StanModule}{ParameterList}(object, ...)
 }
 \arguments{
-\item{object}{(\code{ParameterList}) \cr A List of \code{\link{Parameter}} Objects.}
+\item{object}{(\code{ParameterList}) A List of \code{\link{Parameter}} Objects.}
 
 \item{...}{Not Used.}
 }

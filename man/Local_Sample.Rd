@@ -37,15 +37,15 @@ local_rinvgamma(n, alpha, beta)
 \arguments{
 \item{...}{Pass any additional arguments to the underlying distribution.}
 
-\item{nu}{(\code{number})\cr Parameter for underlying distribution.}
+\item{nu}{(\code{number}) Parameter for underlying distribution.}
 
-\item{mu}{(\code{number})\cr Parameter for underlying distribution.}
+\item{mu}{(\code{number}) Parameter for underlying distribution.}
 
-\item{sigma}{(\code{number})\cr Parameter for underlying distribution.}
+\item{sigma}{(\code{number}) Parameter for underlying distribution.}
 
-\item{alpha}{(\code{number})\cr Parameter for underlying distribution.}
+\item{alpha}{(\code{number}) Parameter for underlying distribution.}
 
-\item{beta}{(\code{number})\cr Parameter for underlying distribution.}
+\item{beta}{(\code{number}) Parameter for underlying distribution.}
 }
 \description{
 These functions only exist so that they can be mocked during unit

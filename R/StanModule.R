@@ -25,8 +25,10 @@ STAN_BLOCKS <- list(
 
 #' Add Missing Stan Blocks
 #'
-#' @param x (`list`)\cr list of Stan code blocks
-#' @param stan_blocks (`list`)\cr reference list of stan blocks.
+#' @typed x: list
+#'   list of Stan code blocks
+#' @typed stan_blocks: list
+#'   reference list of stan blocks.
 #'
 #' @return Amended list `x` such that all blocks in the global variable
 #' `STAN_BLOCKS` are contained.
@@ -45,8 +47,9 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
 
 #' `StanModule` Object and Constructor Function
 #'
-#' @param x (`string`)\cr file path to a Stan program or a character vector
-#' of Stan code to be parsed.
+#' @typed x: string
+#'   file path to a Stan program or a character vector
+#'   of Stan code to be parsed.
 #' @param ... additional arguments passed to the constructor.
 #'
 #' @slot functions (`character`)\cr the `functions` block.
@@ -112,7 +115,8 @@ StanModule <- function(
 # as.character-StanModule ----
 
 #' `StanModule` -> `character`
-#' @param x ([`StanModule`])\cr A stan program
+#' @typed x: StanModule
+#'   A stan program
 #' @param ... Not Used.
 #' @description
 #' Converts a [`StanModule`] object into a valid Stan program file where each
@@ -134,7 +138,8 @@ as.character.StanModule <- function(x, ...) {
 
 # merge-StanModule,StanModule ----
 
-#' @param stan_blocks (`list`)\cr reference list of stan blocks.
+#' @typed stan_blocks: list
+#'   reference list of stan blocks.
 #' @rdname merge
 setMethod(
     f = "merge",
@@ -209,8 +214,10 @@ compileStanModel.StanModule <- function(object) {
 #' @description
 #' Returns a named list where each element of the list corresponds
 #' to a Stan modelling block e.g. `data`, `model`, etc.
-#' @param x ([`StanModule`])\cr A Stan Module
-#' @param stan_blocks (`list`)\cr reference list of stan blocks.
+#' @typed x: StanModule
+#'   A Stan Module
+#' @typed stan_blocks: list
+#'   reference list of stan blocks.
 #' @param ... Not Used.
 #' @family StanModule
 #' @export
@@ -231,7 +238,8 @@ as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
 #' Used to help address short comings of [file.exists()] that will return `TRUE`
 #' for a directory as well as a file.
 #'
-#' @param filename (`string`)\cr file name.
+#' @typed filename: string
+#'   file name.
 #'
 #' @keywords internal
 is_file <- function(filename = NULL) {
@@ -277,14 +285,22 @@ read_stan <- function(string) {
 
 #' Merging Code Blocks into Stan Code Character Vector
 #'
-#' @param functions (`character`)\cr code block.
-#' @param data (`character`)\cr code block.
-#' @param transformed_data (`character`)\cr code block.
-#' @param parameters (`character`)\cr code block.
-#' @param transformed_parameters (`character`)\cr code block.
-#' @param model (`character`)\cr code block.
-#' @param generated_quantities (`character`)\cr code block.
-#' @param stan_blocks (`list`)\cr reference list of stan blocks.
+#' @typed functions: character
+#'   code block.
+#' @typed data: character
+#'   code block.
+#' @typed transformed_data: character
+#'   code block.
+#' @typed parameters: character
+#'   code block.
+#' @typed transformed_parameters: character
+#'   code block.
+#' @typed model: character
+#'   code block.
+#' @typed generated_quantities: character
+#'   code block.
+#' @typed stan_blocks: list
+#'   reference list of stan blocks.
 #'
 #' @return Character vector of the complete Stan code.
 #'
@@ -321,8 +337,10 @@ as_stan_file <- function(
 
 #' Conversion of Character Vector into Stan Code Block List
 #'
-#' @param x (`character`)\cr the single Stan code vector.
-#' @param stan_blocks (`list`)\cr reference list of stan blocks.
+#' @typed x: character
+#'   the single Stan code vector.
+#' @typed stan_blocks: list
+#'   reference list of stan blocks.
 #'
 #' @return A list with the Stan code blocks.
 #'
@@ -331,10 +349,10 @@ as_stan_file <- function(
 #' ```
 #' data {
 #'     <code>
-#' }
+#'   }
 #' model {
 #'     <code>
-#' }
+#'   }
 #' ```
 #' That is to say we do not support code in inline format i.e.
 #' ```
@@ -432,9 +450,11 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' `StanModule` -> Printable `Character`
 #'
 #' Converts [`StanModule`] object into a printable string.
-#' @param object ([`StanModule`])\cr A stan program
+#' @typed object: StanModule
+#'   A stan program
 #' @family StanModule
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @typed indent: numeric
+#'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.StanModule <- function(object, indent = 1, ...) {

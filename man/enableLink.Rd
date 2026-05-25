@@ -7,7 +7,7 @@
 enableLink(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{LongitudinalModel}})\cr to enable link for.}
+\item{object}{(\code{LongitudinalModel}) to enable link for.}
 
 \item{...}{Not used.
 

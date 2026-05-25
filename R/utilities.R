@@ -1,7 +1,9 @@
 #' Row Numbers of Data with Missing Variables
 #'
-#' @param df (`data.frame`)\cr input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness, if `NULL`
+#' @typed df: data.frame
+#'   input data.
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness, if `NULL`
 #'   all variables are considered.
 #'
 #' @returns Numeric vector specifying which rows contain at least 1 missing observation
@@ -22,9 +24,12 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 #' variables. Allows users to specify which variables to inspect for missing values
 #' based on either a formula or a character vector of variable names.
 #'
-#' @param data (`data.frame`)\cr input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness.
-#' @param extra_vars (`character`)\cr additional variables to inspect for missingness.
+#' @typed data: data.frame
+#'   input data.
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness.
+#' @typed extra_vars: character
+#'   additional variables to inspect for missingness.
 #'
 #' @returns The `data` after removing observations that contain missing values in the required variables.
 #'   Note that additional variables not listed in `formula` or `extra_vars` are not dropped and may
@@ -54,8 +59,10 @@ remove_missing_rows <- function(data, formula, extra_vars = NULL) {
 
 #' Replicate Single Values in a List
 #'
-#' @param initial_values (`list`)\cr initial values with names.
-#' @param sizes (`list`)\cr each size corresponds to an element in `initial_values`,
+#' @typed initial_values: list
+#'   initial values with names.
+#' @typed sizes: list
+#'   each size corresponds to an element in `initial_values`,
 #'   matched by the names. An attribute `array` must be attached to each element,
 #'   see [replace_with_lookup()].
 #'
@@ -111,9 +118,11 @@ expand_initial_values <- function(initial_values, sizes) {
 
 #' Replace Character Size by Looked Up Numbers
 #'
-#' @param sizes (`list`)\cr may include character elements that correspond to
+#' @typed sizes: list
+#'   may include character elements that correspond to
 #'   names in the data list.
-#' @param data (`list`)\cr data containing numeric values.
+#' @typed data: list
+#'   data containing numeric values.
 #'
 #' @returns A list of sizes with character elements in `sizes`
 #'   replaced by their corresponding numeric values in `data`.
@@ -161,8 +170,10 @@ replace_with_lookup <- function(sizes, data) {
 
 #' Obtain Median and Credible Intervals from MCMC samples
 #'
-#' @param samples (`matrix`)\cr with samples in rows and parameters in columns.
-#' @param level (`number`)\cr credibility level to use for the credible intervals.
+#' @typed samples: matrix
+#'   with samples in rows and parameters in columns.
+#' @typed level: number
+#'   credibility level to use for the credible intervals.
 #'
 #' @returns A `data.frame` with columns `median`, `lower` and `upper`.
 #' @keywords internal
@@ -216,8 +227,9 @@ is_windows <- function() {
 #' - sorted
 #' - unique
 #'
-#' @param time_grid (`numeric`)\cr A vector of times which quantities will be
-#' evaluated at.
+#' @typed time_grid: numeric
+#'   A vector of times which quantities will be
+#'   evaluated at.
 #'
 #' @keywords internal
 validate_time_grid <- function(time_grid) {
@@ -240,9 +252,11 @@ validate_time_grid <- function(time_grid) {
 #' The input vector must be unique and contain only values
 #' as specified by `all_subjects`
 #'
-#' @param subjects (`character` or `NULL`)\cr Character vector representing the subjects.
-#' If NULL, it will be set to the value of `all_subjects`.
-#' @param all_subjects (`character`)\cr Character vector representing all possible subjects.
+#' @typed subjects: "`character` or `NULL`"
+#'   Character vector representing the subjects.
+#'   If NULL, it will be set to the value of `all_subjects`.
+#' @typed all_subjects: character
+#'   Character vector representing all possible subjects.
 #' @return Returns the expanded `subjects` vector.
 #' @keywords internal
 expand_subjects <- function(subjects, all_subjects) {
@@ -271,10 +285,12 @@ expand_subjects <- function(subjects, all_subjects) {
 #' The primary use of this function is to correctly setup indexing variables for
 #' predicting survival quantities (see [SurvivalQuantities()])
 #'
-#' @param subjects (`character` or `list`)\cr subject identifiers. If `NULL` will be set to `all_subjects`.
+#' @typed subjects: "`character` or `list`"
+#'   subject identifiers. If `NULL` will be set to `all_subjects`.
 #'
-#' @param all_subjects (`character`)\cr the set of allowable subject identifiers.
-#' Will cause an error if any value of `subjects` is not in this vector.
+#' @typed all_subjects: character
+#'   the set of allowable subject identifiers.
+#'   Will cause an error if any value of `subjects` is not in this vector.
 #'
 #' @return A list containing three components:
 #' - `groups`: (`list`)\cr each element of the list is a character vector
@@ -288,7 +304,7 @@ expand_subjects <- function(subjects, all_subjects) {
 #' result <- decompose_subjects(
 #'     list("g1" = c("A", "B"), "g2" = c("B", "C")),
 #'     c("A", "B", "C", "D")
-#' )
+#'   )
 #' }
 #' @seealso [expand_subjects()], [SurvivalQuantities()]
 #' @keywords internal

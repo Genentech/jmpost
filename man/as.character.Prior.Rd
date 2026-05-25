@@ -7,7 +7,7 @@
 \method{as.character}{Prior}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{Prior}})\cr a prior Distribution}
+\item{x}{(\code{Prior}) a prior Distribution}
 
 \item{...}{Not Used.}
 }

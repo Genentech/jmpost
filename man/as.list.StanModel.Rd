@@ -7,7 +7,7 @@
 \method{as.list}{StanModel}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{StanModel}})\cr A Stan Model}
+\item{x}{(\code{StanModel}) A Stan Model}
 
 \item{...}{Not Used.}
 }

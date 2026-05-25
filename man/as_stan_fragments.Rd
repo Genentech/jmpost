@@ -7,9 +7,9 @@
 as_stan_fragments(x, stan_blocks = STAN_BLOCKS)
 }
 \arguments{
-\item{x}{(\code{character})\cr the single Stan code vector.}
+\item{x}{(\code{character}) the single Stan code vector.}
 
-\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
+\item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 }
 \value{
 A list with the Stan code blocks.
@@ -22,10 +22,10 @@ Function only works if code is in format
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{data \{
     <code>
-\}
+  \}
 model \{
     <code>
-\}
+  \}
 }\if{html}{\out{</div>}}
 
 That is to say we do not support code in inline format i.e.

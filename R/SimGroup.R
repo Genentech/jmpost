@@ -2,9 +2,12 @@
 #'
 #' Specifies a simulation group to be used by [`SimJointData()`].
 #'
-#' @param n (`numeric`)\cr number of subjects in the group.
-#' @param arm (`character`)\cr treatment arm.
-#' @param study (`character`)\cr study name.
+#' @typed n: numeric
+#'   number of subjects in the group.
+#' @typed arm: character
+#'   treatment arm.
+#' @typed study: character
+#'   study name.
 #'
 #' @slot n (`numeric`)\cr See arguments.
 #' @slot arm (`character`)\cr See arguments.

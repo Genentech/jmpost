@@ -22,29 +22,29 @@ LongitudinalGSF(
 )
 }
 \arguments{
-\item{mu_bsld}{(\code{Prior})\cr for the mean baseline value \code{mu_bsld}.}
+\item{mu_bsld}{(\code{Prior}) for the mean baseline value \code{mu_bsld}.}
 
-\item{mu_ks}{(\code{Prior})\cr for the mean shrinkage rate \code{mu_ks}.}
+\item{mu_ks}{(\code{Prior}) for the mean shrinkage rate \code{mu_ks}.}
 
-\item{mu_kg}{(\code{Prior})\cr for the mean growth rate \code{mu_kg}.}
+\item{mu_kg}{(\code{Prior}) for the mean growth rate \code{mu_kg}.}
 
-\item{mu_phi}{(\code{Prior})\cr for the mean proportion of cells affected by the treatment \code{mu_phi}.}
+\item{mu_phi}{(\code{Prior}) for the mean proportion of cells affected by the treatment \code{mu_phi}.}
 
-\item{omega_bsld}{(\code{Prior})\cr for the baseline value standard deviation \code{omega_bsld}.}
+\item{omega_bsld}{(\code{Prior}) for the baseline value standard deviation \code{omega_bsld}.}
 
-\item{omega_ks}{(\code{Prior})\cr for the shrinkage rate standard deviation \code{omega_ks}.}
+\item{omega_ks}{(\code{Prior}) for the shrinkage rate standard deviation \code{omega_ks}.}
 
-\item{omega_kg}{(\code{Prior})\cr for the growth rate standard deviation \code{omega_kg}.}
+\item{omega_kg}{(\code{Prior}) for the growth rate standard deviation \code{omega_kg}.}
 
-\item{omega_phi}{(\code{Prior})\cr for the standard deviation of the proportion of cells
+\item{omega_phi}{(\code{Prior}) for the standard deviation of the proportion of cells
 affected by the treatment \code{omega_phi}.}
 
-\item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
+\item{sigma}{(\code{Prior}) for the variance of the longitudinal values \code{sigma}.}
 
-\item{scaled_variance}{(\code{logical})\cr whether the variance should be scaled by the expected value
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 
-\item{centred}{(\code{logical})\cr whether to use the centred parameterization.}
+\item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

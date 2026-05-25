@@ -7,7 +7,7 @@
 is_file(filename = NULL)
 }
 \arguments{
-\item{filename}{(\code{string})\cr file name.}
+\item{filename}{(\code{string}) file name.}
 }
 \description{
 A utility function to check if a string is a valid file or not.

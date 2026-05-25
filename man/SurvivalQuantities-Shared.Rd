@@ -4,9 +4,9 @@
 \alias{SurvivalQuantities-Shared}
 \title{Re-used documentation for \code{SurvivalQuantities}}
 \arguments{
-\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+\item{object}{(\code{SurvivalQuantities}) survival quantities.}
 
-\item{x}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+\item{x}{(\code{SurvivalQuantities}) survival quantities.}
 
 \item{...}{not used.}
 }

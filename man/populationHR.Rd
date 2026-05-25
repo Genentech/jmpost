@@ -12,16 +12,16 @@ populationHR(
 )
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
+\item{object}{(\code{JointModelSamples}) samples as drawn from a Joint Model.}
 
-\item{hr_formula}{(\code{formula}) \cr defines the terms to include in the hazard ratio calculation.
+\item{hr_formula}{(\code{formula}) defines the terms to include in the hazard ratio calculation.
 By default this uses the right side of the formula used in the survival model.
 Set to \code{NULL} not include any terms}
 
-\item{baseline}{(\code{formula}) \cr terms to model baseline hazard using variable \code{time}.
+\item{baseline}{(\code{formula}) terms to model baseline hazard using variable \code{time}.
 Default is a B-spline from \link{splines}: \code{~bs(time, df = 10)}}
 
-\item{quantiles}{(\code{numeric}) \cr vector of two values in (0, 1) for calculating quantiles from log hazard ratio
+\item{quantiles}{(\code{numeric}) vector of two values in (0, 1) for calculating quantiles from log hazard ratio
 distributions.}
 }
 \value{

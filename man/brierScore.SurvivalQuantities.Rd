@@ -7,15 +7,15 @@
 \method{brierScore}{SurvivalQuantities}(object, maintain_cen_order = TRUE, event_offset = TRUE, ...)
 }
 \arguments{
-\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+\item{object}{(\code{SurvivalQuantities}) survival quantities.}
 
-\item{maintain_cen_order}{(\code{logical})\cr If \code{TRUE} then, in the case of ties,
+\item{maintain_cen_order}{(\code{logical}) If \code{TRUE} then, in the case of ties,
 censor times are always considered
 to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
 IPCW estimates. Setting this to \code{TRUE} mirrors the implementation of the \code{{prodlim}}
 package.}
 
-\item{event_offset}{(\code{logical})\cr If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
+\item{event_offset}{(\code{logical}) If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
 Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} package.}
 
 \item{...}{not used.}

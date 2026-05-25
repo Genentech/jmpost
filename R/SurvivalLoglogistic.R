@@ -18,9 +18,12 @@ NULL
 
 #' @rdname SurvivalLogLogistic-class
 #'
-#' @param a (`Prior`)\cr Prior distribution for the scale parameter `a`.
-#' @param b (`Prior`)\cr Prior distribution for the shape parameter `b`.
-#' @param beta (`Prior`)\cr Prior distribution for covariates coefficients `beta`.
+#' @typed a: Prior
+#'   Prior distribution for the scale parameter `a`.
+#' @typed b: Prior
+#'   Prior distribution for the shape parameter `b`.
+#' @typed beta: Prior
+#'   Prior distribution for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalLogLogistic <- function(

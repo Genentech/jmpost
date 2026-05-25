@@ -7,7 +7,7 @@
 \method{as.data.frame}{DataSurvival}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{DataSurvival}}) \cr Survival Data.}
+\item{x}{(\code{DataSurvival}) Survival Data.}
 
 \item{...}{Not Used.}
 }

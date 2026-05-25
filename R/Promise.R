@@ -30,7 +30,8 @@ PromiseLongitudinalModel <- function() {
 #'
 #' @slot fun (`function`) \cr a function that returns a `LinkComponent`. See details.
 #'
-#' @param fun (`function`) \cr a function that returns a `LinkComponent`. See details.
+#' @typed fun: function
+#'   a function that returns a `LinkComponent`. See details.
 #' @inheritParams LinkComponent
 #'
 #' @details
@@ -76,10 +77,13 @@ as.StanModule.PromiseLinkComponent <- function(object, model, ...) {
 #' An error will be thrown if the returned [`LinkComponent`] object
 #' does not have the same `key` slot value as the original [`PromiseLinkComponent`].
 #'
-#' @param object ([`PromiseLinkComponent`]) \cr the promise to resolve
-#' @param model ([`LongitudinalModel`]) \cr the model to resolve the promise with
+#' @typed object: PromiseLinkComponent
+#'   the promise to resolve
+#' @typed model: LongitudinalModel
+#'   the model to resolve the promise with
 #' @param ... Not used.
-#' @return ([`LinkComponent`]) \cr the resolved `LinkComponent` object
+#' @typedreturn LinkComponent
+#'   the resolved `LinkComponent` object
 #'
 #' @export
 resolvePromise.PromiseLinkComponent <- function(object, model, ...) {

@@ -7,9 +7,9 @@
 \method{summary}{SurvivalQuantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{SurvivalQuantities}}) \cr survival quantities.}
+\item{object}{(\code{SurvivalQuantities}) survival quantities.}
 
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{conf.level}{(\code{numeric}) confidence level of the interval.}
 
 \item{...}{not used.}
 }

@@ -4,9 +4,9 @@
 \alias{LongitudinalQuantities-Shared}
 \title{Re-used documentation for \code{LongitudinalQuantities}}
 \arguments{
-\item{x}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
+\item{x}{(\code{LongitudinalQuantities}) longitudinal quantities.}
 
-\item{object}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
+\item{object}{(\code{LongitudinalQuantities}) longitudinal quantities.}
 
 \item{...}{not used.}
 }

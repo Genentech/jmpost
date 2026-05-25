@@ -2,16 +2,19 @@
 #' @param object A [JointModelSamples] object
 #' @param newdata A data frame containing data in the same format as
 #'  the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
-#'  as the variables used in the survival formula `object@data@survival@formula` and
+#'    as the variables used in the survival formula `object@data@survival@formula` and
 #'  the same columns used for `study`, `id`, and `arm`.
 #' @param ... Unused.
 #' @param times Vector of times to simulate SLD for all patients.
 #' @param jitter_var Vector of variances to add noise to the observed SLD `times`. The first value is for any times
 #'   less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
 #'    Jitter values are generated from a normal distribution with mean 0 and the given variances.
-#' @param time_max (`number`)\cr the maximum time to simulate to.
-#' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
-#' @param lambda_censor (`number`)\cr the censoring rate, as the parameter of an exponential distribution.
+#' @typed time_max: number
+#'   the maximum time to simulate to.
+#' @typed time_step: number
+#'   the time interval between evaluating the log-hazard function.
+#' @typed lambda_censor: number
+#'   the censoring rate, as the parameter of an exponential distribution.
 #' @param scaled_variance Should variance be scaled by the expected value. Must be set the same as was used for
 #' model fitting.
 #' @param seed Ignored.

@@ -10,9 +10,9 @@
 SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 2))
 }
 \arguments{
-\item{lambda}{(\code{Prior})\cr for the exponential rate \code{lambda}.}
+\item{lambda}{(\code{Prior}) for the exponential rate \code{lambda}.}
 
-\item{beta}{(\code{Prior})\cr for covariates coefficients \code{beta}.}
+\item{beta}{(\code{Prior}) for covariates coefficients \code{beta}.}
 }
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the

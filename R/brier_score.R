@@ -1,15 +1,20 @@
 #' Re-used documentation for Brier Score components
 #'
-#' @param t (`numeric`)\cr timepoints to calculate the desired quantity at.
-#' @param times (`numeric`)\cr observed times.
-#' @param events (`numeric`)\cr event indicator for `times`. Either 1 for an event or 0 for censor.
-#' @param event_offset (`logical`)\cr If `TRUE` then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
-#' Setting this as `TRUE` mirrors the implementation of the `{pec}` package.
-#' @param maintain_cen_order (`logical`)\cr If `TRUE` then, in the case of ties,
-#' censor times are always considered
-#' to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
-#' IPCW estimates. Setting this to `TRUE` mirrors the implementation of the `{prodlim}`
-#' package.
+#' @typed t: numeric
+#'   timepoints to calculate the desired quantity at.
+#' @typed times: numeric
+#'   observed times.
+#' @typed events: numeric
+#'   event indicator for `times`. Either 1 for an event or 0 for censor.
+#' @typed event_offset: logical
+#'   If `TRUE` then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
+#'   Setting this as `TRUE` mirrors the implementation of the `{pec}` package.
+#' @typed maintain_cen_order: logical
+#'   If `TRUE` then, in the case of ties,
+#'   censor times are always considered
+#'   to have occurred after the event times when calculating the "reverse Kaplan-Meier" for the
+#'   IPCW estimates. Setting this to `TRUE` mirrors the implementation of the `{prodlim}`
+#'   package.
 #' @param ... not used.
 #'
 #' @name Brier-Score-Shared
@@ -114,21 +119,22 @@ reverse_km_cen_first <- function(t, times, events) {
 
 #' Match Order
 #'
-#' @param x (`numeric`)\cr a vector for which we want to generate an index so other
-#' vectors can be put into the same sort order
+#' @typed x: numeric
+#'   a vector for which we want to generate an index so other
+#'   vectors can be put into the same sort order
 #'
-#' Assuming we have a vector that is sorted then this function
-#' will return the index vector to convert that sorted vector
-#' into the same sort order as the input vector `x`.
-#' For example let `x = 8, 7, 9 , 7`. If sorted we would get
-#' `x_sort = 7, 7, 8, 9`. So in order to convert `x_sort`
-#' back into `x` we'd need an index vector of `3, 1, 4, 2`.
-#' This function is used to determine that corresponding
-#' index vector for an arbitrarily sorted vector `x`.
+#'   Assuming we have a vector that is sorted then this function
+#'   will return the index vector to convert that sorted vector
+#'   into the same sort order as the input vector `x`.
+#'   For example let `x = 8, 7, 9 , 7`. If sorted we would get
+#'   `x_sort = 7, 7, 8, 9`. So in order to convert `x_sort`
+#'   back into `x` we'd need an index vector of `3, 1, 4, 2`.
+#'   This function is used to determine that corresponding
+#'   index vector for an arbitrarily sorted vector `x`.
 #'
-#' There is no specific handling of ties. It is assuming that in the case
-#' of ties for `x` that the vector you are re-indexing also has tied values
-#' thus the specific tied element selection does not matter.
+#'   There is no specific handling of ties. It is assuming that in the case
+#'   of ties for `x` that the vector you are re-indexing also has tied values
+#'   thus the specific tied element selection does not matter.
 #' @keywords internal
 match_order <- function(x) {
     order(order(x))

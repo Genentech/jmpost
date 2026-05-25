@@ -15,19 +15,19 @@ SimSurvivalWeibullPH(
 )
 }
 \arguments{
-\item{lambda}{(\code{number})\cr the scale parameter.}
+\item{lambda}{(\code{number}) the scale parameter.}
 
-\item{gamma}{(\code{number})\cr the shape parameter.}
+\item{gamma}{(\code{number}) the shape parameter.}
 
-\item{time_max}{(\code{number})\cr the maximum time to simulate to.}
+\item{time_max}{(\code{number}) the maximum time to simulate to.}
 
-\item{time_step}{(\code{number})\cr the time interval between evaluating the log-hazard function.}
+\item{time_step}{(\code{number}) the time interval between evaluating the log-hazard function.}
 
-\item{lambda_censor}{(\code{number})\cr the censoring rate.}
+\item{lambda_censor}{(\code{number}) the censoring rate.}
 
-\item{beta_cont}{(\code{number})\cr the continuous covariate coefficient.}
+\item{beta_cont}{(\code{number}) the continuous covariate coefficient.}
 
-\item{beta_cat}{(\code{numeric})\cr the categorical covariate coefficients.}
+\item{beta_cat}{(\code{numeric}) the categorical covariate coefficients.}
 }
 \description{
 Simulate Survival Data from a Weibull Proportional Hazard Model

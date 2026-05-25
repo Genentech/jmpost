@@ -10,11 +10,11 @@
 DataLongitudinal(data, formula, threshold = NULL)
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr containing the observed longitudinal data.}
+\item{data}{(\code{data.frame}) containing the observed longitudinal data.}
 
-\item{formula}{(\code{formula})\cr of the form \code{outcome ~ time}, and cannot contain any additional covariates.}
+\item{formula}{(\code{formula}) of the form \code{outcome ~ time}, and cannot contain any additional covariates.}
 
-\item{threshold}{(\code{numeric})\cr cut-off value to be used to declare an observation as censored
+\item{threshold}{(\code{numeric}) cut-off value to be used to declare an observation as censored
 (below detection limit).}
 }
 \description{

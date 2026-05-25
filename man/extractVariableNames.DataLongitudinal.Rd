@@ -7,7 +7,7 @@
 \method{extractVariableNames}{DataLongitudinal}(object)
 }
 \arguments{
-\item{object}{(\code{\link{DataLongitudinal}}) \cr Longitudinal Data.}
+\item{object}{(\code{DataLongitudinal}) Longitudinal Data.}
 }
 \value{
 A list with the following named elements:

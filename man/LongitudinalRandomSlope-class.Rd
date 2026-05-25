@@ -15,13 +15,13 @@ LongitudinalRandomSlope(
 )
 }
 \arguments{
-\item{intercept}{(\code{Prior})\cr for the \code{intercept}.}
+\item{intercept}{(\code{Prior}) for the \code{intercept}.}
 
-\item{slope_mu}{(\code{Prior})\cr for the population slope \code{slope_mu} (one per arm).}
+\item{slope_mu}{(\code{Prior}) for the population slope \code{slope_mu} (one per arm).}
 
-\item{slope_sigma}{(\code{Prior})\cr for the random slope standard deviation \code{slope_sigma} (one per arm).}
+\item{slope_sigma}{(\code{Prior}) for the random slope standard deviation \code{slope_sigma} (one per arm).}
 
-\item{sigma}{(\code{Prior})\cr for the variance of the longitudinal values \code{sigma}.}
+\item{sigma}{(\code{Prior}) for the variance of the longitudinal values \code{sigma}.}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

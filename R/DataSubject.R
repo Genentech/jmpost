@@ -1,7 +1,9 @@
 #' Re-used documentation for `DataSubject`
 #'
-#' @param object ([`DataSubject`]) \cr subject-level data.
-#' @param x ([`DataSubject`]) \cr subject-level data.
+#' @typed object: DataSubject
+#'   subject-level data.
+#' @typed x: DataSubject
+#'   subject-level data.
 #' @param ... Not Used.
 #'
 #' @name DataSubject-Shared
@@ -34,10 +36,14 @@ NULL
 )
 
 
-#' @param data (`data.frame`)\cr the subject-level data.
-#' @param subject (`character`)\cr the name of the variable containing the subject identifier.
-#' @param arm (`character`)\cr the name of the variable containing the arm identifier.
-#' @param study (`character`)\cr the name of the variable containing the study identifier.
+#' @typed data: data.frame
+#'   the subject-level data.
+#' @typed subject: character
+#'   the name of the variable containing the subject identifier.
+#' @typed arm: character
+#'   the name of the variable containing the arm identifier.
+#' @typed study: character
+#'   the name of the variable containing the study identifier.
 #' @rdname DataSubject-class
 #' @export
 DataSubject <- function(data, subject, arm, study) {
@@ -188,7 +194,8 @@ harmonise.DataSubject <- function(object, ...) {
 #' @inheritParams DataSubject-Shared
 #' @family DataSubject
 #' @keywords internal
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @typed indent: numeric
+#'   how much white space to prefix the print string with.
 #' @export
 as_print_string.DataSubject <- function(object, indent = 1, ...) {
     template <- c(

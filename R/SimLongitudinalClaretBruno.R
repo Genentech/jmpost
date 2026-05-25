@@ -4,26 +4,41 @@ NULL
 
 #' Simulate Longitudinal Data from a Claret-Bruno Model
 #'
-#' @param times (`numeric`)\cr the times to generate observations at.
-#' @param sigma (`number`)\cr the variance of the longitudinal values.
+#' @typed times: numeric
+#'   the times to generate observations at.
+#' @typed sigma: number
+#'   the variance of the longitudinal values.
 #'
-#' @param mu_b (`numeric`)\cr the mean population baseline sld value.
-#' @param mu_g (`numeric`)\cr the mean population growth rate.
-#' @param mu_c (`numeric`)\cr the mean population resistance rate.
-#' @param mu_p (`numeric`)\cr the mean population growth inhibition.
+#' @typed mu_b: numeric
+#'   the mean population baseline sld value.
+#' @typed mu_g: numeric
+#'   the mean population growth rate.
+#' @typed mu_c: numeric
+#'   the mean population resistance rate.
+#' @typed mu_p: numeric
+#'   the mean population growth inhibition.
 #'
-#' @param omega_b (`number`)\cr the population standard deviation for the baseline sld value.
-#' @param omega_g (`number`)\cr the population standard deviation for the growth rate.
-#' @param omega_c (`number`)\cr the population standard deviation for the resistance rate.
-#' @param omega_p (`number`)\cr the population standard deviation for the growth inhibition.
+#' @typed omega_b: number
+#'   the population standard deviation for the baseline sld value.
+#' @typed omega_g: number
+#'   the population standard deviation for the growth rate.
+#' @typed omega_c: number
+#'   the population standard deviation for the resistance rate.
+#' @typed omega_p: number
+#'   the population standard deviation for the growth inhibition.
 #'
-#' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
-#' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
-#' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
-#' @param link_growth (`number`)\cr the link coefficient for the growth parameter contribution.
+#' @typed link_dsld: number
+#'   the link coefficient for the derivative contribution.
+#' @typed link_ttg: number
+#'   the link coefficient for the time-to-growth contribution.
+#' @typed link_identity: number
+#'   the link coefficient for the SLD Identity contribution.
+#' @typed link_growth: number
+#'   the link coefficient for the growth parameter contribution.
 #'
-#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
-#' (see the "Statistical Specifications" vignette for more details)
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value
+#'   (see the "Statistical Specifications" vignette for more details)
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #'
@@ -269,11 +284,16 @@ sampleSubjects.SimLongitudinalClaretBruno <- function(object, subjects_df) {
 
 #' Claret-Bruno Functionals
 #'
-#' @param t (`numeric`)\cr time grid.
-#' @param b (`number`)\cr baseline sld.
-#' @param g (`number`)\cr growth rate.
-#' @param c (`number`)\cr resistance rate.
-#' @param p (`number`)\cr growth inhibition.
+#' @typed t: numeric
+#'   time grid.
+#' @typed b: number
+#'   baseline sld.
+#' @typed g: number
+#'   growth rate.
+#' @typed c: number
+#'   resistance rate.
+#' @typed p: number
+#'   growth inhibition.
 #'
 #' @returns The function results.
 #' @keywords internal

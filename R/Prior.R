@@ -7,11 +7,15 @@ NULL
 #' The documentation lists all the conventional arguments for [`Prior`]
 #' constructors.
 #'
-#' @param centre (`number`)\cr the central point of distribution to shrink sampled values towards
-#' (for most distributions this is the mean or median if the mean is undefined)
-#' @param x ([`Prior`])\cr a prior Distribution
-#' @param object ([`Prior`])\cr a prior Distribution
-#' @param name (`character`)\cr the name of the parameter the prior distribution is for
+#' @typed centre: number
+#'   the central point of distribution to shrink sampled values towards
+#'   (for most distributions this is the mean or median if the mean is undefined)
+#' @typed x: Prior
+#'   a prior Distribution
+#' @typed object: Prior
+#'   a prior Distribution
+#' @typed name: character
+#'   the name of the parameter the prior distribution is for
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -51,15 +55,23 @@ NULL
 )
 
 
-#' @param parameters (`list`)\cr the prior distribution parameters.
-#' @param repr_model (`string`)\cr the Stan code representation for the model block.
-#' @param repr_data (`string`)\cr the Stan code representation for the data block.
-#' @param display (`string`)\cr the string to display when object is printed.
-#' @param centre (`numeric`)\cr the central point of distribution to shrink sampled values towards
-#' @param validation (`list`)\cr the prior distribution parameter validation functions. Must have
-#' the same names as the `paramaters` slot.
-#' @param sample (`function`)\cr a function to sample from the prior distribution.
-#' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
+#' @typed parameters: list
+#'   the prior distribution parameters.
+#' @typed repr_model: string
+#'   the Stan code representation for the model block.
+#' @typed repr_data: string
+#'   the Stan code representation for the data block.
+#' @typed display: string
+#'   the string to display when object is printed.
+#' @typed centre: numeric
+#'   the central point of distribution to shrink sampled values towards
+#' @typed validation: list
+#'   the prior distribution parameter validation functions. Must have
+#'   the same names as the `paramaters` slot.
+#' @typed sample: function
+#'   a function to sample from the prior distribution.
+#' @typed limits: numeric
+#'   the lower and upper limits for a truncated distribution
 #' @rdname Prior-class
 Prior <- function(
     parameters,
@@ -159,9 +171,11 @@ as.character.Prior <- function(x, ...) {
 #' Creates Stan Syntax for Truncated distributions
 #' @description
 #' This function creates the Stan syntax for truncated distributions
-#' @param limits (`numeric`)\cr the lower and upper limits for a truncated distribution
+#' @typed limits: numeric
+#'   the lower and upper limits for a truncated distribution
 #' @keywords internal
-#' @return (`character`)\cr the Stan syntax for truncated distributions
+#' @typedreturn character
+#'   the Stan syntax for truncated distributions
 render_stan_limits <- function(limits) {
     l_bound <- if (limits[[1]] > -Inf) limits[[1]] else ""
     u_bound <- if (limits[[2]] < Inf) limits[[2]] else ""
@@ -274,8 +288,10 @@ initialValues.Prior <- function(object, ...) {
 
 #' Normal Prior Distribution
 #'
-#' @param mu (`number`)\cr mean.
-#' @param sigma (`number`)\cr standard deviation.
+#' @typed mu: number
+#'   mean.
+#' @typed sigma: number
+#'   standard deviation.
 #' @family Prior
 #' @export
 prior_normal <- function(mu, sigma) {
@@ -316,8 +332,10 @@ prior_std_normal <- function() {
 
 #' Cauchy Prior Distribution
 #'
-#' @param mu (`number`)\cr mean.
-#' @param sigma (`number`)\cr scale.
+#' @typed mu: number
+#'   mean.
+#' @typed sigma: number
+#'   scale.
 #' @family Prior
 #'
 #' @export
@@ -342,8 +360,10 @@ prior_cauchy <- function(mu, sigma) {
 
 #' Gamma Prior Distribution
 #'
-#' @param alpha (`number`)\cr shape.
-#' @param beta (`number`)\cr inverse scale.
+#' @typed alpha: number
+#'   shape.
+#' @typed beta: number
+#'   inverse scale.
 #' @family Prior
 #'
 #' @export
@@ -367,8 +387,10 @@ prior_gamma <- function(alpha, beta) {
 
 #' Log-Normal Prior Distribution
 #'
-#' @param mu (`number`)\cr mean of the logarithm.
-#' @param sigma (`number`)\cr standard deviation of the logarithm.
+#' @typed mu: number
+#'   mean of the logarithm.
+#' @typed sigma: number
+#'   standard deviation of the logarithm.
 #' @family Prior
 #'
 #' @export
@@ -392,8 +414,10 @@ prior_lognormal <- function(mu, sigma) {
 
 #' Beta Prior Distribution
 #'
-#' @param a (`number`)\cr first parameter.
-#' @param b (`number`)\cr second parameter
+#' @typed a: number
+#'   first parameter.
+#' @typed b: number
+#'   second parameter
 #' @family Prior
 #'
 #' @export
@@ -417,7 +441,8 @@ prior_beta <- function(a, b) {
 
 #' Initial Values Specification
 #'
-#' @param dist (`Prior`)\cr a prior Distribution
+#' @typed dist: Prior
+#'   a prior Distribution
 #' @family Prior
 #' @description
 #' This function is used to specify only the initial values for a parameter.
@@ -442,8 +467,10 @@ prior_init_only <- function(dist) {
 
 #' Uniform Prior Distribution
 #'
-#' @param alpha (`number`)\cr minimum value parameter.
-#' @param beta (`number`)\cr maximum value parameter.
+#' @typed alpha: number
+#'   minimum value parameter.
+#' @typed beta: number
+#'   maximum value parameter.
 #' @family Prior
 #'
 #' @export
@@ -472,9 +499,12 @@ prior_uniform <- function(alpha, beta) {
 
 #' Student-t Prior Distribution
 #'
-#' @param nu (`number`)\cr Degrees of freedom parameter.
-#' @param mu (`number`)\cr Location parameter.
-#' @param sigma (`number`)\cr Scale parameter.
+#' @typed nu: number
+#'   Degrees of freedom parameter.
+#' @typed mu: number
+#'   Location parameter.
+#' @typed sigma: number
+#'   Scale parameter.
 #' @family Prior
 #'
 #' @export
@@ -505,8 +535,10 @@ prior_student_t <- function(nu, mu, sigma) {
 
 #' Logistic Prior Distribution
 #'
-#' @param mu (`number`)\cr Location parameter.
-#' @param sigma (`number`)\cr Scale parameter.
+#' @typed mu: number
+#'   Location parameter.
+#' @typed sigma: number
+#'   Scale parameter.
 #' @family Prior
 #'
 #' @export
@@ -534,8 +566,10 @@ prior_logistic <- function(mu, sigma) {
 
 #' Log-Logistic Prior Distribution
 #'
-#' @param alpha (`number`)\cr Scale parameter.
-#' @param beta (`number`)\cr Shape parameter.
+#' @typed alpha: number
+#'   Scale parameter.
+#' @typed beta: number
+#'   Shape parameter.
 #' @family Prior
 #'
 #' @export
@@ -565,8 +599,10 @@ prior_loglogistic <- function(alpha, beta) {
 
 #' Inverse-Gamma Prior Distribution
 #'
-#' @param alpha (`number`)\cr Shape parameter.
-#' @param beta (`number`)\cr Scale parameter.
+#' @typed alpha: number
+#'   Shape parameter.
+#' @typed beta: number
+#'   Scale parameter.
 #' @family Prior
 #'
 #' @export
@@ -633,11 +669,16 @@ median.Prior <- function(x, na.rm, ...) {
 #' these are just straight forward pass throughs for the underlying
 #' distributions.
 #'
-#' @param alpha (`number`)\cr Parameter for underlying distribution.
-#' @param beta (`number`)\cr Parameter for underlying distribution.
-#' @param mu (`number`)\cr Parameter for underlying distribution.
-#' @param sigma (`number`)\cr Parameter for underlying distribution.
-#' @param nu (`number`)\cr Parameter for underlying distribution.
+#' @typed alpha: number
+#'   Parameter for underlying distribution.
+#' @typed beta: number
+#'   Parameter for underlying distribution.
+#' @typed mu: number
+#'   Parameter for underlying distribution.
+#' @typed sigma: number
+#'   Parameter for underlying distribution.
+#' @typed nu: number
+#'   Parameter for underlying distribution.
 #' @param ... Pass any additional arguments to the underlying distribution.
 #'
 #' @importFrom stats rbeta rcauchy rgamma rlnorm rlogis rnorm rt runif

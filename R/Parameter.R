@@ -8,8 +8,10 @@ NULL
 #' The documentation lists all the conventional arguments for [`Parameter`]
 #' constructors.
 #'
-#' @param x ([`Parameter`])\cr a prior Distribution
-#' @param object ([`Parameter`])\cr a prior Distribution
+#' @typed x: Parameter
+#'   a prior Distribution
+#' @typed object: Parameter
+#'   a prior Distribution
 #' @param ... Not Used.
 #'
 #' @name Parameter-Shared
@@ -42,9 +44,12 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
         "size" = "numeric_OR_character"
     )
 )
-#' @param prior (`Prior`)\cr for the parameter.
-#' @param name (`string`)\cr of the parameter.
-#' @param size (`numeric` or `string`)\cr dimension of the parameter.
+#' @typed prior: Prior
+#'   for the parameter.
+#' @typed name: string
+#'   of the parameter.
+#' @typed size: "`numeric` or `string`"
+#'   dimension of the parameter.
 #' @rdname Parameter-class
 Parameter <- function(prior, name, size = 1) {
     .Parameter(
@@ -102,8 +107,10 @@ as_stan_list.Parameter <- function(object, ...) {
 
 #' Parameter Getter Functions
 #'
-#' @param x (`Paramater`) \cr A model parameter
-#' @param object (`Paramater`) \cr A model parameter
+#' @typed x: Paramater
+#'   A model parameter
+#' @typed object: Paramater
+#'   A model parameter
 #' @param ... Not used.
 #'
 #' @description

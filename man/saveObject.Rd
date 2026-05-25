@@ -7,11 +7,11 @@
 saveObject(object, file, ...)
 }
 \arguments{
-\item{object}{(\code{ANY}) \cr object to save.}
+\item{object}{(\code{ANY}) object to save.}
 
-\item{file}{(\code{character}) \cr file to save object to.}
+\item{file}{(\code{character}) file to save object to.}
 
-\item{...}{(\code{ANY}) \cr additional arguments.}
+\item{...}{(\code{ANY}) additional arguments.}
 }
 \description{
 Save Object to File

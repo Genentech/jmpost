@@ -7,7 +7,7 @@
 \method{as.data.frame}{LongitudinalQuantities}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{LongitudinalQuantities}}) \cr longitudinal quantities.}
+\item{x}{(\code{LongitudinalQuantities}) longitudinal quantities.}
 
 \item{...}{not used.}
 }

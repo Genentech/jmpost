@@ -16,21 +16,21 @@ as_stan_file(
 )
 }
 \arguments{
-\item{functions}{(\code{character})\cr code block.}
+\item{functions}{(\code{character}) code block.}
 
-\item{data}{(\code{character})\cr code block.}
+\item{data}{(\code{character}) code block.}
 
-\item{transformed_data}{(\code{character})\cr code block.}
+\item{transformed_data}{(\code{character}) code block.}
 
-\item{parameters}{(\code{character})\cr code block.}
+\item{parameters}{(\code{character}) code block.}
 
-\item{transformed_parameters}{(\code{character})\cr code block.}
+\item{transformed_parameters}{(\code{character}) code block.}
 
-\item{model}{(\code{character})\cr code block.}
+\item{model}{(\code{character}) code block.}
 
-\item{generated_quantities}{(\code{character})\cr code block.}
+\item{generated_quantities}{(\code{character}) code block.}
 
-\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
+\item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 }
 \value{
 Character vector of the complete Stan code.

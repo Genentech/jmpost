@@ -4,9 +4,9 @@
 \alias{DataSurvival-Shared}
 \title{Re-used documentation for \code{DataSurvival}}
 \arguments{
-\item{object}{(\code{\link{DataSurvival}}) \cr Survival Data.}
+\item{object}{(\code{DataSurvival}) Survival Data.}
 
-\item{x}{(\code{\link{DataSurvival}}) \cr Survival Data.}
+\item{x}{(\code{DataSurvival}) Survival Data.}
 
 \item{...}{Not Used.}
 }

@@ -9,7 +9,7 @@ cut_data(object, cut_time)
 \arguments{
 \item{object}{A \link{SimJointData} object}
 
-\item{cut_time}{(\code{numeric})\cr A vector of cut off times, either length 1 for all patients or
+\item{cut_time}{(\code{numeric}) A vector of cut off times, either length 1 for all patients or
 \code{nrow(object@survival)} for a time per patient.}
 }
 \description{
@@ -23,7 +23,7 @@ values are removed.
 data <- SimJointData(
   survival = SimSurvivalExponential(lambda = 1/10),
   longitudinal = SimLongitudinalSteinFojo()
-)
+  )
 data <- cut_data(data, 5)
 data@survival
 # Now max time is 5

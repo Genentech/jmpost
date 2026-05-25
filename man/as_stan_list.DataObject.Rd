@@ -30,15 +30,13 @@
 \method{as.list}{DataJoint}(x, ...)
 }
 \arguments{
-\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
-data object to convert to a \code{list}.}
+\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) data object to convert to a \code{list}.}
 
 \item{...}{not used.}
 
-\item{x}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr
-data object to convert to a \code{list}.}
+\item{x}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) data object to convert to a \code{list}.}
 
-\item{subject_var}{(\code{character}) \cr the name of the variable
+\item{subject_var}{(\code{character}) the name of the variable
 containing the subject identifier.}
 }
 \description{

@@ -13,15 +13,15 @@ gsf_ttg(time, b, s, g, phi)
 gsf_dsld(time, b, s, g, phi)
 }
 \arguments{
-\item{time}{(\code{numeric})\cr time grid.}
+\item{time}{(\code{numeric}) time grid.}
 
-\item{b}{(\code{number})\cr baseline.}
+\item{b}{(\code{number}) baseline.}
 
-\item{s}{(\code{number})\cr shrinkage.}
+\item{s}{(\code{number}) shrinkage.}
 
-\item{g}{(\code{number})\cr growth.}
+\item{g}{(\code{number}) growth.}
 
-\item{phi}{(\code{number})\cr shrinkage proportion.}
+\item{phi}{(\code{number}) shrinkage proportion.}
 }
 \value{
 The function results.

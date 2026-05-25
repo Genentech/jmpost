@@ -7,7 +7,7 @@
 \method{hazardWindows}{SimSurvival}(object, ...)
 }
 \arguments{
-\item{object}{(\code{SimSurvival})\cr the survival simulation object to create evaluation points for.}
+\item{object}{(\code{SimSurvival}) the survival simulation object to create evaluation points for.}
 
 \item{...}{Not Used.}
 }

@@ -7,9 +7,9 @@
 \method{summary}{RandomEffectQuantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{RandomEffectQuantities}}) \cr generated quantities.}
+\item{object}{(\code{RandomEffectQuantities}) generated quantities.}
 
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{conf.level}{(\code{numeric}) confidence level of the interval.}
 
 \item{...}{not used.}
 }

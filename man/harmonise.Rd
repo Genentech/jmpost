@@ -20,13 +20,13 @@ harmonise(object, ...)
 \method{harmonise}{DataSurvival}(object, subject_var, subject_ord, ...)
 }
 \arguments{
-\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr data object to "harmonise"}
+\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) data object to "harmonise"}
 
 \item{...}{not used.}
 
-\item{subject_var}{(\code{character}) \cr the name of the variable containing the subject identifier.}
+\item{subject_var}{(\code{character}) the name of the variable containing the subject identifier.}
 
-\item{subject_ord}{(\code{character}) \cr the expected levels (in order) of the subject identifier.}
+\item{subject_ord}{(\code{character}) the expected levels (in order) of the subject identifier.}
 }
 \value{
 Returns the original object but with the data standardised (see details)

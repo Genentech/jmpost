@@ -7,7 +7,7 @@
 as_formula(x, ...)
 }
 \arguments{
-\item{x}{(\code{ANY}) \cr object to convert to a formula.}
+\item{x}{(\code{ANY}) object to convert to a formula.}
 
 \item{...}{Not used.}
 }

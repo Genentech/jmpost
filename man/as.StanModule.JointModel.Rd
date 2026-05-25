@@ -7,7 +7,7 @@
 \method{as.StanModule}{JointModel}(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{JointModel}}) \cr Joint model specification.}
+\item{object}{(\code{JointModel}) Joint model specification.}
 
 \item{...}{Not Used.}
 }

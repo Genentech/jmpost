@@ -7,7 +7,7 @@
 validate_time_grid(time_grid)
 }
 \arguments{
-\item{time_grid}{(\code{numeric})\cr A vector of times which quantities will be
+\item{time_grid}{(\code{numeric}) A vector of times which quantities will be
 evaluated at.}
 }
 \description{

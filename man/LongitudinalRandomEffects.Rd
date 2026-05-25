@@ -7,7 +7,7 @@
 LongitudinalRandomEffects(object)
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
+\item{object}{(\code{JointModelSamples}) samples as drawn from a Joint Model.}
 }
 \description{
 Helper function to extract subject-level random effects samples from the longitudinal

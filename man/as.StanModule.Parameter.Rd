@@ -7,7 +7,7 @@
 \method{as.StanModule}{Parameter}(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Parameter}})\cr a prior Distribution}
+\item{object}{(\code{Parameter}) a prior Distribution}
 
 \item{...}{Not Used.}
 }

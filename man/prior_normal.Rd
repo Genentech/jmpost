@@ -7,9 +7,9 @@
 prior_normal(mu, sigma)
 }
 \arguments{
-\item{mu}{(\code{number})\cr mean.}
+\item{mu}{(\code{number}) mean.}
 
-\item{sigma}{(\code{number})\cr standard deviation.}
+\item{sigma}{(\code{number}) standard deviation.}
 }
 \description{
 Normal Prior Distribution

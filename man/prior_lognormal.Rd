@@ -7,9 +7,9 @@
 prior_lognormal(mu, sigma)
 }
 \arguments{
-\item{mu}{(\code{number})\cr mean of the logarithm.}
+\item{mu}{(\code{number}) mean of the logarithm.}
 
-\item{sigma}{(\code{number})\cr standard deviation of the logarithm.}
+\item{sigma}{(\code{number}) standard deviation of the logarithm.}
 }
 \description{
 Log-Normal Prior Distribution

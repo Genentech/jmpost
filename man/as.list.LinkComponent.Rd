@@ -7,7 +7,7 @@
 \method{as.list}{LinkComponent}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{LinkComponent}})\cr a link component.}
+\item{x}{(\code{LinkComponent}) a link component.}
 
 \item{...}{Not Used.}
 }

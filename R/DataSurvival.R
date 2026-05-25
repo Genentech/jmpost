@@ -4,8 +4,10 @@ NULL
 
 #' Re-used documentation for `DataSurvival`
 #'
-#' @param object ([`DataSurvival`]) \cr Survival Data.
-#' @param x ([`DataSurvival`]) \cr Survival Data.
+#' @typed object: DataSurvival
+#'   Survival Data.
+#' @typed x: DataSurvival
+#'   Survival Data.
 #' @param ... Not Used.
 #'
 #' @name DataSurvival-Shared
@@ -35,8 +37,10 @@ NULL
     )
 )
 
-#' @param data (`data.frame`)\cr the observed time-to-event data.
-#' @param formula (`formula`)\cr of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
+#' @typed data: data.frame
+#'   the observed time-to-event data.
+#' @typed formula: formula
+#'   of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
 #'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
 #' @rdname DataSurvival-class
 DataSurvival <- function(data, formula) {
@@ -59,10 +63,9 @@ setValidity(
             return("`formula` should be a 2 sided formula")
         }
         LHS <- as.character(x$frm[[2]][[1]])
-        if (
-            !(identical(LHS, "Surv") ||
-                identical(LHS, c("::", "survival", "Surv")))
-        ) {
+        lhs_surv <- identical(LHS, "Surv")
+        lhs_colon_surv <- identical(LHS, c("::", "survival", "Surv"))
+        if (!(lhs_surv || lhs_colon_surv)) {
             return("The LHS of `formula` should be a call to survival::Surv()")
         }
         for (v in c(x$time, x$event)) {
@@ -191,7 +194,8 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
 #' Converts [`DataSurvival`] object into a printable string.
 #' @inheritParams DataSurvival-Shared
 #' @family DataSurvival
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @typed indent: numeric
+#'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.DataSurvival <- function(object, indent = 1, ...) {
@@ -235,8 +239,10 @@ setMethod(
 #' This is used for predicting new data using a model that was trained on a different
 #' original data source
 #'
-#' @param olddata ([`DataSurvival`]) \cr The original data to be used as a template for the new data
-#' @param newdata ([`data.frame`]) \cr The new data to be used to generate the design matrix
+#' @typed olddata: DataSurvival
+#'   The original data to be used as a template for the new data
+#' @typed newdata: data.frame
+#'   The new data to be used to generate the design matrix
 #' @importFrom stats .checkMFClasses terms delete.response model.frame model.matrix
 #' @importFrom survival coxph
 #' @keywords internal

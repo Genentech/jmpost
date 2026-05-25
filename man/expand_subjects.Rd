@@ -7,10 +7,10 @@
 expand_subjects(subjects, all_subjects)
 }
 \arguments{
-\item{subjects}{(\code{character} or \code{NULL})\cr Character vector representing the subjects.
+\item{subjects}{(\code{character} or \code{NULL}) Character vector representing the subjects.
 If NULL, it will be set to the value of \code{all_subjects}.}
 
-\item{all_subjects}{(\code{character})\cr Character vector representing all possible subjects.}
+\item{all_subjects}{(\code{character}) Character vector representing all possible subjects.}
 }
 \value{
 Returns the expanded \code{subjects} vector.

@@ -4,11 +4,11 @@
 \alias{LinkComponent-Shared}
 \title{\code{LinkComponent} Function Arguments}
 \arguments{
-\item{stan}{(\code{StanModule})\cr Stan code.}
+\item{stan}{(\code{StanModule}) Stan code.}
 
-\item{x}{(\code{\link{LinkComponent}})\cr a link component.}
+\item{x}{(\code{LinkComponent}) a link component.}
 
-\item{object}{(\code{\link{LinkComponent}})\cr a link component.}
+\item{object}{(\code{LinkComponent}) a link component.}
 
 \item{...}{Not Used.}
 }

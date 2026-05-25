@@ -24,9 +24,9 @@ sampleObservations(object, times_df)
 \method{sampleObservations}{SimSurvival}(object, times_df)
 }
 \arguments{
-\item{object}{(\code{SimLongitudinal} or \code{SimSurvival}) \cr object to generate observations from.}
+\item{object}{(\code{SimLongitudinal} or \code{SimSurvival}) object to generate observations from.}
 
-\item{times_df}{(\code{data.frame}) \cr the times at which to generate observations. See details.}
+\item{times_df}{(\code{data.frame}) the times at which to generate observations. See details.}
 }
 \description{
 Generate Simulated Observations
@@ -40,6 +40,6 @@ to generate observations for times \code{c(0, 1, 2, 3)} then \code{times_df} sho
 times_df <- tidyr::expand_grid(
     subject_dat,
     time = c(0, 1, 2, 3)
-)
+  )
 }\if{html}{\out{</div>}}
 }

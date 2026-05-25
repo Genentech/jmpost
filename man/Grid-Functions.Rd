@@ -31,25 +31,25 @@ GridPopulation(times = NULL)
 GridPrediction(times = NULL, newdata, params = list())
 }
 \arguments{
-\item{subjects}{(\code{character} or \code{NULL})\cr vector of subjects to extract quantities for.
+\item{subjects}{(\code{character} or \code{NULL}) vector of subjects to extract quantities for.
 If \code{NULL} will default to all subjects within the dataset.}
 
-\item{length.out}{(\code{numeric})\cr number of evenly spaced timepoints to generate quantities at.}
+\item{length.out}{(\code{numeric}) number of evenly spaced timepoints to generate quantities at.}
 
-\item{times}{(\code{numeric} or \code{NULL})\cr vector of time points to extract quantities at.
+\item{times}{(\code{numeric} or \code{NULL}) vector of time points to extract quantities at.
 If \code{NULL} will default to 201 evenly spaced timepoints between 0 and either the max
 observation time (for \code{\link{LongitudinalQuantities}}) or max event time (for \code{\link{SurvivalQuantities}}).}
 
-\item{groups}{(\code{list})\cr named list of subjects to extract quantities for. See Group Specification.}
+\item{groups}{(\code{list}) named list of subjects to extract quantities for. See Group Specification.}
 
-\item{spec}{(\code{list})\cr named list of subjects to extract quantities for. The names of each
+\item{spec}{(\code{list}) named list of subjects to extract quantities for. The names of each
 element should be the required subjects with the element itself being a numeric vector of timepoints
 to generate the quantity at.}
 
-\item{newdata}{(\code{data.frame}) \cr new data to generate quantities for. Must contain the same columns
+\item{newdata}{(\code{data.frame}) new data to generate quantities for. Must contain the same columns
 and factor levels of the original data used in the \code{\link{DataSurvival}} object.}
 
-\item{params}{(\code{list})\cr named list of parameters to fix the longitudinal model parameters at when
+\item{params}{(\code{list}) named list of parameters to fix the longitudinal model parameters at when
 predicting survival quantities. See \code{\link[=getPredictionNames]{getPredictionNames()}} for the required parameters.}
 }
 \description{
@@ -91,7 +91,7 @@ named \code{Group-1} and \code{Group-2} which are composed of the subjects \code
         "Group-1" = c("sub-1", "sub-2"),
         "Group-2" = c("sub-3", "sub-4")
     )
-)
+  )
 }\if{html}{\out{</div>}}
 }
 

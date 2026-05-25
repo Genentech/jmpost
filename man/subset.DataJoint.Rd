@@ -7,9 +7,9 @@
 \method{subset}{DataJoint}(x, subjects, ...)
 }
 \arguments{
-\item{x}{(\code{DataJoint}) \cr object created by \code{\link[=DataJoint]{DataJoint()}}.}
+\item{x}{(\code{DataJoint}) object created by \code{\link[=DataJoint]{DataJoint()}}.}
 
-\item{subjects}{(\code{character} or \code{list})\cr subjects that you wish to subset the \code{data.frame}
+\item{subjects}{(\code{character} or \code{list}) subjects that you wish to subset the \code{data.frame}
 to contain. See details.}
 
 \item{...}{Not used.}
@@ -27,7 +27,7 @@ subset(x, subjects)
 groups <- list(
     "g1" = c("SUB1", "SUB3", "SUB4"),
     "g2" = c("SUB2", "SUB3")
-)
+  )
 subset(x, groups)
 }
 }

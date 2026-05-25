@@ -44,7 +44,8 @@ NULL
 #' Write the Stan code for a Stan module.
 #'
 #' @param object the module.
-#' @param destination (`character` or  `connection`)\cr Where to write stan code to.
+#' @typed destination: "`character` or  `connection`"
+#'   Where to write stan code to.
 #' @param ... Additional arguments
 #'
 #' @export
@@ -182,9 +183,12 @@ generateQuantities <- function(object, ...) {
 
 #' Prepare Data Object
 #'
-#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr data object to "harmonise"
-#' @param subject_var (`character`) \cr the name of the variable containing the subject identifier.
-#' @param subject_ord (`character`) \cr the expected levels (in order) of the subject identifier.
+#' @typed object: "`DataSubject` or `DataLongitudinal` or `DataSurvival`"
+#'   data object to "harmonise"
+#' @typed subject_var: character
+#'   the name of the variable containing the subject identifier.
+#' @typed subject_ord: character
+#'   the expected levels (in order) of the subject identifier.
 #' @param ... not used.
 #'
 #' @details
@@ -278,8 +282,10 @@ brierScore <- function(object, ...) {
 
 #' Generate Simulated Observations
 #'
-#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate observations from.
-#' @param times_df (`data.frame`) \cr the times at which to generate observations. See details.
+#' @typed object: "`SimLongitudinal` or `SimSurvival`"
+#'   object to generate observations from.
+#' @typed times_df: data.frame
+#'   the times at which to generate observations. See details.
 #'
 #' @details
 #' The `times_df` argument should be a `data.frame` as created by `sampleSubjects` but
@@ -290,7 +296,7 @@ brierScore <- function(object, ...) {
 #' times_df <- tidyr::expand_grid(
 #'     subject_dat,
 #'     time = c(0, 1, 2, 3)
-#' )
+#'   )
 #' ```
 #'
 #' @export
@@ -301,8 +307,10 @@ sampleObservations <- function(object, times_df) {
 
 #' Generate Simulated Subjects
 #'
-#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate subjects from.
-#' @param subjects_df (`data.frame`) \cr the subjects to generate observations for. See details.
+#' @typed object: "`SimLongitudinal` or `SimSurvival`"
+#'   object to generate subjects from.
+#' @typed subjects_df: data.frame
+#'   the subjects to generate observations for. See details.
 #'
 #' @details
 #' The `subjects_df` argument should be a `data.frame` with 1 row per desired subject to create
@@ -321,7 +329,8 @@ sampleSubjects <- function(object, subjects_df) {
 
 #' Generate time windows for evaluating a hazard function
 #'
-#' @param object (`SurvivalModel`) \cr object to generate time windows for.
+#' @typed object: SurvivalModel
+#'   object to generate time windows for.
 #' @param ... Not used.
 #'
 hazardWindows <- function(object, ...) {
@@ -343,8 +352,10 @@ as.QuantityCollapser <- function(object, ...) {
 
 #' Coalesce Time
 #'
-#' @param object ([`Grid`]) \cr object to coalesce time for.
-#' @param times (`numeric`) \cr the times to coalesce to.
+#' @typed object: Grid
+#'   object to coalesce time for.
+#' @typed times: numeric
+#'   the times to coalesce to.
 #' @param ... Not used
 #'
 #' Method used to replace NULL times on grid objects (if appropriate)
@@ -361,8 +372,10 @@ coalesceGridTime.default <- function(object, times, ...) {
 
 #' Resolve a Promise
 #'
-#' @param object (`ANY`)\cr an object to resolve.
-#' @param ... (`ANY`)\cr additional arguments.
+#' @typed object: ANY
+#'   an object to resolve.
+#' @typed ...: ANY
+#'   additional arguments.
 #'
 #' If `object` is not a promise will just return itself else will resolve the promise
 #' and return the promised object.
@@ -380,7 +393,8 @@ resolvePromise.default <- function(object, ...) {
 
 #' Enable Link Generic
 #'
-#' @param object ([`LongitudinalModel`])\cr to enable link for.
+#' @typed object: LongitudinalModel
+#'   to enable link for.
 #' @param ... Not used.
 #'
 #' Optional hook method that is called on a [`LongitudinalModel`] only if a link method
@@ -401,7 +415,8 @@ enableLink.default <- function(object, ...) {
 
 #' Enable Generated Quantities Generic
 #'
-#' @param object ([`StanModel`])\cr to enable generated quantities for.
+#' @typed object: StanModel
+#'   to enable generated quantities for.
 #' @param ... Not used.
 #'
 #' Optional hook method that is called on a [`StanModel`] if attempting to use
@@ -424,7 +439,8 @@ enableGQ.default <- function(object, ...) {
 #' Utility function that returns the names of the required parameters for predicting
 #' survival quantities with [`GridPrediction`].
 #'
-#' @param object (`LongitudinalModel`) \cr A longitudinal model object
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object
 #' @param ... Not used.
 #' @export
 getPredictionNames <- function(object, ...) {
@@ -445,7 +461,8 @@ getPredictionNames.default <- function(object, ...) {
 #' to know which parameters it needs to extract and to what common names
 #' it should map the parameters to.
 #'
-#' @param object (`LongitudinalModel`) \cr A longitudinal model object
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object
 #' @param ... Not used.
 #' @export
 getRandomEffectsNames <- function(object, ...) {
@@ -462,7 +479,8 @@ getRandomEffectsNames.default <- function(object, ...) {
 #' As Formula
 #'
 #' Utility wrapper function to convert an object to a formula.
-#' @param x (`ANY`) \cr object to convert to a formula.
+#' @typed x: ANY
+#'   object to convert to a formula.
 #' @param ... Not used.
 #' @export
 as_formula <- function(x, ...) {
@@ -481,9 +499,12 @@ as_formula.default <- function(x, ...) {
 #' Applies constraints to a prior distribution to ensure any sampled numbers
 #' from the distribution fall within the constraints
 #'
-#' @param object (`Prior`)\cr a prior distribution to apply constraints to
-#' @param lower (`numeric`)\cr lower constraint boundary
-#' @param upper (`numeric`)\cr upper constraint boundary
+#' @typed object: Prior
+#'   a prior distribution to apply constraints to
+#' @typed lower: numeric
+#'   lower constraint boundary
+#' @typed upper: numeric
+#'   upper constraint boundary
 #'
 #' @export
 set_limits <- function(object, lower = -Inf, upper = Inf) {
@@ -493,9 +514,12 @@ set_limits <- function(object, lower = -Inf, upper = Inf) {
 
 #' Save Object to File
 #'
-#' @param object (`ANY`) \cr object to save.
-#' @param file (`character`) \cr file to save object to.
-#' @param ... (`ANY`) \cr additional arguments.
+#' @typed object: ANY
+#'   object to save.
+#' @typed file: character
+#'   file to save object to.
+#' @typed ...: ANY
+#'   additional arguments.
 #'
 #' @family saveObject
 #' @export

@@ -3,13 +3,20 @@
 #' The documentation lists all the conventional arguments for [`SimSurvival`]
 #' constructors.
 #'
-#' @param time_max (`number`)\cr the maximum time to simulate to.
-#' @param time_step (`number`)\cr the time interval between evaluating the log-hazard function.
-#' @param lambda_censor (`number`)\cr the censoring rate.
-#' @param beta_cont (`number`)\cr the continuous covariate coefficient.
-#' @param beta_cat (`numeric`)\cr the categorical covariate coefficients.
-#' @param loghazard (`function`)\cr the log hazard function.
-#' @param name (`character`)\cr the name of the object.
+#' @typed time_max: number
+#'   the maximum time to simulate to.
+#' @typed time_step: number
+#'   the time interval between evaluating the log-hazard function.
+#' @typed lambda_censor: number
+#'   the censoring rate.
+#' @typed beta_cont: number
+#'   the continuous covariate coefficient.
+#' @typed beta_cat: numeric
+#'   the categorical covariate coefficients.
+#' @typed loghazard: function
+#'   the log hazard function.
+#' @typed name: character
+#'   the name of the object.
 #' @param ... Not Used.
 #'
 #' @section Hazard Evaluation:
@@ -105,7 +112,8 @@ as_print_string.SimSurvival <- function(object, ...) {
 
 #' Construct Time Intervals
 #'
-#' @param object (`SimSurvival`)\cr the survival simulation object to create evaluation points for.
+#' @typed object: SimSurvival
+#'   the survival simulation object to create evaluation points for.
 #' @param ... Not Used.
 #'
 #' @return A `tibble` with `lower`, `upper`, `time`, `eval` and `width`.
@@ -244,8 +252,10 @@ sampleObservations.SimSurvival <- function(object, times_df) {
 
 #' Simulate Survival Data from a Weibull Proportional Hazard Model
 #'
-#' @param lambda (`number`)\cr the scale parameter.
-#' @param gamma (`number`)\cr the shape parameter.
+#' @typed lambda: number
+#'   the scale parameter.
+#' @typed gamma: number
+#'   the shape parameter.
 #'
 #' @inheritParams SimSurvival-Shared
 #' @inheritSection SimSurvival-Shared Hazard Evaluation
@@ -277,8 +287,10 @@ SimSurvivalWeibullPH <- function(
 
 #' Simulate Survival Data from a Log-Logistic Proportional Hazard Model
 #'
-#' @param a (`number`)\cr the scale parameter.
-#' @param b (`number`)\cr the shape parameter.
+#' @typed a: number
+#'   the scale parameter.
+#' @typed b: number
+#'   the shape parameter.
 #'
 #' @inheritParams SimSurvival-Shared
 #' @inheritSection SimSurvival-Shared Hazard Evaluation
@@ -312,7 +324,8 @@ SimSurvivalLogLogistic <- function(
 
 #' Simulate Survival Data from a Exponential Proportional Hazard Model
 #'
-#' @param lambda (`number`)\cr the rate parameter.
+#' @typed lambda: number
+#'   the rate parameter.
 #'
 #' @inheritParams SimSurvival-Shared
 #' @inheritSection SimSurvival-Shared Hazard Evaluation
@@ -344,8 +357,10 @@ SimSurvivalExponential <- function(
 
 #' Simulate Survival Data from a Gamma Proportional Hazard Model
 #'
-#' @param k (`number`)\cr the shape parameter.
-#' @param theta (`number`)\cr the scale parameter.
+#' @typed k: number
+#'   the shape parameter.
+#' @typed theta: number
+#'   the scale parameter.
 #'
 #' @inheritParams SimSurvival-Shared
 #' @inheritSection SimSurvival-Shared Hazard Evaluation

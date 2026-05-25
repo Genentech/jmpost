@@ -4,8 +4,10 @@ NULL
 
 #' Re-used documentation for `DataLongitudinal`
 #'
-#' @param object ([`DataLongitudinal`]) \cr Longitudinal Data.
-#' @param x ([`DataLongitudinal`]) \cr Longitudinal Data.
+#' @typed object: DataLongitudinal
+#'   Longitudinal Data.
+#' @typed x: DataLongitudinal
+#'   Longitudinal Data.
 #' @param ... Not Used.
 #'
 #' @name DataLongitudinal-Shared
@@ -39,9 +41,12 @@ NULL
 )
 
 
-#' @param data (`data.frame`)\cr containing the observed longitudinal data.
-#' @param formula (`formula`)\cr of the form `outcome ~ time`, and cannot contain any additional covariates.
-#' @param threshold (`numeric`)\cr cut-off value to be used to declare an observation as censored
+#' @typed data: data.frame
+#'   containing the observed longitudinal data.
+#' @typed formula: formula
+#'   of the form `outcome ~ time`, and cannot contain any additional covariates.
+#' @typed threshold: numeric
+#'   cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
 #' @rdname DataLongitudinal-class
 DataLongitudinal <- function(data, formula, threshold = NULL) {
@@ -182,12 +187,12 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     index_cen <- which(df[[vars$outcome]] < adj_threshold)
 
     sparse_mat_inds_all_y <- rstan::extract_sparse_parts(mat_sld_index)
-    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[,
-        index_obs
-    ])
-    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[,
-        index_cen
-    ])
+    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(
+        mat_sld_index[, index_obs]
+    )
+    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(
+        mat_sld_index[, index_cen]
+    )
 
     model_data <- list(
         n_tumour_all = nrow(df),
@@ -252,7 +257,8 @@ as.list.DataLongitudinal <- function(x, ...) {
 #' Converts [`DataLongitudinal`] object into a printable string.
 #' @inheritParams DataLongitudinal-Shared
 #' @family DataLongitudinal
-#' @param indent (`numeric`)\cr how much white space to prefix the print string with.
+#' @typed indent: numeric
+#'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
 as_print_string.DataLongitudinal <- function(object, indent = 1, ...) {
