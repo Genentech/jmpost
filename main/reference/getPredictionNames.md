@@ -29,8 +29,7 @@ getPredictionNames(object, ...)
 
 - object:
 
-  (`LongitudinalModel`)\
-  A longitudinal model object
+  (`LongitudinalModel`) A longitudinal model object
 
 - ...:
 

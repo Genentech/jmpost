@@ -12,13 +12,11 @@ add_missing_stan_blocks(x, stan_blocks = STAN_BLOCKS)
 
 - x:
 
-  (`list`)\
-  list of Stan code blocks
+  (`list`) list of Stan code blocks
 
 - stan_blocks:
 
-  (`list`)\
-  reference list of stan blocks.
+  (`list`) reference list of stan blocks.
 
 ## Value
 

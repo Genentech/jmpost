@@ -14,18 +14,17 @@ longitudinal_plot(data, data_obs = NULL, add_ci = FALSE)
 
 - data:
 
-  (`data.frame`)\
-  summary statistics for longitudinal value estimates. See details.
+  (`data.frame`) summary statistics for longitudinal value estimates.
+  See details.
 
 - data_obs:
 
-  (`data.frame`)\
-  real observed values to be overlaid for reference. See details.
+  (`data.frame`) real observed values to be overlaid for reference. See
+  details.
 
 - add_ci:
 
-  (`logical`)\
-  Should confidence intervals be added? Default = `TRUE`.
+  (`logical`) Should confidence intervals be added? Default = `TRUE`.
 
 ## Details
 

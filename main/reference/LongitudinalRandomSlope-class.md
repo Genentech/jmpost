@@ -20,23 +20,20 @@ LongitudinalRandomSlope(
 
 - intercept:
 
-  (`Prior`)\
-  for the `intercept`.
+  (`Prior`) for the `intercept`.
 
 - slope_mu:
 
-  (`Prior`)\
-  for the population slope `slope_mu` (one per arm).
+  (`Prior`) for the population slope `slope_mu` (one per arm).
 
 - slope_sigma:
 
-  (`Prior`)\
-  for the random slope standard deviation `slope_sigma` (one per arm).
+  (`Prior`) for the random slope standard deviation `slope_sigma` (one
+  per arm).
 
 - sigma:
 
-  (`Prior`)\
-  for the variance of the longitudinal values `sigma`.
+  (`Prior`) for the variance of the longitudinal values `sigma`.
 
 ## Available Links
 

@@ -16,15 +16,13 @@ subset(x, subjects, ...)
 
 - x:
 
-  (`DataJoint`)\
-  object created by
+  (`DataJoint`) object created by
   [`DataJoint()`](https://genentech.github.io/jmpost/reference/DataJoint-class.md).
 
 - subjects:
 
-  (`character` or `list`)\
-  subjects that you wish to subset the `data.frame` to contain. See
-  details.
+  (`character` or `list`) subjects that you wish to subset the
+  `data.frame` to contain. See details.
 
 - ...:
 
@@ -46,7 +44,7 @@ subset(x, subjects)
 groups <- list(
     "g1" = c("SUB1", "SUB3", "SUB4"),
     "g2" = c("SUB2", "SUB3")
-)
+  )
 subset(x, groups)
 } # }
 ```

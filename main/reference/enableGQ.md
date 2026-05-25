@@ -12,8 +12,7 @@ enableGQ(object, ...)
 
 - object:
 
-  ([`StanModel`](https://genentech.github.io/jmpost/reference/StanModel-class.md))\
-  to enable generated quantities for.
+  (`StanModel`) to enable generated quantities for.
 
 - ...:
 

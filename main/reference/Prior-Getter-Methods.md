@@ -15,8 +15,7 @@ initialValues(object, ...)
 
 - object:
 
-  ([`Prior`](https://genentech.github.io/jmpost/reference/Prior-class.md))\
-  a prior Distribution
+  (`Prior`) a prior Distribution
 
 - ...:
 

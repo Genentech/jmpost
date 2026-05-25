@@ -18,15 +18,12 @@ SurvivalGamma(
 
 - k:
 
-  (`Prior`)\
-  for the shape `k`.
+  (`Prior`) for the shape `k`.
 
 - theta:
 
-  (`Prior`)\
-  for the scale `theta`.
+  (`Prior`) for the scale `theta`.
 
 - beta:
 
-  (`Prior`)\
-  for covariates coefficients `beta`.
+  (`Prior`) for covariates coefficients `beta`.

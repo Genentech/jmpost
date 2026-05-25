@@ -6,13 +6,11 @@ Re-used documentation for `LongitudinalQuantities`
 
 - x:
 
-  ([`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))\
-  longitudinal quantities.
+  (`LongitudinalQuantities`) longitudinal quantities.
 
 - object:
 
-  ([`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))\
-  longitudinal quantities.
+  (`LongitudinalQuantities`) longitudinal quantities.
 
 - ...:
 

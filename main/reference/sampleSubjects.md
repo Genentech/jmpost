@@ -27,13 +27,11 @@ sampleSubjects(object, subjects_df)
 
 - object:
 
-  (`SimLongitudinal` or `SimSurvival`)\
-  object to generate subjects from.
+  (`SimLongitudinal` or `SimSurvival`) object to generate subjects from.
 
 - subjects_df:
 
-  (`data.frame`)\
-  the subjects to generate observations for. See details.
+  (`data.frame`) the subjects to generate observations for. See details.
 
 ## Details
 

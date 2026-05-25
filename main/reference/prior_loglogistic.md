@@ -12,13 +12,11 @@ prior_loglogistic(alpha, beta)
 
 - alpha:
 
-  (`number`)\
-  Scale parameter.
+  (`number`) Scale parameter.
 
 - beta:
 
-  (`number`)\
-  Shape parameter.
+  (`number`) Shape parameter.
 
 ## See also
 

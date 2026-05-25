@@ -13,8 +13,7 @@ LongitudinalRandomEffects(object)
 
 - object:
 
-  ([`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md))\
-  samples as drawn from a Joint Model.
+  (`JointModelSamples`) samples as drawn from a Joint Model.
 
 ## See also
 

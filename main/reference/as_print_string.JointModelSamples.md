@@ -15,14 +15,12 @@ as_print_string(object, indent = 1, ...)
 
 - object:
 
-  ([`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md))\
-  samples as drawn from a
+  (`JointModelSamples`) samples as drawn from a
   [`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md).
 
 - indent:
 
-  (`numeric`)\
-  how much white space to prefix the print string with.
+  (`numeric`) how much white space to prefix the print string with.
 
 ## See also
 

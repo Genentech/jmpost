@@ -16,18 +16,15 @@ saveObject(object, file, ...)
 
 - object:
 
-  ([`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md))\
-  the object to save.
+  (`JointModelSamples`) the object to save.
 
 - file:
 
-  (`character`)\
-  the file to save the object to.
+  (`character`) the file to save the object to.
 
 - ...:
 
-  (`ANY`)\
-  additional arguments to
+  (`ANY`) additional arguments to
   [`saveRDS`](https://rdrr.io/r/base/readRDS.html).
 
 ## See also

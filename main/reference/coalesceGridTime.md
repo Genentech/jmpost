@@ -24,13 +24,11 @@ coalesceGridTime(object, times, ...)
 
 - object:
 
-  (`Grid`)\
-  object to coalesce time for.
+  (`Grid`) object to coalesce time for.
 
 - times:
 
-  (`numeric`)\
-  the times to coalesce to.
+  (`numeric`) the times to coalesce to.
 
 - ...:
 

@@ -15,8 +15,7 @@ length(x)
 
 - x:
 
-  ([`Link`](https://genentech.github.io/jmpost/reference/Link-class.md))\
-  a link object.
+  (`Link`) a link object.
 
 ## See also
 

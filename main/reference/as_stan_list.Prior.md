@@ -14,13 +14,11 @@ as_stan_list(object, name, ...)
 
 - object:
 
-  ([`Prior`](https://genentech.github.io/jmpost/reference/Prior-class.md))\
-  a prior Distribution
+  (`Prior`) a prior Distribution
 
 - name:
 
-  (`character`)\
-  the name of the parameter the prior distribution is for
+  (`character`) the name of the parameter the prior distribution is for
 
 - ...:
 

@@ -14,8 +14,7 @@ as_stan_list(object, ...)
 
 - object:
 
-  ([`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md))\
-  a prior Distribution
+  (`Parameter`) a prior Distribution
 
 - ...:
 

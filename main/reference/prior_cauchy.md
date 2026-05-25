@@ -12,13 +12,11 @@ prior_cauchy(mu, sigma)
 
 - mu:
 
-  (`number`)\
-  mean.
+  (`number`) mean.
 
 - sigma:
 
-  (`number`)\
-  scale.
+  (`number`) scale.
 
 ## See also
 

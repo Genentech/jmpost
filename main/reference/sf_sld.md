@@ -16,23 +16,19 @@ sf_dsld(time, b, s, g)
 
 - time:
 
-  (`numeric`)\
-  time grid.
+  (`numeric`) time grid.
 
 - b:
 
-  (`number`)\
-  baseline.
+  (`number`) baseline.
 
 - s:
 
-  (`number`)\
-  shrinkage.
+  (`number`) shrinkage.
 
 - g:
 
-  (`number`)\
-  growth.
+  (`number`) growth.
 
 ## Value
 

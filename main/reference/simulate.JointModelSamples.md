@@ -59,18 +59,17 @@ simulate(
 
 - time_max:
 
-  (`number`)\
-  the maximum time to simulate to.
+  (`number`) the maximum time to simulate to.
 
 - time_step:
 
-  (`number`)\
-  the time interval between evaluating the log-hazard function.
+  (`number`) the time interval between evaluating the log-hazard
+  function.
 
 - lambda_censor:
 
-  (`number`)\
-  the censoring rate, as the parameter of an exponential distribution.
+  (`number`) the censoring rate, as the parameter of an exponential
+  distribution.
 
 - scaled_variance:
 

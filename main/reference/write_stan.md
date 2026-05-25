@@ -19,8 +19,7 @@ write_stan(object, destination, ...)
 
 - destination:
 
-  (`character` or `connection`)\
-  Where to write stan code to.
+  (`character` or `connection`) Where to write stan code to.
 
 - ...:
 

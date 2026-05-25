@@ -27,60 +27,50 @@ LongitudinalGSF(
 
 - mu_bsld:
 
-  (`Prior`)\
-  for the mean baseline value `mu_bsld`.
+  (`Prior`) for the mean baseline value `mu_bsld`.
 
 - mu_ks:
 
-  (`Prior`)\
-  for the mean shrinkage rate `mu_ks`.
+  (`Prior`) for the mean shrinkage rate `mu_ks`.
 
 - mu_kg:
 
-  (`Prior`)\
-  for the mean growth rate `mu_kg`.
+  (`Prior`) for the mean growth rate `mu_kg`.
 
 - mu_phi:
 
-  (`Prior`)\
-  for the mean proportion of cells affected by the treatment `mu_phi`.
+  (`Prior`) for the mean proportion of cells affected by the treatment
+  `mu_phi`.
 
 - omega_bsld:
 
-  (`Prior`)\
-  for the baseline value standard deviation `omega_bsld`.
+  (`Prior`) for the baseline value standard deviation `omega_bsld`.
 
 - omega_ks:
 
-  (`Prior`)\
-  for the shrinkage rate standard deviation `omega_ks`.
+  (`Prior`) for the shrinkage rate standard deviation `omega_ks`.
 
 - omega_kg:
 
-  (`Prior`)\
-  for the growth rate standard deviation `omega_kg`.
+  (`Prior`) for the growth rate standard deviation `omega_kg`.
 
 - omega_phi:
 
-  (`Prior`)\
-  for the standard deviation of the proportion of cells affected by the
-  treatment `omega_phi`.
+  (`Prior`) for the standard deviation of the proportion of cells
+  affected by the treatment `omega_phi`.
 
 - sigma:
 
-  (`Prior`)\
-  for the variance of the longitudinal values `sigma`.
+  (`Prior`) for the variance of the longitudinal values `sigma`.
 
 - scaled_variance:
 
-  (`logical`)\
-  whether the variance should be scaled by the expected value (see the
-  "Statistical Specifications" vignette for more details)
+  (`logical`) whether the variance should be scaled by the expected
+  value (see the "Statistical Specifications" vignette for more details)
 
 - centred:
 
-  (`logical`)\
-  whether to use the centred parameterization.
+  (`logical`) whether to use the centred parameterization.
 
 ## Available Links
 

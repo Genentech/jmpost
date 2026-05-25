@@ -14,8 +14,7 @@ extract_observed_values(object)
 
 - object:
 
-  ([`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md))\
-  data used to fit a
+  (`DataJoint`) data used to fit a
   [`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md).
 
 ## Value

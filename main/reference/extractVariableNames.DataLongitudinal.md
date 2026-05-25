@@ -14,8 +14,7 @@ extractVariableNames(object)
 
 - object:
 
-  ([`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md))\
-  Longitudinal Data.
+  (`DataLongitudinal`) Longitudinal Data.
 
 ## Value
 

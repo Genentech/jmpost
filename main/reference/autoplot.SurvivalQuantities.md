@@ -13,25 +13,22 @@ autoplot(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 
 - object:
 
-  ([`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md))\
-  survival quantities.
+  (`SurvivalQuantities`) survival quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval. If values of `FALSE`, `NULL` or `0`
-  are provided then confidence regions will not be added to the plot
+  (`numeric`) confidence level of the interval. If values of `FALSE`,
+  `NULL` or `0` are provided then confidence regions will not be added
+  to the plot
 
 - add_km:
 
-  (`logical`)\
-  if `TRUE` Kaplan-Meier curves will be added to the plot for each
-  group/subject.
+  (`logical`) if `TRUE` Kaplan-Meier curves will be added to the plot
+  for each group/subject.
 
 - add_wrap:
 
-  (`logical`)\
-  if `TRUE` will apply a
+  (`logical`) if `TRUE` will apply a
   [`ggplot2::facet_wrap()`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)
   to the plot by each group/subject.
 

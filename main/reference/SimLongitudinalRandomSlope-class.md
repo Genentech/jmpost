@@ -20,38 +20,32 @@ SimLongitudinalRandomSlope(
 
 - times:
 
-  (`numeric`)\
-  the times to generate observations at.
+  (`numeric`) the times to generate observations at.
 
 - intercept:
 
-  (`numeric`)\
-  the mean baseline value for each study.
+  (`numeric`) the mean baseline value for each study.
 
 - slope_mu:
 
-  (`numeric`)\
-  the population slope for each treatment arm.
+  (`numeric`) the population slope for each treatment arm.
 
 - slope_sigma:
 
-  (`numeric`)\
-  the random slope standard deviation for each treatment arm.
+  (`numeric`) the random slope standard deviation for each treatment
+  arm.
 
 - sigma:
 
-  (`number`)\
-  the variance of the longitudinal values.
+  (`number`) the variance of the longitudinal values.
 
 - link_dsld:
 
-  (`number`)\
-  the link coefficient for the DSLD contribution.
+  (`number`) the link coefficient for the DSLD contribution.
 
 - link_identity:
 
-  (`number`)\
-  the link coefficient for the identity contribution.
+  (`number`) the link coefficient for the identity contribution.
 
 ## Slots
 

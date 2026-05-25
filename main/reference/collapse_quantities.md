@@ -13,13 +13,12 @@ collapse_quantities(quantities_raw, collapser)
 
 - quantities_raw:
 
-  (`matrix`)\
-  of samples with 1 row per sample and 1 column per distinct quantity.
+  (`matrix`) of samples with 1 row per sample and 1 column per distinct
+  quantity.
 
 - collapser:
 
-  ([`QuantityCollapser`](https://genentech.github.io/jmpost/reference/Quant-Dev.md))\
-  specifies which columns to combine together.
+  (`QuantityCollapser`) specifies which columns to combine together.
 
 ## Details
 

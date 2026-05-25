@@ -13,13 +13,11 @@ summary(object, conf.level = 0.95, ...)
 
 - object:
 
-  ([`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))\
-  longitudinal quantities.
+  (`LongitudinalQuantities`) longitudinal quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval.
+  (`numeric`) confidence level of the interval.
 
 - ...:
 

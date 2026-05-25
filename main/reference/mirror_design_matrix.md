@@ -17,10 +17,9 @@ mirror_design_matrix(olddata, newdata)
 
 - olddata:
 
-  ([`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md))\
-  The original data to be used as a template for the new data
+  (`DataSurvival`) The original data to be used as a template for the
+  new data
 
 - newdata:
 
-  ([`data.frame`](https://rdrr.io/r/base/data.frame.html))\
-  The new data to be used to generate the design matrix
+  (`data.frame`) The new data to be used to generate the design matrix

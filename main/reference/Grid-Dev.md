@@ -25,12 +25,12 @@ this as follows:
     QuantityGenerator(
         times = c(10, 10, 10, 10, 20, 20, 20, 20),
         subjects = c("sub-1" "sub-2", "sub-3", "sub-4", "sub-1" "sub-2", "sub-3", "sub-4")
-    )
+      )
     QuantityCollapser(
         times = c(10, 20, 10 , 20),
         groups = c("Group-1", "Group-1", "Group-2", "Group-2"),
         indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
-    )
+      )
 
 For population based quantities use the `arms` and `studies` arguments
 of `QuantityGenerator` instead of `subjects`.
@@ -70,7 +70,7 @@ example if the goal was to create two groups named `Group-1` and
             "Group-1" = c("sub-1", "sub-2"),
             "Group-2" = c("sub-3", "sub-4")
         )
-    )
+      )
 
 ## See also
 

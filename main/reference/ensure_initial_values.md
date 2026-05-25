@@ -12,21 +12,19 @@ ensure_initial_values(initial_values, data, parameters)
 
 - initial_values:
 
-  (`list`)\
-  A list of lists containing the initial values must be 1 list per
-  desired chain. All elements should have identical names
+  (`list`) A list of lists containing the initial values must be 1 list
+  per desired chain. All elements should have identical names
 
 - data:
 
-  (`list`)\
-  specifies the size to expand each of our initial values to be. That is
-  elements of size 1 in `initial_values` will be expanded to be the same
-  size as the corresponding element in `data` by broadcasting the value.
+  (`list`) specifies the size to expand each of our initial values to
+  be. That is elements of size 1 in `initial_values` will be expanded to
+  be the same size as the corresponding element in `data` by
+  broadcasting the value.
 
 - parameters:
 
-  ([`ParameterList`](https://genentech.github.io/jmpost/reference/ParameterList-class.md))\
-  the parameters object
+  (`ParameterList`) the parameters object
 
 ## Details
 

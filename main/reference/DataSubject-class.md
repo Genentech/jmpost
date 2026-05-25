@@ -14,23 +14,21 @@ DataSubject(data, subject, arm, study)
 
 - data:
 
-  (`data.frame`)\
-  the subject-level data.
+  (`data.frame`) the subject-level data.
 
 - subject:
 
-  (`character`)\
-  the name of the variable containing the subject identifier.
+  (`character`) the name of the variable containing the subject
+  identifier.
 
 - arm:
 
-  (`character`)\
-  the name of the variable containing the arm identifier.
+  (`character`) the name of the variable containing the arm identifier.
 
 - study:
 
-  (`character`)\
-  the name of the variable containing the study identifier.
+  (`character`) the name of the variable containing the study
+  identifier.
 
 ## Slots
 

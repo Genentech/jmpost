@@ -12,13 +12,11 @@ prior_logistic(mu, sigma)
 
 - mu:
 
-  (`number`)\
-  Location parameter.
+  (`number`) Location parameter.
 
 - sigma:
 
-  (`number`)\
-  Scale parameter.
+  (`number`) Scale parameter.
 
 ## See also
 

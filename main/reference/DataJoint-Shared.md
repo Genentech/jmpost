@@ -6,13 +6,11 @@ Re-used documentation for `DataJoint`
 
 - object:
 
-  ([`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md))\
-  Survival and Longitudinal Data.
+  (`DataJoint`) Survival and Longitudinal Data.
 
 - x:
 
-  ([`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md))\
-  Survival and Longitudinal Data.
+  (`DataJoint`) Survival and Longitudinal Data.
 
 - ...:
 

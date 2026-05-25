@@ -18,13 +18,11 @@ summary(object, conf.level = 0.95, ...)
 
 - object:
 
-  ([`Quantities`](https://genentech.github.io/jmpost/reference/Quantities-class.md))\
-  generated quantities.
+  (`Quantities`) generated quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval.
+  (`numeric`) confidence level of the interval.
 
 - ...:
 

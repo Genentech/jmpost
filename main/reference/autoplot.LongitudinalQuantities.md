@@ -13,14 +13,13 @@ autoplot(object, conf.level = 0.95, ...)
 
 - object:
 
-  ([`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))\
-  longitudinal quantities.
+  (`LongitudinalQuantities`) longitudinal quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval. If values of `FALSE`, `NULL` or `0`
-  are provided then confidence regions will not be added to the plot.
+  (`numeric`) confidence level of the interval. If values of `FALSE`,
+  `NULL` or `0` are provided then confidence regions will not be added
+  to the plot.
 
 - ...:
 

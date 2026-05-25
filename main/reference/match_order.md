@@ -12,9 +12,8 @@ match_order(x)
 
 - x:
 
-  (`numeric`)\
-  a vector for which we want to generate an index so other vectors can
-  be put into the same sort order
+  (`numeric`) a vector for which we want to generate an index so other
+  vectors can be put into the same sort order
 
   Assuming we have a vector that is sorted then this function will
   return the index vector to convert that sorted vector into the same

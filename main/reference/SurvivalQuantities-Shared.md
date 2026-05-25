@@ -6,13 +6,11 @@ Re-used documentation for `SurvivalQuantities`
 
 - object:
 
-  ([`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md))\
-  survival quantities.
+  (`SurvivalQuantities`) survival quantities.
 
 - x:
 
-  ([`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md))\
-  survival quantities.
+  (`SurvivalQuantities`) survival quantities.
 
 - ...:
 

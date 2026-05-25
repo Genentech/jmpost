@@ -16,18 +16,16 @@ reverse_km_cen_first(t, times, events)
 
 - t:
 
-  (`numeric`)\
-  timepoints to calculate the desired quantity at.
+  (`numeric`) timepoints to calculate the desired quantity at.
 
 - times:
 
-  (`numeric`)\
-  observed times.
+  (`numeric`) observed times.
 
 - events:
 
-  (`numeric`)\
-  event indicator for `times`. Either 1 for an event or 0 for censor.
+  (`numeric`) event indicator for `times`. Either 1 for an event or 0
+  for censor.
 
 ## Details
 

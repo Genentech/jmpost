@@ -23,5 +23,4 @@ sampleStanModel(object, data, ...)
 
 - data:
 
-  (`DataJoint` or `list`)\
-  input data.
+  (`DataJoint` or `list`) input data.

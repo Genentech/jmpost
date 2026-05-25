@@ -12,13 +12,11 @@ samples_median_ci(samples, level = 0.95)
 
 - samples:
 
-  (`matrix`)\
-  with samples in rows and parameters in columns.
+  (`matrix`) with samples in rows and parameters in columns.
 
 - level:
 
-  (`number`)\
-  credibility level to use for the credible intervals.
+  (`number`) credibility level to use for the credible intervals.
 
 ## Value
 

@@ -24,8 +24,8 @@ harmonise(object, subject_var, subject_ord, ...)
 
 - object:
 
-  (`DataSubject` or `DataLongitudinal` or `DataSurvival`)\
-  data object to "harmonise"
+  (`DataSubject` or `DataLongitudinal` or `DataSurvival`) data object to
+  "harmonise"
 
 - ...:
 
@@ -33,13 +33,13 @@ harmonise(object, subject_var, subject_ord, ...)
 
 - subject_var:
 
-  (`character`)\
-  the name of the variable containing the subject identifier.
+  (`character`) the name of the variable containing the subject
+  identifier.
 
 - subject_ord:
 
-  (`character`)\
-  the expected levels (in order) of the subject identifier.
+  (`character`) the expected levels (in order) of the subject
+  identifier.
 
 ## Value
 

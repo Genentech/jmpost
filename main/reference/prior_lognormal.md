@@ -12,13 +12,11 @@ prior_lognormal(mu, sigma)
 
 - mu:
 
-  (`number`)\
-  mean of the logarithm.
+  (`number`) mean of the logarithm.
 
 - sigma:
 
-  (`number`)\
-  standard deviation of the logarithm.
+  (`number`) standard deviation of the logarithm.
 
 ## See also
 

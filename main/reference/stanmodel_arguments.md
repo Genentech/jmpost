@@ -8,23 +8,19 @@ around
 
 - stan:
 
-  (`StanModule`)\
-  code containing the Stan code specification.
+  (`StanModule`) code containing the Stan code specification.
 
 - parameters:
 
-  (`ParameterList`)\
-  the parameter specification.
+  (`ParameterList`) the parameter specification.
 
 - parameter:
 
-  (`ParameterList`)\
-  the (single) parameter specification.
+  (`ParameterList`) the (single) parameter specification.
 
 - name:
 
-  (`character`)\
-  display name for the model object.
+  (`character`) display name for the model object.
 
 - ...:
 

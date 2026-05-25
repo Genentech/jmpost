@@ -18,15 +18,12 @@ SurvivalWeibullPH(
 
 - lambda:
 
-  (`Prior`)\
-  for the scale `lambda`.
+  (`Prior`) for the scale `lambda`.
 
 - gamma:
 
-  (`Prior`)\
-  for the shape `gamma`.
+  (`Prior`) for the shape `gamma`.
 
 - beta:
 
-  (`Prior`)\
-  for covariates coefficients `beta`.
+  (`Prior`) for covariates coefficients `beta`.

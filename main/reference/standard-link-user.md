@@ -27,15 +27,13 @@ linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 
 - prior:
 
-  ([`Prior`](https://genentech.github.io/jmpost/reference/Prior-class.md))\
-  A
+  (`Prior`) A
   [`Prior`](https://genentech.github.io/jmpost/reference/Prior-class.md)
   object.
 
 - model:
 
-  ([`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md))\
-  A
+  (`LongitudinalModel`) A
   [`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
   object.
 

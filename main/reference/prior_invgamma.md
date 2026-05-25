@@ -12,13 +12,11 @@ prior_invgamma(alpha, beta)
 
 - alpha:
 
-  (`number`)\
-  Shape parameter.
+  (`number`) Shape parameter.
 
 - beta:
 
-  (`number`)\
-  Scale parameter.
+  (`number`) Scale parameter.
 
 ## See also
 

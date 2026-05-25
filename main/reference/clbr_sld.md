@@ -16,28 +16,23 @@ clbr_dsld(t, b, g, c, p)
 
 - t:
 
-  (`numeric`)\
-  time grid.
+  (`numeric`) time grid.
 
 - b:
 
-  (`number`)\
-  baseline sld.
+  (`number`) baseline sld.
 
 - g:
 
-  (`number`)\
-  growth rate.
+  (`number`) growth rate.
 
 - c:
 
-  (`number`)\
-  resistance rate.
+  (`number`) resistance rate.
 
 - p:
 
-  (`number`)\
-  growth inhibition.
+  (`number`) growth inhibition.
 
 ## Value
 

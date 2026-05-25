@@ -13,8 +13,7 @@ as.data.frame(x, ...)
 
 - x:
 
-  ([`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))\
-  longitudinal quantities.
+  (`LongitudinalQuantities`) longitudinal quantities.
 
 - ...:
 

@@ -12,14 +12,12 @@ get_missing_rownumbers(df, formula = NULL)
 
 - df:
 
-  (`data.frame`)\
-  input data.
+  (`data.frame`) input data.
 
 - formula:
 
-  (`formula` or `NULL`)\
-  which variables to inspect for missingness, if `NULL` all variables
-  are considered.
+  (`formula` or `NULL`) which variables to inspect for missingness, if
+  `NULL` all variables are considered.
 
 ## Value
 

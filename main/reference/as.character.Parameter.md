@@ -15,8 +15,7 @@ as.character(x, ...)
 
 - x:
 
-  ([`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md))\
-  a prior Distribution
+  (`Parameter`) a prior Distribution
 
 - ...:
 

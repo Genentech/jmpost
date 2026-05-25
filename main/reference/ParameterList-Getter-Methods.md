@@ -21,22 +21,19 @@ size(object)
 
 - x:
 
-  (`ParameterList`)\
-  A List of
+  (`ParameterList`) A List of
   [`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
   Objects.
 
 - object:
 
-  (`ParameterList`)\
-  A List of
+  (`ParameterList`) A List of
   [`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
   Objects.
 
 - n_chains:
 
-  (`integer`)\
-  the number of chains.
+  (`integer`) the number of chains.
 
 - ...:
 

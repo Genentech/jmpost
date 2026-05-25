@@ -16,7 +16,7 @@ Link(...)
 
   ([`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)
   or
-  [`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md))\
+  [`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md))
   an arbitrary number of link components.
 
 ## Slots
@@ -48,7 +48,7 @@ Other Link:
 Link(
     linkDSLD(),
     linkTTG()
-)
+  )
 #> 
 #> Link with the following components/parameters:
 #>     link_dsld ~ normal(mu = 0, sigma = 2)

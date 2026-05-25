@@ -73,8 +73,8 @@ QuantityGeneratorSubject(times, subjects = NULL)
 
 - object:
 
-  (`Grid`)\
-  object to convert to a `QuantityGenerator` or `QuantityCollapser`.
+  (`Grid`) object to convert to a `QuantityGenerator` or
+  `QuantityCollapser`.
 
 - ...:
 
@@ -82,29 +82,24 @@ QuantityGeneratorSubject(times, subjects = NULL)
 
 - times:
 
-  (`numeric`)\
-  vector of time points to extract quantities at.
+  (`numeric`) vector of time points to extract quantities at.
 
 - groups:
 
-  (`character`)\
-  vector of labels to apply to the generated quantities.
+  (`character`) vector of labels to apply to the generated quantities.
 
 - indexes:
 
-  (`list`)\
-  list of indexes that specify which observations from a
+  (`list`) list of indexes that specify which observations from a
   `QuantityGenerator` should be combined to form the desired quantities.
 
 - data:
 
-  (`DataJoint`)\
-  Survival and Longitudinal Data.
+  (`DataJoint`) Survival and Longitudinal Data.
 
 - subjects:
 
-  (`character`)\
-  vector of subjects to extract quantities for.
+  (`character`) vector of subjects to extract quantities for.
 
 ## Details
 

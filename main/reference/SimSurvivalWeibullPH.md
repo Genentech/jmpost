@@ -20,38 +20,32 @@ SimSurvivalWeibullPH(
 
 - lambda:
 
-  (`number`)\
-  the scale parameter.
+  (`number`) the scale parameter.
 
 - gamma:
 
-  (`number`)\
-  the shape parameter.
+  (`number`) the shape parameter.
 
 - time_max:
 
-  (`number`)\
-  the maximum time to simulate to.
+  (`number`) the maximum time to simulate to.
 
 - time_step:
 
-  (`number`)\
-  the time interval between evaluating the log-hazard function.
+  (`number`) the time interval between evaluating the log-hazard
+  function.
 
 - lambda_censor:
 
-  (`number`)\
-  the censoring rate.
+  (`number`) the censoring rate.
 
 - beta_cont:
 
-  (`number`)\
-  the continuous covariate coefficient.
+  (`number`) the continuous covariate coefficient.
 
 - beta_cat:
 
-  (`numeric`)\
-  the categorical covariate coefficients.
+  (`numeric`) the categorical covariate coefficients.
 
 ## Hazard Evaluation
 

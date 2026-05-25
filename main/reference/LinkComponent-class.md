@@ -12,18 +12,15 @@ LinkComponent(stan, prior, key, ...)
 
 - stan:
 
-  (`StanModule`)\
-  Stan code. See Details.
+  (`StanModule`) Stan code. See Details.
 
 - prior:
 
-  (`Prior`)\
-  The prior for the scaling coeficient.
+  (`Prior`) The prior for the scaling coeficient.
 
 - key:
 
-  (`character`)\
-  Link identifier. See Details.
+  (`character`) Link identifier. See Details.
 
 - ...:
 

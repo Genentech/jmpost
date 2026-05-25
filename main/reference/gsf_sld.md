@@ -16,28 +16,23 @@ gsf_dsld(time, b, s, g, phi)
 
 - time:
 
-  (`numeric`)\
-  time grid.
+  (`numeric`) time grid.
 
 - b:
 
-  (`number`)\
-  baseline.
+  (`number`) baseline.
 
 - s:
 
-  (`number`)\
-  shrinkage.
+  (`number`) shrinkage.
 
 - g:
 
-  (`number`)\
-  growth.
+  (`number`) growth.
 
 - phi:
 
-  (`number`)\
-  shrinkage proportion.
+  (`number`) shrinkage proportion.
 
 ## Value
 

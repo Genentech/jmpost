@@ -29,85 +29,71 @@ SimLongitudinalGSF(
 
 - times:
 
-  (`numeric`)\
-  the times to generate observations at.
+  (`numeric`) the times to generate observations at.
 
 - sigma:
 
-  (`number`)\
-  the variance of the longitudinal values.
+  (`number`) the variance of the longitudinal values.
 
 - mu_s:
 
-  (`numeric`)\
-  the mean shrinkage rates.
+  (`numeric`) the mean shrinkage rates.
 
 - mu_g:
 
-  (`numeric`)\
-  the mean growth rates.
+  (`numeric`) the mean growth rates.
 
 - mu_b:
 
-  (`numeric`)\
-  the mean baseline values.
+  (`numeric`) the mean baseline values.
 
 - mu_phi:
 
-  (`numeric`)\
-  the mean proportion of cells affected by the treatment
+  (`numeric`) the mean proportion of cells affected by the treatment
 
 - omega_b:
 
-  (`number`)\
-  the baseline value standard deviation.
+  (`number`) the baseline value standard deviation.
 
 - omega_s:
 
-  (`number`)\
-  the shrinkage rate standard deviation.
+  (`number`) the shrinkage rate standard deviation.
 
 - omega_g:
 
-  (`number`)\
-  the growth rate standard deviation.
+  (`number`) the growth rate standard deviation.
 
 - omega_phi:
 
-  (`number`)\
-  for the standard deviation of the proportion of cells affected by the
-  treatment `omega_phi`.
+  (`number`) for the standard deviation of the proportion of cells
+  affected by the treatment `omega_phi`.
 
 - link_dsld:
 
-  (`number`)\
-  the link coefficient for the derivative contribution.
+  (`number`) the link coefficient for the derivative contribution.
 
 - link_ttg:
 
-  (`number`)\
-  the link coefficient for the time-to-growth contribution.
+  (`number`) the link coefficient for the time-to-growth contribution.
 
 - link_identity:
 
-  (`number`)\
-  the link coefficient for the SLD Identity contribution.
+  (`number`) the link coefficient for the SLD Identity contribution.
 
 - link_growth:
 
-  (`number`)\
-  the link coefficient for the log-growth parameter contribution.
+  (`number`) the link coefficient for the log-growth parameter
+  contribution.
 
 - link_shrinkage:
 
-  (`number`)\
-  the link coefficient for the log-shrinkage parameter contribution.
+  (`number`) the link coefficient for the log-shrinkage parameter
+  contribution.
 
 - scaled_variance:
 
-  (`logical`)\
-  whether the variance should be scaled by the expected value (see the
-  "Statistical Specifications" vignette for more details)
+  (`logical`) whether the variance should be scaled by the expected
+  value (see the "Statistical Specifications" vignette for more details)
 
 ## Slots
 

@@ -12,18 +12,15 @@ prior_student_t(nu, mu, sigma)
 
 - nu:
 
-  (`number`)\
-  Degrees of freedom parameter.
+  (`number`) Degrees of freedom parameter.
 
 - mu:
 
-  (`number`)\
-  Location parameter.
+  (`number`) Location parameter.
 
 - sigma:
 
-  (`number`)\
-  Scale parameter.
+  (`number`) Scale parameter.
 
 ## See also
 

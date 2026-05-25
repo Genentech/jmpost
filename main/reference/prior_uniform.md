@@ -12,13 +12,11 @@ prior_uniform(alpha, beta)
 
 - alpha:
 
-  (`number`)\
-  minimum value parameter.
+  (`number`) minimum value parameter.
 
 - beta:
 
-  (`number`)\
-  maximum value parameter.
+  (`number`) maximum value parameter.
 
 ## See also
 

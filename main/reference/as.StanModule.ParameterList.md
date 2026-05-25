@@ -17,8 +17,7 @@ as.StanModule(object, ...)
 
 - object:
 
-  (`ParameterList`)\
-  A List of
+  (`ParameterList`) A List of
   [`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
   Objects.
 

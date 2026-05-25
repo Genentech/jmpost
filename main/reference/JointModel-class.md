@@ -12,20 +12,15 @@ JointModel(longitudinal = NULL, survival = NULL, link = Link())
 
 - longitudinal:
 
-  ([`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
-  or `NULL`)\
-  the longitudinal model.
+  (`LongitudinalModel` or `NULL`) the longitudinal model.
 
 - survival:
 
-  ([`SurvivalModel`](https://genentech.github.io/jmpost/reference/SurvivalModel-class.md)
-  or `NULL`)\
-  the survival model.
+  (`SurvivalModel` or `NULL`) the survival model.
 
 - link:
 
-  (`Link`)\
-  the link.
+  (`Link`) the link.
 
 ## Slots
 

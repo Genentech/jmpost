@@ -12,18 +12,15 @@ saveObject(object, file, ...)
 
 - object:
 
-  (`ANY`)\
-  object to save.
+  (`ANY`) object to save.
 
 - file:
 
-  (`character`)\
-  file to save object to.
+  (`character`) file to save object to.
 
 - ...:
 
-  (`ANY`)\
-  additional arguments.
+  (`ANY`) additional arguments.
 
 ## See also
 

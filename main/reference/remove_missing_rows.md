@@ -15,18 +15,15 @@ remove_missing_rows(data, formula, extra_vars = NULL)
 
 - data:
 
-  (`data.frame`)\
-  input data.
+  (`data.frame`) input data.
 
 - formula:
 
-  (`formula` or `NULL`)\
-  which variables to inspect for missingness.
+  (`formula` or `NULL`) which variables to inspect for missingness.
 
 - extra_vars:
 
-  (`character`)\
-  additional variables to inspect for missingness.
+  (`character`) additional variables to inspect for missingness.
 
 ## Value
 

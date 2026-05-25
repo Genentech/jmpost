@@ -15,13 +15,11 @@ as_print_string(object, indent = 1, ...)
 
 - object:
 
-  ([`RandomEffectQuantities`](https://genentech.github.io/jmpost/reference/RandomEffectQuantities-class.md))\
-  generated quantities.
+  (`RandomEffectQuantities`) generated quantities.
 
 - indent:
 
-  (`numeric`)\
-  the number of spaces to indent the string by.
+  (`numeric`) the number of spaces to indent the string by.
 
 - ...:
 

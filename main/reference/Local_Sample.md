@@ -36,28 +36,23 @@ local_rinvgamma(n, alpha, beta)
 
 - nu:
 
-  (`number`)\
-  Parameter for underlying distribution.
+  (`number`) Parameter for underlying distribution.
 
 - mu:
 
-  (`number`)\
-  Parameter for underlying distribution.
+  (`number`) Parameter for underlying distribution.
 
 - sigma:
 
-  (`number`)\
-  Parameter for underlying distribution.
+  (`number`) Parameter for underlying distribution.
 
 - alpha:
 
-  (`number`)\
-  Parameter for underlying distribution.
+  (`number`) Parameter for underlying distribution.
 
 - beta:
 
-  (`number`)\
-  Parameter for underlying distribution.
+  (`number`) Parameter for underlying distribution.
 
 ## Details
 

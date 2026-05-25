@@ -25,26 +25,23 @@ add_pfs(
 
 - relative_threshold:
 
-  (`number`)\
-  a multiplicative threshold for the change in SLD compared to the
-  `min(SLD)`. Default is 1.2 meaning a 20% increase.
+  (`number`) a multiplicative threshold for the change in SLD compared
+  to the `min(SLD)`. Default is 1.2 meaning a 20% increase.
 
 - absolute_threshold:
 
-  (`number`)\
-  an absolute threshold for the change in SLD compared to the minimum.
-  Default is 5.
+  (`number`) an absolute threshold for the change in SLD compared to the
+  minimum. Default is 5.
 
 - from_time:
 
-  (`number`)\
-  Ignore observations before this time for determining SLD minimum.
+  (`number`) Ignore observations before this time for determining SLD
+  minimum.
 
 - observed_after:
 
-  (`logical`)\
-  If `FALSE` set longitudinal observations after the progression time to
-  `observed = FALSE`
+  (`logical`) If `FALSE` set longitudinal observations after the
+  progression time to `observed = FALSE`
 
 ## Details
 
@@ -56,7 +53,7 @@ Both thresholds must be met for a progression to be declared.
 data <- SimJointData(
   survival = SimSurvivalExponential(lambda = 1/10),
   longitudinal = SimLongitudinalSteinFojo()
-)
+  )
 data <- add_pfs(data)
 data@survival # now has pfs_time and pfs_event columns
 #> # A tibble: 100 × 9

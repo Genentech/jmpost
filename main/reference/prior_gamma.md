@@ -12,13 +12,11 @@ prior_gamma(alpha, beta)
 
 - alpha:
 
-  (`number`)\
-  shape.
+  (`number`) shape.
 
 - beta:
 
-  (`number`)\
-  inverse scale.
+  (`number`) inverse scale.
 
 ## See also
 

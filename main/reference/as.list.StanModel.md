@@ -14,8 +14,7 @@ as.list(x, ...)
 
 - x:
 
-  ([`StanModel`](https://genentech.github.io/jmpost/reference/StanModel-class.md))\
-  A Stan Model
+  (`StanModel`) A Stan Model
 
 - ...:
 

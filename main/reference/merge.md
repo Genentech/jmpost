@@ -51,5 +51,4 @@ merge(x, y, ...)
 
 - stan_blocks:
 
-  (`list`)\
-  reference list of stan blocks.
+  (`list`) reference list of stan blocks.

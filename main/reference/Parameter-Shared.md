@@ -8,13 +8,11 @@ constructors.
 
 - x:
 
-  ([`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md))\
-  a prior Distribution
+  (`Parameter`) a prior Distribution
 
 - object:
 
-  ([`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md))\
-  a prior Distribution
+  (`Parameter`) a prior Distribution
 
 - ...:
 

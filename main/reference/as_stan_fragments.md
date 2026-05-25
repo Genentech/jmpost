@@ -12,13 +12,11 @@ as_stan_fragments(x, stan_blocks = STAN_BLOCKS)
 
 - x:
 
-  (`character`)\
-  the single Stan code vector.
+  (`character`) the single Stan code vector.
 
 - stan_blocks:
 
-  (`list`)\
-  reference list of stan blocks.
+  (`list`) reference list of stan blocks.
 
 ## Value
 
@@ -30,10 +28,10 @@ Function only works if code is in format
 
     data {
         <code>
-    }
+      }
     model {
         <code>
-    }
+      }
 
 That is to say we do not support code in inline format i.e.
 

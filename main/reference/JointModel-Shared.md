@@ -6,13 +6,11 @@ Re-used documentation for `JointModel-Shared`
 
 - object:
 
-  ([`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md))\
-  Joint model specification.
+  (`JointModel`) Joint model specification.
 
 - x:
 
-  ([`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md))\
-  Joint model specification.
+  (`JointModel`) Joint model specification.
 
 - ...:
 

@@ -13,13 +13,11 @@ summary(object, conf.level = 0.95, ...)
 
 - object:
 
-  ([`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md))\
-  survival quantities.
+  (`SurvivalQuantities`) survival quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval.
+  (`numeric`) confidence level of the interval.
 
 - ...:
 

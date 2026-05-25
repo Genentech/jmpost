@@ -12,13 +12,11 @@ prior_normal(mu, sigma)
 
 - mu:
 
-  (`number`)\
-  mean.
+  (`number`) mean.
 
 - sigma:
 
-  (`number`)\
-  standard deviation.
+  (`number`) standard deviation.
 
 ## See also
 

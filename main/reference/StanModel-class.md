@@ -12,18 +12,15 @@ StanModel(stan, parameters, name = "<Unnamed>")
 
 - stan:
 
-  (`StanModule`)\
-  code containing the Stan code specification.
+  (`StanModule`) code containing the Stan code specification.
 
 - parameters:
 
-  (`ParameterList`)\
-  the parameter specification.
+  (`ParameterList`) the parameter specification.
 
 - name:
 
-  (`character`)\
-  display name for the model object.
+  (`character`) display name for the model object.
 
 ## Slots
 

@@ -16,15 +16,12 @@ set_limits(object, lower = -Inf, upper = Inf)
 
 - object:
 
-  (`Prior`)\
-  a prior distribution to apply constraints to
+  (`Prior`) a prior distribution to apply constraints to
 
 - lower:
 
-  (`numeric`)\
-  lower constraint boundary
+  (`numeric`) lower constraint boundary
 
 - upper:
 
-  (`numeric`)\
-  upper constraint boundary
+  (`numeric`) upper constraint boundary

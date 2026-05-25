@@ -12,8 +12,7 @@ hazardWindows(object, ...)
 
 - object:
 
-  (`SurvivalModel`)\
-  object to generate time windows for.
+  (`SurvivalModel`) object to generate time windows for.
 
 - ...:
 

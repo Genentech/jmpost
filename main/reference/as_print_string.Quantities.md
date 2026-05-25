@@ -15,8 +15,7 @@ as_print_string(object, indent = 1, ...)
 
 - object:
 
-  ([`Quantities`](https://genentech.github.io/jmpost/reference/Quantities-class.md))\
-  generated quantities.
+  (`Quantities`) generated quantities.
 
 - ...:
 

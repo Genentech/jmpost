@@ -14,18 +14,15 @@ Parameter(prior, name, size = 1)
 
 - prior:
 
-  (`Prior`)\
-  for the parameter.
+  (`Prior`) for the parameter.
 
 - name:
 
-  (`string`)\
-  of the parameter.
+  (`string`) of the parameter.
 
 - size:
 
-  (`numeric` or `string`)\
-  dimension of the parameter.
+  (`numeric` or `string`) dimension of the parameter.
 
 ## Slots
 

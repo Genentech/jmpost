@@ -13,14 +13,13 @@ decompose_subjects(subjects, all_subjects)
 
 - subjects:
 
-  (`character` or `list`)\
-  subject identifiers. If `NULL` will be set to `all_subjects`.
+  (`character` or `list`) subject identifiers. If `NULL` will be set to
+  `all_subjects`.
 
 - all_subjects:
 
-  (`character`)\
-  the set of allowable subject identifiers. Will cause an error if any
-  value of `subjects` is not in this vector.
+  (`character`) the set of allowable subject identifiers. Will cause an
+  error if any value of `subjects` is not in this vector.
 
 ## Value
 
@@ -57,6 +56,6 @@ result <- decompose_subjects(c("A", "B"), c("A", "B", "C", "D"))
 result <- decompose_subjects(
     list("g1" = c("A", "B"), "g2" = c("B", "C")),
     c("A", "B", "C", "D")
-)
+  )
 } # }
 ```

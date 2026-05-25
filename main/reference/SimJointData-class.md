@@ -18,25 +18,22 @@ SimJointData(
 
 - design:
 
-  (`list`)\
-  a list of
+  (`list`) a list of
   [`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)
   objects. See details.
 
 - longitudinal:
 
-  ([`SimLongitudinal`](https://genentech.github.io/jmpost/reference/SimLongitudinal-class.md))\
-  object specifying how to simulate the longitudinal data
+  (`SimLongitudinal`) object specifying how to simulate the longitudinal
+  data
 
 - survival:
 
-  ([`SimSurvival`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md))\
-  object specifying how to simulate the survival data
+  (`SimSurvival`) object specifying how to simulate the survival data
 
 - .silent:
 
-  (`flag`)\
-  whether to suppress info messages
+  (`flag`) whether to suppress info messages
 
 ## Details
 
@@ -50,7 +47,7 @@ objects e.g.
     design = list(
         SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
         SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
-    )
+      )
 
 ## Slots
 

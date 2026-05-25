@@ -21,13 +21,11 @@ size(object)
 
 - x:
 
-  (`Paramater`)\
-  A model parameter
+  (`Paramater`) A model parameter
 
 - object:
 
-  (`Paramater`)\
-  A model parameter
+  (`Paramater`) A model parameter
 
 - ...:
 

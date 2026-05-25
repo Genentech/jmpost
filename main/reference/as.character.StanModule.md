@@ -16,8 +16,7 @@ as.character(x, ...)
 
 - x:
 
-  ([`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md))\
-  A stan program
+  (`StanModule`) A stan program
 
 - ...:
 

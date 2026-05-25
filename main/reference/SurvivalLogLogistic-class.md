@@ -18,15 +18,12 @@ SurvivalLogLogistic(
 
 - a:
 
-  (`Prior`)\
-  Prior distribution for the scale parameter `a`.
+  (`Prior`) Prior distribution for the scale parameter `a`.
 
 - b:
 
-  (`Prior`)\
-  Prior distribution for the shape parameter `b`.
+  (`Prior`) Prior distribution for the shape parameter `b`.
 
 - beta:
 
-  (`Prior`)\
-  Prior distribution for covariates coefficients `beta`.
+  (`Prior`) Prior distribution for covariates coefficients `beta`.

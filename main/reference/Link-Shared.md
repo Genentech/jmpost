@@ -8,13 +8,11 @@ methods.
 
 - x:
 
-  ([`Link`](https://genentech.github.io/jmpost/reference/Link-class.md))\
-  a link object.
+  (`Link`) a link object.
 
 - object:
 
-  ([`Link`](https://genentech.github.io/jmpost/reference/Link-class.md))\
-  a link object.
+  (`Link`) a link object.
 
 - ...:
 

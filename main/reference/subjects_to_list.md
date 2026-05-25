@@ -14,10 +14,8 @@ subjects_to_list(subjects = NULL, data)
 
 - subjects:
 
-  (`character`)\
-  vector of subjects that should exist in `data`
+  (`character`) vector of subjects that should exist in `data`
 
 - data:
 
-  (`DataJoint`)\
-  Survival and Longitudinal Data.
+  (`DataJoint`) Survival and Longitudinal Data.

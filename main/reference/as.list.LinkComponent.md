@@ -14,8 +14,7 @@ as.list(x, ...)
 
 - x:
 
-  ([`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md))\
-  a link component.
+  (`LinkComponent`) a link component.
 
 - ...:
 

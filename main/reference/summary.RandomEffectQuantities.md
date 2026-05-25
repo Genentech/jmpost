@@ -14,13 +14,11 @@ summary(object, conf.level = 0.95, ...)
 
 - object:
 
-  ([`RandomEffectQuantities`](https://genentech.github.io/jmpost/reference/RandomEffectQuantities-class.md))\
-  generated quantities.
+  (`RandomEffectQuantities`) generated quantities.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval.
+  (`numeric`) confidence level of the interval.
 
 - ...:
 

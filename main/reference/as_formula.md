@@ -12,8 +12,7 @@ as_formula(x, ...)
 
 - x:
 
-  (`ANY`)\
-  object to convert to a formula.
+  (`ANY`) object to convert to a formula.
 
 - ...:
 

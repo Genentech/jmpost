@@ -14,13 +14,11 @@ as.list(x, stan_blocks = STAN_BLOCKS, ...)
 
 - x:
 
-  ([`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md))\
-  A Stan Module
+  (`StanModule`) A Stan Module
 
 - stan_blocks:
 
-  (`list`)\
-  reference list of stan blocks.
+  (`list`) reference list of stan blocks.
 
 - ...:
 

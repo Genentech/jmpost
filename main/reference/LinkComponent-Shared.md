@@ -8,18 +8,15 @@ methods.
 
 - stan:
 
-  (`StanModule`)\
-  Stan code.
+  (`StanModule`) Stan code.
 
 - x:
 
-  ([`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md))\
-  a link component.
+  (`LinkComponent`) a link component.
 
 - object:
 
-  ([`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md))\
-  a link component.
+  (`LinkComponent`) a link component.
 
 - ...:
 

@@ -15,22 +15,20 @@ brierScore(object, maintain_cen_order = TRUE, event_offset = TRUE, ...)
 
 - object:
 
-  ([`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md))\
-  survival quantities.
+  (`SurvivalQuantities`) survival quantities.
 
 - maintain_cen_order:
 
-  (`logical`)\
-  If `TRUE` then, in the case of ties, censor times are always
-  considered to have occurred after the event times when calculating the
-  "reverse Kaplan-Meier" for the IPCW estimates. Setting this to `TRUE`
-  mirrors the implementation of the `{prodlim}` package.
+  (`logical`) If `TRUE` then, in the case of ties, censor times are
+  always considered to have occurred after the event times when
+  calculating the "reverse Kaplan-Meier" for the IPCW estimates. Setting
+  this to `TRUE` mirrors the implementation of the `{prodlim}` package.
 
 - event_offset:
 
-  (`logical`)\
-  If `TRUE` then \\G(T_i)\\ is evaluated at \\G(T_i-)\\. Setting this as
-  `TRUE` mirrors the implementation of the `{pec}` package.
+  (`logical`) If `TRUE` then \\G(T_i)\\ is evaluated at \\G(T_i-)\\.
+  Setting this as `TRUE` mirrors the implementation of the `{pec}`
+  package.
 
 - ...:
 

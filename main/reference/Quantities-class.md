@@ -12,18 +12,16 @@ Quantities(quantities, times, groups)
 
 - quantities:
 
-  (`matrix`)\
-  of generated quantities.
+  (`matrix`) of generated quantities.
 
 - times:
 
-  (`numeric`)\
-  labels specifying which time point the quantity was generated at.
+  (`numeric`) labels specifying which time point the quantity was
+  generated at.
 
 - groups:
 
-  (`character`)\
-  labels for which group the quantity belongs to.
+  (`character`) labels for which group the quantity belongs to.
 
 ## Details
 

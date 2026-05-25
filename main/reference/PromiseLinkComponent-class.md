@@ -17,18 +17,15 @@ PromiseLinkComponent(fun, prior, key)
 
 - fun:
 
-  (`function`)\
-  a function that returns a `LinkComponent`. See details.
+  (`function`) a function that returns a `LinkComponent`. See details.
 
 - prior:
 
-  (`Prior`)\
-  The prior for the scaling coeficient.
+  (`Prior`) The prior for the scaling coeficient.
 
 - key:
 
-  (`character`)\
-  Link identifier. See Details.
+  (`character`) Link identifier. See Details.
 
 ## Details
 

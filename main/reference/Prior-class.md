@@ -21,44 +21,37 @@ Prior(
 
 - parameters:
 
-  (`list`)\
-  the prior distribution parameters.
+  (`list`) the prior distribution parameters.
 
 - display:
 
-  (`string`)\
-  the string to display when object is printed.
+  (`string`) the string to display when object is printed.
 
 - repr_model:
 
-  (`string`)\
-  the Stan code representation for the model block.
+  (`string`) the Stan code representation for the model block.
 
 - repr_data:
 
-  (`string`)\
-  the Stan code representation for the data block.
+  (`string`) the Stan code representation for the data block.
 
 - centre:
 
-  (`numeric`)\
-  the central point of distribution to shrink sampled values towards
+  (`numeric`) the central point of distribution to shrink sampled values
+  towards
 
 - validation:
 
-  (`list`)\
-  the prior distribution parameter validation functions. Must have the
-  same names as the `paramaters` slot.
+  (`list`) the prior distribution parameter validation functions. Must
+  have the same names as the `paramaters` slot.
 
 - sample:
 
-  (`function`)\
-  a function to sample from the prior distribution.
+  (`function`) a function to sample from the prior distribution.
 
 - limits:
 
-  (`numeric`)\
-  the lower and upper limits for a truncated distribution
+  (`numeric`) the lower and upper limits for a truncated distribution
 
 ## Slots
 

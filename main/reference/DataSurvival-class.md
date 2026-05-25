@@ -14,13 +14,11 @@ DataSurvival(data, formula)
 
 - data:
 
-  (`data.frame`)\
-  the observed time-to-event data.
+  (`data.frame`) the observed time-to-event data.
 
 - formula:
 
-  (`formula`)\
-  of the form `Surv(time, event) ~ cov1 + cov2 + ...`. See
+  (`formula`) of the form `Surv(time, event) ~ cov1 + cov2 + ...`. See
   [`survival::Surv()`](https://rdrr.io/pkg/survival/man/Surv.html) for
   more details, though note that this package only supports right
   censoring.

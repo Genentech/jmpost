@@ -23,13 +23,11 @@ as_stan_list(object, data, ...)
 
 - object:
 
-  (`QuantityGenerator`)\
-  object to convert to a list.
+  (`QuantityGenerator`) object to convert to a list.
 
 - data:
 
-  (`DataJoint`)\
-  Survival and Longitudinal Data.
+  (`DataJoint`) Survival and Longitudinal Data.
 
 - ...:
 

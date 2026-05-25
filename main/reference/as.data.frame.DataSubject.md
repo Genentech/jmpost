@@ -15,8 +15,7 @@ as.data.frame(x, ...)
 
 - x:
 
-  ([`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md))\
-  subject-level data.
+  (`DataSubject`) subject-level data.
 
 - ...:
 

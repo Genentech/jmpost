@@ -18,27 +18,23 @@ populationHR(
 
 - object:
 
-  ([`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md))\
-  samples as drawn from a Joint Model.
+  (`JointModelSamples`) samples as drawn from a Joint Model.
 
 - hr_formula:
 
-  (`formula`)\
-  defines the terms to include in the hazard ratio calculation. By
-  default this uses the right side of the formula used in the survival
-  model. Set to `NULL` not include any terms
+  (`formula`) defines the terms to include in the hazard ratio
+  calculation. By default this uses the right side of the formula used
+  in the survival model. Set to `NULL` not include any terms
 
 - baseline:
 
-  (`formula`)\
-  terms to model baseline hazard using variable `time`. Default is a
-  B-spline from splines: `~bs(time, df = 10)`
+  (`formula`) terms to model baseline hazard using variable `time`.
+  Default is a B-spline from splines: `~bs(time, df = 10)`
 
 - quantiles:
 
-  (`numeric`)\
-  vector of two values in (0, 1) for calculating quantiles from log
-  hazard ratio distributions.
+  (`numeric`) vector of two values in (0, 1) for calculating quantiles
+  from log hazard ratio distributions.
 
 ## Value
 

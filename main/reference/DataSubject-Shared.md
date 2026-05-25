@@ -6,13 +6,11 @@ Re-used documentation for `DataSubject`
 
 - object:
 
-  ([`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md))\
-  subject-level data.
+  (`DataSubject`) subject-level data.
 
 - x:
 
-  ([`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md))\
-  subject-level data.
+  (`DataSubject`) subject-level data.
 
 - ...:
 

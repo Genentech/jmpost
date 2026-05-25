@@ -17,13 +17,11 @@ resolvePromise(object, model, ...)
 
 - object:
 
-  ([`Link`](https://genentech.github.io/jmpost/reference/Link-class.md))\
-  a link object.
+  (`Link`) a link object.
 
 - model:
 
-  ([`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md))\
-  the model object.
+  (`LongitudinalModel`) the model object.
 
 - ...:
 

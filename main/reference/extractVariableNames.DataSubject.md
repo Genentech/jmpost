@@ -14,8 +14,7 @@ extractVariableNames(object)
 
 - object:
 
-  ([`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md))\
-  subject-level data.
+  (`DataSubject`) subject-level data.
 
 ## Value
 

@@ -21,43 +21,35 @@ as_stan_file(
 
 - functions:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - data:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - transformed_data:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - parameters:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - transformed_parameters:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - model:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - generated_quantities:
 
-  (`character`)\
-  code block.
+  (`character`) code block.
 
 - stan_blocks:
 
-  (`list`)\
-  reference list of stan blocks.
+  (`list`) reference list of stan blocks.
 
 ## Value
 

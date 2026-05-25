@@ -6,23 +6,19 @@ Re-used documentation for `Quantities`
 
 - x:
 
-  ([`Quantities`](https://genentech.github.io/jmpost/reference/Quantities-class.md))\
-  generated quantities.
+  (`Quantities`) generated quantities.
 
 - object:
 
-  ([`Quantities`](https://genentech.github.io/jmpost/reference/Quantities-class.md))\
-  generated quantities.
+  (`Quantities`) generated quantities.
 
 - type:
 
-  (`character`)\
-  sets the `type` variable.
+  (`character`) sets the `type` variable.
 
 - conf.level:
 
-  (`numeric`)\
-  confidence level of the interval.
+  (`numeric`) confidence level of the interval.
 
 - ...:
 

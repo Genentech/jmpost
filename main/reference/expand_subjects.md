@@ -14,14 +14,12 @@ expand_subjects(subjects, all_subjects)
 
 - subjects:
 
-  (`character` or `NULL`)\
-  Character vector representing the subjects. If NULL, it will be set to
-  the value of `all_subjects`.
+  (`character` or `NULL`) Character vector representing the subjects. If
+  NULL, it will be set to the value of `all_subjects`.
 
 - all_subjects:
 
-  (`character`)\
-  Character vector representing all possible subjects.
+  (`character`) Character vector representing all possible subjects.
 
 ## Value
 

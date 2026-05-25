@@ -12,10 +12,8 @@ render_stan_limits(limits)
 
 - limits:
 
-  (`numeric`)\
-  the lower and upper limits for a truncated distribution
+  (`numeric`) the lower and upper limits for a truncated distribution
 
 ## Value
 
-(`character`)\
-the Stan syntax for truncated distributions
+(`character`) the Stan syntax for truncated distributions

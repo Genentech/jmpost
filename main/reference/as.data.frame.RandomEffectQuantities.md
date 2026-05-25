@@ -14,8 +14,7 @@ as.data.frame(x, ...)
 
 - x:
 
-  ([`RandomEffectQuantities`](https://genentech.github.io/jmpost/reference/RandomEffectQuantities-class.md))\
-  generated quantities.
+  (`RandomEffectQuantities`) generated quantities.
 
 - ...:
 

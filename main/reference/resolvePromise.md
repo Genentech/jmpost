@@ -15,13 +15,11 @@ resolvePromise(object, ...)
 
 - object:
 
-  (`ANY`)\
-  an object to resolve.
+  (`ANY`) an object to resolve.
 
 - ...:
 
-  (`ANY`)\
-  additional arguments.
+  (`ANY`) additional arguments.
 
   If `object` is not a promise will just return itself else will resolve
   the promise and return the promised object.

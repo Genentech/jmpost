@@ -6,13 +6,11 @@ Re-used documentation for `DataSurvival`
 
 - object:
 
-  ([`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md))\
-  Survival Data.
+  (`DataSurvival`) Survival Data.
 
 - x:
 
-  ([`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md))\
-  Survival Data.
+  (`DataSurvival`) Survival Data.
 
 - ...:
 

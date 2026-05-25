@@ -12,9 +12,8 @@ StanModule(x = "", ...)
 
 - x:
 
-  (`string`)\
-  file path to a Stan program or a character vector of Stan code to be
-  parsed.
+  (`string`) file path to a Stan program or a character vector of Stan
+  code to be parsed.
 
 - ...:
 

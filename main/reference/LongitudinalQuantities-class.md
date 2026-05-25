@@ -12,14 +12,12 @@ LongitudinalQuantities(object, grid)
 
 - object:
 
-  ([`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md))\
-  samples as drawn from a Joint Model.
+  (`JointModelSamples`) samples as drawn from a Joint Model.
 
 - grid:
 
-  (`Grid`)\
-  object that specifies which subjects and time points to calculate the
-  quantities for. See
+  (`Grid`) object that specifies which subjects and time points to
+  calculate the quantities for. See
   [Grid-Functions](https://genentech.github.io/jmpost/reference/Grid-Functions.md).
 
 ## Details

@@ -28,79 +28,66 @@ SimLongitudinalClaretBruno(
 
 - times:
 
-  (`numeric`)\
-  the times to generate observations at.
+  (`numeric`) the times to generate observations at.
 
 - sigma:
 
-  (`number`)\
-  the variance of the longitudinal values.
+  (`number`) the variance of the longitudinal values.
 
 - mu_b:
 
-  (`numeric`)\
-  the mean population baseline sld value.
+  (`numeric`) the mean population baseline sld value.
 
 - mu_g:
 
-  (`numeric`)\
-  the mean population growth rate.
+  (`numeric`) the mean population growth rate.
 
 - mu_c:
 
-  (`numeric`)\
-  the mean population resistance rate.
+  (`numeric`) the mean population resistance rate.
 
 - mu_p:
 
-  (`numeric`)\
-  the mean population growth inhibition.
+  (`numeric`) the mean population growth inhibition.
 
 - omega_b:
 
-  (`number`)\
-  the population standard deviation for the baseline sld value.
+  (`number`) the population standard deviation for the baseline sld
+  value.
 
 - omega_g:
 
-  (`number`)\
-  the population standard deviation for the growth rate.
+  (`number`) the population standard deviation for the growth rate.
 
 - omega_c:
 
-  (`number`)\
-  the population standard deviation for the resistance rate.
+  (`number`) the population standard deviation for the resistance rate.
 
 - omega_p:
 
-  (`number`)\
-  the population standard deviation for the growth inhibition.
+  (`number`) the population standard deviation for the growth
+  inhibition.
 
 - link_dsld:
 
-  (`number`)\
-  the link coefficient for the derivative contribution.
+  (`number`) the link coefficient for the derivative contribution.
 
 - link_ttg:
 
-  (`number`)\
-  the link coefficient for the time-to-growth contribution.
+  (`number`) the link coefficient for the time-to-growth contribution.
 
 - link_identity:
 
-  (`number`)\
-  the link coefficient for the SLD Identity contribution.
+  (`number`) the link coefficient for the SLD Identity contribution.
 
 - link_growth:
 
-  (`number`)\
-  the link coefficient for the growth parameter contribution.
+  (`number`) the link coefficient for the growth parameter contribution.
 
 - scaled_variance:
 
-  (`logical`)\
-  whether the variance should be scaled by the expected value (see the
-  "Statistical Specifications" vignette for more details)
+  (`logical`) whether the variance should be scaled by the expected
+  value (see the "Statistical Specifications" vignette for more details)
 
 ## Slots
 

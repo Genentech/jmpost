@@ -13,18 +13,15 @@ RandomEffectQuantities(quantities, subject, parameter)
 
 - quantities:
 
-  (`matrix`)\
-  of random effects values.
+  (`matrix`) of random effects values.
 
 - subject:
 
-  (`character`)\
-  labels specifying which subjects the values belong to.
+  (`character`) labels specifying which subjects the values belong to.
 
 - parameter:
 
-  (`character`)\
-  labels specifying which parameter the value is.
+  (`character`) labels specifying which parameter the value is.
 
 ## Details
 

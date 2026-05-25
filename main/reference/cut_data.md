@@ -18,9 +18,8 @@ cut_data(object, cut_time)
 
 - cut_time:
 
-  (`numeric`)\
-  A vector of cut off times, either length 1 for all patients or
-  `nrow(object@survival)` for a time per patient.
+  (`numeric`) A vector of cut off times, either length 1 for all
+  patients or `nrow(object@survival)` for a time per patient.
 
 ## Details
 
@@ -33,7 +32,7 @@ this time and any longitudinal values are removed.
 data <- SimJointData(
   survival = SimSurvivalExponential(lambda = 1/10),
   longitudinal = SimLongitudinalSteinFojo()
-)
+  )
 data <- cut_data(data, 5)
 data@survival
 #> # A tibble: 100 × 7

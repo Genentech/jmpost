@@ -37,8 +37,8 @@ as.list(x, ...)
 
 - object:
 
-  (`DataSubject` or `DataLongitudinal` or `DataSurvival`)\
-  data object to convert to a `list`.
+  (`DataSubject` or `DataLongitudinal` or `DataSurvival`) data object to
+  convert to a `list`.
 
 - ...:
 
@@ -46,13 +46,13 @@ as.list(x, ...)
 
 - x:
 
-  (`DataSubject` or `DataLongitudinal` or `DataSurvival`)\
-  data object to convert to a `list`.
+  (`DataSubject` or `DataLongitudinal` or `DataSurvival`) data object to
+  convert to a `list`.
 
 - subject_var:
 
-  (`character`)\
-  the name of the variable containing the subject identifier.
+  (`character`) the name of the variable containing the subject
+  identifier.
 
 ## See also
 

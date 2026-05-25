@@ -19,15 +19,13 @@ as.StanModule(object, generator, type, ...)
 
 - generator:
 
-  (`QuantityGenerator`)\
-  object that specifies which subjects and time points to calculate the
-  quantities at
+  (`QuantityGenerator`) object that specifies which subjects and time
+  points to calculate the quantities at
 
 - type:
 
-  (`character`)\
-  type of quantities to be generated, must be either "survival" or
-  "longitudinal".
+  (`character`) type of quantities to be generated, must be either
+  "survival" or "longitudinal".
 
 - ...:
 

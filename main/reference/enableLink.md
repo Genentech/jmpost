@@ -12,8 +12,7 @@ enableLink(object, ...)
 
 - object:
 
-  ([`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md))\
-  to enable link for.
+  (`LongitudinalModel`) to enable link for.
 
 - ...:
 

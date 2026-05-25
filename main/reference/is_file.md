@@ -15,5 +15,4 @@ is_file(filename = NULL)
 
 - filename:
 
-  (`string`)\
-  file name.
+  (`string`) file name.

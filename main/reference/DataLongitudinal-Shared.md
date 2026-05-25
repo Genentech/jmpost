@@ -6,13 +6,11 @@ Re-used documentation for `DataLongitudinal`
 
 - object:
 
-  ([`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md))\
-  Longitudinal Data.
+  (`DataLongitudinal`) Longitudinal Data.
 
 - x:
 
-  ([`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md))\
-  Longitudinal Data.
+  (`DataLongitudinal`) Longitudinal Data.
 
 - ...:
 

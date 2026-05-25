@@ -16,20 +16,17 @@ DataJoint(subject, survival = NULL, longitudinal = NULL)
 
 - subject:
 
-  (`DataSubject`)\
-  object created by
+  (`DataSubject`) object created by
   [`DataSubject()`](https://genentech.github.io/jmpost/reference/DataSubject-class.md).
 
 - survival:
 
-  (`DataSurvival`)\
-  object created by
+  (`DataSurvival`) object created by
   [`DataSurvival()`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md).
 
 - longitudinal:
 
-  (`DataLongitudinal`)\
-  object created by
+  (`DataLongitudinal`) object created by
   [`DataLongitudinal()`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md).
 
 ## Slots

@@ -14,10 +14,8 @@ SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 2))
 
 - lambda:
 
-  (`Prior`)\
-  for the exponential rate `lambda`.
+  (`Prior`) for the exponential rate `lambda`.
 
 - beta:
 
-  (`Prior`)\
-  for covariates coefficients `beta`.
+  (`Prior`) for covariates coefficients `beta`.

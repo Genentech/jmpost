@@ -15,8 +15,7 @@ as.character(x, ...)
 
 - x:
 
-  ([`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md))\
-  Joint model specification.
+  (`JointModel`) Joint model specification.
 
 - ...:
 

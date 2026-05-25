@@ -12,14 +12,13 @@ expand_initial_values(initial_values, sizes)
 
 - initial_values:
 
-  (`list`)\
-  initial values with names.
+  (`list`) initial values with names.
 
 - sizes:
 
-  (`list`)\
-  each size corresponds to an element in `initial_values`, matched by
-  the names. An attribute `array` must be attached to each element, see
+  (`list`) each size corresponds to an element in `initial_values`,
+  matched by the names. An attribute `array` must be attached to each
+  element, see
   [`replace_with_lookup()`](https://genentech.github.io/jmpost/reference/replace_with_lookup.md).
 
 ## Value

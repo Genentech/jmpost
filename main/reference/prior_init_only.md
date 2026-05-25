@@ -15,8 +15,7 @@ prior_init_only(dist)
 
 - dist:
 
-  (`Prior`)\
-  a prior Distribution
+  (`Prior`) a prior Distribution
 
 ## See also
 

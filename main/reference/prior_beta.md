@@ -12,13 +12,11 @@ prior_beta(a, b)
 
 - a:
 
-  (`number`)\
-  first parameter.
+  (`number`) first parameter.
 
 - b:
 
-  (`number`)\
-  second parameter
+  (`number`) second parameter
 
 ## See also
 

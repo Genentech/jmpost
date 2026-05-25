@@ -21,14 +21,12 @@ extract_quantities(
 
 - gq:
 
-  (`CmdStanGQ`)\
-  a
+  (`CmdStanGQ`) a
   [cmdstanr::CmdStanGQ](https://mc-stan.org/cmdstanr/reference/CmdStanGQ.html)
   object created by
   [`generateQuantities()`](https://genentech.github.io/jmpost/reference/generateQuantities.md).
 
 - type:
 
-  (`character`)\
-  quantity to be generated. Must be one of `surv`, `haz`, `loghaz`,
-  `cumhaz`, `lm_identity`.
+  (`character`) quantity to be generated. Must be one of `surv`, `haz`,
+  `loghaz`, `cumhaz`, `lm_identity`.

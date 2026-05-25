@@ -20,13 +20,11 @@ resolvePromise(object, model, ...)
 
 - object:
 
-  ([`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md))\
-  the promise to resolve
+  (`PromiseLinkComponent`) the promise to resolve
 
 - model:
 
-  ([`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md))\
-  the model to resolve the promise with
+  (`LongitudinalModel`) the model to resolve the promise with
 
 - ...:
 
@@ -34,5 +32,4 @@ resolvePromise(object, model, ...)
 
 ## Value
 
-([`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md))\
-the resolved `LinkComponent` object
+(`LinkComponent`) the resolved `LinkComponent` object

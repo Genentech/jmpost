@@ -15,8 +15,7 @@ ParameterList(...)
 
 - ...:
 
-  (`Parameter`)\
-  which parameter specifications to include.
+  (`Parameter`) which parameter specifications to include.
 
 ## Slots
 

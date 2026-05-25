@@ -27,13 +27,13 @@ sampleObservations(object, times_df)
 
 - object:
 
-  (`SimLongitudinal` or `SimSurvival`)\
-  object to generate observations from.
+  (`SimLongitudinal` or `SimSurvival`) object to generate observations
+  from.
 
 - times_df:
 
-  (`data.frame`)\
-  the times at which to generate observations. See details.
+  (`data.frame`) the times at which to generate observations. See
+  details.
 
 ## Details
 
@@ -47,4 +47,4 @@ as:
     times_df <- tidyr::expand_grid(
         subject_dat,
         time = c(0, 1, 2, 3)
-    )
+      )

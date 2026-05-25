@@ -15,13 +15,11 @@ as_print_string(object, indent = 1, ...)
 
 - object:
 
-  ([`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md))\
-  A stan program
+  (`StanModule`) A stan program
 
 - indent:
 
-  (`numeric`)\
-  how much white space to prefix the print string with.
+  (`numeric`) how much white space to prefix the print string with.
 
 ## See also
 

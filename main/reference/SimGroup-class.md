@@ -13,18 +13,15 @@ SimGroup(n, arm, study)
 
 - n:
 
-  (`numeric`)\
-  number of subjects in the group.
+  (`numeric`) number of subjects in the group.
 
 - arm:
 
-  (`character`)\
-  treatment arm.
+  (`character`) treatment arm.
 
 - study:
 
-  (`character`)\
-  study name.
+  (`character`) study name.
 
 ## Slots
 

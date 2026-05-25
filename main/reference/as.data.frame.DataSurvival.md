@@ -15,8 +15,7 @@ as.data.frame(x, ...)
 
 - x:
 
-  ([`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md))\
-  Survival Data.
+  (`DataSurvival`) Survival Data.
 
 - ...:
 

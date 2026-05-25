@@ -30,51 +30,46 @@ GridPrediction(times = NULL, newdata, params = list())
 
 - subjects:
 
-  (`character` or `NULL`)\
-  vector of subjects to extract quantities for. If `NULL` will default
-  to all subjects within the dataset.
+  (`character` or `NULL`) vector of subjects to extract quantities for.
+  If `NULL` will default to all subjects within the dataset.
 
 - length.out:
 
-  (`numeric`)\
-  number of evenly spaced timepoints to generate quantities at.
+  (`numeric`) number of evenly spaced timepoints to generate quantities
+  at.
 
 - times:
 
-  (`numeric` or `NULL`)\
-  vector of time points to extract quantities at. If `NULL` will default
-  to 201 evenly spaced timepoints between 0 and either the max
-  observation time (for
+  (`numeric` or `NULL`) vector of time points to extract quantities at.
+  If `NULL` will default to 201 evenly spaced timepoints between 0 and
+  either the max observation time (for
   [`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md))
   or max event time (for
   [`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md)).
 
 - groups:
 
-  (`list`)\
-  named list of subjects to extract quantities for. See Group
+  (`list`) named list of subjects to extract quantities for. See Group
   Specification.
 
 - spec:
 
-  (`list`)\
-  named list of subjects to extract quantities for. The names of each
-  element should be the required subjects with the element itself being
-  a numeric vector of timepoints to generate the quantity at.
+  (`list`) named list of subjects to extract quantities for. The names
+  of each element should be the required subjects with the element
+  itself being a numeric vector of timepoints to generate the quantity
+  at.
 
 - newdata:
 
-  (`data.frame`)\
-  new data to generate quantities for. Must contain the same columns and
-  factor levels of the original data used in the
+  (`data.frame`) new data to generate quantities for. Must contain the
+  same columns and factor levels of the original data used in the
   [`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)
   object.
 
 - params:
 
-  (`list`)\
-  named list of parameters to fix the longitudinal model parameters at
-  when predicting survival quantities. See
+  (`list`) named list of parameters to fix the longitudinal model
+  parameters at when predicting survival quantities. See
   [`getPredictionNames()`](https://genentech.github.io/jmpost/reference/getPredictionNames.md)
   for the required parameters.
 
@@ -131,7 +126,7 @@ as:
             "Group-1" = c("sub-1", "sub-2"),
             "Group-2" = c("sub-3", "sub-4")
         )
-    )
+      )
 
 ## See also
 

@@ -26,59 +26,51 @@ LongitudinalClaretBruno(
 
 - mu_b:
 
-  (`Prior`)\
-  for the mean population baseline sld value.
+  (`Prior`) for the mean population baseline sld value.
 
 - mu_g:
 
-  (`Prior`)\
-  for the mean population growth rate.
+  (`Prior`) for the mean population growth rate.
 
 - mu_c:
 
-  (`Prior`)\
-  for the mean population resistance rate.
+  (`Prior`) for the mean population resistance rate.
 
 - mu_p:
 
-  (`Prior`)\
-  for the mean population growth inhibition
+  (`Prior`) for the mean population growth inhibition
 
 - omega_b:
 
-  (`Prior`)\
-  for the population standard deviation for the baseline sld value.
+  (`Prior`) for the population standard deviation for the baseline sld
+  value.
 
 - omega_g:
 
-  (`Prior`)\
-  for the population standard deviation for the growth rate.
+  (`Prior`) for the population standard deviation for the growth rate.
 
 - omega_c:
 
-  (`Prior`)\
-  for the population standard deviation for the resistance rate.
+  (`Prior`) for the population standard deviation for the resistance
+  rate.
 
 - omega_p:
 
-  (`Prior`)\
-  for the population standard deviation for the growth inhibition.
+  (`Prior`) for the population standard deviation for the growth
+  inhibition.
 
 - sigma:
 
-  (`Prior`)\
-  for the variance of the longitudinal values.
+  (`Prior`) for the variance of the longitudinal values.
 
 - scaled_variance:
 
-  (`logical`)\
-  whether the variance should be scaled by the expected value (see the
-  "Statistical Specifications" vignette for more details)
+  (`logical`) whether the variance should be scaled by the expected
+  value (see the "Statistical Specifications" vignette for more details)
 
 - centred:
 
-  (`logical`)\
-  whether to use the centred parameterization.
+  (`logical`) whether to use the centred parameterization.
 
 ## Available Links
 

@@ -13,20 +13,17 @@ DataLongitudinal(data, formula, threshold = NULL)
 
 - data:
 
-  (`data.frame`)\
-  containing the observed longitudinal data.
+  (`data.frame`) containing the observed longitudinal data.
 
 - formula:
 
-  (`formula`)\
-  of the form `outcome ~ time`, and cannot contain any additional
-  covariates.
+  (`formula`) of the form `outcome ~ time`, and cannot contain any
+  additional covariates.
 
 - threshold:
 
-  (`numeric`)\
-  cut-off value to be used to declare an observation as censored (below
-  detection limit).
+  (`numeric`) cut-off value to be used to declare an observation as
+  censored (below detection limit).
 
 ## Slots
 

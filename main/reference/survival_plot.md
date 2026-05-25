@@ -21,34 +21,32 @@ survival_plot(
 
 - data:
 
-  (`data.frame`)\
-  summary statistics for a survival curve to be plotted. See details.
+  (`data.frame`) summary statistics for a survival curve to be plotted.
+  See details.
 
 - add_ci:
 
-  (`logical`)\
-  should confidence intervals be added? Default = `TRUE`.
+  (`logical`) should confidence intervals be added? Default = `TRUE`.
 
 - add_wrap:
 
-  (`logical`)\
-  should the plots be wrapped by `data$group`? Default = `TRUE`.
+  (`logical`) should the plots be wrapped by `data$group`? Default =
+  `TRUE`.
 
 - kmdf:
 
-  (`data.frame` or `NULL`)\
-  event times and status used to plot overlaying KM curves. If `NULL` no
-  KM curve will be plotted. See details.
+  (`data.frame` or `NULL`) event times and status used to plot
+  overlaying KM curves. If `NULL` no KM curve will be plotted. See
+  details.
 
 - y_label:
 
-  (`character` or `expression`)\
-  label to display on the y-axis. Default = `expression(S(t))`.
+  (`character` or `expression`) label to display on the y-axis. Default
+  = `expression(S(t))`.
 
 - x_label:
 
-  (`character` or `expression`)\
-  label to display on the x-axis.
+  (`character` or `expression`) label to display on the x-axis.
 
 ## Details
 

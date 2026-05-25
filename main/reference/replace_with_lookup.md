@@ -12,14 +12,12 @@ replace_with_lookup(sizes, data)
 
 - sizes:
 
-  (`list`)\
-  may include character elements that correspond to names in the data
-  list.
+  (`list`) may include character elements that correspond to names in
+  the data list.
 
 - data:
 
-  (`list`)\
-  data containing numeric values.
+  (`list`) data containing numeric values.
 
 ## Value
 

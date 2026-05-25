@@ -13,8 +13,8 @@ hazardWindows(object, ...)
 
 - object:
 
-  (`SimSurvival`)\
-  the survival simulation object to create evaluation points for.
+  (`SimSurvival`) the survival simulation object to create evaluation
+  points for.
 
 - ...:
 

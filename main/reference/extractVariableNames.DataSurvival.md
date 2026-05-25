@@ -14,8 +14,7 @@ extractVariableNames(object)
 
 - object:
 
-  ([`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md))\
-  Survival Data.
+  (`DataSurvival`) Survival Data.
 
 ## Value
 

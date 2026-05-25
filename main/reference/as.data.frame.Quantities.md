@@ -13,8 +13,7 @@ as.data.frame(x, ...)
 
 - x:
 
-  ([`Quantities`](https://genentech.github.io/jmpost/reference/Quantities-class.md))\
-  generated quantities.
+  (`Quantities`) generated quantities.
 
 - ...:
 
