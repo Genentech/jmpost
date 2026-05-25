@@ -5,8 +5,10 @@ NULL
 
 
 #' ParameterList-Shared
-#' @param object (`ParameterList`) \cr A List of [`Parameter`] Objects.
-#' @param x (`ParameterList`) \cr A List of [`Parameter`] Objects.
+#' @typed object: ParameterList
+#'   A List of [`Parameter`] Objects.
+#' @typed x: ParameterList
+#'   A List of [`Parameter`] Objects.
 #' @param ... Not Used.
 #' @keywords internal
 #' @name ParameterList-Shared
@@ -132,7 +134,8 @@ as.list.ParameterList <- function(x, ...) {
 #' Getter functions for the slots of a [`ParameterList`] object
 #' @inheritParams ParameterList-Shared
 #' @family ParameterList
-#' @param n_chains (`integer`) \cr the number of chains.
+#' @typed n_chains: integer
+#'   the number of chains.
 #' @name ParameterList-Getter-Methods
 NULL
 

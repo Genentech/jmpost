@@ -26,21 +26,32 @@ NULL
 
 #' @rdname LongitudinalClaretBruno-class
 #'
-#' @param mu_b (`Prior`)\cr for the mean population baseline sld value.
-#' @param mu_g (`Prior`)\cr for the mean population growth rate.
-#' @param mu_c (`Prior`)\cr for the mean population resistance rate.
-#' @param mu_p (`Prior`)\cr for the mean population growth inhibition
+#' @typed mu_b: Prior
+#'   for the mean population baseline sld value.
+#' @typed mu_g: Prior
+#'   for the mean population growth rate.
+#' @typed mu_c: Prior
+#'   for the mean population resistance rate.
+#' @typed mu_p: Prior
+#'   for the mean population growth inhibition
 #'
-#' @param omega_b (`Prior`)\cr for the population standard deviation for the baseline sld value.
-#' @param omega_g (`Prior`)\cr for the population standard deviation for the growth rate.
-#' @param omega_c (`Prior`)\cr for the population standard deviation for the resistance rate.
-#' @param omega_p (`Prior`)\cr for the population standard deviation for the growth inhibition.
+#' @typed omega_b: Prior
+#'   for the population standard deviation for the baseline sld value.
+#' @typed omega_g: Prior
+#'   for the population standard deviation for the growth rate.
+#' @typed omega_c: Prior
+#'   for the population standard deviation for the resistance rate.
+#' @typed omega_p: Prior
+#'   for the population standard deviation for the growth inhibition.
 #'
-#' @param sigma (`Prior`)\cr for the variance of the longitudinal values.
+#' @typed sigma: Prior
+#'   for the variance of the longitudinal values.
 #'
-#' @param centred (`logical`)\cr whether to use the centred parameterization.
-#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
-#' (see the "Statistical Specifications" vignette for more details)
+#' @typed centred: logical
+#'   whether to use the centred parameterization.
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value
+#'   (see the "Statistical Specifications" vignette for more details)
 #'
 #' @export
 LongitudinalClaretBruno <- function(

@@ -7,19 +7,24 @@
 #' If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
 #' observation time (for [`LongitudinalQuantities`]) or max event time (for [`SurvivalQuantities`]).
 #'
-#' @param groups (`list`)\cr named list of subjects to extract quantities for. See Group Specification.
+#' @typed groups: list
+#'   named list of subjects to extract quantities for. See Group Specification.
 #'
-#' @param spec (`list`)\cr named list of subjects to extract quantities for. The names of each
-#' element should be the required subjects with the element itself being a numeric vector of timepoints
-#' to generate the quantity at.
+#' @typed spec: list
+#'   named list of subjects to extract quantities for. The names of each
+#'   element should be the required subjects with the element itself being a numeric vector of timepoints
+#'   to generate the quantity at.
 #'
-#' @param length.out (`numeric`)\cr number of evenly spaced timepoints to generate quantities at.
+#' @typed length.out: numeric
+#'   number of evenly spaced timepoints to generate quantities at.
 #'
-#' @param newdata (`data.frame`) \cr new data to generate quantities for. Must contain the same columns
-#' and factor levels of the original data used in the [`DataSurvival`] object.
+#' @typed newdata: data.frame
+#'   new data to generate quantities for. Must contain the same columns
+#'   and factor levels of the original data used in the [`DataSurvival`] object.
 #'
-#' @param params (`list`)\cr named list of parameters to fix the longitudinal model parameters at when
-#' predicting survival quantities. See [`getPredictionNames()`] for the required parameters.
+#' @typed params: list
+#'   named list of parameters to fix the longitudinal model parameters at when
+#'   predicting survival quantities. See [`getPredictionNames()`] for the required parameters.
 #'
 #' @description
 #' These functions are used to specify which subjects and timepoints should be generated
@@ -129,14 +134,20 @@ NULL
 #' @slot groups (`character`)\cr See Arguments for details.
 #' @slot indexes (`list`)\cr See Arguments for details.
 #'
-#' @param times (`numeric`)\cr vector of time points to extract quantities at.
-#' @param subjects (`character`)\cr vector of subjects to extract quantities for.
-#' @param groups (`character`)\cr vector of labels to apply to the generated quantities.
-#' @param indexes (`list`)\cr list of indexes that specify which observations from a
-#' `QuantityGenerator` should be combined to form the desired quantities.
+#' @typed times: numeric
+#'   vector of time points to extract quantities at.
+#' @typed subjects: character
+#'   vector of subjects to extract quantities for.
+#' @typed groups: character
+#'   vector of labels to apply to the generated quantities.
+#' @typed indexes: list
+#'   list of indexes that specify which observations from a
+#'   `QuantityGenerator` should be combined to form the desired quantities.
 #'
-#' @param object (`Grid`)\cr object to convert to a `QuantityGenerator` or `QuantityCollapser`.
-#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#' @typed object: Grid
+#'   object to convert to a `QuantityGenerator` or `QuantityCollapser`.
+#' @typed data: DataJoint
+#'   Survival and Longitudinal Data.
 #' @param ... Not currently used.
 #'
 #' @details
@@ -159,8 +170,10 @@ NULL
 #' @description
 #' Converts a `QuantityGenerator` object to a list containing the required input data for a stan
 #' model.
-#' @param object (`QuantityGenerator`)\cr object to convert to a list.
-#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#' @typed object: QuantityGenerator
+#'   object to convert to a list.
+#' @typed data: DataJoint
+#'   Survival and Longitudinal Data.
 #' @param ... Not currently used.
 #' @keywords internal
 #' @exportS3Method NULL
@@ -207,8 +220,10 @@ length.QuantityCollapser <- function(x) {
 
 #' Expand and Validate Subjects
 #'
-#' @param subjects (`character`)\cr vector of subjects that should exist in `data`
-#' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
+#' @typed subjects: character
+#'   vector of subjects that should exist in `data`
+#' @typed data: DataJoint
+#'   Survival and Longitudinal Data.
 #'
 #' @description
 #' If `subjects` is `NULL` this will return a named list of all subjects in `data`.

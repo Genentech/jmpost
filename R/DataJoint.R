@@ -6,8 +6,10 @@ NULL
 
 #' Re-used documentation for `DataJoint`
 #'
-#' @param object ([`DataJoint`]) \cr Survival and Longitudinal Data.
-#' @param x ([`DataJoint`]) \cr Survival and Longitudinal Data.
+#' @typed object: DataJoint
+#'   Survival and Longitudinal Data.
+#' @typed x: DataJoint
+#'   Survival and Longitudinal Data.
 #' @param ... Not Used.
 #'
 #' @name DataJoint-Shared
@@ -44,9 +46,12 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
     )
 )
 
-#' @param subject (`DataSubject`)\cr object created by [DataSubject()].
-#' @param survival (`DataSurvival`)\cr object created by [DataSurvival()].
-#' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
+#' @typed subject: DataSubject
+#'   object created by [DataSubject()].
+#' @typed survival: DataSurvival
+#'   object created by [DataSurvival()].
+#' @typed longitudinal: DataLongitudinal
+#'   object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
 DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
     subject_suited <- harmonise(subject)
@@ -135,8 +140,9 @@ setValidity(
 #' data object to convert to a `list`.
 #' @param x (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr
 #' data object to convert to a `list`.
-#' @param subject_var (`character`) \cr the name of the variable
-#' containing the subject identifier.
+#' @typed subject_var: character
+#'   the name of the variable
+#'   containing the subject identifier.
 #' @param ... not used.
 #'
 #' @description
@@ -167,7 +173,8 @@ as.list.DataJoint <- function(x, ...) {
 
 #' Subsetting `DataJoint` as a `data.frame`
 #'
-#' @param x (`DataJoint`) \cr object created by [DataJoint()].
+#' @typed x: DataJoint
+#'   object created by [DataJoint()].
 #' @param subjects (`character` or `list`)\cr subjects that you wish to subset the `data.frame`
 #' to contain. See details.
 #' @param ... Not used.
@@ -206,8 +213,9 @@ subset.DataJoint <- function(x, subjects, ...) {
 
 #' `subset_and_add_grouping`
 #'
-#' @param dat (`data.frame`) \cr must have a column called `subject` which corresponds to the
-#' values passed to `groupings`.
+#' @typed dat: data.frame
+#'   must have a column called `subject` which corresponds to the
+#'   values passed to `groupings`.
 #' @param groupings (`character` or `list`)\cr subjects that you wish to subset the dataset
 #' to contain. If `groupings` is a list then an additional variable `group` will be added
 #' onto the dataset specifying which group the row belongs to.

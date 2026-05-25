@@ -26,10 +26,10 @@ Encoding: UTF-8
 Language: en-GB
 URL: https://genentech.github.io/jmpost/
 BugReports: https://github.com/Genentech/jmpost/issues
-Roxygen: list(markdown = TRUE)
-Depends:
+Roxygen: list(markdown = TRUE, packages = "roxytypes")
+Depends: 
     R (>= 4.1.0)
-Imports:
+Imports: 
     assertthat,
     Rdpack,
     checkmate,
@@ -47,7 +47,7 @@ Imports:
     posterior,
     stats,
     splines
-Suggests:
+Suggests: 
     cmdstanr,
     bayesplot,
     knitr,
@@ -66,7 +66,7 @@ Suggests:
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Collate:
+Collate: 
     'DataSubject.R'
     'utilities.R'
     'generics.R'
@@ -133,3 +133,5 @@ VignetteBuilder: knitr
 RdMacros: Rdpack
 LazyData: true
 Config/roxygen2/version: 8.0.0
+Config/Needs/documentation: 
+    roxytypes

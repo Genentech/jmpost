@@ -42,8 +42,10 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
         "size" = "numeric_OR_character"
     )
 )
-#' @param prior (`Prior`)\cr for the parameter.
-#' @param name (`string`)\cr of the parameter.
+#' @typed prior: Prior
+#'   for the parameter.
+#' @typed name: string
+#'   of the parameter.
 #' @param size (`numeric` or `string`)\cr dimension of the parameter.
 #' @rdname Parameter-class
 Parameter <- function(prior, name, size = 1) {
@@ -102,8 +104,10 @@ as_stan_list.Parameter <- function(object, ...) {
 
 #' Parameter Getter Functions
 #'
-#' @param x (`Paramater`) \cr A model parameter
-#' @param object (`Paramater`) \cr A model parameter
+#' @typed x: Paramater
+#'   A model parameter
+#' @typed object: Paramater
+#'   A model parameter
 #' @param ... Not used.
 #'
 #' @description

@@ -26,19 +26,28 @@ NULL
 
 #' @rdname LongitudinalSteinFojo-class
 #'
-#' @param mu_bsld (`Prior`)\cr for the mean baseline value `mu_bsld`.
-#' @param mu_ks (`Prior`)\cr for the mean shrinkage rate `mu_ks`.
-#' @param mu_kg (`Prior`)\cr for the mean growth rate `mu_kg`.
+#' @typed mu_bsld: Prior
+#'   for the mean baseline value `mu_bsld`.
+#' @typed mu_ks: Prior
+#'   for the mean shrinkage rate `mu_ks`.
+#' @typed mu_kg: Prior
+#'   for the mean growth rate `mu_kg`.
 #'
-#' @param omega_bsld (`Prior`)\cr for the baseline value standard deviation `omega_bsld`.
-#' @param omega_ks (`Prior`)\cr for the shrinkage rate standard deviation `omega_ks`.
-#' @param omega_kg (`Prior`)\cr for the growth rate standard deviation `omega_kg`.
+#' @typed omega_bsld: Prior
+#'   for the baseline value standard deviation `omega_bsld`.
+#' @typed omega_ks: Prior
+#'   for the shrinkage rate standard deviation `omega_ks`.
+#' @typed omega_kg: Prior
+#'   for the growth rate standard deviation `omega_kg`.
 #'
-#' @param sigma (`Prior`)\cr for the variance of the longitudinal values `sigma`.
+#' @typed sigma: Prior
+#'   for the variance of the longitudinal values `sigma`.
 #'
-#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
-#' (see the "Statistical Specifications" vignette for more details)
-#' @param centred (`logical`)\cr whether to use the centred parameterization.
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value
+#'   (see the "Statistical Specifications" vignette for more details)
+#' @typed centred: logical
+#'   whether to use the centred parameterization.
 #'
 #' @export
 LongitudinalSteinFojo <- function(

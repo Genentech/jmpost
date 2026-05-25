@@ -1,8 +1,11 @@
 #' Re-used documentation for `RandomEffectQuantities`
 #'
-#' @param x ([`RandomEffectQuantities`]) \cr generated quantities.
-#' @param object ([`RandomEffectQuantities`]) \cr generated quantities.
-#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @typed x: RandomEffectQuantities
+#'   generated quantities.
+#' @typed object: RandomEffectQuantities
+#'   generated quantities.
+#' @typed conf.level: numeric
+#'   confidence level of the interval.
 #' @param ... not used.
 #'
 #' @keywords internal
@@ -15,9 +18,12 @@ NULL
 #' A simple wrapper around a `matrix` to store required metadata for patient level
 #' random effects data
 #'
-#' @param quantities (`matrix`)\cr of random effects values.
-#' @param subject (`character`)\cr labels specifying which subjects the values belong to.
-#' @param parameter (`character`)\cr labels specifying which parameter the value is.
+#' @typed quantities: matrix
+#'   of random effects values.
+#' @typed subject: character
+#'   labels specifying which subjects the values belong to.
+#' @typed parameter: character
+#'   labels specifying which parameter the value is.
 #'
 #' @slot quantities (`matrix`)\cr See Arguments for details.
 #' @slot subject (`numeric`)\cr See Arguments for details.
@@ -71,7 +77,8 @@ setValidity(
 #'
 #' Converts [`RandomEffectQuantities`] object into a printable string.
 #' @inheritParams RandomEffectQuantities-Shared
-#' @param indent (`numeric`) \cr the number of spaces to indent the string by.
+#' @typed indent: numeric
+#'   the number of spaces to indent the string by.
 #' @family RandomEffectQuantities
 #' @keywords internal
 #' @export
@@ -165,7 +172,8 @@ summary.RandomEffectQuantities <- function(object, conf.level = 0.95, ...) {
 #' Helper function to extract subject-level random effects samples from the longitudinal
 #' sub-model of a joint model samples object.
 #'
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#' @typed object: JointModelSamples
+#'   samples as drawn from a Joint Model.
 #' @family RandomEffectQuantities
 #' @family JointModelSamples
 #' @export

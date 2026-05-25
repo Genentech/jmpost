@@ -4,13 +4,20 @@ NULL
 
 #' Simulate Longitudinal Data from a Random Slope Model
 #'
-#' @param times (`numeric`)\cr the times to generate observations at.
-#' @param intercept (`numeric`)\cr the mean baseline value for each study.
-#' @param slope_mu (`numeric`)\cr the population slope for each treatment arm.
-#' @param slope_sigma (`numeric`)\cr the random slope standard deviation for each treatment arm.
-#' @param sigma (`number`)\cr the variance of the longitudinal values.
-#' @param link_dsld (`number`)\cr the link coefficient for the DSLD contribution.
-#' @param link_identity (`number`)\cr the link coefficient for the identity contribution.
+#' @typed times: numeric
+#'   the times to generate observations at.
+#' @typed intercept: numeric
+#'   the mean baseline value for each study.
+#' @typed slope_mu: numeric
+#'   the population slope for each treatment arm.
+#' @typed slope_sigma: numeric
+#'   the random slope standard deviation for each treatment arm.
+#' @typed sigma: number
+#'   the variance of the longitudinal values.
+#' @typed link_dsld: number
+#'   the link coefficient for the DSLD contribution.
+#' @typed link_identity: number
+#'   the link coefficient for the identity contribution.
 #'
 #' @slot intercept (`numeric`)\cr See arguments.
 #' @slot slope_mu (`numeric`)\cr See arguments.

@@ -10,7 +10,8 @@ NULL
 #'
 #' This exists to contain all the common arguments for [`LinkComponent`] methods.
 #'
-#' @param stan (`StanModule`)\cr Stan code.
+#' @typed stan: StanModule
+#'   Stan code.
 #' @param x ([`LinkComponent`])\cr a link component.
 #' @param object ([`LinkComponent`])\cr a link component.
 #' @param ... Not Used.
@@ -26,9 +27,12 @@ NULL
 #' @slot name (`character`)\cr See Arguments.
 #' @slot parameters (`ParameterList`)\cr The parameter specification.
 #'
-#' @param stan (`StanModule`)\cr Stan code. See Details.
-#' @param prior (`Prior`)\cr The prior for the scaling coeficient.
-#' @param key (`character`)\cr Link identifier. See Details.
+#' @typed stan: StanModule
+#'   Stan code. See Details.
+#' @typed prior: Prior
+#'   The prior for the scaling coeficient.
+#' @typed key: character
+#'   Link identifier. See Details.
 #'
 #' @details
 #'

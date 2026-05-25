@@ -5,8 +5,10 @@ NULL
 
 #' Re-used documentation for `LongitudinalQuantities`
 #'
-#' @param x ([`LongitudinalQuantities`]) \cr longitudinal quantities.
-#' @param object ([`LongitudinalQuantities`]) \cr longitudinal quantities.
+#' @typed x: LongitudinalQuantities
+#'   longitudinal quantities.
+#' @typed object: LongitudinalQuantities
+#'   longitudinal quantities.
 #' @param ... not used.
 #'
 #' @keywords internal
@@ -38,10 +40,12 @@ NULL
     )
 )
 
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#' @typed object: JointModelSamples
+#'   samples as drawn from a Joint Model.
 #'
-#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
-#' quantities for. See [Grid-Functions].
+#' @typed grid: Grid
+#'   object that specifies which subjects and time points to calculate the
+#'   quantities for. See [Grid-Functions].
 #' @rdname LongitudinalQuantities-class
 LongitudinalQuantities <- function(
     object,
@@ -86,7 +90,8 @@ LongitudinalQuantities <- function(
 
 #' `as.data.frame`
 #'
-#' @param x ([`LongitudinalQuantities`]) \cr longitudinal quantities.
+#' @typed x: LongitudinalQuantities
+#'   longitudinal quantities.
 #' @param ... not used.
 #' @family LongitudinalQuantities
 #' @export
@@ -100,7 +105,8 @@ as.data.frame.LongitudinalQuantities <- function(x, ...) {
 #' @description
 #' This method returns a `data.frame` of the longitudinal quantities.
 #'
-#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @typed conf.level: numeric
+#'   confidence level of the interval.
 #' @inheritParams LongitudinalQuantities-Shared
 #'
 #' @family LongitudinalQuantities
@@ -121,11 +127,14 @@ summary.LongitudinalQuantities <- function(
 #' This function predominately exists to extract core logic into its own function
 #' to enable easier unit testing.
 #'
-#' @param data (`data.frame`)\cr summary statistics for longitudinal
-#' value estimates. See details.
-#' @param data_obs (`data.frame`)\cr real observed values to be
-#' overlaid for reference.  See details.
-#' @param add_ci (`logical`)\cr Should confidence intervals be added? Default = `TRUE`.
+#' @typed data: data.frame
+#'   summary statistics for longitudinal
+#'   value estimates. See details.
+#' @typed data_obs: data.frame
+#'   real observed values to be
+#'   overlaid for reference.  See details.
+#' @typed add_ci: logical
+#'   Should confidence intervals be added? Default = `TRUE`.
 #' @details
 #'
 #' ## `data`
@@ -173,8 +182,9 @@ longitudinal_plot <- function(
 
 #' Automatic Plotting for `LongitudinalQuantities`
 #'
-#' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
-#' `NULL` or `0` are provided then confidence regions will not be added to the plot.
+#' @typed conf.level: numeric
+#'   confidence level of the interval. If values of `FALSE`,
+#'   `NULL` or `0` are provided then confidence regions will not be added to the plot.
 #' @inheritParams LongitudinalQuantities-Shared
 #'
 #' @family LongitudinalQuantities

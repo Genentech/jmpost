@@ -18,9 +18,12 @@ NULL
 
 #' @rdname SurvivalWeibullPH-class
 #'
-#' @param lambda (`Prior`)\cr for the scale `lambda`.
-#' @param gamma (`Prior`)\cr for the shape `gamma`.
-#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#' @typed lambda: Prior
+#'   for the scale `lambda`.
+#' @typed gamma: Prior
+#'   for the shape `gamma`.
+#' @typed beta: Prior
+#'   for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalWeibullPH <- function(

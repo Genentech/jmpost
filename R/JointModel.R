@@ -13,8 +13,10 @@ NULL
 
 #' Re-used documentation for `JointModel-Shared`
 #'
-#' @param object ([`JointModel`]) \cr Joint model specification.
-#' @param x ([`JointModel`]) \cr Joint model specification.
+#' @typed object: JointModel
+#'   Joint model specification.
+#' @typed x: JointModel
+#'   Joint model specification.
 #' @param ... Not Used.
 #'
 #' @name JointModel-Shared
@@ -48,7 +50,8 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 
 #' @param longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
 #' @param survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
-#' @param link (`Link`)\cr the link.
+#' @typed link: Link
+#'   the link.
 #' @rdname JointModel-class
 JointModel <- function(
     longitudinal = NULL,
@@ -226,11 +229,13 @@ sampleStanModel.JointModel <- function(object, data, ...) {
 
 #' Ensure that initial values are correctly specified
 #'
-#' @param initial_values (`list`)\cr A list of lists containing the initial values
-#' must be 1 list per desired chain. All elements should have identical names
-#' @param data (`list`)\cr specifies the size to expand each of our initial values to be.
-#' That is elements of size 1 in `initial_values` will be expanded to be the same
-#' size as the corresponding element in `data` by broadcasting the value.
+#' @typed initial_values: list
+#'   A list of lists containing the initial values
+#'   must be 1 list per desired chain. All elements should have identical names
+#' @typed data: list
+#'   specifies the size to expand each of our initial values to be.
+#'   That is elements of size 1 in `initial_values` will be expanded to be the same
+#'   size as the corresponding element in `data` by broadcasting the value.
 #' @param parameters ([`ParameterList`])\cr the parameters object
 #'
 #' @details

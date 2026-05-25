@@ -1,9 +1,11 @@
 #' Simulating Joint Longitudinal and Time-to-Event Data
 #'
-#' @param design (`list`)\cr a list of [`SimGroup`] objects. See details.
+#' @typed design: list
+#'   a list of [`SimGroup`] objects. See details.
 #' @param longitudinal ([`SimLongitudinal`])\cr object specifying how to simulate the longitudinal data
 #' @param survival ([`SimSurvival`])\cr object specifying how to simulate the survival data
-#' @param .silent (`flag`)\cr whether to suppress info messages
+#' @typed .silent: flag
+#'   whether to suppress info messages
 #'
 #' @slot longitudinal (`data.frame`)\cr the simulated longitudinal data.
 #' @slot survival (`data.frame`)\cr the simulated survival data.
@@ -187,12 +189,16 @@ setMethod(
 #' Adds new columns `pfs_time` and `pfs_event` based on observed changes to SLD.
 #'
 #' @param object A [SimJointData] object
-#' @param relative_threshold (`number`)\cr a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
-#'  Default is 1.2 meaning a 20% increase.
-#' @param absolute_threshold (`number`)\cr an absolute threshold for the change in SLD compared to the minimum.
+#' @typed relative_threshold: number
+#'   a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
+#'   Default is 1.2 meaning a 20% increase.
+#' @typed absolute_threshold: number
+#'   an absolute threshold for the change in SLD compared to the minimum.
 #'   Default is 5.
-#' @param from_time (`number`)\cr Ignore observations before this time for determining SLD minimum.
-#' @param observed_after (`logical`)\cr If `FALSE` set longitudinal observations after the progression time to
+#' @typed from_time: number
+#'   Ignore observations before this time for determining SLD minimum.
+#' @typed observed_after: logical
+#'   If `FALSE` set longitudinal observations after the progression time to
 #'   `observed = FALSE`
 #' @details
 #' Both thresholds must be met for a progression to be declared.
@@ -261,7 +267,8 @@ add_pfs <- function(
 
 #' Cut Study Data
 #' @param object A [SimJointData] object
-#' @param cut_time (`numeric`)\cr A vector of cut off times, either length 1 for all patients or
+#' @typed cut_time: numeric
+#'   A vector of cut off times, either length 1 for all patients or
 #'   `nrow(object@survival)` for a time per patient.
 #' @details
 #'   All observations after this time are remove. Survival is censored at this time and any longitudinal

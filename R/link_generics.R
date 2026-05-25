@@ -4,8 +4,10 @@ NULL
 
 #' Standard Links
 #'
-#' @param prior ([`Prior`]) \cr A [`Prior`] object.
-#' @param model ([`LongitudinalModel`]) \cr A [`LongitudinalModel`] object.
+#' @typed prior: Prior
+#'   A [`Prior`] object.
+#' @typed model: LongitudinalModel
+#'   A [`LongitudinalModel`] object.
 #' @param ... Not used.
 #'
 #' @description

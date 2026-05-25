@@ -3,14 +3,18 @@
 #' Calculates hazard ratios marginalised over subject specific random effects using the
 #' approach proposed by \insertCite{oudenhoven2020marginal}{jmpost}.
 #'
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
-#' @param hr_formula (`formula`) \cr defines the terms to include in the hazard ratio calculation.
-#' By default this uses the right side of the formula used in the survival model.
-#' Set to `NULL` not include any terms
-#' @param baseline (`formula`) \cr terms to model baseline hazard using variable `time`.
-#' Default is a B-spline from [splines]: `~bs(time, df = 10)`
-#' @param quantiles (`numeric`) \cr vector of two values in (0, 1) for calculating quantiles from log hazard ratio
-#' distributions.
+#' @typed object: JointModelSamples
+#'   samples as drawn from a Joint Model.
+#' @typed hr_formula: formula
+#'   defines the terms to include in the hazard ratio calculation.
+#'   By default this uses the right side of the formula used in the survival model.
+#'   Set to `NULL` not include any terms
+#' @typed baseline: formula
+#'   terms to model baseline hazard using variable `time`.
+#'   Default is a B-spline from [splines]: `~bs(time, df = 10)`
+#' @typed quantiles: numeric
+#'   vector of two values in (0, 1) for calculating quantiles from log hazard ratio
+#'   distributions.
 #'
 #' @references \insertAllCited{}
 #'

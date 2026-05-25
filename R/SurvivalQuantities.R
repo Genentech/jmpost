@@ -5,8 +5,10 @@ NULL
 
 #' Re-used documentation for `SurvivalQuantities`
 #'
-#' @param object ([`SurvivalQuantities`]) \cr survival quantities.
-#' @param x ([`SurvivalQuantities`]) \cr survival quantities.
+#' @typed object: SurvivalQuantities
+#'   survival quantities.
+#' @typed x: SurvivalQuantities
+#'   survival quantities.
 #' @param ... not used.
 #'
 #' @keywords internal
@@ -51,13 +53,16 @@ NULL
     )
 )
 
-#' @param object ([`JointModelSamples`]) \cr samples as drawn from a Joint Model.
+#' @typed object: JointModelSamples
+#'   samples as drawn from a Joint Model.
 #'
-#' @param grid (`Grid`) \cr object that specifies which subjects and time points to calculate the
-#' quantities for. See [Grid-Functions].
+#' @typed grid: Grid
+#'   object that specifies which subjects and time points to calculate the
+#'   quantities for. See [Grid-Functions].
 #'
-#' @param type (`character`)\cr quantity to be generated.
-#' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
+#' @typed type: character
+#'   quantity to be generated.
+#'   Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
 #'
 #' @rdname SurvivalQuantities-class
 SurvivalQuantities <- function(
@@ -113,7 +118,8 @@ SurvivalQuantities <- function(
 
 #' `as.data.frame`
 #'
-#' @param x ([`SurvivalQuantities`]) \cr longitudinal quantities.
+#' @typed x: SurvivalQuantities
+#'   longitudinal quantities.
 #' @param ... not used.
 #' @family SurvivalQuantities
 #' @export
@@ -127,7 +133,8 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 #' @description
 #' This method returns a `data.frame` of the longitudinal quantities.
 #'
-#' @param conf.level (`numeric`) \cr confidence level of the interval.
+#' @typed conf.level: numeric
+#'   confidence level of the interval.
 #' @inheritParams SurvivalQuantities-Shared
 #'
 #' @family SurvivalQuantities
@@ -145,12 +152,15 @@ summary.SurvivalQuantities <- function(
 #' Automatic Plotting for `SurvivalQuantities``
 #'
 #' @inheritParams SurvivalQuantities-Shared
-#' @param add_km (`logical`) \cr if `TRUE` Kaplan-Meier curves will be added to the plot for
-#' each group/subject.
-#' @param add_wrap (`logical`) \cr if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
-#' by each group/subject.
-#' @param conf.level (`numeric`) \cr confidence level of the interval. If values of `FALSE`,
-#' `NULL` or `0` are provided then confidence regions will not be added to the plot
+#' @typed add_km: logical
+#'   if `TRUE` Kaplan-Meier curves will be added to the plot for
+#'   each group/subject.
+#' @typed add_wrap: logical
+#'   if `TRUE` will apply a [ggplot2::facet_wrap()] to the plot
+#'   by each group/subject.
+#' @typed conf.level: numeric
+#'   confidence level of the interval. If values of `FALSE`,
+#'   `NULL` or `0` are provided then confidence regions will not be added to the plot
 #' @param ... not used.
 #'
 #' @family SurvivalQuantities
@@ -207,10 +217,13 @@ autoplot.SurvivalQuantities <- function(
 #' This function predominately exists to extract core logic into its own function
 #' to enable easier unit testing.
 #'
-#' @param data (`data.frame`)\cr summary statistics for a survival
-#' curve to be plotted. See details.
-#' @param add_ci (`logical`)\cr should confidence intervals be added? Default = `TRUE`.
-#' @param add_wrap (`logical`)\cr should the plots be wrapped by `data$group`? Default = `TRUE`.
+#' @typed data: data.frame
+#'   summary statistics for a survival
+#'   curve to be plotted. See details.
+#' @typed add_ci: logical
+#'   should confidence intervals be added? Default = `TRUE`.
+#' @typed add_wrap: logical
+#'   should the plots be wrapped by `data$group`? Default = `TRUE`.
 #' @param kmdf (`data.frame` or `NULL`)\cr event times and status used to plot
 #' overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
 #' @param y_label (`character` or `expression`) \cr label to display on the y-axis.

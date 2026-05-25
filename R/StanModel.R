@@ -8,10 +8,14 @@ NULL
 #' The documentation lists all the conventional arguments for wrappers around
 #' [StanModel()].
 #'
-#' @param stan (`StanModule`)\cr code containing the Stan code specification.
-#' @param parameters (`ParameterList`)\cr the parameter specification.
-#' @param parameter (`ParameterList`)\cr the (single) parameter specification.
-#' @param name (`character`)\cr display name for the model object.
+#' @typed stan: StanModule
+#'   code containing the Stan code specification.
+#' @typed parameters: ParameterList
+#'   the parameter specification.
+#' @typed parameter: ParameterList
+#'   the (single) parameter specification.
+#' @typed name: character
+#'   display name for the model object.
 #' @param ... additional arguments for [StanModel()].
 #'
 #' @name stanmodel_arguments

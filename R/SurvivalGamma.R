@@ -17,9 +17,12 @@ NULL
 
 #' @rdname SurvivalGamma-class
 #'
-#' @param k (`Prior`)\cr for the shape `k`.
-#' @param theta (`Prior`)\cr for the scale `theta`.
-#' @param beta (`Prior`)\cr for covariates coefficients `beta`.
+#' @typed k: Prior
+#'   for the shape `k`.
+#' @typed theta: Prior
+#'   for the scale `theta`.
+#' @typed beta: Prior
+#'   for covariates coefficients `beta`.
 #'
 #' @export
 SurvivalGamma <- function(

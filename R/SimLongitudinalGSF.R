@@ -4,24 +4,40 @@ NULL
 
 #' Simulate Longitudinal Data from a GSF Model
 #'
-#' @param times (`numeric`)\cr the times to generate observations at.
-#' @param sigma (`number`)\cr the variance of the longitudinal values.
-#' @param mu_s (`numeric`)\cr the mean shrinkage rates.
-#' @param mu_g (`numeric`)\cr the mean growth rates.
-#' @param mu_b (`numeric`)\cr the mean baseline values.
-#' @param mu_phi (`numeric`)\cr the mean proportion of cells affected by the treatment
-#' @param omega_b (`number`)\cr the baseline value standard deviation.
-#' @param omega_s (`number`)\cr the shrinkage rate standard deviation.
-#' @param omega_g (`number`)\cr the growth rate standard deviation.
-#' @param omega_phi (`number`)\cr for the standard deviation of the proportion of cells
-#' affected by the treatment `omega_phi`.
-#' @param link_dsld (`number`)\cr the link coefficient for the derivative contribution.
-#' @param link_ttg (`number`)\cr the link coefficient for the time-to-growth contribution.
-#' @param link_identity (`number`)\cr the link coefficient for the SLD Identity contribution.
-#' @param link_growth (`number`)\cr the link coefficient for the log-growth parameter contribution.
-#' @param link_shrinkage (`number`)\cr the link coefficient for the log-shrinkage parameter contribution.
-#' @param scaled_variance (`logical`)\cr whether the variance should be scaled by the expected value
-#' (see the "Statistical Specifications" vignette for more details)
+#' @typed times: numeric
+#'   the times to generate observations at.
+#' @typed sigma: number
+#'   the variance of the longitudinal values.
+#' @typed mu_s: numeric
+#'   the mean shrinkage rates.
+#' @typed mu_g: numeric
+#'   the mean growth rates.
+#' @typed mu_b: numeric
+#'   the mean baseline values.
+#' @typed mu_phi: numeric
+#'   the mean proportion of cells affected by the treatment
+#' @typed omega_b: number
+#'   the baseline value standard deviation.
+#' @typed omega_s: number
+#'   the shrinkage rate standard deviation.
+#' @typed omega_g: number
+#'   the growth rate standard deviation.
+#' @typed omega_phi: number
+#'   for the standard deviation of the proportion of cells
+#'   affected by the treatment `omega_phi`.
+#' @typed link_dsld: number
+#'   the link coefficient for the derivative contribution.
+#' @typed link_ttg: number
+#'   the link coefficient for the time-to-growth contribution.
+#' @typed link_identity: number
+#'   the link coefficient for the SLD Identity contribution.
+#' @typed link_growth: number
+#'   the link coefficient for the log-growth parameter contribution.
+#' @typed link_shrinkage: number
+#'   the link coefficient for the log-shrinkage parameter contribution.
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value
+#'   (see the "Statistical Specifications" vignette for more details)
 #'
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot mu_s (`numeric`)\cr See arguments.
@@ -266,11 +282,16 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
 
 #' Generalized Stein-Fojo Functionals
 #'
-#' @param time (`numeric`)\cr time grid.
-#' @param b (`number`)\cr baseline.
-#' @param s (`number`)\cr shrinkage.
-#' @param g (`number`)\cr growth.
-#' @param phi (`number`)\cr shrinkage proportion.
+#' @typed time: numeric
+#'   time grid.
+#' @typed b: number
+#'   baseline.
+#' @typed s: number
+#'   shrinkage.
+#' @typed g: number
+#'   growth.
+#' @typed phi: number
+#'   shrinkage proportion.
 #'
 #' @returns The function results.
 #'
