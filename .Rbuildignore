@@ -28,3 +28,5 @@
 ^vignettes/local$
 
 ^.lycheeignore$
+^\.vscode$
+^[.]?air[.]toml$
