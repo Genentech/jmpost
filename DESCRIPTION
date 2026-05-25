@@ -26,7 +26,7 @@ Encoding: UTF-8
 Language: en-GB
 URL: https://genentech.github.io/jmpost/
 BugReports: https://github.com/Genentech/jmpost/issues
-Roxygen: list(markdown = TRUE, packages = "roxytypes")
+Roxygen: list(markdown = TRUE, packages = "roxytypes", roclets = c("namespace", "rd", "roxylint::roxylint"))
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -134,4 +134,4 @@ RdMacros: Rdpack
 LazyData: true
 Config/roxygen2/version: 8.0.0
 Config/Needs/documentation: 
-    roxytypes
+    roxytypes, roxylint
