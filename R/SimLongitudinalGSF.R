@@ -173,6 +173,7 @@ setValidity(
 )
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimLongitudinalGSF <- function(object, ...) {
     return("SimLongitudinalGSF")
 }

@@ -163,6 +163,7 @@ setMethod(
 # compileStanModel-StanModule,character ----
 
 #' @rdname compileStanModel
+#' @exportS3Method NULL
 compileStanModel.StanModule <- function(object) {
     exe_dir <- getOption("jmpost.cache_dir")
     if (!dir.exists(exe_dir)) {

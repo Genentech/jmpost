@@ -150,6 +150,7 @@ as.list.DataSurvival <- function(x, ...) {
 }
 
 #' @rdname harmonise
+#' @exportS3Method NULL
 harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
     data <- as.data.frame(object)
 

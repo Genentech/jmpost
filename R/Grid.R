@@ -163,6 +163,7 @@ NULL
 #' @param data (`DataJoint`)\cr Survival and Longitudinal Data.
 #' @param ... Not currently used.
 #' @keywords internal
+#' @exportS3Method NULL
 as_stan_list.QuantityGenerator <- function(object, data, ...) {
     stop("as_stan_list.QuantityGenerator not implemented")
 }

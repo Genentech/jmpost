@@ -62,6 +62,7 @@ SimLongitudinalRandomSlope <- function(
 }
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimLongitudinalRandomSlope <- function(object, ...) {
     return("SimLongitudinalRandomSlope")
 }

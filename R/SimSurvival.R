@@ -97,6 +97,7 @@ setMethod(
 )
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimSurvival <- function(object, ...) {
     return(object@name)
 }
@@ -109,6 +110,7 @@ as_print_string.SimSurvival <- function(object, ...) {
 #'
 #' @return A `tibble` with `lower`, `upper`, `time`, `eval` and `width`.
 #' @keywords internal
+#' @exportS3Method NULL
 hazardWindows.SimSurvival <- function(object, ...) {
     times <- seq(0, object@time_max, object@time_step)
     bound_lower <- times[-length(times)]

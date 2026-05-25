@@ -155,6 +155,7 @@ setValidity(
 )
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimLongitudinalSteinFojo <- function(object, ...) {
     return("SimLongitudinalSteinFojo")
 }
