@@ -7,7 +7,7 @@
 \method{length}{Link}(x)
 }
 \arguments{
-\item{x}{(\code{\link{Link}})\cr a link object.}
+\item{x}{(\code{Link}) a link object.}
 }
 \description{
 Returns the number of link components within the \code{\link{Link}} object

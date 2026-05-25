@@ -7,7 +7,7 @@
 \method{as_print_string}{StanModule}(object, indent = 1, ...)
 }
 \arguments{
-\item{object}{(\code{\link{StanModule}})\cr A stan program}
+\item{object}{(\code{StanModule}) A stan program}
 
 \item{indent}{(\code{numeric}) how much white space to prefix the print string with.}
 }

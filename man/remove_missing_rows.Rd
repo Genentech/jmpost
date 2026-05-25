@@ -9,7 +9,7 @@ remove_missing_rows(data, formula, extra_vars = NULL)
 \arguments{
 \item{data}{(\code{data.frame}) input data.}
 
-\item{formula}{(\code{formula} or \code{NULL})\cr which variables to inspect for missingness.}
+\item{formula}{(\code{formula} or \code{NULL}) which variables to inspect for missingness.}
 
 \item{extra_vars}{(\code{character}) additional variables to inspect for missingness.}
 }

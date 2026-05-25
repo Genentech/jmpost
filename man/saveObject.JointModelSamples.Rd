@@ -7,11 +7,11 @@
 \method{saveObject}{JointModelSamples}(object, file, ...)
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}})\cr the object to save.}
+\item{object}{(\code{JointModelSamples}) the object to save.}
 
 \item{file}{(\code{character}) the file to save the object to.}
 
-\item{...}{(\code{ANY})\cr additional arguments to \code{\link{saveRDS}}.}
+\item{...}{(\code{ANY}) additional arguments to \code{\link{saveRDS}}.}
 }
 \description{
 This function is just a wrapper around \code{saveRDS} that saves the object to a file

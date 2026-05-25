@@ -20,7 +20,7 @@ harmonise(object, ...)
 \method{harmonise}{DataSurvival}(object, subject_var, subject_ord, ...)
 }
 \arguments{
-\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) \cr data object to "harmonise"}
+\item{object}{(\code{DataSubject} or \code{DataLongitudinal} or \code{DataSurvival}) data object to "harmonise"}
 
 \item{...}{not used.}
 

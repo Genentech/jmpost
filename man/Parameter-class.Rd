@@ -14,7 +14,7 @@ Parameter(prior, name, size = 1)
 
 \item{name}{(\code{string}) of the parameter.}
 
-\item{size}{(\code{numeric} or \code{string})\cr dimension of the parameter.}
+\item{size}{(\code{numeric} or \code{string}) dimension of the parameter.}
 }
 \description{
 Stores the name, the prior distribution and the size of a parameter.

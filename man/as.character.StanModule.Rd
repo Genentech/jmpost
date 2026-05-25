@@ -7,7 +7,7 @@
 \method{as.character}{StanModule}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{StanModule}})\cr A stan program}
+\item{x}{(\code{StanModule}) A stan program}
 
 \item{...}{Not Used.}
 }

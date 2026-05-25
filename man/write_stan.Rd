@@ -12,7 +12,7 @@ write_stan(object, destination, ...)
 \arguments{
 \item{object}{the module.}
 
-\item{destination}{(\code{character} or  \code{connection})\cr Where to write stan code to.}
+\item{destination}{(\code{character} or  \code{connection}) Where to write stan code to.}
 
 \item{...}{Additional arguments}
 }

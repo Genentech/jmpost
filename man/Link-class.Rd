@@ -10,8 +10,7 @@
 Link(...)
 }
 \arguments{
-\item{...}{(\code{\link{LinkComponent}} or \code{\link{PromiseLinkComponent}})\cr
-an arbitrary number of link components.}
+\item{...}{(\code{\link{LinkComponent}} or \code{\link{PromiseLinkComponent}}) an arbitrary number of link components.}
 }
 \description{
 Simple container class to enable the use of multiple link components in a joint model.
@@ -29,7 +28,7 @@ Note that the constructor of this object is idempotent e.g. \code{Link(Link(x)) 
 Link(
     linkDSLD(),
     linkTTG()
-)
+  )
 
 }
 \seealso{

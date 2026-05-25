@@ -10,7 +10,7 @@
 ParameterList(...)
 }
 \arguments{
-\item{...}{(\code{Parameter})\cr which parameter specifications to include.}
+\item{...}{(\code{Parameter}) which parameter specifications to include.}
 }
 \description{
 This class extends the general \code{\link{list}} type for containing \code{\link{Parameter}}

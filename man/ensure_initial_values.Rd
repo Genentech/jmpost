@@ -14,7 +14,7 @@ must be 1 list per desired chain. All elements should have identical names}
 That is elements of size 1 in \code{initial_values} will be expanded to be the same
 size as the corresponding element in \code{data} by broadcasting the value.}
 
-\item{parameters}{(\code{\link{ParameterList}})\cr the parameters object}
+\item{parameters}{(\code{ParameterList}) the parameters object}
 }
 \description{
 Ensure that initial values are correctly specified

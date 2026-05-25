@@ -7,9 +7,9 @@
 \method{resolvePromise}{Link}(object, model, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Link}})\cr a link object.}
+\item{object}{(\code{Link}) a link object.}
 
-\item{model}{(\code{\link{LongitudinalModel}})\cr the model object.}
+\item{model}{(\code{LongitudinalModel}) the model object.}
 
 \item{...}{Not Used.}
 }

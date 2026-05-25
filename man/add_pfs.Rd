@@ -36,7 +36,7 @@ Both thresholds must be met for a progression to be declared.
 data <- SimJointData(
   survival = SimSurvivalExponential(lambda = 1/10),
   longitudinal = SimLongitudinalSteinFojo()
-)
+  )
 data <- add_pfs(data)
 data@survival # now has pfs_time and pfs_event columns
 }

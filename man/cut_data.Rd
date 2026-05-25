@@ -23,7 +23,7 @@ values are removed.
 data <- SimJointData(
   survival = SimSurvivalExponential(lambda = 1/10),
   longitudinal = SimLongitudinalSteinFojo()
-)
+  )
 data <- cut_data(data, 5)
 data@survival
 # Now max time is 5

@@ -21,13 +21,13 @@ curve to be plotted. See details.}
 
 \item{add_wrap}{(\code{logical}) should the plots be wrapped by \code{data$group}? Default = \code{TRUE}.}
 
-\item{kmdf}{(\code{data.frame} or \code{NULL})\cr event times and status used to plot
+\item{kmdf}{(\code{data.frame} or \code{NULL}) event times and status used to plot
 overlaying KM curves. If \code{NULL} no KM curve will be plotted. See details.}
 
-\item{y_label}{(\code{character} or \code{expression}) \cr label to display on the y-axis.
+\item{y_label}{(\code{character} or \code{expression}) label to display on the y-axis.
 Default = \code{expression(S(t))}.}
 
-\item{x_label}{(\code{character} or \code{expression}) \cr label to display on the x-axis.}
+\item{x_label}{(\code{character} or \code{expression}) label to display on the x-axis.}
 }
 \description{
 Internal plotting function to create survival plots with KM curve overlays

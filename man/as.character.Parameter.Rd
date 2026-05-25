@@ -7,7 +7,7 @@
 \method{as.character}{Parameter}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{Parameter}})\cr a prior Distribution}
+\item{x}{(\code{Parameter}) a prior Distribution}
 
 \item{...}{Not Used.}
 }

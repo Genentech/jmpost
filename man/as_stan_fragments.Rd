@@ -22,10 +22,10 @@ Function only works if code is in format
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{data \{
     <code>
-\}
+  \}
 model \{
     <code>
-\}
+  \}
 }\if{html}{\out{</div>}}
 
 That is to say we do not support code in inline format i.e.

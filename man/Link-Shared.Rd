@@ -4,9 +4,9 @@
 \alias{Link-Shared}
 \title{\code{Link} Function Arguments}
 \arguments{
-\item{x}{(\code{\link{Link}})\cr a link object.}
+\item{x}{(\code{Link}) a link object.}
 
-\item{object}{(\code{\link{Link}})\cr a link object.}
+\item{object}{(\code{Link}) a link object.}
 
 \item{...}{Not Used.}
 }

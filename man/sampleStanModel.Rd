@@ -14,7 +14,7 @@ sampleStanModel(object, ...)
 
 \item{...}{additional arguments.}
 
-\item{data}{(\code{DataJoint} or \code{list})\cr input data.}
+\item{data}{(\code{DataJoint} or \code{list}) input data.}
 }
 \description{
 Sample from a Stan Module.

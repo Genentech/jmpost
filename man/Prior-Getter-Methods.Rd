@@ -8,7 +8,7 @@
 \method{initialValues}{Prior}(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Prior}})\cr a prior Distribution}
+\item{object}{(\code{Prior}) a prior Distribution}
 
 \item{...}{Not Used.}
 }

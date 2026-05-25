@@ -18,9 +18,9 @@ SimJointData(
 \arguments{
 \item{design}{(\code{list}) a list of \code{\link{SimGroup}} objects. See details.}
 
-\item{longitudinal}{(\code{\link{SimLongitudinal}})\cr object specifying how to simulate the longitudinal data}
+\item{longitudinal}{(\code{SimLongitudinal}) object specifying how to simulate the longitudinal data}
 
-\item{survival}{(\code{\link{SimSurvival}})\cr object specifying how to simulate the survival data}
+\item{survival}{(\code{SimSurvival}) object specifying how to simulate the survival data}
 
 \item{.silent}{(\code{flag}) whether to suppress info messages}
 }
@@ -36,7 +36,7 @@ list of \code{\link{SimGroup}} objects e.g.
 \if{html}{\out{<div class="sourceCode">}}\preformatted{design = list(
     SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
     SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
-)
+  )
 }\if{html}{\out{</div>}}
 }
 \section{Slots}{

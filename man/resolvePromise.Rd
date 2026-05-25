@@ -12,7 +12,7 @@ resolvePromise(object, ...)
 \arguments{
 \item{object}{(\code{ANY}) an object to resolve.}
 
-\item{...}{(\code{ANY})\cr additional arguments.
+\item{...}{(\code{ANY}) additional arguments.
 
 If \code{object} is not a promise will just return itself else will resolve the promise
 and return the promised object.}

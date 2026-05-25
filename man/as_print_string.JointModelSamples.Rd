@@ -7,7 +7,7 @@
 \method{as_print_string}{JointModelSamples}(object, indent = 1, ...)
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}})\cr samples as drawn from a \code{\link{JointModel}}.}
+\item{object}{(\code{JointModelSamples}) samples as drawn from a \code{\link{JointModel}}.}
 
 \item{indent}{(\code{numeric}) how much white space to prefix the print string with.}
 }

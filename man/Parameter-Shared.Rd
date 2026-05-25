@@ -4,9 +4,9 @@
 \alias{Parameter-Shared}
 \title{\code{Parameter} Function Arguments}
 \arguments{
-\item{x}{(\code{\link{Parameter}})\cr a prior Distribution}
+\item{x}{(\code{Parameter}) a prior Distribution}
 
-\item{object}{(\code{\link{Parameter}})\cr a prior Distribution}
+\item{object}{(\code{Parameter}) a prior Distribution}
 
 \item{...}{Not Used.}
 }

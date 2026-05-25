@@ -7,7 +7,7 @@
 enableGQ(object, ...)
 }
 \arguments{
-\item{object}{(\code{\link{StanModel}})\cr to enable generated quantities for.}
+\item{object}{(\code{StanModel}) to enable generated quantities for.}
 
 \item{...}{Not used.
 
