@@ -1,6 +1,3 @@
-
-
-
 test_that("Can load and compile SurvivalLogLogistic() model", {
     # Full joint model
     jm <- JointModel(
@@ -29,9 +26,7 @@ test_that("sim_os_loglogistic() is consistant with flexsurv", {
 })
 
 
-
 test_that("SurvivalLogLogistic can recover known values", {
-
     skip_if_not(is_full_test())
 
     true_a <- 300
@@ -103,7 +98,6 @@ test_that("SurvivalLogLogistic can recover known values", {
 
 
 test_that("Print method for SurvivalLogLogistic works as expected", {
-
     expect_snapshot({
         x <- SurvivalLogLogistic()
         print(x)

@@ -1,4 +1,3 @@
-
 test_that("SimLongitudinalRandomSlope works as expected", {
     sim <- SimLongitudinalRandomSlope(
         times = c(-100, 0, 50),
@@ -28,7 +27,6 @@ test_that("SimLongitudinalRandomSlope works as expected", {
         c("subject", "arm", "study", "intercept", "slope_ind")
     )
 
-
     tdat <- purrr::map(
         sim@times,
         \(time) {
@@ -47,8 +45,16 @@ test_that("SimLongitudinalRandomSlope works as expected", {
     expect_equal(
         names(res_obvs),
         c(
-            "subject", "arm", "study", "intercept", "slope_ind", "time",
-            "err", "sld_mu", "sld", "log_haz_link"
+            "subject",
+            "arm",
+            "study",
+            "intercept",
+            "slope_ind",
+            "time",
+            "err",
+            "sld_mu",
+            "sld",
+            "log_haz_link"
         )
     )
     expect_equal(
@@ -73,7 +79,11 @@ test_that("SimLongitudinalRandomSlope correctly generates a dataset with known p
             link_dsld = 0,
             link_identity = 0
         ),
-        survival = SimSurvivalExponential(lambda = 1 / 100, time_max = 10, time_step = 1),
+        survival = SimSurvivalExponential(
+            lambda = 1 / 100,
+            time_max = 10,
+            time_step = 1
+        ),
         .silent = TRUE
     )
 

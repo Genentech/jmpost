@@ -1,4 +1,3 @@
-
 test_that("SimGroup() works as expected", {
     sim_group <- SimGroup(100, "Arm-A", "Study-X")
     expect_s4_class(sim_group, "SimGroup")

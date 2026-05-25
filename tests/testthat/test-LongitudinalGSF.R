@@ -6,9 +6,7 @@ test_that("LongitudinalGSF works as expected with default arguments", {
 })
 
 
-
 test_that("Print method for LongitudinalGSF works as expected", {
-
     expect_snapshot({
         x <- LongitudinalGSF()
         print(x)
@@ -31,7 +29,8 @@ test_that("Centralised parameterisation compiles without issues", {
         link = Link(linkTTG(), linkDSLD(), linkGrowth())
     )
     expect_false(any(
-        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_true(all(
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
@@ -48,7 +47,8 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         link = linkDSLD()
     )
     expect_true(all(
-        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_gsf_eta_tilde_kg", "lm_gsf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_false(any(
         c("lm_gsf_psi_kg", "lm_gsf_psi_bsld") %in% names(jm@parameters)
@@ -79,7 +79,6 @@ test_that("Can load and compile growth + shrinkage links", {
 
 
 test_that("Can recover known distributional parameters from a full GSF joint model", {
-
     skip_if_not(is_full_test())
     pars <- list(
         sigma = 0.015,
@@ -119,7 +118,26 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
             beta_cont = pars$beta_cont
         ),
         longitudinal = SimLongitudinalGSF(
-            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
+            times = c(
+                -100,
+                -50,
+                0,
+                1,
+                10,
+                50,
+                100,
+                150,
+                250,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1000
+            ) /
+                365,
             sigma = pars$sigma,
             mu_s = pars$mu_s,
             mu_g = pars$mu_g,
@@ -222,12 +240,23 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
-        c("lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks", "lm_gsf_omega_phi")
+        c(
+            "lm_gsf_sigma",
+            "lm_gsf_omega_bsld",
+            "lm_gsf_omega_kg",
+            "lm_gsf_omega_ks",
+            "lm_gsf_omega_phi"
+        )
     )
-    true_values <- c(pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s, pars$omega_phi)
+    true_values <- c(
+        pars$sigma,
+        pars$omega_b,
+        pars$omega_g,
+        pars$omega_s,
+        pars$omega_phi
+    )
     dat$real <- true_values
     # Fudge to stop tests failing - this is a known issue that needs resolving
     # https://github.com/Genentech/jmpost/issues/444
@@ -237,18 +266,23 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
     )
-    true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
+    true_values <- c(
+        pars$link_dsld,
+        pars$link_ttg,
+        pars$lambda,
+        pars$beta_cat_B,
+        pars$beta_cat_C,
+        pars$beta_cont
+    )
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 })
-
 
 
 test_that("Quantity models pass the parser", {
@@ -274,10 +308,13 @@ test_that("Quantity models pass the parser", {
 
 
 test_that("Can generate valid initial values", {
-
     pars <- c(
-        "lm_gsf_omega_bsld", "lm_gsf_omega_ks", "lm_gsf_omega_kg",
-        "lm_gsf_a_phi", "lm_gsf_b_phi", "lm_gsf_sigma"
+        "lm_gsf_omega_bsld",
+        "lm_gsf_omega_ks",
+        "lm_gsf_omega_kg",
+        "lm_gsf_a_phi",
+        "lm_gsf_b_phi",
+        "lm_gsf_sigma"
     )
 
     # Defaults work as expected
@@ -285,7 +322,6 @@ test_that("Can generate valid initial values", {
     vals <- initialValues(mod, n_chains = 1)
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 
     # Test all individual parameters throw error if given prior that can't sample
     # valid value
@@ -319,15 +355,15 @@ test_that("Can generate valid initial values", {
     vals <- unlist(initialValues(mod, n_chains = 200))
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 })
-
-
 
 
 test_that("Unscaled variance GSF mode pass the parser", {
     jm <- JointModel(
-        longitudinal = LongitudinalGSF(centred = FALSE, scaled_variance = FALSE),
+        longitudinal = LongitudinalGSF(
+            centred = FALSE,
+            scaled_variance = FALSE
+        ),
         survival = SurvivalLogLogistic(),
         link = linkDSLD()
     )
@@ -337,7 +373,6 @@ test_that("Unscaled variance GSF mode pass the parser", {
 
 
 test_that("Can recover known distributional parameters from unscaled variance GSF model", {
-
     skip_if_not(is_full_test())
     pars <- list(
         sigma = 0.4,
@@ -377,7 +412,22 @@ test_that("Can recover known distributional parameters from unscaled variance GS
             beta_cont = pars$beta_cont
         ),
         longitudinal = SimLongitudinalGSF(
-            times = c(-100, -50, 0, 1, 10, 50, 100, 150, 250, 300, 400, 500, 600) / 365,
+            times = c(
+                -100,
+                -50,
+                0,
+                1,
+                10,
+                50,
+                100,
+                150,
+                250,
+                300,
+                400,
+                500,
+                600
+            ) /
+                365,
             sigma = pars$sigma,
             mu_s = pars$mu_s,
             mu_g = pars$mu_g,
@@ -465,18 +515,29 @@ test_that("Can recover known distributional parameters from unscaled variance GS
         dat
     }
 
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
         c(
-            "lm_gsf_mu_bsld", "lm_gsf_mu_ks", "lm_gsf_mu_kg", "lm_gsf_mu_phi",
-            "lm_gsf_sigma", "lm_gsf_omega_bsld", "lm_gsf_omega_kg", "lm_gsf_omega_ks",
+            "lm_gsf_mu_bsld",
+            "lm_gsf_mu_ks",
+            "lm_gsf_mu_kg",
+            "lm_gsf_mu_phi",
+            "lm_gsf_sigma",
+            "lm_gsf_omega_bsld",
+            "lm_gsf_omega_kg",
+            "lm_gsf_omega_ks",
             "lm_gsf_omega_phi"
         )
     )
     true_values <- c(
-        pars$mu_b, pars$mu_s, pars$mu_g, pars$mu_phi,
-        pars$sigma, pars$omega_b, pars$omega_g, pars$omega_s,
+        pars$mu_b,
+        pars$mu_s,
+        pars$mu_g,
+        pars$mu_phi,
+        pars$sigma,
+        pars$omega_b,
+        pars$omega_g,
+        pars$omega_s,
         pars$omega_phi
     )
     expect_true(all(dat$q01 <= true_values))

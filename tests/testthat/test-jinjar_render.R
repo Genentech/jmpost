@@ -1,5 +1,3 @@
-
-
 test_that("Basic Jinjar syntax works with `decorated_render()`", {
     string <- "multi
 {{ myvar }}

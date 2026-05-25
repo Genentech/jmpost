@@ -59,7 +59,6 @@ if (is_full_test()) {
         step_size = 0.01,
         seed = 1
     )
-
 }
 
 
@@ -107,9 +106,23 @@ test_that("simulate works with jitter and times", {
         nrow = 406,
         ncols = 6
     )
-    expect_numeric(results@longitudinal$time[results@longitudinal$time < 0], lower = -10, upper = -10, len = 203)
-    expect_numeric(results@longitudinal$time[results@longitudinal$time > 0], lower = 7, upper = 13, len = 203)
-    expect_numeric(mean(results@longitudinal$time[results@longitudinal$time > 0]), lower = 9.9, upper = 10.1)
+    expect_numeric(
+        results@longitudinal$time[results@longitudinal$time < 0],
+        lower = -10,
+        upper = -10,
+        len = 203
+    )
+    expect_numeric(
+        results@longitudinal$time[results@longitudinal$time > 0],
+        lower = 7,
+        upper = 13,
+        len = 203
+    )
+    expect_numeric(
+        mean(results@longitudinal$time[results@longitudinal$time > 0]),
+        lower = 9.9,
+        upper = 10.1
+    )
 
     expect_equal(
         mean(results@longitudinal[results@longitudinal$observed, ]$sld),
@@ -121,7 +134,12 @@ test_that("simulate works with jitter and times", {
 test_that("simulate works with lambda_censor", {
     skip_if_not(is_full_test())
     set.seed(12345)
-    results <- simulate(joint_results, times = (1:10), lambda_censor = 1 / 6, time_step = 0.5)
+    results <- simulate(
+        joint_results,
+        times = (1:10),
+        lambda_censor = 1 / 6,
+        time_step = 0.5
+    )
     expect_data_frame(
         results@survival,
         nrow = 203,
@@ -130,8 +148,16 @@ test_that("simulate works with lambda_censor", {
 
     expect_equal(mean(results@survival$event), 0.6601, tolerance = 0.001)
     expect_equal(mean(results@survival$time), 1.74296455, tolerance = 0.001)
-    expect_equal(mean(results@survival$time[results@survival$event == 0]), 1.5901, tolerance = 0.001)
-    expect_equal(mean(results@survival$time[results@survival$event == 1]), 1.819548872, tolerance = 0.001)
+    expect_equal(
+        mean(results@survival$time[results@survival$event == 0]),
+        1.5901,
+        tolerance = 0.001
+    )
+    expect_equal(
+        mean(results@survival$time[results@survival$event == 1]),
+        1.819548872,
+        tolerance = 0.001
+    )
 
     joined <- dplyr::left_join(
         results@survival[, c("subject", "time", "event")],

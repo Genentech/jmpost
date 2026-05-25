@@ -1,5 +1,3 @@
-
-
 #' Re-used documentation for `DataSubject`
 #'
 #' @param object ([`DataSubject`]) \cr subject-level data.
@@ -9,7 +7,6 @@
 #' @name DataSubject-Shared
 #' @keywords internal
 NULL
-
 
 
 #' Subject Data Object and Constructor Function
@@ -75,7 +72,6 @@ setValidity(
         }
     }
 )
-
 
 
 #' @inheritParams DataSubject-Shared
@@ -157,7 +153,6 @@ as.data.frame.DataSubject <- function(x, ...) {
     rownames(x) <- NULL
     x
 }
-
 
 
 #' @rdname harmonise

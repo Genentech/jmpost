@@ -1,9 +1,7 @@
-
 test_data_1 <- ensure_test_data_1()
 
 
 test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
-
     #
     # As we are using a survival-only model with weakly informative priors
     # the point estimates model should be very similar to that of the frequentist
@@ -26,7 +24,6 @@ test_that("brierScore(SurvivalQuantities) returns same results as survreg", {
         type = "surv"
     )
     bs_survquant <- brierScore(sq)
-
 
     ### Get estimates from frequentist model
     mod <- survival::survreg(
@@ -89,16 +86,23 @@ test_that("brier score weight matrix is correctly calculated", {
 
     # Set arbitrary mock values for G(t) and G(ti) so that we
     # can isolate any issues to the bs_get_weights() function
-    # rather than the reverse_km() functions. 
+    # rather than the reverse_km() functions.
     mock_g_t <- c(2, 3)
     mock_g_ti <- c(4, 5, 6, 7)
-    expected <- matrix(c(
-        4, 4,
-        2, 0,
-        2, 6,
-        2, 3
-    ), byrow = TRUE, ncol = 2)
-
+    expected <- matrix(
+        c(
+            4,
+            4,
+            2,
+            0,
+            2,
+            6,
+            2,
+            3
+        ),
+        byrow = TRUE,
+        ncol = 2
+    )
 
     replacefun <- function(t, ...) {
         x <- if (length(t) == length(mock_g_t)) {
@@ -113,7 +117,7 @@ test_that("brier score weight matrix is correctly calculated", {
     # nolint end
     actual <- testthat::with_mocked_bindings(
         code = {
-            times <-  c(1, 5, 10, 20)
+            times <- c(1, 5, 10, 20)
             events <- c(1, 0, 1, 1)
             t <- c(4, 11)
             bs_get_weights(t, times, events)
@@ -140,12 +144,20 @@ test_that("bs_get_squared_dist() works as expected", {
     t <- c(5, 11)
     ti <- c(1, 5, 11, 13)
     ev <- c(1, 0, 1, 1)
-    pred_mat <- matrix(c(
-        0.1, 0.2,
-        0.3, 0.4,
-        0.5, 0.6,
-        0.7, 0.8
-    ), byrow = TRUE, ncol = length(t))
+    pred_mat <- matrix(
+        c(
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8
+        ),
+        byrow = TRUE,
+        ncol = length(t)
+    )
 
     # nolint start
     # ti <= 5 & ev=1  |  ti <= 11 & ev=1
@@ -154,12 +166,20 @@ test_that("bs_get_squared_dist() works as expected", {
     #        F        |         T
     #        F        |         F
     # nolint end
-    indicator_mat <- matrix(c(
-        1, 1,
-        0, 0,
-        0, 1,
-        0, 0
-    ), byrow = TRUE, ncol = length(t))
+    indicator_mat <- matrix(
+        c(
+            1,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+        ),
+        byrow = TRUE,
+        ncol = length(t)
+    )
     expected <- (indicator_mat - pred_mat)^2
     actual <- bs_get_squared_dist(
         t = t,
@@ -220,7 +240,6 @@ test_that("reverse_km_event_first() and reverse_km_cen_first() work as expected"
         extract_prodlim(mod, new_times)
     )
 
-
     actual <- reverse_km_cen_first(
         t = new_times,
         times = idat$times,
@@ -238,7 +257,6 @@ test_that("reverse_km_event_first() and reverse_km_cen_first() work as expected"
         extract_prodlim(mod, new_times)
     )
 })
-
 
 
 test_that("brierScore() works on logical events #438", {
@@ -298,7 +316,6 @@ test_that("brierScore() works on logical events #438", {
             )
         })
     })
-
 
     t_grid <- c(1, 30, 45, 60, 425, 750)
     sq <- SurvivalQuantities(

@@ -1,5 +1,3 @@
-
-
 # Original source repo = r-lib/rlang
 # file: standalone-s3-register.R
 # last-updated: 2024-05-14
@@ -96,7 +94,6 @@ s3_register <- function(generic, class, method = NULL) {
         method_fn <- get_method(method)
         stopifnot(is.function(method_fn))
 
-
         # Only register if generic can be accessed
         if (exists(generic, envir)) {
             registerS3method(generic, class, method_fn, envir = envir)
@@ -110,7 +107,10 @@ s3_register <- function(generic, class, method = NULL) {
                     package
                 ),
                 "i" = "This message is only shown to developers using devtools.",
-                "i" = sprintf("Do you need to update %s to the latest version?", package)
+                "i" = sprintf(
+                    "Do you need to update %s to the latest version?",
+                    package
+                )
             ))
         }
     }
@@ -139,8 +139,11 @@ s3_register <- function(generic, class, method = NULL) {
 
 .rlang_s3_register_compat <- function(fn) {
     # Compats that behave the same independently of rlang's presence
-    out <- switch(fn,
-        is_installed = return(function(pkg) requireNamespace(pkg, quietly = TRUE))
+    out <- switch(
+        fn,
+        is_installed = return(function(pkg) {
+            requireNamespace(pkg, quietly = TRUE)
+        })
     )
 
     is_interactive_compat <- function() {

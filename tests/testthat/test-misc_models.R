@@ -1,4 +1,3 @@
-
 test_data_1 <- ensure_test_data_1()
 
 test_that("Longitudinal Model doesn't print sampler rejection messages", {
@@ -20,5 +19,8 @@ test_that("Longitudinal Model doesn't print sampler rejection messages", {
         })
     })
 
-    expect_false(any(grepl("The current Metropolis proposal is about to be rejected", mp)))
+    expect_false(any(grepl(
+        "The current Metropolis proposal is about to be rejected",
+        mp
+    )))
 })

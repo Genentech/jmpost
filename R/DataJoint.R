@@ -49,7 +49,6 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 #' @param longitudinal (`DataLongitudinal`)\cr object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
 DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
-
     subject_suited <- harmonise(subject)
     vars <- extractVariableNames(subject)
     subject_var <- vars$subject
@@ -75,32 +74,45 @@ DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
 }
 
 
-
 setValidity(
     Class = "DataJoint",
     method = function(object) {
         vars <- extractVariableNames(object@subject)
         subject_var <- vars$subject
-        subject_ord <- as.character(as.data.frame(object@subject)[[vars$subject]])
+        subject_ord <- as.character(as.data.frame(object@subject)[[
+            vars$subject
+        ]])
         if (!is.null(object@survival)) {
             survival_df <- as.data.frame(object@survival)
             if (!subject_var %in% names(survival_df)) {
-                return(sprintf("Unable to find `%s` in `survival`", sujbect_var))
+                return(sprintf(
+                    "Unable to find `%s` in `survival`",
+                    sujbect_var
+                ))
             }
             if (!all(survival_df[[subject_var]] %in% subject_ord)) {
-                return("There are subjects in `survival` that are not in `subject`")
+                return(
+                    "There are subjects in `survival` that are not in `subject`"
+                )
             }
-            if (!nrow(survival_df) == length(unique(survival_df[[subject_var]]))) {
+            if (
+                !nrow(survival_df) == length(unique(survival_df[[subject_var]]))
+            ) {
                 return("There are duplicate subjects in `survival`")
             }
         }
         if (!is.null(object@longitudinal)) {
             long_df <- as.data.frame(object@longitudinal)
             if (!subject_var %in% names(long_df)) {
-                return(sprintf("Unable to find `%s` in `longitudinal`", sujbect_var))
+                return(sprintf(
+                    "Unable to find `%s` in `longitudinal`",
+                    sujbect_var
+                ))
             }
             if (!all(long_df[[subject_var]] %in% subject_ord)) {
-                return("There are subjects in `longitudinal` that are not in `subject`")
+                return(
+                    "There are subjects in `longitudinal` that are not in `subject`"
+                )
             }
         }
         subject_df <- as.data.frame(object@subject)
@@ -116,9 +128,6 @@ setValidity(
 
 
 # DataJoint-as.list ----
-
-
-
 
 #' Data Object -> `list`
 #'
@@ -156,7 +165,6 @@ as.list.DataJoint <- function(x, ...) {
 }
 
 
-
 #' Subsetting `DataJoint` as a `data.frame`
 #'
 #' @param x (`DataJoint`) \cr object created by [DataJoint()].
@@ -187,12 +195,13 @@ subset.DataJoint <- function(x, subjects, ...) {
     data <- as.list(x)
     dat <- data.frame(
         time = data[["event_times"]],
-        event = as.numeric(seq_along(data[["event_times"]]) %in% data[["subject_event_index"]]),
+        event = as.numeric(
+            seq_along(data[["event_times"]]) %in% data[["subject_event_index"]]
+        ),
         subject = names(data[["subject_to_index"]])
     )
     subset_and_add_grouping(dat, subjects)
 }
-
 
 
 #' `subset_and_add_grouping`

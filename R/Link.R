@@ -19,7 +19,6 @@ NULL
 NULL
 
 
-
 #' `Link`
 #'
 #' @slot components (`list`)\cr a list of [`LinkComponent`] or [`PromiseLinkComponent`] objects.
@@ -62,7 +61,11 @@ Link <- function(...) {
 
     .Link(
         components = components,
-        resolved = !any(vapply(components, \(x) is(x, "PromiseLinkComponent"), logical(1)))
+        resolved = !any(vapply(
+            components,
+            \(x) is(x, "PromiseLinkComponent"),
+            logical(1)
+        ))
     )
 }
 
@@ -92,10 +95,11 @@ resolvePromise.Link <- function(object, model, ...) {
 setValidity(
     Class = "Link",
     method = function(object) {
-
         for (i in object@components) {
             if (!(is(i, "LinkComponent") || is(i, "PromiseLinkComponent"))) {
-                return("All components must be of class `LinkComponent` or `PromiseLinkComponent`")
+                return(
+                    "All components must be of class `LinkComponent` or `PromiseLinkComponent`"
+                )
             }
         }
 
@@ -118,8 +122,6 @@ setValidity(
 )
 
 
-
-
 #' `Link` -> `StanModule`
 #'
 #' Converts a [`Link`] object to a [`StanModule`] object
@@ -130,7 +132,6 @@ setValidity(
 #' @family as.StanModule
 #' @export
 as.StanModule.Link <- function(object, ...) {
-
     if (length(object@components) == 0) {
         return(StanModule("base/link_none.stan"))
     }
@@ -161,8 +162,6 @@ as.StanModule.Link <- function(object, ...) {
 }
 
 
-
-
 #' `Link` -> `list`
 #'
 #' @inheritParams Link-Shared
@@ -176,7 +175,6 @@ as.StanModule.Link <- function(object, ...) {
 as.list.Link <- function(x, ...) {
     as.list(as.StanModule(x, ...))
 }
-
 
 
 #' @export

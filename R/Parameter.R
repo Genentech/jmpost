@@ -61,7 +61,9 @@ setValidity(
         }
         if (is.character(object@size)) {
             if (!length(object@size) == 1) {
-                return("Size must be a numeric vector or length 1 character vector")
+                return(
+                    "Size must be a numeric vector or length 1 character vector"
+                )
             }
         }
         return(TRUE)

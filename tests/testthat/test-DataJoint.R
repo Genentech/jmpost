@@ -49,14 +49,16 @@ test_that("DataJoint basic usage", {
     expect_equal(li$subject_tumour_index_cens, integer(0))
     expect_equal(li$tumour_value, c(5, 3, 4, 6, 1, 2))
     expect_equal(li$subject_event_index, c(1, 2))
-    expect_equal(li$os_cov_design, matrix(c(4, 2, 5), ncol = 1), ignore_attr = TRUE)
+    expect_equal(
+        li$os_cov_design,
+        matrix(c(4, 2, 5), ncol = 1),
+        ignore_attr = TRUE
+    )
     expect_equal(li$tumour_value_lloq, -999999)
 })
 
 
-
 test_that("DataJoint errors if inconsistent subject IDs", {
-
     df_subj <- data.frame(
         vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),
         varm = c("A2", "A3", "A4"),
@@ -107,7 +109,6 @@ test_that("DataJoint errors if inconsistent subject IDs", {
         ),
         "`longitudinal` that are not present"
     )
-
 
     df_subj <- data.frame(
         vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),
@@ -210,12 +211,7 @@ test_that("DataJoint errors if inconsistent subject IDs", {
         ),
         "`vpt` not found in `longitudinal`"
     )
-
 })
-
-
-
-
 
 
 test_that("DataJoint sorts handles pre-factored levels correctly", {
@@ -354,19 +350,17 @@ test_that("DataJoint sorts handles character-to-factor levels correctly", {
 })
 
 
-
 # nolint start
 test_that("subset(DataJoint) works as expected", {
-
     dat <- dplyr::tribble(
-        ~subject, ~time, ~event,
-           "a",     1,      1,
-           "b",     1,      0,
-           "c",     2,      1,
-           "d",     2,      0,
-           "e",     3,      1,
-           "f",     3,      0,
-           "g",     4,      1
+        ~subject , ~time , ~event ,
+        "a"      ,     1 ,      1 ,
+        "b"      ,     1 ,      0 ,
+        "c"      ,     2 ,      1 ,
+        "d"      ,     2 ,      0 ,
+        "e"      ,     3 ,      1 ,
+        "f"      ,     3 ,      0 ,
+        "g"      ,     4 ,      1
     )
     pts <- list(
         "g1" = c("a", "e", "f"),
@@ -374,13 +368,13 @@ test_that("subset(DataJoint) works as expected", {
         "g3" = "d"
     )
     expected <- dplyr::tribble(
-        ~subject, ~time, ~event, ~group,
-           "a",     1,      1,    "g1",
-           "e",     3,      1,    "g1",
-           "f",     3,      0,    "g1",
-           "b",     1,      0,    "g2",
-           "c",     2,      1,    "g2",
-           "d",     2,      0,    "g3"
+        ~subject , ~time , ~event , ~group ,
+        "a"      ,     1 ,      1 , "g1"   ,
+        "e"      ,     3 ,      1 , "g1"   ,
+        "f"      ,     3 ,      0 , "g1"   ,
+        "b"      ,     1 ,      0 , "g2"   ,
+        "c"      ,     2 ,      1 , "g2"   ,
+        "d"      ,     2 ,      0 , "g3"
     )
     expect_equal(
         subset_and_add_grouping(dat, pts),
@@ -389,10 +383,10 @@ test_that("subset(DataJoint) works as expected", {
 
     pts <- c("b", "d", "a")
     expected <- dplyr::tribble(
-        ~subject, ~time, ~event, ~group,
-           "b",     1,      0,    "b",
-           "d",     2,      0,    "d",
-           "a",     1,      1,    "a"
+        ~subject , ~time , ~event , ~group ,
+        "b"      ,     1 ,      0 , "b"    ,
+        "d"      ,     2 ,      0 , "d"    ,
+        "a"      ,     1 ,      1 , "a"
     )
     expect_equal(
         subset_and_add_grouping(dat, pts),
@@ -405,19 +399,18 @@ test_that("subset(DataJoint) works as expected", {
         "g2" = c("a", "b", "c")
     )
     expected <- dplyr::tribble(
-        ~subject, ~time, ~event, ~group,
-           "a",     1,      1,    "g1",
-           "b",     1,      0,    "g1",
-           "c",     2,      1,    "g1",
-           "a",     1,      1,    "g2",
-           "b",     1,      0,    "g2",
-           "c",     2,      1,    "g2"
+        ~subject , ~time , ~event , ~group ,
+        "a"      ,     1 ,      1 , "g1"   ,
+        "b"      ,     1 ,      0 , "g1"   ,
+        "c"      ,     2 ,      1 , "g1"   ,
+        "a"      ,     1 ,      1 , "g2"   ,
+        "b"      ,     1 ,      0 , "g2"   ,
+        "c"      ,     2 ,      1 , "g2"
     )
     expect_equal(
         subset_and_add_grouping(dat, pts),
         expected
     )
-
 
     # Should error for subjects that dosn't exist in vector mode
     pts <- c("b", "d", "a", "z")
@@ -437,7 +430,6 @@ test_that("subset(DataJoint) works as expected", {
         subset_and_add_grouping(dat, pts),
         regexp = "`subjects`"
     )
-
 
     df_surv <- data.frame(
         vpt = c("C", "B", "A"),
@@ -482,12 +474,10 @@ test_that("subset(DataJoint) works as expected", {
         subset(d_joint, c("C", "A")),
         expected
     )
-
 })
 # nolint end
 
 test_that("Error Handling", {
-
     x2 <- data.frame(
         varm = c("A", "A", "A"),
         vstudy = c("A", "A", "A"),
@@ -511,7 +501,6 @@ test_that("Error Handling", {
 })
 
 test_that("DataJoint print method works as expected", {
-
     expect_snapshot({
         df_subj <- data.frame(
             vpt = factor(c("A", "B", "C"), levels = c("C", "B", "A")),

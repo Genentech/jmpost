@@ -33,10 +33,13 @@ setOldClass("CmdStanMCMC")
 #' "longitudinal".
 #' @export
 generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
-
     data <- as_stan_list(object@data) |>
         append(as_stan_list(object@model@parameters)) |>
-        append(as_stan_list(generator, data = object@data, model = object@model))
+        append(as_stan_list(
+            generator,
+            data = object@data,
+            model = object@model
+        ))
 
     stanobj <- as.StanModule(object, generator = generator, type = type)
     model <- compileStanModel(stanobj)
@@ -68,10 +71,14 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
 
     quant_stanobj <- read_stan("base/quantities.stan") |>
         decorated_render(
-            include_gq_longitudinal_idv = (type == "longitudinal") & is(generator, "QuantityGeneratorSubject"),
-            include_gq_longitudinal_pop = (type == "longitudinal") & is(generator, "QuantityGeneratorPopulation"),
-            include_gq_survival_idv = (type == "survival") & is(generator, "QuantityGeneratorSubject"),
-            include_gq_survival_pred = (type == "survival") & is(generator, "QuantityGeneratorPrediction")
+            include_gq_longitudinal_idv = (type == "longitudinal") &
+                is(generator, "QuantityGeneratorSubject"),
+            include_gq_longitudinal_pop = (type == "longitudinal") &
+                is(generator, "QuantityGeneratorPopulation"),
+            include_gq_survival_idv = (type == "survival") &
+                is(generator, "QuantityGeneratorSubject"),
+            include_gq_survival_pred = (type == "survival") &
+                is(generator, "QuantityGeneratorPrediction")
         ) |>
         StanModule()
 
@@ -87,7 +94,6 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
 }
 
 
-
 #' `JointModelSamples` -> Printable `Character`
 #'
 #' Converts [`JointModelSamples`] object into a printable string.
@@ -100,7 +106,9 @@ as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sizes <- vapply(
         cmdstanr::as.CmdStanMCMC(object)$metadata()[["stan_variable_sizes"]],
         \(x) {
-            if (length(x) == 1 && x == 1) return("")
+            if (length(x) == 1 && x == 1) {
+                return("")
+            }
             paste0("[", paste(x, collapse = ", "), "]")
         },
         character(1)

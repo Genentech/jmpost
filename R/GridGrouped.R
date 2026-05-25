@@ -64,7 +64,9 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     assert_that(
-        all(unique(unlist(object@groups)) %in% names(data_list$subject_to_index))
+        all(
+            unique(unlist(object@groups)) %in% names(data_list$subject_to_index)
+        )
     )
 
     validate_time_grid(object@times)

@@ -1,5 +1,4 @@
 test_that("Priors work as expected", {
-
     x <- prior_normal(4, 10)
     with_mocked_bindings(
         expect_equal(
@@ -34,20 +33,21 @@ test_that("Priors work as expected", {
         list(prior_mu_tim = log(4), prior_sigma_tim = 2)
     )
 
-
     tom <- prior_logistic(1, 2)
     dave <- prior_loglogistic(3, 4)
     jim <- prior_invgamma(5, 6)
     ben <- prior_student_t(7, 8, 9)
     kim <- prior_uniform(10, 11)
 
-    header <- StanModule("parameters {
+    header <- StanModule(
+        "parameters {
     real tom;
     real dave;
     real jim;
     real ben;
     real kim;
-}")
+}"
+    )
     tom_sm <- as.StanModule(tom, name = "tom")
     dave_sm <- as.StanModule(dave, name = "dave")
     jim_sm <- as.StanModule(jim, name = "jim")
@@ -135,12 +135,10 @@ test_that("Invalid prior parameters are rejected", {
         regexp = "`alpha`` must be less than `beta`"
     )
 
-
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
     expect_s4_class(prior_init_only(prior_normal(3, 1)), "Prior")
     expect_s4_class(prior_std_normal(), "Prior")
 })
-
 
 
 test_that("show() works for Prior objects", {
@@ -188,7 +186,6 @@ test_that("jmpost.prior_shrinkage works as expected", {
 })
 
 
-
 test_that("Limits work as expected", {
     x <- prior_normal(0, 1)
     x <- set_limits(x, lower = 0, upper = 1)
@@ -204,7 +201,6 @@ test_that("Limits work as expected", {
         "    bob ~ normal(prior_mu_bob, prior_sigma_bob) T[0, 1];"
     )
 
-
     x <- prior_cauchy(-200, 150)
     x <- set_limits(x, lower = 0)
     ivs <- replicate(
@@ -217,7 +213,6 @@ test_that("Limits work as expected", {
         "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim) T[0, ];"
     )
 
-
     ## Put an impossible constraint on the distribution
     x <- prior_lognormal(0, 1)
     x <- set_limits(x, upper = 0)
@@ -227,7 +222,6 @@ test_that("Limits work as expected", {
         "    phil ~ lognormal(prior_mu_phil, prior_sigma_phil) T[, 0];"
     )
 })
-
 
 
 test_that("median(Prior) works as expected", {
@@ -240,7 +234,6 @@ test_that("median(Prior) works as expected", {
         -200,
         tolerance = 0.15
     )
-
 
     # Constrained
     p2 <- set_limits(p1, lower = 0)

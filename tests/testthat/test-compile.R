@@ -1,4 +1,3 @@
-
 model <- "
 data {
     int n;

@@ -1,6 +1,4 @@
-
 test_that("Simple utility functions work as expected", {
-
     x <- Quantities(
         quantities = matrix(1:10, ncol = 2),
         groups = c("a", "b"),
@@ -29,17 +27,46 @@ test_that("collapse_quantities() works as expected", {
 
     x <- matrix(
         c(
-            1, 10, 1, 3, 9,  23,
-            2, 20, 1, 3, 10, 23,
-            3, 30, 1, 3, 9,  23,
-            4, 40, 2, 4, 12, 23,
-            5, 50, 2, 4, 14, 23,
-            6, 60, 2, 4, 10, 23
+            1,
+            10,
+            1,
+            3,
+            9,
+            23,
+            2,
+            20,
+            1,
+            3,
+            10,
+            23,
+            3,
+            30,
+            1,
+            3,
+            9,
+            23,
+            4,
+            40,
+            2,
+            4,
+            12,
+            23,
+            5,
+            50,
+            2,
+            4,
+            14,
+            23,
+            6,
+            60,
+            2,
+            4,
+            10,
+            23
         ),
         byrow = TRUE,
         ncol = 6
     )
-
 
     collapser <- QuantityCollapser(
         times = 2,
@@ -64,7 +91,6 @@ test_that("collapse_quantities() works as expected", {
         get_ci_summary(x[, c(1, 3)])
     )
 
-
     ## Can select the same subject in multiple groups
     collapser <- QuantityCollapser(
         times = c(13, 123),
@@ -79,7 +105,6 @@ test_that("collapse_quantities() works as expected", {
             get_ci_summary(x[, c(4, 1)])
         )
     )
-
 
     ## Can select the same subject multiple times
     collapser <- QuantityCollapser(
@@ -96,7 +121,6 @@ test_that("collapse_quantities() works as expected", {
         )
     )
 })
-
 
 
 test_that("summary.Quantiles works as expected", {

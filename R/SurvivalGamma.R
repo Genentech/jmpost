@@ -27,7 +27,6 @@ SurvivalGamma <- function(
     theta = prior_gamma(2, 0.5),
     beta = prior_normal(0, 2)
 ) {
-
     k <- set_limits(k, lower = 0)
     theta <- set_limits(theta, lower = 0)
 
@@ -38,7 +37,11 @@ SurvivalGamma <- function(
             parameters = ParameterList(
                 Parameter(name = "sm_gamma_k", prior = k, size = 1),
                 Parameter(name = "sm_gamma_theta", prior = theta, size = 1),
-                Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
+                Parameter(
+                    name = "beta_os_cov",
+                    prior = beta,
+                    size = "p_os_cov_design"
+                )
             )
         )
     )

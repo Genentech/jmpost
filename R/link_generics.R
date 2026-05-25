@@ -2,7 +2,6 @@
 NULL
 
 
-
 #' Standard Links
 #'
 #' @param prior ([`Prior`]) \cr A [`Prior`] object.
@@ -19,8 +18,6 @@ NULL
 NULL
 
 
-
-
 #' @describeIn standard-link-user No link (fit the survival and longitudinal models independently)
 #' @export
 linkNone <- function() {
@@ -34,15 +31,20 @@ linkTTG <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkTTG", model)
 }
 #' @export
-linkTTG.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+linkTTG.PromiseLongitudinalModel <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     PromiseLinkComponent(fun = linkTTG, prior = prior, key = "link_ttg")
 }
 #' @export
 linkTTG.default <- function(prior, model, ...) {
-    stop(sprintf("Method `linkTTG` is not available for `%s`", class(model)[[1]]))
+    stop(sprintf(
+        "Method `linkTTG` is not available for `%s`",
+        class(model)[[1]]
+    ))
 }
-
-
 
 
 #' @describeIn standard-link-user Derivative of the SLD over time link
@@ -51,15 +53,20 @@ linkDSLD <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkDSLD", model)
 }
 #' @export
-linkDSLD.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+linkDSLD.PromiseLongitudinalModel <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     PromiseLinkComponent(fun = linkDSLD, prior = prior, key = "link_dsld")
 }
 #' @export
 linkDSLD.default <- function(prior, model, ...) {
-    stop(sprintf("Method `linkDSLD` is not available for `%s`", class(model)[[1]]))
+    stop(sprintf(
+        "Method `linkDSLD` is not available for `%s`",
+        class(model)[[1]]
+    ))
 }
-
-
 
 
 #' @describeIn standard-link-user Current SLD value link
@@ -68,12 +75,23 @@ linkIdentity <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkIdentity", model)
 }
 #' @export
-linkIdentity.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
-    PromiseLinkComponent(fun = linkIdentity, prior = prior, key = "link_identity")
+linkIdentity.PromiseLongitudinalModel <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
+    PromiseLinkComponent(
+        fun = linkIdentity,
+        prior = prior,
+        key = "link_identity"
+    )
 }
 #' @export
 linkIdentity.default <- function(prior, model, ...) {
-    stop(sprintf("Method `linkIdentity` is not available for `%s`", class(model)[[1]]))
+    stop(sprintf(
+        "Method `linkIdentity` is not available for `%s`",
+        class(model)[[1]]
+    ))
 }
 
 
@@ -83,12 +101,19 @@ linkGrowth <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkGrowth", model)
 }
 #' @export
-linkGrowth.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
+linkGrowth.PromiseLongitudinalModel <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     PromiseLinkComponent(fun = linkGrowth, prior = prior, key = "link_growth")
 }
 #' @export
 linkGrowth.default <- function(prior, model, ...) {
-    stop(sprintf("Method `linkGrowth` is not available for `%s`", class(model)[[1]]))
+    stop(sprintf(
+        "Method `linkGrowth` is not available for `%s`",
+        class(model)[[1]]
+    ))
 }
 
 
@@ -98,10 +123,21 @@ linkShrinkage <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkShrinkage", model)
 }
 #' @export
-linkShrinkage.PromiseLongitudinalModel <- function(prior = prior_normal(0, 2), model, ...) {
-    PromiseLinkComponent(fun = linkShrinkage, prior = prior, key = "link_shrinkage")
+linkShrinkage.PromiseLongitudinalModel <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
+    PromiseLinkComponent(
+        fun = linkShrinkage,
+        prior = prior,
+        key = "link_shrinkage"
+    )
 }
 #' @export
 linkShrinkage.default <- function(prior, model, ...) {
-    stop(sprintf("Method `linkShrinkage` is not available for `%s`", class(model)[[1]]))
+    stop(sprintf(
+        "Method `linkShrinkage` is not available for `%s`",
+        class(model)[[1]]
+    ))
 }

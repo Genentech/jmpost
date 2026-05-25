@@ -1,4 +1,3 @@
-
 test_data_1 <- ensure_test_data_1()
 
 test_that("print works as expected for JointModelSamples", {
@@ -6,7 +5,6 @@ test_that("print works as expected for JointModelSamples", {
         print(test_data_1$jsamples)
     })
 })
-
 
 
 test_that("saving and restoring samples from disk works as expected", {

@@ -1,4 +1,3 @@
-
 #' Re-used documentation for `Quantities`
 #'
 #' @param x ([`Quantities`]) \cr generated quantities.
@@ -56,12 +55,13 @@ setValidity(
             return("Length of `times` must be equal to the length of `groups`")
         }
         if (length(object@times) != ncol(object@quantities)) {
-            return("Length of `times` must be equal to the number of columns in `quantities`")
+            return(
+                "Length of `times` must be equal to the number of columns in `quantities`"
+            )
         }
         return(TRUE)
     }
 )
-
 
 
 #' @export
@@ -119,7 +119,6 @@ summary.Quantities <- function(object, conf.level = 0.95, ...) {
 }
 
 
-
 #' Create Grouped Quantities
 #'
 #' This function takes a matrix of quantity samples and aggregates them by calculating the
@@ -147,11 +146,11 @@ collapse_quantities <- function(quantities_raw, collapser) {
     )
 
     for (idx in seq_along(collapser)) {
-        quantities[, idx] <- quantities_raw[
-            ,
+        quantities[, idx] <- quantities_raw[,
             collapser@indexes[[idx]],
             drop = FALSE
-        ] |> rowMeans()
+        ] |>
+            rowMeans()
     }
 
     return(quantities)
@@ -167,10 +166,14 @@ collapse_quantities <- function(quantities_raw, collapser) {
 #' @param type (`character`)\cr quantity to be generated.
 #' Must be one of `surv`, `haz`, `loghaz`, `cumhaz`, `lm_identity`.
 #' @keywords internal
-extract_quantities <- function(gq, type = c("surv", "haz", "loghaz", "cumhaz", "lm_identity")) {
+extract_quantities <- function(
+    gq,
+    type = c("surv", "haz", "loghaz", "cumhaz", "lm_identity")
+) {
     type <- match.arg(type)
     assert_class(gq, "CmdStanGQ")
-    meta <- switch(type,
+    meta <- switch(
+        type,
         surv = list("log_surv_fit_at_time_grid", exp),
         cumhaz = list("log_surv_fit_at_time_grid", \(x) -x),
         haz = list("log_haz_fit_at_time_grid", exp),

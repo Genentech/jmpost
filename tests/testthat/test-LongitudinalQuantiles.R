@@ -1,21 +1,21 @@
-
 test_data_1 <- ensure_test_data_1()
 
 test_that("Test that LongitudinalQuantities works as expected", {
-
     expected_column_names <- c("group", "time", "median", "lower", "upper")
 
     times <- c(-50, -10, 0, 10, 20, 50, 200, 300)
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
-        grid = GridFixed(times = times, subjects = c("subject_0001", "subject_0002"))
+        grid = GridFixed(
+            times = times,
+            subjects = c("subject_0001", "subject_0002")
+        )
     )
     preds <- summary(longsamps)
     expect_equal(nrow(preds), length(times) * 2)
     expect_equal(length(unique(preds$group)), 2)
     expect_equal(names(preds), expected_column_names)
     expect_equal(preds$type, NULL)
-
 
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
@@ -25,7 +25,6 @@ test_that("Test that LongitudinalQuantities works as expected", {
     expect_equal(nrow(preds), 5 * nrow(test_data_1$dat_os)) # 5 timepoints for each subject in the OS dataset
     expect_equal(names(preds), expected_column_names)
     expect_equal(unique(preds$group), test_data_1$dat_os$subject)
-
 
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,
@@ -38,9 +37,7 @@ test_that("Test that LongitudinalQuantities works as expected", {
 })
 
 
-
 test_that("autoplot.LongitudinalQuantities works as expected", {
-
     samps <- LongitudinalQuantities(
         test_data_1$jsamples,
         grid = GridFixed(subjects = c("subject_0011", "subject_0061"))
@@ -58,11 +55,15 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
     expect_true(inherits(p$layers[[2]]$geom, "GeomPoint"))
     expect_equal(ggplot_build(p)$layout$layout |> nrow(), 2)
 
-
     samps <- LongitudinalQuantities(
         test_data_1$jsamples,
         grid = GridFixed(
-            subjects = c("subject_0011", "subject_0061", "subject_0001", "subject_0002"),
+            subjects = c(
+                "subject_0011",
+                "subject_0061",
+                "subject_0001",
+                "subject_0002"
+            ),
             times = c(10, 20, 50, 200)
         )
     )
@@ -79,12 +80,14 @@ test_that("autoplot.LongitudinalQuantities works as expected", {
 })
 
 
-
-
 test_that("LongitudinalQuantities print method works as expected", {
-
     expect_snapshot({
-        subjectgroups <- c("subject_0011", "subject_0061", "subject_0001", "subject_0002")
+        subjectgroups <- c(
+            "subject_0011",
+            "subject_0061",
+            "subject_0001",
+            "subject_0002"
+        )
         times <- seq(0, 100, by = 10)
         samps_p1 <- LongitudinalQuantities(
             test_data_1$jsamples,
@@ -108,15 +111,11 @@ test_that("LongitudinalQuantities print method works as expected", {
 })
 
 
-
-
-
 # The idea of this test is that we compare the medians of the generated quantities
 # against the true values in the dataset
 # As the model is perfect it should be an extremely high value meaning we are recovering
 # the correct quantities
 test_that("LongitudinalQuantities can recover known results", {
-
     set.seed(101)
     longsamps <- LongitudinalQuantities(
         test_data_1$jsamples,

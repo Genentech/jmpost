@@ -42,7 +42,6 @@ NULL
 #'
 #' @export
 LongitudinalSteinFojo <- function(
-
     mu_bsld = prior_normal(log(60), 1),
     mu_ks = prior_normal(log(0.5), 1),
     mu_kg = prior_normal(log(0.3), 1),
@@ -56,7 +55,6 @@ LongitudinalSteinFojo <- function(
     scaled_variance = TRUE,
     centred = FALSE
 ) {
-
     sf_model <- StanModule(decorated_render(
         .x = read_stan("lm-stein-fojo/model.stan"),
         centred = centred,
@@ -74,7 +72,11 @@ LongitudinalSteinFojo <- function(
         Parameter(name = "lm_sf_mu_ks", prior = mu_ks, size = "n_arms"),
         Parameter(name = "lm_sf_mu_kg", prior = mu_kg, size = "n_arms"),
 
-        Parameter(name = "lm_sf_omega_bsld", prior = omega_bsld, size = "n_studies"),
+        Parameter(
+            name = "lm_sf_omega_bsld",
+            prior = omega_bsld,
+            size = "n_studies"
+        ),
         Parameter(name = "lm_sf_omega_ks", prior = omega_ks, size = "n_arms"),
         Parameter(name = "lm_sf_omega_kg", prior = omega_kg, size = "n_arms"),
 
@@ -86,25 +88,46 @@ LongitudinalSteinFojo <- function(
         list(
             Parameter(
                 name = "lm_sf_psi_bsld",
-                prior = prior_init_only(prior_lognormal(median(mu_bsld), median(omega_bsld))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_bsld),
+                    median(omega_bsld)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_ks",
-                prior = prior_init_only(prior_lognormal(median(mu_ks), median(omega_ks))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_ks),
+                    median(omega_ks)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_kg",
-                prior = prior_init_only(prior_lognormal(median(mu_kg), median(omega_kg))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_kg),
+                    median(omega_kg)
+                )),
                 size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_sf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_sf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_sf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects")
+            Parameter(
+                name = "lm_sf_eta_tilde_bsld",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_sf_eta_tilde_ks",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_sf_eta_tilde_kg",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            )
         )
     }
     parameters <- append(parameters, parameters_extra)
@@ -119,7 +142,6 @@ LongitudinalSteinFojo <- function(
     )
     .LongitudinalSteinFojo(x)
 }
-
 
 
 #' @export
@@ -137,7 +159,11 @@ enableLink.LongitudinalSteinFojo <- function(object, ...) {
 }
 
 #' @export
-linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+linkDSLD.LongitudinalSteinFojo <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_dsld",
         stan = StanModule("lm-stein-fojo/link_dsld.stan"),
@@ -146,7 +172,11 @@ linkDSLD.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ..
 }
 
 #' @export
-linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+linkTTG.LongitudinalSteinFojo <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_ttg",
         stan = StanModule("lm-stein-fojo/link_ttg.stan"),
@@ -155,7 +185,11 @@ linkTTG.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...
 }
 
 #' @export
-linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+linkIdentity.LongitudinalSteinFojo <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_identity",
         stan = StanModule("lm-stein-fojo/link_identity.stan"),
@@ -164,7 +198,11 @@ linkIdentity.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model
 }
 
 #' @export
-linkGrowth.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+linkGrowth.LongitudinalSteinFojo <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_growth",
         stan = StanModule("lm-stein-fojo/link_growth.stan"),
@@ -173,7 +211,11 @@ linkGrowth.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, 
 }
 
 #' @export
-linkShrinkage.LongitudinalSteinFojo <- function(prior = prior_normal(0, 2), model, ...) {
+linkShrinkage.LongitudinalSteinFojo <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_shrinkage",
         stan = StanModule("lm-stein-fojo/link_shrinkage.stan"),

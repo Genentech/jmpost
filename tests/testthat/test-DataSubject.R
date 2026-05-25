@@ -1,4 +1,3 @@
-
 test_that("DataSubject works as expected", {
     df_subj <- data.frame(
         vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),
@@ -17,11 +16,17 @@ test_that("DataSubject works as expected", {
     expect_equal(obj@study, "vstudy")
     expect_equal(obj@arm, "varm")
 
-
     expected_variables <- c(
-        "n_subjects", "n_studies", "n_arms", "subject_study_index",
-        "subject_arm_index", "subject_to_index", "arm_to_index",
-        "study_to_index", "pop_arm_index", "pop_study_index"
+        "n_subjects",
+        "n_studies",
+        "n_arms",
+        "subject_study_index",
+        "subject_arm_index",
+        "subject_to_index",
+        "arm_to_index",
+        "study_to_index",
+        "pop_arm_index",
+        "pop_study_index"
     )
 
     li <- as_stan_list(obj)
@@ -38,11 +43,9 @@ test_that("DataSubject works as expected", {
     expect_equal(li$study_to_index, c("S1" = 1, "S2" = 2))
     expect_equal(li$pop_arm_index, c(3, 2, 1))
     expect_equal(li$pop_study_index, c(2, 1, 1))
-
 })
 
 test_that("DataSubject print method works as expected", {
-
     expect_snapshot({
         df_subj <- data.frame(
             vpt = factor(c("A", "B", "C", "D"), levels = c("C", "B", "A", "D")),

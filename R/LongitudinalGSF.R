@@ -48,7 +48,6 @@ NULL
 #' @importFrom stats qlogis
 #' @export
 LongitudinalGSF <- function(
-
     mu_bsld = prior_normal(log(60), 1),
     mu_ks = prior_normal(log(0.5), 1),
     mu_kg = prior_normal(log(0.3), 1),
@@ -64,7 +63,6 @@ LongitudinalGSF <- function(
     scaled_variance = TRUE,
     centred = FALSE
 ) {
-
     gsf_model <- StanModule(decorated_render(
         .x = read_stan("lm-gsf/model.stan"),
         centred = centred,
@@ -78,17 +76,24 @@ LongitudinalGSF <- function(
     omega_phi <- set_limits(omega_phi, lower = 0)
     sigma <- set_limits(sigma, lower = 0)
 
-
     parameters <- list(
         Parameter(name = "lm_gsf_mu_bsld", prior = mu_bsld, size = "n_studies"),
         Parameter(name = "lm_gsf_mu_ks", prior = mu_ks, size = "n_arms"),
         Parameter(name = "lm_gsf_mu_kg", prior = mu_kg, size = "n_arms"),
         Parameter(name = "lm_gsf_mu_phi", prior = mu_phi, size = "n_arms"),
 
-        Parameter(name = "lm_gsf_omega_bsld", prior = omega_bsld, size = "n_studies"),
+        Parameter(
+            name = "lm_gsf_omega_bsld",
+            prior = omega_bsld,
+            size = "n_studies"
+        ),
         Parameter(name = "lm_gsf_omega_ks", prior = omega_ks, size = "n_arms"),
         Parameter(name = "lm_gsf_omega_kg", prior = omega_kg, size = "n_arms"),
-        Parameter(name = "lm_gsf_omega_phi", prior = omega_phi, size = "n_arms"),
+        Parameter(
+            name = "lm_gsf_omega_phi",
+            prior = omega_phi,
+            size = "n_arms"
+        ),
 
         Parameter(name = "lm_gsf_sigma", prior = sigma, size = 1)
     )
@@ -98,31 +103,59 @@ LongitudinalGSF <- function(
         list(
             Parameter(
                 name = "lm_gsf_psi_bsld",
-                prior = prior_init_only(prior_lognormal(median(mu_bsld), median(omega_bsld))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_bsld),
+                    median(omega_bsld)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_ks",
-                prior = prior_init_only(prior_lognormal(median(mu_ks), median(omega_ks))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_ks),
+                    median(omega_ks)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_kg",
-                prior = prior_init_only(prior_lognormal(median(mu_kg), median(omega_kg))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_kg),
+                    median(omega_kg)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_gsf_psi_phi_logit",
-                prior = prior_init_only(prior_normal(median(mu_phi), median(omega_phi))),
+                prior = prior_init_only(prior_normal(
+                    median(mu_phi),
+                    median(omega_phi)
+                )),
                 size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_gsf_eta_tilde_bsld", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_gsf_eta_tilde_ks", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_gsf_eta_tilde_kg", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_gsf_eta_tilde_phi", prior = prior_std_normal(), size = "n_subjects")
+            Parameter(
+                name = "lm_gsf_eta_tilde_bsld",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_gsf_eta_tilde_ks",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_gsf_eta_tilde_kg",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_gsf_eta_tilde_phi",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            )
         )
     }
     parameters <- append(parameters, parameters_extra)
@@ -137,7 +170,6 @@ LongitudinalGSF <- function(
     )
     .LongitudinalGSF(x)
 }
-
 
 
 #' @export
@@ -174,7 +206,11 @@ linkTTG.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 }
 
 #' @export
-linkIdentity.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+linkIdentity.LongitudinalGSF <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_identity",
         stan = StanModule("lm-gsf/link_identity.stan"),
@@ -193,7 +229,11 @@ linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 
 
 #' @export
-linkShrinkage.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
+linkShrinkage.LongitudinalGSF <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_shrinkage",
         stan = StanModule("lm-gsf/link_shrinkage.stan"),

@@ -32,7 +32,6 @@
 )
 
 
-
 #' @rdname SimJointData-class
 #' @export
 SimJointData <- function(
@@ -44,7 +43,6 @@ SimJointData <- function(
     survival,
     .silent = FALSE
 ) {
-
     assert(
         all(vapply(design, \(x) is(x, "SimGroup"), logical(1))),
         msg = "All elements of `design` must be of class `SimGroup`"
@@ -58,11 +56,24 @@ SimJointData <- function(
     n_subjects <- sum(n_group)
     n_times <- length(hazard_evaluation_info$midpoint)
 
-    sprintf_string <- paste0("subject_%0", ceiling(log(n_subjects, 10)) + 1, "i")
+    sprintf_string <- paste0(
+        "subject_%0",
+        ceiling(log(n_subjects, 10)) + 1,
+        "i"
+    )
 
-    baseline <- dplyr::tibble(subject = sprintf(sprintf_string, seq_len(n_subjects))) |>
-        dplyr::mutate(arm = factor(rep(arms, times = n_group), levels = unique(arms))) |>
-        dplyr::mutate(study = factor(rep(studies, times = n_group), levels = unique(studies)))
+    baseline <- dplyr::tibble(
+        subject = sprintf(sprintf_string, seq_len(n_subjects))
+    ) |>
+        dplyr::mutate(
+            arm = factor(rep(arms, times = n_group), levels = unique(arms))
+        ) |>
+        dplyr::mutate(
+            study = factor(
+                rep(studies, times = n_group),
+                levels = unique(studies)
+            )
+        )
 
     os_baseline <- sampleSubjects(survival, subjects_df = baseline)
     lm_baseline <- sampleSubjects(longitudinal, subjects_df = baseline)
@@ -79,20 +90,34 @@ SimJointData <- function(
 
     lm_dat <- sampleObservations(longitudinal, lm_dat_no_obvs)
 
-
     hazard_eval_df <- dplyr::tibble(
         subject = rep(lm_baseline$subject, each = n_times),
         arm = rep(lm_baseline$arm, each = n_times),
         study = rep(lm_baseline$study, each = n_times),
-        midpoint = rep(as.double(hazard_evaluation_info$midpoint), times = n_subjects),
+        midpoint = rep(
+            as.double(hazard_evaluation_info$midpoint),
+            times = n_subjects
+        ),
         time = rep(as.double(hazard_evaluation_info$upper), times = n_subjects),
         width = rep(as.double(hazard_evaluation_info$width), times = n_subjects)
     )
 
     lm_link_dat <- sampleObservations(
         longitudinal,
-        dplyr::left_join(hazard_eval_df, lm_baseline, by = c("subject", "study", "arm"))
-    )[, c("subject", "study", "arm", "log_haz_link", "time", "width", "midpoint")]
+        dplyr::left_join(
+            hazard_eval_df,
+            lm_baseline,
+            by = c("subject", "study", "arm")
+        )
+    )[, c(
+        "subject",
+        "study",
+        "arm",
+        "log_haz_link",
+        "time",
+        "width",
+        "midpoint"
+    )]
 
     os_eval_df <- lm_link_dat |>
         dplyr::left_join(os_baseline, by = c("subject", "study", "arm"))
@@ -100,13 +125,18 @@ SimJointData <- function(
     withCallingHandlers(
         os_dat <- sampleObservations(survival, os_eval_df),
         message = function(e) {
-            if (!.silent) message(e)
+            if (!.silent) {
+                message(e)
+            }
             invokeRestart("muffleMessage")
         }
     )
 
     lm_dat2 <- lm_dat |>
-        dplyr::left_join(dplyr::select(os_dat, "subject", os_time = "time"), by = "subject") |>
+        dplyr::left_join(
+            dplyr::select(os_dat, "subject", os_time = "time"),
+            by = "subject"
+        ) |>
         dplyr::mutate(observed = (.data$time <= .data$os_time)) |>
         dplyr::arrange(dplyr::pick(c("subject", "time")))
 
@@ -127,7 +157,14 @@ SimJointData <- function(
     return(
         .SimJointData(
             survival = os_dat,
-            longitudinal = lm_dat2[, c("subject", "arm", "study", "time", "sld", "observed")]
+            longitudinal = lm_dat2[, c(
+                "subject",
+                "arm",
+                "study",
+                "time",
+                "sld",
+                "observed"
+            )]
         )
     )
 }
@@ -168,17 +205,25 @@ setMethod(
 #' )
 #' data <- add_pfs(data)
 #' data@survival # now has pfs_time and pfs_event columns
-add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, from_time = 0, observed_after = FALSE) {
+add_pfs <- function(
+    object,
+    relative_threshold = 1.2,
+    absolute_threshold = 5,
+    from_time = 0,
+    observed_after = FALSE
+) {
     assert_class(object, "SimJointData")
 
     pd_times <- object@longitudinal |>
         dplyr::filter(.data$time >= from_time) |>
         dplyr::mutate(
             min_sld = cummin(.data$sld),
-            is_pd = .data$sld >= pmax(
-                .data$min_sld * relative_threshold,
-                .data$min_sld + absolute_threshold
-            ) & .data$observed,
+            is_pd = .data$sld >=
+                pmax(
+                    .data$min_sld * relative_threshold,
+                    .data$min_sld + absolute_threshold
+                ) &
+                .data$observed,
             pd_time = min(.data$time[.data$is_pd], Inf),
             .by = "subject"
         ) |>
@@ -189,7 +234,11 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
         object@longitudinal <- object@longitudinal |>
             dplyr::left_join(pd_times, by = "subject") |>
             dplyr::mutate(
-                observed = dplyr::if_else(.data$time > .data$pd_time, FALSE, .data$observed),
+                observed = dplyr::if_else(
+                    .data$time > .data$pd_time,
+                    FALSE,
+                    .data$observed
+                ),
                 pd_time = NULL
             )
     }
@@ -199,7 +248,11 @@ add_pfs <- function(object, relative_threshold = 1.2, absolute_threshold = 5, fr
         dplyr::left_join(pd_times, by = "subject") |>
         dplyr::mutate(
             pfs_time = pmin(.data$time, .data$pd_time, na.rm = TRUE),
-            pfs_event = dplyr::if_else(.data$pfs_time < .data$time, 1, .data$event),
+            pfs_event = dplyr::if_else(
+                .data$pfs_time < .data$time,
+                1,
+                .data$event
+            ),
             pd_time = NULL
         )
     object
@@ -237,7 +290,11 @@ cut_data <- function(object, cut_time) {
     if (all(c("pfs_event", "pfs_time") %in% colnames(object@survival))) {
         object@survival <- object@survival |>
             dplyr::mutate(
-                pfs_event = dplyr::if_else(.data$pfs_time < .data$cut_time, .data$pfs_event, 0),
+                pfs_event = dplyr::if_else(
+                    .data$pfs_time < .data$cut_time,
+                    .data$pfs_event,
+                    0
+                ),
                 pfs_time = pmin(.data$cut_time, .data$pfs_time)
             )
     }

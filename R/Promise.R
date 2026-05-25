@@ -1,5 +1,3 @@
-
-
 #' Promise
 #'
 #' Abstract class for promise objects to inherit off of
@@ -23,8 +21,6 @@
 PromiseLongitudinalModel <- function() {
     .PromiseLongitudinalModel()
 }
-
-
 
 
 #' Promise of a `LinkComponent`
@@ -58,7 +54,11 @@ PromiseLinkComponent <- function(fun, prior, key) {
     .PromiseLinkComponent(
         fun = fun,
         stan = StanModule(),
-        parameters = ParameterList(Parameter(name = key, prior = prior, size = 1)),
+        parameters = ParameterList(Parameter(
+            name = key,
+            prior = prior,
+            size = 1
+        )),
         key = key
     )
 }

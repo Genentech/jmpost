@@ -35,7 +35,11 @@ SurvivalLogLogistic <- function(
             parameters = ParameterList(
                 Parameter(name = "sm_loglogis_a", prior = a, size = 1),
                 Parameter(name = "sm_loglogis_b", prior = b, size = 1),
-                Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
+                Parameter(
+                    name = "beta_os_cov",
+                    prior = beta,
+                    size = "p_os_cov_design"
+                )
             )
         )
     )

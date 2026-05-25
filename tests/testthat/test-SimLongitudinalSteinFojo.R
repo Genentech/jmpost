@@ -1,4 +1,3 @@
-
 test_that("SimLongitudinalSteinFojo works as expected", {
     sim <- SimLongitudinalSteinFojo(
         times = c(-100, 0, 50),
@@ -33,7 +32,6 @@ test_that("SimLongitudinalSteinFojo works as expected", {
         c("subject", "arm", "study", "psi_b", "psi_s", "psi_g")
     )
 
-
     tdat <- purrr::map(
         sim@times,
         \(time) {
@@ -52,8 +50,19 @@ test_that("SimLongitudinalSteinFojo works as expected", {
     expect_equal(
         names(res_obvs),
         c(
-            "subject", "arm", "study", "psi_b", "psi_s", "psi_g", "time",
-            "mu_sld", "dsld", "ttg", "sld_sd", "sld", "log_haz_link"
+            "subject",
+            "arm",
+            "study",
+            "psi_b",
+            "psi_s",
+            "psi_g",
+            "time",
+            "mu_sld",
+            "dsld",
+            "ttg",
+            "sld_sd",
+            "sld",
+            "log_haz_link"
         )
     )
 })

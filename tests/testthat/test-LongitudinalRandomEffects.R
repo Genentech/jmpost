@@ -1,5 +1,3 @@
-
-
 test_that("LongitudinalRandomEffects() works as expected", {
     set.seed(1122)
 
@@ -40,7 +38,6 @@ test_that("LongitudinalRandomEffects() works as expected", {
         dplyr::mutate(arm = factor("A")) |>
         dplyr::mutate(study = factor("X")) |>
         dplyr::sample_frac(1)
-
 
     # Fit joint model to the data
     jdat <- DataJoint(
@@ -100,7 +97,6 @@ test_that("LongitudinalRandomEffects() works as expected", {
     # nolint end
     expect_true(cor(combined$real, combined$median) > 0.9997)
 
-
     # Basic sanity checks
     expect_true(all(combined$lower < combined$median))
     expect_true(all(combined$median < combined$upper))
@@ -113,5 +109,4 @@ test_that("LongitudinalRandomEffects() works as expected", {
         dplyr::left_join(s_requant, by = c("subject", "parameter"))
 
     expect_equal(s_requant2$median, s_requant2$median2)
-
 })

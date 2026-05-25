@@ -33,8 +33,6 @@ setValidity(
 )
 
 
-
-
 #' @rdname as_stan_list.QuantityGenerator
 #' @export
 as_stan_list.QuantityGeneratorPrediction <- function(object, data, model, ...) {
@@ -94,7 +92,6 @@ as_stan_list.QuantityGeneratorPrediction <- function(object, data, model, ...) {
     # conditional logic to check if they are generating population quantities or not
     ret[["gq_long_pop_arm_index"]] <- rep(1, ret[["gq_n_quant"]])
     ret[["gq_long_pop_study_index"]] <- rep(1, ret[["gq_n_quant"]])
-
 
     # Sanity checks
     assert_that(

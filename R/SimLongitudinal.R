@@ -1,4 +1,3 @@
-
 #' Abstract Simulation Class for Longitudinal Data
 #'
 #' @param times (`numeric`) the times to generate observations at.

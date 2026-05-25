@@ -1,7 +1,3 @@
-
-
-
-
 test_that("Can alter Gaussian Quadrature arguments", {
     x <- data.frame(
         vpt = c("b", "a", "c", "d", "e"),
@@ -23,7 +19,6 @@ test_that("Can alter Gaussian Quadrature arguments", {
         statmod::gauss.quad(15, "legendre")
     )
 
-
     ## Test modified values
     options("jmpost.gauss_quad_n" = 20)
     df <- DataSurvival(
@@ -36,7 +31,6 @@ test_that("Can alter Gaussian Quadrature arguments", {
         li[c("nodes", "weights")],
         statmod::gauss.quad(20, "legendre")
     )
-
 
     ## Reset back to default to not impact additional tests
     options("jmpost.gauss_quad_n" = 15)

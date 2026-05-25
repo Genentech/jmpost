@@ -88,8 +88,13 @@ StanModule <- function(
     code <- read_stan(x)
     code_fragments <- as_stan_fragments(code)
 
-    if (paste0(unlist(code_fragments), collapse = "") == "" && paste0(x, collaspe = "") != "") {
-        warning("Non-empty input resulted in an empty StanModule object. Is the input correct?")
+    if (
+        paste0(unlist(code_fragments), collapse = "") == "" &&
+            paste0(x, collaspe = "") != ""
+    ) {
+        warning(
+            "Non-empty input resulted in an empty StanModule object. Is the input correct?"
+        )
     }
 
     .StanModule(
@@ -125,7 +130,6 @@ as.character.StanModule <- function(x, ...) {
         generated_quantities = x@generated_quantities
     )
 }
-
 
 
 # merge-StanModule,StanModule ----
@@ -196,7 +200,6 @@ compileStanModel.StanModule <- function(object) {
     )
     invisible(x)
 }
-
 
 
 # as.list-StanModule ----
@@ -300,7 +303,11 @@ as_stan_file <- function(
         function(id) {
             char <- get(id)
             if (any(nchar(char) >= 1)) {
-                return(sprintf("%s {\n%s\n}\n\n", stan_blocks[[id]], paste(char, collapse = "\n")))
+                return(sprintf(
+                    "%s {\n%s\n}\n\n",
+                    stan_blocks[[id]],
+                    paste(char, collapse = "\n")
+                ))
             } else {
                 return("")
             }
@@ -431,7 +438,10 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' @export
 as_print_string.StanModule <- function(object, indent = 1, ...) {
     slots <- names(getSlots("StanModule"))
-    components <- Filter(\(block) paste(slot(object, block), collapse = "") != "", slots)
+    components <- Filter(
+        \(block) paste(slot(object, block), collapse = "") != "",
+        slots
+    )
     template <- c(
         "StanModule Object with components:",
         paste("    ", components)

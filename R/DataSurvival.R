@@ -13,7 +13,6 @@ NULL
 NULL
 
 
-
 # DataSurvival-class ----
 
 #' Survival Data Object and Constructor Function
@@ -60,21 +59,20 @@ setValidity(
             return("`formula` should be a 2 sided formula")
         }
         LHS <- as.character(x$frm[[2]][[1]])
-        if (!(identical(LHS, "Surv") || identical(LHS, c("::", "survival", "Surv")))) {
+        if (
+            !(identical(LHS, "Surv") ||
+                identical(LHS, c("::", "survival", "Surv")))
+        ) {
             return("The LHS of `formula` should be a call to survival::Surv()")
         }
         for (v in c(x$time, x$event)) {
-            if (! v %in% dnames) {
+            if (!v %in% dnames) {
                 return(sprintf("Variable %s is not in `data`", x$subject))
             }
         }
         return(TRUE)
     }
 )
-
-
-
-
 
 
 #' @inheritParams DataSurvival-Shared
@@ -112,7 +110,6 @@ as.data.frame.DataSurvival <- function(x, ...) {
     rownames(x) <- NULL
     x
 }
-
 
 
 #' @rdname as_stan_list.DataObject
@@ -154,14 +151,16 @@ as.list.DataSurvival <- function(x, ...) {
 
 #' @rdname harmonise
 harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
-
     data <- as.data.frame(object)
 
     assert_string(subject_var, na.ok = FALSE)
     assert_character(subject_ord, any.missing = FALSE)
     assert_that(
         subject_var %in% names(data),
-        msg = sprintf("Subject variable `%s` not found in `survival`", subject_var)
+        msg = sprintf(
+            "Subject variable `%s` not found in `survival`",
+            subject_var
+        )
     )
     assert_that(
         all(data[[subject_var]] %in% subject_ord),
@@ -184,7 +183,6 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
         formula = object@formula
     )
 }
-
 
 
 #' `DataSurvival` -> Printable `Character`
@@ -252,8 +250,7 @@ mirror_design_matrix <- function(olddata, newdata) {
         newdata,
         xlev = model$xlevels
     )
-    if (
-        !is.null(data_classes <- attr(model_terms, "dataClasses"))) {
+    if (!is.null(data_classes <- attr(model_terms, "dataClasses"))) {
         .checkMFClasses(data_classes, model_frame)
     }
     design_mat <- model.matrix(

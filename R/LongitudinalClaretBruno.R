@@ -44,7 +44,6 @@ NULL
 #'
 #' @export
 LongitudinalClaretBruno <- function(
-
     mu_b = prior_normal(log(60), 0.5),
     mu_g = prior_normal(log(1), 0.5),
     mu_c = prior_normal(log(0.4), 0.5),
@@ -60,7 +59,6 @@ LongitudinalClaretBruno <- function(
     scaled_variance = TRUE,
     centred = FALSE
 ) {
-
     sf_model <- StanModule(decorated_render(
         .x = read_stan("lm-claret-bruno/model.stan"),
         scaled_variance = scaled_variance,
@@ -74,14 +72,17 @@ LongitudinalClaretBruno <- function(
     omega_p <- set_limits(omega_p, lower = 0)
     sigma <- set_limits(sigma, lower = 0)
 
-
     parameters <- list(
         Parameter(name = "lm_clbr_mu_b", prior = mu_b, size = "n_studies"),
         Parameter(name = "lm_clbr_mu_g", prior = mu_g, size = "n_arms"),
         Parameter(name = "lm_clbr_mu_c", prior = mu_c, size = "n_arms"),
         Parameter(name = "lm_clbr_mu_p", prior = mu_p, size = "n_arms"),
 
-        Parameter(name = "lm_clbr_omega_b", prior = omega_b, size = "n_studies"),
+        Parameter(
+            name = "lm_clbr_omega_b",
+            prior = omega_b,
+            size = "n_studies"
+        ),
         Parameter(name = "lm_clbr_omega_g", prior = omega_g, size = "n_arms"),
         Parameter(name = "lm_clbr_omega_c", prior = omega_c, size = "n_arms"),
         Parameter(name = "lm_clbr_omega_p", prior = omega_p, size = "n_arms"),
@@ -94,31 +95,59 @@ LongitudinalClaretBruno <- function(
         list(
             Parameter(
                 name = "lm_clbr_ind_b",
-                prior = prior_init_only(prior_lognormal(median(mu_b), median(omega_b))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_b),
+                    median(omega_b)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_g",
-                prior = prior_init_only(prior_lognormal(median(mu_g), median(omega_g))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_g),
+                    median(omega_g)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_c",
-                prior = prior_init_only(prior_lognormal(median(mu_c), median(omega_c))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_c),
+                    median(omega_c)
+                )),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_p",
-                prior = prior_init_only(prior_lognormal(median(mu_p), median(omega_p))),
+                prior = prior_init_only(prior_lognormal(
+                    median(mu_p),
+                    median(omega_p)
+                )),
                 size = "n_subjects"
             )
         )
     } else {
         list(
-            Parameter(name = "lm_clbr_eta_b", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_clbr_eta_g", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_clbr_eta_c", prior = prior_std_normal(), size = "n_subjects"),
-            Parameter(name = "lm_clbr_eta_p", prior = prior_std_normal(), size = "n_subjects")
+            Parameter(
+                name = "lm_clbr_eta_b",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_clbr_eta_g",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_clbr_eta_c",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ),
+            Parameter(
+                name = "lm_clbr_eta_p",
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            )
         )
     }
     parameters <- append(parameters, parameters_extra)
@@ -135,7 +164,6 @@ LongitudinalClaretBruno <- function(
 }
 
 
-
 #' @export
 enableLink.LongitudinalClaretBruno <- function(object, ...) {
     object@stan <- merge(
@@ -146,7 +174,11 @@ enableLink.LongitudinalClaretBruno <- function(object, ...) {
 }
 
 #' @export
-linkDSLD.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, ...) {
+linkDSLD.LongitudinalClaretBruno <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_dsld",
         stan = StanModule("lm-claret-bruno/link_dsld.stan"),
@@ -155,7 +187,11 @@ linkDSLD.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, 
 }
 
 #' @export
-linkTTG.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, ...) {
+linkTTG.LongitudinalClaretBruno <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_ttg",
         stan = StanModule("lm-claret-bruno/link_ttg.stan"),
@@ -164,7 +200,11 @@ linkTTG.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, .
 }
 
 #' @export
-linkIdentity.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, ...) {
+linkIdentity.LongitudinalClaretBruno <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_identity",
         stan = StanModule("lm-claret-bruno/link_identity.stan"),
@@ -173,7 +213,11 @@ linkIdentity.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), mod
 }
 
 #' @export
-linkGrowth.LongitudinalClaretBruno <- function(prior = prior_normal(0, 2), model, ...) {
+linkGrowth.LongitudinalClaretBruno <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_growth",
         stan = StanModule("lm-claret-bruno/link_growth.stan"),

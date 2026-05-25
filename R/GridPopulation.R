@@ -23,7 +23,6 @@ GridPopulation <- function(times = NULL) {
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator.GridPopulation <- function(object, data, ...) {
-
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     validate_time_grid(object@times)
@@ -33,8 +32,14 @@ as.QuantityGenerator.GridPopulation <- function(object, data, ...) {
 
     QuantityGeneratorPopulation(
         times = rep(object@times, each = n_quant),
-        arms = rep(names(data_list$arm_to_index)[data_list$pop_arm_index], n_times),
-        studies = rep(names(data_list$study_to_index)[data_list$pop_study_index], n_times)
+        arms = rep(
+            names(data_list$arm_to_index)[data_list$pop_arm_index],
+            n_times
+        ),
+        studies = rep(
+            names(data_list$study_to_index)[data_list$pop_study_index],
+            n_times
+        )
     )
 }
 

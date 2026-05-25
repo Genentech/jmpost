@@ -20,7 +20,6 @@ NULL
 
 # StanModel-class ----
 
-
 #' Stan Model Object and Constructor Function
 #'
 #' @slot stan (`StanModule`)\cr See Arguments.
@@ -77,7 +76,8 @@ as_print_string.StanModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Model Object with parameters:\n%s\n\n",
         object@name,
-        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
+        paste("   ", as_print_string(object@parameters)) |>
+            paste(collapse = "\n")
     )
     return(string)
 }

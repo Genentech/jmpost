@@ -1,4 +1,3 @@
-
 #' Quantity Grid Specification
 #'
 #' @param subjects (`character` or `NULL`)\cr vector of subjects to extract quantities for.
@@ -73,10 +72,6 @@
 NULL
 
 
-
-
-
-
 #' Grid Developer Notes
 #'
 #' @description
@@ -121,7 +116,6 @@ NULL
 #' @seealso `Quant-Dev`
 #' @name Grid-Dev
 NULL
-
 
 
 #' Quantity Developer Notes
@@ -172,7 +166,6 @@ NULL
 as_stan_list.QuantityGenerator <- function(object, data, ...) {
     stop("as_stan_list.QuantityGenerator not implemented")
 }
-
 
 
 #' @rdname Quant-Dev

@@ -28,7 +28,6 @@ SurvivalWeibullPH <- function(
     gamma = prior_gamma(2, 0.5),
     beta = prior_normal(0, 2)
 ) {
-
     lambda <- set_limits(lambda, lower = 0)
     gamma <- set_limits(gamma, lower = 0)
 
@@ -37,9 +36,21 @@ SurvivalWeibullPH <- function(
             name = "Weibull-PH",
             stan = StanModule(x = "sm-weibull-ph/model.stan"),
             parameters = ParameterList(
-                Parameter(name = "sm_weibull_ph_lambda", prior = lambda, size = 1),
-                Parameter(name = "sm_weibull_ph_gamma", prior = gamma, size = 1),
-                Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
+                Parameter(
+                    name = "sm_weibull_ph_lambda",
+                    prior = lambda,
+                    size = 1
+                ),
+                Parameter(
+                    name = "sm_weibull_ph_gamma",
+                    prior = gamma,
+                    size = 1
+                ),
+                Parameter(
+                    name = "beta_os_cov",
+                    prior = beta,
+                    size = "p_os_cov_design"
+                )
             )
         )
     )

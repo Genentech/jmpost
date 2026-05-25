@@ -8,14 +8,16 @@
 NULL
 
 
-
 #' @rdname getParameters
 #' @export
 getParameters.default <- function(object, ...) {
     if (missing(object) || is.null(object)) {
         return(NULL)
     }
-    stop(sprintf("No default method implemented for getParameters(<%s>)", typeof(object)))
+    stop(sprintf(
+        "No default method implemented for getParameters(<%s>)",
+        typeof(object)
+    ))
 }
 
 

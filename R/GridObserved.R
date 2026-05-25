@@ -26,7 +26,11 @@ as.QuantityGenerator.GridObserved <- function(object, data, ...) {
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)
-    unique_visits <- tapply(data_list$tumour_time, data_list$subject_tumour_index, unique)
+    unique_visits <- tapply(
+        data_list$tumour_time,
+        data_list$subject_tumour_index,
+        unique
+    )
     subject_visits <- unique_visits[data_list$subject_to_index[subjects]]
     visit_lengths <- vapply(subject_visits, length, numeric(1))
     QuantityGeneratorSubject(

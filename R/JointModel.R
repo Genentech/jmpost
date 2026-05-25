@@ -1,4 +1,3 @@
-
 #' @include StanModule.R
 #' @include generics.R
 #' @include ParameterList.R
@@ -98,7 +97,6 @@ enableGQ.JointModel <- function(object, ...) {
 #' @family as.StanModule
 #' @export
 as.StanModule.JointModel <- function(object, ...) {
-
     base_model <- read_stan("base/base.stan")
 
     stan_full <- decorated_render(
@@ -123,7 +121,6 @@ as.StanModule.JointModel <- function(object, ...) {
         StanModule(stan_full)
     )
 }
-
 
 
 #' `JointModel` -> `character`
@@ -171,7 +168,6 @@ compileStanModel.JointModel <- function(object) {
 #' @param data (`DataJoint` or `list`)\cr input data.
 #' @export
 sampleStanModel.JointModel <- function(object, data, ...) {
-
     assert_class(data, "DataJoint")
 
     if (!is.null(object@survival)) {
@@ -264,7 +260,6 @@ ensure_initial_values <- function(initial_values, data, parameters) {
 }
 
 
-
 #' @rdname initialValues
 #' @export
 initialValues.JointModel <- function(object, n_chains, ...) {
@@ -312,7 +307,6 @@ setMethod(
         ))
     }
 )
-
 
 
 #' @rdname getRandomEffectsNames

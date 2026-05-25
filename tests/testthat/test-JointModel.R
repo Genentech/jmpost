@@ -1,7 +1,3 @@
-
-
-
-
 test_that("JointModel smoke tests", {
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
@@ -24,7 +20,6 @@ test_that("JointModel print method works as expected", {
         )
         print(x)
     })
-
 
     expect_snapshot({
         x <- JointModel(
@@ -61,7 +56,6 @@ test_that("JointModel print method works as expected", {
         print(x)
     })
 })
-
 
 
 test_that("Log_Lik variables are produced correctly", {

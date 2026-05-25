@@ -1,6 +1,3 @@
-
-
-
 #' jmpost settings
 #'
 #' @description
@@ -51,7 +48,6 @@
 #' }
 #' @name jmpost-settings
 set_options <- function() {
-
     cache_dir <- Sys.getenv("JMPOST_CACHE_DIR")
 
     if (cache_dir == "" || is.null(cache_dir)) {

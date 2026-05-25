@@ -1,4 +1,3 @@
-
 test_that("SimLongitudinalClaretBruno works as expected", {
     sim <- SimLongitudinalClaretBruno(
         times = c(-100, 0, 50),
@@ -36,7 +35,6 @@ test_that("SimLongitudinalClaretBruno works as expected", {
         c("subject", "arm", "study", "ind_b", "ind_g", "ind_c", "ind_p")
     )
 
-
     tdat <- purrr::map(
         sim@times,
         \(time) {
@@ -55,8 +53,20 @@ test_that("SimLongitudinalClaretBruno works as expected", {
     expect_equal(
         names(res_obvs),
         c(
-            "subject", "arm", "study", "ind_b", "ind_g", "ind_c", "ind_p", "time",
-            "mu_sld", "dsld", "ttg", "sld_sd", "sld", "log_haz_link"
+            "subject",
+            "arm",
+            "study",
+            "ind_b",
+            "ind_g",
+            "ind_c",
+            "ind_p",
+            "time",
+            "mu_sld",
+            "dsld",
+            "ttg",
+            "sld_sd",
+            "sld",
+            "log_haz_link"
         )
     )
 })
