@@ -32,7 +32,7 @@ Authors:
 
 - Francois Mercier <francois.mercier@roche.com>
 
-- Daniel Sabanes Bove <daniel.sabanes_bove@roche.com>
+- Daniel Sabanes Bove <daniel@rconis.com>
 
 - Georgios Kazantzidis <georgios.kazantzidis@roche.com>
 
