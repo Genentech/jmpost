@@ -26,7 +26,7 @@ Authors:
   \item Isaac Gravestock \email{isaac.gravestock@roche.com}
   \item Craig Gower-Page \email{craig.gower-page@roche.com}
   \item Francois Mercier \email{francois.mercier@roche.com}
-  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Daniel Sabanes Bove \email{daniel@rconis.com}
   \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
   \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
 }
