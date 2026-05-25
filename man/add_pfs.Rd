@@ -15,15 +15,15 @@ add_pfs(
 \arguments{
 \item{object}{A \link{SimJointData} object}
 
-\item{relative_threshold}{(\code{number})\cr a multiplicative threshold for the change in SLD compared to the \code{min(SLD)}.
+\item{relative_threshold}{(\code{number}) a multiplicative threshold for the change in SLD compared to the \code{min(SLD)}.
 Default is 1.2 meaning a 20\% increase.}
 
-\item{absolute_threshold}{(\code{number})\cr an absolute threshold for the change in SLD compared to the minimum.
+\item{absolute_threshold}{(\code{number}) an absolute threshold for the change in SLD compared to the minimum.
 Default is 5.}
 
-\item{from_time}{(\code{number})\cr Ignore observations before this time for determining SLD minimum.}
+\item{from_time}{(\code{number}) Ignore observations before this time for determining SLD minimum.}
 
-\item{observed_after}{(\code{logical})\cr If \code{FALSE} set longitudinal observations after the progression time to
+\item{observed_after}{(\code{logical}) If \code{FALSE} set longitudinal observations after the progression time to
 \code{observed = FALSE}}
 }
 \description{

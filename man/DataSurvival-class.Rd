@@ -10,9 +10,9 @@
 DataSurvival(data, formula)
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr the observed time-to-event data.}
+\item{data}{(\code{data.frame}) the observed time-to-event data.}
 
-\item{formula}{(\code{formula})\cr of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
+\item{formula}{(\code{formula}) of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
 See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
 }
 \description{

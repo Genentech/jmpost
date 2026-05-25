@@ -9,10 +9,10 @@
 \arguments{
 \item{object}{object to obtain generated quantities from}
 
-\item{generator}{(\code{QuantityGenerator})\cr object that specifies which subjects and time points
+\item{generator}{(\code{QuantityGenerator}) object that specifies which subjects and time points
 to calculate the quantities at}
 
-\item{type}{(\code{character})\cr type of quantities to be generated, must be either "survival" or
+\item{type}{(\code{character}) type of quantities to be generated, must be either "survival" or
 "longitudinal".}
 
 \item{...}{additional options.}

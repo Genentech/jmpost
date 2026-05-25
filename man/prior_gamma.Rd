@@ -7,9 +7,9 @@
 prior_gamma(alpha, beta)
 }
 \arguments{
-\item{alpha}{(\code{number})\cr shape.}
+\item{alpha}{(\code{number}) shape.}
 
-\item{beta}{(\code{number})\cr inverse scale.}
+\item{beta}{(\code{number}) inverse scale.}
 }
 \description{
 Gamma Prior Distribution

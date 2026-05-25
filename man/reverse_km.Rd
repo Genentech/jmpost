@@ -11,11 +11,11 @@ reverse_km_event_first(t, times, events)
 reverse_km_cen_first(t, times, events)
 }
 \arguments{
-\item{t}{(\code{numeric})\cr timepoints to calculate the desired quantity at.}
+\item{t}{(\code{numeric}) timepoints to calculate the desired quantity at.}
 
-\item{times}{(\code{numeric})\cr observed times.}
+\item{times}{(\code{numeric}) observed times.}
 
-\item{events}{(\code{numeric})\cr event indicator for \code{times}. Either 1 for an event or 0 for censor.}
+\item{events}{(\code{numeric}) event indicator for \code{times}. Either 1 for an event or 0 for censor.}
 }
 \description{
 Calculates the survival estimates of the censoring distribution

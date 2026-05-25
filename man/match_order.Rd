@@ -7,7 +7,7 @@
 match_order(x)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr a vector for which we want to generate an index so other
+\item{x}{(\code{numeric}) a vector for which we want to generate an index so other
 vectors can be put into the same sort order
 
 Assuming we have a vector that is sorted then this function

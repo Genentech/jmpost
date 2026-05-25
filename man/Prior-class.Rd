@@ -19,22 +19,22 @@ Prior(
 )
 }
 \arguments{
-\item{parameters}{(\code{list})\cr the prior distribution parameters.}
+\item{parameters}{(\code{list}) the prior distribution parameters.}
 
-\item{display}{(\code{string})\cr the string to display when object is printed.}
+\item{display}{(\code{string}) the string to display when object is printed.}
 
-\item{repr_model}{(\code{string})\cr the Stan code representation for the model block.}
+\item{repr_model}{(\code{string}) the Stan code representation for the model block.}
 
-\item{repr_data}{(\code{string})\cr the Stan code representation for the data block.}
+\item{repr_data}{(\code{string}) the Stan code representation for the data block.}
 
-\item{centre}{(\code{numeric})\cr the central point of distribution to shrink sampled values towards}
+\item{centre}{(\code{numeric}) the central point of distribution to shrink sampled values towards}
 
-\item{validation}{(\code{list})\cr the prior distribution parameter validation functions. Must have
+\item{validation}{(\code{list}) the prior distribution parameter validation functions. Must have
 the same names as the \code{paramaters} slot.}
 
-\item{sample}{(\code{function})\cr a function to sample from the prior distribution.}
+\item{sample}{(\code{function}) a function to sample from the prior distribution.}
 
-\item{limits}{(\code{numeric})\cr the lower and upper limits for a truncated distribution}
+\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
 }
 \description{
 Specifies the prior distribution in a Stan Model

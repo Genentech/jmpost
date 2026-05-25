@@ -10,11 +10,11 @@
 PromiseLinkComponent(fun, prior, key)
 }
 \arguments{
-\item{fun}{(\code{function}) \cr a function that returns a \code{LinkComponent}. See details.}
+\item{fun}{(\code{function}) a function that returns a \code{LinkComponent}. See details.}
 
-\item{prior}{(\code{Prior})\cr The prior for the scaling coeficient.}
+\item{prior}{(\code{Prior}) The prior for the scaling coeficient.}
 
-\item{key}{(\code{character})\cr Link identifier. See Details.}
+\item{key}{(\code{character}) Link identifier. See Details.}
 }
 \description{
 An object that promises to resolve to a \code{\link{LinkComponent}} object.

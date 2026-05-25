@@ -16,13 +16,13 @@ SimJointData(
 )
 }
 \arguments{
-\item{design}{(\code{list})\cr a list of \code{\link{SimGroup}} objects. See details.}
+\item{design}{(\code{list}) a list of \code{\link{SimGroup}} objects. See details.}
 
 \item{longitudinal}{(\code{\link{SimLongitudinal}})\cr object specifying how to simulate the longitudinal data}
 
 \item{survival}{(\code{\link{SimSurvival}})\cr object specifying how to simulate the survival data}
 
-\item{.silent}{(\code{flag})\cr whether to suppress info messages}
+\item{.silent}{(\code{flag}) whether to suppress info messages}
 }
 \description{
 Simulating Joint Longitudinal and Time-to-Event Data

@@ -7,7 +7,7 @@
 \method{as.data.frame}{RandomEffectQuantities}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{RandomEffectQuantities}}) \cr generated quantities.}
+\item{x}{(\code{RandomEffectQuantities}) generated quantities.}
 
 \item{...}{not used.}
 }

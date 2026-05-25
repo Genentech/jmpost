@@ -7,9 +7,9 @@
 prior_cauchy(mu, sigma)
 }
 \arguments{
-\item{mu}{(\code{number})\cr mean.}
+\item{mu}{(\code{number}) mean.}
 
-\item{sigma}{(\code{number})\cr scale.}
+\item{sigma}{(\code{number}) scale.}
 }
 \description{
 Cauchy Prior Distribution

@@ -24,9 +24,9 @@ harmonise(object, ...)
 
 \item{...}{not used.}
 
-\item{subject_var}{(\code{character}) \cr the name of the variable containing the subject identifier.}
+\item{subject_var}{(\code{character}) the name of the variable containing the subject identifier.}
 
-\item{subject_ord}{(\code{character}) \cr the expected levels (in order) of the subject identifier.}
+\item{subject_ord}{(\code{character}) the expected levels (in order) of the subject identifier.}
 }
 \value{
 Returns the original object but with the data standardised (see details)

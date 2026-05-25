@@ -7,7 +7,7 @@
 \method{extractVariableNames}{DataSubject}(object)
 }
 \arguments{
-\item{object}{(\code{\link{DataSubject}}) \cr subject-level data.}
+\item{object}{(\code{DataSubject}) subject-level data.}
 }
 \value{
 A list with the following named elements:

@@ -10,13 +10,13 @@
 DataSubject(data, subject, arm, study)
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr the subject-level data.}
+\item{data}{(\code{data.frame}) the subject-level data.}
 
-\item{subject}{(\code{character})\cr the name of the variable containing the subject identifier.}
+\item{subject}{(\code{character}) the name of the variable containing the subject identifier.}
 
-\item{arm}{(\code{character})\cr the name of the variable containing the arm identifier.}
+\item{arm}{(\code{character}) the name of the variable containing the arm identifier.}
 
-\item{study}{(\code{character})\cr the name of the variable containing the study identifier.}
+\item{study}{(\code{character}) the name of the variable containing the study identifier.}
 }
 \description{
 The \code{\link{DataSubject}} class handles the processing of the subject data for

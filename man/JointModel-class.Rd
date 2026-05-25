@@ -14,7 +14,7 @@ JointModel(longitudinal = NULL, survival = NULL, link = Link())
 
 \item{survival}{(\code{\link{SurvivalModel}} or \code{NULL})\cr the survival model.}
 
-\item{link}{(\code{Link})\cr the link.}
+\item{link}{(\code{Link}) the link.}
 }
 \description{
 Joint Model Object and Constructor Function

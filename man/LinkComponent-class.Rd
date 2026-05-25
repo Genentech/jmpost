@@ -10,11 +10,11 @@
 LinkComponent(stan, prior, key, ...)
 }
 \arguments{
-\item{stan}{(\code{StanModule})\cr Stan code. See Details.}
+\item{stan}{(\code{StanModule}) Stan code. See Details.}
 
-\item{prior}{(\code{Prior})\cr The prior for the scaling coeficient.}
+\item{prior}{(\code{Prior}) The prior for the scaling coeficient.}
 
-\item{key}{(\code{character})\cr Link identifier. See Details.}
+\item{key}{(\code{character}) Link identifier. See Details.}
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }

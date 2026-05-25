@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{(\code{\link{Prior}})\cr a prior Distribution}
 
-\item{name}{(\code{character})\cr the name of the parameter the prior distribution is for}
+\item{name}{(\code{character}) the name of the parameter the prior distribution is for}
 
 \item{...}{Not Used.}
 }

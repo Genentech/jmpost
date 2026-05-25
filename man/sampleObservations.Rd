@@ -26,7 +26,7 @@ sampleObservations(object, times_df)
 \arguments{
 \item{object}{(\code{SimLongitudinal} or \code{SimSurvival}) \cr object to generate observations from.}
 
-\item{times_df}{(\code{data.frame}) \cr the times at which to generate observations. See details.}
+\item{times_df}{(\code{data.frame}) the times at which to generate observations. See details.}
 }
 \description{
 Generate Simulated Observations

@@ -7,7 +7,7 @@
 prior_init_only(dist)
 }
 \arguments{
-\item{dist}{(\code{Prior})\cr a prior Distribution}
+\item{dist}{(\code{Prior}) a prior Distribution}
 }
 \description{
 This function is used to specify only the initial values for a parameter.

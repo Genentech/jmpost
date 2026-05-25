@@ -10,11 +10,11 @@ set_limits(object, lower = -Inf, upper = Inf)
 \method{set_limits}{Prior}(object, lower = -Inf, upper = Inf)
 }
 \arguments{
-\item{object}{(\code{Prior})\cr a prior distribution to apply constraints to}
+\item{object}{(\code{Prior}) a prior distribution to apply constraints to}
 
-\item{lower}{(\code{numeric})\cr lower constraint boundary}
+\item{lower}{(\code{numeric}) lower constraint boundary}
 
-\item{upper}{(\code{numeric})\cr upper constraint boundary}
+\item{upper}{(\code{numeric}) upper constraint boundary}
 }
 \description{
 Applies constraints to a prior distribution to ensure any sampled numbers

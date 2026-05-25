@@ -7,7 +7,7 @@
 \method{as.character}{JointModel}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{JointModel}}) \cr Joint model specification.}
+\item{x}{(\code{JointModel}) Joint model specification.}
 
 \item{...}{Not Used.}
 }

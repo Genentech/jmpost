@@ -23,9 +23,9 @@ linkGrowth(prior, model = PromiseLongitudinalModel(), ...)
 linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 }
 \arguments{
-\item{prior}{(\code{\link{Prior}}) \cr A \code{\link{Prior}} object.}
+\item{prior}{(\code{Prior}) A \code{\link{Prior}} object.}
 
-\item{model}{(\code{\link{LongitudinalModel}}) \cr A \code{\link{LongitudinalModel}} object.}
+\item{model}{(\code{LongitudinalModel}) A \code{\link{LongitudinalModel}} object.}
 
 \item{...}{Not used.}
 }

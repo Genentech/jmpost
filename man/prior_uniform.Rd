@@ -7,9 +7,9 @@
 prior_uniform(alpha, beta)
 }
 \arguments{
-\item{alpha}{(\code{number})\cr minimum value parameter.}
+\item{alpha}{(\code{number}) minimum value parameter.}
 
-\item{beta}{(\code{number})\cr maximum value parameter.}
+\item{beta}{(\code{number}) maximum value parameter.}
 }
 \description{
 Uniform Prior Distribution

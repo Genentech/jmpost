@@ -7,10 +7,10 @@
 render_stan_limits(limits)
 }
 \arguments{
-\item{limits}{(\code{numeric})\cr the lower and upper limits for a truncated distribution}
+\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
 }
 \value{
-(\code{character})\cr the Stan syntax for truncated distributions
+(\code{character}) the Stan syntax for truncated distributions
 }
 \description{
 This function creates the Stan syntax for truncated distributions

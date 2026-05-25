@@ -4,9 +4,9 @@
 \alias{DataLongitudinal-Shared}
 \title{Re-used documentation for \code{DataLongitudinal}}
 \arguments{
-\item{object}{(\code{\link{DataLongitudinal}}) \cr Longitudinal Data.}
+\item{object}{(\code{DataLongitudinal}) Longitudinal Data.}
 
-\item{x}{(\code{\link{DataLongitudinal}}) \cr Longitudinal Data.}
+\item{x}{(\code{DataLongitudinal}) Longitudinal Data.}
 
 \item{...}{Not Used.}
 }

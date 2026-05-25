@@ -7,9 +7,9 @@
 \method{summary}{Quantities}(object, conf.level = 0.95, ...)
 }
 \arguments{
-\item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
+\item{object}{(\code{Quantities}) generated quantities.}
 
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{conf.level}{(\code{numeric}) confidence level of the interval.}
 
 \item{...}{not used.}
 }

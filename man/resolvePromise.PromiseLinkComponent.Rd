@@ -7,14 +7,14 @@
 \method{resolvePromise}{PromiseLinkComponent}(object, model, ...)
 }
 \arguments{
-\item{object}{(\code{\link{PromiseLinkComponent}}) \cr the promise to resolve}
+\item{object}{(\code{PromiseLinkComponent}) the promise to resolve}
 
-\item{model}{(\code{\link{LongitudinalModel}}) \cr the model to resolve the promise with}
+\item{model}{(\code{LongitudinalModel}) the model to resolve the promise with}
 
 \item{...}{Not used.}
 }
 \value{
-(\code{\link{LinkComponent}}) \cr the resolved \code{LinkComponent} object
+(\code{LinkComponent}) the resolved \code{LinkComponent} object
 }
 \description{
 Resolves a \code{\link{PromiseLinkComponent}} object to a \code{\link{LinkComponent}} object.

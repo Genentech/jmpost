@@ -86,20 +86,20 @@ QuantityGeneratorPrediction(times, newdata = NULL, params = NULL)
 QuantityGeneratorSubject(times, subjects = NULL)
 }
 \arguments{
-\item{object}{(\code{Grid})\cr object to convert to a \code{QuantityGenerator} or \code{QuantityCollapser}.}
+\item{object}{(\code{Grid}) object to convert to a \code{QuantityGenerator} or \code{QuantityCollapser}.}
 
 \item{...}{Not currently used.}
 
-\item{times}{(\code{numeric})\cr vector of time points to extract quantities at.}
+\item{times}{(\code{numeric}) vector of time points to extract quantities at.}
 
-\item{groups}{(\code{character})\cr vector of labels to apply to the generated quantities.}
+\item{groups}{(\code{character}) vector of labels to apply to the generated quantities.}
 
-\item{indexes}{(\code{list})\cr list of indexes that specify which observations from a
+\item{indexes}{(\code{list}) list of indexes that specify which observations from a
 \code{QuantityGenerator} should be combined to form the desired quantities.}
 
-\item{data}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
+\item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
 
-\item{subjects}{(\code{character})\cr vector of subjects to extract quantities for.}
+\item{subjects}{(\code{character}) vector of subjects to extract quantities for.}
 }
 \description{
 Developer details for \code{QuantityX} objects/methods. This page just outlines the arguments

@@ -10,9 +10,9 @@
 LongitudinalQuantities(object, grid)
 }
 \arguments{
-\item{object}{(\code{\link{JointModelSamples}}) \cr samples as drawn from a Joint Model.}
+\item{object}{(\code{JointModelSamples}) samples as drawn from a Joint Model.}
 
-\item{grid}{(\code{Grid}) \cr object that specifies which subjects and time points to calculate the
+\item{grid}{(\code{Grid}) object that specifies which subjects and time points to calculate the
 quantities for. See \link{Grid-Functions}.}
 }
 \description{

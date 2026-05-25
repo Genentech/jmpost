@@ -18,19 +18,19 @@ SimSurvival(
 )
 }
 \arguments{
-\item{time_max}{(\code{number})\cr the maximum time to simulate to.}
+\item{time_max}{(\code{number}) the maximum time to simulate to.}
 
-\item{time_step}{(\code{number})\cr the time interval between evaluating the log-hazard function.}
+\item{time_step}{(\code{number}) the time interval between evaluating the log-hazard function.}
 
-\item{lambda_censor}{(\code{number})\cr the censoring rate.}
+\item{lambda_censor}{(\code{number}) the censoring rate.}
 
-\item{beta_cont}{(\code{number})\cr the continuous covariate coefficient.}
+\item{beta_cont}{(\code{number}) the continuous covariate coefficient.}
 
-\item{beta_cat}{(\code{numeric})\cr the categorical covariate coefficients.}
+\item{beta_cat}{(\code{numeric}) the categorical covariate coefficients.}
 
-\item{loghazard}{(\code{function})\cr the log hazard function.}
+\item{loghazard}{(\code{function}) the log hazard function.}
 
-\item{name}{(\code{character})\cr the name of the object.}
+\item{name}{(\code{character}) the name of the object.}
 }
 \description{
 Abstract Simulation Class for Survival Data

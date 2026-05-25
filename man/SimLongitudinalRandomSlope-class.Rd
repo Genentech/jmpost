@@ -18,19 +18,19 @@ SimLongitudinalRandomSlope(
 )
 }
 \arguments{
-\item{times}{(\code{numeric})\cr the times to generate observations at.}
+\item{times}{(\code{numeric}) the times to generate observations at.}
 
-\item{intercept}{(\code{numeric})\cr the mean baseline value for each study.}
+\item{intercept}{(\code{numeric}) the mean baseline value for each study.}
 
-\item{slope_mu}{(\code{numeric})\cr the population slope for each treatment arm.}
+\item{slope_mu}{(\code{numeric}) the population slope for each treatment arm.}
 
-\item{slope_sigma}{(\code{numeric})\cr the random slope standard deviation for each treatment arm.}
+\item{slope_sigma}{(\code{numeric}) the random slope standard deviation for each treatment arm.}
 
-\item{sigma}{(\code{number})\cr the variance of the longitudinal values.}
+\item{sigma}{(\code{number}) the variance of the longitudinal values.}
 
-\item{link_dsld}{(\code{number})\cr the link coefficient for the DSLD contribution.}
+\item{link_dsld}{(\code{number}) the link coefficient for the DSLD contribution.}
 
-\item{link_identity}{(\code{number})\cr the link coefficient for the identity contribution.}
+\item{link_identity}{(\code{number}) the link coefficient for the identity contribution.}
 }
 \description{
 Simulate Longitudinal Data from a Random Slope Model

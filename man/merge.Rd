@@ -41,7 +41,7 @@ merge(x, y, ...)
 
 \item{...}{additional arguments.}
 
-\item{stan_blocks}{(\code{list})\cr reference list of stan blocks.}
+\item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 }
 \description{
 Merge two \code{StanModule} or \code{ParameterList} objects.

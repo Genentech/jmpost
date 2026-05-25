@@ -10,7 +10,7 @@ resolvePromise(object, ...)
 \method{resolvePromise}{default}(object, ...)
 }
 \arguments{
-\item{object}{(\code{ANY})\cr an object to resolve.}
+\item{object}{(\code{ANY}) an object to resolve.}
 
 \item{...}{(\code{ANY})\cr additional arguments.
 

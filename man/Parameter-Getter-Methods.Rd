@@ -14,9 +14,9 @@
 \method{size}{Parameter}(object)
 }
 \arguments{
-\item{x}{(\code{Paramater}) \cr A model parameter}
+\item{x}{(\code{Paramater}) A model parameter}
 
-\item{object}{(\code{Paramater}) \cr A model parameter}
+\item{object}{(\code{Paramater}) A model parameter}
 
 \item{...}{Not used.}
 }

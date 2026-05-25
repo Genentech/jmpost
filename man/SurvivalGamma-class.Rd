@@ -14,11 +14,11 @@ SurvivalGamma(
 )
 }
 \arguments{
-\item{k}{(\code{Prior})\cr for the shape \code{k}.}
+\item{k}{(\code{Prior}) for the shape \code{k}.}
 
-\item{theta}{(\code{Prior})\cr for the scale \code{theta}.}
+\item{theta}{(\code{Prior}) for the scale \code{theta}.}
 
-\item{beta}{(\code{Prior})\cr for covariates coefficients \code{beta}.}
+\item{beta}{(\code{Prior}) for covariates coefficients \code{beta}.}
 }
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the

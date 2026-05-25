@@ -7,9 +7,9 @@
 prior_invgamma(alpha, beta)
 }
 \arguments{
-\item{alpha}{(\code{number})\cr Shape parameter.}
+\item{alpha}{(\code{number}) Shape parameter.}
 
-\item{beta}{(\code{number})\cr Scale parameter.}
+\item{beta}{(\code{number}) Scale parameter.}
 }
 \description{
 Inverse-Gamma Prior Distribution

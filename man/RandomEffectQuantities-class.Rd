@@ -10,11 +10,11 @@
 RandomEffectQuantities(quantities, subject, parameter)
 }
 \arguments{
-\item{quantities}{(\code{matrix})\cr of random effects values.}
+\item{quantities}{(\code{matrix}) of random effects values.}
 
-\item{subject}{(\code{character})\cr labels specifying which subjects the values belong to.}
+\item{subject}{(\code{character}) labels specifying which subjects the values belong to.}
 
-\item{parameter}{(\code{character})\cr labels specifying which parameter the value is.}
+\item{parameter}{(\code{character}) labels specifying which parameter the value is.}
 }
 \description{
 A simple wrapper around a \code{matrix} to store required metadata for patient level

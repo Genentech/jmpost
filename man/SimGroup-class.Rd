@@ -10,11 +10,11 @@
 SimGroup(n, arm, study)
 }
 \arguments{
-\item{n}{(\code{numeric})\cr number of subjects in the group.}
+\item{n}{(\code{numeric}) number of subjects in the group.}
 
-\item{arm}{(\code{character})\cr treatment arm.}
+\item{arm}{(\code{character}) treatment arm.}
 
-\item{study}{(\code{character})\cr study name.}
+\item{study}{(\code{character}) study name.}
 }
 \description{
 Specifies a simulation group to be used by \code{\link[=SimJointData]{SimJointData()}}.

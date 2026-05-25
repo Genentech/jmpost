@@ -7,11 +7,11 @@
 remove_missing_rows(data, formula, extra_vars = NULL)
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr input data.}
+\item{data}{(\code{data.frame}) input data.}
 
 \item{formula}{(\code{formula} or \code{NULL})\cr which variables to inspect for missingness.}
 
-\item{extra_vars}{(\code{character})\cr additional variables to inspect for missingness.}
+\item{extra_vars}{(\code{character}) additional variables to inspect for missingness.}
 }
 \value{
 The \code{data} after removing observations that contain missing values in the required variables.

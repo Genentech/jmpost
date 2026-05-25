@@ -14,11 +14,11 @@ SurvivalWeibullPH(
 )
 }
 \arguments{
-\item{lambda}{(\code{Prior})\cr for the scale \code{lambda}.}
+\item{lambda}{(\code{Prior}) for the scale \code{lambda}.}
 
-\item{gamma}{(\code{Prior})\cr for the shape \code{gamma}.}
+\item{gamma}{(\code{Prior}) for the shape \code{gamma}.}
 
-\item{beta}{(\code{Prior})\cr for covariates coefficients \code{beta}.}
+\item{beta}{(\code{Prior}) for covariates coefficients \code{beta}.}
 }
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the

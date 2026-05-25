@@ -26,7 +26,7 @@ sampleSubjects(object, subjects_df)
 \arguments{
 \item{object}{(\code{SimLongitudinal} or \code{SimSurvival}) \cr object to generate subjects from.}
 
-\item{subjects_df}{(\code{data.frame}) \cr the subjects to generate observations for. See details.}
+\item{subjects_df}{(\code{data.frame}) the subjects to generate observations for. See details.}
 }
 \description{
 Generate Simulated Subjects

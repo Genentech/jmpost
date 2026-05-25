@@ -4,11 +4,11 @@
 \alias{RandomEffectQuantities-Shared}
 \title{Re-used documentation for \code{RandomEffectQuantities}}
 \arguments{
-\item{x}{(\code{\link{RandomEffectQuantities}}) \cr generated quantities.}
+\item{x}{(\code{RandomEffectQuantities}) generated quantities.}
 
-\item{object}{(\code{\link{RandomEffectQuantities}}) \cr generated quantities.}
+\item{object}{(\code{RandomEffectQuantities}) generated quantities.}
 
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{conf.level}{(\code{numeric}) confidence level of the interval.}
 
 \item{...}{not used.}
 }

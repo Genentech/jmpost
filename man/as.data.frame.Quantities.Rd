@@ -7,7 +7,7 @@
 \method{as.data.frame}{Quantities}(x, ...)
 }
 \arguments{
-\item{x}{(\code{\link{Quantities}}) \cr generated quantities.}
+\item{x}{(\code{Quantities}) generated quantities.}
 
 \item{...}{not used.}
 }

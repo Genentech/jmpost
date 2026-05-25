@@ -7,7 +7,7 @@
 collapse_quantities(quantities_raw, collapser)
 }
 \arguments{
-\item{quantities_raw}{(\code{matrix})\cr of samples with 1 row per sample and 1 column per
+\item{quantities_raw}{(\code{matrix}) of samples with 1 row per sample and 1 column per
 distinct quantity.}
 
 \item{collapser}{(\code{\link{QuantityCollapser}})\cr specifies which columns to combine together.}

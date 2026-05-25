@@ -4,13 +4,13 @@
 \alias{Quantities-Shared}
 \title{Re-used documentation for \code{Quantities}}
 \arguments{
-\item{x}{(\code{\link{Quantities}}) \cr generated quantities.}
+\item{x}{(\code{Quantities}) generated quantities.}
 
-\item{object}{(\code{\link{Quantities}}) \cr generated quantities.}
+\item{object}{(\code{Quantities}) generated quantities.}
 
-\item{type}{(\code{character})\cr sets the \code{type} variable.}
+\item{type}{(\code{character}) sets the \code{type} variable.}
 
-\item{conf.level}{(\code{numeric}) \cr confidence level of the interval.}
+\item{conf.level}{(\code{numeric}) confidence level of the interval.}
 
 \item{...}{not used.}
 }

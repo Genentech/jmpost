@@ -7,9 +7,9 @@
 prior_logistic(mu, sigma)
 }
 \arguments{
-\item{mu}{(\code{number})\cr Location parameter.}
+\item{mu}{(\code{number}) Location parameter.}
 
-\item{sigma}{(\code{number})\cr Scale parameter.}
+\item{sigma}{(\code{number}) Scale parameter.}
 }
 \description{
 Logistic Prior Distribution

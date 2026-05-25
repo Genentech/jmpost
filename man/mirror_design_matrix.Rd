@@ -7,9 +7,9 @@
 mirror_design_matrix(olddata, newdata)
 }
 \arguments{
-\item{olddata}{(\code{\link{DataSurvival}}) \cr The original data to be used as a template for the new data}
+\item{olddata}{(\code{DataSurvival}) The original data to be used as a template for the new data}
 
-\item{newdata}{(\code{\link{data.frame}}) \cr The new data to be used to generate the design matrix}
+\item{newdata}{(\code{data.frame}) The new data to be used to generate the design matrix}
 }
 \description{
 This function takes a \code{DataSurvival} object and a \code{data.frame} object and generates
