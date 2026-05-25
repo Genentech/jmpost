@@ -10,7 +10,7 @@
 #' @keywords internal
 get_missing_rownumbers <- function(df, formula = NULL) {
     if (is.null(formula)) {
-        formula <- ~ .
+        formula <- ~.
     }
     mdf <- stats::model.frame(formula, data = df, na.action = stats::na.pass)
     which(!stats::complete.cases(mdf))
@@ -128,7 +128,6 @@ expand_initial_values <- function(initial_values, sizes) {
 #'
 #' @keywords internal
 replace_with_lookup <- function(sizes, data) {
-
     assert_that(is.list(sizes), msg = "`sizes` must be a list")
     assert_that(is.list(data), msg = "`data` must be a list")
 
@@ -174,14 +173,18 @@ samples_median_ci <- function(samples, level = 0.95) {
 
     samples_median <- apply(samples, MARGIN = 2L, FUN = stats::median)
     probs <- c((1 - level) / 2, (1 + level) / 2)
-    samples_ci <- t(apply(samples, MARGIN = 2L, FUN = stats::quantile, probs = probs))
+    samples_ci <- t(apply(
+        samples,
+        MARGIN = 2L,
+        FUN = stats::quantile,
+        probs = probs
+    ))
     colnames(samples_ci) <- c("lower", "upper")
     as.data.frame(cbind(
         median = samples_median,
         samples_ci
     ))
 }
-
 
 
 #' `decorated_render`
@@ -232,7 +235,6 @@ validate_time_grid <- function(time_grid) {
 }
 
 
-
 #' `expand_subjects`
 #'
 #' This function checks and expands a given subjects vector.
@@ -260,7 +262,6 @@ expand_subjects <- function(subjects, all_subjects) {
     )
     return(subjects)
 }
-
 
 
 #' Decompose subjects into Relevant Components

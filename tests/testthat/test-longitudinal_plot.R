@@ -1,4 +1,3 @@
-
 test_that("longitudinal_plot() works as expected", {
     set.seed(3023)
 

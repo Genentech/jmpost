@@ -1,4 +1,3 @@
-
 #' Re-used documentation for `RandomEffectQuantities`
 #'
 #' @param x ([`RandomEffectQuantities`]) \cr generated quantities.
@@ -9,10 +8,6 @@
 #' @keywords internal
 #' @name RandomEffectQuantities-Shared
 NULL
-
-
-
-
 
 
 #' Random Effects Quantities Container
@@ -58,10 +53,14 @@ setValidity(
     Class = "RandomEffectQuantities",
     method = function(object) {
         if (length(object@subject) != ncol(object@quantities)) {
-            return("Length of `subject` must be equal to the number of columns in `quantities`")
+            return(
+                "Length of `subject` must be equal to the number of columns in `quantities`"
+            )
         }
         if (length(object@parameter) != ncol(object@quantities)) {
-            return("Length of `parameter` must be equal to the number of columns in `quantities`")
+            return(
+                "Length of `parameter` must be equal to the number of columns in `quantities`"
+            )
         }
         TRUE
     }
@@ -105,7 +104,6 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
-
 
 
 #' `RandomEffectQuantities` -> `data.frame`
@@ -152,7 +150,13 @@ summary.RandomEffectQuantities <- function(object, conf.level = 0.95, ...) {
 
     quantities_summarised$subject <- object@subject
     quantities_summarised$parameter <- object@parameter
-    quantities_summarised[, c("subject", "parameter", "median", "lower", "upper")]
+    quantities_summarised[, c(
+        "subject",
+        "parameter",
+        "median",
+        "lower",
+        "upper"
+    )]
 }
 
 
@@ -176,8 +180,14 @@ LongitudinalRandomEffects <- function(object) {
     )
     expanded$subject <- names(subject_indexes)[expanded$subject_indexes]
     expanded$parameter <- names(random_effects_names)[expanded$parameter_long]
-    stan_parameter_names <- sprintf("%s[%i]", expanded$parameter_long, expanded$subject_indexes)
-    draw_matrix <- posterior::as_draws_matrix(object@results$draws(stan_parameter_names))
+    stan_parameter_names <- sprintf(
+        "%s[%i]",
+        expanded$parameter_long,
+        expanded$subject_indexes
+    )
+    draw_matrix <- posterior::as_draws_matrix(object@results$draws(
+        stan_parameter_names
+    ))
     class(draw_matrix) <- "matrix"
     rownames(draw_matrix) <- NULL
     colnames(draw_matrix) <- NULL

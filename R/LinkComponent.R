@@ -6,8 +6,6 @@
 NULL
 
 
-
-
 #' `LinkComponent` Function Arguments
 #'
 #' This exists to contain all the common arguments for [`LinkComponent`] methods.
@@ -20,8 +18,6 @@ NULL
 #' @name LinkComponent-Shared
 #' @keywords internal
 NULL
-
-
 
 
 #' `LinkComponent`
@@ -65,12 +61,14 @@ LinkComponent <- function(stan, prior, key, ...) {
     .LinkComponent(
         stan = stan,
         key = key,
-        parameters = ParameterList(Parameter(name = key, prior = prior, size = 1)),
+        parameters = ParameterList(Parameter(
+            name = key,
+            prior = prior,
+            size = 1
+        )),
         ...
     )
 }
-
-
 
 
 #' @family LinkComponent
@@ -89,8 +87,6 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 }
 
 
-
-
 #' `LinkComponent` -> `StanModule`
 #'
 #' Converts a [`LinkComponent`] object to a [`StanModule`] object
@@ -103,7 +99,6 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 as.StanModule.LinkComponent <- function(object, ...) {
     object@stan
 }
-
 
 
 #' `LinkComponent` -> `list`
@@ -137,7 +132,8 @@ setMethod(
         cat(
             paste0(
                 "\nLinkComponent with parameter:\n    ",
-                as_print_string(object), "\n\n"
+                as_print_string(object),
+                "\n\n"
             )
         )
     }

@@ -1,4 +1,3 @@
-
 #
 # Setup global data objects to be used within this test file
 #
@@ -38,7 +37,6 @@ set_fixtures_gsf <- function() {
         .silent = TRUE
     )
 
-
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
         dplyr::group_by(subject) |>
@@ -46,7 +44,6 @@ set_fixtures_gsf <- function() {
         dplyr::group_by(subject) |>
         dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
-
 
     jm <- JointModel(
         longitudinal = LongitudinalGSF(
@@ -103,7 +100,6 @@ set_fixtures_gsf <- function() {
     fixtures_gsf$dat_lm <- dat_lm
     fixtures_gsf$jlist <- jlist
     return(fixtures_gsf)
-
 }
 
 set_fixtures_rs <- function() {
@@ -136,7 +132,6 @@ set_fixtures_rs <- function() {
         .silent = TRUE
     )
 
-
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
         dplyr::group_by(subject) |>
@@ -144,7 +139,6 @@ set_fixtures_rs <- function() {
         dplyr::group_by(subject) |>
         dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
-
 
     jm <- JointModel(
         longitudinal = LongitudinalRandomSlope(
@@ -195,7 +189,6 @@ set_fixtures_rs <- function() {
     fixtures_rs$dat_lm <- dat_lm
     fixtures_rs$jlist <- jlist
     return(fixtures_rs)
-
 }
 
 
@@ -211,7 +204,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         time = c(110, 220, 42, 302),
         event = c(1, 1, 0, 1)
     )
-
 
     dat_lm <- dplyr::tibble(
         subject = c("A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "D"),
@@ -259,7 +251,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
-
     #
     # GridGrouped
     #
@@ -282,7 +273,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
-
     #
     # GridObserved
     #
@@ -303,7 +293,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         indexes = list(1, 2, 3, 4, 5, 6)
     )
     expect_equal(actual, expected)
-
 
     #
     # GridManual
@@ -330,8 +319,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
     )
     expect_equal(actual, expected)
 
-
-
     #
     # GridEven
     #
@@ -356,7 +343,6 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         indexes = as.list(seq_along(expected@times))
     )
     expect_equal(actual, expected)
-
 
     #
     # GridEvent
@@ -413,16 +399,10 @@ test_that("Grid objects work with QuantityGenerator and QuantityCollapser", {
         as.QuantityGenerator(grid, data = dj2),
         regexp = "`GridEvent\\(\\)`"
     )
-
 })
 
 
-
-
-
-
 test_that("GridObservered + Constructs correct quantities", {
-
     #
     # This test essentially works by attempting to construct the generated
     # quantities by hand and then testing to show that they match the values
@@ -444,7 +424,6 @@ test_that("GridObservered + Constructs correct quantities", {
         )
     )
     actual_obsv <- summary(longquant_obsv)
-
 
     longquant_manual <- LongitudinalQuantities(
         fixtures_gsf$mp,
@@ -469,14 +448,17 @@ test_that("GridObservered + Constructs correct quantities", {
 
     expect_equal(actual_obsv, actual_manual)
 
-
-
-    pred_mat <- cmdstanr::as.CmdStanMCMC(fixtures_gsf$mp)$draws("Ypred", format = "draws_matrix")
+    pred_mat <- cmdstanr::as.CmdStanMCMC(fixtures_gsf$mp)$draws(
+        "Ypred",
+        format = "draws_matrix"
+    )
 
     fdat <- fixtures_gsf$dat_lm |>
         dplyr::arrange(subject, time, sld) |>
         dplyr::mutate(index = seq_len(dplyr::n())) |>
-        dplyr::filter(subject %in% c("subject_0004", "subject_0002", "subject_0050"))
+        dplyr::filter(
+            subject %in% c("subject_0004", "subject_0002", "subject_0050")
+        )
 
     times <- c(
         fdat |> dplyr::filter(subject == "subject_0004") |> dplyr::pull(time),
@@ -492,7 +474,10 @@ test_that("GridObservered + Constructs correct quantities", {
 
     preds_reduced <- pred_mat[, indexes]
     expected <- dplyr::tibble(
-        group = rep(c("subject_0004", "subject_0002", "subject_0050"), c(7, 9, 9)),
+        group = rep(
+            c("subject_0004", "subject_0002", "subject_0050"),
+            c(7, 9, 9)
+        ),
         time = times,
         median = apply(preds_reduced, 2, median),
         lower = apply(preds_reduced, 2, quantile, 0.025),
@@ -521,9 +506,16 @@ test_that("GridObservered + Constructs correct quantities", {
     lambda_samples <- exp(design %*% t(beta_coefs))[c(4, 2, 50), ]
 
     samples_df <- dplyr::tibble(
-        subject = rep(c("subject_0004", "subject_0002", "subject_0050"), c(100, 100, 100)),
+        subject = rep(
+            c("subject_0004", "subject_0002", "subject_0050"),
+            c(100, 100, 100)
+        ),
         id = rep(seq_len(100), 3),
-        samples = c(lambda_samples[1, ], lambda_samples[2, ], lambda_samples[3, ])
+        samples = c(
+            lambda_samples[1, ],
+            lambda_samples[2, ],
+            lambda_samples[3, ]
+        )
     )
 
     expected <- purrr::map(
@@ -613,9 +605,7 @@ test_that("coalesceGridTime() works as expected", {
 })
 
 
-
 test_that("GridPopulation() works as expected for GSF models", {
-
     selected_times <- seq(-0.5, 4, by = 0.02)
 
     actual_quants <- LongitudinalQuantities(
@@ -626,7 +616,6 @@ test_that("GridPopulation() works as expected for GSF models", {
     )
     actual <- summary(actual_quants) |>
         dplyr::arrange(group, time)
-
 
     #
     # Derive values by hand
@@ -643,29 +632,50 @@ test_that("GridPopulation() works as expected for GSF models", {
         dplyr::as_tibble(.name_repair = make.names) |>
         dplyr::mutate(sample_id = seq_len(dplyr::n()))
 
-
     grouped_samples <- tidyr::crossing(
         samples_df,
         time = selected_times
     ) |>
         dplyr::mutate(
             esld_g1 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.1.), exp(lm_gsf_mu_kg.1.), plogis(lm_gsf_mu_phi.1.)
+                time,
+                exp(lm_gsf_mu_bsld.1.),
+                exp(lm_gsf_mu_ks.1.),
+                exp(lm_gsf_mu_kg.1.),
+                plogis(lm_gsf_mu_phi.1.)
             ),
             esld_g2 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.1.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), plogis(lm_gsf_mu_phi.2.)
+                time,
+                exp(lm_gsf_mu_bsld.1.),
+                exp(lm_gsf_mu_ks.2.),
+                exp(lm_gsf_mu_kg.2.),
+                plogis(lm_gsf_mu_phi.2.)
             ),
             esld_g3 = gsf_sld(
-                time, exp(lm_gsf_mu_bsld.2.), exp(lm_gsf_mu_ks.2.), exp(lm_gsf_mu_kg.2.), plogis(lm_gsf_mu_phi.2.)
+                time,
+                exp(lm_gsf_mu_bsld.2.),
+                exp(lm_gsf_mu_ks.2.),
+                exp(lm_gsf_mu_kg.2.),
+                plogis(lm_gsf_mu_phi.2.)
             ),
         ) |>
         dplyr::select(time, esld_g1, esld_g2, esld_g3, sample_id) |>
-        tidyr::pivot_longer(cols = starts_with("esld"), names_to = "group", values_to = "sld") |>
-        dplyr::mutate(group = factor(
-            group,
-            levels = c("esld_g1", "esld_g2", "esld_g3"),
-            labels = c("arm=Arm-A; study=Study-X", "arm=Arm-B; study=Study-X", "arm=Arm-B; study=Study-Y")
-        )) |>
+        tidyr::pivot_longer(
+            cols = starts_with("esld"),
+            names_to = "group",
+            values_to = "sld"
+        ) |>
+        dplyr::mutate(
+            group = factor(
+                group,
+                levels = c("esld_g1", "esld_g2", "esld_g3"),
+                labels = c(
+                    "arm=Arm-A; study=Study-X",
+                    "arm=Arm-B; study=Study-X",
+                    "arm=Arm-B; study=Study-Y"
+                )
+            )
+        ) |>
         dplyr::mutate(group = as.character(group))
 
     expected <- grouped_samples |>
@@ -684,11 +694,9 @@ test_that("GridPopulation() works as expected for GSF models", {
     expect_gt(cor(actual$upper, expected$upper), 0.99999999)
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$group)
-
 })
 
 test_that("GridPopulation() works as expected for Longitudinal models", {
-
     selected_times <- seq(-60, 400, by = 20)
 
     actual_quants <- LongitudinalQuantities(
@@ -701,7 +709,6 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
         dplyr::arrange(group, time) |>
         dplyr::as_tibble()
 
-
     #
     # Derive values by hand
     #
@@ -711,7 +718,6 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     ) |>
         dplyr::as_tibble(.name_repair = make.names) |>
         dplyr::mutate(sample_id = seq_len(dplyr::n()))
-
 
     grouped_samples <- tidyr::crossing(
         samples_df,
@@ -723,12 +729,22 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
             esld_g3 = lm_rs_intercept.2. + lm_rs_slope_mu.2. * time
         ) |>
         dplyr::select(time, esld_g1, esld_g2, esld_g3, sample_id) |>
-        tidyr::pivot_longer(cols = starts_with("esld"), names_to = "group", values_to = "sld") |>
-        dplyr::mutate(group = factor(
-            group,
-            levels = c("esld_g1", "esld_g2", "esld_g3"),
-            labels = c("arm=Arm-A; study=Study-X", "arm=Arm-B; study=Study-X", "arm=Arm-B; study=Study-Y")
-        )) |>
+        tidyr::pivot_longer(
+            cols = starts_with("esld"),
+            names_to = "group",
+            values_to = "sld"
+        ) |>
+        dplyr::mutate(
+            group = factor(
+                group,
+                levels = c("esld_g1", "esld_g2", "esld_g3"),
+                labels = c(
+                    "arm=Arm-A; study=Study-X",
+                    "arm=Arm-B; study=Study-X",
+                    "arm=Arm-B; study=Study-Y"
+                )
+            )
+        ) |>
         dplyr::mutate(group = as.character(group))
 
     expected <- grouped_samples |>
@@ -747,7 +763,6 @@ test_that("GridPopulation() works as expected for Longitudinal models", {
     expect_gt(cor(actual$upper, expected$upper), 0.99999999)
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$group)
-
 })
 
 test_that("GridPopulation() doesn't work with SurvivalQuantities", {

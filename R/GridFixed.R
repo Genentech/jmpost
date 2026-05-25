@@ -25,7 +25,6 @@ GridFixed <- function(subjects = NULL, times = NULL) {
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator.GridFixed <- function(object, data, ...) {
-
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     subjects <- unlist(as.list(object, data = data), use.names = FALSE)

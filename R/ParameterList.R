@@ -43,14 +43,17 @@ ParameterList <- function(...) {
 setValidity(
     Class = "ParameterList",
     method = function(object) {
-        is_parameters <- vapply(object@parameters, function(x) is(x, "Parameter"), logical(1))
+        is_parameters <- vapply(
+            object@parameters,
+            function(x) is(x, "Parameter"),
+            logical(1)
+        )
         if (!all(is_parameters)) {
             return("all elements must be of class 'Parameter'")
         }
         return(TRUE)
     }
 )
-
 
 
 # as.StanModule-ParameterList ----
@@ -74,7 +77,6 @@ as.StanModule.ParameterList <- function(object, ...) {
     )
     Reduce(merge, stan_modules)
 }
-
 
 
 #' `ParameterList` -> `list`
@@ -123,8 +125,6 @@ setMethod(
 as.list.ParameterList <- function(x, ...) {
     as.list(as.StanModule(x))
 }
-
-
 
 
 #' Parameter-List Getter Functions
@@ -185,7 +185,6 @@ as_print_string.ParameterList <- function(object, ...) {
     }
     return(x)
 }
-
 
 
 #' @rdname show-object

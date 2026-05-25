@@ -1,8 +1,6 @@
-
 #' @include DataJoint.R
 #' @include Quantities.R
 NULL
-
 
 
 #' Re-used documentation for `SurvivalQuantities`
@@ -14,7 +12,6 @@ NULL
 #' @keywords internal
 #' @name SurvivalQuantities-Shared
 NULL
-
 
 
 #' `SurvivalQuantities` Object & Constructor Function
@@ -114,7 +111,6 @@ SurvivalQuantities <- function(
 }
 
 
-
 #' `as.data.frame`
 #'
 #' @param x ([`SurvivalQuantities`]) \cr longitudinal quantities.
@@ -124,7 +120,6 @@ SurvivalQuantities <- function(
 as.data.frame.SurvivalQuantities <- function(x, ...) {
     as.data.frame(x@quantities)
 }
-
 
 
 #' summary
@@ -168,7 +163,9 @@ autoplot.SurvivalQuantities <- function(
     add_wrap = TRUE,
     ...
 ) {
-    include_ci <- !is.null(conf.level) && is.numeric(conf.level) && conf.level > 0
+    include_ci <- !is.null(conf.level) &&
+        is.numeric(conf.level) &&
+        conf.level > 0
     # If CI aren't needed supply a default 0.95 to summary function as it needs
     # a value to be specified to work
     conf.level <- if (include_ci) conf.level else 0.95
@@ -202,8 +199,6 @@ autoplot.SurvivalQuantities <- function(
         y_label = label
     )
 }
-
-
 
 
 #' Survival Plot
@@ -319,7 +314,6 @@ setMethod(
         cat("\n", string, "\n\n")
     }
 )
-
 
 
 #' `brierScore`

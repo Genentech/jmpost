@@ -1,5 +1,3 @@
-
-
 #' Re-used documentation for Brier Score components
 #'
 #' @param t (`numeric`)\cr timepoints to calculate the desired quantity at.
@@ -17,8 +15,6 @@
 #' @name Brier-Score-Shared
 #' @keywords internal
 NULL
-
-
 
 
 #' Reverse Kaplan-Meier
@@ -163,7 +159,6 @@ brier_score <- function(
     maintain_cen_order = TRUE,
     event_offset = TRUE
 ) {
-
     square_diff_mat <- bs_get_squared_dist(
         t = t,
         times = times,
@@ -190,7 +185,6 @@ brier_score <- function(
 
 #' @rdname brier_score
 bs_get_squared_dist <- function(t, times, events, pred_mat) {
-
     assert_numeric(
         times,
         finite = TRUE,
@@ -217,7 +211,6 @@ bs_get_squared_dist <- function(t, times, events, pred_mat) {
     assert_that(
         length(events) == length(times)
     )
-
 
     expected_mat <- mapply(
         \(ti, event) (ti <= t) * event * 1,
@@ -267,21 +260,27 @@ bs_get_weights <- function(
     n_col <- length(t)
     n_row <- length(times)
 
-    reverse_km <- if (maintain_cen_order) reverse_km_event_first else reverse_km_cen_first
+    reverse_km <- if (maintain_cen_order) {
+        reverse_km_event_first
+    } else {
+        reverse_km_cen_first
+    }
     offset <- if (event_offset) -.Machine$double.eps^(1 / 2) else 0
 
     censor_dist_t <- reverse_km(t, times, events)
-    weight_mat_t <- 1 / matrix(
-        rep(censor_dist_t$surv, n_row),
-        nrow = n_row,
-        byrow = TRUE
-    )
+    weight_mat_t <- 1 /
+        matrix(
+            rep(censor_dist_t$surv, n_row),
+            nrow = n_row,
+            byrow = TRUE
+        )
 
     censor_dist_ti <- reverse_km(times + offset, times, events)
-    weight_mat_ti <- 1 / matrix(
-        rep(censor_dist_ti$surv, n_col),
-        nrow = n_row
-    )
+    weight_mat_ti <- 1 /
+        matrix(
+            rep(censor_dist_ti$surv, n_col),
+            nrow = n_row
+        )
 
     indicator_mat_t <- mapply(
         \(ti) (ti > t) * 1,

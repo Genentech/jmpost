@@ -1,4 +1,3 @@
-
 .onAttach <- function(libname, pkgname) {
     if (!is_cmdstanr_available()) {
         packageStartupMessage(
@@ -28,7 +27,9 @@
                 packageStartupMessage("CmdStan path set to: ", new_path)
             }
         } else {
-            packageStartupMessage("jmpost could not identify CmdStan path. Please use cmdstanr::set_cmdstan_path()")
+            packageStartupMessage(
+                "jmpost could not identify CmdStan path. Please use cmdstanr::set_cmdstan_path()"
+            )
         }
     }
     return(invisible(NULL))

@@ -47,7 +47,8 @@ as_print_string.SurvivalModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Survival Model with parameters:\n%s\n\n",
         object@name,
-        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
+        paste("   ", as_print_string(object@parameters)) |>
+            paste(collapse = "\n")
     )
     return(string)
 }

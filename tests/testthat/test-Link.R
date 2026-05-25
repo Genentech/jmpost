@@ -1,6 +1,3 @@
-
-
-
 test_that("link_none() works as expected", {
     expect_equal(
         Link(),
@@ -11,7 +8,6 @@ test_that("link_none() works as expected", {
         length(Link()),
         0
     )
-
 
     # Double check that key "link_none" bits of stan code present in the complete joint model
     # if no link is provided
@@ -84,7 +80,6 @@ test_that("Link prints as expected", {
         print(Link(linkDSLD(), linkIdentity()))
     )
 
-
     expect_snapshot({
         link <- resolvePromise(
             Link(linkDSLD(), linkIdentity()),
@@ -100,5 +95,4 @@ test_that("Link prints as expected", {
         )
         print(link)
     })
-
 })

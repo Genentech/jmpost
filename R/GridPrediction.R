@@ -34,7 +34,9 @@ setValidity(
             return("All elements of `params` must be named")
         }
         if (!is.null(object@newdata[["..new_subject.."]])) {
-            return("`newdata` must not contain a column named '..new_subject..'")
+            return(
+                "`newdata` must not contain a column named '..new_subject..'"
+            )
         }
         return(TRUE)
     }
@@ -44,7 +46,6 @@ setValidity(
 #' @rdname Quant-Dev
 #' @export
 as.QuantityGenerator.GridPrediction <- function(object, data, ...) {
-
     assert_class(data, "DataJoint")
     data_list <- as.list(data)
     validate_time_grid(object@times)
@@ -59,7 +60,8 @@ as.QuantityGenerator.GridPrediction <- function(object, data, ...) {
 
     QuantityGeneratorPrediction(
         times = rep(object@times, each = n_obs),
-        newdata = replicate(newdata, n = n_times, simplify = FALSE) |> dplyr::bind_rows(),
+        newdata = replicate(newdata, n = n_times, simplify = FALSE) |>
+            dplyr::bind_rows(),
         params = object@params
     )
 }

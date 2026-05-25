@@ -96,7 +96,6 @@ as.StanModule <- function(object, ...) {
 }
 
 
-
 #' `getParameters`
 #'
 #' Extract any modelling parameters as a [`ParameterList`] object
@@ -125,7 +124,6 @@ getParameters <- function(object, ...) {
 extractVariableNames <- function(object) {
     UseMethod("extractVariableNames")
 }
-
 
 
 # initialValues ----
@@ -263,7 +261,6 @@ as_print_string <- function(object, ...) {
 NULL
 
 
-
 #' `brierScore`
 #'
 #' @description
@@ -277,7 +274,6 @@ NULL
 brierScore <- function(object, ...) {
     UseMethod("brierScore")
 }
-
 
 
 #' Generate Simulated Observations
@@ -423,7 +419,6 @@ enableGQ.default <- function(object, ...) {
 }
 
 
-
 #' Get Prediction Names
 #'
 #' Utility function that returns the names of the required parameters for predicting
@@ -441,7 +436,6 @@ getPredictionNames <- function(object, ...) {
 getPredictionNames.default <- function(object, ...) {
     NULL
 }
-
 
 
 #' Get Random Effects Names
@@ -495,7 +489,6 @@ as_formula.default <- function(x, ...) {
 set_limits <- function(object, lower = -Inf, upper = Inf) {
     UseMethod("set_limits")
 }
-
 
 
 #' Save Object to File

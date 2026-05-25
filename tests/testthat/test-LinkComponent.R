@@ -1,5 +1,3 @@
-
-
 test_that("all link files pass stan's syntax checker", {
     expect_stan_syntax(
         load_with_base_stan("lm-gsf/link_dsld.stan")
@@ -8,9 +6,11 @@ test_that("all link files pass stan's syntax checker", {
         load_with_base_stan("lm-gsf/link_ttg.stan")
     )
     expect_stan_syntax(
-        load_with_base_stan("lm-gsf/link_identity.stan", "lm-gsf/functions.stan")
+        load_with_base_stan(
+            "lm-gsf/link_identity.stan",
+            "lm-gsf/functions.stan"
+        )
     )
-
 
     expect_stan_syntax(
         load_with_base_stan("lm-random-slope/link_dsld.stan")
@@ -21,9 +21,7 @@ test_that("all link files pass stan's syntax checker", {
 })
 
 
-
 test_that("complete models with links pass stan's syntax checker", {
-
     x <- JointModel(
         longitudinal = LongitudinalRandomSlope(),
         survival = SurvivalWeibullPH(),
@@ -35,8 +33,6 @@ test_that("complete models with links pass stan's syntax checker", {
     stan@generated_quantities <- ""
     expect_stan_syntax(stan)
 
-
-
     x <- JointModel(
         longitudinal = LongitudinalGSF(),
         survival = SurvivalLogLogistic(),
@@ -47,7 +43,6 @@ test_that("complete models with links pass stan's syntax checker", {
     # Until later so void it out for now
     stan@generated_quantities <- ""
     expect_stan_syntax(stan)
-
 })
 
 
@@ -79,7 +74,6 @@ test_that("LinkComponents are constructed correctly and can access key component
 
 
 test_that("Model specific links return the correct stan code", {
-
     ### GSF
 
     expect_equal(
@@ -113,7 +107,6 @@ test_that("Model specific links return the correct stan code", {
         as.StanModule(linkTTG(model = LongitudinalRandomSlope())),
         regexp = "Method `linkTTG` is not available"
     )
-
 })
 
 
@@ -166,7 +159,6 @@ test_that("PromiseLinkComponents work as expected", {
         x@key,
         "bob"
     )
-
 
     # Resolving promise throws an error if the function changes the key
     x <- PromiseLinkComponent(

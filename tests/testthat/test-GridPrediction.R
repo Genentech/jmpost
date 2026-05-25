@@ -35,7 +35,6 @@ set_fixtures_gsf_link <- function() {
         .silent = TRUE
     )
 
-
     dat_os <- jlist@survival
     dat_lm <- jlist@longitudinal |>
         dplyr::group_by(subject) |>
@@ -43,7 +42,6 @@ set_fixtures_gsf_link <- function() {
         dplyr::group_by(subject) |>
         dplyr::filter(!subject == "subject_0004" | seq_len(dplyr::n()) <= 7) |>
         dplyr::ungroup()
-
 
     jm <- JointModel(
         longitudinal = LongitudinalGSF(
@@ -103,7 +101,6 @@ set_fixtures_gsf_link <- function() {
     fixtures_gsf_link$dat_lm <- dat_lm
     fixtures_gsf_link$jlist <- jlist
     return(fixtures_gsf_link)
-
 }
 
 set_fixtures_weibull_only <- function() {
@@ -143,7 +140,6 @@ set_fixtures_weibull_only <- function() {
         ),
         .silent = TRUE
     )
-
 
     dat_os <- jlist@survival
 
@@ -185,7 +181,6 @@ set_fixtures_weibull_only <- function() {
     fixtures_weibull_only$dat_os <- dat_os
     fixtures_weibull_only$jlist <- jlist
     return(fixtures_weibull_only)
-
 }
 
 
@@ -194,7 +189,6 @@ fixtures_weibull_only <- set_fixtures_weibull_only()
 
 
 test_that("GridPrediction() works as expected for Survival models", {
-
     selected_times <- seq(0, 200, by = 20) / 365
 
     new_data <- dplyr::tibble(
@@ -221,7 +215,6 @@ test_that("GridPrediction() works as expected for Survival models", {
         dplyr::arrange(group, time) |>
         dplyr::as_tibble()
 
-
     #
     # Derive values by hand
     #
@@ -237,29 +230,85 @@ test_that("GridPrediction() works as expected for Survival models", {
         time = selected_times
     ) |>
         dplyr::mutate(
-            esld_g1 = sm_exp_lambda * exp(
-                1 * beta_os_cov.3. +
-                    link_dsld * gsf_dsld(time, new_params$b, new_params$s, new_params$g, new_params$phi) +
-                    link_ttg * gsf_ttg(time, new_params$b, new_params$s, new_params$g, new_params$phi)
-            ),
-            esld_g2 =  sm_exp_lambda * exp(
-                2 * beta_os_cov.3. + beta_os_cov.2. +
-                    link_dsld * gsf_dsld(time, new_params$b, new_params$s, new_params$g, new_params$phi) +
-                    link_ttg * gsf_ttg(time, new_params$b, new_params$s, new_params$g, new_params$phi)
-            ),
-            esld_g3 =  sm_exp_lambda * exp(
-                -1 * beta_os_cov.3. + beta_os_cov.1. +
-                    link_dsld * gsf_dsld(time, new_params$b, new_params$s, new_params$g, new_params$phi) +
-                    link_ttg * gsf_ttg(time, new_params$b, new_params$s, new_params$g, new_params$phi)
-            )
+            esld_g1 = sm_exp_lambda *
+                exp(
+                    1 *
+                        beta_os_cov.3. +
+                        link_dsld *
+                            gsf_dsld(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            ) +
+                        link_ttg *
+                            gsf_ttg(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            )
+                ),
+            esld_g2 = sm_exp_lambda *
+                exp(
+                    2 *
+                        beta_os_cov.3. +
+                        beta_os_cov.2. +
+                        link_dsld *
+                            gsf_dsld(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            ) +
+                        link_ttg *
+                            gsf_ttg(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            )
+                ),
+            esld_g3 = sm_exp_lambda *
+                exp(
+                    -1 *
+                        beta_os_cov.3. +
+                        beta_os_cov.1. +
+                        link_dsld *
+                            gsf_dsld(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            ) +
+                        link_ttg *
+                            gsf_ttg(
+                                time,
+                                new_params$b,
+                                new_params$s,
+                                new_params$g,
+                                new_params$phi
+                            )
+                )
         ) |>
         dplyr::select(time, esld_g1, esld_g2, esld_g3, sample_id) |>
-        tidyr::pivot_longer(cols = starts_with("esld"), names_to = "group", values_to = "haz") |>
-        dplyr::mutate(group = factor(
-            group,
-            levels = c("esld_g1", "esld_g2", "esld_g3"),
-            labels = c("new_subject_1", "new_subject_2", "new_subject_3")
-        )) |>
+        tidyr::pivot_longer(
+            cols = starts_with("esld"),
+            names_to = "group",
+            values_to = "haz"
+        ) |>
+        dplyr::mutate(
+            group = factor(
+                group,
+                levels = c("esld_g1", "esld_g2", "esld_g3"),
+                labels = c("new_subject_1", "new_subject_2", "new_subject_3")
+            )
+        ) |>
         dplyr::mutate(group = as.character(group))
 
     expected <- grouped_samples |>
@@ -278,12 +327,10 @@ test_that("GridPrediction() works as expected for Survival models", {
     expect_gt(cor(actual$upper, expected$upper), 0.99999999)
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$group)
-
 })
 
 
 test_that("GridPrediction() error handling works as expected", {
-
     selected_times <- seq(0, 200, by = 20) / 365
 
     new_data <- dplyr::tibble(
@@ -301,7 +348,11 @@ test_that("GridPrediction() error handling works as expected", {
         SurvivalQuantities(
             fixtures_gsf_link$mp,
             type = "haz",
-            grid = GridPrediction(times = selected_times, newdata = new_data, params = new_params)
+            grid = GridPrediction(
+                times = selected_times,
+                newdata = new_data,
+                params = new_params
+            )
         ),
         regex = "has new levels"
     )
@@ -310,11 +361,14 @@ test_that("GridPrediction() error handling works as expected", {
         SurvivalQuantities(
             fixtures_gsf_link$mp,
             type = "haz",
-            grid = GridPrediction(times = c(-100, 100), newdata = new_data, params = new_params)
+            grid = GridPrediction(
+                times = c(-100, 100),
+                newdata = new_data,
+                params = new_params
+            )
         ),
         regex = "greater than or equal to 0"
     )
-
 
     new_params <- list(
         "b" = c(10, 50),
@@ -326,11 +380,14 @@ test_that("GridPrediction() error handling works as expected", {
         SurvivalQuantities(
             fixtures_gsf_link$mp,
             type = "haz",
-            grid = GridPrediction(times = selected_times, newdata = new_data, params = new_params)
+            grid = GridPrediction(
+                times = selected_times,
+                newdata = new_data,
+                params = new_params
+            )
         ),
         regex = "must be length 1"
     )
-
 
     new_params <- list(
         "b" = c(10),
@@ -342,12 +399,15 @@ test_that("GridPrediction() error handling works as expected", {
         SurvivalQuantities(
             fixtures_gsf_link$mp,
             type = "haz",
-            grid = GridPrediction(times = selected_times, newdata = new_data, params = new_params)
+            grid = GridPrediction(
+                times = selected_times,
+                newdata = new_data,
+                params = new_params
+            )
         ),
         regex = "must be length 1"
     )
 })
-
 
 
 test_that("getPredictionNames() works as expected", {
@@ -378,7 +438,6 @@ test_that("GridPrediction() throws an error if key column already exists", {
 
 
 test_that("GridPrediction() works for survival only models", {
-
     selected_times <- seq(0, 200, by = 20) / 365
 
     new_data <- dplyr::tibble(
@@ -405,29 +464,52 @@ test_that("GridPrediction() works for survival only models", {
     ) |>
         dplyr::as_tibble(.name_repair = make.names) |>
         dplyr::mutate(sample_id = seq_len(dplyr::n())) |>
-        dplyr::mutate(new_subject_1 = sm_weibull_ph_lambda * exp(
-            0 * beta_os_cov.1. +
-                0 * beta_os_cov.2. +
-                1 * beta_os_cov.3.
-        )) |>
-        dplyr::mutate(new_subject_2 = sm_weibull_ph_lambda * exp(
-            0 * beta_os_cov.1. +
-                1 * beta_os_cov.2. +
-                2 * beta_os_cov.3.
-        )) |>
-        dplyr::mutate(new_subject_3 = sm_weibull_ph_lambda * exp(
-            1 * beta_os_cov.1. +
-                0 * beta_os_cov.2. +
-                -1 * beta_os_cov.3.
-        )) |>
-        dplyr::select(gamma = sm_weibull_ph_gamma, new_subject_1, new_subject_2, new_subject_3, sample_id) |>
-        tidyr::pivot_longer(cols = starts_with("new_subject"), names_to = "group", values_to = "lambda")
+        dplyr::mutate(
+            new_subject_1 = sm_weibull_ph_lambda *
+                exp(
+                    0 * beta_os_cov.1. + 0 * beta_os_cov.2. + 1 * beta_os_cov.3.
+                )
+        ) |>
+        dplyr::mutate(
+            new_subject_2 = sm_weibull_ph_lambda *
+                exp(
+                    0 * beta_os_cov.1. + 1 * beta_os_cov.2. + 2 * beta_os_cov.3.
+                )
+        ) |>
+        dplyr::mutate(
+            new_subject_3 = sm_weibull_ph_lambda *
+                exp(
+                    1 *
+                        beta_os_cov.1. +
+                        0 * beta_os_cov.2. +
+                        -1 * beta_os_cov.3.
+                )
+        ) |>
+        dplyr::select(
+            gamma = sm_weibull_ph_gamma,
+            new_subject_1,
+            new_subject_2,
+            new_subject_3,
+            sample_id
+        ) |>
+        tidyr::pivot_longer(
+            cols = starts_with("new_subject"),
+            names_to = "group",
+            values_to = "lambda"
+        )
 
     expected <- tidyr::crossing(
         pars_dat,
         time = selected_times
     ) |>
-        dplyr::mutate(surv = flexsurv::pweibullPH(time, shape = gamma, scale = lambda, lower.tail = FALSE)) |>
+        dplyr::mutate(
+            surv = flexsurv::pweibullPH(
+                time,
+                shape = gamma,
+                scale = lambda,
+                lower.tail = FALSE
+            )
+        ) |>
         dplyr::group_by(time, group) |>
         dplyr::summarise(
             lower = quantile(surv, 0.025),

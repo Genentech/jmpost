@@ -1,4 +1,3 @@
-
 #' @include Grid.R
 #' @include generics.R
 NULL
@@ -52,7 +51,11 @@ as.QuantityGenerator.GridEven <- function(object, data, ...) {
             subject_index <- data_list$subject_to_index[[sub]]
             time_index <- data_list$subject_tumour_index == subject_index
             subject_times <- data_list$tumour_time[time_index]
-            seq(min(subject_times), max(subject_times), length.out = object@length.out)
+            seq(
+                min(subject_times),
+                max(subject_times),
+                length.out = object@length.out
+            )
         }
     )
     names(spec) <- subjects

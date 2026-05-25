@@ -1,4 +1,3 @@
-
 #' @include Grid.R
 #' @include generics.R
 NULL
@@ -27,7 +26,9 @@ setValidity(
     "GridManual",
     function(object) {
         subject_names <- names(object@spec)
-        subject_names_valid <- subject_names[!is.na(subject_names) & subject_names != ""]
+        subject_names_valid <- subject_names[
+            !is.na(subject_names) & subject_names != ""
+        ]
         if (length(subject_names_valid) != length(object@spec)) {
             return("Each element of `subjects` must be named")
         }

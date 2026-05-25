@@ -27,19 +27,28 @@ populationHR <- function(
     assert_class(object, "JointModelSamples")
     assert_formula(hr_formula)
     assert_formula(baseline)
-    assert_numeric(quantiles, lower = 0, upper = 1, any.missing = FALSE, unique = TRUE)
-    if (!"time" %in% all.vars(baseline)) stop("baseline formula should include a time term.")
+    assert_numeric(
+        quantiles,
+        lower = 0,
+        upper = 1,
+        any.missing = FALSE,
+        unique = TRUE
+    )
+    if (!"time" %in% all.vars(baseline)) {
+        stop("baseline formula should include a time term.")
+    }
 
     # Extract the variable names used in the data
     subject_var <- object@data@subject@subject
     arm_var <- object@data@subject@arm
-    long_time_var <- all.vars(delete.response(terms(object@data@longitudinal@formula)))
+    long_time_var <- all.vars(delete.response(terms(
+        object@data@longitudinal@formula
+    )))
     surv_time_var <- all.vars(object@data@survival@formula[[2]][[2]])
     surv_covs <- all.vars(delete.response(terms(hr_formula)))
     if (!all(surv_covs %in% colnames(object@data@survival@data))) {
         stop("All variables in hr_formula must be in survival data")
     }
-
 
     marginal_formula <- stats::reformulate(c(
         attr(terms(baseline), "term.labels"),
@@ -48,8 +57,14 @@ populationHR <- function(
 
     # Get the survival quantities at the observed longitudinal and survival times for each patient:
     times_df <- rbind(
-        stats::setNames(object@data@longitudinal@data[, c(subject_var, long_time_var)], c("subject", "time")),
-        stats::setNames(object@data@survival@data[, c(subject_var, surv_time_var)], c("subject", "time"))
+        stats::setNames(
+            object@data@longitudinal@data[, c(subject_var, long_time_var)],
+            c("subject", "time")
+        ),
+        stats::setNames(
+            object@data@survival@data[, c(subject_var, surv_time_var)],
+            c("subject", "time")
+        )
     )
     times_df <- times_df[order(times_df$subject, times_df$time), ]
     times_df <- times_df[times_df$time > 0, ]
@@ -61,12 +76,16 @@ populationHR <- function(
         object,
         grid = GridManual(grid_spec),
         type = "loghaz"
-    )@quantities@quantities |> t()
+    )@quantities@quantities |>
+        t()
 
     # Construct \tilde{X} in paper's notation with one row per patient's time
     W_df <- dplyr::left_join(
         times_df,
-        stats::setNames(object@data@survival@data[, c(subject_var, surv_covs)], c("subject", surv_covs)),
+        stats::setNames(
+            object@data@survival@data[, c(subject_var, surv_covs)],
+            c("subject", surv_covs)
+        ),
         by = "subject"
     )
     W_mat <- model.matrix(marginal_formula, W_df)

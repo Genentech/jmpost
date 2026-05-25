@@ -1,5 +1,3 @@
-
-
 # This is potentially confusing so to help explain it
 # The quantities matrix (inside stan not what is returned by stan) is
 # 1 column per timepoint, 1 row per subject
@@ -10,7 +8,6 @@
 # indexes refer to the matrix position within the internal stan matrix.
 # ...
 # Good luck :)
-
 
 # To explain how the following unit test works though...
 # the extract_quantities function essentially attempts to extract specific

@@ -1,14 +1,10 @@
-
-
 test_that("LongitudinalClaretBruno works as expected with default arguments", {
     result <- expect_silent(LongitudinalClaretBruno())
     expect_s4_class(result, "LongitudinalClaretBruno")
 })
 
 
-
 test_that("Print method for LongitudinalClaretBruno works as expected", {
-
     expect_snapshot({
         x <- LongitudinalClaretBruno()
         print(x)
@@ -50,7 +46,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
 })
 
 
-
 test_that("Centralised parameterisation compiles without issues", {
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(centred = TRUE),
@@ -85,11 +80,8 @@ test_that("Non-Centralised parameterisation compiles without issues", {
 })
 
 
-
 test_that("Can recover known distributional parameters from a SF joint model", {
-
     skip_if_not(is_full_test())
-
 
     sim_params <- list(
         sigma = 0.005,
@@ -121,9 +113,19 @@ test_that("Can recover known distributional parameters from a SF joint model", {
         ),
         longitudinal = SimLongitudinalClaretBruno(
             times = c(
-                1, 100, 200, 300, 400, 500,
-                600, 700, 800, 900, 1000
-            ) / 365,
+                1,
+                100,
+                200,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1000
+            ) /
+                365,
             sigma = sim_params$sigma,
             mu_b = sim_params$mu_b,
             mu_g = sim_params$mu_g,
@@ -153,17 +155,14 @@ test_that("Can recover known distributional parameters from a SF joint model", {
         .silent = TRUE
     )
 
-
     # nolint start⁠
     ### Diagnostics helpers
     # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
     # median(jlist@survival$time)
     # nolint end
 
-
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
-
             mu_b = prior_normal(log(60), 0.4),
             mu_g = prior_normal(log(1), 0.4),
             mu_c = prior_normal(log(0.4), 0.4),
@@ -176,7 +175,6 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
             sigma = prior_lognormal(log(0.05), 0.4),
             centred = TRUE
-
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(0.5), 0.4),
@@ -188,7 +186,6 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             linkGrowth(prior_normal(10, 3))
         )
     )
-
 
     jdat <- DataJoint(
         subject = DataSubject(
@@ -247,21 +244,29 @@ test_that("Can recover known distributional parameters from a SF joint model", {
         TRUE
     )
     true_values <- exp(c(
-        sim_params$mu_b, sim_params$mu_g, sim_params$mu_c, sim_params$mu_p
+        sim_params$mu_b,
+        sim_params$mu_g,
+        sim_params$mu_c,
+        sim_params$mu_p
     ))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
-
-
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
-        c("beta_os_cov", "sm_exp_lambda", "link_dsld", "link_growth", "link_ttg")
+        c(
+            "beta_os_cov",
+            "sm_exp_lambda",
+            "link_dsld",
+            "link_growth",
+            "link_ttg"
+        )
     )
     true_values <- c(
-        sim_params$beta_cat_b, sim_params$beta_cat_c, sim_params$beta_cont,
+        sim_params$beta_cat_b,
+        sim_params$beta_cat_c,
+        sim_params$beta_cont,
         sim_params$lambda,
         sim_params$link_dsld,
         sim_params$link_growth,
@@ -296,10 +301,13 @@ test_that("Quantity models pass the parser", {
 
 
 test_that("Can generate valid initial values", {
-
     pars <- c(
-        "lm_clbr_omega_b", "lm_clbr_omega_g", "lm_clbr_omega_c",
-        "lm_clbr_omega_p", "lm_clbr_sigma", "lm_gsf_sigma"
+        "lm_clbr_omega_b",
+        "lm_clbr_omega_g",
+        "lm_clbr_omega_c",
+        "lm_clbr_omega_p",
+        "lm_clbr_sigma",
+        "lm_gsf_sigma"
     )
 
     # Defaults work as expected
@@ -307,7 +315,6 @@ test_that("Can generate valid initial values", {
     vals <- initialValues(mod, n_chains = 1)
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 
     # Test all individual parameters throw error if given prior that can't sample
     # valid value
@@ -341,14 +348,15 @@ test_that("Can generate valid initial values", {
     vals <- unlist(initialValues(mod, n_chains = 200))
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 })
-
 
 
 test_that("Unscaled variance pass the parser", {
     jm <- JointModel(
-        longitudinal = LongitudinalClaretBruno(centred = FALSE, scaled_variance = FALSE),
+        longitudinal = LongitudinalClaretBruno(
+            centred = FALSE,
+            scaled_variance = FALSE
+        ),
         survival = SurvivalLogLogistic(),
         link = linkDSLD()
     )
@@ -357,12 +365,8 @@ test_that("Unscaled variance pass the parser", {
 })
 
 
-
-
 test_that("Can recover known distributional parameters from unscaled variance ClaretBruno model", {
-
     skip_if_not(is_full_test())
-
 
     sim_params <- list(
         sigma = 1,
@@ -393,7 +397,23 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
             SimGroup(150, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalClaretBruno(
-            times = c(1, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000) / 365,
+            times = c(
+                1,
+                50,
+                100,
+                150,
+                200,
+                250,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1000
+            ) /
+                365,
             sigma = sim_params$sigma,
             mu_b = sim_params$mu_b,
             mu_g = sim_params$mu_g,
@@ -424,7 +444,6 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         .silent = TRUE
     )
 
-
     # nolint start⁠
     ### Diagnostics helpers
     # plot(survival::survfit(Surv(time, event) ~ 1, data = jlist@survival))
@@ -434,7 +453,6 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     #     geom_point() +
     #     geom_line()
     # nolint end
-
 
     jm <- JointModel(
         longitudinal = LongitudinalClaretBruno(
@@ -481,7 +499,6 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
         })
     })
 
-
     summary_post <- function(model, vars, exp = FALSE) {
         dat <- model$summary(
             vars,
@@ -496,8 +513,14 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     }
 
     par_names <- c(
-        "mu_b", "mu_g", "mu_c", "mu_p",
-        "omega_b", "omega_g", "omega_c", "omega_p",
+        "mu_b",
+        "mu_g",
+        "mu_c",
+        "mu_p",
+        "omega_b",
+        "omega_g",
+        "omega_c",
+        "omega_p",
         "sigma"
     )
 
@@ -514,7 +537,7 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     # dat$gt_q01 <- dat$q01 <= true_values
     # dat$lt_q99 <- dat$q99 >= true_values
     # dat[, c("variable", "true_values", "mean", "q01", "q99", "rhat", "ess_bulk", "ess_tail", "gt_q01", "lt_q99")] |> print()
-    # 
+    #
     # nolint end
 
     expect_true(all(dat$q01 <= true_values))

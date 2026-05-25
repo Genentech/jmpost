@@ -1,7 +1,3 @@
-
-
-
-
 test_that("ParameterList smoke tests", {
     pl <- ParameterList(
         Parameter(name = "inter", prior = prior_gamma(1, 2)),
@@ -42,7 +38,6 @@ test_that("ParameterList smoke tests", {
 
 
 test_that("show() works for ParameterList objects", {
-
     x <- ParameterList(
         Parameter(name = "bob", prior = prior_normal(1, 4)),
         Parameter(name = "sam", prior = prior_beta(3, 1)),

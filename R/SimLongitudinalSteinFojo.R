@@ -1,4 +1,3 @@
-
 #' @include SimLongitudinal.R
 #' @include generics.R
 NULL
@@ -76,10 +75,15 @@ SimLongitudinalSteinFojo <- function(
     link_shrinkage = 0,
     scaled_variance = TRUE
 ) {
-
-    if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
-    if (length(omega_s) == 1) omega_s <- rep(omega_s, length(mu_s))
-    if (length(omega_g) == 1) omega_g <- rep(omega_g, length(mu_g))
+    if (length(omega_b) == 1) {
+        omega_b <- rep(omega_b, length(mu_b))
+    }
+    if (length(omega_s) == 1) {
+        omega_s <- rep(omega_s, length(mu_s))
+    }
+    if (length(omega_g) == 1) {
+        omega_g <- rep(omega_g, length(mu_g))
+    }
 
     .SimLongitudinalSteinFojo(
         times = times,
@@ -108,7 +112,9 @@ setValidity(
             length(object@mu_g)
         )
         if (length(unique(par_lengths)) != 1) {
-            return("The parameters `mu_s` and `mu_g` must have the same length.")
+            return(
+                "The parameters `mu_s` and `mu_g` must have the same length."
+            )
         }
         pairs <- list(
             "omega_b" = "mu_b",
@@ -120,18 +126,28 @@ setValidity(
             mu <- slot(object, pairs[[i]])
             if (!(length(omega) == length(mu))) {
                 return(
-                    sprintf("`%s` must be length 1 or the same length as `%s`", omega, mu)
+                    sprintf(
+                        "`%s` must be length 1 or the same length as `%s`",
+                        omega,
+                        mu
+                    )
                 )
             }
         }
         len_1_pars <- c(
             "sigma",
-            "link_dsld", "link_ttg", "link_identity",
-            "link_growth", "link_shrinkage"
+            "link_dsld",
+            "link_ttg",
+            "link_identity",
+            "link_growth",
+            "link_shrinkage"
         )
         for (par in len_1_pars) {
             if (length(slot(object, par)) != 1) {
-                return(sprintf("The `%s` parameter must be a length 1 numeric.", par))
+                return(sprintf(
+                    "The `%s` parameter must be a length 1 numeric.",
+                    par
+                ))
             }
         }
         return(TRUE)
@@ -151,10 +167,13 @@ sampleObservations.SimLongitudinalSteinFojo <- function(object, times_df) {
             mu_sld = sf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
             dsld = sf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
             ttg = sf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g),
-            sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma),
+            sld_sd = ifelse(
+                object@scaled_variance,
+                .data$mu_sld * object@sigma,
+                object@sigma
+            ),
             sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd),
-            log_haz_link =
-                (object@link_dsld * .data$dsld) +
+            log_haz_link = (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
                 (object@link_identity * .data$mu_sld) +
                 (object@link_growth * log(.data$psi_g)) +

@@ -17,7 +17,6 @@ test_that("get_missing_rownumbers works as expected", {
 # remove_missing_rows ----
 
 test_that("remove_missing_rows works as expected", {
-
     df <- data.frame(
         time = c(1, NA, 3, 5, 5, 4, 5, 5),
         event = c(0, 0, NA, 1, 0, 1, 1, 0),
@@ -28,7 +27,7 @@ test_that("remove_missing_rows works as expected", {
     )
 
     expected <- data.frame(
-        time =  c(4, 5),
+        time = c(4, 5),
         event = c(1, 1),
         y = c(4, 3),
         z = c(2, 4),
@@ -36,7 +35,11 @@ test_that("remove_missing_rows works as expected", {
         w = c("h", "i")
     )
     suppressMessages({
-        actual <- remove_missing_rows(df, Surv(time, event) ~ y, extra_vars = c("z", "w"))
+        actual <- remove_missing_rows(
+            df,
+            Surv(time, event) ~ y,
+            extra_vars = c("z", "w")
+        )
     })
 
     rownames(expected) <- NULL
@@ -104,9 +107,36 @@ test_that("replace_with_lookup asserts looked up sizes as numbers as expected", 
 test_that("samples_median_ci works as expected", {
     samples <- matrix(
         data = c(
-            -0.6, -0.2, 1.6, 0.1, 0.1, 1.7, 0.5, -1.3, -0.7, -0.4,
-            0.9, 0.8, 0.4, 1.7, 3.1, 1, 1.2, 8.1, 1.7, 1.9,
-            3, 3, 4, 4, 4, 3, 3, 3, 5, 4
+            -0.6,
+            -0.2,
+            1.6,
+            0.1,
+            0.1,
+            1.7,
+            0.5,
+            -1.3,
+            -0.7,
+            -0.4,
+            0.9,
+            0.8,
+            0.4,
+            1.7,
+            3.1,
+            1,
+            1.2,
+            8.1,
+            1.7,
+            1.9,
+            3,
+            3,
+            4,
+            4,
+            4,
+            3,
+            3,
+            3,
+            5,
+            4
         ),
         nrow = 10,
         ncol = 3,
@@ -125,9 +155,36 @@ test_that("samples_median_ci works as expected", {
 test_that("samples_median_ci works with a custom credibility level", {
     samples <- matrix(
         data = c(
-            -0.6, -0.2, 1.6, 0.1, 0.1, 1.7, 0.5, -1.3, -0.7, -0.4,
-            0.9, 0.8, 0.4, 1.7, 3.1, 1, 1.2, 8.1, 1.7, 1.9,
-            3, 3, 4, 4, 4, 3, 3, 3, 5, 4
+            -0.6,
+            -0.2,
+            1.6,
+            0.1,
+            0.1,
+            1.7,
+            0.5,
+            -1.3,
+            -0.7,
+            -0.4,
+            0.9,
+            0.8,
+            0.4,
+            1.7,
+            3.1,
+            1,
+            1.2,
+            8.1,
+            1.7,
+            1.9,
+            3,
+            3,
+            4,
+            4,
+            4,
+            3,
+            3,
+            3,
+            5,
+            4
         ),
         nrow = 10,
         ncol = 3,
@@ -145,9 +202,7 @@ test_that("samples_median_ci works with a custom credibility level", {
 })
 
 
-
 test_that("validate_time_grid() works as expected", {
-
     expect_equal(
         validate_time_grid(c(1, 2, 3)),
         c(1, 2, 3)
@@ -164,7 +219,6 @@ test_that("validate_time_grid() works as expected", {
         validate_time_grid(c(1L, 2L, 4L)),
         c(1L, 2L, 4L)
     )
-
 
     ## Error handling
     expect_error(
@@ -187,7 +241,6 @@ test_that("validate_time_grid() works as expected", {
 
 
 test_that("expand_subjects() works as expected", {
-
     ## Smoke tests of basic usage
     expect_equal(
         expand_subjects(c("A", "B"), c("A", "B", "C", "D")),
@@ -223,7 +276,6 @@ test_that("expand_subjects() works as expected", {
 
 
 test_that("decompose_subjects() works as expected", {
-
     # Basic vector format
     actual <- decompose_subjects(c("a", "b", "d"), c("a", "b", "c", "d"))
     expected <- list(
@@ -240,8 +292,6 @@ test_that("decompose_subjects() works as expected", {
         )
     )
     expect_equal(actual, expected)
-
-
 
     # list format
     actual <- decompose_subjects(
@@ -261,7 +311,6 @@ test_that("decompose_subjects() works as expected", {
     )
     expect_equal(actual, expected)
 
-
     # NULL is correctly expanded
     actual <- decompose_subjects(
         NULL,
@@ -269,11 +318,17 @@ test_that("decompose_subjects() works as expected", {
     )
     expected <- list(
         groups = list(
-            "a" = "a", "d" = "d", "c" = "c", "b" = "b"
+            "a" = "a",
+            "d" = "d",
+            "c" = "c",
+            "b" = "b"
         ),
         unique_values = c("a", "b", "c", "d"),
         indexes = list(
-            "a" = 1, "d" = 4, "c" = 3, "b" = 2
+            "a" = 1,
+            "d" = 4,
+            "c" = 3,
+            "b" = 2
         )
     )
     expect_equal(actual, expected)
@@ -285,10 +340,12 @@ test_that("decompose_subjects() works as expected", {
     )
     # errors if group has same subject twice
     expect_error(
-        decompose_subjects(list("g1" = c("a", "a")), c("a", "d", "c", "b", "b")),
+        decompose_subjects(
+            list("g1" = c("a", "a")),
+            c("a", "d", "c", "b", "b")
+        ),
         regexp = "`subjects`"
     )
-
 })
 
 
@@ -296,11 +353,14 @@ test_that("add_missing_stan_blocks() works as expected", {
     x <- list("data" = "abc", "model" = "das")
     actual <- add_missing_stan_blocks(x)
     expected <- STAN_BLOCKS
-    for (i in names(expected)) expected[[i]] <- ""
+    for (i in names(expected)) {
+        expected[[i]] <- ""
+    }
     expected$data <- x$data
     expected$model <- x$model
     names_in_order <- c(
-        "data", "model",
+        "data",
+        "model",
         names(expected)[!names(expected) %in% names(x)]
     )
     expect_equal(actual, expected[names_in_order])

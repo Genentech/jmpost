@@ -1,7 +1,4 @@
-
-
 test_that("DataSurvival being rendered to list is as expected for simple inputs", {
-
     x <- data.frame(
         vpt = c("b", "a", "c", "d", "e"),
         vtime = c(10, 20, 30, 25, 15),
@@ -22,8 +19,14 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
-            "os_cov_design", "n_nodes", "nodes", "weights"
+            "n_subject_event",
+            "subject_event_index",
+            "event_times",
+            "p_os_cov_design",
+            "os_cov_design",
+            "n_nodes",
+            "nodes",
+            "weights"
         ),
         names(res)
     )
@@ -32,7 +35,6 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
     expect_equal(res$os_cov_design, covmat)
     expect_equal(res$subject_event_index, c(1, 2, 4))
     expect_equal(res$event_times, c(10, 20, 30, 25, 15))
-
 
     ## Dropped rows works as expected
 
@@ -61,8 +63,14 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
     expect_equal(
         c(
-            "n_subject_event", "subject_event_index", "event_times", "p_os_cov_design",
-            "os_cov_design", "n_nodes", "nodes", "weights"
+            "n_subject_event",
+            "subject_event_index",
+            "event_times",
+            "p_os_cov_design",
+            "os_cov_design",
+            "n_nodes",
+            "nodes",
+            "weights"
         ),
         names(res)
     )
@@ -75,7 +83,6 @@ test_that("DataSurvival being rendered to list is as expected for simple inputs"
 
 
 test_that("DataSurvival print method works as expected", {
-
     expect_snapshot({
         x <- data.frame(
             vpt = c("b", "a", "c", "d", "e"),
@@ -88,11 +95,14 @@ test_that("DataSurvival print method works as expected", {
 
         df <- DataSurvival(
             data = x,
-            formula = Surv(vtime, vevent) ~ vcov1 * vcov2 + vcov1:vcov2 + vcov1^2 + vcov2^2
+            formula = Surv(vtime, vevent) ~ vcov1 *
+                vcov2 +
+                vcov1:vcov2 +
+                vcov1^2 +
+                vcov2^2
         )
         print(df)
     })
-
 })
 
 
@@ -109,7 +119,7 @@ test_that("mirror_design_matrix() works as expected", {
         sex = sample_cat(c("M", "F"), N),
         covar1 = rnorm(N),
         covar2 = rnorm(N),
-        lp =  0.6 * covar1 + -0.4 * covar2 + beta_trt[trt] + beta_sex[sex],
+        lp = 0.6 * covar1 + -0.4 * covar2 + beta_trt[trt] + beta_sex[sex],
         lambda = 1 / 200 * exp(lp),
         time_real = flexsurv::rweibullPH(N, 0.95, lambda),
         cnsr = rexp(N, 1 / 300),
@@ -145,13 +155,16 @@ test_that("mirror_design_matrix() works as expected", {
 
     expected <- matrix(
         c(
-            1, 1,                                # trtB
-            1, 0,                                # sexF
-            new_data$covar1,                     # covar1
-            new_data$covar2,                     # covar2
-            1, 0,                                # trtB:sexF
-            new_data$covar1 * new_data$covar2,   # covar1:covar2
-            new_data$covar1 * c(1, 0)            # covar1:sex
+            1,
+            1, # trtB
+            1,
+            0, # sexF
+            new_data$covar1, # covar1
+            new_data$covar2, # covar2
+            1,
+            0, # trtB:sexF
+            new_data$covar1 * new_data$covar2, # covar1:covar2
+            new_data$covar1 * c(1, 0) # covar1:sex
         ),
         ncol = 7,
         nrow = 2,

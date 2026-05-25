@@ -1,4 +1,3 @@
-
 test_that("StanModel print function works as expected", {
     x <- StanModel(
         stan = StanModule(),

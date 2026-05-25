@@ -1,4 +1,3 @@
-
 #' @include DataJoint.R
 #' @include Quantities.R
 NULL
@@ -85,7 +84,6 @@ LongitudinalQuantities <- function(
 }
 
 
-
 #' `as.data.frame`
 #'
 #' @param x ([`LongitudinalQuantities`]) \cr longitudinal quantities.
@@ -95,7 +93,6 @@ LongitudinalQuantities <- function(
 as.data.frame.LongitudinalQuantities <- function(x, ...) {
     as.data.frame(x@quantities)
 }
-
 
 
 #' summary
@@ -159,11 +156,12 @@ longitudinal_plot <- function(
         theme_bw()
 
     if (add_ci) {
-        p <- p + geom_ribbon(
-            aes(x = .data$time, ymin = .data$lower, ymax = .data$upper),
-            data = data,
-            alpha = 0.3
-        )
+        p <- p +
+            geom_ribbon(
+                aes(x = .data$time, ymin = .data$lower, ymax = .data$upper),
+                data = data,
+                alpha = 0.3
+            )
     }
 
     if (!is.null(data_obs)) {
@@ -183,7 +181,9 @@ longitudinal_plot <- function(
 #' @family autoplot
 #' @export
 autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
-    include_ci <- !is.null(conf.level) && is.numeric(conf.level) && conf.level > 0
+    include_ci <- !is.null(conf.level) &&
+        is.numeric(conf.level) &&
+        conf.level > 0
     # If CI aren't needed supply a default 0.95 to summary function as it needs
     # a value to be specified to work.
     conf.level <- if (include_ci) conf.level else 0.95
@@ -201,7 +201,6 @@ autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
         add_ci = include_ci
     )
 }
-
 
 
 #' @rdname show-object

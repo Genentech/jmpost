@@ -1,7 +1,4 @@
-
-
 test_that("jmpost and brms get similar loo for longitudinal models", {
-
     skip_if_not(is_full_test())
 
     set.seed(22231)
@@ -19,7 +16,6 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         s <- dplyr::if_else(time >= 0, s, 0)
         b * (exp(-s * time) + exp(g * time) - 1)
     }
-
 
     baseline <- dplyr::tibble(
         pt = sprintf("pt_%06i", seq_len(n)),
@@ -39,7 +35,6 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     dat <- dat_full |>
         dplyr::select(pt, value, time)
 
-
     # nolint start
     # DEBUG
     # ggplot(data = filter(dat, pt %in% sample(dat$pt, 5)), aes(x = time, y = value, col = pt, group = pt)) +
@@ -57,7 +52,6 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         dplyr::slice(1) |>
         dplyr::ungroup()
 
-
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_bl,
@@ -67,11 +61,10 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         ),
         longitudinal = DataLongitudinal(
             data = dat2,
-            formula =  value ~ time,
+            formula = value ~ time,
             threshold = -99999
         )
     )
-
 
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
@@ -97,9 +90,7 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         parallel_chains = 2
     )
 
-
     stanmod <- cmdstanr::as.CmdStanMCMC(mp)
-
 
     mp_brms <- brms::brm(
         brms::bf(
@@ -126,28 +117,39 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
         backend = "cmdstanr"
     )
 
-
     #
     # Assert that loo scores are similar
     #
     withCallingHandlers(
         b_est <- brms::loo(mp_brms),
         warning = function(w) {
-            if (grepl("moment match", as.character(w))) invokeRestart("muffleWarning") else w
+            if (grepl("moment match", as.character(w))) {
+                invokeRestart("muffleWarning")
+            } else {
+                w
+            }
         }
     )
 
     withCallingHandlers(
         j_est <- stanmod$loo(),
         warning = function(w) {
-            if (grepl("Pareto k diagnostic", as.character(w))) invokeRestart("muffleWarning") else w
+            if (grepl("Pareto k diagnostic", as.character(w))) {
+                invokeRestart("muffleWarning")
+            } else {
+                w
+            }
         }
     )
 
-    z_score <- abs(b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]) / b_est$estimates[, "SE"]
+    z_score <- abs(
+        b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]
+    ) /
+        b_est$estimates[, "SE"]
     expect_true(all(z_score < qnorm(0.99)))
-    expect_true(cor(b_est$pointwise[, "elpd_loo"], j_est$pointwise[, "elpd_loo"]) > 0.95)
-
+    expect_true(
+        cor(b_est$pointwise[, "elpd_loo"], j_est$pointwise[, "elpd_loo"]) > 0.95
+    )
 
     #
     # Assert that patient level random effects are similar
@@ -155,17 +157,27 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
     bdat <- brms::as_draws_matrix(mp_brms) |> colMeans()
 
     cor_b <- cor(
-        exp(bdat[grepl("r_pt__b.*Intercept", names(bdat))] + bdat["b_b_Intercept"]),
-        posterior::as_draws_matrix(stanmod$draws("lm_sf_psi_bsld")) |> colMeans()
+        exp(
+            bdat[grepl("r_pt__b.*Intercept", names(bdat))] +
+                bdat["b_b_Intercept"]
+        ),
+        posterior::as_draws_matrix(stanmod$draws("lm_sf_psi_bsld")) |>
+            colMeans()
     )
 
     cor_s <- cor(
-        exp(bdat[grepl("r_pt__s.*Intercept", names(bdat))] + bdat["b_s_Intercept"]),
+        exp(
+            bdat[grepl("r_pt__s.*Intercept", names(bdat))] +
+                bdat["b_s_Intercept"]
+        ),
         posterior::as_draws_matrix(stanmod$draws("lm_sf_psi_ks")) |> colMeans()
     )
 
     cor_g <- cor(
-        exp(bdat[grepl("r_pt__g.*Intercept", names(bdat))] + bdat["b_g_Intercept"]),
+        exp(
+            bdat[grepl("r_pt__g.*Intercept", names(bdat))] +
+                bdat["b_g_Intercept"]
+        ),
         posterior::as_draws_matrix(stanmod$draws("lm_sf_psi_kg")) |> colMeans()
     )
 
@@ -173,12 +185,7 @@ test_that("jmpost and brms get similar loo for longitudinal models", {
 })
 
 
-
-
-
-
 test_that("jmpost and brms get similar loo for survival models", {
-
     skip_if_not(is_full_test())
 
     set.seed(9825)
@@ -193,7 +200,6 @@ test_that("jmpost and brms get similar loo for survival models", {
         event = 1
     )
 
-
     mp_brms <- brms::brm(
         time ~ 1 + cov1 + cov2,
         family = brms::exponential(),
@@ -206,7 +212,6 @@ test_that("jmpost and brms get similar loo for survival models", {
         backend = "cmdstanr"
     )
 
-
     dat_surv2 <- dat_surv |>
         dplyr::mutate(arm = "A") |>
         dplyr::mutate(study = "A")
@@ -217,7 +222,6 @@ test_that("jmpost and brms get similar loo for survival models", {
         dplyr::slice(1) |>
         dplyr::ungroup()
 
-
     jdat <- DataJoint(
         subject = DataSubject(
             data = dat_surv_bl,
@@ -227,10 +231,9 @@ test_that("jmpost and brms get similar loo for survival models", {
         ),
         survival = DataSurvival(
             data = dat_surv2,
-            formula =  Surv(time, event) ~ cov1 + cov2
+            formula = Surv(time, event) ~ cov1 + cov2
         )
     )
-
 
     jm <- JointModel(
         survival = SurvivalExponential()
@@ -248,15 +251,18 @@ test_that("jmpost and brms get similar loo for survival models", {
 
     stanmod <- cmdstanr::as.CmdStanMCMC(mp)
 
-
     #
     # Assert that loo scores are similar
     #
     b_est <- brms::loo(mp_brms)
     j_est <- stanmod$loo()
 
-    z_score <- abs(b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]) / b_est$estimates[, "SE"]
+    z_score <- abs(
+        b_est$estimates[, "Estimate"] - j_est$estimates[, "Estimate"]
+    ) /
+        b_est$estimates[, "SE"]
     expect_true(all(z_score < qnorm(0.99)))
-    expect_true(cor(b_est$pointwise[, "looic"], j_est$pointwise[, "looic"]) > 0.95)
-
+    expect_true(
+        cor(b_est$pointwise[, "looic"], j_est$pointwise[, "looic"]) > 0.95
+    )
 })

@@ -1,4 +1,3 @@
-
 #' Define Simulation Group
 #'
 #' Specifies a simulation group to be used by [`SimJointData()`].

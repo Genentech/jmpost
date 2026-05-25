@@ -1,5 +1,3 @@
-
-
 #' @include SimLongitudinal.R
 #' @include generics.R
 NULL
@@ -85,11 +83,18 @@ SimLongitudinalGSF <- function(
     link_shrinkage = 0,
     scaled_variance = TRUE
 ) {
-
-    if (length(omega_b) == 1) omega_b <- rep(omega_b, length(mu_b))
-    if (length(omega_s) == 1) omega_s <- rep(omega_s, length(mu_s))
-    if (length(omega_g) == 1) omega_g <- rep(omega_g, length(mu_g))
-    if (length(omega_phi) == 1) omega_phi <- rep(omega_phi, length(mu_phi))
+    if (length(omega_b) == 1) {
+        omega_b <- rep(omega_b, length(mu_b))
+    }
+    if (length(omega_s) == 1) {
+        omega_s <- rep(omega_s, length(mu_s))
+    }
+    if (length(omega_g) == 1) {
+        omega_g <- rep(omega_g, length(mu_g))
+    }
+    if (length(omega_phi) == 1) {
+        omega_phi <- rep(omega_phi, length(mu_phi))
+    }
 
     .SimLongitudinalGSF(
         times = times,
@@ -121,7 +126,9 @@ setValidity(
             length(object@mu_phi)
         )
         if (length(unique(par_lengths)) != 1) {
-            return("The parameters `mu_s`, `mu_g` and `mu_phi` must have the same length.")
+            return(
+                "The parameters `mu_s`, `mu_g` and `mu_phi` must have the same length."
+            )
         }
 
         pairs <- list(
@@ -135,19 +142,29 @@ setValidity(
             mu <- slot(object, pairs[[i]])
             if (!(length(omega) == length(mu))) {
                 return(
-                    sprintf("`%s` must be length 1 or the same length as `%s`", omega, mu)
+                    sprintf(
+                        "`%s` must be length 1 or the same length as `%s`",
+                        omega,
+                        mu
+                    )
                 )
             }
         }
 
         len_1_pars <- c(
             "sigma",
-            "link_dsld", "link_ttg", "link_identity", "link_growth",
+            "link_dsld",
+            "link_ttg",
+            "link_identity",
+            "link_growth",
             "link_shrinkage"
         )
         for (par in len_1_pars) {
             if (length(slot(object, par)) != 1) {
-                return(sprintf("The `%s` parameter must be a length 1 numeric.", par))
+                return(sprintf(
+                    "The `%s` parameter must be a length 1 numeric.",
+                    par
+                ))
             }
         }
 
@@ -165,13 +182,34 @@ as_print_string.SimLongitudinalGSF <- function(object, ...) {
 sampleObservations.SimLongitudinalGSF <- function(object, times_df) {
     times_df |>
         dplyr::mutate(
-            mu_sld = gsf_sld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi),
-            dsld = gsf_dsld(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi),
-            ttg = gsf_ttg(.data$time, .data$psi_b, .data$psi_s, .data$psi_g, .data$psi_phi),
-            sld_sd = ifelse(object@scaled_variance, .data$mu_sld * object@sigma, object@sigma),
+            mu_sld = gsf_sld(
+                .data$time,
+                .data$psi_b,
+                .data$psi_s,
+                .data$psi_g,
+                .data$psi_phi
+            ),
+            dsld = gsf_dsld(
+                .data$time,
+                .data$psi_b,
+                .data$psi_s,
+                .data$psi_g,
+                .data$psi_phi
+            ),
+            ttg = gsf_ttg(
+                .data$time,
+                .data$psi_b,
+                .data$psi_s,
+                .data$psi_g,
+                .data$psi_phi
+            ),
+            sld_sd = ifelse(
+                object@scaled_variance,
+                .data$mu_sld * object@sigma,
+                object@sigma
+            ),
             sld = stats::rnorm(dplyr::n(), .data$mu_sld, .data$sld_sd),
-            log_haz_link =
-                (object@link_dsld * .data$dsld) +
+            log_haz_link = (object@link_dsld * .data$dsld) +
                 (object@link_ttg * .data$ttg) +
                 (object@link_identity * .data$mu_sld) +
                 (object@link_growth * log(.data$psi_g)) +
@@ -221,8 +259,6 @@ sampleSubjects.SimLongitudinalGSF <- function(object, subjects_df) {
         )
     res[, c("subject", "arm", "study", "psi_b", "psi_s", "psi_g", "psi_phi")]
 }
-
-
 
 
 ## sim_lm_gsf ----

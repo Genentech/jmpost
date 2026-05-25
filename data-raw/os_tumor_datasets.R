@@ -112,7 +112,12 @@ tumor_data_summary <- tumor_data |>
         nadir = min(sld[year >= 0], na.rm = TRUE),
         max_cfn = max((sld[year >= 0] - nadir) / nadir, na.rm = TRUE),
         min_cfb = min((sld[year >= 0] - bsld) / bsld, na.rm = TRUE),
-        contig_below_0.2 = get_contig_below_thresh(sld, year, bsld, thresh = 0.2),
+        contig_below_0.2 = get_contig_below_thresh(
+            sld,
+            year,
+            bsld,
+            thresh = 0.2
+        ),
         approx_response = case_when(
             min_cfb <= -0.3 ~ "PR",
             contig_below_0.2 >= 2 ~ "SD",

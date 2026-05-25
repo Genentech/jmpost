@@ -32,7 +32,11 @@ SurvivalExponential <- function(
             stan = StanModule("sm-exponential/model.stan"),
             parameters = ParameterList(
                 Parameter(name = "sm_exp_lambda", prior = lambda, size = 1),
-                Parameter(name = "beta_os_cov", prior = beta, size = "p_os_cov_design")
+                Parameter(
+                    name = "beta_os_cov",
+                    prior = beta,
+                    size = "p_os_cov_design"
+                )
             )
         )
     )

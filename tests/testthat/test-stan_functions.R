@@ -1,4 +1,3 @@
-
 run_stan_function <- function(stan_data, fun_files, dir, basename) {
     stan_mods <- lapply(fun_files, \(i) StanModule(i))
     stan_mod <- Reduce(merge, stan_mods)
@@ -43,8 +42,6 @@ run_stan_function <- function(stan_data, fun_files, dir, basename) {
 }
 
 
-
-
 test_that("GSF SLD function works as expected", {
     stan_data <- list(
         sld_time = c(0, 0.5, 1, 2),
@@ -81,17 +78,14 @@ test_that("GSF SLD function works as expected", {
 })
 
 
-
-
-
 test_that("Normal Log Density functions work as expected", {
     stan_data <- list(
-        nrm_logden_obs   = c(5, 4, 3, 9, 10),
-        nrm_logden_mu    = c(4, 4, 3, 3, 10),
-        nrm_logden_sigma = c(2, 3, 4, 5,  6),
-        nrm_logcum_quant  = 5,
-        nrm_logcum_mu    = c(4, 4, 3, 3, 10),
-        nrm_logcum_sigma = c(2, 3, 4, 5,  6)
+        nrm_logden_obs = c(5, 4, 3, 9, 10),
+        nrm_logden_mu = c(4, 4, 3, 3, 10),
+        nrm_logden_sigma = c(2, 3, 4, 5, 6),
+        nrm_logcum_quant = 5,
+        nrm_logcum_mu = c(4, 4, 3, 3, 10),
+        nrm_logcum_sigma = c(2, 3, 4, 5, 6)
     )
     stan_data["nrm_logden_n"] <- length(stan_data$nrm_logden_mu)
     stan_data["nrm_logcum_n"] <- length(stan_data$nrm_logcum_mu)
@@ -108,7 +102,8 @@ test_that("Normal Log Density functions work as expected", {
     )
 
     #### vect_normal_log_dens
-    observed <- as.numeric(fit$draws(variables = "nrm_logden_results")) |> round(5)
+    observed <- as.numeric(fit$draws(variables = "nrm_logden_results")) |>
+        round(5)
 
     expected <- dnorm(
         stan_data$nrm_logden_obs,
@@ -120,9 +115,9 @@ test_that("Normal Log Density functions work as expected", {
 
     expect_equal(observed, expected)
 
-
     ### vect_normal_log_cum
-    observed <- as.numeric(fit$draws(variables = "nrm_logcum_results")) |> round(5)
+    observed <- as.numeric(fit$draws(variables = "nrm_logcum_results")) |>
+        round(5)
 
     expected <- pnorm(
         stan_data$nrm_logcum_quant,
@@ -136,14 +131,22 @@ test_that("Normal Log Density functions work as expected", {
 })
 
 
-
 test_that("GSF Identity Link Function works as expected", {
     stan_data <- list(
         sld_time = matrix(
             c(
-                0, 0.5, 1, 2,
-                0, 0.2, 0.4, 0.6,
-                0, 5, 2, 6
+                0,
+                0.5,
+                1,
+                2,
+                0,
+                0.2,
+                0.4,
+                0.6,
+                0,
+                5,
+                2,
+                6
             ),
             byrow = TRUE,
             nrow = 3
@@ -156,7 +159,6 @@ test_that("GSF Identity Link Function works as expected", {
 
     stan_data["sld_n"] <- nrow(stan_data$sld_time)
     stan_data["time_p"] <- ncol(stan_data$sld_time)
-
 
     fit <- run_stan_function(
         stan_data,
@@ -185,7 +187,7 @@ test_that("GSF Identity Link Function works as expected", {
         )
         expected <- c(expected, sld)
     }
-    expected <-  expected |> round(3)
+    expected <- expected |> round(3)
 
     expect_equal(observed, expected)
 })

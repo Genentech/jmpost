@@ -1,6 +1,3 @@
-
-
-
 # This file defines any magic numbers or constants used in the package.
 
 # The default number of chains to use when sampling from a Stan model.

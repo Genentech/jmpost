@@ -53,7 +53,8 @@ as_stan_list.QuantityGeneratorPopulation <- function(object, data, ...) {
 
     # Sanity checks
     assert_that(
-        length(ret[["gq_long_pop_arm_index"]]) == length(ret[["gq_long_pop_study_index"]]),
+        length(ret[["gq_long_pop_arm_index"]]) ==
+            length(ret[["gq_long_pop_study_index"]]),
         length(ret[["gq_long_pop_study_index"]]) == length(ret[["gq_times"]]),
         length(ret[["gq_long_pop_study_index"]]) == ret[["gq_n_quant"]],
         all(!is.na(ret[["gq_long_pop_arm_index"]])),

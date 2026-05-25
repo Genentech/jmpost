@@ -1,4 +1,3 @@
-
 #' `SimSurvival` Function Arguments
 #'
 #' The documentation lists all the conventional arguments for [`SimSurvival`]
@@ -129,11 +128,21 @@ hazardWindows.SimSurvival <- function(object, ...) {
 sampleSubjects.SimSurvival <- function(object, subjects_df) {
     subjects_df |>
         dplyr::mutate(cov_cont = stats::rnorm(dplyr::n())) |>
-        dplyr::mutate(cov_cat = factor(
-            sample(names(object@beta_cat), replace = TRUE, size = dplyr::n()),
-            levels = names(object@beta_cat)
-        )) |>
-        dplyr::mutate(log_haz_cov = .data$cov_cont * object@beta_cont + object@beta_cat[.data$cov_cat]) |>
+        dplyr::mutate(
+            cov_cat = factor(
+                sample(
+                    names(object@beta_cat),
+                    replace = TRUE,
+                    size = dplyr::n()
+                ),
+                levels = names(object@beta_cat)
+            )
+        ) |>
+        dplyr::mutate(
+            log_haz_cov = .data$cov_cont *
+                object@beta_cont +
+                object@beta_cat[.data$cov_cat]
+        ) |>
         dplyr::mutate(survival = stats::runif(dplyr::n())) |>
         dplyr::mutate(chazard_limit = -log(.data$survival)) |>
         dplyr::mutate(time_cen = stats::rexp(dplyr::n(), object@lambda_censor))
@@ -143,7 +152,6 @@ sampleSubjects.SimSurvival <- function(object, subjects_df) {
 #' @rdname sampleObservations
 #' @export
 sampleObservations.SimSurvival <- function(object, times_df) {
-
     assert_that(
         all(times_df$time >= 0),
         msg = "All time points must be greater than or equal to 0"
@@ -152,13 +160,35 @@ sampleObservations.SimSurvival <- function(object, times_df) {
     os_dat_chaz <- times_df |>
         dplyr::mutate(log_bl_haz = object@loghazard(.data$midpoint)) |>
         # Fix to avoid issue with log(0) = NaN values
-        dplyr::mutate(log_bl_haz = dplyr::if_else(.data$midpoint == 0, -999, .data$log_bl_haz)) |>
-        dplyr::mutate(hazard_instant = exp(.data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link)) |>
+        dplyr::mutate(
+            log_bl_haz = dplyr::if_else(
+                .data$midpoint == 0,
+                -999,
+                .data$log_bl_haz
+            )
+        ) |>
+        dplyr::mutate(
+            hazard_instant = exp(
+                .data$log_bl_haz + .data$log_haz_cov + .data$log_haz_link
+            )
+        ) |>
         # Reset Inf values to large number to avoid NaN issues downstream
         # This is suitable as Hazard limits tend to be in the range of -10 to 10 so large numbers
         # are essentially equivalent to infinity for simulation purposes
-        dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == Inf, 999, .data$hazard_instant)) |>
-        dplyr::mutate(hazard_instant = dplyr::if_else(.data$hazard_instant == -Inf, -999, .data$hazard_instant)) |>
+        dplyr::mutate(
+            hazard_instant = dplyr::if_else(
+                .data$hazard_instant == Inf,
+                999,
+                .data$hazard_instant
+            )
+        ) |>
+        dplyr::mutate(
+            hazard_instant = dplyr::if_else(
+                .data$hazard_instant == -Inf,
+                -999,
+                .data$hazard_instant
+            )
+        ) |>
         dplyr::mutate(hazard_interval = .data$hazard_instant * .data$width) |>
         dplyr::group_by(.data$subject) |>
         dplyr::mutate(chazard = cumsum(.data$hazard_interval)) |>
@@ -179,17 +209,33 @@ sampleObservations.SimSurvival <- function(object, times_df) {
         dplyr::mutate(event = 0)
 
     if (!(nrow(os_had_censor) == 0)) {
-        message(sprintf("INFO: %i subject(s) did not die before max(times)", nrow(os_had_censor)))
+        message(sprintf(
+            "INFO: %i subject(s) did not die before max(times)",
+            nrow(os_had_censor)
+        ))
     }
 
     os_dat_complete <- os_had_event |>
         dplyr::bind_rows(os_had_censor) |>
         dplyr::mutate(real_time = .data$time) |>
-        dplyr::mutate(event = dplyr::if_else(.data$real_time <= .data$time_cen, .data$event, 0)) |>
-        dplyr::mutate(time = dplyr::if_else(.data$real_time <= .data$time_cen, .data$real_time, .data$time_cen)) |>
+        dplyr::mutate(
+            event = dplyr::if_else(
+                .data$real_time <= .data$time_cen,
+                .data$event,
+                0
+            )
+        ) |>
+        dplyr::mutate(
+            time = dplyr::if_else(
+                .data$real_time <= .data$time_cen,
+                .data$real_time,
+                .data$time_cen
+            )
+        ) |>
         dplyr::arrange(.data$subject)
 
-    keep_cols <- colnames(os_dat_complete) %in% c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
+    keep_cols <- colnames(os_dat_complete) %in%
+        c("subject", "study", "arm", "time", "event", "cov_cont", "cov_cat")
     os_dat_complete[, keep_cols]
 }
 
@@ -253,14 +299,13 @@ SimSurvivalLogLogistic <- function(
         beta_cont = beta_cont,
         beta_cat = beta_cat,
         loghazard = function(time) {
-            c1 <- - log(a) + log(b) + (b - 1) * (- log(a) + log(time))
+            c1 <- -log(a) + log(b) + (b - 1) * (-log(a) + log(time))
             c2 <- log(1 + (time / a)^b)
             return(c1 - c2)
         },
         name = "SimSurvivalLogLogistic"
     )
 }
-
 
 
 #' Simulate Survival Data from a Exponential Proportional Hazard Model

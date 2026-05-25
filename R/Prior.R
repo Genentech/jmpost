@@ -89,7 +89,10 @@ setValidity(
     method = function(object) {
         for (param in names(object@parameters)) {
             if (!param %in% names(object@validation)) {
-                return(sprintf("Parameter `%s` does not have a validation method", param))
+                return(sprintf(
+                    "Parameter `%s` does not have a validation method",
+                    param
+                ))
             }
             if (length(object@parameters[[param]]) != 1) {
                 return(sprintf("Parameter `%s` must be a single value", param))
@@ -109,13 +112,14 @@ setValidity(
         if (object@limits[1] >= object@limits[2]) {
             return("Lower limit must be less than upper limit")
         }
-        if (length(object@repr_model) != 1 || !is.character(object@repr_model)) {
+        if (
+            length(object@repr_model) != 1 || !is.character(object@repr_model)
+        ) {
             return("Model representation must be length 1 string")
         }
         return(TRUE)
     }
 )
-
 
 
 #' @rdname set_limits
@@ -134,7 +138,6 @@ set_limits.Prior <- function(object, lower = -Inf, upper = Inf) {
 #' @family Prior-internal
 #' @export
 as.character.Prior <- function(x, ...) {
-
     parameters_rounded <- lapply(x@parameters, round, 5)
 
     display_string <- do.call(
@@ -142,7 +145,11 @@ as.character.Prior <- function(x, ...) {
         append(x@display, parameters_rounded)
     )
     display_limits <- render_stan_limits(x@limits)
-    if (display_limits != "" && display_string != "" && display_string != "<None>") {
+    if (
+        display_limits != "" &&
+            display_string != "" &&
+            display_string != "<None>"
+    ) {
         display_string <- paste0(display_string, display_limits)
     }
     return(display_string)
@@ -160,7 +167,11 @@ render_stan_limits <- function(limits) {
     u_bound <- if (limits[[2]] < Inf) limits[[2]] else ""
     string <- ""
     if (l_bound != "" || u_bound != "") {
-        string <- glue::glue(" T[{l_bound}, {u_bound}]", l_bound = l_bound, u_bound = u_bound)
+        string <- glue::glue(
+            " T[{l_bound}, {u_bound}]",
+            l_bound = l_bound,
+            u_bound = u_bound
+        )
     }
     return(string)
 }
@@ -227,7 +238,6 @@ as_stan_list.Prior <- function(object, name, ...) {
 }
 
 
-
 #' Prior Getter Functions
 #' @description
 #' Getter functions for the slots of a [`Prior`] object
@@ -237,16 +247,18 @@ as_stan_list.Prior <- function(object, name, ...) {
 NULL
 
 
-
 # initialValues-Prior ----
 
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
 initialValues.Prior <- function(object, ...) {
-    samples <- getOption("jmpost.prior_shrinkage") * object@centre +
+    samples <- getOption("jmpost.prior_shrinkage") *
+        object@centre +
         (1 - getOption("jmpost.prior_shrinkage")) * object@sample(100)
 
-    valid_samples <- samples[samples >= min(object@limits) & samples <= max(object@limits)]
+    valid_samples <- samples[
+        samples >= min(object@limits) & samples <= max(object@limits)
+    ]
     assert_that(
         length(valid_samples) >= 1,
         msg = "Unable to generate an initial value that meets the required constraints"
@@ -428,8 +440,6 @@ prior_init_only <- function(dist) {
 }
 
 
-
-
 #' Uniform Prior Distribution
 #'
 #' @param alpha (`number`)\cr minimum value parameter.
@@ -491,7 +501,6 @@ prior_student_t <- function(nu, mu, sigma) {
         )
     )
 }
-
 
 
 #' Logistic Prior Distribution
@@ -614,8 +623,6 @@ median.Prior <- function(x, na.rm, ...) {
         unlist()
     median(vals)
 }
-
-
 
 
 #' Stub functions for sampling from distributions

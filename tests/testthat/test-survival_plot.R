@@ -1,4 +1,3 @@
-
 ## Code to re-run this from commandline
 # JMPOST_GRAPH_SNAPSHOT=TRUE \
 # NOT_CRAN=TRUE \
@@ -7,7 +6,6 @@
 snap_dir <- file.path(testthat::test_path(), "_snaps", "survival_plot")
 
 test_that("survival_plot works as expected", {
-
     set.seed(38132)
     define_data <- function(i, group) {
         n <- 120
@@ -17,7 +15,8 @@ test_that("survival_plot works as expected", {
             event = ifelse(e_time <= c_time, 1, 0),
             time = ifelse(e_time <= c_time, e_time, c_time),
             group = group
-        ) |> dplyr::select(time, event, group)
+        ) |>
+            dplyr::select(time, event, group)
     }
 
     dat <- dplyr::bind_rows(
@@ -71,7 +70,6 @@ test_that("survival_plot works as expected", {
             x_label = expression(thd[3])
         )
     })
-
 
     announce_snapshot_file(file.path(snap_dir, "wrap-ci.svg"))
     if (is_graph_snapshot_enabled()) {

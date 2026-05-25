@@ -1,4 +1,3 @@
-
 # Surv ----
 
 #' Survival Formula Specification
@@ -14,7 +13,6 @@
 #' @export Surv
 #' @keywords internal
 NULL
-
 
 
 # autoplot ----

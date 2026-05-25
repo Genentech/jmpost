@@ -68,15 +68,13 @@ setValidity(
         vars$threshold <- NULL
         vars$frm <- NULL
         for (i in unlist(vars)) {
-            if (! i %in% names(object@data)) {
+            if (!i %in% names(object@data)) {
                 return(sprintf("Variable `%s` is not in data", i))
             }
         }
         return(TRUE)
     }
 )
-
-
 
 
 #' @rdname harmonise
@@ -87,7 +85,10 @@ harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
     assert_character(subject_ord, any.missing = FALSE)
     assert_that(
         subject_var %in% names(data),
-        msg = sprintf("Subject variable `%s` not found in `longitudinal`", subject_var)
+        msg = sprintf(
+            "Subject variable `%s` not found in `longitudinal`",
+            subject_var
+        )
     )
     assert_that(
         all(data[[subject_var]] %in% subject_ord),
@@ -115,7 +116,6 @@ harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
 }
 
 
-
 #' `DataLongitudinal` -> `data.frame`
 #'
 #' @inheritParams DataLongitudinal-Shared
@@ -130,8 +130,6 @@ as.data.frame.DataLongitudinal <- function(x, ...) {
     rownames(x) <- NULL
     x
 }
-
-
 
 
 #' @inheritParams DataLongitudinal-Shared
@@ -161,7 +159,6 @@ extractVariableNames.DataLongitudinal <- function(object) {
 #' @family DataLongitudinal
 #' @export
 as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
-
     df <- as.data.frame(object)
     vars <- extractVariableNames(object)
 
@@ -183,8 +180,12 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     index_cen <- which(df[[vars$outcome]] < adj_threshold)
 
     sparse_mat_inds_all_y <- rstan::extract_sparse_parts(mat_sld_index)
-    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[, index_obs])
-    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[, index_cen])
+    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[,
+        index_obs
+    ])
+    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[,
+        index_cen
+    ])
 
     model_data <- list(
         n_tumour_all = nrow(df),
@@ -232,7 +233,6 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
         w_mat_inds_all_y = sparse_mat_inds_all_y$w,
         v_mat_inds_all_y = sparse_mat_inds_all_y$v,
         u_mat_inds_all_y = sparse_mat_inds_all_y$u
-
     )
 
     return(model_data)

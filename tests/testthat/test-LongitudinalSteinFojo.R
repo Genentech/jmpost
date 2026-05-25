@@ -1,13 +1,10 @@
-
 test_that("LongitudinalSteinFojo works as expected with default arguments", {
     result <- expect_silent(LongitudinalSteinFojo())
     expect_s4_class(result, "LongitudinalSteinFojo")
 })
 
 
-
 test_that("Print method for LongitudinalSteinFojo works as expected", {
-
     expect_snapshot({
         x <- LongitudinalSteinFojo()
         print(x)
@@ -26,7 +23,8 @@ test_that("Print method for LongitudinalSteinFojo works as expected", {
 test_that("Centralised parameterisation compiles without issues", {
     jm <- JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE))
     expect_false(any(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_true(all(
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
@@ -39,7 +37,8 @@ test_that("Centralised parameterisation compiles without issues", {
 test_that("Non-Centralised parameterisation compiles without issues", {
     jm <- JointModel(longitudinal = LongitudinalSteinFojo(centred = FALSE))
     expect_true(all(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_false(any(
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
@@ -49,7 +48,6 @@ test_that("Non-Centralised parameterisation compiles without issues", {
 })
 
 
-
 test_that("Centralised parameterisation compiles without issues", {
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(centred = TRUE),
@@ -57,7 +55,8 @@ test_that("Centralised parameterisation compiles without issues", {
         link = Link(linkTTG(), linkDSLD(), linkGrowth())
     )
     expect_false(any(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_true(all(
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
@@ -74,7 +73,8 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         link = Link()
     )
     expect_true(all(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in% names(jm@parameters)
+        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+            names(jm@parameters)
     ))
     expect_false(any(
         c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
@@ -104,9 +104,7 @@ test_that("Can load and compile growth + shrinkage links", {
 })
 
 
-
 test_that("Can recover known distributional parameters from a SF joint model", {
-
     skip_if_not(is_full_test())
     pars <- list(
         sigma = 0.015,
@@ -133,7 +131,25 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             SimGroup(150, "Arm-B", "Study-X")
         ),
         longitudinal = SimLongitudinalSteinFojo(
-            times = c(-100, -50, -10, 1, 50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000) * (1 / 365),
+            times = c(
+                -100,
+                -50,
+                -10,
+                1,
+                50,
+                100,
+                150,
+                200,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1000
+            ) *
+                (1 / 365),
             sigma = pars$sigma,
             mu_s = pars$mu_s,
             mu_g = pars$mu_g,
@@ -163,7 +179,6 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
-
             mu_bsld = prior_normal(mean(pars$mu_b), 0.25),
             mu_ks = prior_normal(mean(pars$mu_s), 0.25),
             mu_kg = prior_normal(mean(pars$mu_g), 0.25),
@@ -246,7 +261,6 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
         c("lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks")
@@ -261,12 +275,18 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 100))
 
-
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
         c("link_dsld", "link_ttg", "sm_exp_lambda", "beta_os_cov")
     )
-    true_values <- c(pars$link_dsld, pars$link_ttg, pars$lambda, pars$beta_cat_B, pars$beta_cat_C, pars$beta_cont)
+    true_values <- c(
+        pars$link_dsld,
+        pars$link_ttg,
+        pars$lambda,
+        pars$beta_cat_B,
+        pars$beta_cat_C,
+        pars$beta_cont
+    )
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
@@ -274,12 +294,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
 })
 
 
-
-
-
-
 test_that("Can recover known distributional parameters from a SF joint model with growth link", {
-
     skip_if_not(is_full_test())
 
     sim_params <- list(
@@ -309,9 +324,26 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         ),
         longitudinal = SimLongitudinalSteinFojo(
             times = c(
-                -100, -50, -10, 1, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900,
-                1100, 1300, 1500, 1800
-            ) / 365,
+                -100,
+                -50,
+                -10,
+                1,
+                100,
+                150,
+                200,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1100,
+                1300,
+                1500,
+                1800
+            ) /
+                365,
             sigma = sim_params$sigma,
             mu_s = sim_params$mu_s,
             mu_g = sim_params$mu_g,
@@ -344,10 +376,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     # median(jlist@survival$time)
     # nolint end
 
-
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
-
             mu_bsld = prior_normal(log(60), 0.5),
             mu_ks = prior_normal(log(0.2), 0.5),
             mu_kg = prior_normal(log(0.3), 0.5),
@@ -358,7 +388,6 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 
             sigma = prior_lognormal(log(0.005), 0.5),
             centred = TRUE
-
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(2), 0.5)
@@ -434,8 +463,11 @@ test_that("Can recover known distributional parameters from a SF joint model wit
         c("link_growth", "sm_exp_lambda", "beta_os_cov")
     )
     true_values <- c(
-        sim_params$link_growth, sim_params$lambda,
-        sim_params$beta_cat_b, sim_params$beta_cat_c, sim_params$beta_cont
+        sim_params$link_growth,
+        sim_params$lambda,
+        sim_params$beta_cat_b,
+        sim_params$beta_cat_c,
+        sim_params$beta_cont
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
@@ -443,13 +475,11 @@ test_that("Can recover known distributional parameters from a SF joint model wit
 })
 
 
-
-
-
-
 test_that("Quantity models pass the parser", {
     mock_samples <- .JointModelSamples(
-        model = JointModel(longitudinal = LongitudinalSteinFojo(centred = TRUE)),
+        model = JointModel(
+            longitudinal = LongitudinalSteinFojo(centred = TRUE)
+        ),
         data = structure(1, class = "DataJoint"),
         results = structure(1, class = "CmdStanMCMC")
     )
@@ -469,16 +499,11 @@ test_that("Quantity models pass the parser", {
 })
 
 
-
-
-
-
-
-
 test_that("Can generate valid initial values", {
-
     pars <- c(
-        "lm_gsf_omega_bsld", "lm_gsf_omega_ks", "lm_gsf_omega_kg",
+        "lm_gsf_omega_bsld",
+        "lm_gsf_omega_ks",
+        "lm_gsf_omega_kg",
         "lm_gsf_sigma"
     )
 
@@ -487,7 +512,6 @@ test_that("Can generate valid initial values", {
     vals <- initialValues(mod, n_chains = 1)
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 
     # Test all individual parameters throw error if given prior that can't sample
     # valid value
@@ -519,17 +543,15 @@ test_that("Can generate valid initial values", {
     vals <- unlist(initialValues(mod, n_chains = 200))
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
-
 })
-
-
-
-
 
 
 test_that("Unscaled variance SF mode pass the parser", {
     jm <- JointModel(
-        longitudinal = LongitudinalSteinFojo(centred = FALSE, scaled_variance = FALSE),
+        longitudinal = LongitudinalSteinFojo(
+            centred = FALSE,
+            scaled_variance = FALSE
+        ),
         survival = SurvivalLogLogistic(),
         link = linkDSLD()
     )
@@ -538,12 +560,7 @@ test_that("Unscaled variance SF mode pass the parser", {
 })
 
 
-
-
-
-
 test_that("Can recover known distributional parameters from unscaled variance SF model", {
-
     skip_if_not(is_full_test())
 
     sim_params <- list(
@@ -606,7 +623,6 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     # median(jlist@survival$time)
     # nolint end
 
-
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
             mu_bsld = prior_normal(log(60), 0.5),
@@ -634,7 +650,6 @@ test_that("Can recover known distributional parameters from unscaled variance SF
             threshold = 5
         )
     )
-
 
     set.seed(2213)
     mp <- run_quietly({
@@ -669,13 +684,23 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
         c(
-            "lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg",
-            "lm_sf_sigma", "lm_sf_omega_bsld", "lm_sf_omega_kg", "lm_sf_omega_ks"
+            "lm_sf_mu_bsld",
+            "lm_sf_mu_ks",
+            "lm_sf_mu_kg",
+            "lm_sf_sigma",
+            "lm_sf_omega_bsld",
+            "lm_sf_omega_kg",
+            "lm_sf_omega_ks"
         )
     )
     true_values <- c(
-        sim_params$mu_b, sim_params$mu_s, sim_params$mu_g,
-        sim_params$sigma, sim_params$omega_b, sim_params$omega_g, sim_params$omega_s
+        sim_params$mu_b,
+        sim_params$mu_s,
+        sim_params$mu_g,
+        sim_params$sigma,
+        sim_params$omega_b,
+        sim_params$omega_g,
+        sim_params$omega_s
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))

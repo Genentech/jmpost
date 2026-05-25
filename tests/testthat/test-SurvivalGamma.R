@@ -1,6 +1,4 @@
-
 test_that("Print method for SurvivalGamma works as expected", {
-
     expect_snapshot({
         x <- SurvivalGamma()
         print(x)
@@ -14,7 +12,6 @@ test_that("Print method for SurvivalGamma works as expected", {
         print(x)
     })
 })
-
 
 
 test_that("Can load and compile SurvivalGamma() model", {
@@ -36,7 +33,6 @@ test_that("Can load and compile SurvivalGamma() model", {
 })
 
 
-
 test_that("SimSurvivalGamma() is consistant with flexsurv", {
     t <- c(1, 4, 50, 200, 600)
     expect_equal(
@@ -46,7 +42,6 @@ test_that("SimSurvivalGamma() is consistant with flexsurv", {
 })
 
 test_that("SurvivalGamma can recover known values", {
-
     skip_if_not(is_full_test())
 
     true_k <- 10
@@ -117,5 +112,4 @@ test_that("SurvivalGamma can recover known values", {
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
     expect_true(all(results_summary$ess_bulk > 100))
-
 })

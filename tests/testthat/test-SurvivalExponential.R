@@ -1,4 +1,3 @@
-
 test_that("Can load and compile SurvivalExponential() model", {
     # Full joint model
     jm <- JointModel(
@@ -19,7 +18,6 @@ test_that("Can load and compile SurvivalExponential() model", {
 
 
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
-
     skip_if_not(is_full_test())
 
     true_lambda <- 1 / 100

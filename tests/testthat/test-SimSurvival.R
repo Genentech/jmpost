@@ -1,4 +1,3 @@
-
 test_that("SimSurvivalExponential creates a dataset with the correct parameter", {
     set.seed(321)
     sim_data <- SimJointData(
@@ -61,7 +60,7 @@ test_that("SimSurvivalWeibullPH creates a dataset with the correct parameter", {
     scale <- mod$scale
 
     ## Check covariate coefficients
-    alpha_real <- -c(1.2, -0.6, 0.9) * scale  # Convert from PH to scale-location formulation
+    alpha_real <- -c(1.2, -0.6, 0.9) * scale # Convert from PH to scale-location formulation
     alpha_obs <- coef(mod)[-1]
     alpha_se <- sqrt(diag(vcov(mod)[2:4, 2:4]))
     z_score <- (alpha_obs - alpha_real) / alpha_se

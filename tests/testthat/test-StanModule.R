@@ -1,4 +1,3 @@
-
 test_that("StanModule print method works as expected", {
     expect_snapshot({
         code <- "functions{\n some fun \n}\n\ndata{ \n abd \n}"
@@ -7,30 +6,39 @@ test_that("StanModule print method works as expected", {
     })
 
     expect_snapshot({
-        code <- paste(c(
-            "functions{\n some fun \n}\n",
-            "model{ \n abd \n}\n",
-            "generated quantities{ \n awdadawda \n}\n"
-        ), collapse = "\n")
+        code <- paste(
+            c(
+                "functions{\n some fun \n}\n",
+                "model{ \n abd \n}\n",
+                "generated quantities{ \n awdadawda \n}\n"
+            ),
+            collapse = "\n"
+        )
         x <- StanModule(code)
         print(x)
     })
 
     expect_snapshot({
-        code <- paste(c(
-            "data {\n    int x;\n}",
-            "parameters {\n    real sigma;\n    real mu;  real par;\n}"
-        ), collapse = "\n")
+        code <- paste(
+            c(
+                "data {\n    int x;\n}",
+                "parameters {\n    real sigma;\n    real mu;  real par;\n}"
+            ),
+            collapse = "\n"
+        )
         x <- StanModule(code)
         print(x)
     })
 
     expect_snapshot({
-        code <- paste(c(
-            "data {\n    int x;\n}",
-            "model {\n    real sigma;\n    real mu; \n}",
-            "generated quantities {\n    //something \n}"
-        ), collapse = "\n")
+        code <- paste(
+            c(
+                "data {\n    int x;\n}",
+                "model {\n    real sigma;\n    real mu; \n}",
+                "generated quantities {\n    //something \n}"
+            ),
+            collapse = "\n"
+        )
         x <- StanModule(code)
         print(x)
     })
@@ -47,7 +55,6 @@ test_that("StanModule() can read basic stan programs", {
     expect_equal(x@parameters, c("   real mu;", "   real sigma;"))
     expect_equal(x@model, "   x ~ normal(mu, sigma);")
 })
-
 
 
 test_that("StanModule() can handle trailing } characters", {
@@ -70,8 +77,6 @@ model {
 })
 
 
-
-
 test_that("StanModule() works with in-line code", {
     code <- "
 data {
@@ -87,15 +92,20 @@ transformed parameters {
     */
 }"
     x <- StanModule(code)
-    expect_equal(x@transformed_parameters, c("    /*", "    a block comment", "    */"))
-    expect_equal(x@generated_quantities, c("    int z;", "    // some line comment"))
+    expect_equal(
+        x@transformed_parameters,
+        c("    /*", "    a block comment", "    */")
+    )
+    expect_equal(
+        x@generated_quantities,
+        c("    int z;", "    // some line comment")
+    )
     expect_equal(x@functions, "")
     expect_equal(x@data, "    int x;")
     expect_equal(x@transformed_data, "")
     expect_equal(x@parameters, "")
     expect_equal(x@model, "")
 })
-
 
 
 test_that("StanModule() throws an error for 1-line blocks", {
@@ -106,7 +116,6 @@ model {
     int y;
 }"
     expect_error(StanModule(code), "`data`")
-
 
     code <- "
 data {
@@ -169,7 +178,6 @@ test_that("StanModule.merge works as expected", {
     expect_equal(x@generated_quantities, "")
     expect_equal(x@functions, "")
 
-
     x <- merge(
         StanModule("model {\n    int x;\n}"),
         StanModule("data {\n    int x;\n}")
@@ -182,10 +190,13 @@ test_that("StanModule.merge works as expected", {
     expect_equal(x@generated_quantities, "")
     expect_equal(x@functions, "")
 
-
     x <- merge(
-        StanModule("parameters {\n    int x;\n}\n generated quantities {\n    int w;\n}"),
-        StanModule("generated quantities {\n    int z;\n}\n parameters {\n    int y;\n}")
+        StanModule(
+            "parameters {\n    int x;\n}\n generated quantities {\n    int w;\n}"
+        ),
+        StanModule(
+            "generated quantities {\n    int z;\n}\n parameters {\n    int y;\n}"
+        )
     )
     expect_equal(x@data, "")
     expect_equal(x@transformed_data, "")

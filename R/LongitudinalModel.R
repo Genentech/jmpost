@@ -49,7 +49,8 @@ as_print_string.LongitudinalModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Longitudinal Model with parameters:\n%s\n\n",
         object@name,
-        paste("   ", as_print_string(object@parameters)) |> paste(collapse = "\n")
+        paste("   ", as_print_string(object@parameters)) |>
+            paste(collapse = "\n")
     )
     return(string)
 }
