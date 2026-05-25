@@ -35,6 +35,7 @@ setMethod(
 )
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimLongitudinal <- function(object, ...) {
     return("SimLongitudinal")
 }

@@ -18,4 +18,3 @@ A \code{data.frame} with columns \code{median}, \code{lower} and \code{upper}.
 Obtain Median and Credible Intervals from MCMC samples
 }
 \keyword{internal}
-\keyword{samples_median_ci(samples)}

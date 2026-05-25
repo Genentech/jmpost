@@ -156,6 +156,7 @@ as.data.frame.DataSubject <- function(x, ...) {
 
 
 #' @rdname harmonise
+#' @exportS3Method NULL
 harmonise.DataSubject <- function(object, ...) {
     data <- as.data.frame(object)
     vars <- extractVariableNames(object)

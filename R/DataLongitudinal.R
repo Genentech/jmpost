@@ -78,6 +78,7 @@ setValidity(
 
 
 #' @rdname harmonise
+#' @exportS3Method NULL
 harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
     data <- as.data.frame(object)
     vars <- extractVariableNames(object)
@@ -145,6 +146,7 @@ as.data.frame.DataLongitudinal <- function(x, ...) {
 #'   (below detection limit).
 #' @family DataLongitudinal
 #' @family extractVariableNames
+#' @exportS3Method NULL
 extractVariableNames.DataLongitudinal <- function(object) {
     list(
         frm = object@formula,

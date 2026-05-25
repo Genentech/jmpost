@@ -166,7 +166,6 @@ replace_with_lookup <- function(sizes, data) {
 #'
 #' @returns A `data.frame` with columns `median`, `lower` and `upper`.
 #' @keywords internal
-#' samples_median_ci(samples)
 samples_median_ci <- function(samples, level = 0.95) {
     assert_that(is.matrix(samples))
     assert_that(is.number(level), level < 1, level > 0)

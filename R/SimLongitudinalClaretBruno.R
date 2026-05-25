@@ -172,6 +172,7 @@ setValidity(
 )
 
 #' @rdname as_print_string
+#' @exportS3Method NULL
 as_print_string.SimLongitudinalClaretBruno <- function(object, ...) {
     return("SimLongitudinalClaretBruno")
 }
