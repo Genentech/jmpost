@@ -187,12 +187,12 @@ as_stan_list.DataLongitudinal <- function(object, subject_var, ...) {
     index_cen <- which(df[[vars$outcome]] < adj_threshold)
 
     sparse_mat_inds_all_y <- rstan::extract_sparse_parts(mat_sld_index)
-    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(mat_sld_index[,
-        index_obs
-    ])
-    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(mat_sld_index[,
-        index_cen
-    ])
+    sparse_mat_inds_obs_y <- rstan::extract_sparse_parts(
+        mat_sld_index[, index_obs]
+    )
+    sparse_mat_inds_cens_y <- rstan::extract_sparse_parts(
+        mat_sld_index[, index_cen]
+    )
 
     model_data <- list(
         n_tumour_all = nrow(df),
