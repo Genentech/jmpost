@@ -10,8 +10,10 @@ NULL
 #' @typed centre: number
 #'   the central point of distribution to shrink sampled values towards
 #'   (for most distributions this is the mean or median if the mean is undefined)
-#' @param x ([`Prior`])\cr a prior Distribution
-#' @param object ([`Prior`])\cr a prior Distribution
+#' @typed x: Prior
+#'   a prior Distribution
+#' @typed object: Prior
+#'   a prior Distribution
 #' @typed name: character
 #'   the name of the parameter the prior distribution is for
 #' @param ... Not Used.

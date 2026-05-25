@@ -44,7 +44,8 @@ NULL
 #' Write the Stan code for a Stan module.
 #'
 #' @param object the module.
-#' @param destination (`character` or  `connection`)\cr Where to write stan code to.
+#' @typed destination: "`character` or  `connection`"
+#'   Where to write stan code to.
 #' @param ... Additional arguments
 #'
 #' @export
@@ -182,7 +183,8 @@ generateQuantities <- function(object, ...) {
 
 #' Prepare Data Object
 #'
-#' @param object (`DataSubject` or `DataLongitudinal` or `DataSurvival`) \cr data object to "harmonise"
+#' @typed object: "`DataSubject` or `DataLongitudinal` or `DataSurvival`"
+#'   data object to "harmonise"
 #' @typed subject_var: character
 #'   the name of the variable containing the subject identifier.
 #' @typed subject_ord: character
@@ -280,7 +282,8 @@ brierScore <- function(object, ...) {
 
 #' Generate Simulated Observations
 #'
-#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate observations from.
+#' @typed object: "`SimLongitudinal` or `SimSurvival`"
+#'   object to generate observations from.
 #' @typed times_df: data.frame
 #'   the times at which to generate observations. See details.
 #'
@@ -293,7 +296,7 @@ brierScore <- function(object, ...) {
 #' times_df <- tidyr::expand_grid(
 #'     subject_dat,
 #'     time = c(0, 1, 2, 3)
-#' )
+#'   )
 #' ```
 #'
 #' @export
@@ -304,7 +307,8 @@ sampleObservations <- function(object, times_df) {
 
 #' Generate Simulated Subjects
 #'
-#' @param object (`SimLongitudinal` or `SimSurvival`) \cr object to generate subjects from.
+#' @typed object: "`SimLongitudinal` or `SimSurvival`"
+#'   object to generate subjects from.
 #' @typed subjects_df: data.frame
 #'   the subjects to generate observations for. See details.
 #'
@@ -370,7 +374,8 @@ coalesceGridTime.default <- function(object, times, ...) {
 #'
 #' @typed object: ANY
 #'   an object to resolve.
-#' @param ... (`ANY`)\cr additional arguments.
+#' @typed ...: ANY
+#'   additional arguments.
 #'
 #' If `object` is not a promise will just return itself else will resolve the promise
 #' and return the promised object.
@@ -388,7 +393,8 @@ resolvePromise.default <- function(object, ...) {
 
 #' Enable Link Generic
 #'
-#' @param object ([`LongitudinalModel`])\cr to enable link for.
+#' @typed object: LongitudinalModel
+#'   to enable link for.
 #' @param ... Not used.
 #'
 #' Optional hook method that is called on a [`LongitudinalModel`] only if a link method
@@ -409,7 +415,8 @@ enableLink.default <- function(object, ...) {
 
 #' Enable Generated Quantities Generic
 #'
-#' @param object ([`StanModel`])\cr to enable generated quantities for.
+#' @typed object: StanModel
+#'   to enable generated quantities for.
 #' @param ... Not used.
 #'
 #' Optional hook method that is called on a [`StanModel`] if attempting to use
@@ -511,7 +518,8 @@ set_limits <- function(object, lower = -Inf, upper = Inf) {
 #'   object to save.
 #' @typed file: character
 #'   file to save object to.
-#' @param ... (`ANY`) \cr additional arguments.
+#' @typed ...: ANY
+#'   additional arguments.
 #'
 #' @family saveObject
 #' @export

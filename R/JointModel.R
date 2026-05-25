@@ -48,8 +48,10 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
     )
 )
 
-#' @param longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
-#' @param survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
+#' @typed longitudinal: "`LongitudinalModel` or `NULL`"
+#'   the longitudinal model.
+#' @typed survival: "`SurvivalModel` or `NULL`"
+#'   the survival model.
 #' @typed link: Link
 #'   the link.
 #' @rdname JointModel-class
@@ -168,7 +170,8 @@ compileStanModel.JointModel <- function(object) {
 
 #' @rdname sampleStanModel
 #'
-#' @param data (`DataJoint` or `list`)\cr input data.
+#' @typed data: "`DataJoint` or `list`"
+#'   input data.
 #' @export
 sampleStanModel.JointModel <- function(object, data, ...) {
     assert_class(data, "DataJoint")
@@ -236,7 +239,8 @@ sampleStanModel.JointModel <- function(object, data, ...) {
 #'   specifies the size to expand each of our initial values to be.
 #'   That is elements of size 1 in `initial_values` will be expanded to be the same
 #'   size as the corresponding element in `data` by broadcasting the value.
-#' @param parameters ([`ParameterList`])\cr the parameters object
+#' @typed parameters: ParameterList
+#'   the parameters object
 #'
 #' @details
 #' This function is mostly a thin wrapper around `expand_initial_values` to

@@ -2,8 +2,10 @@
 #'
 #' @typed design: list
 #'   a list of [`SimGroup`] objects. See details.
-#' @param longitudinal ([`SimLongitudinal`])\cr object specifying how to simulate the longitudinal data
-#' @param survival ([`SimSurvival`])\cr object specifying how to simulate the survival data
+#' @typed longitudinal: SimLongitudinal
+#'   object specifying how to simulate the longitudinal data
+#' @typed survival: SimSurvival
+#'   object specifying how to simulate the survival data
 #' @typed .silent: flag
 #'   whether to suppress info messages
 #'
@@ -20,7 +22,7 @@
 #' design = list(
 #'     SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
 #'     SimGroup(n = 50, study = "Study-1", arm = "Arm-B")
-#' )
+#'   )
 #' ```
 #'
 #' @name SimJointData-class
@@ -208,7 +210,7 @@ setMethod(
 #' data <- SimJointData(
 #'   survival = SimSurvivalExponential(lambda = 1/10),
 #'   longitudinal = SimLongitudinalSteinFojo()
-#' )
+#'   )
 #' data <- add_pfs(data)
 #' data@survival # now has pfs_time and pfs_event columns
 add_pfs <- function(
@@ -278,7 +280,7 @@ add_pfs <- function(
 #' data <- SimJointData(
 #'   survival = SimSurvivalExponential(lambda = 1/10),
 #'   longitudinal = SimLongitudinalSteinFojo()
-#' )
+#'   )
 #' data <- cut_data(data, 5)
 #' data@survival
 #' # Now max time is 5

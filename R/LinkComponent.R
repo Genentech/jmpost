@@ -12,8 +12,10 @@ NULL
 #'
 #' @typed stan: StanModule
 #'   Stan code.
-#' @param x ([`LinkComponent`])\cr a link component.
-#' @param object ([`LinkComponent`])\cr a link component.
+#' @typed x: LinkComponent
+#'   a link component.
+#' @typed object: LinkComponent
+#'   a link component.
 #' @param ... Not Used.
 #'
 #' @name LinkComponent-Shared

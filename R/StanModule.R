@@ -115,7 +115,8 @@ StanModule <- function(
 # as.character-StanModule ----
 
 #' `StanModule` -> `character`
-#' @param x ([`StanModule`])\cr A stan program
+#' @typed x: StanModule
+#'   A stan program
 #' @param ... Not Used.
 #' @description
 #' Converts a [`StanModule`] object into a valid Stan program file where each
@@ -213,7 +214,8 @@ compileStanModel.StanModule <- function(object) {
 #' @description
 #' Returns a named list where each element of the list corresponds
 #' to a Stan modelling block e.g. `data`, `model`, etc.
-#' @param x ([`StanModule`])\cr A Stan Module
+#' @typed x: StanModule
+#'   A Stan Module
 #' @typed stan_blocks: list
 #'   reference list of stan blocks.
 #' @param ... Not Used.
@@ -347,10 +349,10 @@ as_stan_file <- function(
 #' ```
 #' data {
 #'     <code>
-#' }
+#'   }
 #' model {
 #'     <code>
-#' }
+#'   }
 #' ```
 #' That is to say we do not support code in inline format i.e.
 #' ```
@@ -448,7 +450,8 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #' `StanModule` -> Printable `Character`
 #'
 #' Converts [`StanModule`] object into a printable string.
-#' @param object ([`StanModule`])\cr A stan program
+#' @typed object: StanModule
+#'   A stan program
 #' @family StanModule
 #' @typed indent: numeric
 #'   how much white space to prefix the print string with.

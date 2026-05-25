@@ -10,8 +10,10 @@ NULL
 #'
 #' This exists just to contain all the common arguments for [`Link`] methods.
 #'
-#' @param x ([`Link`])\cr a link object.
-#' @param object ([`Link`])\cr a link object.
+#' @typed x: Link
+#'   a link object.
+#' @typed object: Link
+#'   a link object.
 #' @param ... Not Used.
 #'
 #' @name Link-Shared
@@ -24,8 +26,8 @@ NULL
 #' @slot components (`list`)\cr a list of [`LinkComponent`] or [`PromiseLinkComponent`] objects.
 #' @slot resolved (`logical`)\cr indicates if all the `components` have been resolved.
 #'
-#' @param ... ([`LinkComponent`] or [`PromiseLinkComponent`])\cr
-#' an arbitrary number of link components.
+#' @typed ...: "[`LinkComponent`] or [`PromiseLinkComponent`]"
+#'   an arbitrary number of link components.
 #'
 #' @description
 #' Simple container class to enable the use of multiple link components in a joint model.
@@ -35,7 +37,7 @@ NULL
 #' Link(
 #'     linkDSLD(),
 #'     linkTTG()
-#' )
+#'   )
 #'
 #' @family Link
 #' @name Link-class
@@ -75,8 +77,10 @@ Link <- function(...) {
 #' Loops over all components and ensures that any [`PromiseLinkComponent`] objects
 #' are resolved to [`LinkComponent`] objects.
 #'
-#' @param object ([`Link`])\cr a link object.
-#' @param model ([`LongitudinalModel`])\cr the model object.
+#' @typed object: Link
+#'   a link object.
+#' @typed model: LongitudinalModel
+#'   the model object.
 #' @param ... Not Used.
 #'
 #' @export

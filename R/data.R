@@ -13,7 +13,7 @@
 #'   \item{year}{Time of measurement in years from treatment start (numeric)}
 #'   \item{sld}{Sum of longest diameters of target lesions in mm (numeric)}
 #'   \item{arm}{Treatment arm (factor): `"Docetaxel"` or `"MPDL3280A"`}
-#' }
+#'   }
 #' @source Tumor size measurements extracted from the S1 dataset of:
 #'   Ghaffari Laleh N, Loeffler CML, Grajek J, Staňková K, Pearson AT,
 #'   Muti HS, et al. (2022). Classical mathematical models for prediction of
@@ -49,7 +49,7 @@
 #'   \item{pfs_event}{Progression-free survival event indicator (logical): `TRUE` = event observed}
 #'   \item{os_time}{Overall survival time in years (numeric)}
 #'   \item{os_event}{Overall survival event indicator (logical): `TRUE` = death observed}
-#' }
+#'   }
 #' @source Supplementary Table 8 from:
 #'   Rittmeyer A, Barlesi F, Waterkamp D, et al. (2017). Atezolizumab versus
 #'   docetaxel in patients with previously treated non-small-cell lung cancer

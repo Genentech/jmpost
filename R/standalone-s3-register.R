@@ -31,7 +31,7 @@
 #' ```
 #' if (getRversion() >= "3.6.0") {
 #'   S3method(package::generic, class)
-#' }
+#'   }
 #' ```
 #'
 #' @section Usage in other packages:
@@ -57,7 +57,7 @@
 #' .onLoad <- function(...) {
 #'   s3_register("pillar::pillar_shaft", "vctrs_vctr")
 #'   s3_register("tibble::type_sum", "vctrs_vctr")
-#' }
+#'   }
 #' @keywords internal
 #' @noRd
 s3_register <- function(generic, class, method = NULL) {

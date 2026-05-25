@@ -224,11 +224,14 @@ autoplot.SurvivalQuantities <- function(
 #'   should confidence intervals be added? Default = `TRUE`.
 #' @typed add_wrap: logical
 #'   should the plots be wrapped by `data$group`? Default = `TRUE`.
-#' @param kmdf (`data.frame` or `NULL`)\cr event times and status used to plot
-#' overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
-#' @param y_label (`character` or `expression`) \cr label to display on the y-axis.
-#' Default = `expression(S(t))`.
-#' @param x_label (`character` or `expression`) \cr label to display on the x-axis.
+#' @typed kmdf: "`data.frame` or `NULL`"
+#'   event times and status used to plot
+#'   overlaying KM curves. If `NULL` no KM curve will be plotted. See details.
+#' @typed y_label: "`character` or `expression`"
+#'   label to display on the y-axis.
+#'   Default = `expression(S(t))`.
+#' @typed x_label: "`character` or `expression`"
+#'   label to display on the x-axis.
 #'
 #' @details
 #'

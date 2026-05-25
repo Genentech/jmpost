@@ -1,6 +1,7 @@
 #' Abstract Simulation Class for Longitudinal Data
 #'
-#' @param times (`numeric`) the times to generate observations at.
+#' @typed times: numeric
+#'   the times to generate observations at.
 #'
 #' @description
 #' This class exists to be extended by other classes that simulate longitudinal data.

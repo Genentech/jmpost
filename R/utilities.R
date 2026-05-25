@@ -2,7 +2,8 @@
 #'
 #' @typed df: data.frame
 #'   input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness, if `NULL`
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness, if `NULL`
 #'   all variables are considered.
 #'
 #' @returns Numeric vector specifying which rows contain at least 1 missing observation
@@ -25,7 +26,8 @@ get_missing_rownumbers <- function(df, formula = NULL) {
 #'
 #' @typed data: data.frame
 #'   input data.
-#' @param formula (`formula` or `NULL`)\cr which variables to inspect for missingness.
+#' @typed formula: "`formula` or `NULL`"
+#'   which variables to inspect for missingness.
 #' @typed extra_vars: character
 #'   additional variables to inspect for missingness.
 #'
@@ -250,8 +252,9 @@ validate_time_grid <- function(time_grid) {
 #' The input vector must be unique and contain only values
 #' as specified by `all_subjects`
 #'
-#' @param subjects (`character` or `NULL`)\cr Character vector representing the subjects.
-#' If NULL, it will be set to the value of `all_subjects`.
+#' @typed subjects: "`character` or `NULL`"
+#'   Character vector representing the subjects.
+#'   If NULL, it will be set to the value of `all_subjects`.
 #' @typed all_subjects: character
 #'   Character vector representing all possible subjects.
 #' @return Returns the expanded `subjects` vector.
@@ -282,7 +285,8 @@ expand_subjects <- function(subjects, all_subjects) {
 #' The primary use of this function is to correctly setup indexing variables for
 #' predicting survival quantities (see [SurvivalQuantities()])
 #'
-#' @param subjects (`character` or `list`)\cr subject identifiers. If `NULL` will be set to `all_subjects`.
+#' @typed subjects: "`character` or `list`"
+#'   subject identifiers. If `NULL` will be set to `all_subjects`.
 #'
 #' @typed all_subjects: character
 #'   the set of allowable subject identifiers.
@@ -300,7 +304,7 @@ expand_subjects <- function(subjects, all_subjects) {
 #' result <- decompose_subjects(
 #'     list("g1" = c("A", "B"), "g2" = c("B", "C")),
 #'     c("A", "B", "C", "D")
-#' )
+#'   )
 #' }
 #' @seealso [expand_subjects()], [SurvivalQuantities()]
 #' @keywords internal

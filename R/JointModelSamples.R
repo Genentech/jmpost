@@ -99,7 +99,9 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
 #' `JointModelSamples` -> Printable `Character`
 #'
 #' Converts [`JointModelSamples`] object into a printable string.
-#' @param object ([`JointModelSamples`])\cr samples as drawn from a [`JointModel`].
+#'
+#' @typed object: JointModelSamples
+#'   samples as drawn from a [`JointModel`].
 #' @family JointModelSamples
 #' @typed indent: numeric
 #'   how much white space to prefix the print string with.
@@ -164,10 +166,12 @@ as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
 #' `cmdstanr` objects store their samples as a csv file the samples may be lost
 #' if you call `saveRDS` directly on the object.
 #'
-#' @param object ([`JointModelSamples`])\cr the object to save.
+#' @typed object: JointModelSamples
+#'   the object to save.
 #' @typed file: character
 #'   the file to save the object to.
-#' @param ... (`ANY`)\cr additional arguments to [`saveRDS`].
+#' @typed ...: ANY
+#'   additional arguments to [`saveRDS`].
 #'
 #' @family saveObject
 #'

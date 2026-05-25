@@ -60,7 +60,8 @@ StanModel <- function(stan, parameters, name = "<Unnamed>") {
 #' @description
 #' Returns a named list where each element of the list corresponds
 #' to a Stan modelling block e.g. `data`, `model`, etc.
-#' @param x ([`StanModel`])\cr A Stan Model
+#' @typed x: StanModel
+#'   A Stan Model
 #' @param ... Not Used.
 #' @family StanModel
 #' @export

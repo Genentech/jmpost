@@ -135,7 +135,8 @@ summary.Quantities <- function(object, conf.level = 0.95, ...) {
 #'   of samples with 1 row per sample and 1 column per
 #'   distinct quantity.
 #'
-#' @param collapser ([`QuantityCollapser`])\cr specifies which columns to combine together.
+#' @typed collapser: QuantityCollapser
+#'   specifies which columns to combine together.
 #'
 #' @details
 #' This function essentially implements the group wise average by collapsing multiple columns

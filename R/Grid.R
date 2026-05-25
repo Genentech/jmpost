@@ -1,10 +1,12 @@
 #' Quantity Grid Specification
 #'
-#' @param subjects (`character` or `NULL`)\cr vector of subjects to extract quantities for.
-#' If `NULL` will default to all subjects within the dataset.
+#' @typed subjects: "`character` or `NULL`"
+#'   vector of subjects to extract quantities for.
+#'   If `NULL` will default to all subjects within the dataset.
 #'
-#' @param times (`numeric` or `NULL`)\cr vector of time points to extract quantities at.
-#' If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
+#' @typed times: "`numeric` or `NULL`"
+#'   vector of time points to extract quantities at.
+#'   If `NULL` will default to 201 evenly spaced timepoints between 0 and either the max
 #' observation time (for [`LongitudinalQuantities`]) or max event time (for [`SurvivalQuantities`]).
 #'
 #' @typed groups: list
@@ -70,7 +72,7 @@
 #'         "Group-1" = c("sub-1", "sub-2"),
 #'         "Group-2" = c("sub-3", "sub-4")
 #'     )
-#' )
+#'   )
 #' ```
 #' @seealso [`SurvivalQuantities`], [`LongitudinalQuantities`]
 #' @name Grid-Functions
@@ -105,12 +107,12 @@ NULL
 #' QuantityGenerator(
 #'     times = c(10, 10, 10, 10, 20, 20, 20, 20),
 #'     subjects = c("sub-1" "sub-2", "sub-3", "sub-4", "sub-1" "sub-2", "sub-3", "sub-4")
-#' )
+#'   )
 #' QuantityCollapser(
 #'     times = c(10, 20, 10 , 20),
 #'     groups = c("Group-1", "Group-1", "Group-2", "Group-2"),
 #'     indexes = list(c(1, 2), c(5, 6), c(3, 4), c(7, 8))
-#' )
+#'   )
 #' ```
 #' For population based quantities use the `arms` and `studies` arguments of `QuantityGenerator`
 #' instead of `subjects`.

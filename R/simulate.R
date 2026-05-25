@@ -2,7 +2,7 @@
 #' @param object A [JointModelSamples] object
 #' @param newdata A data frame containing data in the same format as
 #'  the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
-#'  as the variables used in the survival formula `object@data@survival@formula` and
+#'    as the variables used in the survival formula `object@data@survival@formula` and
 #'  the same columns used for `study`, `id`, and `arm`.
 #' @param ... Unused.
 #' @param times Vector of times to simulate SLD for all patients.
