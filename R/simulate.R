@@ -453,7 +453,7 @@ SimJointDataResults <- function(
 
     return(
         .SimJointData(
-            survival = os_dat |> dplyr::rename(all_of(original_names)),
+            survival = os_dat |> dplyr::rename(dplyr::all_of(original_names)),
             longitudinal = lm_dat2[, c(
                 "subject",
                 "arm",
@@ -462,7 +462,7 @@ SimJointDataResults <- function(
                 "sld",
                 "observed"
             )] |>
-                dplyr::rename(all_of(original_names))
+                dplyr::rename(dplyr::all_of(original_names))
         )
     )
 }

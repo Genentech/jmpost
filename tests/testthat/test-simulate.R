@@ -160,9 +160,9 @@ test_that("simulate works with lambda_censor", {
     )
 
     joined <- dplyr::left_join(
-        results@survival[, c("subject", "time", "event")],
-        results@longitudinal[, c("subject", "time", "observed")],
-        by = "subject"
+        results@survival[, c("id", "time", "event")],
+        results@longitudinal[, c("id", "time", "observed")],
+        by = "id"
     )
 
     expect_true(all(!joined$observed[joined$time.y > joined$time.x]))

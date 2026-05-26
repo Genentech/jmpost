@@ -59,7 +59,10 @@ test_that("SurvivalGamma can recover known values", {
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
             beta_cont = true_beta[3],
         ),
-        longitudinal = SimLongitudinalRandomSlope(slope_mu = 0),
+        longitudinal = SimLongitudinalRandomSlope(
+            slope_mu = 0,
+            slope_sigma = 0.5
+        ),
         .silent = TRUE
     )
 
@@ -94,7 +97,8 @@ test_that("SurvivalGamma can recover known values", {
                 iter_sampling = 400,
                 chains = 2,
                 refresh = 100,
-                parallel_chains = 2
+                parallel_chains = 2,
+                seed = 123
             )
         })
     })

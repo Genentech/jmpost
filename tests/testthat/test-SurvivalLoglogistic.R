@@ -43,7 +43,10 @@ test_that("SurvivalLogLogistic can recover known values", {
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
             beta_cont = true_beta[3],
         ),
-        longitudinal = SimLongitudinalRandomSlope(slope_mu = 0),
+        longitudinal = SimLongitudinalRandomSlope(
+            slope_mu = 0,
+            slope_sigma = 0.5
+        ),
         .silent = TRUE
     )
 
@@ -77,7 +80,8 @@ test_that("SurvivalLogLogistic can recover known values", {
             iter_sampling = 450,
             chains = 1,
             refresh = 0,
-            parallel_chains = 1
+            parallel_chains = 1,
+            seed = 123
         )
     })
 

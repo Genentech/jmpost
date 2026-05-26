@@ -487,7 +487,8 @@ test_that("Can recover known distributional parameters from unscaled variance GS
                 iter_sampling = 800,
                 chains = 2,
                 refresh = 200,
-                parallel_chains = 2
+                parallel_chains = 2,
+                seed = 123
             )
         })
     })
