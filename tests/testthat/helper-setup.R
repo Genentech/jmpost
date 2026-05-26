@@ -9,6 +9,14 @@ is_full_test <- function() {
     toupper(Sys.getenv("JMPOST_FULL_TEST")) == "TRUE"
 }
 
+set_full_test <- function() {
+    Sys.setenv(JMPOST_FULL_TEST = "TRUE")
+}
+
+disable_full_test <- function() {
+    Sys.setenv(JMPOST_FULL_TEST = "FALSE")
+}
+
 is_graph_snapshot_enabled <- function() {
     toupper(Sys.getenv("JMPOST_GRAPH_SNAPSHOT")) == "TRUE"
 }
