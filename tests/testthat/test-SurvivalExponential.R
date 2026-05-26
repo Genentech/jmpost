@@ -31,7 +31,10 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
             beta_cont = true_beta[3],
         ),
-        longitudinal = SimLongitudinalRandomSlope(slope_mu = 0)
+        longitudinal = SimLongitudinalRandomSlope(
+            slope_mu = 0,
+            slope_sigma = 0.5
+        )
     )
 
     dat_os <- jdat@survival
@@ -59,7 +62,8 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
             iter_warmup = 500,
             chains = 1,
             refresh = 0,
-            parallel_chains = 1
+            parallel_chains = 1,
+            seed = 123
         )
     })
 
