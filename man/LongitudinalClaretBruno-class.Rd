@@ -17,7 +17,7 @@ LongitudinalClaretBruno(
   omega_c = prior_lognormal(log(0.2), 0.5),
   omega_p = prior_lognormal(log(0.2), 0.5),
   sigma = prior_lognormal(log(0.1), 0.5),
-  scaled_variance = TRUE,
+  scaled_variance = FALSE,
   centred = FALSE
 )
 }
@@ -40,8 +40,9 @@ LongitudinalClaretBruno(
 
 \item{sigma}{(\code{Prior}) for the variance of the longitudinal values.}
 
-\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
-(see the "Statistical Specifications" vignette for more details)}
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+(See the "Statistical Specifications" vignette for more details.)}
 
 \item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }

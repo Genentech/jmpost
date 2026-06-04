@@ -1,6 +1,7 @@
 
 # jmpost (development version)
 
+- Changed default longitudinal model option `scaled_variance` to `FALSE`, corresponding to an additive error model. Also added this option to the random effects model for consistency with the other models.
 - Included new `populationHR()` function to calculate population effects from a `JointModelSample` object, by marginalising over the patient-level random effects (#447).
 - Included new `LongitudinalRandomEffects()` function which can be used to extract the patient-level random effects parameter samples from a `JointModelSample` object (#423).
 - Introduced the `saveObject()` method for `JointModelSample` objects in order to serialise them to disk (#431).

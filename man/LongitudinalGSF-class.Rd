@@ -17,7 +17,7 @@ LongitudinalGSF(
   omega_kg = prior_lognormal(log(0.2), 1),
   omega_phi = prior_lognormal(log(0.2), 1),
   sigma = prior_lognormal(log(0.1), 1),
-  scaled_variance = TRUE,
+  scaled_variance = FALSE,
   centred = FALSE
 )
 }
@@ -41,8 +41,9 @@ affected by the treatment \code{omega_phi}.}
 
 \item{sigma}{(\code{Prior}) for the variance of the longitudinal values \code{sigma}.}
 
-\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
-(see the "Statistical Specifications" vignette for more details)}
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+(See the "Statistical Specifications" vignette for more details.)}
 
 \item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }

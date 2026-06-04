@@ -44,8 +44,9 @@ NULL
 #'   for the variance of the longitudinal values `sigma`.
 #'
 #' @typed scaled_variance: logical
-#'   whether the variance should be scaled by the expected value
-#'   (see the "Statistical Specifications" vignette for more details)
+#'   whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+#'   As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+#'   (See the "Statistical Specifications" vignette for more details.)
 #' @typed centred: logical
 #'   whether to use the centred parameterization.
 #'
@@ -61,7 +62,7 @@ LongitudinalSteinFojo <- function(
 
     sigma = prior_lognormal(log(0.1), 1),
 
-    scaled_variance = TRUE,
+    scaled_variance = FALSE,
     centred = FALSE
 ) {
     sf_model <- StanModule(decorated_render(
