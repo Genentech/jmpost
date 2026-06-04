@@ -51,15 +51,11 @@ test_that("SimLongitudinalRandomSlope works as expected", {
             "intercept",
             "slope_ind",
             "time",
-            "err",
             "sld_mu",
+            "sld_sd",
             "sld",
             "log_haz_link"
         )
-    )
-    expect_equal(
-        res_obvs$sld_mu + res_obvs$err,
-        res_obvs$sld
     )
 })
 

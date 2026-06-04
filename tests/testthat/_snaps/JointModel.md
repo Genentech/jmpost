@@ -15,7 +15,7 @@
                beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
-           Random Slope Longitudinal Model with parameters:
+           Random Slope Longitudinal Model (additive error) with parameters:
                lm_rs_intercept ~ normal(mu = 30, sigma = 10)
                lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
                lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5) T[0, ]
@@ -43,7 +43,7 @@
                beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
-           Random Slope Longitudinal Model with parameters:
+           Random Slope Longitudinal Model (additive error) with parameters:
                lm_rs_intercept ~ normal(mu = 30, sigma = 10)
                lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
                lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5) T[0, ]
@@ -89,7 +89,7 @@
            Not Specified
       
         Longitudinal:     
-           Generalized Stein-Fojo Longitudinal Model with parameters:
+           Generalized Stein-Fojo Longitudinal Model (additive error) with parameters:
                lm_gsf_mu_bsld ~ normal(mu = 4.09434, sigma = 1)
                lm_gsf_mu_ks ~ normal(mu = -0.69315, sigma = 1)
                lm_gsf_mu_kg ~ normal(mu = -1.20397, sigma = 1)
@@ -124,7 +124,7 @@
                beta_os_cov ~ normal(mu = 0, sigma = 2)
            
         Longitudinal:     
-           Random Slope Longitudinal Model with parameters:
+           Random Slope Longitudinal Model (additive error) with parameters:
                lm_rs_intercept ~ normal(mu = 30, sigma = 10)
                lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
                lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5) T[0, ]
