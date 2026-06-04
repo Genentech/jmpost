@@ -11,7 +11,8 @@ LongitudinalRandomSlope(
   intercept = prior_normal(30, 10),
   slope_mu = prior_normal(1, 3),
   slope_sigma = prior_lognormal(0, 1.5),
-  sigma = prior_lognormal(0, 1.5)
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,10 @@ LongitudinalRandomSlope(
 \item{slope_sigma}{(\code{Prior}) for the random slope standard deviation \code{slope_sigma} (one per arm).}
 
 \item{sigma}{(\code{Prior}) for the variance of the longitudinal values \code{sigma}.}
+
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+(See the "Statistical Specifications" vignette for more details.)}
 }
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the

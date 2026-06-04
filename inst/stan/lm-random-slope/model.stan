@@ -26,13 +26,21 @@ transformed parameters {
     long_obvs_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(
         tumour_value[subject_tumour_index_obs],
         Ypred[subject_tumour_index_obs],
-        rep_vector(lm_rs_sigma, n_tumour_obs)
+        {%- if scaled_variance -%}
+            fmax(Ypred[subject_tumour_index_obs] * lm_rs_sigma, {{ machine_double_eps }})
+        {% else %}
+            rep_vector(lm_rs_sigma, n_tumour_obs)
+        {% endif -%}
     );
     if (n_tumour_cens > 0 ) {
         long_obvs_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(
             tumour_value_lloq,
             Ypred[subject_tumour_index_cens],
-            rep_vector(lm_rs_sigma, n_tumour_cens)
+            {%- if scaled_variance -%}
+                fmax(Ypred[subject_tumour_index_cens] * lm_rs_sigma, {{ machine_double_eps }})
+            {% else %}
+                rep_vector(lm_rs_sigma, n_tumour_cens)
+            {% endif -%}
         );
     }
 }

@@ -30,7 +30,8 @@ set_fixtures_gsf_link <- function() {
             omega_g = 0.2,
             omega_phi = 0.2,
             link_dsld = 0.04,
-            link_identity = 0.04
+            link_identity = 0.04,
+            scaled_variance = TRUE
         ),
         .silent = TRUE
     )
@@ -54,7 +55,8 @@ set_fixtures_gsf_link <- function() {
             omega_kg = prior_lognormal(log(0.2), 0.5),
             omega_phi = prior_lognormal(log(0.2), 0.5),
             sigma = prior_lognormal(log(0.01), 0.5),
-            centred = TRUE
+            centred = TRUE,
+            scaled_variance = TRUE
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)
@@ -136,7 +138,8 @@ set_fixtures_weibull_only <- function() {
             omega_g = 0.2,
             omega_phi = 0.2,
             link_dsld = 0,
-            link_identity = 0
+            link_identity = 0,
+            scaled_variance = TRUE
         ),
         .silent = TRUE
     )

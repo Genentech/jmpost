@@ -11,6 +11,7 @@ LongitudinalModel(
   stan = StanModule(),
   parameters = ParameterList(),
   name = "<Unnamed>",
+  scaled_variance = NA,
   ...
 )
 }
@@ -27,3 +28,11 @@ LongitudinalModel(
 This class extends the general \code{\link{StanModel}} class to comprise the longitudinal
 model specification.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{scaled_variance}}{logical scalar, whether the variance should be scaled
+by the expected value, corresponding to a multiplicative model. If not,
+then an additive error model is used.}
+}}
+

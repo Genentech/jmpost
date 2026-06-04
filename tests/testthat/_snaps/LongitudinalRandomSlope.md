@@ -5,7 +5,7 @@
       print(x)
     Output
       
-      Random Slope Longitudinal Model with parameters:
+      Random Slope Longitudinal Model (additive error) with parameters:
           lm_rs_intercept ~ normal(mu = 30, sigma = 10)
           lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
           lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5) T[0, ]
@@ -21,7 +21,7 @@
       print(x)
     Output
       
-      Random Slope Longitudinal Model with parameters:
+      Random Slope Longitudinal Model (additive error) with parameters:
           lm_rs_intercept ~ normal(mu = 0, sigma = 1)
           lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
           lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5) T[0, ]

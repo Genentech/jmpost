@@ -21,7 +21,7 @@ SimLongitudinalSteinFojo(
   link_identity = 0,
   link_growth = 0,
   link_shrinkage = 0,
-  scaled_variance = TRUE
+  scaled_variance = FALSE
 )
 }
 \arguments{

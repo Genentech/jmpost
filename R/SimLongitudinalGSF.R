@@ -53,7 +53,7 @@ NULL
 #' @slot link_identity (`numeric`)\cr See arguments.
 #' @slot link_growth (`numeric`)\cr See arguments.
 #' @slot link_shrinkage (`numeric`)\cr See arguments.
-#' @slot scaled_variance (`numeric`)\cr See arguments.
+#' @slot scaled_variance (`logical`)\cr See arguments.
 #' @family SimLongitudinal
 #' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
@@ -97,7 +97,7 @@ SimLongitudinalGSF <- function(
     link_identity = 0,
     link_growth = 0,
     link_shrinkage = 0,
-    scaled_variance = TRUE
+    scaled_variance = FALSE
 ) {
     if (length(omega_b) == 1) {
         omega_b <- rep(omega_b, length(mu_b))

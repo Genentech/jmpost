@@ -35,7 +35,7 @@ simulate.JointModelSamples <- function(
     time_max = 2000,
     time_step = 1,
     lambda_censor = 1 / 3000,
-    scaled_variance = TRUE,
+    scaled_variance = FALSE,
     ...
 ) {
     subj_data <- if (is.null(newdata)) {

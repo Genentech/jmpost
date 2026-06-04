@@ -87,7 +87,7 @@ SimLongitudinalSteinFojo <- function(
     link_identity = 0,
     link_growth = 0,
     link_shrinkage = 0,
-    scaled_variance = TRUE
+    scaled_variance = FALSE
 ) {
     if (length(omega_b) == 1) {
         omega_b <- rep(omega_b, length(mu_b))

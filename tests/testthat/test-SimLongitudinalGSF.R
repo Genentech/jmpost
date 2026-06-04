@@ -12,7 +12,8 @@ test_that("SimLongitudinalGSF works as expected", {
         omega_phi = 0.000000001,
         link_dsld = 0,
         link_ttg = 0,
-        link_identity = 0
+        link_identity = 0,
+        scaled_variance = TRUE
     )
     expect_true(is(sim, "SimLongitudinalGSF"))
 

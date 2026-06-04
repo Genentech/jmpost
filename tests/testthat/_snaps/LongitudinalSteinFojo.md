@@ -5,7 +5,7 @@
       print(x)
     Output
       
-      Stein-Fojo Longitudinal Model with parameters:
+      Stein-Fojo Longitudinal Model (additive error) with parameters:
           lm_sf_mu_bsld ~ normal(mu = 4.09434, sigma = 1)
           lm_sf_mu_ks ~ normal(mu = -0.69315, sigma = 1)
           lm_sf_mu_kg ~ normal(mu = -1.20397, sigma = 1)
@@ -25,7 +25,7 @@
       print(x)
     Output
       
-      Stein-Fojo Longitudinal Model with parameters:
+      Stein-Fojo Longitudinal Model (additive error) with parameters:
           lm_sf_mu_bsld ~ normal(mu = 4.09434, sigma = 1)
           lm_sf_mu_ks ~ normal(mu = -0.69315, sigma = 1)
           lm_sf_mu_kg ~ gamma(alpha = 2, beta = 1)

@@ -32,7 +32,8 @@ set_fixtures_gsf <- function() {
             omega_b = 0.2,
             omega_s = 0.2,
             omega_g = 0.2,
-            omega_phi = 0.2
+            omega_phi = 0.2,
+            scaled_variance = TRUE
         ),
         .silent = TRUE
     )
@@ -56,7 +57,8 @@ set_fixtures_gsf <- function() {
             omega_kg = prior_lognormal(log(0.2), 0.5),
             omega_phi = prior_lognormal(log(0.2), 0.5),
             sigma = prior_lognormal(log(0.01), 0.5),
-            centred = TRUE
+            centred = TRUE,
+            scaled_variance = TRUE
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(1 / (400 / 365)), 1)
