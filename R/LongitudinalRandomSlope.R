@@ -57,6 +57,7 @@ LongitudinalRandomSlope <- function(
         LongitudinalModel(
             name = "Random Slope",
             stan = stan,
+            scaled_variance = scaled_variance,
             parameters = ParameterList(
                 Parameter(
                     name = "lm_rs_intercept",

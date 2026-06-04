@@ -148,7 +148,8 @@ LongitudinalSteinFojo <- function(
             sf_model,
             StanModule("lm-stein-fojo/functions.stan")
         ),
-        parameters = do.call(ParameterList, parameters)
+        parameters = do.call(ParameterList, parameters),
+        scaled_variance = scaled_variance
     )
     .LongitudinalSteinFojo(x)
 }

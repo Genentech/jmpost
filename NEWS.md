@@ -1,6 +1,7 @@
 
 # jmpost (development version)
 
+- `LongitudinalModel` objects now have a new slot `scaled_variance` which stores the used variance option, and this is part of the `print` output now thereby transparently communicating to the user the choice of the multiplicative or additive error model.
 - Changed default longitudinal model option `scaled_variance` to `FALSE`, corresponding to an additive error model. Also added this option to the random effects model for consistency with the other models.
 - Included new `populationHR()` function to calculate population effects from a `JointModelSample` object, by marginalising over the patient-level random effects (#447).
 - Included new `LongitudinalRandomEffects()` function which can be used to extract the patient-level random effects parameter samples from a `JointModelSample` object (#423).

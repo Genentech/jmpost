@@ -170,7 +170,8 @@ LongitudinalClaretBruno <- function(
             sf_model,
             StanModule("lm-claret-bruno/functions.stan")
         ),
-        parameters = do.call(ParameterList, parameters)
+        parameters = do.call(ParameterList, parameters),
+        scaled_variance = scaled_variance
     )
     .LongitudinalClaretBruno(x)
 }

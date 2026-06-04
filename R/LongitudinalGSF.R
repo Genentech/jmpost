@@ -178,7 +178,8 @@ LongitudinalGSF <- function(
             gsf_model,
             StanModule("lm-gsf/functions.stan")
         ),
-        parameters = do.call(ParameterList, parameters)
+        parameters = do.call(ParameterList, parameters),
+        scaled_variance = scaled_variance
     )
     .LongitudinalGSF(x)
 }
