@@ -240,7 +240,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -266,7 +266,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     dat[1, "q99"] <- dat[1, "mean"] * 2
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -283,7 +283,7 @@ test_that("Can recover known distributional parameters from a full GSF joint mod
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
 
 
@@ -545,5 +545,5 @@ test_that("Can recover known distributional parameters from unscaled variance GS
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })

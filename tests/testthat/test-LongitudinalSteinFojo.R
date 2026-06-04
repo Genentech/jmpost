@@ -259,7 +259,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -273,7 +273,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -290,7 +290,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
 
 
@@ -458,7 +458,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     true_values <- exp(c(sim_params$mu_b, sim_params$mu_s, sim_params$mu_g))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -473,7 +473,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
 
 

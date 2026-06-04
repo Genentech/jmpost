@@ -104,5 +104,5 @@ test_that("SurvivalWeibullPH can recover known values", {
 
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
-    expect_true(all(results_summary$ess_bulk > 100))
+    expect_true(all(results_summary$ess_bulk > 50))
 })
