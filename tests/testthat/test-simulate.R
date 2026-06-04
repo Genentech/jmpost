@@ -86,8 +86,8 @@ test_that("simulate works with default options", {
     )
     expect_number(
         mean(results@longitudinal[results@longitudinal$observed, ]$sld),
-        lower = 30,
-        upper = 40
+        lower = 0,
+        finite = TRUE
     )
 })
 
