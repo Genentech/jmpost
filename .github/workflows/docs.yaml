@@ -42,6 +42,8 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
+      deps-installation-method: |
+        staged-dependencies
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
