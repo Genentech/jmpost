@@ -45,7 +45,7 @@ LongitudinalRandomSlope <- function(
     scaled_variance = FALSE
 ) {
     stan <- StanModule(decorated_render(
-        x = "lm-random-slope/model.stan",
+        .x = read_stan("lm-random-slope/model.stan"),
         scaled_variance = scaled_variance
     ))
 
