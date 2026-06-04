@@ -27,7 +27,7 @@ transformed parameters {
         tumour_value[subject_tumour_index_obs],
         Ypred[subject_tumour_index_obs],
         {%- if scaled_variance -%}
-            Ypred[subject_tumour_index_obs] * lm_rs_sigma
+            fmax(Ypred[subject_tumour_index_obs] * lm_rs_sigma, {{ machine_double_eps }})
         {% else %}
             rep_vector(lm_rs_sigma, n_tumour_obs)
         {% endif -%}
@@ -37,7 +37,7 @@ transformed parameters {
             tumour_value_lloq,
             Ypred[subject_tumour_index_cens],
             {%- if scaled_variance -%}
-                Ypred[subject_tumour_index_cens] * lm_rs_sigma
+                fmax(Ypred[subject_tumour_index_cens] * lm_rs_sigma, {{ machine_double_eps }})
             {% else %}
                 rep_vector(lm_rs_sigma, n_tumour_cens)
             {% endif -%}

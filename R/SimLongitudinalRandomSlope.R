@@ -89,7 +89,7 @@ sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
             sld_mu = .data$intercept + .data$slope_ind * .data$time,
             sld_sd = ifelse(
                 object@scaled_variance,
-                .data$sld_mu * object@sigma,
+                pmax(.data$sld_mu * object@sigma, .Machine$double.eps),
                 object@sigma
             ),
             sld = stats::rnorm(dplyr::n(), .data$sld_mu, .data$sld_sd),

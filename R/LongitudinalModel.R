@@ -35,6 +35,7 @@ LongitudinalModel <- function(
     scaled_variance = NA,
     ...
 ) {
+    assert_flag(scaled_variance)
     base_stan <- read_stan("base/longitudinal.stan")
 
     stan_full <- decorated_render(
@@ -58,7 +59,14 @@ as_print_string.LongitudinalModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Longitudinal Model (%s error) with parameters:\n%s\n\n",
         object@name,
-        ifelse(object@scaled_variance, "multiplicative", "additive"),
+        if (is.na(object@scaled_variance)) {
+            # Should not happen but just to be robust against this case.
+            "unknown"
+        } else if (object@scaled_variance) {
+            "multiplicative"
+        } else {
+            "additive"
+        },
         paste("   ", as_print_string(object@parameters)) |>
             paste(collapse = "\n")
     )

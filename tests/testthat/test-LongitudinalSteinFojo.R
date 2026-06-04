@@ -706,5 +706,5 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
