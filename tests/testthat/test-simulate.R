@@ -35,7 +35,8 @@ if (is_full_test()) {
             omega_bsld = prior_normal(0, 3) |> set_limits(0, Inf),
             omega_ks = prior_normal(0, 3) |> set_limits(0, Inf),
             omega_kg = prior_normal(0, 3) |> set_limits(0, Inf),
-            sigma = prior_normal(0, 3) |> set_limits(0, Inf)
+            sigma = prior_normal(0, 3) |> set_limits(0, Inf),
+            scaled_variance = TRUE
         ),
         survival = SurvivalWeibullPH(
             lambda = prior_gamma(0.7, 1),

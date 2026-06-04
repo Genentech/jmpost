@@ -138,7 +138,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             link_ttg = sim_params$link_ttg,
             link_dsld = sim_params$link_dsld,
             link_identity = sim_params$link_identity,
-            link_growth = sim_params$link_growth
+            link_growth = sim_params$link_growth,
+            scaled_variance = TRUE
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
@@ -174,7 +175,8 @@ test_that("Can recover known distributional parameters from a SF joint model", {
             omega_p = prior_lognormal(log(0.1), 0.4),
 
             sigma = prior_lognormal(log(0.05), 0.4),
-            centred = TRUE
+            centred = TRUE,
+            scaled_variance = TRUE
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(0.5), 0.4),
