@@ -14,7 +14,8 @@ SimLongitudinalRandomSlope(
   slope_sigma = c(0.5, 0.6),
   sigma = 2,
   link_dsld = 0,
-  link_identity = 0
+  link_identity = 0,
+  scaled_variance = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ SimLongitudinalRandomSlope(
 \item{link_dsld}{(\code{number}) the link coefficient for the DSLD contribution.}
 
 \item{link_identity}{(\code{number}) the link coefficient for the identity contribution.}
+
+\item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
+(see the "Statistical Specifications" vignette for more details)}
 }
 \description{
 Simulate Longitudinal Data from a Random Slope Model
@@ -49,6 +53,8 @@ Simulate Longitudinal Data from a Random Slope Model
 \item{\code{link_dsld}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{link_identity}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{
