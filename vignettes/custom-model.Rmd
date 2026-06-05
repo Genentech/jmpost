@@ -199,6 +199,7 @@ longmodel <- WangModel(
     LongitudinalModel(
         name = "Wang",
         stan = StanModule("custom-model.stan"),
+        scaled_variance = FALSE,
         parameters = ParameterList(
             Parameter(name = "mu_baseline", prior = prior_lognormal(log(60), 1), size = 1),
             Parameter(name = "mu_shrinkage", prior = prior_lognormal(log(2), 1), size = 1),
@@ -229,9 +230,10 @@ longmodel <- WangModel(
 )
 ```
 
-Please note that the `parameters` argument is used to specify the priors for the model and
-that the `name` argument for the `Parameter`'s objects must match the name of the parameter used
-within the corresponding Stan code.
+Please note that:
+
+- The `scaled_variance` flag needs to be specified in the `LongitudinalModel()` construction, in order to indicate whether a multiplicative error model is used. Here we have an additive error model, therefore `scaled_variance` is set to `FALSE`.
+- The `parameters` argument is used to specify the priors for the model and the `name` argument for the `Parameter`'s objects must match the name of the parameter used within the corresponding Stan code.
 
 The `StanModule` object contains all of the stan code used to implement the model. For this
 particular model the Stan code specified in the `custom-model.stan` file is as follows:
