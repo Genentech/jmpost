@@ -7,7 +7,7 @@
 cut_data(object, cut_time)
 }
 \arguments{
-\item{object}{A \link{SimJointData} object}
+\item{object}{(\code{SimJointData}) where the cut times should be applied.}
 
 \item{cut_time}{(\code{numeric}) A vector of cut off times, either length 1 for all patients or
 \code{nrow(object@survival)} for a time per patient.}

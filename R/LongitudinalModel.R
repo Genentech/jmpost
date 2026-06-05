@@ -26,6 +26,10 @@ NULL
 #' @rdname LongitudinalModel-class
 #'
 #' @inheritParams stanmodel_arguments
+#' @typed scaled_variance: flag
+#'   whether the variance should be scaled
+#'   by the expected value, corresponding to a multiplicative model. If not,
+#'   then an additive error model is used.
 #'
 #' @export
 LongitudinalModel <- function(

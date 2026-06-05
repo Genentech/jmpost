@@ -22,6 +22,10 @@ LongitudinalModel(
 
 \item{name}{(\code{character}) display name for the model object.}
 
+\item{scaled_variance}{(\code{flag}) whether the variance should be scaled
+by the expected value, corresponding to a multiplicative model. If not,
+then an additive error model is used.}
+
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
 \description{
