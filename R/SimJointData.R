@@ -190,7 +190,8 @@ setMethod(
 #'
 #' Adds new columns `pfs_time` and `pfs_event` based on observed changes to SLD.
 #'
-#' @param object A [SimJointData] object
+#' @typed object: SimJointData
+#'   where the PFS events should be added.
 #' @typed relative_threshold: number
 #'   a multiplicative threshold for the change in SLD compared to the `min(SLD)`.
 #'   Default is 1.2 meaning a 20% increase.
@@ -268,7 +269,8 @@ add_pfs <- function(
 
 
 #' Cut Study Data
-#' @param object A [SimJointData] object
+#' @typed object: SimJointData
+#'   where the cut times should be applied.
 #' @typed cut_time: numeric
 #'   A vector of cut off times, either length 1 for all patients or
 #'   `nrow(object@survival)` for a time per patient.

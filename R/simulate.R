@@ -1,12 +1,17 @@
 #' Simulate Patients from Posterior Predictive Distribution
-#' @param object A [JointModelSamples] object
-#' @param newdata A data frame containing data in the same format as
-#'  the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
-#'    as the variables used in the survival formula `object@data@survival@formula` and
-#'  the same columns used for `study`, `id`, and `arm`.
-#' @param ... Unused.
-#' @param times Vector of times to simulate SLD for all patients.
-#' @param jitter_var Vector of variances to add noise to the observed SLD `times`. The first value is for any times
+#' @typed object: JointModelSamples
+#'   the object containing the posterior samples.
+#' @typed newdata: data.frame
+#'   A data frame containing data in the same format as
+#'   the `object@data@survival@data`. Importantly, it should contain the same covariates and factor levels
+#'   as the variables used in the survival formula `object@data@survival@formula` and
+#'   the same columns used for `study`, `id`, and `arm`.
+#' @param ... unused
+#'   Unused.
+#' @typed times: numeric
+#'   times to simulate SLD for all patients.
+#' @typed jitter_var: numeric
+#'   variances to add noise to the observed SLD `times`. The first value is for any times
 #'   less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
 #'    Jitter values are generated from a normal distribution with mean 0 and the given variances.
 #' @typed time_max: number
@@ -15,10 +20,11 @@
 #'   the time interval between evaluating the log-hazard function.
 #' @typed lambda_censor: number
 #'   the censoring rate, as the parameter of an exponential distribution.
-#' @param scaled_variance Should variance be scaled by the expected value. Must be set the same as was used for
+#' @typed scaled_variance: flag
+#'   Should variance be scaled by the expected value. Must be set the same as was used for
 #' model fitting.
-#' @param seed Ignored.
-#' @param nsim Ignored.
+#' @param seed ignored.
+#' @param nsim ignored.
 #' @details Simulates a set of patients based on the covariates of those
 #' used in the model fit or from `newdata`, which must contain the
 #' same column names and factor levels.
@@ -137,8 +143,10 @@ createLongitudinalSimObject <- function(object, draw, ...) {
 }
 
 #' Get draws value by name
-#' @param draws matrix
-#' @param name character to match column names of `draws` with [startsWith]
+#' @typed draws: matrix
+#'   the draws input.
+#' @typed name: character
+#'   to match column names of `draws` with [startsWith].
 #' @return A vector of matching values or `NULL` if no match.
 #' @noRd
 get_vars <- function(draws, name) {
