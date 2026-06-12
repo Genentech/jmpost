@@ -1,0 +1,15 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+bibliography: references.bib
+---
+
+# Covariate selection options for `jmpost`
+
+Covariate selection (CS) is a very big topic, and likewise there are many different methodology options we could potentially look into. Historically, in pharmacometrics, CS has been handled using stepwise approaches. However, it is meanwhile well known that stepwise approaches have a number of issues and should be avoided (see e.g. @Ahamadi2019, @Sauerbrei2020, @Sanghavi2024). We are focusing here on CS in the Bayesian framework which we are using in `jmpost`.
+
+## Horseshoe priors
+
+
+
