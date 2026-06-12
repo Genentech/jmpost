@@ -2,6 +2,9 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
+format:
+  html:
+    embed-resources: true
 bibliography: references.bib
 ---
 
@@ -11,7 +14,10 @@ Covariate selection (CS) is a very big topic, and likewise there are many differ
 
 We are focusing here on CS in the Bayesian framework which we are using in `jmpost`. In particular, we are looking at horseshoe priors, R2-D2 priors and projection predictive variable selection. We also briefly look at the idea of using posterior probabilities for covariate selection. We don't go into subgroup estimation here; while it is a related topic and also important, it is not directly relevant for the `jmpost` covariate selection use case.
 
-On a high level, we have two groups of methods: (i) those that perform covariate selection implicitly through the use of shrinkage priors, and (ii) those that perform covariate selection explicitly by defining a model space and then selecting the best model in this space. The first group includes horseshoe and R2-D2 priors, while the second group includes projection predictive variable selection and posterior probabilities for covariate selection.
+On a high level, we have two groups of methods available for Bayesian covariate selection:
+
+1. Those that perform covariate selection implicitly through the use of shrinkage priors. This includes horseshoe and R2-D2 priors.
+2. Those that perform covariate selection explicitly by defining a model space and then selecting the best model in this space. This includes projection predictive variable selection and posterior probabilities for covariate selection.
 
 ## Horseshoe priors
 
@@ -101,7 +107,7 @@ It is not clear to me how $a, b, d$ or $\xi_{1}, \dotsc, \xi_{p}$ should be sele
 1. Fit the reference model, which includes all covariates of interest.
 2. Perform an initial search of the covariate selection model space, using all available data.
 3. Diagnose this solution path to detect possible overoptimism using the cross-validated predictive performance of the submodels along the solution path.
-4. (Only if initial path is deemd overoptimistic) Perform a more extensive search of the covariate selection model space, using cross-validation to guide the search.
+4. (Only if initial path is deemed overoptimistic) Perform a more extensive search of the covariate selection model space, using cross-validation to guide the search.
 5. Select the minimal submodel size capable of producing similar predictive performance to our reference model.
 
 The R package `projpred` implements projection predictive variable selection for generalized linear models [@projpred2025]. The corresponding vignette includes [examples](https://mc-stan.org/projpred/articles/latent.html#cens) for Weibull and log-normal survival models. These build on `brms` models.
