@@ -1,0 +1,127 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    embed-resources: true
+bibliography: references.bib
+---
+
+# Covariate selection options for `jmpost`
+
+Covariate selection (CS) is a very big topic, and likewise there are many different methodology options we could potentially look into. Historically, in pharmacometrics, CS has been handled using stepwise approaches. However, it is meanwhile well known that stepwise approaches have a number of issues and should be avoided (see e.g. @Ahamadi2019, @Sauerbrei2020, @Sanghavi2024). 
+
+We are focusing here on CS in the Bayesian framework which we are using in `jmpost`. In particular, we are looking at horseshoe priors, R2-D2 priors and projection predictive variable selection. We also briefly look at the idea of using posterior probabilities for covariate selection. We don't go into subgroup estimation here; while it is a related topic and also important, it is not directly relevant for the `jmpost` covariate selection use case.
+
+On a high level, we have two groups of methods available for Bayesian covariate selection:
+
+1. Those that perform covariate selection implicitly through the use of shrinkage priors. This includes horseshoe and R2-D2 priors.
+2. Those that perform covariate selection explicitly by defining a model space and then selecting the best model in this space. This includes projection predictive variable selection and posterior probabilities for covariate selection.
+
+## Horseshoe priors
+
+Originally proposed by @CarvalhoEtAl2010, the horseshoe prior for the mean $\theta$ of a $p$-dimensional normal likelihood $y \vert \theta \sim N_{p}(\theta, \sigma^2 I_{p})$ is defined as:
+
+$$
+\begin{align*}
+\theta_{j} \vert \lambda_{j} \sim N(0, \lambda_{j}^2), \quad \lambda_{j} \vert \tau &\sim C^{+}(0, \tau), \quad j = 1, \dotsc, p,\\
+\tau \vert \sigma &\sim C^{+}(0, \sigma)
+\end{align*}
+$$
+
+where $C^{+}(0, b)$ denotes the half-Cauchy distribution with location 0 and scale $b$. 
+In addition, a Jeffreys prior is used for the variance $\sigma^2$, i.e. $p(\sigma^2) \propto 1/\sigma^2$.
+
+The horseshoe is one of the so called global-local shrinkage priors, meaning that there is a global hyperparameter $\tau$ that shrinks all the parameters $\theta_{j}$ towards zero, while the heavy-tailed half-Cauchy priors for the local hyperparameters $\lambda_{j}$ allow some $\theta_{j}$ to "escape" the shrinkage.
+
+@PiironenVehtari2017 investigated the horseshoe prior in generalized linear models, and proposed the regularized horseshoe prior, that operates similarly as the horseshoe but allows specifying the regularization to the coefficients that are far from zero:
+
+$$
+\begin{align*}
+\theta_{j} \vert \lambda_{j}, \tau \sim N(0, c^2 \lambda_{j}^2 / (c^2 + \tau^2 \lambda_{j}^2)), \quad \lambda_{j} \vert \tau &\sim C^{+}(0, \tau), \quad j = 1, \dotsc, p,\\
+\tau \vert \sigma &\sim C^{+}(0, \sigma)
+\end{align*}
+$$
+
+where $c > 0$ is a regularization parameter, which is assigned a hyperprior distribution, e.g. $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$. @PiironenVehtari2017 report that the regularized horseshoe solves also the problems with the divergent transitions in MCMC sampling observed before for the horseshoe prior.
+
+Regularized horseshoe priors have recently been applied in pharmacokinetics/pharmacodynamics (PK/PD) models by @PourzanjaniDavis2026. They highlight the computational convenience, in that they can simultaneously assess all possible covariates in a single model fit. Supplementary materials also include Stan and R code for their implementations (see [here](https://drive.google.com/drive/u/0/folders/1vYiKni470cw0k5aIxHzEJ_EcVdmMUKYR) on Google Drive).
+
+## R2-D2 priors
+
+@ZhangEtAl2022 proposed the R2-D2 prior for regression coefficients in linear regression models. While the original motivation started in the linear model setting, @ZhangEtAl2022 note that "the resultant prior is simply a member of the class of global-local shrinkage priors, which can then be applied directly to other models, as with other priors." This then also includes generalized linear and survival models. Its general definition for regression coefficients $\beta_{j}, j = 1, \dotsc, p$ is:
+
+$$
+\begin{align*}
+\beta_{j} \vert \sigma^{2}, \lambda_{j} &\sim \text{Double-Exponential}(\sigma \sqrt{\lambda_{j}/2}), \\
+\lambda_{j} \vert \xi &\sim \text{Gamma}(a, \xi), \\
+\xi &\sim \text{Gamma}(b, 1)
+\end{align*}    
+$$
+
+It seems that the R2-D2 prior has not been widely applied to survival models yet. @YanchenkoEtAl2025 propose the following extension to Weibull models with linear predictor
+
+$$
+\eta_{i} = \beta_{0} + X_{i}\beta + u_{g_i}
+$$
+
+where $u_{g_i}$ is a random effect for the group $g_i$ into which subject $i$ belongs. If $Y_{i}$ is the survival time, then the model is 
+
+$$
+Y_{i} \vert \eta_{i}, \theta \sim \text{Weibull}(\exp(\eta_{i}), \theta)
+$$
+
+where $\theta$ is the shape parameter of the Weibull distribution. Then they define the R2-D2 prior for the regression coefficients (without intercept $\beta_{0}$) as:
+
+$$
+\begin{align*}
+\beta \vert \phi_{1}, W &\sim \text{Normal}_{p}(0, p^{-1} \phi_{1} W I_{p}), \\
+u \vert \phi_{2}, W &\sim \text{Normal}_{L}(0, \phi_{2}W I_{L}), \\
+\phi &\sim \text{Dirichlet}(\xi_{0}, \xi_{0}).
+\end{align*}
+$$
+
+Here $W>0$ controls the overall variance of the linear predictor (not the response).
+
+The similar group of authors then further developed the idea in @FengEtAl2024 for the Weibull model without random effects:
+
+$$
+\begin{align*}
+\beta_{j} \vert \phi_{j}, W &\sim \text{Normal}(0, \phi_{j} W), \\
+\phi_{1}, \dotsc, \phi_{p} &\sim \text{Dirichlet}(\xi_{1}, \dotsc, \xi_{p}), \\
+W \vert \gamma &\sim \text{Gamma}(a, \gamma), \\
+\gamma &\sim \text{Gamma}(b, d)\\
+\log(\theta) &\sim \text{Normal}(t_{1}, t_{2}) \\
+\beta_{0} &\sim \text{Normal}(t_{3}, t_{4})
+\end{align*}
+$$
+
+where the hyperparameters $t_{1}, t_{2}, t_{3}, t_{4}$ are selected to give uninformative priors. 
+It is not clear to me how $a, b, d$ or $\xi_{1}, \dotsc, \xi_{p}$ should be selected.
+
+## Projection predictive variable selection
+
+@McLatchie2025 describe projection predictive inference in a nutshell as follows: "Given a reference model, we wish to achieve a parsimonious restricted model whose posterior predictive distribution most closely resembles that of the reference model." The steps to achieve this are as follows:
+
+1. Fit the reference model, which includes all covariates of interest.
+2. Perform an initial search of the covariate selection model space, using all available data.
+3. Diagnose this solution path to detect possible overoptimism using the cross-validated predictive performance of the submodels along the solution path.
+4. (Only if initial path is deemed overoptimistic) Perform a more extensive search of the covariate selection model space, using cross-validation to guide the search.
+5. Select the minimal submodel size capable of producing similar predictive performance to our reference model.
+
+The R package `projpred` implements projection predictive variable selection for generalized linear models [@projpred2025]. The corresponding vignette includes [examples](https://mc-stan.org/projpred/articles/latent.html#cens) for Weibull and log-normal survival models. These build on `brms` models.
+
+Considering a potential use for `jmpost` purposes, we could use `projpred` directly on `brms` survival models as a pre-processing step in the workflow, and then only provide the selected covariates to the joint model fitting step. The alternative of implementing the projection predictive variable selection directly in `jmpost` would be quite a bit of engineering work. If we were interested in that path we should probably try to reach out to the `projpred` developers in order to understand how we could interface `jmpost` with `projpred`, instead of developing the whole workflow again from scratch.
+
+## Covariate selection posterior probabilities
+
+It is also interesting to look at the discussion by @RossellRubio2023 who focus particularly on Bayesian covariate selection in survival models (and they provide the R package [`mombf`](https://cran.r-project.org/web/packages/mombf/index.html)). They summarize their findings as follows:
+
+1. One asymptotically discards covariates that do not help predict the outcome neither censoring times (conditionally on other covariates).
+1. Censoring and misspecification can reduce power significantly.
+1. Recommendation is to use Bayesian model selection to decide their inclusion in a data-adaptive manner, as in the proposed linear plus deviation from linearity decomposition.
+
+@RubioEtAl2022 illustrate this in accelerated failure time (AFT) models. They use standard binary covariate selection indicator vectors $\gamma \in \{0, 1\}^p$ to define the model space, and apply a beta-binomial prior on $\gamma$ to control the model size. The key to making this practical is the approximation of the marginal likelihood $p(y \vert \gamma)$ using a Laplace approximation. 
+
+This line of research has a long tradition. One example where I was involved is @HeldEtAl2016, where we used a similar approach for variable selection in Cox models. Considering the use for our `jmpost` purposes, the key challenge would be to have a robust and computationally efficient way to compute the marginal likelihoods for the different models. Because we have a lot of random effects and high non-linearity in the joint model, this won't be straightforward. @RizopoulosEtAl2009 has a separate publication on the Laplace approximation in joint models, and it could be a potential starting point.
