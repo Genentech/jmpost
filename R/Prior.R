@@ -316,7 +316,10 @@ initialValues.Prior <- function(object, ...) {
         n_centre_vals <- length(centre_value)
         assert_that(
             ncol(sample_values) == n_centre_vals,
-            msg = "Sample function must return a matrix with n_samples rows and the same number of columns as the length of the centre value"
+            msg = paste(
+                "Sample function must return a matrix with n_samples rows and the same",
+                "number of columns as the length of the centre value"
+            )
         )
         samples <- getOption("jmpost.prior_shrinkage") *
             matrix(
