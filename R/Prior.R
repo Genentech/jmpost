@@ -394,8 +394,10 @@ prior_normal_vector <- function(mus, sigmas) {
         display = "normal(mus = [{toString(mus)}], sigmas = [{toString(sigmas)}])",
         repr_model = "{name} ~ normal(prior_mus_{name}, prior_sigmas_{name})",
         repr_data = c(
-            "vector[{dim_mus}] prior_mus_{name};",
-            "vector<lower=0>[{dim_sigmas}] prior_sigmas_{name};"
+            "int<lower=1> prior_dim_mus_{name};",
+            "int<lower=1> prior_dim_sigmas_{name};",
+            "vector[prior_dim_mus_{name}] prior_mus_{name};",
+            "vector<lower=0>[prior_dim_sigmas_{name}] prior_sigmas_{name};"
         ),
         centre = mus,
         sample = \(n) local_rnorm_vector(n, mus, sigmas),

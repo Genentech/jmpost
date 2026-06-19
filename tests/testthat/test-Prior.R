@@ -283,15 +283,18 @@ test_that("prior_normal_vector works as expected", {
     x_inits <- initialValues(x)
     expect_numeric(x_inits, len = 3)
 
+    x_stan_module <- as.StanModule(x, name = "bob")
     expect_equal(
-        as.StanModule(x, name = "bob"),
+        x_stan_module,
         StanModule(test_path("models", "Prior_4.stan"))
     )
     expect_equal(
         as_stan_list(x, name = "bob"),
         list(
-            prior_mu_bob = c(1, 2, 3),
-            prior_sigma_bob = c(4, 5, 6)
+            prior_mus_bob = c(1, 2, 3),
+            prior_sigmas_bob = c(4, 5, 6),
+            prior_dim_mus_bob = 3,
+            prior_dim_sigmas_bob = 3
         )
     )
 })
