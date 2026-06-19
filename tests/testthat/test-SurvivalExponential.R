@@ -94,3 +94,19 @@ test_that("Print method for SurvivalExponential works as expected", {
         print(x)
     })
 })
+
+test_that("Different priors for the beta components are possible", {
+    # Same iid prior for all beta components:
+    expect_snapshot({
+        x <- SurvivalExponential(beta = prior_normal(0, 1))
+        print(x)
+    })
+
+    # Different priors for each beta component:
+    expect_snapshot({
+        x <- SurvivalExponential(
+            beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3))
+        )
+        print(x)
+    })
+})

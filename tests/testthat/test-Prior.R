@@ -270,3 +270,28 @@ test_that("Parameters in priors must be length 1 #422", {
         "Parameter `alpha`"
     )
 })
+
+test_that("prior_normal_vector works as expected", {
+    x <- prior_normal_vector(c(1, 2, 3), c(4, 5, 6))
+    x_char <- as.character(x)
+
+    expect_equal(
+        x_char,
+        "normal(mus = [1, 2, 3], sigmas = [4, 5, 6])"
+    )
+
+    x_inits <- initialValues(x)
+    expect_numeric(x_inits, len = 3)
+
+    expect_equal(
+        as.StanModule(x, name = "bob"),
+        StanModule(test_path("models", "Prior_4.stan"))
+    )
+    expect_equal(
+        as_stan_list(x, name = "bob"),
+        list(
+            prior_mu_bob = c(1, 2, 3),
+            prior_sigma_bob = c(4, 5, 6)
+        )
+    )
+})
