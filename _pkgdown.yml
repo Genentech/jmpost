@@ -64,6 +64,7 @@ reference:
       - prior_loglogistic
       - prior_lognormal
       - prior_normal
+      - prior_normal_vector
       - prior_uniform
       - prior_std_normal
       - prior_student_t
