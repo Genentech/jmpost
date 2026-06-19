@@ -7,7 +7,7 @@ test_that("Parameters smoke tests", {
             initialValues(p),
             expected_mu * 0.5
         ),
-        local_rbeta = \(...) 0
+        local_rbeta = \(n, ...) rep(0, n)
     )
     expect_equal(names(p), "intercept")
 })

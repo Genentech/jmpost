@@ -5,7 +5,7 @@ test_that("Priors work as expected", {
             initialValues(x),
             4 * 0.5
         ),
-        local_rnorm = \(...) 0
+        local_rnorm = \(n, ...) rep(0, n)
     )
     expect_equal(
         as.StanModule(x, name = "bob"),
@@ -22,7 +22,7 @@ test_that("Priors work as expected", {
             initialValues(x),
             exp(log(4) + 2) * 0.5
         ),
-        local_rlnorm = \(...) 0
+        local_rlnorm = \(n, ...) rep(0, n)
     )
     expect_equal(
         as.StanModule(x, name = "tim"),
@@ -181,7 +181,7 @@ test_that("jmpost.prior_shrinkage works as expected", {
             ## Reset Shrinkage factor
             options("jmpost.prior_shrinkage" = 0.5)
         },
-        local_rnorm = \(...) 4
+        local_rnorm = \(n, ...) rep(4, n)
     )
 })
 
