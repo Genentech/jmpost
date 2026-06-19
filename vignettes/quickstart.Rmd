@@ -98,6 +98,16 @@ random_slope_model <- LongitudinalRandomSlope(
 This sets the prior for the `intercept` to be a $N(40, 5)$ distribution and
 the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 
+For the survival models, we can set different independent normal priors for the coefficients of the covariates in the linear predictor using the `prior_normal_vector()` specification. Here we can give a vector of the same length as the number of design matrix columns for both the means or standard deviations of the normal distributions, or we can give a single value that will be repeated for all covariates. 
+For example, say we have 3 design matrix columns, i.e. coefficients, in the linear predictor of the survival model, then we can set the priors for these coefficients as follows:
+
+```{r survival_prior_inits}
+survival_model <- SurvivalWeibullPH(
+    beta = prior_normal_vector(mus = c(-1, 0, 5), sigmas = c(1, 1, 10))
+)
+survival_model
+```
+
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
