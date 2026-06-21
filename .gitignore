@@ -76,6 +76,7 @@ local/
 # Compiled stan model
 inst/stanmodels/stan_model
 **/models/*
+!**/models/*.stan
 
 
 
