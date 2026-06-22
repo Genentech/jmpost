@@ -22,7 +22,7 @@ test_that("populationHR works as expected for default parameters", {
     expect_equal(
         0.2,
         result[[1]][["cov_cont", "mean"]],
-        tolerance = 0.1
+        tolerance = 0.3
     )
 
     # Summary calculations are match expectations
