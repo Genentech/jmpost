@@ -207,8 +207,8 @@ samples_median_ci <- function(samples, level = 0.95) {
 decorated_render <- function(...) {
     jinjar::render(
         ...,
-        machine_double_eps = 0,
-        machine_double_neg_eps = 0
+        machine_double_eps = getOption("jmpost.double_eps"),
+        machine_double_neg_eps = getOption("jmpost.double_neg_eps"),
     )
 }
 

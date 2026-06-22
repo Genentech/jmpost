@@ -1,4 +1,3 @@
-
 # jmpost (development version)
 
 - `LongitudinalModel` objects now have a new slot `scaled_variance` which stores the used variance option, and this is part of the `print` output now thereby transparently communicating to the user the choice of the multiplicative or additive error model.
@@ -13,6 +12,7 @@
 - Added support for additive variance (#403).
 - Added support for independent variances per study/arm (#389).
 - Miscellaneous bug fixes.
+- Introduce new package options for bounds close to zero which are used to avoid MCMC sampler starting warnings.
 
 # jmpost 0.0.1
 

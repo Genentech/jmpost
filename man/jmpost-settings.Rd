@@ -49,6 +49,18 @@ This option specifies the \code{n} argument in the call to \code{\link[statmod:g
 higher values of \code{n} lead to better accuracy of the approximation but at the cost of
 increased computational time.
 }
+
+\subsection{\code{jmpost.double_eps} and \code{jmpost.double_neg_eps}}{
+
+Default = \code{sqrt(.Machine$double.eps)} and \code{sqrt(.Machine$double.neg.eps)}
+
+These are the smallest positive floating-point numbers \code{x} which are used
+in the parameter definitions as lower boundaries to prevent numerical issues
+with the MCMC sampler in the beginning of the sampling process.
+The default values are set to the square root of the machine epsilon for
+double precision numbers, which is a common choice to balance numerical stability
+and the ability to explore the parameter space effectively.
+}
 }
 \examples{
 \dontrun{
