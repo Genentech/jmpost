@@ -36,6 +36,7 @@ NULL
 #' @slot display (`string`)\cr See arguments.
 #' @slot sample (`function`)\cr See arguments.
 #' @slot limits (`numeric`)\cr See arguments.
+#' @slot .allow_vectors (`logical`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior

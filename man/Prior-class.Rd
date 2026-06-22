@@ -60,6 +60,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{sample}}{(\code{function})\cr See arguments.}
 
 \item{\code{limits}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{.allow_vectors}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{
