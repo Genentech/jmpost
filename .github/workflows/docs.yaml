@@ -48,5 +48,4 @@ jobs:
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
         CMDSTANR_NO_VER_CHECK=true
-        JMPOST_GRAPH_SNAPSHOT=TRUE
       default-landing-page: 'main' # Set to 'latest-tag' after CRAN release or when you create a tag
