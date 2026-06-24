@@ -50,7 +50,7 @@ test_that("populationHR fails for bad input", {
 })
 
 
-test_that("populationHR works as expected for alternative specfications", {
+test_that("populationHR works as expected for alternative specifications", {
     mp <- test_data_1$jsamples
     set.seed(1231)
     # Arm + continuous covariate
