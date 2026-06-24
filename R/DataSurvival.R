@@ -117,6 +117,8 @@ as.data.frame.DataSurvival <- function(x, ...) {
 
 #' @rdname as_stan_list.DataObject
 #' @family DataSurvival
+#' @param df (`data.frame`)\cr The data frame to be used for generating the design matrix.
+#' @param vars (`list`)\cr The list of variable names to be used for generating the design matrix.
 #' @export
 model.matrix.DataSurvival <- function(
     object,

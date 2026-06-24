@@ -46,6 +46,10 @@
 
 \item{subject_var}{(\code{character}) the name of the variable
 containing the subject identifier.}
+
+\item{df}{(\code{data.frame})\cr The data frame to be used for generating the design matrix.}
+
+\item{vars}{(\code{list})\cr The list of variable names to be used for generating the design matrix.}
 }
 \description{
 Coerces a data object into a \code{list} of data components required
