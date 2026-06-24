@@ -108,6 +108,8 @@ survival_model <- SurvivalWeibullPH(
 survival_model
 ```
 
+In order to know which position corresponds to which design matrix column and thus coefficient, we can use the `model.matrix()` function on the `DataSurvival` object. This is explained in the section "Formatting Data" below in detail.
+
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
@@ -256,6 +258,14 @@ joint_data <- DataJoint(
 )
 ```
 
+Note that we can also actively look into the design matrix of the `DataSurvival` object. This can be helpful if we want to know which coefficients are at which position, e.g. for setting the right prior means and standard deviations with `prior_normal_vector()`. It works like this:
+
+```{r design_matrix}
+head(model.matrix(joint_data@survival))
+```
+
+So here we see that the first coefficient corresponds to category `B` and the second coefficient corresponds to category `C` of the categorical covariate `cov_cat`, while the third coefficient corresponds to the continuous covariate `cov_cont`.
+
 # Model Fitting
 
 Now let's have a look how we can fit the (joint) models.
@@ -288,8 +298,6 @@ mcmc_results <- sampleStanModel(
     parallel_chains = 1
 )
 ```
-
-
 
 ## Convergence checks
 

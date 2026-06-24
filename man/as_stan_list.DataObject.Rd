@@ -6,6 +6,7 @@
 \alias{as.list.DataSubject}
 \alias{as_stan_list.DataLongitudinal}
 \alias{as.list.DataLongitudinal}
+\alias{model.matrix.DataSurvival}
 \alias{as_stan_list.DataSurvival}
 \alias{as.list.DataSurvival}
 \alias{as_stan_list.DataObject}
@@ -20,6 +21,13 @@
 \method{as_stan_list}{DataLongitudinal}(object, subject_var, ...)
 
 \method{as.list}{DataLongitudinal}(x, ...)
+
+\method{model.matrix}{DataSurvival}(
+  object,
+  df = as.data.frame(object),
+  vars = extractVariableNames(object),
+  ...
+)
 
 \method{as_stan_list}{DataSurvival}(object, ...)
 

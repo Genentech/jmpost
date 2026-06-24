@@ -118,14 +118,27 @@ as.data.frame.DataSurvival <- function(x, ...) {
 #' @rdname as_stan_list.DataObject
 #' @family DataSurvival
 #' @export
-as_stan_list.DataSurvival <- function(object, ...) {
-    df <- as.data.frame(object)
-    vars <- extractVariableNames(object)
-
+model.matrix.DataSurvival <- function(
+    object,
+    df = as.data.frame(object),
+    vars = extractVariableNames(object),
+    ...
+) {
     design_mat <- stats::model.matrix(vars$frm, data = df)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
     design_mat <- design_mat[, -remove_index, drop = FALSE]
     rownames(design_mat) <- NULL
+    design_mat
+}
+
+#' @rdname as_stan_list.DataObject
+#' @family DataSurvival
+#' @export
+as_stan_list.DataSurvival <- function(object, ...) {
+    df <- as.data.frame(object)
+    vars <- extractVariableNames(object)
+
+    design_mat <- model.matrix(object, df = df, vars = vars)
 
     # Parameters for efficient integration of hazard function -> survival function
     gh_parameters <- statmod::gauss.quad(
