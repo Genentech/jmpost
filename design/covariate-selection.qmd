@@ -8,7 +8,9 @@ format:
 bibliography: references.bib
 ---
 
-# Covariate selection options for `jmpost`
+# Covariate selection in `jmpost`
+
+## Options
 
 Covariate selection (CS) is a very big topic, and likewise there are many different methodology options we could potentially look into. Historically, in pharmacometrics, CS has been handled using stepwise approaches. However, it is meanwhile well known that stepwise approaches have a number of issues and should be avoided (see e.g. @Ahamadi2019, @Sauerbrei2020, @Sanghavi2024). 
 
@@ -19,7 +21,7 @@ On a high level, we have two groups of methods available for Bayesian covariate 
 1. Those that perform covariate selection implicitly through the use of shrinkage priors. This includes horseshoe and R2-D2 priors.
 2. Those that perform covariate selection explicitly by defining a model space and then selecting the best model in this space. This includes projection predictive variable selection and posterior probabilities for covariate selection.
 
-## Horseshoe priors
+### Horseshoe priors
 
 Originally proposed by @CarvalhoEtAl2010, the horseshoe prior for the mean $\theta$ of a $p$-dimensional normal likelihood $y \vert \theta \sim N_{p}(\theta, \sigma^2 I_{p})$ is defined as:
 
@@ -38,17 +40,16 @@ The horseshoe is one of the so called global-local shrinkage priors, meaning tha
 @PiironenVehtari2017 investigated the horseshoe prior in generalized linear models, and proposed the regularized horseshoe prior, that operates similarly as the horseshoe but allows specifying the regularization to the coefficients that are far from zero:
 
 $$
-\begin{align*}
-\theta_{j} \vert \lambda_{j}, \tau \sim N(0, c^2 \lambda_{j}^2 / (c^2 + \tau^2 \lambda_{j}^2)), \quad \lambda_{j} \vert \tau &\sim C^{+}(0, \tau), \quad j = 1, \dotsc, p,\\
-\tau \vert \sigma &\sim C^{+}(0, \sigma)
-\end{align*}
+\theta_{j} \vert \lambda_{j}, \tau \sim N(0, \tau^2c^2 \lambda_{j}^2 / (c^2 + \tau^2 \lambda_{j}^2)), \quad \lambda_{j} &\sim C^{+}(0, 1), \quad j = 1, \dotsc, p
 $$
 
-where $c > 0$ is a regularization parameter, which is assigned a hyperprior distribution, e.g. $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$. @PiironenVehtari2017 report that the regularized horseshoe solves also the problems with the divergent transitions in MCMC sampling observed before for the horseshoe prior.
+where $c > 0$ is a regularization parameter, which is assigned a hyperprior distribution, e.g. $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$. 
+With $\alpha = \nu/2$ and $\beta = \nu s^2/2$, the regularized horseshoe prior can be interpreted as a horseshoe prior with an additional Student-$t$ slab with $\nu$ degrees of freedom and scale $s$ on the coefficients far from zero. 
+@PiironenVehtari2017 report that the regularized horseshoe solves also the problems with the divergent transitions in MCMC sampling observed before for the horseshoe prior.
 
 Regularized horseshoe priors have recently been applied in pharmacokinetics/pharmacodynamics (PK/PD) models by @PourzanjaniDavis2026. They highlight the computational convenience, in that they can simultaneously assess all possible covariates in a single model fit. Supplementary materials also include Stan and R code for their implementations (see [here](https://drive.google.com/drive/u/0/folders/1vYiKni470cw0k5aIxHzEJ_EcVdmMUKYR) on Google Drive).
 
-## R2-D2 priors
+### R2-D2 priors
 
 @ZhangEtAl2022 proposed the R2-D2 prior for regression coefficients in linear regression models. While the original motivation started in the linear model setting, @ZhangEtAl2022 note that "the resultant prior is simply a member of the class of global-local shrinkage priors, which can then be applied directly to other models, as with other priors." This then also includes generalized linear and survival models. Formally, the R2-D2 model as we use it is defined as [@McLatchie2025]:
 
@@ -112,7 +113,7 @@ $$
 where the hyperparameters $t_{1}, t_{2}, t_{3}, t_{4}$ are selected to give uninformative priors. 
 It is not clear to me how $a, b, d$ or $\xi_{1}, \dotsc, \xi_{p}$ should be selected.
 
-## Projection predictive variable selection
+### Projection predictive variable selection
 
 @McLatchie2025 describe projection predictive inference in a nutshell as follows: "Given a reference model, we wish to achieve a parsimonious restricted model whose posterior predictive distribution most closely resembles that of the reference model." The steps to achieve this are as follows:
 
@@ -126,7 +127,7 @@ The R package `projpred` implements projection predictive variable selection for
 
 Considering a potential use for `jmpost` purposes, we could use `projpred` directly on `brms` survival models as a pre-processing step in the workflow, and then only provide the selected covariates to the joint model fitting step. The alternative of implementing the projection predictive variable selection directly in `jmpost` would be quite a bit of engineering work. If we were interested in that path we should probably try to reach out to the `projpred` developers in order to understand how we could interface `jmpost` with `projpred`, instead of developing the whole workflow again from scratch.
 
-## Covariate selection posterior probabilities
+### Covariate selection posterior probabilities
 
 It is also interesting to look at the discussion by @RossellRubio2023 who focus particularly on Bayesian covariate selection in survival models (and they provide the R package [`mombf`](https://cran.r-project.org/web/packages/mombf/index.html)). They summarize their findings as follows:
 
@@ -137,3 +138,110 @@ It is also interesting to look at the discussion by @RossellRubio2023 who focus 
 @RubioEtAl2022 illustrate this in accelerated failure time (AFT) models. They use standard binary covariate selection indicator vectors $\gamma \in \{0, 1\}^p$ to define the model space, and apply a beta-binomial prior on $\gamma$ to control the model size. The key to making this practical is the approximation of the marginal likelihood $p(y \vert \gamma)$ using a Laplace approximation. 
 
 This line of research has a long tradition. One example where I was involved is @HeldEtAl2016, where we used a similar approach for variable selection in Cox models. Considering the use for our `jmpost` purposes, the key challenge would be to have a robust and computationally efficient way to compute the marginal likelihoods for the different models. Because we have a lot of random effects and high non-linearity in the joint model, this won't be straightforward. @RizopoulosEtAl2009 has a separate publication on the Laplace approximation in joint models, and it could be a potential starting point.
+
+## Priority decision
+
+Based on the above options, and some discussion, we have decided to go forward with the regularized horseshoe prior as the first option to implement in `jmpost`. The main reasons for this are:
+
+- It is a shrinkage prior, so we can use it directly in the joint model fitting step, without having to do a separate covariate selection step.
+- It is relatively straightforward to implement, and we can build on the existing work by @PourzanjaniDavis2026.
+- It is already implemented in `brms`, so we can use that as a reference implementation and for testing purposes (see [here](https://github.com/paul-buerkner/brms/blob/master/R/priors.R#L2112))
+- It will work with any survival baseline hazard, because we always have the coefficients vector, where we can apply the new `prior_horseshoe()` in the similar way as we now apply e.g. `prior_normal_vector()`.
+
+## Implementation plan
+
+### `brms` implementation
+
+
+As reference, let's quickly check how the regularized horseshoe prior is implemented in `brms`:
+
+```{r}
+#| message: false
+library(brms)
+
+ex_model <- brm(
+    formula = y | cens(censored) ~ x1 + x2 + x3,
+    family = weibull(),
+    data = data.frame(y = rexp(100), x1 = rnorm(100), x2 = rnorm(100), x3 = rnorm(100), censored = sample(0:1, 100, replace = TRUE)),
+    prior = set_prior(horseshoe(1), class = "b"),
+    refresh = 0
+)
+
+stancode(ex_model)
+```
+
+So we see that we have as hyperparameters for the regularized horseshoe prior (from the `data` block in the Stan code, omitting here the `hs_` prefix for brevity):
+
+- `df`: local degrees of freedom
+- `df_global`: global degrees of freedom
+- `df_slab`: slab degrees of freedom
+- `scale_global`: global scale
+- `scale_slab`: slab scale
+
+In terms of model parameters (see the `parameters` block in the Stan code), we have:
+
+- `global`: global shrinkage parameter, corresponds to $\tau$ in the above equations
+- `slab`: slab regularization parameter, via `c2 = scale_slab^2 * slab` related to $c$ in the above equations,
+- `local`: local parameters for horseshoe prior, correspond to $\lambda_{j}$ in the above equations
+
+Then the model assumes:
+
+- `c2 = scale_slab^2 * slab` to obtain the squared slab regularization parameter $c^2$ in the above equations
+- `zb` are the standardized regression coefficients, which have a standard normal distribution
+- `scales` are the scales for the regression coefficients, which are obtained by multiplying `global` with $\sqrt{c^2 \lambda_{j}^2 / (c^2 + \tau^2 \lambda_{j}^2)}$, i.e. `global * sqrt(c2 * local^2 ./ (c2 + global^2 * local^2))` in the Stan code
+- `b` are the actual regression coefficients, which are obtained by multiplying `zb` with `scales`
+- The intercept has a Student-t prior
+- `global` has a half-Student-t prior with `df_global` degrees of freedom and scale `scale_global`
+- `slab` has an inverse gamma prior with `df_slab/2` parameters. Note that after multiplying with `scale_slab^2` and obtaining `c2`, this corresponds to $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$ with $\alpha = \textrm{df_slab}/2$ and $\beta = \textrm{df_slab} * \textrm{scale_slab}^2 / 2$ in the above equations
+- `local` parameters have half-Student-t priors with `df` degrees of freedom and scale 1
+
+So mapping this back to the math equations above, this is more general than what was defined above. This model has:
+
+$$
+\begin{align*}
+z_{j} &\sim \text{Normal}(0, 1), \\
+\lambda_{j} &\sim \text{Student-}t^{+}_{\nu_{\lambda}}(0, 1), \\
+\tau &\sim \text{Student-}t^{+}_{\nu_{\tau}}(0, s_{\tau}), \\
+\xi &\sim \text{Inv-Gamma}\!\left(\frac{\nu_{c}}{2}, \frac{\nu_{c}}{2}\right), \\
+c^{2} &= s_{c}^{2} \xi, \\
+\tilde{\lambda}_{j} &=
+\sqrt{
+\frac{c^{2}\lambda_{j}^{2}}
+{c^{2} + \tau^{2}\lambda_{j}^{2}}
+}, \\
+\beta_{j} &= z_{j}\tau\tilde{\lambda}_{j}, \quad j = 1, \dotsc, p
+\end{align*}
+$$
+
+Here $\nu_{\lambda}$ is the local degrees of freedom (`df`), $\nu_{\tau}$ is the global degrees of freedom (`df_global`), $\nu_{c}$ is the slab degrees of freedom (`df_slab`), $s_{\tau}$ is the global scale (`scale_global`), and $s_{c}$ is the slab scale (`scale_slab`).
+
+This is the same regularized horseshoe construction in spirit, with a few minor differences. First, `brms` uses a non-centered parameterization: the coefficient is represented as a standard normal variable $z_j$ multiplied by the regularized scale $\tau\tilde{\lambda}_j$. Marginally, this gives the same as above,
+
+$$
+\beta_j \vert \lambda_j, \tau, c \sim
+\text{Normal}\!\left(
+0,\,
+\tau^2
+\frac{c^2\lambda_j^2}{c^2 + \tau^2\lambda_j^2}
+\right).
+$$
+
+Second, the `brms` hyperpriors are more general. The local and global shrinkage parameters have half-Student-$t$ priors, which reduce to half-Cauchy priors when $\nu_{\lambda} = \nu_{\tau} = 1$. The slab part matches the interpretation above: since $\xi \sim \text{Inv-Gamma}(\nu_c/2, \nu_c/2)$ and $c^2 = s_c^2\xi$, we have $c^2 \sim \text{Inv-Gamma}(\nu_c/2, \nu_c s_c^2/2)$, corresponding to a Student-$t$ slab with $\nu_c$ degrees of freedom and scale $s_c$.
+
+### Prior specification
+
+We need a new prior distribution, `prior_horseshoe()`, that implements the regularized horseshoe prior. 
+Parameters can be similar as in `brms`:
+
+- `df`: Degrees of freedom of student-t prior of the local shrinkage parameter
+- `df_global`: Degrees of freedom of student-t prior of the global shrinkage parameter
+- `df_slab`: Degrees of freedom of student-t prior of the slab regularization parameter
+- `scale_global`: Scale of student-t prior of the global shrinkage parameter
+- `scale_slab`: Scale of student-t prior of the slab regularization parameter
+
+### Stan code
+
+We can use the `brms` Stan code as a reference, and adapt it to our needs. 
+The main advantage will be to stay compatible with `brms` and don't introduce new parametrizations or choices that would confuse the users.
+
+
