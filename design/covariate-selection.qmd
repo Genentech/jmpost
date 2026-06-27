@@ -50,15 +50,27 @@ Regularized horseshoe priors have recently been applied in pharmacokinetics/phar
 
 ## R2-D2 priors
 
-@ZhangEtAl2022 proposed the R2-D2 prior for regression coefficients in linear regression models. While the original motivation started in the linear model setting, @ZhangEtAl2022 note that "the resultant prior is simply a member of the class of global-local shrinkage priors, which can then be applied directly to other models, as with other priors." This then also includes generalized linear and survival models. Its general definition for regression coefficients $\beta_{j}, j = 1, \dotsc, p$ is:
+@ZhangEtAl2022 proposed the R2-D2 prior for regression coefficients in linear regression models. While the original motivation started in the linear model setting, @ZhangEtAl2022 note that "the resultant prior is simply a member of the class of global-local shrinkage priors, which can then be applied directly to other models, as with other priors." This then also includes generalized linear and survival models. Formally, the R2-D2 model as we use it is defined as [@McLatchie2025]:
 
 $$
 \begin{align*}
-\beta_{j} \vert \sigma^{2}, \lambda_{j} &\sim \text{Double-Exponential}(\sigma \sqrt{\lambda_{j}/2}), \\
-\lambda_{j} \vert \xi &\sim \text{Gamma}(a, \xi), \\
-\xi &\sim \text{Gamma}(b, 1)
-\end{align*}    
+y_{i} &\sim \text{Normal}\!\left(\beta_{0} + \sum_{j=1}^{p} x_{j,i}\beta_{j},\, \sigma^{2}\right), \\
+\beta_{0} &\sim \text{Student-}t_{3}(0, 2.5), \\
+\sigma &\sim \text{Student-}t_{3}^{+}(0, 2.5), \\
+\beta_{j} &\sim \text{Normal}(0, \sigma^{2}\tau^{2}\phi_{j}), \\
+R^{2} &\sim \text{Beta}(\mu_{R^{2}}, \varphi_{R^{2}}), \\
+\phi &\sim \text{Dirichlet}(\xi, \dotsc, \xi), \\
+\tau^{2} &= \frac{R^{2}}{1 - R^{2}}.
+\end{align*}
 $$
+
+Here $\text{Student-}t_{\nu}(\mu, \sigma)$ denotes Student's $t$-distribution with $\nu$ degrees of freedom, location $\mu$, and scale $\sigma$; the superscript $+$ indicates a half-Student-$t$ distribution. We use the mean $\mu_{R^{2}}$ and a pseudo-precision $\varphi_{R^{2}}$ to parameterise the Beta distribution for $R^{2}$, rather than the conventional shape parameters $a > 0$ and $b > 0$. The relationship between the two parameterisations is
+
+$$
+\mu_{R^{2}} = \frac{a}{a + b}, \qquad \varphi_{R^{2}} = a + b.
+$$
+
+Depending on the dataset, different hyperparameter values for $\xi$, $\mu_{R^{2}}$ and $\varphi_{R^{2}}$ can be used to control the amount of shrinkage. For example, with weakly-relevant predictors @McLatchie2025 use $\xi = 10$, $\mu_{R^{2}} = 0.3$ and $\varphi_{R^{2}} = 5$.
 
 It seems that the R2-D2 prior has not been widely applied to survival models yet. @YanchenkoEtAl2025 propose the following extension to Weibull models with linear predictor
 
