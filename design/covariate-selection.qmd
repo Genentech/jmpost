@@ -244,4 +244,15 @@ Parameters can be similar as in `brms`:
 We can use the `brms` Stan code as a reference, and adapt it to our needs. 
 The main advantage will be to stay compatible with `brms` and don't introduce new parametrizations or choices that would confuse the users.
 
+### Validation
+
+In order to make sure that everything is correctly implemented, in addition to standard unit testing, we can do the following:
+
+- Compare the `jmpost` implementation with the `brms` implementation on a survival only model, and check that the posterior distributions of the coefficients are similar.
+- Perform simulations with increasingly clear separation between important and irrelevant covariates, and check that the horseshoe prior correctly identifies the important covariates.
+
+### Plots and Summaries
+
+We can also provide the shrinkage factors $\kappa_{j} = 1/(1 + \tau^2\lambda_j^2/c^2)$ for each coefficient, which are a measure of how much shrinkage is applied to each coefficient: $\kappa_{j} \approx 1$ means that the coefficient is shrunk to zero, while $\kappa_{j} \approx 0$ means that the coefficient is not shrunk.
+Density plots of the shrinkage factors, or even just the median shrinkage factor for each coefficient, can be a useful diagnostic tool to assess which covariates are important and which are not.
 
