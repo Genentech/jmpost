@@ -21,7 +21,7 @@ test_that("Global variables defined by `decorated_render() are usable", {
         "%d hi there %s and %s",
         5,
         "bob",
-        0
+        scales::scientific(getOption("jmpost.double_eps"), digits = 5)
     )
     expect_equal(observed, expected)
 })

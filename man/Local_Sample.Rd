@@ -3,6 +3,7 @@
 \name{Local_Sample}
 \alias{Local_Sample}
 \alias{local_rnorm}
+\alias{local_rnorm_vector}
 \alias{local_rcauchy}
 \alias{local_rgamma}
 \alias{local_rlnorm}
@@ -15,6 +16,8 @@
 \title{Stub functions for sampling from distributions}
 \usage{
 local_rnorm(...)
+
+local_rnorm_vector(n, mus, sigmas)
 
 local_rcauchy(...)
 

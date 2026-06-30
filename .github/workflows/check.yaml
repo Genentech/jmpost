@@ -27,7 +27,8 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      deps-installation-method: |
+      # Use |- so the reusable workflow receives the exact string without a trailing newline.
+      deps-installation-method: |-
         staged-dependencies
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
@@ -45,7 +46,8 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      deps-installation-method: |
+      # Use |- so the reusable workflow receives the exact string without a trailing newline.
+      deps-installation-method: |-
         staged-dependencies
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
@@ -61,7 +63,8 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      deps-installation-method: |
+      # Use |- so the reusable workflow receives the exact string without a trailing newline.
+      deps-installation-method: |-
         staged-dependencies
       auto-update: true
   gitleaks:

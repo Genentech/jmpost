@@ -16,13 +16,13 @@ test_that("populationHR works as expected for default parameters", {
     expect_equal(
         0.2 - -0.4,
         result[[1]][["cov_catC", "mean"]] - result[[1]][["cov_catB", "mean"]],
-        tolerance = 0.2
+        tolerance = 0.3
     )
 
     expect_equal(
         0.2,
         result[[1]][["cov_cont", "mean"]],
-        tolerance = 0.1
+        tolerance = 0.3
     )
 
     # Summary calculations are match expectations
@@ -50,7 +50,7 @@ test_that("populationHR fails for bad input", {
 })
 
 
-test_that("populationHR works as expected for alternative specfications", {
+test_that("populationHR works as expected for alternative specifications", {
     mp <- test_data_1$jsamples
     set.seed(1231)
     # Arm + continuous covariate

@@ -15,7 +15,8 @@ Prior(
   centre,
   validation,
   sample,
-  limits = c(-Inf, Inf)
+  limits = c(-Inf, Inf),
+  .allow_vectors = FALSE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ the same names as the \code{paramaters} slot.}
 \item{sample}{(\code{function}) a function to sample from the prior distribution.}
 
 \item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+
+\item{.allow_vectors}{(\code{flag}) whether to allow vector parameters.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -57,6 +60,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{sample}}{(\code{function})\cr See arguments.}
 
 \item{\code{limits}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{.allow_vectors}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{

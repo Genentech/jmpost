@@ -24,6 +24,7 @@ Other Prior:
 \code{\link[=prior_logistic]{prior_logistic()}},
 \code{\link[=prior_lognormal]{prior_lognormal()}},
 \code{\link[=prior_normal]{prior_normal()}},
+\code{\link[=prior_normal_vector]{prior_normal_vector()}},
 \code{\link[=prior_std_normal]{prior_std_normal()}},
 \code{\link[=prior_student_t]{prior_student_t()}},
 \code{\link[=prior_uniform]{prior_uniform()}}

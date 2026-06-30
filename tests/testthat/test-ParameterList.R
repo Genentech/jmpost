@@ -17,8 +17,8 @@ test_that("ParameterList smoke tests", {
             ))
             expect_equal(actual, expected)
         },
-        local_rgamma = \(...) 0,
-        local_rnorm = \(...) 0
+        local_rgamma = \(n, ...) rep(0, n),
+        local_rnorm = \(n, ...) rep(0, n)
     )
 
     # Can render to character

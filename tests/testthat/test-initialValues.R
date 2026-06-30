@@ -42,16 +42,56 @@ test_that("initialValues() works as expected", {
     # show that if we mock the random number generator, we get the same initial values
     ivs <- testthat::with_mocked_bindings(
         initialValues(jm, n_chains = 2),
-        local_rnorm = \(...) 0,
-        local_rbeta = \(...) 0,
-        local_rlnorm = \(...) 0,
-        local_rgamma = \(...) 0,
-        local_runif = \(...) 0,
-        local_rlogis = \(...) 0,
+        local_rnorm = \(n, ...) rep(0, n),
+        local_rbeta = \(n, ...) rep(0, n),
+        local_rlnorm = \(n, ...) rep(0, n),
+        local_rgamma = \(n, ...) rep(0, n),
+        local_runif = \(n, ...) rep(0, n),
+        local_rlogis = \(n, ...) rep(0, n)
     )
     expect_equal(ivs[[1]], ivs[[2]])
 })
 
+test_that("initialValues() works also for vectorized parameters", {
+    jm <- JointModel(
+        longitudinal = LongitudinalRandomSlope(),
+        survival = SurvivalWeibullPH(
+            beta = prior_normal_vector(mus = c(-1, 0, 5), sigmas = c(1, 1, 10))
+        ),
+        link = linkDSLD()
+    )
+
+    set.seed(341)
+    initial_values <- initialValues(jm, n_chains = 2)
+
+    # Ensure that we actually got 2 chains worth of initial values
+    expect_length(initial_values, 2)
+
+    # Ensure that we get different initial values per chain
+    expect_numeric(initial_values[[1]]$beta_os_cov, len = 3)
+    expect_numeric(initial_values[[2]]$beta_os_cov, len = 3)
+    expect_true(
+        all(initial_values[[1]]$beta_os_cov != initial_values[[2]]$beta_os_cov)
+    )
+
+    # Ensure each inner list has the same parameters
+    expect_equal(
+        names(initial_values[[1]]),
+        names(initial_values[[2]])
+    )
+
+    # Show that if we mock the random number generator, we get the same initial values:
+    ivs <- testthat::with_mocked_bindings(
+        initialValues(jm, n_chains = 2),
+        local_rnorm = \(n, ...) rep(0, n),
+        local_rlnorm = \(n, ...) rep(0, n),
+        local_rgamma = \(n, ...) rep(0, n),
+        local_rnorm_vector = \(n, mus, sigmas) {
+            matrix(0, nrow = n, ncol = length(mus))
+        }
+    )
+    expect_equal(ivs[[1]], ivs[[2]])
+})
 
 test_that("ensure_initial_values() works as expected", {
     pars <- ParameterList(
@@ -86,7 +126,7 @@ test_that("ensure_initial_values() works as expected", {
 })
 
 
-test_that("intial values for fixed distributions gives valid values", {
+test_that("initial values for fixed distributions gives valid values", {
     set.seed(3150)
     gsfmodel <- LongitudinalGSF(centred = TRUE)
     ivs <- initialValues(gsfmodel, n_chains = 100)

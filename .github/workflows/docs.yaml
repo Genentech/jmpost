@@ -42,12 +42,11 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      deps-installation-method: |
+      # Use |- so the reusable workflow receives the exact string without a trailing newline.
+      deps-installation-method: |-
         staged-dependencies
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
         CMDSTANR_NO_VER_CHECK=true
-        NOT_CRAN=TRUE
-        JMPOST_GRAPH_SNAPSHOT=TRUE
       default-landing-page: 'main' # Set to 'latest-tag' after CRAN release or when you create a tag

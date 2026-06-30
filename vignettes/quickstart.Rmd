@@ -98,6 +98,18 @@ random_slope_model <- LongitudinalRandomSlope(
 This sets the prior for the `intercept` to be a $N(40, 5)$ distribution and
 the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 
+For the survival models, we can set different independent normal priors for the coefficients of the covariates in the linear predictor using the `prior_normal_vector()` specification. Here we can give a vector of the same length as the number of design matrix columns for both the means or standard deviations of the normal distributions, or we can give a single value that will be repeated for all covariates. 
+For example, say we have 3 design matrix columns, i.e. coefficients, in the linear predictor of the survival model, then we can set the priors for these coefficients as follows:
+
+```{r survival_prior_inits}
+survival_model <- SurvivalWeibullPH(
+    beta = prior_normal_vector(mus = c(-1, 0, 5), sigmas = c(1, 1, 10))
+)
+survival_model
+```
+
+In order to know which position corresponds to which design matrix column and thus coefficient, we can use the `model.matrix()` function on the `DataSurvival` object. This is explained in the section "Formatting Data" below in detail.
+
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using
@@ -246,6 +258,14 @@ joint_data <- DataJoint(
 )
 ```
 
+Note that we can also actively look into the design matrix of the `DataSurvival` object. This can be helpful if we want to know which coefficients are at which position, e.g. for setting the right prior means and standard deviations with `prior_normal_vector()`. It works like this:
+
+```{r design_matrix}
+head(model.matrix(joint_data@survival))
+```
+
+So here we see that the first coefficient corresponds to category `B` and the second coefficient corresponds to category `C` of the categorical covariate `cov_cat`, while the third coefficient corresponds to the continuous covariate `cov_cont`.
+
 # Model Fitting
 
 Now let's have a look how we can fit the (joint) models.
@@ -278,8 +298,6 @@ mcmc_results <- sampleStanModel(
     parallel_chains = 1
 )
 ```
-
-
 
 ## Convergence checks
 

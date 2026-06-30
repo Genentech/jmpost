@@ -6,6 +6,7 @@
 \alias{as.list.DataSubject}
 \alias{as_stan_list.DataLongitudinal}
 \alias{as.list.DataLongitudinal}
+\alias{model.matrix.DataSurvival}
 \alias{as_stan_list.DataSurvival}
 \alias{as.list.DataSurvival}
 \alias{as_stan_list.DataObject}
@@ -20,6 +21,13 @@
 \method{as_stan_list}{DataLongitudinal}(object, subject_var, ...)
 
 \method{as.list}{DataLongitudinal}(x, ...)
+
+\method{model.matrix}{DataSurvival}(
+  object,
+  df = as.data.frame(object),
+  vars = extractVariableNames(object),
+  ...
+)
 
 \method{as_stan_list}{DataSurvival}(object, ...)
 
@@ -38,6 +46,10 @@
 
 \item{subject_var}{(\code{character}) the name of the variable
 containing the subject identifier.}
+
+\item{df}{(\code{data.frame})\cr The data frame to be used for generating the design matrix.}
+
+\item{vars}{(\code{list})\cr The list of variable names to be used for generating the design matrix.}
 }
 \description{
 Coerces a data object into a \code{list} of data components required

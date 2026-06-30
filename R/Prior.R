@@ -36,6 +36,7 @@ NULL
 #' @slot display (`string`)\cr See arguments.
 #' @slot sample (`function`)\cr See arguments.
 #' @slot limits (`numeric`)\cr See arguments.
+#' @slot .allow_vectors (`logical`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior
@@ -50,7 +51,8 @@ NULL
         "centre" = "numeric",
         "validation" = "list",
         "sample" = "function",
-        "limits" = "numeric"
+        "limits" = "numeric",
+        ".allow_vectors" = "logical"
     )
 )
 
@@ -72,6 +74,8 @@ NULL
 #'   a function to sample from the prior distribution.
 #' @typed limits: numeric
 #'   the lower and upper limits for a truncated distribution
+#' @typed .allow_vectors: flag
+#'   whether to allow vector parameters.
 #' @rdname Prior-class
 Prior <- function(
     parameters,
@@ -81,7 +85,8 @@ Prior <- function(
     centre,
     validation,
     sample,
-    limits = c(-Inf, Inf)
+    limits = c(-Inf, Inf),
+    .allow_vectors = FALSE
 ) {
     .Prior(
         parameters = parameters,
@@ -91,7 +96,8 @@ Prior <- function(
         display = display,
         validation = validation,
         sample = sample,
-        limits = limits
+        limits = limits,
+        .allow_vectors = .allow_vectors
     )
 }
 
@@ -106,7 +112,10 @@ setValidity(
                     param
                 ))
             }
-            if (length(object@parameters[[param]]) != 1) {
+            if (
+                !object@.allow_vectors &&
+                    length(object@parameters[[param]]) != 1
+            ) {
                 return(sprintf("Parameter `%s` must be a single value", param))
             }
             if (!object@validation[[param]](object@parameters[[param]])) {
@@ -116,6 +125,18 @@ setValidity(
                     param
                 )
                 return(return_message)
+            }
+        }
+        if (object@.allow_vectors) {
+            # Check that all parameters have either same length or are
+            # length 1.
+            all_lengths <- sapply(
+                object@parameters,
+                length
+            )
+            none_one_lengths <- setdiff(unique(all_lengths), 1)
+            if (length(none_one_lengths) > 1) {
+                return("All parameters must be the same length or length 1")
             }
         }
         if (length(object@limits) != 2) {
@@ -266,21 +287,66 @@ NULL
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
 initialValues.Prior <- function(object, ...) {
-    samples <- getOption("jmpost.prior_shrinkage") *
-        object@centre +
-        (1 - getOption("jmpost.prior_shrinkage")) * object@sample(100)
+    n_samples <- 100
+    centre_value <- object@centre
+    sample_values <- object@sample(n_samples)
 
-    valid_samples <- samples[
-        samples >= min(object@limits) & samples <= max(object@limits)
-    ]
-    assert_that(
-        length(valid_samples) >= 1,
-        msg = "Unable to generate an initial value that meets the required constraints"
-    )
-    if (length(valid_samples) == 1) {
-        return(valid_samples)
+    is_scalar <- length(centre_value) == 1
+    if (is_scalar) {
+        assert_that(
+            length(sample_values) == n_samples,
+            msg = "Sample function must return a vector of length n_samples"
+        )
+
+        samples <- getOption("jmpost.prior_shrinkage") *
+            object@centre +
+            (1 - getOption("jmpost.prior_shrinkage")) * object@sample(n_samples)
+
+        valid_samples <- samples[
+            samples >= min(object@limits) & samples <= max(object@limits)
+        ]
+        assert_that(
+            length(valid_samples) >= 1,
+            msg = "Unable to generate an initial value that meets the required constraints"
+        )
+        if (length(valid_samples) == 1) {
+            return(valid_samples)
+        }
+        return(sample(valid_samples, 1))
+    } else {
+        n_centre_vals <- length(centre_value)
+        assert_that(
+            ncol(sample_values) == n_centre_vals,
+            msg = paste(
+                "Sample function must return a matrix with n_samples rows and the same",
+                "number of columns as the length of the centre value"
+            )
+        )
+        samples <- getOption("jmpost.prior_shrinkage") *
+            matrix(
+                centre_value,
+                nrow = n_samples,
+                ncol = n_centre_vals,
+                byrow = TRUE
+            ) +
+            (1 - getOption("jmpost.prior_shrinkage")) * sample_values
+        valid_samples <- samples[
+            apply(samples, 1, function(row) {
+                all(row >= min(object@limits) & row <= max(object@limits))
+            }),
+            ,
+            drop = FALSE
+        ]
+        assert_that(
+            nrow(valid_samples) >= 1,
+            msg = "Unable to generate an initial value that meets the required constraints"
+        )
+        if (nrow(valid_samples) == 1) {
+            return(valid_samples[1, ])
+        } else {
+            return(valid_samples[sample(nrow(valid_samples), 1), ])
+        }
     }
-    return(sample(valid_samples, 1))
 }
 
 
@@ -309,6 +375,43 @@ prior_normal <- function(mu, sigma) {
             mu = is.numeric,
             sigma = \(x) x > 0
         )
+    )
+}
+
+
+#' Normal Prior for a Vector Distribution
+#'
+#' @typed mus: numeric
+#'   means.
+#' @typed sigmas: numeric
+#'   standard deviations.
+#' @family Prior
+#' @export
+prior_normal_vector <- function(mus, sigmas) {
+    Prior(
+        parameters = list(
+            mus = mus,
+            sigmas = sigmas,
+            dim_mus = length(mus),
+            dim_sigmas = length(sigmas)
+        ),
+        display = "normal(mus = [{toString(mus)}], sigmas = [{toString(sigmas)}])",
+        repr_model = "{name} ~ normal(prior_mus_{name}, prior_sigmas_{name})",
+        repr_data = c(
+            "int<lower=1> prior_dim_mus_{name};",
+            "int<lower=1> prior_dim_sigmas_{name};",
+            "vector[prior_dim_mus_{name}] prior_mus_{name};",
+            "vector<lower=0>[prior_dim_sigmas_{name}] prior_sigmas_{name};"
+        ),
+        centre = mus,
+        sample = \(n) local_rnorm_vector(n, mus, sigmas),
+        validation = list(
+            mus = \(x) all(is.numeric(x)),
+            sigmas = \(x) all(x > 0),
+            dim_mus = is.count,
+            dim_sigmas = is.count
+        ),
+        .allow_vectors = TRUE
     )
 }
 
@@ -718,6 +821,11 @@ NULL
 
 #' @rdname Local_Sample
 local_rnorm <- \(...) rnorm(...)
+
+#' @rdname Local_Sample
+local_rnorm_vector <- \(n, mus, sigmas) {
+    mapply(local_rnorm, n = n, mean = mus, sd = sigmas)
+}
 
 #' @rdname Local_Sample
 local_rcauchy <- \(...) rcauchy(...)

@@ -94,3 +94,76 @@ test_that("Print method for SurvivalExponential works as expected", {
         print(x)
     })
 })
+
+test_that("Different priors for the beta components are possible", {
+    # Same iid prior for all beta components:
+    expect_snapshot({
+        x <- SurvivalExponential(beta = prior_normal(0, 1))
+        print(x)
+    })
+
+    # Different priors for each beta component:
+    expect_snapshot({
+        x <- SurvivalExponential(
+            beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3))
+        )
+        print(x)
+    })
+
+    skip_if_not(is_full_test())
+
+    true_lambda <- 1 / 100
+    true_beta <- c(0.5, -0.2, 0.1)
+    set.seed(2034)
+    jdat <- SimJointData(
+        design = list(SimGroup(700, "Arm-A", "Study-X")),
+        survival = SimSurvivalExponential(
+            lambda = true_lambda,
+            lambda_censor = 1 / 9000,
+            beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
+            beta_cont = true_beta[3],
+        ),
+        longitudinal = SimLongitudinalRandomSlope(
+            slope_mu = 0,
+            slope_sigma = 0.5
+        )
+    )
+
+    dat_os <- jdat@survival
+
+    jm <- JointModel(
+        survival = SurvivalExponential(
+            beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3))
+        )
+    )
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = dat_os,
+            subject = "subject",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = dat_os,
+            formula = Surv(time, event) ~ cov_cat + cov_cont
+        )
+    )
+
+    mp <- run_quietly({
+        sampleStanModel(
+            jm,
+            data = jdat,
+            iter_sampling = 600,
+            iter_warmup = 500,
+            chains = 1,
+            refresh = 0,
+            parallel_chains = 1,
+            seed = 123
+        )
+    })
+
+    # Variables to extract (order important)
+    vars <- c("sm_exp_lambda", "beta_os_cov")
+    results_summary <- cmdstanr::as.CmdStanMCMC(mp)$summary(vars)
+})
