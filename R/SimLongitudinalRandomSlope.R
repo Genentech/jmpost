@@ -18,6 +18,9 @@ NULL
 #'   the link coefficient for the DSLD contribution.
 #' @typed link_identity: number
 #'   the link coefficient for the identity contribution.
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value
+#'   (see the "Statistical Specifications" vignette for more details)
 #'
 #' @slot intercept (`numeric`)\cr See arguments.
 #' @slot slope_mu (`numeric`)\cr See arguments.
@@ -25,6 +28,7 @@ NULL
 #' @slot sigma (`numeric`)\cr See arguments.
 #' @slot link_dsld (`numeric`)\cr See arguments.
 #' @slot link_identity (`numeric`)\cr See arguments.
+#' @slot scaled_variance (`logical`)\cr See arguments.
 #'
 #' @family SimLongitudinal
 #' @name SimLongitudinalRandomSlope-class
@@ -38,7 +42,8 @@ NULL
         slope_sigma = "numeric",
         sigma = "numeric",
         link_dsld = "numeric",
-        link_identity = "numeric"
+        link_identity = "numeric",
+        scaled_variance = "logical"
     )
 )
 
@@ -51,7 +56,8 @@ SimLongitudinalRandomSlope <- function(
     slope_sigma = c(0.5, 0.6),
     sigma = 2,
     link_dsld = 0,
-    link_identity = 0
+    link_identity = 0,
+    scaled_variance = FALSE
 ) {
     if (length(slope_sigma) == 1) {
         slope_sigma <- rep(slope_sigma, length(slope_mu))
@@ -64,7 +70,8 @@ SimLongitudinalRandomSlope <- function(
         slope_sigma = slope_sigma,
         sigma = sigma,
         link_dsld = link_dsld,
-        link_identity = link_identity
+        link_identity = link_identity,
+        scaled_variance = scaled_variance
     )
 }
 
@@ -79,9 +86,13 @@ as_print_string.SimLongitudinalRandomSlope <- function(object, ...) {
 sampleObservations.SimLongitudinalRandomSlope <- function(object, times_df) {
     times_df |>
         dplyr::mutate(
-            err = stats::rnorm(dplyr::n(), 0, object@sigma),
             sld_mu = .data$intercept + .data$slope_ind * .data$time,
-            sld = .data$sld_mu + .data$err,
+            sld_sd = ifelse(
+                object@scaled_variance,
+                pmax(.data$sld_mu * object@sigma, .Machine$double.eps),
+                object@sigma
+            ),
+            sld = stats::rnorm(dplyr::n(), .data$sld_mu, .data$sld_sd),
             log_haz_link = object@link_dsld *
                 .data$slope_ind +
                 object@link_identity * .data$sld_mu

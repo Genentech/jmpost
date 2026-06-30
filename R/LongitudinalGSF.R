@@ -53,8 +53,9 @@ NULL
 #' @typed centred: logical
 #'   whether to use the centred parameterization.
 #' @typed scaled_variance: logical
-#'   whether the variance should be scaled by the expected value
-#'   (see the "Statistical Specifications" vignette for more details)
+#'   whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+#'   As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+#'   (See the "Statistical Specifications" vignette for more details.)
 #'
 #' @importFrom stats qlogis
 #' @export
@@ -71,7 +72,7 @@ LongitudinalGSF <- function(
 
     sigma = prior_lognormal(log(0.1), 1),
 
-    scaled_variance = TRUE,
+    scaled_variance = FALSE,
     centred = FALSE
 ) {
     gsf_model <- StanModule(decorated_render(
@@ -177,7 +178,8 @@ LongitudinalGSF <- function(
             gsf_model,
             StanModule("lm-gsf/functions.stan")
         ),
-        parameters = do.call(ParameterList, parameters)
+        parameters = do.call(ParameterList, parameters),
+        scaled_variance = scaled_variance
     )
     .LongitudinalGSF(x)
 }

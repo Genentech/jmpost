@@ -22,7 +22,7 @@ SimLongitudinalClaretBruno(
   link_ttg = 0,
   link_identity = 0,
   link_growth = 0,
-  scaled_variance = TRUE
+  scaled_variance = FALSE
 )
 }
 \arguments{

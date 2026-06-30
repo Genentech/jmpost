@@ -31,17 +31,23 @@ NULL
 #'   for the random slope standard deviation `slope_sigma` (one per arm).
 #' @typed sigma: Prior
 #'   for the variance of the longitudinal values `sigma`.
+#' @typed scaled_variance: logical
+#'   whether the variance should be scaled by the expected value, corresponding to a multiplicative model.
+#'   As a default, the variance is not scaled by the expected value, corresponding to an additive model.
+#'   (See the "Statistical Specifications" vignette for more details.)
 #'
 #' @export
 LongitudinalRandomSlope <- function(
     intercept = prior_normal(30, 10),
     slope_mu = prior_normal(1, 3),
     slope_sigma = prior_lognormal(0, 1.5),
-    sigma = prior_lognormal(0, 1.5)
+    sigma = prior_lognormal(0, 1.5),
+    scaled_variance = FALSE
 ) {
-    stan <- StanModule(
-        x = "lm-random-slope/model.stan"
-    )
+    stan <- StanModule(decorated_render(
+        .x = read_stan("lm-random-slope/model.stan"),
+        scaled_variance = scaled_variance
+    ))
 
     # Apply constriants
     sigma <- set_limits(sigma, lower = 0)
@@ -51,6 +57,7 @@ LongitudinalRandomSlope <- function(
         LongitudinalModel(
             name = "Random Slope",
             stan = stan,
+            scaled_variance = scaled_variance,
             parameters = ParameterList(
                 Parameter(
                     name = "lm_rs_intercept",

@@ -14,25 +14,25 @@
   time_max = 2000,
   time_step = 1,
   lambda_censor = 1/3000,
-  scaled_variance = TRUE,
+  scaled_variance = FALSE,
   ...
 )
 }
 \arguments{
-\item{object}{A \link{JointModelSamples} object}
+\item{object}{(\code{JointModelSamples}) the object containing the posterior samples.}
 
-\item{nsim}{Ignored.}
+\item{nsim}{ignored.}
 
-\item{seed}{Ignored.}
+\item{seed}{ignored.}
 
-\item{newdata}{A data frame containing data in the same format as
+\item{newdata}{(\code{data.frame}) A data frame containing data in the same format as
 the \code{object@data@survival@data}. Importantly, it should contain the same covariates and factor levels
 as the variables used in the survival formula \code{object@data@survival@formula} and
 the same columns used for \code{study}, \code{id}, and \code{arm}.}
 
-\item{times}{Vector of times to simulate SLD for all patients.}
+\item{times}{(\code{numeric}) times to simulate SLD for all patients.}
 
-\item{jitter_var}{Vector of variances to add noise to the observed SLD \code{times}. The first value is for any times
+\item{jitter_var}{(\code{numeric}) variances to add noise to the observed SLD \code{times}. The first value is for any times
 less than 0 and the second for any times after 0. All positive (negative) times will remain positive (negative).
 Jitter values are generated from a normal distribution with mean 0 and the given variances.}
 
@@ -42,10 +42,11 @@ Jitter values are generated from a normal distribution with mean 0 and the given
 
 \item{lambda_censor}{(\code{number}) the censoring rate, as the parameter of an exponential distribution.}
 
-\item{scaled_variance}{Should variance be scaled by the expected value. Must be set the same as was used for
+\item{scaled_variance}{(\code{flag}) Should variance be scaled by the expected value. Must be set the same as was used for
 model fitting.}
 
-\item{...}{Unused.}
+\item{...}{unused
+Unused.}
 }
 \description{
 Simulate Patients from Posterior Predictive Distribution

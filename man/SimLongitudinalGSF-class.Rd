@@ -23,7 +23,7 @@ SimLongitudinalGSF(
   link_identity = 0,
   link_growth = 0,
   link_shrinkage = 0,
-  scaled_variance = TRUE
+  scaled_variance = FALSE
 )
 }
 \arguments{
@@ -95,7 +95,7 @@ Simulate Longitudinal Data from a GSF Model
 
 \item{\code{link_shrinkage}}{(\code{numeric})\cr See arguments.}
 
-\item{\code{scaled_variance}}{(\code{numeric})\cr See arguments.}
+\item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{

@@ -13,7 +13,7 @@ add_pfs(
 )
 }
 \arguments{
-\item{object}{A \link{SimJointData} object}
+\item{object}{(\code{SimJointData}) where the PFS events should be added.}
 
 \item{relative_threshold}{(\code{number}) a multiplicative threshold for the change in SLD compared to the \code{min(SLD)}.
 Default is 1.2 meaning a 20\% increase.}

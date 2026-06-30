@@ -26,7 +26,8 @@ test_that("SimJointData works as expected", {
                 omega_g = 0.1,
                 omega_phi = 0.1,
                 link_dsld = 0,
-                link_ttg = 0
+                link_ttg = 0,
+                scaled_variance = TRUE
             ),
             .silent = TRUE
         )
@@ -113,7 +114,8 @@ test_that("add_pfs works as expected", {
     sim_data <- SimJointData(
         longitudinal = SimLongitudinalGSF(
             mu_g = log(c(0.5, 0.35)),
-            mu_s = log(c(0.001, 0.35))
+            mu_s = log(c(0.001, 0.35)),
+            scaled_variance = TRUE
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
@@ -149,7 +151,8 @@ test_that("add_pfs works with large from_time", {
     sim_data <- SimJointData(
         longitudinal = SimLongitudinalGSF(
             mu_g = log(c(0.5, 0.35)),
-            mu_s = log(c(0.001, 0.35))
+            mu_s = log(c(0.001, 0.35)),
+            scaled_variance = TRUE
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
@@ -166,7 +169,7 @@ test_that("add_pfs works with large from_time", {
 test_that("cut_data works as expected", {
     set.seed(123)
     sim_data <- SimJointData(
-        longitudinal = SimLongitudinalGSF(),
+        longitudinal = SimLongitudinalGSF(scaled_variance = TRUE),
         survival = SimSurvivalExponential(
             time_max = 4,
             lambda = 365 / 100,

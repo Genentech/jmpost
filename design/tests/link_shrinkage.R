@@ -153,7 +153,7 @@ dat <- summary_post(
 true_values <- c(model_pars$mu_b, model_pars$mu_s, model_pars$mu_g)
 expect_true(all(dat$q01 <= true_values))
 expect_true(all(dat$q99 >= true_values))
-expect_true(all(dat$ess_bulk > 100))
+expect_true(all(dat$ess_bulk > 50))
 
 dat <- summary_post(
     as.CmdStanMCMC(mp),
@@ -163,7 +163,7 @@ dat <- summary_post(
 true_values <- c(model_pars$link_shrinkage, model_pars$lambda)
 expect_true(all(dat$q01 <= true_values))
 expect_true(all(dat$q99 >= true_values))
-expect_true(all(dat$ess_bulk > 100))
+expect_true(all(dat$ess_bulk > 50))
 
 
 

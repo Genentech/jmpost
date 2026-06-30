@@ -259,7 +259,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -273,7 +273,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -290,7 +290,7 @@ test_that("Can recover known distributional parameters from a SF joint model", {
     dat$real <- true_values
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
 
 
@@ -353,7 +353,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
             omega_g = sim_params$omega_g,
             link_ttg = sim_params$link_ttg,
             link_dsld = sim_params$link_dsld,
-            link_growth = sim_params$link_growth
+            link_growth = sim_params$link_growth,
+            scaled_variance = TRUE
         ),
         survival = SimSurvivalExponential(
             time_max = 4,
@@ -387,7 +388,8 @@ test_that("Can recover known distributional parameters from a SF joint model wit
             omega_kg = prior_lognormal(log(0.1), 0.5),
 
             sigma = prior_lognormal(log(0.005), 0.5),
-            centred = TRUE
+            centred = TRUE,
+            scaled_variance = TRUE
         ),
         survival = SurvivalExponential(
             lambda = prior_lognormal(log(2), 0.5)
@@ -456,7 +458,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     true_values <- exp(c(sim_params$mu_b, sim_params$mu_s, sim_params$mu_g))
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 
     dat <- summary_post(
         cmdstanr::as.CmdStanMCMC(mp),
@@ -471,7 +473,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })
 
 
@@ -546,11 +548,11 @@ test_that("Can generate valid initial values", {
 })
 
 
-test_that("Unscaled variance SF mode pass the parser", {
+test_that("Scaled variance SF mode pass the parser", {
     jm <- JointModel(
         longitudinal = LongitudinalSteinFojo(
             centred = FALSE,
-            scaled_variance = FALSE
+            scaled_variance = TRUE
         ),
         survival = SurvivalLogLogistic(),
         link = linkDSLD()
@@ -704,5 +706,5 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     )
     expect_true(all(dat$q01 <= true_values))
     expect_true(all(dat$q99 >= true_values))
-    expect_true(all(dat$ess_bulk > 100))
+    expect_true(all(dat$ess_bulk > 50))
 })

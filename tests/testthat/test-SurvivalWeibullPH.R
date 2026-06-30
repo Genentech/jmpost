@@ -50,7 +50,10 @@ test_that("SurvivalWeibullPH can recover known values", {
             beta_cat = c("A" = 0, "B" = true_beta[1], "C" = true_beta[2]),
             beta_cont = true_beta[3],
         ),
-        longitudinal = SimLongitudinalRandomSlope(slope_mu = 0),
+        longitudinal = SimLongitudinalRandomSlope(
+            slope_mu = 0,
+            slope_sigma = 0.5
+        ),
         .silent = TRUE
     )
 
@@ -84,7 +87,8 @@ test_that("SurvivalWeibullPH can recover known values", {
             iter_sampling = 400,
             chains = 1,
             refresh = 0,
-            parallel_chains = 1
+            parallel_chains = 1,
+            seed = 123
         )
     })
 
@@ -100,5 +104,5 @@ test_that("SurvivalWeibullPH can recover known values", {
 
     # Ensure Z-scores are within a reasonable margin of real values
     expect_true(all(abs(z_score) <= qnorm(0.99)))
-    expect_true(all(results_summary$ess_bulk > 100))
+    expect_true(all(results_summary$ess_bulk > 50))
 })

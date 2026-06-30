@@ -43,9 +43,12 @@
 #' make it crystal clear that we're happy for you to do this. There's no need to
 #' include the license or even credit us when using this function.
 #'
-#' @param generic Name of the generic in the form `"pkg::generic"`.
-#' @param class Name of the class
-#' @param method Optionally, the implementation of the method. By default,
+#' @typed generic: string
+#'   name of the generic in the form `"pkg::generic"`.
+#' @typed class: string
+#'   name of the class
+#' @typed method: function
+#'   optionally, the implementation of the method. By default,
 #'   this will be found by looking for a function called `generic.class`
 #'   in the package environment.
 #' @examples

@@ -5,7 +5,7 @@
       print(x)
     Output
       
-      Claret-Bruno Longitudinal Model with parameters:
+      Claret-Bruno Longitudinal Model (additive error) with parameters:
           lm_clbr_mu_b ~ normal(mu = 4.09434, sigma = 0.5)
           lm_clbr_mu_g ~ normal(mu = 0, sigma = 0.5)
           lm_clbr_mu_c ~ normal(mu = -0.91629, sigma = 0.5)
@@ -29,7 +29,7 @@
       print(x)
     Output
       
-      Claret-Bruno Longitudinal Model with parameters:
+      Claret-Bruno Longitudinal Model (additive error) with parameters:
           lm_clbr_mu_b ~ normal(mu = 4.09434, sigma = 0.5)
           lm_clbr_mu_g ~ gamma(alpha = 2, beta = 1)
           lm_clbr_mu_c ~ normal(mu = -0.91629, sigma = 0.5)
