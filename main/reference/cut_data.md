@@ -12,9 +12,7 @@ cut_data(object, cut_time)
 
 - object:
 
-  A
-  [SimJointData](https://genentech.github.io/jmpost/reference/SimJointData-class.md)
-  object
+  (`SimJointData`) where the cut times should be applied.
 
 - cut_time:
 

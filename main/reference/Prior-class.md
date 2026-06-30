@@ -13,7 +13,8 @@ Prior(
   centre,
   validation,
   sample,
-  limits = c(-Inf, Inf)
+  limits = c(-Inf, Inf),
+  .allow_vectors = FALSE
 )
 ```
 
@@ -52,6 +53,10 @@ Prior(
 - limits:
 
   (`numeric`) the lower and upper limits for a truncated distribution
+
+- .allow_vectors:
+
+  (`flag`) whether to allow vector parameters.
 
 ## Slots
 
@@ -93,6 +98,11 @@ Prior(
 - `limits`:
 
   (`numeric`)\
+  See arguments.
+
+- `.allow_vectors`:
+
+  (`logical`)\
   See arguments.
 
 ## See also

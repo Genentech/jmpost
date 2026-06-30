@@ -72,6 +72,8 @@
   : Log-Normal Prior Distribution
 - [`prior_normal()`](https://genentech.github.io/jmpost/reference/prior_normal.md)
   : Normal Prior Distribution
+- [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md)
+  : Normal Prior for a Vector Distribution
 - [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
   : Uniform Prior Distribution
 - [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md)
@@ -443,6 +445,7 @@
   [`as.list(`*`<DataSubject>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
   [`as_stan_list(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
   [`as.list(`*`<DataLongitudinal>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
+  [`model.matrix(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
   [`as_stan_list(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
   [`as.list(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)
   [`as_stan_list(`*`<DataJoint>`*`)`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md)

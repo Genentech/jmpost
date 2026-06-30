@@ -203,6 +203,7 @@ longmodel <- WangModel(
     LongitudinalModel(
         name = "Wang",
         stan = StanModule("custom-model.stan"),
+        scaled_variance = FALSE,
         parameters = ParameterList(
             Parameter(name = "mu_baseline", prior = prior_lognormal(log(60), 1), size = 1),
             Parameter(name = "mu_shrinkage", prior = prior_lognormal(log(2), 1), size = 1),
@@ -233,10 +234,16 @@ longmodel <- WangModel(
 )
 ```
 
-Please note that the `parameters` argument is used to specify the priors
-for the model and that the `name` argument for the `Parameter`’s objects
-must match the name of the parameter used within the corresponding Stan
-code.
+Please note that:
+
+- The `scaled_variance` flag needs to be specified in the
+  [`LongitudinalModel()`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
+  construction, in order to indicate whether a multiplicative error
+  model is used. Here we have an additive error model, therefore
+  `scaled_variance` is set to `FALSE`.
+- The `parameters` argument is used to specify the priors for the model
+  and the `name` argument for the `Parameter`’s objects must match the
+  name of the parameter used within the corresponding Stan code.
 
 The `StanModule` object contains all of the stan code used to implement
 the model. For this particular model the Stan code specified in the
@@ -402,31 +409,11 @@ model_samples <- sampleStanModel(
 )
 #> Running MCMC with 1 chain...
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmptaJzC8/model-b141874359.stan', line 507, column 4 to column 79)
+#> Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpXLeYXL/model-b3e342b7ccd.stan', line 485, column 4 to column 66)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmptaJzC8/model-b141874359.stan', line 507, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmptaJzC8/model-b141874359.stan', line 507, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmptaJzC8/model-b141874359.stan', line 484, column 4 to column 63)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmptaJzC8/model-b141874359.stan', line 507, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 finished in 9.2 seconds.
+#> Chain 1 finished in 8.9 seconds.
 
 vars <- c(
     "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
@@ -436,12 +423,12 @@ cmdstanr::as.CmdStanMCMC(model_samples)$summary(vars)
 #> # A tibble: 6 × 10
 #>   variable       mean median     sd    mad     q5    q95  rhat ess_bulk ess_tail
 #>   <chr>         <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl>    <dbl>    <dbl>
-#> 1 mu_baseline  61.7   61.7   2.10   2.05   58.3   65.0   1.00     1630.     481.
-#> 2 mu_shrinkage  2.04   2.04  0.0675 0.0658  1.93   2.15  1.000    1199.     721.
-#> 3 mu_growth    10.2   10.2   0.288  0.279   9.75  10.7   1.00     1873.     690.
-#> 4 sigma         1.52   1.52  0.0435 0.0441  1.45   1.60  1.00      863.     631.
-#> 5 link_dsld     0.219  0.218 0.0260 0.0259  0.178  0.263 1.00     1527.     787.
-#> 6 sm_exp_lamb…  1.01   0.998 0.207  0.207   0.682  1.36  0.999     850.     548.
+#> 1 mu_baseline  61.6   61.6   2.31   2.30   57.8   65.4   1.000    1688.     566.
+#> 2 mu_shrinkage  2.04   2.04  0.0717 0.0686  1.92   2.16  1.00     1721.     689.
+#> 3 mu_growth    10.2   10.2   0.309  0.316   9.73  10.7   0.999    1416.     637.
+#> 4 sigma         1.52   1.52  0.0429 0.0447  1.45   1.59  1.000     705.     744.
+#> 5 link_dsld     0.219  0.219 0.0274 0.0285  0.175  0.263 1.00     1401.     719.
+#> 6 sm_exp_lamb…  1.01   0.994 0.204  0.213   0.706  1.36  1.00      632.     645.
 ```
 
 ## Generating Quantities of Interest

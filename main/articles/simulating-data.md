@@ -66,9 +66,9 @@ head(sim_data@longitudinal)
 #>   subject     arm   study    time   sld observed
 #>   <chr>       <fct> <fct>   <dbl> <dbl> <lgl>   
 #> 1 subject_001 Arm-A Study-X    -2  64.0 TRUE    
-#> 2 subject_001 Arm-A Study-X     1  60.2 TRUE    
-#> 3 subject_001 Arm-A Study-X    30  26.9 TRUE    
-#> 4 subject_001 Arm-A Study-X    90  59.7 FALSE   
+#> 2 subject_001 Arm-A Study-X     1  61.9 TRUE    
+#> 3 subject_001 Arm-A Study-X    30  27.7 TRUE    
+#> 4 subject_001 Arm-A Study-X    90  58.9 FALSE   
 #> 5 subject_001 Arm-A Study-X   150 124.  FALSE   
 #> 6 subject_001 Arm-A Study-X   210 226.  FALSE
 ```
@@ -240,14 +240,14 @@ knitr::kable(
 
 | variable | mean | median | sd | mad | q5 | q95 | rhat | ess_bulk | ess_tail |
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| lm_sf_mu_bsld\[1\] | 4.079 | 4.079 | 0.021 | 0.021 | 4.045 | 4.114 | 1.000 | 5987.428 | 2918.645 |
-| lm_sf_mu_ks\[1\] | -2.869 | -2.869 | 0.027 | 0.026 | -2.913 | -2.825 | 1.002 | 5410.170 | 2800.191 |
-| lm_sf_mu_ks\[2\] | -4.967 | -4.968 | 0.029 | 0.029 | -5.015 | -4.921 | 1.001 | 5287.283 | 3114.357 |
-| lm_sf_mu_kg\[1\] | -5.372 | -5.372 | 0.044 | 0.043 | -5.442 | -5.301 | 1.000 | 5527.698 | 2841.944 |
-| lm_sf_mu_kg\[2\] | -5.339 | -5.339 | 0.041 | 0.039 | -5.406 | -5.270 | 1.001 | 5421.597 | 2809.312 |
-| lm_sf_omega_bsld\[1\] | 0.207 | 0.206 | 0.014 | 0.014 | 0.185 | 0.232 | 1.000 | 5964.946 | 2854.316 |
-| lm_sf_omega_ks\[1\] | 0.188 | 0.186 | 0.019 | 0.019 | 0.159 | 0.222 | 1.001 | 5040.261 | 2584.869 |
-| lm_sf_omega_ks\[2\] | 0.194 | 0.192 | 0.022 | 0.021 | 0.162 | 0.233 | 1.002 | 4079.301 | 2510.376 |
+| lm_sf_mu_bsld\[1\] | 4.079 | 4.078 | 0.021 | 0.021 | 4.045 | 4.113 | 1.010 | 499.031 | 874.038 |
+| lm_sf_mu_ks\[1\] | -2.864 | -2.864 | 0.027 | 0.026 | -2.908 | -2.821 | 1.001 | 655.016 | 1062.161 |
+| lm_sf_mu_ks\[2\] | -4.975 | -4.975 | 0.029 | 0.029 | -5.022 | -4.928 | 1.010 | 707.218 | 1134.503 |
+| lm_sf_mu_kg\[1\] | -5.372 | -5.374 | 0.046 | 0.045 | -5.447 | -5.297 | 1.008 | 437.717 | 704.556 |
+| lm_sf_mu_kg\[2\] | -5.336 | -5.337 | 0.043 | 0.043 | -5.405 | -5.264 | 1.005 | 388.108 | 430.017 |
+| lm_sf_omega_bsld\[1\] | 0.207 | 0.207 | 0.014 | 0.014 | 0.185 | 0.231 | 1.004 | 642.744 | 1055.525 |
+| lm_sf_omega_ks\[1\] | 0.185 | 0.183 | 0.019 | 0.018 | 0.157 | 0.217 | 1.011 | 478.458 | 776.004 |
+| lm_sf_omega_ks\[2\] | 0.211 | 0.209 | 0.022 | 0.021 | 0.179 | 0.249 | 1.014 | 487.256 | 875.852 |
 
 ## Simulating from a Fitted Model
 
@@ -280,22 +280,22 @@ Now we can inspect the new simulated data.
 
 head(new_model_data@longitudinal)
 #>       subject   arm   study       time      sld observed
-#> 1 subject_001 Arm-A Study-X  -2.000000 52.87169     TRUE
-#> 2 subject_001 Arm-A Study-X   1.092538 52.32004     TRUE
-#> 3 subject_001 Arm-A Study-X  31.020617 19.78334     TRUE
-#> 4 subject_001 Arm-A Study-X  60.795321 14.85165     TRUE
-#> 5 subject_001 Arm-A Study-X  91.002436 18.72383     TRUE
-#> 6 subject_001 Arm-A Study-X 120.535991 25.86408     TRUE
+#> 1 subject_001 Arm-A Study-X  -2.000000 52.45178     TRUE
+#> 2 subject_001 Arm-A Study-X   1.092538 50.42547     TRUE
+#> 3 subject_001 Arm-A Study-X  31.020617 18.29569     TRUE
+#> 4 subject_001 Arm-A Study-X  60.795321 14.45488     TRUE
+#> 5 subject_001 Arm-A Study-X  91.002436 18.35262     TRUE
+#> 6 subject_001 Arm-A Study-X 120.535991 24.59377     TRUE
 head(new_model_data@survival)
 #> # A tibble: 6 × 7
 #>   subject     study   arm    time event cov_cat cov_cont
 #>   <fct>       <fct>   <fct> <dbl> <dbl> <fct>      <dbl>
-#> 1 subject_001 Study-X Arm-A   443     1 B         -1.12 
-#> 2 subject_002 Study-X Arm-A   240     1 C         -0.990
-#> 3 subject_003 Study-X Arm-A   233     1 C         -1.37 
-#> 4 subject_004 Study-X Arm-A   420     1 C         -1.36 
-#> 5 subject_005 Study-X Arm-A    18     1 B          2.00 
-#> 6 subject_006 Study-X Arm-A   135     1 B          0.696
+#> 1 subject_001 Study-X Arm-A   422     1 B         -1.12 
+#> 2 subject_002 Study-X Arm-A   186     1 C         -0.990
+#> 3 subject_003 Study-X Arm-A   136     1 C         -1.37 
+#> 4 subject_004 Study-X Arm-A   477     1 C         -1.36 
+#> 5 subject_005 Study-X Arm-A    20     1 B          2.00 
+#> 6 subject_006 Study-X Arm-A   180     1 B          0.696
 ```
 
 ``` r

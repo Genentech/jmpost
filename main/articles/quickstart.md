@@ -61,7 +61,7 @@ this from the arguments of the constructors (or from the help page):
 args(LongitudinalRandomSlope)
 #> function (intercept = prior_normal(30, 10), slope_mu = prior_normal(1, 
 #>     3), slope_sigma = prior_lognormal(0, 1.5), sigma = prior_lognormal(0, 
-#>     1.5)) 
+#>     1.5), scaled_variance = FALSE) 
 #> NULL
 ```
 
@@ -89,6 +89,36 @@ random_slope_model <- LongitudinalRandomSlope(
 This sets the prior for the `intercept` to be a $`N(40, 5)`$
 distribution and the prior for the `slope_mu` parameter to be a
 $`N(10, 2)`$ distribution.
+
+For the survival models, we can set different independent normal priors
+for the coefficients of the covariates in the linear predictor using the
+[`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md)
+specification. Here we can give a vector of the same length as the
+number of design matrix columns for both the means or standard
+deviations of the normal distributions, or we can give a single value
+that will be repeated for all covariates. For example, say we have 3
+design matrix columns, i.e. coefficients, in the linear predictor of the
+survival model, then we can set the priors for these coefficients as
+follows:
+
+``` r
+
+survival_model <- SurvivalWeibullPH(
+    beta = prior_normal_vector(mus = c(-1, 0, 5), sigmas = c(1, 1, 10))
+)
+survival_model
+#> 
+#> Weibull-PH Survival Model with parameters:
+#>     sm_weibull_ph_lambda ~ gamma(alpha = 2, beta = 0.5) T[0, ]
+#>     sm_weibull_ph_gamma ~ gamma(alpha = 2, beta = 0.5) T[0, ]
+#>     beta_os_cov ~ normal(mus = [-1, 0, 5], sigmas = [1, 1, 10])
+```
+
+In order to know which position corresponds to which design matrix
+column and thus coefficient, we can use the
+[`model.matrix()`](https://rdrr.io/r/stats/model.matrix.html) function
+on the `DataSurvival` object. This is explained in the section
+“Formatting Data” below in detail.
 
 ### Separate Models
 
@@ -279,6 +309,30 @@ joint_data <- DataJoint(
 )
 ```
 
+Note that we can also actively look into the design matrix of the
+`DataSurvival` object. This can be helpful if we want to know which
+coefficients are at which position, e.g. for setting the right prior
+means and standard deviations with
+[`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md).
+It works like this:
+
+``` r
+
+head(model.matrix(joint_data@survival))
+#>      cov_catB cov_catC   cov_cont
+#> [1,]        1        0 -1.1209000
+#> [2,]        0        1 -0.9897245
+#> [3,]        0        1 -1.3746970
+#> [4,]        0        1 -1.3556451
+#> [5,]        1        0  1.9967553
+#> [6,]        1        0  0.6958700
+```
+
+So here we see that the first coefficient corresponds to category `B`
+and the second coefficient corresponds to category `C` of the
+categorical covariate `cov_cat`, while the third coefficient corresponds
+to the continuous covariate `cov_cont`.
+
 ## Model Fitting
 
 Now let’s have a look how we can fit the (joint) models.
@@ -328,47 +382,7 @@ mcmc_results <- sampleStanModel(
 #> 
 #> Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 497, column 4 to column 107)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 498, column 4 to column 104)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 498, column 4 to column 104)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: normal_lpdf: Scale parameter[1] is 0, but must be positive! (in '/tmp/RtmpYKEroK/model-c2b3858354e.stan', line 478, column 4 to line 481, column 6)
+#> Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmpHRUNkY/model-c5525d719c.stan', line 499, column 4 to column 107)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
@@ -383,7 +397,7 @@ mcmc_results <- sampleStanModel(
 #> Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) 
 #> Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) 
 #> Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) 
-#> Chain 1 finished in 28.7 seconds.
+#> Chain 1 finished in 15.7 seconds.
 ```
 
 ### Convergence checks
@@ -408,18 +422,18 @@ cmdstanr::as.CmdStanMCMC(mcmc_results)$summary(vars)
 #> # A tibble: 12 × 10
 #>    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk
 #>    <chr>          <dbl>    <dbl>   <dbl>   <dbl>    <dbl>   <dbl> <dbl>    <dbl>
-#>  1 lm_rs_inte… 27.7     27.6     1.12    1.14    25.8     29.5    0.999     247.
-#>  2 lm_rs_slop…  1.02     1.02    0.0283  0.0282   0.973    1.07   0.998     844.
-#>  3 lm_rs_slop…  1.97     1.97    0.0332  0.0314   1.92     2.03   1.00      713.
-#>  4 lm_rs_slop…  0.208    0.207   0.0223  0.0228   0.175    0.245  0.998     706.
-#>  5 lm_rs_slop…  0.213    0.213   0.0224  0.0226   0.177    0.252  1.01      509.
-#>  6 lm_rs_sigma 19.5     19.4     0.505   0.483   18.7     20.4    1.00      389.
-#>  7 link_dsld   -0.0195  -0.0157  0.199   0.206   -0.349    0.308  1.000     394.
-#>  8 sm_weibull…  0.00921  0.00783 0.00533 0.00408  0.00302  0.0192 1.00      219.
-#>  9 sm_weibull…  0.892    0.890   0.0757  0.0746   0.771    1.02   1.00      277.
-#> 10 beta_os_co…  0.00602  0.00467 0.238   0.227   -0.412    0.372  1.00      411.
-#> 11 beta_os_co…  0.340    0.336   0.273   0.265   -0.111    0.799  1.00      394.
-#> 12 beta_os_co…  0.363    0.362   0.109   0.104    0.187    0.554  0.998     572.
+#>  1 lm_rs_inte…  2.76e+1 27.6     1.19    1.25    25.7     29.6    1.00      198.
+#>  2 lm_rs_slop…  1.02e+0  1.02    0.0300  0.0293   0.972    1.07   1.00      841.
+#>  3 lm_rs_slop…  1.97e+0  1.97    0.0316  0.0298   1.92     2.02   1.00      574.
+#>  4 lm_rs_slop…  2.08e-1  0.206   0.0209  0.0208   0.176    0.244  0.999     844.
+#>  5 lm_rs_slop…  2.13e-1  0.212   0.0204  0.0205   0.182    0.249  1.00      811.
+#>  6 lm_rs_sigma  1.94e+1 19.4     0.530   0.547   18.6     20.3    1.000     696.
+#>  7 link_dsld   -2.38e-2 -0.0270  0.203   0.204   -0.334    0.318  1.00      478.
+#>  8 sm_weibull…  9.79e-3  0.00836 0.00581 0.00471  0.00305  0.0218 1.00      320.
+#>  9 sm_weibull…  8.85e-1  0.883   0.0743  0.0758   0.765    1.00   1.01      412.
+#> 10 beta_os_co… -3.52e-5  0.00358 0.267   0.250   -0.427    0.439  0.998     663.
+#> 11 beta_os_co…  3.37e-1  0.336   0.272   0.280   -0.116    0.762  1.00      504.
+#> 12 beta_os_co…  3.67e-1  0.365   0.104   0.0995   0.194    0.548  1.00      525.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -480,20 +494,20 @@ long_quantities <- LongitudinalQuantities(
 )
 as.data.frame(long_quantities) |> head()
 #>         group time   values
-#> 1 subject_001    0 26.94544
-#> 2 subject_001    0 29.76504
-#> 3 subject_001    0 28.72278
-#> 4 subject_001    0 29.34917
-#> 5 subject_001    0 27.50176
-#> 6 subject_001    0 27.78639
+#> 1 subject_001    0 30.16538
+#> 2 subject_001    0 27.82267
+#> 3 subject_001    0 29.41591
+#> 4 subject_001    0 28.83954
+#> 5 subject_001    0 29.46468
+#> 6 subject_001    0 27.89626
 summary(long_quantities) |> head()
 #>         group time   median    lower    upper
-#> 1 subject_001    0 27.62505 25.58032 29.88866
-#> 2 subject_002    0 27.62505 25.58032 29.88866
-#> 3 subject_003    0 27.62505 25.58032 29.88866
-#> 4 subject_004    0 27.62505 25.58032 29.88866
-#> 5 subject_005    0 27.62505 25.58032 29.88866
-#> 6 subject_006    0 27.62505 25.58032 29.88866
+#> 1 subject_001    0 27.58226 25.45642 29.92349
+#> 2 subject_002    0 27.58226 25.45642 29.92349
+#> 3 subject_003    0 27.58226 25.45642 29.92349
+#> 4 subject_004    0 27.58226 25.45642 29.92349
+#> 5 subject_005    0 27.58226 25.45642 29.92349
+#> 6 subject_006    0 27.58226 25.45642 29.92349
 autoplot(long_quantities)
 ```
 
@@ -611,7 +625,7 @@ sq <- SurvivalQuantities(
 )
 brierScore(sq)
 #>          1         50        100        400        800 
-#> 0.01951598 0.17180524 0.23762809 0.14860404 0.06088910
+#> 0.01949617 0.17228589 0.23846209 0.14912514 0.06095365
 ```
 
 ### Initial Values

@@ -21,7 +21,7 @@ SimLongitudinalGSF(
   link_identity = 0,
   link_growth = 0,
   link_shrinkage = 0,
-  scaled_variance = TRUE
+  scaled_variance = FALSE
 )
 ```
 
@@ -169,7 +169,7 @@ SimLongitudinalGSF(
 
 - `scaled_variance`:
 
-  (`numeric`)\
+  (`logical`)\
   See arguments.
 
 ## See also

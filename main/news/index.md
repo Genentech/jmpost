@@ -2,6 +2,15 @@
 
 ## jmpost (development version)
 
+- `LongitudinalModel` objects now have a new slot `scaled_variance`
+  which stores the used variance option, and this is part of the `print`
+  output now thereby transparently communicating to the user the choice
+  of the multiplicative or additive error model.
+- Changed default longitudinal model option `scaled_variance` to
+  `FALSE`, corresponding to an additive error model (both for the
+  simulation as well as for the inference functions). Also added this
+  option to the random effects model for consistency with the other
+  models.
 - Included new
   [`populationHR()`](https://genentech.github.io/jmpost/reference/populationHR.md)
   function to calculate population effects from a `JointModelSample`
@@ -20,6 +29,10 @@
   a normal prior to a strictly positive parameter and jmpost will take
   care of adjusting the density accordingly
   ([\#429](https://github.com/Genentech/jmpost/issues/429)).
+- Added
+  [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md)
+  which can be used to assign different normal prior distributions to
+  the coefficients of the survival model covariates.
 - Included new Gamma distribution survival model
   ([\#411](https://github.com/Genentech/jmpost/issues/411)).
 - Reworked LOO calculations to apply to each individual submodel and
@@ -30,6 +43,8 @@
 - Added support for independent variances per study/arm
   ([\#389](https://github.com/Genentech/jmpost/issues/389)).
 - Miscellaneous bug fixes.
+- Introduce new package options for bounds close to zero which are used
+  to avoid MCMC sampler starting warnings.
 
 ## jmpost 0.0.1
 

@@ -12,7 +12,8 @@ LongitudinalRandomSlope(
   intercept = prior_normal(30, 10),
   slope_mu = prior_normal(1, 3),
   slope_sigma = prior_lognormal(0, 1.5),
-  sigma = prior_lognormal(0, 1.5)
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
 )
 ```
 
@@ -34,6 +35,14 @@ LongitudinalRandomSlope(
 - sigma:
 
   (`Prior`) for the variance of the longitudinal values `sigma`.
+
+- scaled_variance:
+
+  (`logical`) whether the variance should be scaled by the expected
+  value, corresponding to a multiplicative model. As a default, the
+  variance is not scaled by the expected value, corresponding to an
+  additive model. (See the "Statistical Specifications" vignette for
+  more details.)
 
 ## Available Links
 

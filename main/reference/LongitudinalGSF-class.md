@@ -18,7 +18,7 @@ LongitudinalGSF(
   omega_kg = prior_lognormal(log(0.2), 1),
   omega_phi = prior_lognormal(log(0.2), 1),
   sigma = prior_lognormal(log(0.1), 1),
-  scaled_variance = TRUE,
+  scaled_variance = FALSE,
   centred = FALSE
 )
 ```
@@ -66,7 +66,10 @@ LongitudinalGSF(
 - scaled_variance:
 
   (`logical`) whether the variance should be scaled by the expected
-  value (see the "Statistical Specifications" vignette for more details)
+  value, corresponding to a multiplicative model. As a default, the
+  variance is not scaled by the expected value, corresponding to an
+  additive model. (See the "Statistical Specifications" vignette for
+  more details.)
 
 - centred:
 

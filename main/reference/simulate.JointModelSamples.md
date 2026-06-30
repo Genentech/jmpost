@@ -16,7 +16,7 @@ simulate(
   time_max = 2000,
   time_step = 1,
   lambda_censor = 1/3000,
-  scaled_variance = TRUE,
+  scaled_variance = FALSE,
   ...
 )
 ```
@@ -25,21 +25,19 @@ simulate(
 
 - object:
 
-  A
-  [JointModelSamples](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md)
-  object
+  (`JointModelSamples`) the object containing the posterior samples.
 
 - nsim:
 
-  Ignored.
+  ignored.
 
 - seed:
 
-  Ignored.
+  ignored.
 
 - newdata:
 
-  A data frame containing data in the same format as the
+  (`data.frame`) A data frame containing data in the same format as the
   `object@data@survival@data`. Importantly, it should contain the same
   covariates and factor levels as the variables used in the survival
   formula `object@data@survival@formula` and the same columns used for
@@ -47,11 +45,11 @@ simulate(
 
 - times:
 
-  Vector of times to simulate SLD for all patients.
+  (`numeric`) times to simulate SLD for all patients.
 
 - jitter_var:
 
-  Vector of variances to add noise to the observed SLD `times`. The
+  (`numeric`) variances to add noise to the observed SLD `times`. The
   first value is for any times less than 0 and the second for any times
   after 0. All positive (negative) times will remain positive
   (negative). Jitter values are generated from a normal distribution
@@ -73,12 +71,12 @@ simulate(
 
 - scaled_variance:
 
-  Should variance be scaled by the expected value. Must be set the same
-  as was used for model fitting.
+  (`flag`) Should variance be scaled by the expected value. Must be set
+  the same as was used for model fitting.
 
 - ...:
 
-  Unused.
+  unused Unused.
 
 ## Details
 

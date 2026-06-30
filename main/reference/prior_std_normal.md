@@ -20,5 +20,6 @@ Other Prior:
 [`prior_loglogistic()`](https://genentech.github.io/jmpost/reference/prior_loglogistic.md),
 [`prior_lognormal()`](https://genentech.github.io/jmpost/reference/prior_lognormal.md),
 [`prior_normal()`](https://genentech.github.io/jmpost/reference/prior_normal.md),
+[`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md),
 [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)

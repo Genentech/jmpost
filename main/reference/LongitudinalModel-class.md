@@ -11,6 +11,7 @@ LongitudinalModel(
   stan = StanModule(),
   parameters = ParameterList(),
   name = "<Unnamed>",
+  scaled_variance = NA,
   ...
 )
 ```
@@ -29,7 +30,21 @@ LongitudinalModel(
 
   (`character`) display name for the model object.
 
+- scaled_variance:
+
+  (`flag`) whether the variance should be scaled by the expected value,
+  corresponding to a multiplicative model. If not, then an additive
+  error model is used.
+
 - ...:
 
   additional arguments for
   [`StanModel()`](https://genentech.github.io/jmpost/reference/StanModel-class.md).
+
+## Slots
+
+- `scaled_variance`:
+
+  logical scalar, whether the variance should be scaled by the expected
+  value, corresponding to a multiplicative model. If not, then an
+  additive error model is used.

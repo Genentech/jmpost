@@ -9,6 +9,8 @@ straight forward pass throughs for the underlying distributions.
 ``` r
 local_rnorm(...)
 
+local_rnorm_vector(n, mus, sigmas)
+
 local_rcauchy(...)
 
 local_rgamma(...)

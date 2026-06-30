@@ -21,6 +21,14 @@ as_stan_list(object, subject_var, ...)
 as.list(x, ...)
 
 # S3 method for class 'DataSurvival'
+model.matrix(
+  object,
+  df = as.data.frame(object),
+  vars = extractVariableNames(object),
+  ...
+)
+
+# S3 method for class 'DataSurvival'
 as_stan_list(object, ...)
 
 # S3 method for class 'DataSurvival'
@@ -53,6 +61,17 @@ as.list(x, ...)
 
   (`character`) the name of the variable containing the subject
   identifier.
+
+- df:
+
+  (`data.frame`)\
+  The data frame to be used for generating the design matrix.
+
+- vars:
+
+  (`list`)\
+  The list of variable names to be used for generating the design
+  matrix.
 
 ## See also
 

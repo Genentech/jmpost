@@ -19,9 +19,7 @@ add_pfs(
 
 - object:
 
-  A
-  [SimJointData](https://genentech.github.io/jmpost/reference/SimJointData-class.md)
-  object
+  (`SimJointData`) where the PFS events should be added.
 
 - relative_threshold:
 

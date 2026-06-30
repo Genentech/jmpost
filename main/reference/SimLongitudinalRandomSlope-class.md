@@ -12,7 +12,8 @@ SimLongitudinalRandomSlope(
   slope_sigma = c(0.5, 0.6),
   sigma = 2,
   link_dsld = 0,
-  link_identity = 0
+  link_identity = 0,
+  scaled_variance = FALSE
 )
 ```
 
@@ -47,6 +48,11 @@ SimLongitudinalRandomSlope(
 
   (`number`) the link coefficient for the identity contribution.
 
+- scaled_variance:
+
+  (`logical`) whether the variance should be scaled by the expected
+  value (see the "Statistical Specifications" vignette for more details)
+
 ## Slots
 
 - `intercept`:
@@ -77,6 +83,11 @@ SimLongitudinalRandomSlope(
 - `link_identity`:
 
   (`numeric`)\
+  See arguments.
+
+- `scaled_variance`:
+
+  (`logical`)\
   See arguments.
 
 ## See also
