@@ -372,6 +372,7 @@ test_that("prior_horseshoe works as expected", {
         )
     )
 
+    # Check the model syntax.
     header <- StanModule(
         "data {
     int<lower=1> p;
