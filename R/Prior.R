@@ -31,6 +31,8 @@ NULL
 #' @slot parameters (`list`)\cr See arguments.
 #' @slot repr_model (`string`)\cr See arguments.
 #' @slot repr_data (`string`)\cr See arguments.
+#' @slot repr_parameters (`string`)\cr See arguments.
+#' @slot repr_transformed_parameters (`string`)\cr See arguments.
 #' @slot centre (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #' @slot display (`string`)\cr See arguments.
@@ -48,6 +50,8 @@ NULL
         "display" = "character",
         "repr_model" = "character",
         "repr_data" = "character",
+        "repr_parameters" = "character",
+        "repr_transformed_parameters" = "character",
         "centre" = "numeric",
         "validation" = "list",
         "sample" = "function",
@@ -63,6 +67,10 @@ NULL
 #'   the Stan code representation for the model block.
 #' @typed repr_data: string
 #'   the Stan code representation for the data block.
+#' @typed repr_parameters: string
+#'   the Stan code representation for the parameters block.
+#' @typed repr_transformed_parameters: string
+#'   the Stan code representation for the transformed parameters block.
 #' @typed display: string
 #'   the string to display when object is printed.
 #' @typed centre: numeric
@@ -85,6 +93,8 @@ Prior <- function(
     centre,
     validation,
     sample,
+    repr_parameters = "",
+    repr_transformed_parameters = "",
     limits = c(-Inf, Inf),
     .allow_vectors = FALSE
 ) {
@@ -92,6 +102,8 @@ Prior <- function(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
+        repr_parameters = repr_parameters,
+        repr_transformed_parameters = repr_transformed_parameters,
         centre = centre,
         display = display,
         validation = validation,
@@ -149,6 +161,20 @@ setValidity(
             length(object@repr_model) != 1 || !is.character(object@repr_model)
         ) {
             return("Model representation must be length 1 string")
+        }
+        if (
+            length(object@repr_parameters) < 1 ||
+                !is.character(object@repr_parameters)
+        ) {
+            return("Parameters representation must be a character vector")
+        }
+        if (
+            length(object@repr_transformed_parameters) < 1 ||
+                !is.character(object@repr_transformed_parameters)
+        ) {
+            return(
+                "Transformed parameters representation must be a character vector"
+            )
         }
         return(TRUE)
     }
@@ -234,7 +260,14 @@ setMethod(
 #' @family Prior-internal
 #' @family as.StanModule
 #' @export
-as.StanModule.Prior <- function(object, name, ...) {
+as.StanModule.Prior <- function(object, name, size = 1, ...) {
+    indent_stan <- function(x) {
+        x <- x[nchar(x) >= 1]
+        if (length(x) == 0) {
+            return("")
+        }
+        paste0("    ", x, collapse = "\n")
+    }
     trunctation <- if (object@repr_model != "") {
         paste0(render_stan_limits(object@limits), ";")
     } else {
@@ -242,14 +275,20 @@ as.StanModule.Prior <- function(object, name, ...) {
     }
     string <- paste(
         "data {{",
-        paste0("    ", object@repr_data, collapse = "\n"),
+        indent_stan(object@repr_data),
+        "}}",
+        "parameters {{",
+        indent_stan(object@repr_parameters),
+        "}}",
+        "transformed parameters {{",
+        indent_stan(object@repr_transformed_parameters),
         "}}",
         "model {{",
-        paste0("    ", object@repr_model, trunctation),
+        indent_stan(paste0(object@repr_model, trunctation)),
         "}}",
         sep = "\n"
     )
-    StanModule(glue::glue(string, name = name))
+    StanModule(glue::glue(string, name = name, size = size))
 }
 
 
@@ -412,6 +451,86 @@ prior_normal_vector <- function(mus, sigmas) {
             dim_sigmas = is.count
         ),
         .allow_vectors = TRUE
+    )
+}
+
+#' Regularized Horseshoe Prior for a Vector Distribution
+#'
+#' @typed df: number
+#'   degrees of freedom of the half-Student-t prior for local shrinkage
+#'   parameters.
+#' @typed df_global: number
+#'   degrees of freedom of the half-Student-t prior for the global shrinkage
+#'   parameter.
+#' @typed df_slab: number
+#'   degrees of freedom of the Student-t slab.
+#' @typed scale_global: number
+#'   scale of the half-Student-t prior for the global shrinkage parameter.
+#' @typed scale_slab: number
+#'   scale of the Student-t slab.
+#' @family Prior
+#' @export
+prior_horseshoe <- function(
+    df = 1,
+    df_global = 1,
+    df_slab = 4,
+    scale_global = 1,
+    scale_slab = 2
+) {
+    Prior(
+        parameters = list(
+            df = df,
+            df_global = df_global,
+            df_slab = df_slab,
+            scale_global = scale_global,
+            scale_slab = scale_slab
+        ),
+        display = paste0(
+            "horseshoe(df = {df}, df_global = {df_global}, ",
+            "df_slab = {df_slab}, scale_global = {scale_global}, ",
+            "scale_slab = {scale_slab})"
+        ),
+        repr_model = paste(
+            "prior_local_{name} ~ student_t(prior_df_{name}, 0, 1);",
+            "prior_global_{name} ~ student_t(prior_df_global_{name}, 0, prior_scale_global_{name});",
+            "prior_slab_{name} ~ inv_gamma(prior_df_slab_{name} / 2, prior_df_slab_{name} / 2);",
+            "{name} ~ normal(rep_vector(0, {size}), prior_scales_{name})",
+            sep = "\n    "
+        ),
+        repr_data = c(
+            "real<lower=0> prior_df_{name};",
+            "real<lower=0> prior_df_global_{name};",
+            "real<lower=0> prior_df_slab_{name};",
+            "real<lower=0> prior_scale_global_{name};",
+            "real<lower=0> prior_scale_slab_{name};"
+        ),
+        repr_parameters = c(
+            "vector<lower=0>[{size}] prior_local_{name};",
+            "real<lower=0> prior_global_{name};",
+            "real<lower=0> prior_slab_{name};"
+        ),
+        repr_transformed_parameters = c(
+            "real<lower=0> prior_c2_{name} = square(prior_scale_slab_{name}) * prior_slab_{name};",
+            "vector<lower=0>[{size}] prior_scales_{name} = prior_global_{name} * sqrt((prior_c2_{name} * square(prior_local_{name})) ./ (prior_c2_{name} + square(prior_global_{name}) * square(prior_local_{name})));"
+        ),
+        centre = 0,
+        sample = \(n) {
+            local_rhorseshoe(
+                n = n,
+                df = df,
+                df_global = df_global,
+                df_slab = df_slab,
+                scale_global = scale_global,
+                scale_slab = scale_slab
+            )
+        },
+        validation = list(
+            df = \(x) x > 0,
+            df_global = \(x) x > 0,
+            df_slab = \(x) x > 0,
+            scale_global = \(x) x > 0,
+            scale_slab = \(x) x > 0
+        )
     )
 }
 
@@ -825,6 +944,16 @@ local_rnorm <- \(...) rnorm(...)
 #' @rdname Local_Sample
 local_rnorm_vector <- \(n, mus, sigmas) {
     mapply(local_rnorm, n = n, mean = mus, sd = sigmas)
+}
+
+#' @rdname Local_Sample
+local_rhorseshoe <- \(n, df, df_global, df_slab, scale_global, scale_slab) {
+    local <- abs(local_rt(n, df, 0, 1))
+    global <- abs(local_rt(n, df_global, 0, scale_global))
+    slab <- local_rinvgamma(n, df_slab / 2, df_slab / 2)
+    c2 <- scale_slab^2 * slab
+    scales <- global * sqrt((c2 * local^2) / (c2 + global^2 * local^2))
+    local_rnorm(n, mean = 0, sd = scales)
 }
 
 #' @rdname Local_Sample

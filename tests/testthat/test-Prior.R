@@ -269,6 +269,16 @@ test_that("Parameters in priors must be length 1 #422", {
         prior_gamma(c(1, 2), 2),
         "Parameter `alpha`"
     )
+
+    expect_error(
+        prior_horseshoe(df = -1),
+        regexp = "Invalid.*`df`"
+    )
+
+    expect_error(
+        prior_horseshoe(scale_global = -1),
+        regexp = "Invalid.*`scale_global`"
+    )
 })
 
 test_that("prior_normal_vector works as expected", {
@@ -297,4 +307,83 @@ test_that("prior_normal_vector works as expected", {
             prior_dim_sigmas_bob = 3
         )
     )
+})
+
+test_that("prior_horseshoe works as expected", {
+    x <- prior_horseshoe(
+        df = 1,
+        df_global = 2,
+        df_slab = 3,
+        scale_global = 0.4,
+        scale_slab = 2
+    )
+
+    expect_equal(
+        as.character(x),
+        paste0(
+            "horseshoe(df = 1, df_global = 2, df_slab = 3, ",
+            "scale_global = 0.4, scale_slab = 2)"
+        )
+    )
+
+    x_inits <- initialValues(x)
+    expect_numeric(x_inits, len = 1)
+
+    x_stan_module <- as.StanModule(x, name = "beta", size = "p")
+    expect_equal(
+        x_stan_module@data,
+        c(
+            "    real<lower=0> prior_df_beta;",
+            "    real<lower=0> prior_df_global_beta;",
+            "    real<lower=0> prior_df_slab_beta;",
+            "    real<lower=0> prior_scale_global_beta;",
+            "    real<lower=0> prior_scale_slab_beta;"
+        )
+    )
+    expect_equal(
+        x_stan_module@parameters,
+        c(
+            "    vector<lower=0>[p] prior_local_beta;",
+            "    real<lower=0> prior_global_beta;",
+            "    real<lower=0> prior_slab_beta;"
+        )
+    )
+    expect_true(
+        any(grepl(
+            "vector<lower=0>\\[p\\] prior_scales_beta",
+            x_stan_module@transformed_parameters
+        ))
+    )
+    expect_true(
+        any(grepl(
+            "beta ~ normal(rep_vector(0, p), prior_scales_beta);",
+            x_stan_module@model,
+            fixed = TRUE
+        ))
+    )
+    expect_equal(
+        as_stan_list(x, name = "beta"),
+        list(
+            prior_df_beta = 1,
+            prior_df_global_beta = 2,
+            prior_df_slab_beta = 3,
+            prior_scale_global_beta = 0.4,
+            prior_scale_slab_beta = 2
+        )
+    )
+
+    header <- StanModule(
+        "data {
+    int<lower=1> p;
+}
+parameters {
+    vector[p] beta;
+}"
+    )
+    stan_file <- cmdstanr::write_stan_file(
+        as.character(merge(header, x_stan_module)),
+        dir = tempdir()
+    )
+    model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
+    expect_true(model_obj$check_syntax(quiet = TRUE))
 })

@@ -86,7 +86,7 @@ setValidity(
 #' @family as.StanModule
 #' @export
 as.StanModule.Parameter <- function(object, ...) {
-    as.StanModule(object@prior, name = object@name)
+    as.StanModule(object@prior, name = object@name, size = object@size)
 }
 
 
