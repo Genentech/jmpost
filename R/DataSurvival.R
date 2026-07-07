@@ -128,7 +128,9 @@ model.matrix.DataSurvival <- function(
 ) {
     design_mat <- stats::model.matrix(vars$frm, data = df)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
-    design_mat <- design_mat[, -remove_index, drop = FALSE]
+    if (length(remove_index) > 0) {
+        design_mat <- design_mat[, -remove_index, drop = FALSE]
+    }
     rownames(design_mat) <- NULL
     design_mat
 }
