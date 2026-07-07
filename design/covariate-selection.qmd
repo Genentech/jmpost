@@ -192,7 +192,7 @@ Then the model assumes:
 - `b` are the actual regression coefficients, which are obtained by multiplying `zb` with `scales`
 - The intercept has a Student-t prior
 - `global` has a half-Student-t prior with `df_global` degrees of freedom and scale `scale_global`
-- `slab` has an inverse gamma prior with `df_slab/2` parameters. Note that after multiplying with `scale_slab^2` and obtaining `c2`, this corresponds to $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$ with $\alpha = \textrm{df_slab}/2$ and $\beta = \textrm{df_slab} * \textrm{scale_slab}^2 / 2$ in the above equations
+- `slab` has an inverse gamma prior with `df_slab/2` parameters. Note that after multiplying with `scale_slab^2` and obtaining `c2`, this corresponds to $c^2 \sim \text{Inv-Gamma}(\alpha, \beta)$ with $\alpha = \text{df\_slab}/2$ and $\beta = \text{df\_slab} * \text{scale\_slab}^2 / 2$ in the above equations
 - `local` parameters have half-Student-t priors with `df` degrees of freedom and scale 1
 
 So mapping this back to the math equations above, this is more general than what was defined above. This model has:
