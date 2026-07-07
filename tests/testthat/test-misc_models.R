@@ -55,12 +55,17 @@ test_that("Survival model can be fit with a horseshoe prior", {
     draws <- cmdstanr::as.CmdStanMCMC(mp)$draws()
     variables <- posterior::variables(draws)
 
-    expect_true(all(c(
-        "beta_os_cov[1]",
-        "prior_local_beta_os_cov[1]",
-        "prior_global_beta_os_cov",
-        "prior_slab_beta_os_cov",
-        "prior_shrinkage_factors_beta_os_cov[1]",
-        "prior_scales_beta_os_cov[1]"
-    ) %in% variables))
+    expect_true(all(
+        c(
+            "beta_os_cov[1]",
+            "prior_local_beta_os_cov[1]",
+            "prior_global_beta_os_cov",
+            "prior_slab_beta_os_cov",
+            "prior_shrinkage_factors_beta_os_cov[1]",
+            "prior_shrinkage_factors_beta_os_cov[2]",
+            "prior_shrinkage_factors_beta_os_cov[3]",
+            "prior_scales_beta_os_cov[1]"
+        ) %in%
+            variables
+    ))
 })
