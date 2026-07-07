@@ -511,6 +511,7 @@ prior_horseshoe <- function(
         ),
         repr_transformed_parameters = c(
             "real<lower=0> prior_c2_{name} = square(prior_scale_slab_{name}) * prior_slab_{name};",
+            "vector<lower=0, upper=1>[{size}] prior_shrinkage_factors_{name} = rep_vector(1, {size}) ./ (rep_vector(1, {size}) + square(prior_global_{name}) * square(prior_local_{name}) / prior_c2_{name});",
             "vector<lower=0>[{size}] prior_scales_{name} = prior_global_{name} * sqrt((prior_c2_{name} * square(prior_local_{name})) ./ (prior_c2_{name} + square(prior_global_{name}) * square(prior_local_{name})));"
         ),
         centre = 0,

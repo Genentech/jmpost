@@ -356,6 +356,19 @@ test_that("prior_horseshoe works as expected", {
     )
     expect_true(
         any(grepl(
+            "vector<lower=0, upper=1>\\[p\\] prior_shrinkage_factors_beta",
+            x_stan_module@transformed_parameters
+        ))
+    )
+    expect_true(
+        any(grepl(
+            "rep_vector(1, p) ./ (rep_vector(1, p) + square(prior_global_beta) * square(prior_local_beta) / prior_c2_beta)",
+            x_stan_module@transformed_parameters,
+            fixed = TRUE
+        ))
+    )
+    expect_true(
+        any(grepl(
             "beta ~ normal(rep_vector(0, p), prior_scales_beta);",
             x_stan_module@model,
             fixed = TRUE
