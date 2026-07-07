@@ -205,10 +205,10 @@ z_{j} &\sim \text{Normal}(0, 1), \\
 \xi &\sim \text{Inv-Gamma}\!\left(\frac{\nu_{c}}{2}, \frac{\nu_{c}}{2}\right), \\
 c^{2} &= s_{c}^{2} \xi, \\
 \tilde{\lambda}_{j} &=
-\sqrt{
+\left(
 \frac{c^{2}\lambda_{j}^{2}}
 {c^{2} + \tau^{2}\lambda_{j}^{2}}
-}, \\
+\right)^{1/2}, \\
 \beta_{j} &= z_{j}\tau\tilde{\lambda}_{j}, \quad j = 1, \dotsc, p
 \end{align*}
 $$
@@ -255,4 +255,3 @@ In order to make sure that everything is correctly implemented, in addition to s
 
 We can also provide the shrinkage factors $\kappa_{j} = 1/(1 + \tau^2\lambda_j^2/c^2)$ for each coefficient, which are a measure of how much shrinkage is applied to each coefficient: $\kappa_{j} \approx 1$ means that the coefficient is shrunk to zero, while $\kappa_{j} \approx 0$ means that the coefficient is not shrunk.
 Density plots of the shrinkage factors, or even just the median shrinkage factor for each coefficient, can be a useful diagnostic tool to assess which covariates are important and which are not.
-
