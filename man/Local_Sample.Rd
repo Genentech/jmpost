@@ -4,6 +4,7 @@
 \alias{Local_Sample}
 \alias{local_rnorm}
 \alias{local_rnorm_vector}
+\alias{local_rhorseshoe}
 \alias{local_rcauchy}
 \alias{local_rgamma}
 \alias{local_rlnorm}
@@ -18,6 +19,8 @@
 local_rnorm(...)
 
 local_rnorm_vector(n, mus, sigmas)
+
+local_rhorseshoe(n, df, df_global, df_slab, scale_global, scale_slab)
 
 local_rcauchy(...)
 

@@ -526,3 +526,25 @@ set_limits <- function(object, lower = -Inf, upper = Inf) {
 saveObject <- function(object, file, ...) {
     UseMethod("saveObject")
 }
+
+
+#' Extract Covariate Names
+#'
+#' @typed object: ANY
+#'
+#' @family covariates
+#' @export
+covariates <- function(object, ...) {
+    UseMethod("covariates")
+}
+
+#' Extract Covariate Shrinkage Factors from the Posterior Samples
+#'
+#' @typed object: ANY
+#'   the object to extract shrinkage factors from.
+#'
+#' @family shrinkage
+#' @export
+shrinkage <- function(object, ...) {
+    UseMethod("shrinkage")
+}

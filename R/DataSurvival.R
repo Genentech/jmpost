@@ -133,6 +133,18 @@ model.matrix.DataSurvival <- function(
     design_mat
 }
 
+#' Extract Covariate Names for Survival Data
+#'
+#' @typed object: DataSurvival
+#'  Survival data object to extract covariate names from.
+#'
+#' @family covariates
+#' @export
+covariates.DataSurvival <- function(object, ...) {
+    design_mat <- model.matrix(object, ...)
+    colnames(design_mat)
+}
+
 #' @rdname as_stan_list.DataObject
 #' @family DataSurvival
 #' @export

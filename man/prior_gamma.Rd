@@ -18,6 +18,7 @@ Gamma Prior Distribution
 Other Prior:
 \code{\link[=prior_beta]{prior_beta()}},
 \code{\link[=prior_cauchy]{prior_cauchy()}},
+\code{\link[=prior_horseshoe]{prior_horseshoe()}},
 \code{\link[=prior_init_only]{prior_init_only()}},
 \code{\link[=prior_invgamma]{prior_invgamma()}},
 \code{\link[=prior_logistic]{prior_logistic()}},

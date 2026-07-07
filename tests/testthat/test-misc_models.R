@@ -43,11 +43,11 @@ test_that("Survival model can be fit with a horseshoe prior", {
         sampleStanModel(
             jm,
             data = test_data_1$jdata,
-            iter_sampling = 3,
-            iter_warmup = 3,
-            chains = 1,
+            iter_sampling = 1000,
+            iter_warmup = 100,
+            chains = 4,
             refresh = 0,
-            parallel_chains = 1,
+            parallel_chains = 4,
             seed = 325
         )
     })
@@ -68,4 +68,21 @@ test_that("Survival model can be fit with a horseshoe prior", {
         ) %in%
             variables
     ))
+
+    # Look at the shrinkage factors in more detail now.
+    shrinkage_draws <- draws |>
+        subset(
+            variable = "prior_shrinkage_factors_beta_os_cov"
+        )
+    shrinkage_summary <- summary(shrinkage_draws)
+    expect_true(all(shrinkage_summary$rhat < 1.05))
+    shrinkage_with_method <- shrinkage(mp)
+    expect_equal(
+        posterior::variables(shrinkage_with_method),
+        c("cov_catB", "cov_catC", "cov_cont")
+    )
+    shrinkage_summary2 <- summary(shrinkage_with_method)
+    expect_equal(shrinkage_summary$median, shrinkage_summary2$median)
+    # Now one could also do density plots etc. to visualize the shrinkage factors
+    # with the bayesplot package.
 })

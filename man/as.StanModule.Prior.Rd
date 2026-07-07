@@ -4,7 +4,7 @@
 \alias{as.StanModule.Prior}
 \title{\code{Prior} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{Prior}(object, name, ...)
+\method{as.StanModule}{Prior}(object, name, size = 1, ...)
 }
 \arguments{
 \item{object}{(\code{Prior}) a prior Distribution}

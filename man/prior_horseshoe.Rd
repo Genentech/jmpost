@@ -13,9 +13,11 @@ prior_horseshoe(
 )
 }
 \arguments{
-\item{df}{(\code{number}) degrees of freedom of the half-Student-t prior for local shrinkage parameters.}
+\item{df}{(\code{number}) degrees of freedom of the half-Student-t prior for local shrinkage
+parameters.}
 
-\item{df_global}{(\code{number}) degrees of freedom of the half-Student-t prior for the global shrinkage parameter.}
+\item{df_global}{(\code{number}) degrees of freedom of the half-Student-t prior for the global shrinkage
+parameter.}
 
 \item{df_slab}{(\code{number}) degrees of freedom of the Student-t slab.}
 
