@@ -17,8 +17,25 @@ test_that("Can load and compile SurvivalExponential() model", {
 })
 
 test_that("SurvivalExponential() can fix lambda with prior_const()", {
+    default_model <- SurvivalExponential()
+    expect_true(any(grepl(
+        "    real<lower={{ machine_double_eps }}> sm_exp_lambda;",
+        default_model@stan@parameters,
+        fixed = TRUE
+    )))
+
     jm <- JointModel(
         survival = SurvivalExponential(lambda = prior_const(1))
+    )
+
+    expect_false(any(grepl(
+        "sm_exp_lambda",
+        jm@survival@stan@parameters,
+        fixed = TRUE
+    )))
+    expect_match(
+        paste(jm@survival@stan@transformed_parameters, collapse = "\n"),
+        "real<lower=\\{\\{ machine_double_eps \\}\\}> sm_exp_lambda = prior_const_sm_exp_lambda;"
     )
 
     x <- as.StanModule(jm)
