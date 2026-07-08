@@ -28,7 +28,7 @@ Joint Model Object and Constructor Function
 
 \item{\code{link}}{(\code{Link})\cr the link.}
 
-\item{\code{parameters}}{(\code{ParameterList})\cr the parameter specification.}
+\item{\code{parameters}}{(\code{ParameterList})\cr the parameter declaration and prior specification.}
 }}
 
 \seealso{

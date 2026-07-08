@@ -20,7 +20,8 @@ NULL
 #' `ParameterList`
 #'
 #' This class extends the general [`list`] type for containing [`Parameter`]
-#' specifications.
+#' specifications. When converted to a [`StanModule`], the list supplies the
+#' Stan declarations and prior statements for those parameters.
 #'
 #'
 

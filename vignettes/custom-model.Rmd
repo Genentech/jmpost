@@ -201,28 +201,65 @@ longmodel <- WangModel(
         stan = StanModule("custom-model.stan"),
         scaled_variance = FALSE,
         parameters = ParameterList(
-            Parameter(name = "mu_baseline", prior = prior_lognormal(log(60), 1), size = 1),
-            Parameter(name = "mu_shrinkage", prior = prior_lognormal(log(2), 1), size = 1),
-            Parameter(name = "mu_growth", prior = prior_lognormal(log(10), 1), size = 1),
-            Parameter(name = "sigma_baseline", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma_shrinkage", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma_growth", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma", prior = prior_lognormal(1.5, 1), size = 1),
+            Parameter(
+                name = "mu_baseline",
+                prior = set_limits(prior_lognormal(log(60), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "mu_shrinkage",
+                prior = set_limits(prior_lognormal(log(2), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "mu_growth",
+                prior = set_limits(prior_lognormal(log(10), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_baseline",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_shrinkage",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_growth",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma",
+                prior = set_limits(prior_lognormal(1.5, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
             # The following is only required if we want jmpost to generate
             # initial values automatically for us
             Parameter(
                 name = "baseline_idv",
-                prior = prior_init_only(prior_lognormal(log(60), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(60), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "shrinkage_idv",
-                prior = prior_init_only(prior_lognormal(log(2), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(2), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "growth_idv",
-                prior = prior_init_only(prior_lognormal(log(10), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(10), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             )
         )
@@ -233,9 +270,12 @@ longmodel <- WangModel(
 Please note that:
 
 - The `scaled_variance` flag needs to be specified in the `LongitudinalModel()` construction, in order to indicate whether a multiplicative error model is used. Here we have an additive error model, therefore `scaled_variance` is set to `FALSE`.
-- The `parameters` argument is used to specify the priors for the model and the `name` argument for the `Parameter`'s objects must match the name of the parameter used within the corresponding Stan code.
+- The `parameters` argument declares the model parameters and specifies their priors. The `name` argument for each `Parameter()` must match the name used within the corresponding Stan code. This includes hierarchical subject-level parameters such as `baseline_idv`, where `prior_init_only()` is used so that `jmpost` declares the parameter and can generate initial values, but does not add a prior statement.
+- Since this model requires positive parameters, the priors are wrapped in `set_limits()` so that
+the generated Stan declarations include lower bounds.
 
-The `StanModule` object contains all of the stan code used to implement the model. For this
+The `StanModule` object contains the model-specific Stan code. Parameters listed in
+`ParameterList()` should not be declared again in this Stan code. For this
 particular model the Stan code specified in the `custom-model.stan` file is as follows:
 ```{R, results='asis', echo=FALSE} 
 x <- readLines("./custom-model.stan")

@@ -40,20 +40,18 @@ distribution only.
 
 Survival distributions are implemented as S4 classes that inherit from `SurvivalModel`.
 The two main components of the `SurvivalModel` object are the `stan` and `parameters` slots.
-The `parameters` slot is a `ParametersList()` object which is used to specify the prior distributions
-of each parameter used by the survival distribution as well as for the design matrix coefficients
+The `parameters` slot is a `ParameterList()` object which is used to declare each parameter
+used by the survival distribution and specify its prior distribution, as well as to declare
+the design matrix coefficients
 (please see the "Prior Specification" section below).
 
 The `stan` slot is a `StanModule()` object which needs to define the following:
 
-1) In the `parameters` block each of the distributions parameters must be formally declared.
-
-
-2) In the `transformed parameters` block there must define a vector called `pars_os` which contains one
+1) In the `transformed parameters` block there must define a vector called `pars_os` which contains one
 element for each parameter used by the survival distribution.
 
 
-3) In the `functions` block there must define a function called `log_h0` which returns the
+2) In the `functions` block there must define a function called `log_h0` which returns the
 log-hazard contribution. This function must have the following signature:
 
 ```stan
@@ -64,7 +62,7 @@ Where:
 - The return matrix must be of the same dimensionality as the `time` argument matrix where each 
 element is the log-hazard contribution for the corresponding timepoint in the `time` matrix.
 - The `time` matrix contains one row per unique subject and one column per timepoint for that subject
-- The `pars_os` vector is as defined from (2) above and contains the parameters for that
+- The `pars_os` vector is as defined from (1) above and contains the parameters for that
 particular distribution.
 
 For example the following is roughly equivalent to how the Weibull distribution is implemented:
@@ -74,6 +72,9 @@ SurvivalWeibullPH <- function(
     gamma = prior_gamma(2, 0.5),
     beta = prior_normal(0, 2)
 ) {
+    lambda <- set_limits(lambda, lower = getOption("jmpost.double_eps"))
+    gamma <- set_limits(gamma, lower = getOption("jmpost.double_eps"))
+
     stan <- StanModule("
         functions {
             matrix log_h0(matrix time, vector pars_os) {
@@ -81,11 +82,6 @@ SurvivalWeibullPH <- function(
                 result = log(pars_os[1]) + log(pars_os[2]) + (pars_os[2] - 1) * log(time);
                 return result;
             }
-        }
-
-        parameters {
-            real<lower=0> sm_weibull_ph_lambda;
-            real<lower=0> sm_weibull_ph_gamma;
         }
 
         transformed parameters {
@@ -109,8 +105,8 @@ SurvivalWeibullPH <- function(
 
 Similar to the survival model the longitudinal models are implemented as S4 classes that inherit
 from the `LongitudinalModel` class. The two main components of the `LongitudinalModel` object are
-the `stan` and `parameters` slots which specify the underlying Stan code and prior distributions
-for the models parameters respectively (please see the "Prior Specification" section below).
+the `stan` and `parameters` slots which specify the underlying Stan code and the model parameter
+declarations and prior distributions respectively (please see the "Prior Specification" section below).
 
 Unlike the survival distributions, the longitudinal models are a lot more flexible and have less
 constraints on how they are implemented. That is there aren't any specific variables or functions
@@ -226,12 +222,14 @@ custom generated quantity code.
 ## Prior Specification
 
 When writing your own custom longitudinal or survival model it is important to understand
-how the prior definitions are specified. By default `jmpost` will insert the Stan statements
-for any prior distributions based on the `parameters` slot of the model object.
-The importance of this is that it means you should not define the prior distributions in the
-Stan code itself. Note that this does not apply to hierarchical parameters who must have their
-distributions specified in the Stan code. For example in the `LongitudinalRandomSlope` model
-their is a different random slope for each treatment arm which is specified in the Stan code as:
+how model parameters and prior definitions are specified. By default `jmpost` will insert
+the Stan declarations and prior statements for entries in the `parameters` slot of the model
+object. This means that parameters listed in `ParameterList()` should not be declared in the
+custom Stan code itself, and their prior distributions should not be defined there either.
+Note that hierarchical relationships between parameters are still model-specific and must be
+specified in the Stan code. For example in the `LongitudinalRandomSlope` model there is a
+different random slope for each treatment arm, and this relationship is specified in the Stan
+code as:
 
 ```stan
 model {

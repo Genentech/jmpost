@@ -9,11 +9,11 @@ NULL
 #' [StanModel()].
 #'
 #' @typed stan: StanModule
-#'   code containing the Stan code specification.
+#'   code containing the model-specific Stan code specification.
 #' @typed parameters: ParameterList
-#'   the parameter specification.
+#'   the parameter declaration and prior specification.
 #' @typed parameter: ParameterList
-#'   the (single) parameter specification.
+#'   the (single) parameter declaration and prior specification.
 #' @typed name: character
 #'   display name for the model object.
 #' @param ... additional arguments for [StanModel()].
