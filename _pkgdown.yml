@@ -65,6 +65,7 @@ reference:
       - prior_lognormal
       - prior_normal
       - prior_normal_vector
+      - prior_horseshoe
       - prior_uniform
       - prior_std_normal
       - prior_student_t
@@ -124,6 +125,8 @@ reference:
       - brierScore
       - brierScore.SurvivalQuantities
       - populationHR
+      - shrinkage
+      - shrinkage.JointModelSamples
 
   - title: Stan Code
     contents:
@@ -185,6 +188,8 @@ reference:
       - hazardWindows
       - sampleObservations
       - sampleSubjects
+      - covariates
+      - covariates.DataSurvival
       - enableLink
       - enableGQ
       - as_formula
@@ -218,7 +223,7 @@ articles:
     contents:
         - quickstart
         - '`statistical-specification`'
+        - '`covariate-selection-horseshoe`'
         - '`custom-model`'
         - '`extending-jmpost`'
         - '`simulating-data`'
-
