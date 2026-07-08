@@ -1,19 +1,6 @@
 
 
 
-parameters {
-    //
-    // Source - lm-random-slope/model.stan
-    //
-
-    array [n_studies] real lm_rs_intercept;
-    array [n_arms] real lm_rs_slope_mu;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_rs_slope_sigma;
-    real<lower={{ machine_double_eps }}> lm_rs_sigma;
-    vector[n_subjects] lm_rs_ind_rnd_slope;
-}
-
-
 transformed parameters {
     //
     // Source - lm-random-slope/model.stan
@@ -56,5 +43,4 @@ model {
         lm_rs_slope_sigma[subject_arm_index]
     );
 }
-
 

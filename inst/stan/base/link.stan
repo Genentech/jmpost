@@ -24,20 +24,9 @@ functions {
     }
 }
 
-parameters{
-    //
-    // Source - base/link.stan
-    //
-    {% for item in items -%}
-    real {{ item }};
-    {% endfor -%}
-
-}
-
 transformed parameters {
     vector[{{ length(items) }}] link_coefficients;
     {% for item in items -%}
     link_coefficients[{{loop.index1}}] = {{ item }};
     {% endfor -%}
 }
-

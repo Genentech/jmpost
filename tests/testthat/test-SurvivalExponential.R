@@ -17,25 +17,18 @@ test_that("Can load and compile SurvivalExponential() model", {
 })
 
 test_that("SurvivalExponential() can fix lambda with prior_const()", {
-    default_model <- SurvivalExponential()
-    expect_true(any(grepl(
-        "    real<lower={{ machine_double_eps }}> sm_exp_lambda;",
-        default_model@stan@parameters,
-        fixed = TRUE
-    )))
+    default_model <- JointModel(survival = SurvivalExponential())
+    default_stan_code <- paste(
+        as.character(as.StanModule(default_model)),
+        collapse = "\n"
+    )
+    expect_match(
+        default_stan_code,
+        "real<lower=[^>]+> sm_exp_lambda;"
+    )
 
     jm <- JointModel(
         survival = SurvivalExponential(lambda = prior_const(1))
-    )
-
-    expect_false(any(grepl(
-        "sm_exp_lambda",
-        jm@survival@stan@parameters,
-        fixed = TRUE
-    )))
-    expect_match(
-        paste(jm@survival@stan@transformed_parameters, collapse = "\n"),
-        "real<lower=\\{\\{ machine_double_eps \\}\\}> sm_exp_lambda = prior_const_sm_exp_lambda;"
     )
 
     x <- as.StanModule(jm)
@@ -61,12 +54,10 @@ test_that("SurvivalExponential() can fix lambda with prior_const()", {
         "sm_exp_lambda" %in% names(initialValues(jm, n_chains = 1)[[1]])
     )
 
-    expect_error(
-        as.StanModule(JointModel(
-            survival = SurvivalExponential(beta = prior_const(0))
-        )),
-        "currently only supported"
+    beta_const <- JointModel(
+        survival = SurvivalExponential(beta = prior_const(0))
     )
+    expect_stan_syntax(as.StanModule(beta_const))
 })
 
 

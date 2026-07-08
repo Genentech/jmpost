@@ -273,13 +273,6 @@ setMethod(
 #' @family as.StanModule
 #' @export
 as.StanModule.Prior <- function(object, name, size = 1, ...) {
-    if (object@.is_const && name != "sm_exp_lambda") {
-        stop(
-            "prior_const() is currently only supported for ",
-            "SurvivalExponential(lambda = ...).",
-            call. = FALSE
-        )
-    }
     stan_repr <- c(
         object@repr_data,
         object@repr_parameters,
@@ -750,7 +743,8 @@ prior_init_only <- function(dist) {
             dist@sample(n)
         },
         centre = dist@centre,
-        validation = list()
+        validation = list(),
+        limits = dist@limits
     )
 }
 

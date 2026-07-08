@@ -57,8 +57,11 @@ test_that("Link works as expected", {
     ## Fully resolved stan code pass's the syntax checker
     expect_stan_syntax(
         merge(
-            load_with_base_stan("lm-gsf/functions.stan"),
-            as.StanModule(x)
+            merge(
+                load_with_base_stan("lm-gsf/functions.stan"),
+                as.StanModule(x)
+            ),
+            as.StanModule(getParameters(x))
         )
     )
 

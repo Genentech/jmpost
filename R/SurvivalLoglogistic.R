@@ -31,6 +31,9 @@ SurvivalLogLogistic <- function(
     b = prior_gamma(2, 5),
     beta = prior_normal(0, 2)
 ) {
+    a <- set_limits(a, lower = getOption("jmpost.double_eps"))
+    b <- set_limits(b, lower = getOption("jmpost.double_eps"))
+
     .SurvivalLogLogistic(
         SurvivalModel(
             name = "Log-Logistic",

@@ -28,23 +28,11 @@ SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
     beta = prior_normal(0, 2)
 ) {
-    lambda_declaration <- if (lambda@.is_const) {
-        "transformed parameters {
-    real<lower={{ machine_double_eps }}> sm_exp_lambda = prior_const_sm_exp_lambda;
-}"
-    } else {
-        "parameters {
-    real<lower={{ machine_double_eps }}> sm_exp_lambda;
-}"
-    }
-    stan <- merge(
-        StanModule(lambda_declaration),
-        StanModule("sm-exponential/model.stan")
-    )
+    lambda <- set_limits(lambda, lower = getOption("jmpost.double_eps"))
     .SurvivalExponential(
         SurvivalModel(
             name = "Exponential",
-            stan = stan,
+            stan = StanModule("sm-exponential/model.stan"),
             parameters = ParameterList(
                 Parameter(name = "sm_exp_lambda", prior = lambda, size = 1),
                 Parameter(

@@ -154,9 +154,9 @@ test_that("prior_const() works as expected", {
         "    real prior_const_sm_exp_lambda;"
     )
     expect_equal(as.StanModule(x, name = "sm_exp_lambda")@model, "")
-    expect_error(
-        as.StanModule(x, name = "bob"),
-        "currently only supported"
+    expect_equal(
+        as.StanModule(x, name = "bob")@data,
+        "    real prior_const_bob;"
     )
 
     pars <- ParameterList(

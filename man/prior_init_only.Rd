@@ -18,6 +18,7 @@ are fixed within the model and cannot be altered by the user.
 Other Prior:
 \code{\link[=prior_beta]{prior_beta()}},
 \code{\link[=prior_cauchy]{prior_cauchy()}},
+\code{\link[=prior_const]{prior_const()}},
 \code{\link[=prior_gamma]{prior_gamma()}},
 \code{\link[=prior_horseshoe]{prior_horseshoe()}},
 \code{\link[=prior_invgamma]{prior_invgamma()}},

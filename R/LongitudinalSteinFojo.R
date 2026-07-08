@@ -72,10 +72,10 @@ LongitudinalSteinFojo <- function(
     ))
 
     # Apply constriants
-    omega_bsld <- set_limits(omega_bsld, lower = 0)
-    omega_ks <- set_limits(omega_ks, lower = 0)
-    omega_kg <- set_limits(omega_kg, lower = 0)
-    sigma <- set_limits(sigma, lower = 0)
+    omega_bsld <- set_limits(omega_bsld, lower = getOption("jmpost.double_eps"))
+    omega_ks <- set_limits(omega_ks, lower = getOption("jmpost.double_eps"))
+    omega_kg <- set_limits(omega_kg, lower = getOption("jmpost.double_eps"))
+    sigma <- set_limits(sigma, lower = getOption("jmpost.double_eps"))
 
     parameters <- list(
         Parameter(name = "lm_sf_mu_bsld", prior = mu_bsld, size = "n_studies"),
@@ -98,26 +98,26 @@ LongitudinalSteinFojo <- function(
         list(
             Parameter(
                 name = "lm_sf_psi_bsld",
-                prior = prior_init_only(prior_lognormal(
+                prior = set_limits(prior_init_only(prior_lognormal(
                     median(mu_bsld),
                     median(omega_bsld)
-                )),
+                )), lower = getOption("jmpost.double_eps")),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_ks",
-                prior = prior_init_only(prior_lognormal(
+                prior = set_limits(prior_init_only(prior_lognormal(
                     median(mu_ks),
                     median(omega_ks)
-                )),
+                )), lower = getOption("jmpost.double_eps")),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_kg",
-                prior = prior_init_only(prior_lognormal(
+                prior = set_limits(prior_init_only(prior_lognormal(
                     median(mu_kg),
                     median(omega_kg)
-                )),
+                )), lower = getOption("jmpost.double_eps")),
                 size = "n_subjects"
             )
         )

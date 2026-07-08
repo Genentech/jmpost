@@ -12,15 +12,7 @@ functions {
 }
 
 
-parameters {
-    // SurvivalWeibullPH
-    real<lower={{ machine_double_eps }}> sm_weibull_ph_lambda;
-    real<lower={{ machine_double_eps }}> sm_weibull_ph_gamma;
-}
-
-
 transformed parameters {
     // SurvivalWeibullPH
     vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma]';
 }
-

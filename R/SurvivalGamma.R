@@ -30,8 +30,8 @@ SurvivalGamma <- function(
     theta = prior_gamma(2, 0.5),
     beta = prior_normal(0, 2)
 ) {
-    k <- set_limits(k, lower = 0)
-    theta <- set_limits(theta, lower = 0)
+    k <- set_limits(k, lower = getOption("jmpost.double_eps"))
+    theta <- set_limits(theta, lower = getOption("jmpost.double_eps"))
 
     .SurvivalGamma(
         SurvivalModel(
