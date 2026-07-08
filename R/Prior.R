@@ -267,6 +267,17 @@ setMethod(
 #' @family as.StanModule
 #' @export
 as.StanModule.Prior <- function(object, name, size = 1, ...) {
+    stan_repr <- c(
+        object@repr_data,
+        object@repr_parameters,
+        object@repr_transformed_parameters,
+        object@repr_model,
+        object@repr_generated_quantities
+    )
+    if (all(nchar(stan_repr) == 0)) {
+        return(StanModule())
+    }
+
     indent_stan <- function(x) {
         x <- x[nchar(x) >= 1]
         if (length(x) == 0) {
