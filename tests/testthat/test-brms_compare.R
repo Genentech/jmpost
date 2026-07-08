@@ -293,8 +293,8 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
             "horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.3, scale_slab = 2)",
             class = "b"
         ),
-        warmup = 5000,
-        iter = 10000,
+        warmup = 50,
+        iter = 100,
         chains = 4,
         cores = 4,
         seed = 9826,
@@ -326,6 +326,9 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
 
     jm <- JointModel(
         survival = SurvivalExponential(
+            # Let's use an approximate point mass
+            # at lambda = 1 to get the same model as brms.
+            lambda = prior_normal(1, 0.00001),
             beta = prior_horseshoe(
                 df = 1,
                 df_global = 1,
@@ -339,8 +342,8 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
     mp <- sampleStanModel(
         jm,
         data = jdat,
-        iter_warmup = 5000,
-        iter_sampling = 5000,
+        iter_warmup = 50,
+        iter_sampling = 50,
         chains = 4,
         refresh = 200,
         parallel_chains = 4,
