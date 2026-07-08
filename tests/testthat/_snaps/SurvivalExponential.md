@@ -22,6 +22,18 @@
           beta_os_cov ~ gamma(alpha = 3, beta = 4)
       
 
+---
+
+    Code
+      x <- SurvivalExponential(lambda = prior_const(1))
+      print(x)
+    Output
+      
+      Exponential Survival Model with parameters:
+          sm_exp_lambda = const(value = 1)
+          beta_os_cov ~ normal(mu = 0, sigma = 2)
+      
+
 # Different priors for the beta components are possible
 
     Code

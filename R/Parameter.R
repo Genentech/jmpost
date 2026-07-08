@@ -139,6 +139,9 @@ size.Parameter <- function(object) object@size
 #' @family Parameter
 #' @export
 as.character.Parameter <- function(x, ...) {
+    if (x@prior@.is_const) {
+        return(paste0(x@name, " = ", as.character(x@prior)))
+    }
     paste0(x@name, " ~ ", as.character(x@prior))
 }
 

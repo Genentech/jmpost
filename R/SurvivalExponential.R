@@ -28,10 +28,15 @@ SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
     beta = prior_normal(0, 2)
 ) {
+    stan <- if (lambda@.is_const) {
+        StanModule("sm-exponential/model_const_lambda.stan")
+    } else {
+        StanModule("sm-exponential/model.stan")
+    }
     .SurvivalExponential(
         SurvivalModel(
             name = "Exponential",
-            stan = StanModule("sm-exponential/model.stan"),
+            stan = stan,
             parameters = ParameterList(
                 Parameter(name = "sm_exp_lambda", prior = lambda, size = 1),
                 Parameter(

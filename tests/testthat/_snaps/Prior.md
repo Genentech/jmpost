@@ -11,6 +11,16 @@
 ---
 
     Code
+      print(prior_const(1))
+    Output
+      
+      Prior Object:
+         const(value = 1)
+      
+
+---
+
+    Code
       print(prior_normal(0, 0.8))
     Output
       

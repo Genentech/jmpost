@@ -19,7 +19,8 @@ Prior(
   repr_transformed_parameters = "",
   repr_generated_quantities = "",
   limits = c(-Inf, Inf),
-  .allow_vectors = FALSE
+  .allow_vectors = FALSE,
+  .is_const = FALSE
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ the same names as the \code{paramaters} slot.}
 \item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
 
 \item{.allow_vectors}{(\code{flag}) whether to allow vector parameters.}
+
+\item{.is_const}{(\code{flag}) whether this prior fixes the parameter at a constant value.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -77,6 +80,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{limits}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{.allow_vectors}}{(\code{logical})\cr See arguments.}
+
+\item{\code{.is_const}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{

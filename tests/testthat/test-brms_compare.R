@@ -328,7 +328,7 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
         survival = SurvivalExponential(
             # Let's use an approximate point mass
             # at lambda = 1 to get the same model as brms.
-            lambda = prior_normal(1, 0.00001),
+            lambda = prior_const(1),
             beta = prior_horseshoe(
                 df = 1,
                 df_global = 1,

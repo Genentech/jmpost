@@ -1,0 +1,30 @@
+% Please edit documentation in R/Prior.R
+\name{prior_const}
+\alias{prior_const}
+\title{Constant Prior Distribution}
+\usage{
+prior_const(value)
+}
+\arguments{
+\item{value}{(\code{number}) the fixed parameter value.}
+}
+\description{
+Constant Prior Distribution
+}
+\seealso{
+\code{\link[=prior_beta]{prior_beta()}},
+\code{\link[=prior_cauchy]{prior_cauchy()}},
+\code{\link[=prior_gamma]{prior_gamma()}},
+\code{\link[=prior_horseshoe]{prior_horseshoe()}},
+\code{\link[=prior_init_only]{prior_init_only()}},
+\code{\link[=prior_invgamma]{prior_invgamma()}},
+\code{\link[=prior_logistic]{prior_logistic()}},
+\code{\link[=prior_loglogistic]{prior_loglogistic()}},
+\code{\link[=prior_lognormal]{prior_lognormal()}},
+\code{\link[=prior_normal]{prior_normal()}},
+\code{\link[=prior_normal_vector]{prior_normal_vector()}},
+\code{\link[=prior_std_normal]{prior_std_normal()}},
+\code{\link[=prior_student_t]{prior_student_t()}},
+\code{\link[=prior_uniform]{prior_uniform()}}
+}
+\concept{Prior}

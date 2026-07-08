@@ -16,6 +16,42 @@ test_that("Can load and compile SurvivalExponential() model", {
     expect_stan_syntax(x)
 })
 
+test_that("SurvivalExponential() can fix lambda with prior_const()", {
+    jm <- JointModel(
+        survival = SurvivalExponential(lambda = prior_const(1))
+    )
+
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+
+    stan_code <- paste(as.character(x), collapse = "\n")
+    expect_match(stan_code, "real prior_const_sm_exp_lambda;", fixed = TRUE)
+    expect_match(
+        stan_code,
+        "real<lower=[^>]+> sm_exp_lambda = prior_const_sm_exp_lambda;"
+    )
+    expect_false(grepl(
+        "real<lower=[^>]+> sm_exp_lambda;",
+        stan_code,
+        perl = TRUE
+    ))
+
+    expect_equal(
+        as_stan_list(jm@parameters)$prior_const_sm_exp_lambda,
+        1
+    )
+    expect_false(
+        "sm_exp_lambda" %in% names(initialValues(jm, n_chains = 1)[[1]])
+    )
+
+    expect_error(
+        as.StanModule(JointModel(
+            survival = SurvivalExponential(beta = prior_const(0))
+        )),
+        "currently only supported"
+    )
+})
+
 
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
     skip_if_not(is_full_test())
@@ -91,6 +127,11 @@ test_that("Print method for SurvivalExponential works as expected", {
 
     expect_snapshot({
         x <- SurvivalExponential(beta = prior_gamma(3, 4))
+        print(x)
+    })
+
+    expect_snapshot({
+        x <- SurvivalExponential(lambda = prior_const(1))
         print(x)
     })
 })

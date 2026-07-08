@@ -40,6 +40,7 @@ NULL
 #' @slot sample (`function`)\cr See arguments.
 #' @slot limits (`numeric`)\cr See arguments.
 #' @slot .allow_vectors (`logical`)\cr See arguments.
+#' @slot .is_const (`logical`)\cr See arguments.
 #'
 #' @family Prior-internal
 #' @export Prior
@@ -58,7 +59,8 @@ NULL
         "validation" = "list",
         "sample" = "function",
         "limits" = "numeric",
-        ".allow_vectors" = "logical"
+        ".allow_vectors" = "logical",
+        ".is_const" = "logical"
     )
 )
 
@@ -88,6 +90,8 @@ NULL
 #'   the lower and upper limits for a truncated distribution
 #' @typed .allow_vectors: flag
 #'   whether to allow vector parameters.
+#' @typed .is_const: flag
+#'   whether this prior fixes the parameter at a constant value.
 #' @rdname Prior-class
 Prior <- function(
     parameters,
@@ -101,7 +105,8 @@ Prior <- function(
     repr_transformed_parameters = "",
     repr_generated_quantities = "",
     limits = c(-Inf, Inf),
-    .allow_vectors = FALSE
+    .allow_vectors = FALSE,
+    .is_const = FALSE
 ) {
     .Prior(
         parameters = parameters,
@@ -115,7 +120,8 @@ Prior <- function(
         validation = validation,
         sample = sample,
         limits = limits,
-        .allow_vectors = .allow_vectors
+        .allow_vectors = .allow_vectors,
+        .is_const = .is_const
     )
 }
 
@@ -267,6 +273,13 @@ setMethod(
 #' @family as.StanModule
 #' @export
 as.StanModule.Prior <- function(object, name, size = 1, ...) {
+    if (object@.is_const && name != "sm_exp_lambda") {
+        stop(
+            "prior_const() is currently only supported for ",
+            "SurvivalExponential(lambda = ...).",
+            call. = FALSE
+        )
+    }
     stan_repr <- c(
         object@repr_data,
         object@repr_parameters,
@@ -324,6 +337,10 @@ as.StanModule.Prior <- function(object, name, size = 1, ...) {
 #' @export
 as_stan_list.Prior <- function(object, name, ...) {
     vals <- object@parameters
+    if (object@.is_const) {
+        names(vals) <- paste0("prior_const_", name)
+        return(vals)
+    }
     vals_names <- names(vals)
     if (length(vals_names) >= 1) {
         names(vals) <- paste0("prior_", vals_names, "_", name)
@@ -579,6 +596,27 @@ prior_std_normal <- function() {
         centre = 0,
         sample = \(n) local_rnorm(n),
         validation = list()
+    )
+}
+
+#' Constant Prior Distribution
+#'
+#' @typed value: number
+#'   the fixed parameter value.
+#' @family Prior
+#' @export
+prior_const <- function(value) {
+    Prior(
+        parameters = list(value = value),
+        display = "const(value = {value})",
+        repr_model = "",
+        repr_data = "real prior_const_{name};",
+        centre = value,
+        sample = \(n) rep(value, n),
+        validation = list(
+            value = is.numeric
+        ),
+        .is_const = TRUE
     )
 }
 
