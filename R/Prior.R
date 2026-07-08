@@ -33,6 +33,7 @@ NULL
 #' @slot repr_data (`string`)\cr See arguments.
 #' @slot repr_parameters (`string`)\cr See arguments.
 #' @slot repr_transformed_parameters (`string`)\cr See arguments.
+#' @slot repr_generated_quantities (`string`)\cr See arguments.
 #' @slot centre (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #' @slot display (`string`)\cr See arguments.
@@ -52,6 +53,7 @@ NULL
         "repr_data" = "character",
         "repr_parameters" = "character",
         "repr_transformed_parameters" = "character",
+        "repr_generated_quantities" = "character",
         "centre" = "numeric",
         "validation" = "list",
         "sample" = "function",
@@ -71,6 +73,8 @@ NULL
 #'   the Stan code representation for the parameters block.
 #' @typed repr_transformed_parameters: string
 #'   the Stan code representation for the transformed parameters block.
+#' @typed repr_generated_quantities: string
+#'   the Stan code representation for the generated quantities block.
 #' @typed display: string
 #'   the string to display when object is printed.
 #' @typed centre: numeric
@@ -95,6 +99,7 @@ Prior <- function(
     sample,
     repr_parameters = "",
     repr_transformed_parameters = "",
+    repr_generated_quantities = "",
     limits = c(-Inf, Inf),
     .allow_vectors = FALSE
 ) {
@@ -104,6 +109,7 @@ Prior <- function(
         repr_data = repr_data,
         repr_parameters = repr_parameters,
         repr_transformed_parameters = repr_transformed_parameters,
+        repr_generated_quantities = repr_generated_quantities,
         centre = centre,
         display = display,
         validation = validation,
@@ -285,6 +291,9 @@ as.StanModule.Prior <- function(object, name, size = 1, ...) {
         "}}",
         "model {{",
         indent_stan(paste0(object@repr_model, trunctation)),
+        "}}",
+        "generated quantities {{",
+        indent_stan(object@repr_generated_quantities),
         "}}",
         sep = "\n"
     )
@@ -513,12 +522,14 @@ prior_horseshoe <- function(
         repr_transformed_parameters = c(
             "real<lower=0> prior_c2_{name} = square(prior_scale_slab_{name}) * prior_slab_{name};",
             paste(
-                "vector<lower=0, upper=1>[{size}] prior_shrinkage_factors_{name} =",
-                "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
-            ),
-            paste(
                 "vector<lower=0>[{size}] prior_scales_{name} =",
                 "scales_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
+            )
+        ),
+        repr_generated_quantities = c(
+            paste(
+                "vector<lower=0, upper=1>[{size}] prior_shrinkage_factors_{name} =",
+                "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
             )
         ),
         centre = 0,

@@ -357,13 +357,13 @@ test_that("prior_horseshoe works as expected", {
     expect_true(
         any(grepl(
             "vector<lower=0, upper=1>\\[p\\] prior_shrinkage_factors_beta",
-            x_stan_module@transformed_parameters
+            x_stan_module@generated_quantities
         ))
     )
     expect_true(
         any(grepl(
-            "rep_vector(1, p) ./ (rep_vector(1, p) + square(prior_global_beta) * square(prior_local_beta) / prior_c2_beta)",
-            x_stan_module@transformed_parameters,
+            "shrinkage_horseshoe(prior_local_beta, prior_global_beta, prior_c2_beta)",
+            x_stan_module@generated_quantities,
             fixed = TRUE
         ))
     )
@@ -386,13 +386,16 @@ test_that("prior_horseshoe works as expected", {
     )
 
     # Check the model syntax.
-    header <- StanModule(
+    header <- merge(
+        StanModule("base/functions.stan"),
+        StanModule(
         "data {
     int<lower=1> p;
 }
 parameters {
     vector[p] beta;
 }"
+        )
     )
     stan_file <- cmdstanr::write_stan_file(
         as.character(merge(header, x_stan_module)),
