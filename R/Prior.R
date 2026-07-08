@@ -491,8 +491,9 @@ prior_horseshoe <- function(
             "scale_slab = {scale_slab})"
         ),
         repr_model = paste(
-            "prior_local_{name} ~ student_t(prior_df_{name}, 0, 1);",
-            "prior_global_{name} ~ student_t(prior_df_global_{name}, 0, prior_scale_global_{name});",
+            # Important: T[0, ] for truncating to positive values!
+            "prior_local_{name} ~ student_t(prior_df_{name}, 0, 1) T[0, ];",
+            "prior_global_{name} ~ student_t(prior_df_global_{name}, 0, prior_scale_global_{name}) T[0, ];",
             "prior_slab_{name} ~ inv_gamma(prior_df_slab_{name} / 2, prior_df_slab_{name} / 2);",
             "{name} ~ normal(rep_vector(0, {size}), prior_scales_{name})",
             sep = "\n    "
@@ -511,8 +512,14 @@ prior_horseshoe <- function(
         ),
         repr_transformed_parameters = c(
             "real<lower=0> prior_c2_{name} = square(prior_scale_slab_{name}) * prior_slab_{name};",
-            "vector<lower=0, upper=1>[{size}] prior_shrinkage_factors_{name} = rep_vector(1, {size}) ./ (rep_vector(1, {size}) + square(prior_global_{name}) * square(prior_local_{name}) / prior_c2_{name});",
-            "vector<lower=0>[{size}] prior_scales_{name} = prior_global_{name} * sqrt((prior_c2_{name} * square(prior_local_{name})) ./ (prior_c2_{name} + square(prior_global_{name}) * square(prior_local_{name})));"
+            paste(
+                "vector<lower=0, upper=1>[{size}] prior_shrinkage_factors_{name} =",
+                "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
+            ),
+            paste(
+                "vector<lower=0>[{size}] prior_scales_{name} =",
+                "scales_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
+            )
         ),
         centre = 0,
         sample = \(n) {
@@ -949,6 +956,8 @@ local_rnorm_vector <- \(n, mus, sigmas) {
 
 #' @rdname Local_Sample
 local_rhorseshoe <- \(n, df, df_global, df_slab, scale_global, scale_slab) {
+    # Note: Half-t distribution is here the same as truncated t
+    # distribution because the t distribution is symmetric around 0.
     local <- abs(local_rt(n, df, 0, 1))
     global <- abs(local_rt(n, df_global, 0, scale_global))
     slab <- local_rinvgamma(n, df_slab / 2, df_slab / 2)
