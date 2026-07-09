@@ -159,10 +159,20 @@ initialValues.ParameterList <- function(object, n_chains, ...) {
     lapply(
         seq_len(n_chains),
         \(i) {
-            vals <- lapply(parameters, initialValues)
-            name <- vapply(parameters, names, character(1))
-            names(vals) <- name
-            vals
+            vals <- lapply(parameters, function(parameter) {
+                c(
+                    stats::setNames(
+                        list(initialValues(parameter)),
+                        names(parameter)
+                    ),
+                    auxiliaryInitialValues(
+                        parameter@prior,
+                        name = names(parameter),
+                        size = size(parameter)
+                    )
+                )
+            })
+            unlist(vals, recursive = FALSE)
         }
     )
 }
@@ -172,9 +182,17 @@ initialValues.ParameterList <- function(object, n_chains, ...) {
 #' @export
 size.ParameterList <- function(object) {
     parameters <- Filter(\(x) !x@prior@.is_const, object@parameters)
-    x <- lapply(parameters, size)
-    names(x) <- vapply(parameters, names, character(1))
-    return(x)
+    sizes <- lapply(parameters, function(parameter) {
+        c(
+            stats::setNames(list(size(parameter)), names(parameter)),
+            auxiliarySize(
+                parameter@prior,
+                name = names(parameter),
+                size = size(parameter)
+            )
+        )
+    })
+    unlist(sizes, recursive = FALSE)
 }
 
 

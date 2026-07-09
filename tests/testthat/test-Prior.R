@@ -403,6 +403,24 @@ test_that("prior_horseshoe works as expected", {
     x_inits <- initialValues(x)
     expect_numeric(x_inits, len = 1)
 
+    auxiliary_inits <- auxiliaryInitialValues(x, name = "beta", size = 3)
+    expect_equal(
+        names(auxiliary_inits),
+        c("prior_local_beta", "prior_global_beta", "prior_slab_beta")
+    )
+    expect_numeric(auxiliary_inits$prior_local_beta, len = 3, lower = 0)
+    expect_numeric(auxiliary_inits$prior_global_beta, len = 1, lower = 0)
+    expect_numeric(auxiliary_inits$prior_slab_beta, len = 1, lower = 0)
+
+    expect_equal(
+        auxiliarySize(x, name = "beta", size = "p"),
+        list(
+            prior_local_beta = "p",
+            prior_global_beta = 1,
+            prior_slab_beta = 1
+        )
+    )
+
     x_stan_module <- as.StanModule(x, name = "beta", size = "p")
     expect_equal(
         x_stan_module@data,
@@ -477,4 +495,17 @@ parameters {
     )
     model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
     expect_true(model_obj$check_syntax(quiet = TRUE))
+})
+
+test_that("default auxiliary prior methods return empty lists", {
+    x <- prior_normal(0, 1)
+
+    expect_equal(
+        auxiliaryInitialValues(x, name = "beta", size = 3),
+        list()
+    )
+    expect_equal(
+        auxiliarySize(x, name = "beta", size = 3),
+        list()
+    )
 })

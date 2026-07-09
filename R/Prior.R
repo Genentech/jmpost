@@ -16,6 +16,8 @@ NULL
 #'   a prior Distribution
 #' @typed name: character
 #'   the name of the parameter the prior distribution is for
+#' @typed size: "`numeric` or `character`"
+#'   the parameter size.
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -34,6 +36,8 @@ NULL
 #' @slot repr_parameters (`string`)\cr See arguments.
 #' @slot repr_transformed_parameters (`string`)\cr See arguments.
 #' @slot repr_generated_quantities (`string`)\cr See arguments.
+#' @slot auxiliary_initial_values (`function`)\cr See arguments.
+#' @slot auxiliary_size (`function`)\cr See arguments.
 #' @slot centre (`numeric`)\cr See arguments.
 #' @slot validation (`list`)\cr See arguments.
 #' @slot display (`string`)\cr See arguments.
@@ -56,6 +60,8 @@ NULL
         "repr_parameters" = "character",
         "repr_transformed_parameters" = "character",
         "repr_generated_quantities" = "character",
+        "auxiliary_initial_values" = "function",
+        "auxiliary_size" = "function",
         "centre" = "numeric",
         "validation" = "list",
         "sample" = "function",
@@ -79,6 +85,12 @@ NULL
 #'   the Stan code representation for the transformed parameters block.
 #' @typed repr_generated_quantities: string
 #'   the Stan code representation for the generated quantities block.
+#' @typed auxiliary_initial_values: function
+#'   a function that returns initial values for extra Stan parameters
+#'   introduced by the prior.
+#' @typed auxiliary_size: function
+#'   a function that returns sizes for extra Stan parameters introduced
+#'   by the prior.
 #' @typed display: string
 #'   the string to display when object is printed.
 #' @typed centre: numeric
@@ -108,6 +120,8 @@ Prior <- function(
     repr_parameters = "",
     repr_transformed_parameters = "",
     repr_generated_quantities = "",
+    auxiliary_initial_values = \(name, size) list(),
+    auxiliary_size = \(name, size) list(),
     limits = c(-Inf, Inf),
     .omit_zero_lower_truncation = FALSE,
     .allow_vectors = FALSE,
@@ -120,6 +134,8 @@ Prior <- function(
         repr_parameters = repr_parameters,
         repr_transformed_parameters = repr_transformed_parameters,
         repr_generated_quantities = repr_generated_quantities,
+        auxiliary_initial_values = auxiliary_initial_values,
+        auxiliary_size = auxiliary_size,
         centre = centre,
         display = display,
         validation = validation,
@@ -440,6 +456,20 @@ initialValues.Prior <- function(object, ...) {
 }
 
 
+#' @describeIn Prior-Getter-Methods The prior's auxiliary initial values
+#' @export
+auxiliaryInitialValues.Prior <- function(object, name, size, ...) {
+    object@auxiliary_initial_values(name = name, size = size)
+}
+
+
+#' @describeIn Prior-Getter-Methods The prior's auxiliary parameter sizes
+#' @export
+auxiliarySize.Prior <- function(object, name, size, ...) {
+    object@auxiliary_size(name = name, size = size)
+}
+
+
 # Prior-constructors ----
 
 #' Normal Prior Distribution
@@ -574,6 +604,23 @@ prior_horseshoe <- function(
                 "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
             )
         ),
+        auxiliary_initial_values = \(name, size) {
+            local_size <- if (is.numeric(size)) size else 1
+            stats::setNames(
+                list(
+                    abs(local_rt(local_size, df, 0, 1)),
+                    abs(local_rt(1, df_global, 0, scale_global)),
+                    local_rinvgamma(1, df_slab / 2, df_slab / 2)
+                ),
+                paste0(c("prior_local_", "prior_global_", "prior_slab_"), name)
+            )
+        },
+        auxiliary_size = \(name, size) {
+            stats::setNames(
+                list(size, 1, 1),
+                paste0(c("prior_local_", "prior_global_", "prior_slab_"), name)
+            )
+        },
         centre = 0,
         sample = \(n) {
             local_rhorseshoe(

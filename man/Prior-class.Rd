@@ -18,6 +18,8 @@ Prior(
   repr_parameters = "",
   repr_transformed_parameters = "",
   repr_generated_quantities = "",
+  auxiliary_initial_values = function(name, size) list(),
+  auxiliary_size = function(name, size) list(),
   limits = c(-Inf, Inf),
   .omit_zero_lower_truncation = FALSE,
   .allow_vectors = FALSE,
@@ -46,6 +48,12 @@ the same names as the \code{paramaters} slot.}
 
 \item{repr_generated_quantities}{(\code{string}) the Stan code representation for the generated quantities block.}
 
+\item{auxiliary_initial_values}{(\code{function}) a function that returns initial values for extra Stan parameters
+introduced by the prior.}
+
+\item{auxiliary_size}{(\code{function}) a function that returns sizes for extra Stan parameters introduced
+by the prior.}
+
 \item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
 
 \item{.omit_zero_lower_truncation}{(\code{flag}) whether to omit a lower-zero truncation adjustment.}
@@ -71,6 +79,10 @@ Specifies the prior distribution in a Stan Model
 \item{\code{repr_transformed_parameters}}{(\code{string})\cr See arguments.}
 
 \item{\code{repr_generated_quantities}}{(\code{string})\cr See arguments.}
+
+\item{\code{auxiliary_initial_values}}{(\code{function})\cr See arguments.}
+
+\item{\code{auxiliary_size}}{(\code{function})\cr See arguments.}
 
 \item{\code{centre}}{(\code{numeric})\cr See arguments.}
 

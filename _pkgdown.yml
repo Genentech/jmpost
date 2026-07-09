@@ -136,6 +136,8 @@ reference:
       - ParameterList
       - ParameterList-Getter-Methods
       - Prior-Getter-Methods
+      - auxiliaryInitialValues
+      - auxiliarySize
       - read_stan
       - StanModel
       - StanModule

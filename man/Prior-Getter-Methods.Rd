@@ -3,14 +3,24 @@
 \name{Prior-Getter-Methods}
 \alias{Prior-Getter-Methods}
 \alias{initialValues.Prior}
+\alias{auxiliaryInitialValues.Prior}
+\alias{auxiliarySize.Prior}
 \title{Prior Getter Functions}
 \usage{
 \method{initialValues}{Prior}(object, ...)
+
+\method{auxiliaryInitialValues}{Prior}(object, name, size, ...)
+
+\method{auxiliarySize}{Prior}(object, name, size, ...)
 }
 \arguments{
 \item{object}{(\code{Prior}) a prior Distribution}
 
 \item{...}{Not Used.}
+
+\item{name}{(\code{character}) the name of the parameter the prior distribution is for}
+
+\item{size}{the parameter size.}
 }
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object
@@ -18,6 +28,10 @@ Getter functions for the slots of a \code{\link{Prior}} object
 \section{Functions}{
 \itemize{
 \item \code{initialValues(Prior)}: The prior's initial value
+
+\item \code{auxiliaryInitialValues(Prior)}: The prior's auxiliary initial values
+
+\item \code{auxiliarySize(Prior)}: The prior's auxiliary parameter sizes
 
 }}
 \seealso{

@@ -166,6 +166,46 @@ size <- function(object) {
 }
 
 
+# auxiliaryInitialValues ----
+
+#' `auxiliaryInitialValues`
+#'
+#' Obtain initial values for any additional Stan parameters introduced by an object.
+#'
+#' @param object where to get the auxiliary initial values from.
+#' @param ... additional options.
+#'
+#' @details
+#' Some objects, such as shrinkage priors, declare additional Stan parameters
+#' beyond the main model parameter. This helper returns named initial values for
+#' those additional parameters.
+#'
+#' @keywords internal
+auxiliaryInitialValues <- function(object, ...) {
+    UseMethod("auxiliaryInitialValues")
+}
+
+
+# auxiliarySize ----
+
+#' `auxiliarySize`
+#'
+#' Obtain sizes for any additional Stan parameters introduced by an object.
+#'
+#' @param object where to get the auxiliary parameter sizes from.
+#' @param ... additional options.
+#'
+#' @details
+#' Some objects, such as shrinkage priors, declare additional Stan parameters
+#' beyond the main model parameter. This helper returns named sizes for those
+#' additional parameters so their initial values can be expanded consistently.
+#'
+#' @keywords internal
+auxiliarySize <- function(object, ...) {
+    UseMethod("auxiliarySize")
+}
+
+
 # generateQuantities ----
 
 #' `generateQuantities`
