@@ -246,7 +246,7 @@ test_that("Limits work as expected", {
     expect_true(all(ivs > 0))
     expect_equal(
         as.StanModule(x, name = "tim")@model,
-        "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim) T[0, ];"
+        "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim);"
     )
 
     ## Put an impossible constraint on the distribution
@@ -257,6 +257,44 @@ test_that("Limits work as expected", {
         as.StanModule(x, name = "phil")@model,
         "    phil ~ lognormal(prior_mu_phil, prior_sigma_phil) T[, 0];"
     )
+})
+
+
+test_that("redundant positive-support prior truncation is omitted", {
+    positive_priors <- list(
+        cauchy = prior_cauchy(0, 1),
+        gamma = prior_gamma(2, 1),
+        invgamma = prior_invgamma(2, 1),
+        loglogistic = prior_loglogistic(2, 3),
+        lognormal = prior_lognormal(0, 1)
+    )
+
+    for (prior in positive_priors) {
+        x <- set_limits(prior, lower = 0)
+        expect_false(grepl("T\\[0, \\]", as.character(x)))
+        expect_false(grepl(
+            "T\\[0, \\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+
+        x <- set_limits(prior, lower = 1e-8)
+        expect_true(grepl("T\\[1e-08, \\]", as.character(x)))
+        expect_true(grepl(
+            "T\\[1e-08, \\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+
+        x <- set_limits(prior, lower = 0, upper = 1)
+        expect_true(grepl("T\\[0, 1\\]", as.character(x)))
+        expect_true(grepl(
+            "T\\[0, 1\\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+    }
+
+    x <- set_limits(prior_normal(0, 1), lower = 0)
+    expect_true(grepl("T\\[0, \\]", as.character(x)))
+    expect_true(grepl("T\\[0, \\]", as.StanModule(x, name = "theta")@model))
 })
 
 

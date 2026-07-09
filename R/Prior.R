@@ -39,6 +39,7 @@ NULL
 #' @slot display (`string`)\cr See arguments.
 #' @slot sample (`function`)\cr See arguments.
 #' @slot limits (`numeric`)\cr See arguments.
+#' @slot .omit_zero_lower_truncation (`logical`)\cr See arguments.
 #' @slot .allow_vectors (`logical`)\cr See arguments.
 #' @slot .is_const (`logical`)\cr See arguments.
 #'
@@ -59,6 +60,7 @@ NULL
         "validation" = "list",
         "sample" = "function",
         "limits" = "numeric",
+        ".omit_zero_lower_truncation" = "logical",
         ".allow_vectors" = "logical",
         ".is_const" = "logical"
     )
@@ -87,7 +89,9 @@ NULL
 #' @typed sample: function
 #'   a function to sample from the prior distribution.
 #' @typed limits: numeric
-#'   the lower and upper limits for a truncated distribution
+#'   the lower and upper limits for a truncated distribution.
+#' @typed .omit_zero_lower_truncation: flag
+#'   whether to omit a lower-zero truncation adjustment.
 #' @typed .allow_vectors: flag
 #'   whether to allow vector parameters.
 #' @typed .is_const: flag
@@ -105,6 +109,7 @@ Prior <- function(
     repr_transformed_parameters = "",
     repr_generated_quantities = "",
     limits = c(-Inf, Inf),
+    .omit_zero_lower_truncation = FALSE,
     .allow_vectors = FALSE,
     .is_const = FALSE
 ) {
@@ -120,6 +125,7 @@ Prior <- function(
         validation = validation,
         sample = sample,
         limits = limits,
+        .omit_zero_lower_truncation = .omit_zero_lower_truncation,
         .allow_vectors = .allow_vectors,
         .is_const = .is_const
     )
@@ -215,7 +221,7 @@ as.character.Prior <- function(x, ...) {
         glue::glue,
         append(x@display, parameters_rounded)
     )
-    display_limits <- if (x@.is_const) "" else render_stan_limits(x@limits)
+    display_limits <- if (x@.is_const) "" else render_stan_limits(x)
     if (
         display_limits != "" &&
             display_string != "" &&
@@ -230,12 +236,27 @@ as.character.Prior <- function(x, ...) {
 #' Creates Stan Syntax for Truncated distributions
 #' @description
 #' This function creates the Stan syntax for truncated distributions
-#' @typed limits: numeric
-#'   the lower and upper limits for a truncated distribution
+#' @typed object: Prior | numeric
+#'   prior or lower and upper limits for a truncated distribution.
 #' @keywords internal
 #' @typedreturn character
 #'   the Stan syntax for truncated distributions
-render_stan_limits <- function(limits) {
+render_stan_limits <- function(object) {
+    UseMethod("render_stan_limits")
+}
+
+render_stan_limits.Prior <- function(object) {
+    if (
+        object@.omit_zero_lower_truncation &&
+            identical(object@limits, c(0, Inf))
+    ) {
+        return("")
+    }
+    render_stan_limits(object@limits)
+}
+
+render_stan_limits.numeric <- function(object) {
+    limits <- object
     l_bound <- if (limits[[1]] > -Inf) limits[[1]] else ""
     u_bound <- if (limits[[2]] < Inf) limits[[2]] else ""
     string <- ""
@@ -292,7 +313,7 @@ as.StanModule.Prior <- function(object, name, size = 1, ...) {
         paste0("    ", x, collapse = "\n")
     }
     trunctation <- if (object@repr_model != "") {
-        paste0(render_stan_limits(object@limits), ";")
+        paste0(render_stan_limits(object), ";")
     } else {
         ""
     }
@@ -636,7 +657,8 @@ prior_cauchy <- function(mu, sigma) {
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
-        )
+        ),
+        .omit_zero_lower_truncation = TRUE
     )
 }
 
@@ -664,7 +686,8 @@ prior_gamma <- function(alpha, beta) {
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
-        )
+        ),
+        .omit_zero_lower_truncation = TRUE
     )
 }
 
@@ -691,7 +714,8 @@ prior_lognormal <- function(mu, sigma) {
         validation = list(
             mu = is.numeric,
             sigma = \(x) x > 0
-        )
+        ),
+        .omit_zero_lower_truncation = TRUE
     )
 }
 
@@ -744,7 +768,8 @@ prior_init_only <- function(dist) {
         },
         centre = dist@centre,
         validation = list(),
-        limits = dist@limits
+        limits = dist@limits,
+        .omit_zero_lower_truncation = dist@.omit_zero_lower_truncation
     )
 }
 
@@ -876,7 +901,8 @@ prior_loglogistic <- function(alpha, beta) {
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
-        )
+        ),
+        .omit_zero_lower_truncation = TRUE
     )
 }
 
@@ -907,7 +933,8 @@ prior_invgamma <- function(alpha, beta) {
         validation = list(
             alpha = \(x) x > 0,
             beta = \(x) x > 0
-        )
+        ),
+        .omit_zero_lower_truncation = TRUE
     )
 }
 

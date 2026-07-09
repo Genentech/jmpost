@@ -19,6 +19,7 @@ Prior(
   repr_transformed_parameters = "",
   repr_generated_quantities = "",
   limits = c(-Inf, Inf),
+  .omit_zero_lower_truncation = FALSE,
   .allow_vectors = FALSE,
   .is_const = FALSE
 )
@@ -46,6 +47,8 @@ the same names as the \code{paramaters} slot.}
 \item{repr_generated_quantities}{(\code{string}) the Stan code representation for the generated quantities block.}
 
 \item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+
+\item{.omit_zero_lower_truncation}{(\code{flag}) whether to omit a lower-zero truncation adjustment.}
 
 \item{.allow_vectors}{(\code{flag}) whether to allow vector parameters.}
 
@@ -78,6 +81,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{sample}}{(\code{function})\cr See arguments.}
 
 \item{\code{limits}}{(\code{numeric})\cr See arguments.}
+
+\item{\code{.omit_zero_lower_truncation}}{(\code{logical})\cr See arguments.}
 
 \item{\code{.allow_vectors}}{(\code{logical})\cr See arguments.}
 

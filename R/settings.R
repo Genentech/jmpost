@@ -44,14 +44,11 @@
 #'
 #' ## `jmpost.double_eps` and `jmpost.double_neg_eps`
 #'
-#' Default = `sqrt(.Machine$double.eps)` and `sqrt(.Machine$double.neg.eps)`
+#' Default = `0` and `sqrt(.Machine$double.neg.eps)`
 #'
-#' These are the smallest positive floating-point numbers `x` which are used
-#' in the parameter definitions as lower boundaries to prevent numerical issues
-#' with the MCMC sampler in the beginning of the sampling process.
-#' The default values are set to the square root of the machine epsilon for
-#' double precision numbers, which is a common choice to balance numerical stability
-#' and the ability to explore the parameter space effectively.
+#' These are small floating-point numbers `x` which are used in parameter
+#' definitions as lower boundaries to prevent numerical issues with the MCMC
+#' sampler in the beginning of the sampling process.
 #'
 #' @examples
 #' \dontrun{
@@ -70,7 +67,7 @@ set_options <- function() {
         jmpost.cache_dir = cache_dir,
         jmpost.prior_shrinkage = 0.5,
         jmpost.gauss_quad_n = 15,
-        jmpost.double_eps = sqrt(.Machine$double.eps),
+        jmpost.double_eps = 0,
         jmpost.double_neg_eps = sqrt(.Machine$double.neg.eps)
     )
     for (opt in names(jmpost_opts)) {

@@ -4,10 +4,11 @@
 \alias{render_stan_limits}
 \title{Creates Stan Syntax for Truncated distributions}
 \usage{
-render_stan_limits(limits)
+render_stan_limits(object)
 }
 \arguments{
-\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+\item{object}{a \code{\link{Prior}} or numeric lower/upper limits for a
+truncated distribution}
 }
 \value{
 (\code{character}) the Stan syntax for truncated distributions
