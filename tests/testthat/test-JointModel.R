@@ -46,8 +46,6 @@ snapshot_joint_model_parameter_declarations <- function(object) {
 
 
 test_that("JointModel snapshots assembled parameter declarations", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     expect_snapshot(
         snapshot_joint_model_parameter_declarations(JointModel(
             longitudinal = LongitudinalRandomSlope(),
@@ -73,8 +71,6 @@ test_that("JointModel snapshots assembled parameter declarations", {
 
 
 test_that("JointModel print method works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     expect_snapshot({
         x <- JointModel(
             longitudinal = LongitudinalRandomSlope(),

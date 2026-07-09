@@ -102,8 +102,6 @@ test_that("SurvivalLogLogistic can recover known values", {
 
 
 test_that("Print method for SurvivalLogLogistic works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     expect_snapshot({
         x <- SurvivalLogLogistic()
         print(x)

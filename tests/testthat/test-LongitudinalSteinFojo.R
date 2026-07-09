@@ -5,8 +5,6 @@ test_that("LongitudinalSteinFojo works as expected with default arguments", {
 
 
 test_that("Print method for LongitudinalSteinFojo works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     x <- LongitudinalSteinFojo()
     expect_snapshot(print(x))
 

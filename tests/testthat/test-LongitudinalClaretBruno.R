@@ -5,8 +5,6 @@ test_that("LongitudinalClaretBruno works as expected with default arguments", {
 
 
 test_that("Print method for LongitudinalClaretBruno works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     expect_snapshot({
         x <- LongitudinalClaretBruno()
         print(x)
@@ -305,8 +303,6 @@ test_that("Quantity models pass the parser", {
 
 
 test_that("Can generate valid initial values", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     pars <- c(
         "lm_clbr_omega_b",
         "lm_clbr_omega_g",

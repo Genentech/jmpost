@@ -142,8 +142,6 @@ test_that("autoplot.SurvivalSamples works as expected", {
 
 
 test_that("SurvivalQuantities print method works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     expect_snapshot({
         set.seed(3219)
         subjectgroups <- list(

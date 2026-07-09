@@ -136,8 +136,6 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
 
 
 test_that("Print method for SurvivalExponential works as expected", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     x <- SurvivalExponential()
     expect_snapshot(print(x))
 
@@ -149,8 +147,6 @@ test_that("Print method for SurvivalExponential works as expected", {
 })
 
 test_that("Different priors for the beta components are possible", {
-    withr::local_options(list(jmpost.double_eps = 0))
-
     # Same iid prior for all beta components:
     x <- SurvivalExponential(beta = prior_normal(0, 1))
     expect_snapshot(print(x))
