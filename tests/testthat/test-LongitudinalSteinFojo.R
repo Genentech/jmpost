@@ -6,18 +6,15 @@ test_that("LongitudinalSteinFojo works as expected with default arguments", {
 
 test_that("Print method for LongitudinalSteinFojo works as expected", {
     withr::local_options(list(jmpost.double_eps = 0))
-    expect_snapshot({
-        x <- LongitudinalSteinFojo()
-        print(x)
-    })
 
-    expect_snapshot({
-        x <- LongitudinalSteinFojo(
-            sigma = prior_normal(0, 1),
-            mu_kg = prior_gamma(2, 1)
-        )
-        print(x)
-    })
+    x <- LongitudinalSteinFojo()
+    expect_snapshot(print(x))
+
+    x <- LongitudinalSteinFojo(
+        sigma = prior_normal(0, 1),
+        mu_kg = prior_gamma(2, 1)
+    )
+    expect_snapshot(print(x))
 })
 
 

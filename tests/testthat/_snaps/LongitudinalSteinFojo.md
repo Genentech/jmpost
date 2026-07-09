@@ -1,7 +1,6 @@
 # Print method for LongitudinalSteinFojo works as expected
 
     Code
-      x <- LongitudinalSteinFojo()
       print(x)
     Output
       
@@ -21,7 +20,6 @@
 ---
 
     Code
-      x <- LongitudinalSteinFojo(sigma = prior_normal(0, 1), mu_kg = prior_gamma(2, 1))
       print(x)
     Output
       

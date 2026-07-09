@@ -305,6 +305,8 @@ test_that("Quantity models pass the parser", {
 
 
 test_that("Can generate valid initial values", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     pars <- c(
         "lm_clbr_omega_b",
         "lm_clbr_omega_g",
