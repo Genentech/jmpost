@@ -47,11 +47,11 @@ the design matrix coefficients
 
 The `stan` slot is a `StanModule()` object which needs to define the following:
 
-1) In the `transformed parameters` block there must define a vector called `pars_os` which contains one
+1) In the `transformed parameters` block you must define a vector called `pars_os` which contains one
 element for each parameter used by the survival distribution.
 
 
-2) In the `functions` block there must define a function called `log_h0` which returns the
+2) In the `functions` block you must define a function called `log_h0` which returns the
 log-hazard contribution. This function must have the following signature:
 
 ```stan

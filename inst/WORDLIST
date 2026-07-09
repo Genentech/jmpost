@@ -21,6 +21,7 @@ Grajek
 HS
 Hoffmann
 IPCW
+Inv
 JointModel
 JointModelSamples
 Kerioui
@@ -63,6 +64,7 @@ coeficient
 csv
 dSLD
 docetaxel
+dotsc
 du
 etc
 extractVariableNames
@@ -71,6 +73,7 @@ geq
 gk
 groupwise
 gt
+hardcode
 hardcoded
 ie
 ij
@@ -80,16 +83,20 @@ ln
 lt
 mathbb
 nonlinear
+operatorname
 parameterise
 parameterised
 pk
 prior's
+qquad
 saveObject
 sim
 sk
 sld
 stan
+standalone
 throughs
 tumor
 u
+unregularized
 urothelial

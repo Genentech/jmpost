@@ -39,3 +39,4 @@ model specification.
 by the expected value, corresponding to a multiplicative model. If not,
 then an additive error model is used.}
 }}
+

@@ -157,7 +157,9 @@ render_stan_const_declaration <- function(name, size, limits) {
     if (length(size) == 1 && is.numeric(size) && size == 1) {
         return(glue::glue("real{constraints} {name} = {value};"))
     }
-    glue::glue("vector{constraints}[{size}] {name} = rep_vector({value}, {size});")
+    glue::glue(
+        "vector{constraints}[{size}] {name} = rep_vector({value}, {size});"
+    )
 }
 
 #' `Parameter` Declaration -> `StanModule`
@@ -170,7 +172,7 @@ render_stan_const_declaration <- function(name, size, limits) {
 #'
 #' @return A [`StanModule`] object.
 #'
-#' @keywords internal
+#' @export
 as.StanModule.ParameterDeclaration <- function(object) {
     declaration <- if (object@prior@.is_const) {
         render_stan_const_declaration(
@@ -191,9 +193,11 @@ as.StanModule.ParameterDeclaration <- function(object) {
     } else {
         "parameters"
     }
-    StanModule(glue::glue("{block} {{
+    StanModule(glue::glue(
+        "{block} {{
     {declaration}
-}}"))
+}}"
+    ))
 }
 
 

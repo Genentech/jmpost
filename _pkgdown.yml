@@ -58,6 +58,7 @@ reference:
       - Prior
       - prior_beta
       - prior_cauchy
+      - prior_const
       - prior_gamma
       - prior_invgamma
       - prior_logistic
@@ -152,6 +153,7 @@ reference:
       - as.CmdStanMCMC.JointModelSamples
       - as.character.JointModel
       - as.StanModule.Parameter
+      - as.StanModule.ParameterDeclaration
       - as.StanModule.ParameterList
       - as.StanModule.Prior
       - as.StanModule.JointModel

@@ -46,7 +46,7 @@ local parameters allow selected coefficients to remain large. The regularized
 horseshoe [@PiironenVehtari2017] adds a slab component that regularizes
 coefficients that escape the main shrinkage. This is the parameterization used
 by `jmpost`, following the same notation as `brms` [@Buerkner2017].
-Details are provided in the statistical specifications vignette [here](statistical-specifications.Rmd).
+Details are provided in the statistical specifications vignette [here](statistical-specification.html).
 
 The hyperparameters map to `prior_horseshoe()`
 arguments as follows:

@@ -17,4 +17,3 @@ Creates only the Stan declaration for a \code{\link{Parameter}}. Sampled paramet
 declared in the \code{parameters} block; constant parameters are declared in the
 \verb{transformed parameters} block.
 }
-\keyword{internal}

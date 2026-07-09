@@ -7,7 +7,7 @@
 covariates(object, ...)
 }
 \arguments{
-\item{<parse error>}{(\if{html}{\out{<parse error>}}) \if{html}{\out{<parse error>}}}
+\item{object}{(\code{ANY}) the object to extract covariate names from.}
 }
 \description{
 Extract Covariate Names
