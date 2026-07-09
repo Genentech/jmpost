@@ -60,7 +60,7 @@ arguments as follows:
 The local shrinkage parameters $\lambda_j$ let individual coefficients escape
 the global shrinkage $\tau$. The slab scale $s_c$ and slab degrees of freedom
 $\nu_c$ control how much very large coefficients are regularized. Smaller
-`scale_global` values encode stronger prior belief that only a small number of
+$s_{\tau}$ values encode stronger prior belief that only a small number of
 candidate covariates are relevant.
 
 A useful posterior diagnostic is the shrinkage factor
@@ -107,13 +107,15 @@ sim_data <- SimJointData(
         lambda_cen = 1 / 9000,
         beta_cat = c(
             "A" = 0,
-            "B" = -0.1,
-            "C" = 0.5
+            "B" = 0.3,
+            "C" = 0.7
         ),
         beta_cont = 0.3
     )
 )
 ```
+
+Then we prepare the corresponding objects:
 
 ```{r prepare-data}
 os_data <- sim_data@survival
@@ -138,7 +140,7 @@ joint_data <- DataJoint(
 )
 ```
 
-Before setting priors or interpreting the output, check the survival design
+Before setting priors or interpreting the output, it is a good habit to check the survival design
 matrix. With `covariates()` we can access the column names, which map to the
 corresponding survival coefficients that receive the horseshoe prior.
 
@@ -152,7 +154,7 @@ survival_covariates
 
 Now we define a joint model. The longitudinal model and the association link use
 standard priors. The survival model uses `prior_horseshoe()` for the vector of
-survival covariate coefficients.
+survival covariate coefficients:
 
 ```{r model-specification}
 joint_model <- JointModel(
@@ -188,16 +190,13 @@ fit <- sampleStanModel(
     chains = 4,
     parallel_chains = 4,
     seed = 325,
-    refresh = 200
+    refresh = 0
 )
 ```
 
-The iteration counts above are chosen to keep this vignette reasonably fast to
-render. Refit with longer chains before making inferential claims.
-
 ## Inspect Coefficients
 
-After fitting, inspect the coefficient posterior and standard MCMC diagnostics.
+After fitting, let's inspect the coefficient posterior and standard MCMC diagnostics.
 The survival covariate coefficients are stored in `beta_os_cov`.
 
 ```{r inspect-coefficients}
@@ -227,7 +226,7 @@ closer to 0 have escaped shrinkage and are more strongly supported by the model.
 
 ## Extract and Plot Shrinkage Factors
 
-Use `shrinkage()` to extract the posterior draws of $\kappa_j$. The returned
+Let's use the `shrinkage()` function to extract the posterior draws of $\kappa_j$. The returned
 draws are named with the survival covariate names, so they can be plotted or
 summarised directly.
 
@@ -250,10 +249,13 @@ mcmc_dens_overlay(shrinkage_draws) +
     )
 ```
 
-A second useful display is the median shrinkage factor with an interval for each
-covariate.
+We see that both coefficients for the categorical covariate have shrinkage factors near 1, while the continuous 
+covariate's shrinkage factor is a bit more distributed towards smaller values.
 
-```{r shrinkage-intervals, fig.width=7, fig.height=4}
+A second useful display is the median shrinkage factor with an interval for each
+covariate:
+
+```{r shrinkage-intervals, fig.width=7, fig.height=4, message=FALSE}
 library(dplyr)
 library(ggplot2)
 
@@ -316,3 +318,5 @@ Finally, the horseshoe prior is a shrinkage prior, not a replacement for model
 checking. Always inspect convergence diagnostics, posterior predictive fit, and
 sensitivity to reasonable prior choices before using the selected covariates for
 scientific conclusions.
+
+## References
