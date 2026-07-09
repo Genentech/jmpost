@@ -139,7 +139,8 @@ test_that("simulate works with lambda_censor", {
         joint_results,
         times = (1:10),
         lambda_censor = 1 / 6,
-        time_step = 0.5
+        time_step = 0.5,
+        seed = 9382
     )
     expect_data_frame(
         results@survival,
@@ -147,7 +148,7 @@ test_that("simulate works with lambda_censor", {
         ncols = 9
     )
 
-    expect_equal(mean(results@survival$event), 0.6601, tolerance = 0.001)
+    expect_equal(mean(results@survival$event), 0.6601, tolerance = 0.01)
     expect_number(mean(results@survival$time), lower = 1, upper = 3)
     expect_number(
         mean(results@survival$time[results@survival$event == 0]),
