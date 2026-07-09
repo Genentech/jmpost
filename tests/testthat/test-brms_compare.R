@@ -396,27 +396,15 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
         posterior::as_draws_df()
 
     b_c2 <- 2^2 * b_shrink_pars$hs_slab
+    b_g2 <- b_shrink_pars$hs_global^2
+    shrink_fun <- function(hs_local) {
+        1 / (1 + b_g2 * hs_local^2 / b_c2)
+    }
     b_shrinkage <- dplyr::tibble(
-        cov1 = 1 /
-            (1 +
-                b_shrink_pars$hs_global^2 *
-                    b_shrink_pars$`hs_local[1]`^2 /
-                    b_c2),
-        cov2 = 1 /
-            (1 +
-                b_shrink_pars$hs_global^2 *
-                    b_shrink_pars$`hs_local[2]`^2 /
-                    b_c2),
-        cov3 = 1 /
-            (1 +
-                b_shrink_pars$hs_global^2 *
-                    b_shrink_pars$`hs_local[3]`^2 /
-                    b_c2),
-        cov4 = 1 /
-            (1 +
-                b_shrink_pars$hs_global^2 *
-                    b_shrink_pars$`hs_local[4]`^2 /
-                    b_c2)
+        cov1 = shrink_fun(b_shrink_pars$`hs_local[1]`),
+        cov2 = shrink_fun(b_shrink_pars$`hs_local[2]`),
+        cov3 = shrink_fun(b_shrink_pars$`hs_local[3]`),
+        cov4 = shrink_fun(b_shrink_pars$`hs_local[4]`)
     )
 
     j_shrinkage <- shrinkage(mp) |>

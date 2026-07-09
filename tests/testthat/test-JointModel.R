@@ -22,7 +22,7 @@ normalise_stan_declarations <- function(x) {
 # Snapshot only the assembled parameter declarations and constant-parameter
 # declarations. This catches regressions in dynamic parameter insertion without
 # snapshotting the full generated Stan program.
-snapshot_joint_model_parameter_declarations <- function(object) {
+snapshot_joint_model_parameter_decl <- function(object) {
     stan <- as.StanModule(object)
     cat("parameters\n")
     cat(normalise_stan_declarations(stan@parameters), sep = "\n")
@@ -47,7 +47,7 @@ snapshot_joint_model_parameter_declarations <- function(object) {
 
 test_that("JointModel snapshots assembled parameter declarations", {
     expect_snapshot(
-        snapshot_joint_model_parameter_declarations(JointModel(
+        snapshot_joint_model_parameter_decl(JointModel(
             longitudinal = LongitudinalRandomSlope(),
             survival = SurvivalWeibullPH(),
             link = linkDSLD()
@@ -55,7 +55,7 @@ test_that("JointModel snapshots assembled parameter declarations", {
     )
 
     expect_snapshot(
-        snapshot_joint_model_parameter_declarations(JointModel(
+        snapshot_joint_model_parameter_decl(JointModel(
             longitudinal = LongitudinalGSF(centred = FALSE),
             survival = SurvivalWeibullPH(),
             link = Link(linkTTG(), linkDSLD(), linkGrowth())
@@ -63,7 +63,7 @@ test_that("JointModel snapshots assembled parameter declarations", {
     )
 
     expect_snapshot(
-        snapshot_joint_model_parameter_declarations(JointModel(
+        snapshot_joint_model_parameter_decl(JointModel(
             survival = SurvivalExponential(lambda = prior_const(0.5))
         ))
     )

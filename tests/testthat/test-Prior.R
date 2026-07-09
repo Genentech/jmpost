@@ -481,7 +481,7 @@ test_that("prior_horseshoe works as expected", {
     header <- merge(
         StanModule("base/functions.stan"),
         StanModule(
-        "data {
+            "data {
     int<lower=1> p;
 }
 parameters {
