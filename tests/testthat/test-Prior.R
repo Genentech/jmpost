@@ -138,11 +138,46 @@ test_that("Invalid prior parameters are rejected", {
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
     expect_s4_class(prior_init_only(prior_normal(3, 1)), "Prior")
     expect_s4_class(prior_std_normal(), "Prior")
+    expect_s4_class(prior_const(1), "Prior")
+})
+
+test_that("prior_const() works as expected", {
+    x <- prior_const(1)
+
+    expect_equal(initialValues(x), 1)
+    expect_equal(
+        as_stan_list(x, name = "sm_exp_lambda"),
+        list(prior_const_sm_exp_lambda = 1)
+    )
+    expect_equal(
+        as.StanModule(x, name = "sm_exp_lambda")@data,
+        "    real prior_const_sm_exp_lambda;"
+    )
+    expect_equal(as.StanModule(x, name = "sm_exp_lambda")@model, "")
+    expect_equal(
+        as.StanModule(x, name = "bob")@data,
+        "    real prior_const_bob;"
+    )
+
+    pars <- ParameterList(
+        Parameter(name = "fixed", prior = x, size = 1),
+        Parameter(name = "sampled", prior = prior_normal(0, 1), size = 1)
+    )
+    expect_equal(names(initialValues(pars, n_chains = 1)[[1]]), "sampled")
+    expect_equal(
+        as_stan_list(pars),
+        list(
+            prior_const_fixed = 1,
+            prior_mu_sampled = 0,
+            prior_sigma_sampled = 1
+        )
+    )
 })
 
 
 test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_cauchy(0, 0.8)))
+    expect_snapshot(print(prior_const(1)))
     expect_snapshot(print(prior_normal(0, 0.8)))
     expect_snapshot(print(prior_std_normal()))
     expect_snapshot(print(prior_beta(5, 1)))

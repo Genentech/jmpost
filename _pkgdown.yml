@@ -58,6 +58,7 @@ reference:
       - Prior
       - prior_beta
       - prior_cauchy
+      - prior_const
       - prior_gamma
       - prior_invgamma
       - prior_logistic
@@ -65,6 +66,7 @@ reference:
       - prior_lognormal
       - prior_normal
       - prior_normal_vector
+      - prior_horseshoe
       - prior_uniform
       - prior_std_normal
       - prior_student_t
@@ -124,6 +126,8 @@ reference:
       - brierScore
       - brierScore.SurvivalQuantities
       - populationHR
+      - shrinkage
+      - shrinkage.JointModelSamples
 
   - title: Stan Code
     contents:
@@ -149,6 +153,7 @@ reference:
       - as.CmdStanMCMC.JointModelSamples
       - as.character.JointModel
       - as.StanModule.Parameter
+      - as.StanModule.ParameterDeclaration
       - as.StanModule.ParameterList
       - as.StanModule.Prior
       - as.StanModule.JointModel
@@ -185,6 +190,8 @@ reference:
       - hazardWindows
       - sampleObservations
       - sampleSubjects
+      - covariates
+      - covariates.DataSurvival
       - enableLink
       - enableGQ
       - as_formula
@@ -218,7 +225,7 @@ articles:
     contents:
         - quickstart
         - '`statistical-specification`'
+        - '`covariate-selection-horseshoe`'
         - '`custom-model`'
         - '`extending-jmpost`'
         - '`simulating-data`'
-

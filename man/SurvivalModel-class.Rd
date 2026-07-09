@@ -15,9 +15,9 @@ SurvivalModel(
 )
 }
 \arguments{
-\item{stan}{(\code{StanModule}) code containing the Stan code specification.}
+\item{stan}{(\code{StanModule}) code containing the model-specific Stan code specification.}
 
-\item{parameters}{(\code{ParameterList}) the parameter specification.}
+\item{parameters}{(\code{ParameterList}) the parameter declaration and prior specification.}
 
 \item{name}{(\code{character}) display name for the model object.}
 

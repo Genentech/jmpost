@@ -15,19 +15,9 @@ functions {
 }
 
 
-parameters {
-    //
-    // Source - sm-gamma/model.stan
-    //
-    real<lower={{ machine_double_eps }}> sm_gamma_k;
-    real<lower={{ machine_double_eps }}> sm_gamma_theta;
-}
-
-
 transformed parameters {
     //
     // Source - sm-gamma/model.stan
     //
     vector[2] pars_os = [sm_gamma_k, sm_gamma_theta]';
 }
-

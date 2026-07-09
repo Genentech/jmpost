@@ -28,6 +28,7 @@ SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
     beta = prior_normal(0, 2)
 ) {
+    lambda <- set_limits(lambda, lower = getOption("jmpost.double_eps"))
     .SurvivalExponential(
         SurvivalModel(
             name = "Exponential",

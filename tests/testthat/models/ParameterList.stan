@@ -6,10 +6,14 @@ data {
     real<lower=0> prior_sigma_myp;
 }
 
+parameters {
+    real inter;
+    real myp;
+}
+
 model {
     inter ~ gamma(prior_alpha_inter, prior_beta_inter);
     myp ~ normal(prior_mu_myp, prior_sigma_myp);
 }
-
 
 

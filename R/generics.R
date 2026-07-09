@@ -531,6 +531,7 @@ saveObject <- function(object, file, ...) {
 #' Extract Covariate Names
 #'
 #' @typed object: ANY
+#'   the object to extract covariate names from.
 #'
 #' @family covariates
 #' @export

@@ -86,7 +86,118 @@ setValidity(
 #' @family as.StanModule
 #' @export
 as.StanModule.Parameter <- function(object, ...) {
-    as.StanModule(object@prior, name = object@name, size = object@size)
+    merge(
+        as.StanModule.ParameterDeclaration(object),
+        as.StanModule(object@prior, name = object@name, size = object@size)
+    )
+}
+
+#' Render Stan Parameter Constraints
+#'
+#' Converts a lower/upper limit vector from a [`Prior`] into a Stan declaration
+#' constraint, e.g. `<lower=0.1, upper=1>`.
+#'
+#' @typed limits: numeric
+#'   length-two vector containing lower and upper parameter limits.
+#'
+#' @return A length-one character vector.
+#'
+#' @keywords internal
+render_stan_parameter_limits <- function(limits) {
+    limits_names <- c("lower", "upper")
+    limits <- stats::setNames(limits, limits_names)
+    limits <- limits[is.finite(limits)]
+    if (length(limits) == 0) {
+        return("")
+    }
+    constraints <- paste(names(limits), limits, sep = "=", collapse = ", ")
+    paste0("<", constraints, ">")
+}
+
+#' Render Stan Parameter Declaration
+#'
+#' Creates a Stan declaration for a sampled scalar or vector parameter.
+#'
+#' @typed name: string
+#'   parameter name.
+#' @typed size: numeric_OR_character
+#'   parameter size.
+#' @typed limits: numeric
+#'   lower and upper parameter limits.
+#'
+#' @return A length-one character vector.
+#'
+#' @keywords internal
+render_stan_parameter_declaration <- function(name, size, limits) {
+    constraints <- render_stan_parameter_limits(limits)
+    if (length(size) == 1 && is.numeric(size) && size == 1) {
+        return(glue::glue("real{constraints} {name};"))
+    }
+    glue::glue("vector{constraints}[{size}] {name};")
+}
+
+#' Render Stan Constant Parameter Declaration
+#'
+#' Creates a Stan transformed-parameter declaration that fixes a scalar or vector
+#' parameter at a data-supplied constant value.
+#'
+#' @typed name: string
+#'   parameter name.
+#' @typed size: numeric_OR_character
+#'   parameter size.
+#' @typed limits: numeric
+#'   lower and upper parameter limits.
+#'
+#' @return A length-one character vector.
+#'
+#' @keywords internal
+render_stan_const_declaration <- function(name, size, limits) {
+    constraints <- render_stan_parameter_limits(limits)
+    value <- glue::glue("prior_const_{name}")
+    if (length(size) == 1 && is.numeric(size) && size == 1) {
+        return(glue::glue("real{constraints} {name} = {value};"))
+    }
+    glue::glue(
+        "vector{constraints}[{size}] {name} = rep_vector({value}, {size});"
+    )
+}
+
+#' `Parameter` Declaration -> `StanModule`
+#'
+#' Creates only the Stan declaration for a [`Parameter`]. Sampled parameters are
+#' declared in the `parameters` block; constant parameters are declared in the
+#' `transformed parameters` block.
+#'
+#' @inheritParams Parameter-Shared
+#'
+#' @return A [`StanModule`] object.
+#'
+#' @export
+as.StanModule.ParameterDeclaration <- function(object) {
+    declaration <- if (object@prior@.is_const) {
+        render_stan_const_declaration(
+            name = object@name,
+            size = object@size,
+            limits = object@prior@limits
+        )
+    } else {
+        render_stan_parameter_declaration(
+            name = object@name,
+            size = object@size,
+            limits = object@prior@limits
+        )
+    }
+
+    block <- if (object@prior@.is_const) {
+        "transformed parameters"
+    } else {
+        "parameters"
+    }
+    StanModule(glue::glue(
+        "{block} {{
+    {declaration}
+}}"
+    ))
 }
 
 
@@ -139,6 +250,9 @@ size.Parameter <- function(object) object@size
 #' @family Parameter
 #' @export
 as.character.Parameter <- function(x, ...) {
+    if (x@prior@.is_const) {
+        return(paste0(x@name, " = ", as.character(x@prior)))
+    }
     paste0(x@name, " ~ ", as.character(x@prior))
 }
 

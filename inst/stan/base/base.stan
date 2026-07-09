@@ -44,10 +44,10 @@ parameters{
 
 
 transformed parameters{
+{{ priors.transformed_parameters }}
 {{ longitudinal.transformed_parameters }}
 {{ link.transformed_parameters }}
 {{ survival.transformed_parameters }}
-{{ priors.transformed_parameters }}
 
     //
     // Source - base/base.stan

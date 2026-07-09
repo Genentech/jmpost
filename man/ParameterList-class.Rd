@@ -14,7 +14,8 @@ ParameterList(...)
 }
 \description{
 This class extends the general \code{\link{list}} type for containing \code{\link{Parameter}}
-specifications.
+specifications. When converted to a \code{\link{StanModule}}, the list supplies the
+Stan declarations and prior statements for those parameters.
 }
 \section{Slots}{
 

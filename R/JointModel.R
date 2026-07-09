@@ -33,7 +33,7 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 #' @slot longitudinal ([`LongitudinalModel`] or `NULL`)\cr the longitudinal model.
 #' @slot survival ([`SurvivalModel`] or `NULL`)\cr the survival model.
 #' @slot link (`Link`)\cr the link.
-#' @slot parameters (`ParameterList`)\cr the parameter specification.
+#' @slot parameters (`ParameterList`)\cr the parameter declaration and prior specification.
 #'
 #' @family JointModel
 #' @export JointModel

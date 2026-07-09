@@ -15,14 +15,7 @@ functions {
 }
 
 
-parameters {
-    // SurvivalExponential
-    real<lower={{ machine_double_eps }}> sm_exp_lambda;
-}
-
-
 transformed parameters {
     // SurvivalExponential
     vector[1] pars_os = [sm_exp_lambda]';
 }
-
