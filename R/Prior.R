@@ -261,7 +261,7 @@ render_stan_limits <- function(object) {
     UseMethod("render_stan_limits")
 }
 
-#' describeIn render_stan_limits method for [Prior] objects.
+#' @describeIn render_stan_limits method for [Prior] objects.
 #' @exportS3Method NULL
 render_stan_limits.Prior <- function(object) {
     if (
@@ -273,7 +273,7 @@ render_stan_limits.Prior <- function(object) {
     render_stan_limits(object@limits)
 }
 
-#' describeIn render_stan_limits method for numeric vectors.
+#' @describeIn render_stan_limits method for numeric vectors.
 #' @exportS3Method NULL
 render_stan_limits.numeric <- function(object) {
     limits <- object
