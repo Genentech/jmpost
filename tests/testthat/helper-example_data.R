@@ -1,4 +1,5 @@
-ensure_test_data_1 <- function() {
+ensure_test_data_1 <- function(positive_epsilon = FALSE) {
+    assert_flag(positive_epsilon)
     set.seed(739)
     simjdat <- SimJointData(
         design = list(
@@ -19,6 +20,10 @@ ensure_test_data_1 <- function() {
         ),
         .silent = TRUE
     )
+
+    withr::local_options(list(
+        jmpost.double_eps = ifelse(positive_epsilon, 1e-10, 0)
+    ))
 
     dat_os <- simjdat@survival
     dat_lm <- simjdat@longitudinal

@@ -1,4 +1,4 @@
-test_data_1 <- ensure_test_data_1()
+test_data_1 <- ensure_test_data_1(positive_epsilon = TRUE)
 
 test_that("Longitudinal Model doesn't print sampler rejection messages", {
     # These rejections typically happen when the sampler samples a
