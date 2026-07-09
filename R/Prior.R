@@ -215,7 +215,7 @@ as.character.Prior <- function(x, ...) {
         glue::glue,
         append(x@display, parameters_rounded)
     )
-    display_limits <- render_stan_limits(x@limits)
+    display_limits <- if (x@.is_const) "" else render_stan_limits(x@limits)
     if (
         display_limits != "" &&
             display_string != "" &&

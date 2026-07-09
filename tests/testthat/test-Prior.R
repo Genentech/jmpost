@@ -145,6 +145,7 @@ test_that("prior_const() works as expected", {
     x <- prior_const(1)
 
     expect_equal(initialValues(x), 1)
+    expect_equal(as.character(set_limits(x, lower = 0)), "const(value = 1)")
     expect_equal(
         as_stan_list(x, name = "sm_exp_lambda"),
         list(prior_const_sm_exp_lambda = 1)

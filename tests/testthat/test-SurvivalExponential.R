@@ -60,6 +60,14 @@ test_that("SurvivalExponential() can fix lambda with prior_const()", {
     expect_stan_syntax(as.StanModule(beta_const))
 })
 
+test_that("SurvivalExponential() does not print truncation for prior_const()", {
+    x <- SurvivalExponential(lambda = prior_const(1))
+    expect_equal(
+        as.character(x@parameters@parameters[[1]]),
+        "sm_exp_lambda = const(value = 1)"
+    )
+})
+
 
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
     skip_if_not(is_full_test())
