@@ -7,6 +7,8 @@ test_that("LongitudinalGSF works as expected with default arguments", {
 
 
 test_that("Print method for LongitudinalGSF works as expected", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     expect_snapshot({
         x <- LongitudinalGSF()
         print(x)
@@ -310,6 +312,8 @@ test_that("Quantity models pass the parser", {
 
 
 test_that("Can generate valid initial values", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     pars <- c(
         "lm_gsf_omega_bsld",
         "lm_gsf_omega_ks",

@@ -128,6 +128,8 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
 
 
 test_that("Print method for SurvivalExponential works as expected", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     expect_snapshot({
         x <- SurvivalExponential()
         print(x)

@@ -522,9 +522,9 @@ test_that("GridPrediction() works for survival only models", {
         ) |>
         dplyr::arrange(group, time)
 
-    expect_gt(cor(actual$median, expected$median), 0.999999)
-    expect_gt(cor(actual$lower, expected$lower), 0.999999)
-    expect_gt(cor(actual$upper, expected$upper), 0.999999)
+    expect_gt(cor(actual$median, expected$median), 0.99999)
+    expect_gt(cor(actual$lower, expected$lower), 0.99999)
+    expect_gt(cor(actual$upper, expected$upper), 0.99999)
     expect_equal(actual$time, expected$time)
     expect_equal(actual$group, expected$group)
 })

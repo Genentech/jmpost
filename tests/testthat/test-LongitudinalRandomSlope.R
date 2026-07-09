@@ -1,4 +1,6 @@
 test_that("Print method for LongitudinalRandomSlope works as expected", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     expect_snapshot({
         x <- LongitudinalRandomSlope()
         print(x)

@@ -5,6 +5,8 @@ test_that("LongitudinalClaretBruno works as expected with default arguments", {
 
 
 test_that("Print method for LongitudinalClaretBruno works as expected", {
+    withr::local_options(list(jmpost.double_eps = 0))
+
     expect_snapshot({
         x <- LongitudinalClaretBruno()
         print(x)

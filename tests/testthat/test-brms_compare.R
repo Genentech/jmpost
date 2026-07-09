@@ -421,6 +421,7 @@ test_that("jmpost and brms get similar horseshoe estimates for survival models",
 
     j_shrinkage <- shrinkage(mp) |>
         posterior::as_draws_df() |>
+        dplyr::as_tibble() |>
         dplyr::select(ones, cov1, cov2, cov3)
 
     expect_equal(
