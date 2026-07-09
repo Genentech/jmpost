@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{(\code{DataSurvival}) Survival data object to extract covariate names from.}
+
+\item{...}{not used.}
 }
 \description{
 Extract Covariate Names for Survival Data

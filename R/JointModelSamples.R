@@ -188,6 +188,7 @@ saveObject.JointModelSamples <- function(object, file, ...) {
 #'
 #' @typed object: JointModelSamples
 #'   the object to extract shrinkage factors from.
+#' @param ... not used.
 #' @return the shrinkage factors correctly named after the covariate names.
 #'
 #' @family shrinkage

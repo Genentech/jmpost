@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{(\code{JointModelSamples}) the object to extract shrinkage factors from.}
+
+\item{...}{not used.}
 }
 \value{
 the shrinkage factors correctly named after the covariate names.

@@ -8,6 +8,8 @@ covariates(object, ...)
 }
 \arguments{
 \item{object}{(\code{ANY}) the object to extract covariate names from.}
+
+\item{...}{additional arguments added by methods.}
 }
 \description{
 Extract Covariate Names

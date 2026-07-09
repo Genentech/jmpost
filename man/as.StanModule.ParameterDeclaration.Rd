@@ -4,10 +4,12 @@
 \alias{as.StanModule.ParameterDeclaration}
 \title{\code{Parameter} Declaration -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{ParameterDeclaration}(object)
+\method{as.StanModule}{ParameterDeclaration}(object, ...)
 }
 \arguments{
 \item{object}{(\code{Parameter}) a prior Distribution}
+
+\item{...}{not used.}
 }
 \value{
 A \code{\link{StanModule}} object.

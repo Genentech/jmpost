@@ -139,6 +139,7 @@ model.matrix.DataSurvival <- function(
 #'
 #' @typed object: DataSurvival
 #'  Survival data object to extract covariate names from.
+#' @param ... not used.
 #'
 #' @family covariates
 #' @export

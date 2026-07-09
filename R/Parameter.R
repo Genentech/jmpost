@@ -169,11 +169,12 @@ render_stan_const_declaration <- function(name, size, limits) {
 #' `transformed parameters` block.
 #'
 #' @inheritParams Parameter-Shared
+#' @param ... not used.
 #'
 #' @return A [`StanModule`] object.
 #'
 #' @export
-as.StanModule.ParameterDeclaration <- function(object) {
+as.StanModule.ParameterDeclaration <- function(object, ...) {
     declaration <- if (object@prior@.is_const) {
         render_stan_const_declaration(
             name = object@name,

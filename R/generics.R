@@ -572,6 +572,7 @@ saveObject <- function(object, file, ...) {
 #'
 #' @typed object: ANY
 #'   the object to extract covariate names from.
+#' @param ... additional arguments added by methods.
 #'
 #' @family covariates
 #' @export
@@ -583,6 +584,7 @@ covariates <- function(object, ...) {
 #'
 #' @typed object: ANY
 #'   the object to extract shrinkage factors from.
+#' @param ... additional arguments added by methods.
 #'
 #' @family shrinkage
 #' @export

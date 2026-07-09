@@ -8,6 +8,8 @@ shrinkage(object, ...)
 }
 \arguments{
 \item{object}{(\code{ANY}) the object to extract shrinkage factors from.}
+
+\item{...}{additional arguments added by methods.}
 }
 \description{
 Extract Covariate Shrinkage Factors from the Posterior Samples
