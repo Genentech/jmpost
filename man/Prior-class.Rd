@@ -54,7 +54,7 @@ introduced by the prior.}
 \item{auxiliary_size}{(\code{function}) a function that returns sizes for extra Stan parameters introduced
 by the prior.}
 
-\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution.}
 
 \item{.omit_zero_lower_truncation}{(\code{flag}) whether to omit a lower-zero truncation adjustment.}
 

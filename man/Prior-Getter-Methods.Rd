@@ -20,7 +20,7 @@
 
 \item{name}{(\code{character}) the name of the parameter the prior distribution is for}
 
-\item{size}{the parameter size.}
+\item{size}{(\code{numeric} or \code{character}) the parameter size.}
 }
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object

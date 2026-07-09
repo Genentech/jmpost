@@ -7,8 +7,7 @@
 render_stan_limits(object)
 }
 \arguments{
-\item{object}{a \code{\link{Prior}} or numeric lower/upper limits for a
-truncated distribution}
+\item{object}{(\code{Prior | numeric}) prior or lower and upper limits for a truncated distribution.}
 }
 \value{
 (\code{character}) the Stan syntax for truncated distributions

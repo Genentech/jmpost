@@ -261,6 +261,8 @@ render_stan_limits <- function(object) {
     UseMethod("render_stan_limits")
 }
 
+#' describeIn render_stan_limits method for [Prior] objects.
+#' @exportS3Method NULL
 render_stan_limits.Prior <- function(object) {
     if (
         object@.omit_zero_lower_truncation &&
@@ -271,6 +273,8 @@ render_stan_limits.Prior <- function(object) {
     render_stan_limits(object@limits)
 }
 
+#' describeIn render_stan_limits method for numeric vectors.
+#' @exportS3Method NULL
 render_stan_limits.numeric <- function(object) {
     limits <- object
     l_bound <- if (limits[[1]] > -Inf) limits[[1]] else ""
@@ -286,7 +290,6 @@ render_stan_limits.numeric <- function(object) {
     return(string)
 }
 
-
 #' @rdname show-object
 #' @export
 setMethod(
@@ -298,7 +301,6 @@ setMethod(
         return(object)
     }
 )
-
 
 #' `Prior` -> `StanModule`
 #'

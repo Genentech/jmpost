@@ -190,7 +190,9 @@ fit <- sampleStanModel(
     chains = 4,
     parallel_chains = 4,
     seed = 325,
-    refresh = 0
+    refresh = 0,
+    show_exceptions = FALSE,
+    show_messages = FALSE
 )
 ```
 
