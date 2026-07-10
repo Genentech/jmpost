@@ -1,7 +1,7 @@
 # JointModel snapshots assembled parameter declarations
 
     Code
-      snapshot_joint_model_parameter_declarations(JointModel(longitudinal = LongitudinalRandomSlope(),
+      snapshot_joint_model_parameter_decl(JointModel(longitudinal = LongitudinalRandomSlope(),
       survival = SurvivalWeibullPH(), link = linkDSLD()))
     Output
       parameters
@@ -21,7 +21,7 @@
 ---
 
     Code
-      snapshot_joint_model_parameter_declarations(JointModel(longitudinal = LongitudinalGSF(
+      snapshot_joint_model_parameter_decl(JointModel(longitudinal = LongitudinalGSF(
         centred = FALSE), survival = SurvivalWeibullPH(), link = Link(linkTTG(),
       linkDSLD(), linkGrowth())))
     Output
@@ -52,7 +52,7 @@
 ---
 
     Code
-      snapshot_joint_model_parameter_declarations(JointModel(survival = SurvivalExponential(
+      snapshot_joint_model_parameter_decl(JointModel(survival = SurvivalExponential(
         lambda = prior_const(0.5))))
     Output
       parameters
