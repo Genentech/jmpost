@@ -20,13 +20,11 @@ functions {
         matrix[nrows, ncols] ind_c_matrix = rep_matrix(ind_c, ncols);
         matrix[nrows, ncols] ind_p_matrix = rep_matrix(ind_p, ncols);
 
-        matrix[nrows, ncols] result_lt0 = fmin(
-            8000.0,
+        matrix[nrows, ncols] result_lt0 = safe_finite(
             ind_b_matrix .* ind_g_matrix .* exp(ind_g_matrix .* time)
         );
 
-        matrix[nrows, ncols] result_gt0 = fmin(
-            8000.0,
+        matrix[nrows, ncols] result_gt0 = safe_finite(
             ind_b_matrix .*
             (
                 ind_g_matrix - (ind_p_matrix .* exp(-ind_c_matrix .* time))

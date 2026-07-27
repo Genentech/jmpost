@@ -22,8 +22,7 @@ functions {
 
         matrix[nrows, ncols] psi_ks_matrix_mod = if_gte0_else(time, psi_ks_matrix, 0);
 
-        matrix[nrows, ncols] result = fmin(
-            8000.0,
+        matrix[nrows, ncols] result = safe_finite(
             psi_bsld_matrix .* (
                 psi_kg_matrix .* exp(psi_kg_matrix .* time) -
                 psi_ks_matrix_mod .* exp(- psi_ks_matrix_mod .* time)
@@ -32,5 +31,4 @@ functions {
         return result;
     }
 }
-
 

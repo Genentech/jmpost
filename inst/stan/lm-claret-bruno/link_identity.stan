@@ -15,10 +15,7 @@ functions {
         vector[nrows] ind_p = link_function_inputs[,4];
         matrix[nrows, ncols] result;
         for (i in 1:ncols) {
-            result[,i] = fmin(
-                sld(time[,i], ind_b, ind_g, ind_c, ind_p),
-                8000.0
-            );
+            result[,i] = safe_finite(sld(time[,i], ind_b, ind_g, ind_c, ind_p));
         }
         return result;
     }

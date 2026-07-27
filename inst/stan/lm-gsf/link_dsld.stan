@@ -24,8 +24,7 @@ functions {
 
         psi_phi_matrix = if_gte0_else(time, psi_phi_matrix, 0);
 
-        matrix[nrows, ncols] result = fmin(
-            8000.0,
+        matrix[nrows, ncols] result = safe_finite(
             psi_bsld_matrix .* (
                 (1 - psi_phi_matrix) .* psi_kg_matrix .* exp(psi_kg_matrix .* time)
                 - psi_phi_matrix .* psi_ks_matrix .* exp(- psi_ks_matrix .* time)
@@ -34,5 +33,4 @@ functions {
         return result;
     }
 }
-
 
