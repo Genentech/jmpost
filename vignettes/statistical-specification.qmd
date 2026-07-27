@@ -6,6 +6,7 @@ csl: ../inst/jss.csl
 format:
   html:
     toc: true
+    html-math-method: mathml
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Statistical Specifications}

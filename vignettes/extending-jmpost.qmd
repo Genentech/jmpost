@@ -4,6 +4,7 @@ package: jmpost
 format:
   html:
     toc: true
+    html-math-method: mathml
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Extending jmpost}

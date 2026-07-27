@@ -1,7 +1,9 @@
 ---
 title: "jmpost Quickstart"
 package: jmpost
-format: html
+format:
+  html:
+    html-math-method: mathml
 vignette: >
   %\VignetteIndexEntry{jmpost Quickstart}
   %\VignetteEncoding{UTF-8}

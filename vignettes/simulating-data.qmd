@@ -1,6 +1,8 @@
 ---
 title: "Simulating Data"
-format: html
+format:
+  html:
+    html-math-method: mathml
 vignette: >
   %\VignetteIndexEntry{Simulating Data}
   %\VignetteEngine{quarto::html}
