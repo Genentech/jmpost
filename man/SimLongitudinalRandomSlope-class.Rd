@@ -36,6 +36,9 @@ SimLongitudinalRandomSlope(
 \item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 }
+\value{
+A \code{SimLongitudinalRandomSlope} object.
+}
 \description{
 Simulate Longitudinal Data from a Random Slope Model
 }
@@ -57,6 +60,9 @@ Simulate Longitudinal Data from a Random Slope Model
 \item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
+\examples{
+SimLongitudinalRandomSlope(times = c(0, 30, 60))
+}
 \seealso{
 Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},

@@ -6,8 +6,14 @@
 \usage{
 prior_std_normal()
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Standard Normal Prior Distribution
+}
+\examples{
+prior_std_normal()
 }
 \seealso{
 Other Prior:

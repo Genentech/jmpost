@@ -9,6 +9,9 @@ is_file(filename = NULL)
 \arguments{
 \item{filename}{(\code{string}) file name.}
 }
+\value{
+\code{TRUE} if the input identifies an existing file; otherwise \code{FALSE}.
+}
 \description{
 A utility function to check if a string is a valid file or not.
 Used to help address short comings of \code{\link[=file.exists]{file.exists()}} that will return \code{TRUE}

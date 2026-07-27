@@ -10,6 +10,9 @@ read_stan(string)
 \item{string}{Character, either the absolute path of a stan file, or the name of the stan
 file in the package directory or the stan code as a string.}
 }
+\value{
+A character vector containing Stan program code.
+}
 \description{
 Stan Code as Character
 }

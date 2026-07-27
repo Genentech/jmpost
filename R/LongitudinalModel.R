@@ -32,6 +32,11 @@ NULL
 #'   then an additive error model is used.
 #'
 #' @export
+#'
+#' @returns A `LongitudinalModel` object.
+#'
+#' @examples
+#' LongitudinalModel(scaled_variance = FALSE)
 LongitudinalModel <- function(
     stan = StanModule(),
     parameters = ParameterList(),
@@ -59,6 +64,8 @@ LongitudinalModel <- function(
 }
 
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.LongitudinalModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Longitudinal Model (%s error) with parameters:\n%s\n\n",

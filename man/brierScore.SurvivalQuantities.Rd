@@ -20,6 +20,9 @@ Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} packa
 
 \item{...}{not used.}
 }
+\value{
+A \code{data.frame} containing Brier scores by time and group.
+}
 \description{
 Derives the Brier Scores (using Inverse Probability of Censoring Weighting)
 for the Survival estimates as detailed in \insertCite{blanche2015}{jmpost}.

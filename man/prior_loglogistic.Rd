@@ -11,8 +11,14 @@ prior_loglogistic(alpha, beta)
 
 \item{beta}{(\code{number}) Shape parameter.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Log-Logistic Prior Distribution
+}
+\examples{
+prior_loglogistic(2, 3)
 }
 \seealso{
 Other Prior:

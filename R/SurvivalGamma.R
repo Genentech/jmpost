@@ -25,6 +25,11 @@ NULL
 #'   for covariates coefficients `beta`.
 #'
 #' @export
+#'
+#' @returns A `SurvivalGamma` object.
+#'
+#' @examples
+#' SurvivalGamma()
 SurvivalGamma <- function(
     k = prior_gamma(2, 0.5),
     theta = prior_gamma(2, 0.5),

@@ -62,6 +62,8 @@ as.QuantityCollapser.GridPopulation <- function(object, data, ...) {
 
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridPopulation <- function(x, data, ...) {
     stop("`as.list()` is not implemented for `GridPopulation` objects")
 }

@@ -11,8 +11,14 @@ prior_uniform(alpha, beta)
 
 \item{beta}{(\code{number}) maximum value parameter.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Uniform Prior Distribution
+}
+\examples{
+prior_uniform(0, 1)
 }
 \seealso{
 Other Prior:

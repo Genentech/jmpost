@@ -9,6 +9,9 @@
 \arguments{
 \item{x}{(\code{Link}) a link object.}
 }
+\value{
+A single integer giving the number of link components.
+}
 \description{
 Returns the number of link components within the \code{\link{Link}} object
 }

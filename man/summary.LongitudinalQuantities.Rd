@@ -13,6 +13,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A \code{data.frame} containing posterior summary statistics.
+}
 \description{
 This method returns a \code{data.frame} of the longitudinal quantities.
 }

@@ -55,6 +55,11 @@ setClassUnion("SurvivalModel_OR_NULL", c("SurvivalModel", "NULL"))
 #' @typed link: Link
 #'   the link.
 #' @rdname JointModel-class
+#'
+#' @returns A `JointModel` object.
+#'
+#' @examples
+#' JointModel(LongitudinalGSF(), SurvivalWeibullPH(), linkDSLD())
 JointModel <- function(
     longitudinal = NULL,
     survival = NULL,
@@ -85,6 +90,8 @@ JointModel <- function(
 
 
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.JointModel <- function(object, ...) {
     merge(
         enableGQ(object@survival),
@@ -101,6 +108,8 @@ enableGQ.JointModel <- function(object, ...) {
 #' @family JointModel
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.JointModel <- function(object, ...) {
     base_model <- read_stan("base/base.stan")
 
@@ -135,6 +144,8 @@ as.StanModule.JointModel <- function(object, ...) {
 #' @inheritParams JointModel-Shared
 #' @family JointModel
 #' @export
+#'
+#' @returns A character vector.
 as.character.JointModel <- function(x, ...) {
     as.character(as.StanModule(x))
 }
@@ -247,6 +258,8 @@ sampleStanModel.JointModel <- function(object, data, ...) {
 #' enable easier unit testing.
 #'
 #' @keywords internal
+#'
+#' @returns A list of initial values, one element per chain.
 ensure_initial_values <- function(initial_values, data, parameters) {
     if (is.function(initial_values)) {
         return(initial_values)

@@ -31,6 +31,8 @@
 #'
 #' @importFrom stats simulate
 #' @export
+#'
+#' @returns A `SimJointData` object containing posterior-predictive simulations.
 simulate.JointModelSamples <- function(
     object,
     nsim = NULL,
@@ -138,6 +140,8 @@ add_jitter <- function(times, jitter_var = c(0, 0)) {
 
 # Longitudinal Sim Object constructors --------
 #' @noRd
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject <- function(object, draw, ...) {
     UseMethod("createLongitudinalSimObject")
 }
@@ -159,6 +163,8 @@ get_vars <- function(draws, name) {
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalRandomSlope <- function(
     object,
     draw,
@@ -177,6 +183,8 @@ createLongitudinalSimObject.LongitudinalRandomSlope <- function(
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalSteinFojo <- function(
     object,
     draw,
@@ -199,6 +207,8 @@ createLongitudinalSimObject.LongitudinalSteinFojo <- function(
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalGSF <- function(object, draw, ...) {
     args <- list(...)
     args$sigma <- get_vars(draw, "lm_gsf_sigma")
@@ -220,6 +230,8 @@ createLongitudinalSimObject.LongitudinalGSF <- function(object, draw, ...) {
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalClaretBruno <- function(
     object,
     draw,
@@ -247,11 +259,15 @@ createLongitudinalSimObject.LongitudinalClaretBruno <- function(
 # Survival Sim Object constructors --------
 
 #' @noRd
+#'
+#' @returns A `SimSurvival` object configured from the posterior draw.
 createSurvivalSimObject <- function(object, draw, ...) {
     UseMethod("createSurvivalSimObject")
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimSurvival` object configured from the posterior draw.
 createSurvivalSimObject.SurvivalWeibullPH <- function(object, draw, ...) {
     args <- list(...)
     args$lambda <- get_vars(draw, "sm_weibull_ph_lambda")
@@ -263,6 +279,8 @@ createSurvivalSimObject.SurvivalWeibullPH <- function(object, draw, ...) {
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimSurvival` object configured from the posterior draw.
 createSurvivalSimObject.SurvivalExponential <- function(object, draw, ...) {
     args <- list(...)
     args$lambda <- get_vars(draw, "sm_exp_lambda")
@@ -273,6 +291,8 @@ createSurvivalSimObject.SurvivalExponential <- function(object, draw, ...) {
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimSurvival` object configured from the posterior draw.
 createSurvivalSimObject.SurvivalGamma <- function(object, draw, ...) {
     lapply(object@model@survival@parameters@parameters, function(x) x@name)
     lapply(object@model@link@components, function(x) x@key)
@@ -286,6 +306,8 @@ createSurvivalSimObject.SurvivalGamma <- function(object, draw, ...) {
 }
 
 #' @exportS3Method
+#'
+#' @returns A `SimSurvival` object configured from the posterior draw.
 createSurvivalSimObject.SurvivalLogLogistic <- function(object, draw, ...) {
     lapply(object@model@survival@parameters@parameters, function(x) x@name)
     lapply(object@model@link@components, function(x) x@key)

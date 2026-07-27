@@ -17,6 +17,8 @@ render_stan_limits(object)
 }
 \value{
 (\code{character}) the Stan syntax for truncated distributions
+
+A character vector containing the Stan truncation syntax.
 }
 \description{
 This function creates the Stan syntax for truncated distributions

@@ -46,6 +46,9 @@ As a default, the variance is not scaled by the expected value, corresponding to
 
 \item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }
+\value{
+A \code{LongitudinalClaretBruno} object.
+}
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the
 Claret-Bruno model for the longitudinal outcome.
@@ -60,3 +63,6 @@ Claret-Bruno model for the longitudinal outcome.
 }
 }
 
+\examples{
+LongitudinalClaretBruno()
+}

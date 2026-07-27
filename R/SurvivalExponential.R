@@ -24,6 +24,11 @@ NULL
 #'   for covariates coefficients `beta`.
 #'
 #' @export
+#'
+#' @returns A `SurvivalExponential` object.
+#'
+#' @examples
+#' SurvivalExponential()
 SurvivalExponential <- function(
     lambda = prior_gamma(2, 5),
     beta = prior_normal(0, 2)

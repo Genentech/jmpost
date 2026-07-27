@@ -40,6 +40,9 @@ As a default, the variance is not scaled by the expected value, corresponding to
 
 \item{centred}{(\code{logical}) whether to use the centred parameterization.}
 }
+\value{
+A \code{LongitudinalSteinFojo} object.
+}
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the
 Stein-Fojo model for the longitudinal outcome.
@@ -54,3 +57,6 @@ Stein-Fojo model for the longitudinal outcome.
 }
 }
 
+\examples{
+LongitudinalSteinFojo()
+}

@@ -11,8 +11,14 @@ prior_logistic(mu, sigma)
 
 \item{sigma}{(\code{number}) Scale parameter.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Logistic Prior Distribution
+}
+\examples{
+prior_logistic(0, 1)
 }
 \seealso{
 Other Prior:

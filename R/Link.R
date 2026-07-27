@@ -52,6 +52,8 @@ NULL
 
 #' @rdname Link-class
 #' @export
+#'
+#' @returns A `Link` object.
 Link <- function(...) {
     components <- list(...)
 
@@ -84,6 +86,8 @@ Link <- function(...) {
 #' @param ... Not Used.
 #'
 #' @export
+#'
+#' @returns A `Link` object with all promised components resolved.
 resolvePromise.Link <- function(object, model, ...) {
     if (length(object) == 0) {
         return(object)
@@ -135,6 +139,8 @@ setValidity(
 #' @family Link
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.Link <- function(object, ...) {
     if (length(object@components) == 0) {
         return(StanModule("base/link_none.stan"))
@@ -176,6 +182,8 @@ as.StanModule.Link <- function(object, ...) {
 #'
 #' @family Link
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.Link <- function(x, ...) {
     as.list(as.StanModule(x, ...))
 }
@@ -215,12 +223,16 @@ initialValues.Link <- function(object, ...) {
 #'
 #' @family Link
 #' @export
+#'
+#' @returns A single integer giving the number of link components.
 length.Link <- function(x) {
     length(x@components)
 }
 
 
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.Link <- function(object, ...) {
     if (length(object) == 0) {
         return("\nNo Link")

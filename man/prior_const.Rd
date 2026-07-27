@@ -9,8 +9,14 @@ prior_const(value)
 \arguments{
 \item{value}{(\code{number}) the fixed parameter value.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Constant Prior Distribution
+}
+\examples{
+prior_const(0)
 }
 \seealso{
 Other Prior:

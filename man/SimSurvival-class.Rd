@@ -32,6 +32,9 @@ SimSurvival(
 
 \item{name}{(\code{character}) the name of the object.}
 }
+\value{
+A \code{SimSurvival} object.
+}
 \description{
 Abstract Simulation Class for Survival Data
 }
@@ -70,6 +73,9 @@ values for \code{time_max} will minimize the number of censored subjects at the 
 increased computation time.
 }
 
+\examples{
+SimSurvival(loghazard = function(time, ...) rep(log(1 / 100), length(time)))
+}
 \seealso{
 Other SimSurvival:
 \code{\link[=SimSurvivalExponential]{SimSurvivalExponential()}},

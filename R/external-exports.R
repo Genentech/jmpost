@@ -12,6 +12,9 @@
 #' @importFrom survival Surv
 #' @export Surv
 #' @keywords internal
+#'
+#' @examples
+#' Surv(c(5, 8, 12), c(1, 0, 1))
 NULL
 
 
@@ -27,6 +30,11 @@ NULL
 #' @importFrom ggplot2 autoplot
 #' @export autoplot
 #' @family autoplot
+#'
+#' @examples
+#' \dontrun{
+#' autoplot(survival_quantities)
+#' }
 NULL
 
 

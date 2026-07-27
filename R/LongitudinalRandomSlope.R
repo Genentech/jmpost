@@ -37,6 +37,11 @@ NULL
 #'   (See the "Statistical Specifications" vignette for more details.)
 #'
 #' @export
+#'
+#' @returns A `LongitudinalRandomSlope` object.
+#'
+#' @examples
+#' LongitudinalRandomSlope()
 LongitudinalRandomSlope <- function(
     intercept = prior_normal(30, 10),
     slope_mu = prior_normal(1, 3),
@@ -90,11 +95,15 @@ LongitudinalRandomSlope <- function(
 
 
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalRandomSlope <- function(object, ...) {
     StanModule("lm-random-slope/quantities.stan")
 }
 
 #' @export
+#'
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalRandomSlope <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -105,6 +114,8 @@ enableLink.LongitudinalRandomSlope <- function(object, ...) {
 
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalRandomSlope <- function(
     prior = prior_normal(0, 2),
     model,
@@ -118,6 +129,8 @@ linkDSLD.LongitudinalRandomSlope <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalRandomSlope <- function(
     prior = prior_normal(0, 2),
     model,
@@ -131,6 +144,8 @@ linkIdentity.LongitudinalRandomSlope <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalRandomSlope <- function(
     prior = prior_normal(0, 2),
     model,

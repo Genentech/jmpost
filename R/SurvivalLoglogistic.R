@@ -26,6 +26,11 @@ NULL
 #'   Prior distribution for covariates coefficients `beta`.
 #'
 #' @export
+#'
+#' @returns A `SurvivalLogLogistic` object.
+#'
+#' @examples
+#' SurvivalLogLogistic()
 SurvivalLogLogistic <- function(
     a = prior_lognormal(log(0.1), 5),
     b = prior_gamma(2, 5),

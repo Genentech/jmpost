@@ -57,6 +57,9 @@ NULL
 #' @family SimLongitudinal
 #' @name SimLongitudinalGSF-class
 #' @exportClass SimLongitudinalGSF
+#'
+#' @examples
+#' SimLongitudinalGSF(times = c(0, 30, 60))
 .SimLongitudinalGSF <- setClass(
     "SimLongitudinalGSF",
     contains = "SimLongitudinal",
@@ -81,6 +84,8 @@ NULL
 
 #' @rdname SimLongitudinalGSF-class
 #' @export
+#'
+#' @returns A `SimLongitudinalGSF` object.
 SimLongitudinalGSF <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
     sigma = 0.01,

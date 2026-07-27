@@ -11,6 +11,9 @@ as.StanModule(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A \code{StanModule} object.
+}
 \description{
 Converts an object into a \code{\link{StanModule}}.
 }

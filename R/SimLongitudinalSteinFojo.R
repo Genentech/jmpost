@@ -51,6 +51,9 @@ NULL
 #' @family SimLongitudinal
 #' @name SimLongitudinalSteinFojo-class
 #' @exportClass SimLongitudinalSteinFojo
+#'
+#' @examples
+#' SimLongitudinalSteinFojo(times = c(0, 30, 60))
 .SimLongitudinalSteinFojo <- setClass(
     "SimLongitudinalSteinFojo",
     contains = "SimLongitudinal",
@@ -73,6 +76,8 @@ NULL
 
 #' @rdname SimLongitudinalSteinFojo-class
 #' @export
+#'
+#' @returns A `SimLongitudinalSteinFojo` object.
 SimLongitudinalSteinFojo <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
     sigma = 0.01,

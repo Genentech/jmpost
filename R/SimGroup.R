@@ -28,6 +28,8 @@
 
 #' @export
 #' @rdname SimGroup-class
+#'
+#' @returns A `SimGroup` object.
 SimGroup <- function(n, arm, study) {
     .SimGroup(
         n = n,

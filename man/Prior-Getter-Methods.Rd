@@ -22,6 +22,9 @@
 
 \item{size}{(\code{numeric} or \code{character}) the parameter size.}
 }
+\value{
+The requested prior initial values or auxiliary-parameter information.
+}
 \description{
 Getter functions for the slots of a \code{\link{Prior}} object
 }

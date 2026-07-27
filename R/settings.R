@@ -55,6 +55,8 @@
 #' options(jmpost.prior_shrinkage = 0.5)
 #' }
 #' @name jmpost-settings
+#'
+#' @returns Invisibly returns `NULL` after initializing the package options.
 set_options <- function() {
     cache_dir <- Sys.getenv("JMPOST_CACHE_DIR")
 

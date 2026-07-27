@@ -17,6 +17,9 @@ DataLongitudinal(data, formula, threshold = NULL)
 \item{threshold}{(\code{numeric}) cut-off value to be used to declare an observation as censored
 (below detection limit).}
 }
+\value{
+A \code{DataLongitudinal} object.
+}
 \description{
 The \code{\link{DataLongitudinal}} class handles the processing of the longitudinal data for fitting a Joint Model.
 }
@@ -31,6 +34,9 @@ observations that contain missing values in the required variables are removed.}
 \item{\code{threshold}}{(\code{numeric})\cr See Arguments for details}
 }}
 
+\examples{
+DataLongitudinal(tumor_data, sld ~ year, threshold = 5)
+}
 \seealso{
 Other DataObjects:
 \code{\link{DataJoint-class}},

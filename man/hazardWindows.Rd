@@ -11,6 +11,9 @@ hazardWindows(object, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A \code{data.frame} describing the hazard-evaluation intervals.
+}
 \description{
 Generate time windows for evaluating a hazard function
 }

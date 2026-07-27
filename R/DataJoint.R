@@ -53,6 +53,22 @@ setClassUnion("DataSurvival_or_NULL", c("DataSurvival", "NULL"))
 #' @typed longitudinal: DataLongitudinal
 #'   object created by [DataLongitudinal()].
 #' @rdname DataJoint-class
+#'
+#' @returns A `DataJoint` object.
+#'
+#' @examples
+#' subjects <- data.frame(id = c("1", "2"), arm = "A", study = "S")
+#' survival <- data.frame(id = c("1", "2"), time = c(5, 8), event = c(1, 0))
+#' longitudinal <- data.frame(
+#'   id = rep(c("1", "2"), each = 2),
+#'   time = rep(c(0, 1), 2),
+#'   response = c(10, 9, 12, 11)
+#' )
+#' DataJoint(
+#'   DataSubject(subjects, "id", "arm", "study"),
+#'   DataSurvival(survival, Surv(time, event) ~ 1),
+#'   DataLongitudinal(longitudinal, response ~ time)
+#' )
 DataJoint <- function(subject, survival = NULL, longitudinal = NULL) {
     subject_suited <- harmonise(subject)
     vars <- extractVariableNames(subject)
@@ -153,6 +169,8 @@ setValidity(
 #' @family as_stan_list
 #' @family DataJoint
 #' @export
+#'
+#' @returns A named `list` suitable for use as Stan data.
 as_stan_list.DataJoint <- function(object, ...) {
     vars <- extractVariableNames(object@subject)
     subject_var <- vars$subject
@@ -199,6 +217,8 @@ as.list.DataJoint <- function(x, ...) {
 #' }
 #' @family DataJoint
 #' @export
+#'
+#' @returns A `DataJoint` object restricted to the requested subjects.
 subset.DataJoint <- function(x, subjects, ...) {
     data <- as.list(x)
     dat <- data.frame(
@@ -236,6 +256,8 @@ subset.DataJoint <- function(x, subjects, ...) {
 #' ```
 #'
 #' @keywords internal
+#'
+#' @returns A subsetted `data.frame` with a grouping column.
 subset_and_add_grouping <- function(dat, groupings) {
     groupings <- decompose_subjects(groupings, dat$subject)$groups
     dat_subset_list <- lapply(
@@ -276,6 +298,8 @@ extract_observed_values <- function(object) {
 
 #' @rdname show-object
 #' @export
+#'
+#' @returns Invisibly returns `NULL` after printing the object.
 setMethod(
     f = "show",
     signature = "DataJoint",

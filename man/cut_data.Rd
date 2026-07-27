@@ -12,6 +12,9 @@ cut_data(object, cut_time)
 \item{cut_time}{(\code{numeric}) A vector of cut off times, either length 1 for all patients or
 \code{nrow(object@survival)} for a time per patient.}
 }
+\value{
+The input \code{SimJointData} object restricted to the requested follow-up time.
+}
 \description{
 Cut Study Data
 }
@@ -28,4 +31,5 @@ data <- cut_data(data, 5)
 data@survival
 # Now max time is 5
 max(data@survival$time)
+
 }

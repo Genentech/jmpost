@@ -11,8 +11,14 @@ prior_normal_vector(mus, sigmas)
 
 \item{sigmas}{(\code{numeric}) standard deviations.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Normal Prior for a Vector Distribution
+}
+\examples{
+prior_normal_vector(c(0, 1), c(1, 2))
 }
 \seealso{
 Other Prior:

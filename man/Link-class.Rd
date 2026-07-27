@@ -12,6 +12,9 @@ Link(...)
 \arguments{
 \item{...}{(\code{\link{LinkComponent}} or \code{\link{PromiseLinkComponent}}) an arbitrary number of link components.}
 }
+\value{
+A \code{Link} object.
+}
 \description{
 Simple container class to enable the use of multiple link components in a joint model.
 Note that the constructor of this object is idempotent e.g. \code{Link(Link(x)) == Link(x)}

@@ -9,10 +9,16 @@ prior_init_only(dist)
 \arguments{
 \item{dist}{(\code{Prior}) a prior Distribution}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 This function is used to specify only the initial values for a parameter.
 This is primarily used for hierarchical parameters whose distributions
 are fixed within the model and cannot be altered by the user.
+}
+\examples{
+prior_init_only(prior_normal(0, 1))
 }
 \seealso{
 Other Prior:

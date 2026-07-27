@@ -25,8 +25,14 @@ parameter.}
 
 \item{scale_slab}{(\code{number}) scale of the Student-t slab.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Regularized Horseshoe Prior for a Vector Distribution
+}
+\examples{
+prior_horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.1, scale_slab = 2)
 }
 \seealso{
 Other Prior:

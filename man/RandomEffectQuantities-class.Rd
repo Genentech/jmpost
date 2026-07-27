@@ -16,6 +16,9 @@ RandomEffectQuantities(quantities, subject, parameter)
 
 \item{parameter}{(\code{character}) labels specifying which parameter the value is.}
 }
+\value{
+A \code{RandomEffectQuantities} object.
+}
 \description{
 A simple wrapper around a \code{matrix} to store required metadata for patient level
 random effects data

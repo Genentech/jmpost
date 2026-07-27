@@ -21,6 +21,11 @@ NULL
 #' @inheritParams stanmodel_arguments
 #'
 #' @export
+#'
+#' @returns A `SurvivalModel` object.
+#'
+#' @examples
+#' SurvivalModel()
 SurvivalModel <- function(
     stan = StanModule(),
     parameters = ParameterList(),
@@ -43,6 +48,8 @@ SurvivalModel <- function(
 }
 
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.SurvivalModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Survival Model with parameters:\n%s\n\n",

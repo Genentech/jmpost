@@ -41,6 +41,9 @@ package.}
 \item{event_offset}{(\code{logical}) If \code{TRUE} then \eqn{G(T_i)} is evaluated at \eqn{G(T_i-)}.
 Setting this as \code{TRUE} mirrors the implementation of the \code{{pec}} package.}
 }
+\value{
+A numeric vector or matrix of Brier-score components.
+}
 \description{
 Implements the Brier Score as detailed in \insertCite{blanche2015}{jmpost}
 }

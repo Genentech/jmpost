@@ -16,6 +16,9 @@ Quantities(quantities, times, groups)
 
 \item{groups}{(\code{character}) labels for which group the quantity belongs to.}
 }
+\value{
+A \code{Quantities} object.
+}
 \description{
 A simple wrapper around a \code{matrix} to store required metadata
 }

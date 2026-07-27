@@ -52,6 +52,9 @@ and factor levels of the original data used in the \code{\link{DataSurvival}} ob
 \item{params}{(\code{list}) named list of parameters to fix the longitudinal model parameters at when
 predicting survival quantities. See \code{\link[=getPredictionNames]{getPredictionNames()}} for the required parameters.}
 }
+\value{
+A \code{Grid} object of the requested type.
+}
 \description{
 These functions are used to specify which subjects and timepoints should be generated
 when calculating quantities via \code{\link{SurvivalQuantities}} and \code{\link{LongitudinalQuantities}}.
@@ -95,6 +98,16 @@ named \code{Group-1} and \code{Group-2} which are composed of the subjects \code
 }\if{html}{\out{</div>}}
 }
 
+\examples{
+GridFixed(subjects = c("subject 1", "subject 2"), times = c(0, 10))
+GridGrouped(groups = list(control = c("subject 1", "subject 2")))
+GridEven(subjects = c("subject 1", "subject 2"), length.out = 20)
+GridObserved()
+GridEvent()
+GridPopulation(times = seq(0, 100, by = 10))
+GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
+GridPrediction(times = c(0, 10), newdata = data.frame(age = 60))
+}
 \seealso{
 \code{\link{SurvivalQuantities}}, \code{\link{LongitudinalQuantities}}
 }

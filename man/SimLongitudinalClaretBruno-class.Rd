@@ -57,6 +57,9 @@ SimLongitudinalClaretBruno(
 \item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 }
+\value{
+A \code{SimLongitudinalClaretBruno} object.
+}
 \description{
 Simulate Longitudinal Data from a Claret-Bruno Model
 }
@@ -92,6 +95,9 @@ Simulate Longitudinal Data from a Claret-Bruno Model
 \item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
+\examples{
+SimLongitudinalClaretBruno(times = c(0, 30, 60))
+}
 \seealso{
 Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},

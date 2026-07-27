@@ -29,6 +29,9 @@ Default = \code{expression(S(t))}.}
 
 \item{x_label}{(\code{character} or \code{expression}) label to display on the x-axis.}
 }
+\value{
+A \code{ggplot} object.
+}
 \description{
 Internal plotting function to create survival plots with KM curve overlays
 This function predominately exists to extract core logic into its own function

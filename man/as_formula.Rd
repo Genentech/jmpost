@@ -11,6 +11,12 @@ as_formula(x, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A \code{formula} object.
+}
 \description{
 Utility wrapper function to convert an object to a formula.
+}
+\examples{
+as_formula("response ~ time")
 }

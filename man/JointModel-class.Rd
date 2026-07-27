@@ -16,6 +16,9 @@ JointModel(longitudinal = NULL, survival = NULL, link = Link())
 
 \item{link}{(\code{Link}) the link.}
 }
+\value{
+A \code{JointModel} object.
+}
 \description{
 Joint Model Object and Constructor Function
 }
@@ -31,6 +34,9 @@ Joint Model Object and Constructor Function
 \item{\code{parameters}}{(\code{ParameterList})\cr the parameter declaration and prior specification.}
 }}
 
+\examples{
+JointModel(LongitudinalGSF(), SurvivalWeibullPH(), linkDSLD())
+}
 \seealso{
 Other JointModel:
 \code{\link[=as.StanModule.JointModel]{as.StanModule.JointModel()}},

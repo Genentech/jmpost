@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A \code{data.frame} representation of the object.
+}
 \description{
 Converts a \code{\link{DataSurvival}} object into a \code{data.frame}.
 The subject variable is cast to factor.

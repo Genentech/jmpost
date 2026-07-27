@@ -30,9 +30,15 @@ getRandomEffectsNames(object, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A named character vector of random-effect parameter names, or \code{NULL}.
+}
 \description{
 Utility function that returns the names of the random effects parameters.
 The main use for this is to allow the \code{\link{LongitudinalRandomEffects}} function
 to know which parameters it needs to extract and to what common names
 it should map the parameters to.
+}
+\examples{
+getRandomEffectsNames(LongitudinalGSF())
 }

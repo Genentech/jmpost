@@ -9,6 +9,12 @@
 \usage{
 PromiseLongitudinalModel()
 }
+\value{
+A \code{PromiseLongitudinalModel} object.
+}
 \description{
 An object that promises to resolve to a \code{\link{LongitudinalModel}} object.
+}
+\examples{
+PromiseLongitudinalModel()
 }

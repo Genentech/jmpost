@@ -11,6 +11,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Converts \code{\link{Quantities}} object into a printable string.
 }

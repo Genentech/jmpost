@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A \code{StanModule} object.
+}
 \description{
 Converts a \code{\link{LinkComponent}} object to a \code{\link{StanModule}} object
 }

@@ -14,6 +14,9 @@ to contain. See details.}
 
 \item{...}{Not used.}
 }
+\value{
+A \code{DataJoint} object restricted to the requested subjects.
+}
 \description{
 Coerces the object into a \code{data.frame} containing just event times and status
 filtering for specific subjects If \code{subjects} is a list then an additional variable \code{group} will be added

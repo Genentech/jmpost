@@ -16,6 +16,9 @@ DataJoint(subject, survival = NULL, longitudinal = NULL)
 
 \item{longitudinal}{(\code{DataLongitudinal}) object created by \code{\link[=DataLongitudinal]{DataLongitudinal()}}.}
 }
+\value{
+A \code{DataJoint} object.
+}
 \description{
 The \code{DataJoint} class handles combining data from a \code{\link{DataSurvival}} object and a
 \code{\link{DataLongitudinal}} object.
@@ -30,6 +33,20 @@ The \code{DataJoint} class handles combining data from a \code{\link{DataSurviva
 \item{\code{longitudinal}}{(\code{DataLongitudinal})\cr See Argument for details.}
 }}
 
+\examples{
+subjects <- data.frame(id = c("1", "2"), arm = "A", study = "S")
+survival <- data.frame(id = c("1", "2"), time = c(5, 8), event = c(1, 0))
+longitudinal <- data.frame(
+  id = rep(c("1", "2"), each = 2),
+  time = rep(c(0, 1), 2),
+  response = c(10, 9, 12, 11)
+)
+DataJoint(
+  DataSubject(subjects, "id", "arm", "study"),
+  DataSurvival(survival, Surv(time, event) ~ 1),
+  DataLongitudinal(longitudinal, response ~ time)
+)
+}
 \seealso{
 Other DataObjects:
 \code{\link{DataLongitudinal-class}},

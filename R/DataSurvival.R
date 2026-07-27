@@ -43,6 +43,11 @@ NULL
 #'   of the form `Surv(time, event) ~ cov1 + cov2 + ...`.
 #'   See [survival::Surv()] for more details, though note that this package only supports right censoring.
 #' @rdname DataSurvival-class
+#'
+#' @returns A `DataSurvival` object.
+#'
+#' @examples
+#' DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
 DataSurvival <- function(data, formula) {
     .DataSurvival(
         data = remove_missing_rows(data, formula),
@@ -108,6 +113,8 @@ extractVariableNames.DataSurvival <- function(object) {
 #' The subject variable is cast to factor.
 #' @family DataSurvival
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.DataSurvival <- function(x, ...) {
     x <- x@data
     rownames(x) <- NULL
@@ -143,6 +150,8 @@ model.matrix.DataSurvival <- function(
 #'
 #' @family covariates
 #' @export
+#'
+#' @returns A character vector containing the covariate names.
 covariates.DataSurvival <- function(object, ...) {
     design_mat <- model.matrix(object, ...)
     colnames(design_mat)
@@ -228,6 +237,8 @@ harmonise.DataSurvival <- function(object, subject_var, subject_ord, ...) {
 #'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.DataSurvival <- function(object, indent = 1, ...) {
     template <- c(
         "Survival-Data Object:",
@@ -276,6 +287,8 @@ setMethod(
 #' @importFrom stats .checkMFClasses terms delete.response model.frame model.matrix
 #' @importFrom survival coxph
 #' @keywords internal
+#'
+#' @returns A model matrix whose columns match the original design matrix.
 mirror_design_matrix <- function(olddata, newdata) {
     frm <- as_formula(olddata)
     # Dummy model to generate a bunch of meta information that we can use to
@@ -303,6 +316,8 @@ mirror_design_matrix <- function(olddata, newdata) {
 
 
 #' @export
+#'
+#' @returns A `formula` object.
 as_formula.DataSurvival <- function(x, ...) {
     vars <- extractVariableNames(x)
     vars$frm

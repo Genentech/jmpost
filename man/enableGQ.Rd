@@ -20,3 +20,6 @@ either \code{\link{LongitudinalQuantities}} or \code{\link{SurvivalQuantities}}}
 \description{
 Enable Generated Quantities Generic
 }
+\examples{
+enableGQ(LongitudinalGSF())
+}

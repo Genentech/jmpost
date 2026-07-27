@@ -29,6 +29,9 @@ SimSurvivalGamma(
 
 \item{beta_cat}{(\code{numeric}) the categorical covariate coefficients.}
 }
+\value{
+A \code{SimSurvival} object.
+}
 \description{
 Simulate Survival Data from a Gamma Proportional Hazard Model
 }
@@ -47,6 +50,9 @@ values for \code{time_max} will minimize the number of censored subjects at the 
 increased computation time.
 }
 
+\examples{
+SimSurvivalGamma(k = 2, theta = 300)
+}
 \seealso{
 Other SimSurvival:
 \code{\link{SimSurvival-class}},

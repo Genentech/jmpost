@@ -54,6 +54,9 @@ NULL
 #' @family SimSurvival
 #' @exportClass SimSurvival
 #' @name SimSurvival-class
+#'
+#' @examples
+#' SimSurvival(loghazard = function(time, ...) rep(log(1 / 100), length(time)))
 .SimSurvival <- setClass(
     "SimSurvival",
     slots = c(
@@ -70,6 +73,8 @@ NULL
 
 #' @rdname SimSurvival-class
 #' @export
+#'
+#' @returns A `SimSurvival` object.
 SimSurvival <- function(
     time_max = 2000,
     time_step = 1,
@@ -263,6 +268,11 @@ sampleObservations.SimSurvival <- function(object, times_df) {
 #' @family SimSurvival
 #'
 #' @export
+#'
+#' @returns A `SimSurvival` object.
+#'
+#' @examples
+#' SimSurvivalWeibullPH(lambda = 1 / 300, gamma = 1.2)
 SimSurvivalWeibullPH <- function(
     lambda,
     gamma,
@@ -297,6 +307,11 @@ SimSurvivalWeibullPH <- function(
 #'
 #' @family SimSurvival
 #' @export
+#'
+#' @returns A `SimSurvival` object.
+#'
+#' @examples
+#' SimSurvivalLogLogistic(a = 300, b = 2)
 SimSurvivalLogLogistic <- function(
     a,
     b,
@@ -333,6 +348,11 @@ SimSurvivalLogLogistic <- function(
 #' @family SimSurvival
 #'
 #' @export
+#'
+#' @returns A `SimSurvival` object.
+#'
+#' @examples
+#' SimSurvivalExponential(lambda = 1 / 300)
 SimSurvivalExponential <- function(
     lambda,
     time_max = 2000,
@@ -370,6 +390,11 @@ SimSurvivalExponential <- function(
 #' @importFrom stats dgamma pgamma
 #'
 #' @export
+#'
+#' @returns A `SimSurvival` object.
+#'
+#' @examples
+#' SimSurvivalGamma(k = 2, theta = 300)
 SimSurvivalGamma <- function(
     k,
     theta,

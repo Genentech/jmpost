@@ -16,6 +16,9 @@ PromiseLinkComponent(fun, prior, key)
 
 \item{key}{(\code{character}) Link identifier. See Details.}
 }
+\value{
+A \code{PromiseLinkComponent} object.
+}
 \description{
 An object that promises to resolve to a \code{\link{LinkComponent}} object.
 Inheriting from \code{\link{Promise}} and \code{\link{LinkComponent}}.
@@ -31,3 +34,7 @@ does not have the same \code{key} slot value as the original \code{PromiseLinkCo
 \item{\code{fun}}{(\code{function}) \cr a function that returns a \code{LinkComponent}. See details.}
 }}
 
+\examples{
+promise <- PromiseLinkComponent(linkDSLD, prior_normal(0, 2), "link_dsld")
+resolvePromise(promise, LongitudinalGSF())
+}

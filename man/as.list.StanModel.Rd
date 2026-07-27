@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A named \code{list} representation of the object.
+}
 \description{
 Returns a named list where each element of the list corresponds
 to a Stan modelling block e.g. \code{data}, \code{model}, etc.

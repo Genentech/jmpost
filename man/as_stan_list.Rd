@@ -14,9 +14,15 @@ as_stan_list(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A named \code{list} suitable for use as Stan data.
+}
 \description{
 Extracts a list of data elements from an object to be used as input
 to a Stan Model
+}
+\examples{
+as_stan_list(Parameter(prior_normal(0, 1), "beta"))
 }
 \seealso{
 Other as_stan_list:

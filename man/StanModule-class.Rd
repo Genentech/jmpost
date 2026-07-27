@@ -15,6 +15,9 @@ of Stan code to be parsed.}
 
 \item{...}{additional arguments passed to the constructor.}
 }
+\value{
+A \code{StanModule} object.
+}
 \description{
 \code{StanModule} Object and Constructor Function
 }
@@ -36,6 +39,17 @@ of Stan code to be parsed.}
 \item{\code{generated_quantities}}{(\code{character})\cr the \code{generated_quantities} block.}
 }}
 
+\examples{
+code <- "
+parameters {
+  real x;
+}
+model {
+  x ~ normal(0, 1);
+}
+"
+StanModule(code)
+}
 \seealso{
 Other StanModule:
 \code{\link[=as.character.StanModule]{as.character.StanModule()}},

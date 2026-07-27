@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A character vector.
+}
 \description{
 Renders a \code{\link{JointModel}} object to a stan program
 }

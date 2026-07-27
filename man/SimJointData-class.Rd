@@ -24,6 +24,9 @@ SimJointData(
 
 \item{.silent}{(\code{flag}) whether to suppress info messages}
 }
+\value{
+A \code{SimJointData} object.
+}
 \description{
 Simulating Joint Longitudinal and Time-to-Event Data
 }
@@ -47,3 +50,15 @@ list of \code{\link{SimGroup}} objects e.g.
 \item{\code{survival}}{(\code{data.frame})\cr the simulated survival data.}
 }}
 
+\examples{
+set.seed(1)
+SimJointData(
+  design = list(SimGroup(3, "A", "Study 1")),
+  longitudinal = SimLongitudinalRandomSlope(
+    times = c(0, 10),
+    slope_mu = 0.01,
+    slope_sigma = 0.5
+  ),
+  survival = SimSurvivalExponential(lambda = 1 / 300)
+)
+}

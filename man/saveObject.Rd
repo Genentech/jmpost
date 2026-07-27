@@ -13,8 +13,16 @@ saveObject(object, file, ...)
 
 \item{...}{(\code{ANY}) additional arguments.}
 }
+\value{
+Invisibly returns \code{NULL} after saving the object.
+}
 \description{
 Save Object to File
+}
+\examples{
+\dontrun{
+saveObject(fit, "joint-model-fit.rds")
+}
 }
 \seealso{
 Other saveObject:

@@ -15,6 +15,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A \code{StanModule} object.
+}
 \description{
 Converts a \code{\link{Prior}} object to a \code{\link{StanModule}} object
 }

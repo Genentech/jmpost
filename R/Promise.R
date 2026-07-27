@@ -18,6 +18,11 @@
 
 #' @rdname PromiseLongitudinalModel-class
 #' @export
+#'
+#' @returns A `PromiseLongitudinalModel` object.
+#'
+#' @examples
+#' PromiseLongitudinalModel()
 PromiseLongitudinalModel <- function() {
     .PromiseLongitudinalModel()
 }
@@ -51,6 +56,12 @@ PromiseLongitudinalModel <- function() {
 
 #' @rdname PromiseLinkComponent-class
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
+#'
+#' @examples
+#' promise <- PromiseLinkComponent(linkDSLD, prior_normal(0, 2), "link_dsld")
+#' resolvePromise(promise, LongitudinalGSF())
 PromiseLinkComponent <- function(fun, prior, key) {
     .PromiseLinkComponent(
         fun = fun,
@@ -66,6 +77,8 @@ PromiseLinkComponent <- function(fun, prior, key) {
 
 
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.PromiseLinkComponent <- function(object, model, ...) {
     resolved_object <- resolvePromise(object, model = model)
     as.StanModule(resolved_object, ...)
@@ -86,6 +99,8 @@ as.StanModule.PromiseLinkComponent <- function(object, model, ...) {
 #'   the resolved `LinkComponent` object
 #'
 #' @export
+#'
+#' @returns The resolved `LinkComponent` object.
 resolvePromise.PromiseLinkComponent <- function(object, model, ...) {
     x <- object@fun(
         prior = object@parameters@parameters[[1]]@prior,

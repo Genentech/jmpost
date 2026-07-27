@@ -15,6 +15,8 @@
 }
 \value{
 (\code{LinkComponent}) the resolved \code{LinkComponent} object
+
+The resolved \code{LinkComponent} object.
 }
 \description{
 Resolves a \code{\link{PromiseLinkComponent}} object to a \code{\link{LinkComponent}} object.

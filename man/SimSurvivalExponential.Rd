@@ -26,6 +26,9 @@ SimSurvivalExponential(
 
 \item{beta_cat}{(\code{numeric}) the categorical covariate coefficients.}
 }
+\value{
+A \code{SimSurvival} object.
+}
 \description{
 Simulate Survival Data from a Exponential Proportional Hazard Model
 }
@@ -44,6 +47,9 @@ values for \code{time_max} will minimize the number of censored subjects at the 
 increased computation time.
 }
 
+\examples{
+SimSurvivalExponential(lambda = 1 / 300)
+}
 \seealso{
 Other SimSurvival:
 \code{\link{SimSurvival-class}},

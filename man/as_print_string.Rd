@@ -32,6 +32,9 @@ as_print_string(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Returns the character representation of an object which is suitable
 for printing to the console

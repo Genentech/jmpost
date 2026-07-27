@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Converts \code{\link{ParameterList}} object into a printable string.
 }

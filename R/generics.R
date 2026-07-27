@@ -34,6 +34,9 @@ setGeneric(
 #' @param object what to print.
 #'
 #' @export
+#'
+#' @examples
+#' show(prior_normal(0, 1))
 NULL
 
 
@@ -49,6 +52,13 @@ NULL
 #' @param ... Additional arguments
 #'
 #' @export
+#'
+#' @returns Invisibly returns `NULL` after writing the Stan program.
+#'
+#' @examples
+#' path <- tempfile(fileext = ".stan")
+#' write_stan(JointModel(LongitudinalGSF()), path)
+#' unlink(path)
 write_stan <- function(object, destination, ...) {
     UseMethod("write_stan")
 }
@@ -62,6 +72,13 @@ write_stan <- function(object, destination, ...) {
 #' @param object the module.
 #'
 #' @export
+#'
+#' @returns A compiled `cmdstanr::CmdStanModel` object.
+#'
+#' @examples
+#' \dontrun{
+#' compileStanModel(JointModel(LongitudinalGSF()))
+#' }
 compileStanModel <- function(object) {
     UseMethod("compileStanModel")
 }
@@ -77,6 +94,13 @@ compileStanModel <- function(object) {
 #' @param ... additional arguments.
 #'
 #' @export
+#'
+#' @returns A `JointModelSamples` object.
+#'
+#' @examples
+#' \dontrun{
+#' sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+#' }
 sampleStanModel <- function(object, ...) {
     UseMethod("sampleStanModel")
 }
@@ -92,6 +116,8 @@ sampleStanModel <- function(object, ...) {
 #' @param ... additional options.
 #' @family as.StanModule
 #' @keywords internal
+#'
+#' @returns A `StanModule` object.
 as.StanModule <- function(object, ...) {
     UseMethod("as.StanModule")
 }
@@ -122,6 +148,8 @@ getParameters <- function(object, ...) {
 #' @param object the data object.
 #' @family extractVariableNames
 #' @keywords internal
+#'
+#' @returns A named list mapping source variables to standard names.
 extractVariableNames <- function(object) {
     UseMethod("extractVariableNames")
 }
@@ -147,6 +175,11 @@ extractVariableNames <- function(object) {
 #' See the Vignette for further details of how to specify initial values.
 #'
 #' @export
+#'
+#' @returns Initial values for the object, usually as a numeric vector or list.
+#'
+#' @examples
+#' initialValues(prior_normal(0, 1))
 initialValues <- function(object, ...) {
     UseMethod("initialValues")
 }
@@ -161,6 +194,8 @@ initialValues <- function(object, ...) {
 #' @param object where to get the parameter sizes from.
 #'
 #' @keywords internal
+#'
+#' @returns A numeric value or named list describing parameter sizes.
 size <- function(object) {
     UseMethod("size")
 }
@@ -181,6 +216,8 @@ size <- function(object) {
 #' those additional parameters.
 #'
 #' @keywords internal
+#'
+#' @returns A named `list` of initial values for auxiliary parameters.
 auxiliaryInitialValues <- function(object, ...) {
     UseMethod("auxiliaryInitialValues")
 }
@@ -201,6 +238,8 @@ auxiliaryInitialValues <- function(object, ...) {
 #' additional parameters so their initial values can be expanded consistently.
 #'
 #' @keywords internal
+#'
+#' @returns A named `list` of auxiliary parameter sizes.
 auxiliarySize <- function(object, ...) {
     UseMethod("auxiliarySize")
 }
@@ -216,6 +255,13 @@ auxiliarySize <- function(object, ...) {
 #' @param ... additional options.
 #'
 #' @export
+#'
+#' @returns A `cmdstanr::CmdStanGQ` object containing generated quantities.
+#'
+#' @examples
+#' \dontrun{
+#' generateQuantities(fit, generator, "survival")
+#' }
 generateQuantities <- function(object, ...) {
     UseMethod("generateQuantities")
 }
@@ -269,6 +315,11 @@ harmonise.default <- function(object, ...) {
 #'
 #' @family as_stan_list
 #' @export
+#'
+#' @returns A named `list` suitable for use as Stan data.
+#'
+#' @examples
+#' as_stan_list(Parameter(prior_normal(0, 1), "beta"))
 as_stan_list <- function(object, ...) {
     UseMethod("as_stan_list")
 }
@@ -291,6 +342,8 @@ as_stan_list.default <- function(object, ...) {
 #'
 #' @family as_print_string
 #' @keywords internal
+#'
+#' @returns A character vector suitable for printing.
 as_print_string <- function(object, ...) {
     UseMethod("as_print_string")
 }
@@ -315,6 +368,13 @@ NULL
 #'
 #' @family brierScore
 #' @export
+#'
+#' @returns A numeric Brier score or a `data.frame` of scores over time.
+#'
+#' @examples
+#' \dontrun{
+#' brierScore(survival_quantities)
+#' }
 brierScore <- function(object, ...) {
     UseMethod("brierScore")
 }
@@ -340,6 +400,14 @@ brierScore <- function(object, ...) {
 #' ```
 #'
 #' @export
+#'
+#' @returns A `data.frame` containing simulated observations.
+#'
+#' @examples
+#' sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
+#' subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
+#' subject_parameters <- sampleSubjects(sim, subjects)
+#' sampleObservations(sim, transform(subject_parameters, time = 0))
 sampleObservations <- function(object, times_df) {
     UseMethod("sampleObservations")
 }
@@ -362,6 +430,13 @@ sampleObservations <- function(object, times_df) {
 #' This method takes care of generating all the individual subject data required for the
 #' [`sampleObservations`] method to generate the observations.
 #' @export
+#'
+#' @returns A `data.frame` containing simulated subject-level parameters.
+#'
+#' @examples
+#' subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
+#' sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
+#' sampleSubjects(sim, subjects)
 sampleSubjects <- function(object, subjects_df) {
     UseMethod("sampleSubjects")
 }
@@ -373,12 +448,23 @@ sampleSubjects <- function(object, subjects_df) {
 #'   object to generate time windows for.
 #' @param ... Not used.
 #'
+#'
+#' @returns A `data.frame` describing the hazard-evaluation intervals.
 hazardWindows <- function(object, ...) {
     UseMethod("hazardWindows")
 }
 
 #' @rdname Quant-Dev
 #' @export
+#'
+#' @returns A `QuantityGenerator` or `QuantityCollapser` object, according to the function called.
+#'
+#' @examples
+#' \dontrun{
+#' grid <- GridFixed(times = c(0, 10))
+#' as.QuantityGenerator(grid, joint_data)
+#' as.QuantityCollapser(grid, joint_data)
+#' }
 as.QuantityGenerator <- function(object, ...) {
     UseMethod("as.QuantityGenerator")
 }
@@ -401,10 +487,14 @@ as.QuantityCollapser <- function(object, ...) {
 #' Method used to replace NULL times on grid objects (if appropriate)
 #'
 #' @keywords internal
+#'
+#' @returns A `Grid` object with missing time points replaced.
 coalesceGridTime <- function(object, times, ...) {
     UseMethod("coalesceGridTime")
 }
 #' @export
+#'
+#' @returns The input object, unchanged.
 coalesceGridTime.default <- function(object, times, ...) {
     object
 }
@@ -421,6 +511,12 @@ coalesceGridTime.default <- function(object, times, ...) {
 #' and return the promised object.
 #'
 #' @export
+#'
+#' @returns The input object, or the value obtained by resolving a promise.
+#'
+#' @examples
+#' resolvePromise(1)
+#' resolvePromise(linkDSLD(), LongitudinalGSF())
 resolvePromise <- function(object, ...) {
     UseMethod("resolvePromise")
 }
@@ -444,10 +540,15 @@ resolvePromise.default <- function(object, ...) {
 #' @return [`LongitudinalModel`] object
 #'
 #' @export
+#'
+#' @examples
+#' enableLink(LongitudinalGSF())
 enableLink <- function(object, ...) {
     UseMethod("enableLink")
 }
 #' @export
+#'
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.default <- function(object, ...) {
     object
 }
@@ -465,10 +566,15 @@ enableLink.default <- function(object, ...) {
 #' @return [`StanModule`] object
 #'
 #' @export
+#'
+#' @examples
+#' enableGQ(LongitudinalGSF())
 enableGQ <- function(object, ...) {
     UseMethod("enableGQ")
 }
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.default <- function(object, ...) {
     StanModule()
 }
@@ -483,6 +589,11 @@ enableGQ.default <- function(object, ...) {
 #'   A longitudinal model object
 #' @param ... Not used.
 #' @export
+#'
+#' @returns A character vector of required prediction parameter names, or `NULL`.
+#'
+#' @examples
+#' getPredictionNames(LongitudinalGSF())
 getPredictionNames <- function(object, ...) {
     UseMethod("getPredictionNames")
 }
@@ -505,6 +616,11 @@ getPredictionNames.default <- function(object, ...) {
 #'   A longitudinal model object
 #' @param ... Not used.
 #' @export
+#'
+#' @returns A named character vector of random-effect parameter names, or `NULL`.
+#'
+#' @examples
+#' getRandomEffectsNames(LongitudinalGSF())
 getRandomEffectsNames <- function(object, ...) {
     UseMethod("getRandomEffectsNames")
 }
@@ -523,12 +639,19 @@ getRandomEffectsNames.default <- function(object, ...) {
 #'   object to convert to a formula.
 #' @param ... Not used.
 #' @export
+#'
+#' @returns A `formula` object.
+#'
+#' @examples
+#' as_formula("response ~ time")
 as_formula <- function(x, ...) {
     UseMethod("as_formula")
 }
 
 #' @importFrom stats as.formula
 #' @export
+#'
+#' @returns A `formula` object.
 as_formula.default <- function(x, ...) {
     as.formula(x, ...)
 }
@@ -547,6 +670,11 @@ as_formula.default <- function(x, ...) {
 #'   upper constraint boundary
 #'
 #' @export
+#'
+#' @returns A `Prior` object with the requested bounds.
+#'
+#' @examples
+#' set_limits(prior_normal(0, 1), lower = 0)
 set_limits <- function(object, lower = -Inf, upper = Inf) {
     UseMethod("set_limits")
 }
@@ -563,6 +691,13 @@ set_limits <- function(object, lower = -Inf, upper = Inf) {
 #'
 #' @family saveObject
 #' @export
+#'
+#' @returns Invisibly returns `NULL` after saving the object.
+#'
+#' @examples
+#' \dontrun{
+#' saveObject(fit, "joint-model-fit.rds")
+#' }
 saveObject <- function(object, file, ...) {
     UseMethod("saveObject")
 }
@@ -576,6 +711,12 @@ saveObject <- function(object, file, ...) {
 #'
 #' @family covariates
 #' @export
+#'
+#' @returns A character vector containing the covariate names.
+#'
+#' @examples
+#' surv_data <- DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
+#' covariates(surv_data)
 covariates <- function(object, ...) {
     UseMethod("covariates")
 }
@@ -588,6 +729,13 @@ covariates <- function(object, ...) {
 #'
 #' @family shrinkage
 #' @export
+#'
+#' @returns A named numeric vector or matrix of shrinkage factors.
+#'
+#' @examples
+#' \dontrun{
+#' shrinkage(fit)
+#' }
 shrinkage <- function(object, ...) {
     UseMethod("shrinkage")
 }

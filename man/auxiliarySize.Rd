@@ -11,6 +11,9 @@ auxiliarySize(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A named \code{list} of auxiliary parameter sizes.
+}
 \description{
 Obtain sizes for any additional Stan parameters introduced by an object.
 }

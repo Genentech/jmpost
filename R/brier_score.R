@@ -48,6 +48,8 @@ NULL
 #'
 #' @name reverse_km
 #' @keywords internal
+#'
+#' @returns The reverse Kaplan-Meier estimate at each requested time.
 reverse_km_event_first <- function(t, times, events) {
     assert_numeric(t, any.missing = FALSE, finite = TRUE)
     assert_numeric(times, any.missing = FALSE, finite = TRUE)
@@ -136,6 +138,8 @@ reverse_km_cen_first <- function(t, times, events) {
 #'   of ties for `x` that the vector you are re-indexing also has tied values
 #'   thus the specific tied element selection does not matter.
 #' @keywords internal
+#'
+#' @returns An integer vector giving the order that groups identical values.
 match_order <- function(x) {
     order(order(x))
 }
@@ -157,6 +161,8 @@ match_order <- function(x) {
 #' \insertAllCited{}
 #'
 #' @keywords internal
+#'
+#' @returns A numeric vector or matrix of Brier-score components.
 brier_score <- function(
     t,
     times,

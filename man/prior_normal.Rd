@@ -11,8 +11,14 @@ prior_normal(mu, sigma)
 
 \item{sigma}{(\code{number}) standard deviation.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Normal Prior Distribution
+}
+\examples{
+prior_normal(0, 1)
 }
 \seealso{
 Other Prior:

@@ -9,9 +9,17 @@ LongitudinalRandomEffects(object)
 \arguments{
 \item{object}{(\code{JointModelSamples}) samples as drawn from a Joint Model.}
 }
+\value{
+A \code{RandomEffectQuantities} object.
+}
 \description{
 Helper function to extract subject-level random effects samples from the longitudinal
 sub-model of a joint model samples object.
+}
+\examples{
+\dontrun{
+LongitudinalRandomEffects(fit)
+}
 }
 \seealso{
 Other RandomEffectQuantities:

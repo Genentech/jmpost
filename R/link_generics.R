@@ -17,11 +17,18 @@ NULL
 #' \code{vignette("Statistical Specifications", package = "jmpost")} for more details.
 #'
 #' @name standard-link-user
+#'
+#' @examples
+#' linkNone()
+#' linkDSLD()
+#' linkTTG(prior_normal(0, 1), model = LongitudinalGSF())
 NULL
 
 
 #' @describeIn standard-link-user No link (fit the survival and longitudinal models independently)
 #' @export
+#'
+#' @returns A `Link` or `LinkComponent` object representing the requested association.
 linkNone <- function() {
     Link()
 }
@@ -33,6 +40,8 @@ linkTTG <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkTTG", model)
 }
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
 linkTTG.PromiseLongitudinalModel <- function(
     prior = prior_normal(0, 2),
     model,
@@ -41,6 +50,8 @@ linkTTG.PromiseLongitudinalModel <- function(
     PromiseLinkComponent(fun = linkTTG, prior = prior, key = "link_ttg")
 }
 #' @export
+#'
+#' @returns This method always raises an error for unsupported models.
 linkTTG.default <- function(prior, model, ...) {
     stop(sprintf(
         "Method `linkTTG` is not available for `%s`",
@@ -55,6 +66,8 @@ linkDSLD <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkDSLD", model)
 }
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
 linkDSLD.PromiseLongitudinalModel <- function(
     prior = prior_normal(0, 2),
     model,
@@ -63,6 +76,8 @@ linkDSLD.PromiseLongitudinalModel <- function(
     PromiseLinkComponent(fun = linkDSLD, prior = prior, key = "link_dsld")
 }
 #' @export
+#'
+#' @returns This method always raises an error for unsupported models.
 linkDSLD.default <- function(prior, model, ...) {
     stop(sprintf(
         "Method `linkDSLD` is not available for `%s`",
@@ -77,6 +92,8 @@ linkIdentity <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkIdentity", model)
 }
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
 linkIdentity.PromiseLongitudinalModel <- function(
     prior = prior_normal(0, 2),
     model,
@@ -89,6 +106,8 @@ linkIdentity.PromiseLongitudinalModel <- function(
     )
 }
 #' @export
+#'
+#' @returns This method always raises an error for unsupported models.
 linkIdentity.default <- function(prior, model, ...) {
     stop(sprintf(
         "Method `linkIdentity` is not available for `%s`",
@@ -103,6 +122,8 @@ linkGrowth <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkGrowth", model)
 }
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
 linkGrowth.PromiseLongitudinalModel <- function(
     prior = prior_normal(0, 2),
     model,
@@ -111,6 +132,8 @@ linkGrowth.PromiseLongitudinalModel <- function(
     PromiseLinkComponent(fun = linkGrowth, prior = prior, key = "link_growth")
 }
 #' @export
+#'
+#' @returns This method always raises an error for unsupported models.
 linkGrowth.default <- function(prior, model, ...) {
     stop(sprintf(
         "Method `linkGrowth` is not available for `%s`",
@@ -125,6 +148,8 @@ linkShrinkage <- function(prior, model = PromiseLongitudinalModel(), ...) {
     UseMethod("linkShrinkage", model)
 }
 #' @export
+#'
+#' @returns A `PromiseLinkComponent` object.
 linkShrinkage.PromiseLongitudinalModel <- function(
     prior = prior_normal(0, 2),
     model,
@@ -137,6 +162,8 @@ linkShrinkage.PromiseLongitudinalModel <- function(
     )
 }
 #' @export
+#'
+#' @returns This method always raises an error for unsupported models.
 linkShrinkage.default <- function(prior, model, ...) {
     stop(sprintf(
         "Method `linkShrinkage` is not available for `%s`",

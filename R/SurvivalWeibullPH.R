@@ -26,6 +26,11 @@ NULL
 #'   for covariates coefficients `beta`.
 #'
 #' @export
+#'
+#' @returns A `SurvivalWeibullPH` object.
+#'
+#' @examples
+#' SurvivalWeibullPH()
 SurvivalWeibullPH <- function(
     lambda = prior_gamma(2, 0.5),
     gamma = prior_gamma(2, 0.5),

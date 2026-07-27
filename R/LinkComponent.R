@@ -51,6 +51,13 @@ NULL
 #' @family LinkComponent
 #' @name LinkComponent-class
 #' @exportClass Link
+#'
+#' @examples
+#' LinkComponent(
+#'   stan = StanModule(),
+#'   prior = prior_normal(0, 1),
+#'   key = "custom_link"
+#' )
 .LinkComponent <- setClass(
     Class = "LinkComponent",
     slots = list(
@@ -63,6 +70,8 @@ NULL
 
 #' @rdname LinkComponent-class
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 LinkComponent <- function(stan, prior, key, ...) {
     .LinkComponent(
         stan = stan,
@@ -102,6 +111,8 @@ initialValues.LinkComponent <- function(object, n_chains, ...) {
 #' @family LinkComponent
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.LinkComponent <- function(object, ...) {
     object@stan
 }
@@ -117,6 +128,8 @@ as.StanModule.LinkComponent <- function(object, ...) {
 #'
 #' @family LinkComponent
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.LinkComponent <- function(x, ...) {
     stan <- as.StanModule(x, ...)
     as.list(stan)
@@ -124,6 +137,8 @@ as.list.LinkComponent <- function(x, ...) {
 
 #' @family LinkComponent
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.LinkComponent <- function(object, ...) {
     as_print_string(object@parameters)
 }
@@ -147,6 +162,8 @@ setMethod(
 
 #' @family LinkComponent
 #' @export
+#'
+#' @returns A character vector containing the component's parameter names.
 names.LinkComponent <- function(x, ...) {
     names(x@parameters)
 }

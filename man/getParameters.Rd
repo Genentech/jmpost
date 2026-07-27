@@ -24,9 +24,15 @@ getParameters(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A \code{ParameterList} object.
+}
 \description{
 Extract any modelling parameters as a \code{\link{ParameterList}} object
 from a model.
+}
+\examples{
+getParameters(LongitudinalGSF())
 }
 \seealso{
 Other LinkComponent:

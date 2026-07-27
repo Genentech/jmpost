@@ -9,3 +9,6 @@
 \description{
 These methods print objects of different classes.
 }
+\examples{
+show(prior_normal(0, 1))
+}

@@ -73,6 +73,9 @@
 \arguments{
 \item{object}{Object to be printed}
 }
+\value{
+Invisibly returns \code{NULL} after printing the object.
+}
 \description{
 Prints an object to the console.
 }

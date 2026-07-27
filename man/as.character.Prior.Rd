@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A character vector.
+}
 \description{
 Converts a \code{\link{Prior}} object to a character vector
 }

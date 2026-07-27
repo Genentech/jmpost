@@ -20,6 +20,9 @@
 
 \item{...}{Not used.}
 }
+\value{
+The requested parameter property: its name, initial values, or size.
+}
 \description{
 Getter functions for the slots of a \code{\link{Parameter}} object
 }

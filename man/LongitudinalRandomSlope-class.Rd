@@ -28,6 +28,9 @@ LongitudinalRandomSlope(
 As a default, the variance is not scaled by the expected value, corresponding to an additive model.
 (See the "Statistical Specifications" vignette for more details.)}
 }
+\value{
+A \code{LongitudinalRandomSlope} object.
+}
 \description{
 This class extends the general \code{\link{LongitudinalModel}} class for using the
 random slope linear model for the longitudinal outcome.
@@ -40,3 +43,6 @@ random slope linear model for the longitudinal outcome.
 }
 }
 
+\examples{
+LongitudinalRandomSlope()
+}

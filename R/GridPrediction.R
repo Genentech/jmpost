@@ -81,6 +81,8 @@ as.QuantityCollapser.GridPrediction <- function(object, data, ...) {
 
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridPrediction <- function(x, data, ...) {
     stop("`as.list()` is not implemented for `GridPrediction` objects")
 }

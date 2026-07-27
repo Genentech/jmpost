@@ -18,6 +18,9 @@ DataSubject(data, subject, arm, study)
 
 \item{study}{(\code{character}) the name of the variable containing the study identifier.}
 }
+\value{
+A \code{DataSubject} object.
+}
 \description{
 The \code{\link{DataSubject}} class handles the processing of the subject data for
 fitting a \code{\link{JointModel}}.
@@ -34,6 +37,10 @@ fitting a \code{\link{JointModel}}.
 \item{\code{study}}{(\code{character})\cr the name of the variable containing the study identifier.}
 }}
 
+\examples{
+dat <- transform(os_data, study = "Study 1")
+DataSubject(dat, subject = "id", arm = "arm", study = "study")
+}
 \seealso{
 Other DataObjects:
 \code{\link{DataJoint-class}},

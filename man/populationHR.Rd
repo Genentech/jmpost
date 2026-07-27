@@ -32,6 +32,11 @@ matrix containing the parameter estimates for each sample.
 Calculates hazard ratios marginalised over subject specific random effects using the
 approach proposed by \insertCite{oudenhoven2020marginal}{jmpost}.
 }
+\examples{
+\dontrun{
+populationHR(fit, quantiles = c(0.01, 0.99))
+}
+}
 \references{
 \insertAllCited{}
 }

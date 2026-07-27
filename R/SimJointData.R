@@ -27,6 +27,18 @@
 #'
 #' @name SimJointData-class
 #' @exportClass SimJointData
+#'
+#' @examples
+#' set.seed(1)
+#' SimJointData(
+#'   design = list(SimGroup(3, "A", "Study 1")),
+#'   longitudinal = SimLongitudinalRandomSlope(
+#'     times = c(0, 10),
+#'     slope_mu = 0.01,
+#'     slope_sigma = 0.5
+#'   ),
+#'   survival = SimSurvivalExponential(lambda = 1 / 300)
+#' )
 .SimJointData <- setClass(
     "SimJointData",
     slots = list(
@@ -38,6 +50,8 @@
 
 #' @rdname SimJointData-class
 #' @export
+#'
+#' @returns A `SimJointData` object.
 SimJointData <- function(
     design = list(
         SimGroup(n = 50, study = "Study-1", arm = "Arm-A"),
@@ -214,6 +228,9 @@ setMethod(
 #'   )
 #' data <- add_pfs(data)
 #' data@survival # now has pfs_time and pfs_event columns
+#'
+#' @returns The input `SimJointData` object with progression-free survival columns
+#'   `pfs_time` and `pfs_event` added.
 add_pfs <- function(
     object,
     relative_threshold = 1.2,
@@ -287,6 +304,8 @@ add_pfs <- function(
 #' data@survival
 #' # Now max time is 5
 #' max(data@survival$time)
+#'
+#' @returns The input `SimJointData` object restricted to the requested follow-up time.
 cut_data <- function(object, cut_time) {
     assert_class(object, "SimJointData")
     check_len <- if (length(cut_time) > 1) nrow(object@survival) else 1

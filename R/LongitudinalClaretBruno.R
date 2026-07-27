@@ -55,6 +55,11 @@ NULL
 #'   (See the "Statistical Specifications" vignette for more details.)
 #'
 #' @export
+#'
+#' @returns A `LongitudinalClaretBruno` object.
+#'
+#' @examples
+#' LongitudinalClaretBruno()
 LongitudinalClaretBruno <- function(
     mu_b = prior_normal(log(60), 0.5),
     mu_g = prior_normal(log(1), 0.5),
@@ -178,6 +183,8 @@ LongitudinalClaretBruno <- function(
 
 
 #' @export
+#'
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalClaretBruno <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -187,6 +194,8 @@ enableLink.LongitudinalClaretBruno <- function(object, ...) {
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalClaretBruno <- function(
     prior = prior_normal(0, 2),
     model,
@@ -200,6 +209,8 @@ linkDSLD.LongitudinalClaretBruno <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkTTG.LongitudinalClaretBruno <- function(
     prior = prior_normal(0, 2),
     model,
@@ -213,6 +224,8 @@ linkTTG.LongitudinalClaretBruno <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalClaretBruno <- function(
     prior = prior_normal(0, 2),
     model,
@@ -226,6 +239,8 @@ linkIdentity.LongitudinalClaretBruno <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalClaretBruno <- function(
     prior = prior_normal(0, 2),
     model,
@@ -245,6 +260,8 @@ getPredictionNames.LongitudinalClaretBruno <- function(object, ...) {
 }
 
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalClaretBruno <- function(object, ...) {
     StanModule("lm-claret-bruno/quantities.stan")
 }

@@ -26,6 +26,10 @@ Default is 5.}
 \item{observed_after}{(\code{logical}) If \code{FALSE} set longitudinal observations after the progression time to
 \code{observed = FALSE}}
 }
+\value{
+The input \code{SimJointData} object with progression-free survival columns
+\code{pfs_time} and \code{pfs_event} added.
+}
 \description{
 Adds new columns \code{pfs_time} and \code{pfs_event} based on observed changes to SLD.
 }
@@ -39,4 +43,5 @@ data <- SimJointData(
   )
 data <- add_pfs(data)
 data@survival # now has pfs_time and pfs_event columns
+
 }

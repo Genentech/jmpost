@@ -13,6 +13,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Converts \code{\link{RandomEffectQuantities}} object into a printable string.
 }

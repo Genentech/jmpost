@@ -61,6 +61,9 @@ affected by the treatment \code{omega_phi}.}
 \item{scaled_variance}{(\code{logical}) whether the variance should be scaled by the expected value
 (see the "Statistical Specifications" vignette for more details)}
 }
+\value{
+A \code{SimLongitudinalGSF} object.
+}
 \description{
 Simulate Longitudinal Data from a GSF Model
 }
@@ -98,6 +101,9 @@ Simulate Longitudinal Data from a GSF Model
 \item{\code{scaled_variance}}{(\code{logical})\cr See arguments.}
 }}
 
+\examples{
+SimLongitudinalGSF(times = c(0, 30, 60))
+}
 \seealso{
 Other SimLongitudinal:
 \code{\link{SimLongitudinal-class}},

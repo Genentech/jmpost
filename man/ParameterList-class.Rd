@@ -12,6 +12,9 @@ ParameterList(...)
 \arguments{
 \item{...}{(\code{Parameter}) which parameter specifications to include.}
 }
+\value{
+A \code{ParameterList} object.
+}
 \description{
 This class extends the general \code{\link{list}} type for containing \code{\link{Parameter}}
 specifications. When converted to a \code{\link{StanModule}}, the list supplies the
@@ -23,6 +26,12 @@ Stan declarations and prior statements for those parameters.
 \item{\code{parameters}}{(\code{list}) \cr a list of \code{\link{Parameter}} objects}
 }}
 
+\examples{
+ParameterList(
+  Parameter(prior_normal(0, 1), "intercept"),
+  Parameter(prior_normal(0, 2), "slope")
+)
+}
 \seealso{
 Other ParameterList:
 \code{\link{ParameterList-Getter-Methods}},

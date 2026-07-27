@@ -6,6 +6,9 @@
 \alias{.JointModelSamples}
 \alias{JointModelSamples}
 \title{\code{JointModelSamples}}
+\value{
+A \code{JointModelSamples} object.
+}
 \description{
 Contains samples from a \code{\link{JointModel}}.
 }
@@ -19,3 +22,9 @@ Contains samples from a \code{\link{JointModel}}.
 \item{\code{results}}{(\code{\link[cmdstanr:CmdStanMCMC]{cmdstanr::CmdStanMCMC}})\cr the STAN samples.}
 }}
 
+\examples{
+\dontrun{
+# JointModelSamples objects are returned by sampleStanModel().
+fit <- sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+}
+}

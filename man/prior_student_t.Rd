@@ -13,8 +13,14 @@ prior_student_t(nu, mu, sigma)
 
 \item{sigma}{(\code{number}) Scale parameter.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Student-t Prior Distribution
+}
+\examples{
+prior_student_t(4, 0, 1)
 }
 \seealso{
 Other Prior:

@@ -9,6 +9,9 @@ size(object)
 \arguments{
 \item{object}{where to get the parameter sizes from.}
 }
+\value{
+A numeric value or named list describing parameter sizes.
+}
 \description{
 Obtain the \code{list} of parameter sizes.
 }

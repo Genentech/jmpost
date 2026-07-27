@@ -11,8 +11,14 @@ prior_beta(a, b)
 
 \item{b}{(\code{number}) second parameter}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Beta Prior Distribution
+}
+\examples{
+prior_beta(2, 3)
 }
 \seealso{
 Other Prior:

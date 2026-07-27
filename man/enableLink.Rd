@@ -21,3 +21,6 @@ optional stan code that is only required if there are links present.}
 \description{
 Enable Link Generic
 }
+\examples{
+enableLink(LongitudinalGSF())
+}

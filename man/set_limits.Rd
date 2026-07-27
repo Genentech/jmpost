@@ -16,7 +16,13 @@ set_limits(object, lower = -Inf, upper = Inf)
 
 \item{upper}{(\code{numeric}) upper constraint boundary}
 }
+\value{
+A \code{Prior} object with the requested bounds.
+}
 \description{
 Applies constraints to a prior distribution to ensure any sampled numbers
 from the distribution fall within the constraints
+}
+\examples{
+set_limits(prior_normal(0, 1), lower = 0)
 }

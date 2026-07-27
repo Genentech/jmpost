@@ -23,6 +23,9 @@
 
 \item{...}{Not currently used.}
 }
+\value{
+A named \code{list} suitable for use as Stan data.
+}
 \description{
 Converts a \code{QuantityGenerator} object to a list containing the required input data for a stan
 model.

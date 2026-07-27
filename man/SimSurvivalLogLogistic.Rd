@@ -29,6 +29,9 @@ SimSurvivalLogLogistic(
 
 \item{beta_cat}{(\code{numeric}) the categorical covariate coefficients.}
 }
+\value{
+A \code{SimSurvival} object.
+}
 \description{
 Simulate Survival Data from a Log-Logistic Proportional Hazard Model
 }
@@ -47,6 +50,9 @@ values for \code{time_max} will minimize the number of censored subjects at the 
 increased computation time.
 }
 
+\examples{
+SimSurvivalLogLogistic(a = 300, b = 2)
+}
 \seealso{
 Other SimSurvival:
 \code{\link{SimSurvival-class}},
