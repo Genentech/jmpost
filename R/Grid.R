@@ -190,7 +190,7 @@ NULL
 #'   Survival and Longitudinal Data.
 #' @param ... Not currently used.
 #' @keywords internal
-#' @exportS3Method NULL
+#' @export
 #'
 #' @returns Will always throw an error.
 as_stan_list.QuantityGenerator <- function(object, data, ...) {
