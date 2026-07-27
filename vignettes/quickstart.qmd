@@ -1,16 +1,17 @@
 ---
 title: "jmpost Quickstart"
 package: jmpost
-output: rmarkdown::html_vignette
+format: html
 vignette: >
   %\VignetteIndexEntry{jmpost Quickstart}
   %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options:
-  chunk_output_type: console
+  %\VignetteEngine{quarto::html}
 ---
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -59,7 +60,9 @@ Let's first specify a very simple joint model with:
    enters as a product with a link coefficient into the linear predictor of the 
    survival model.
    
-```{r simple_model}
+```{r}
+#| label: simple_model
+
 simple_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
@@ -72,7 +75,9 @@ in particular the prior distributions and the initial values in the MCMC chain
 for the parameters are automatically chosen. We can see this 
 from the arguments of the constructors (or from the help page):
 
-```{r constructor_args}
+```{r}
+#| label: constructor_args
+
 args(LongitudinalRandomSlope)
 ```
 
@@ -88,7 +93,9 @@ posterior distributions.
 
 For the random slope model for the longitudinal outcome, we can e.g. say:
 
-```{r random_slope_prior_inits}
+```{r}
+#| label: random_slope_prior_inits
+
 random_slope_model <- LongitudinalRandomSlope(
     intercept = prior_normal(40, 5),
     slope_mu = prior_normal(10, 2)
@@ -101,7 +108,9 @@ the prior for the `slope_mu` parameter to be a $N(10, 2)$ distribution.
 For the survival models, we can set different independent normal priors for the coefficients of the covariates in the linear predictor using the `prior_normal_vector()` specification. Here we can give a vector of the same length as the number of design matrix columns for both the means or standard deviations of the normal distributions, or we can give a single value that will be repeated for all covariates. 
 For example, say we have 3 design matrix columns, i.e. coefficients, in the linear predictor of the survival model, then we can set the priors for these coefficients as follows:
 
-```{r survival_prior_inits}
+```{r}
+#| label: survival_prior_inits
+
 survival_model <- SurvivalWeibullPH(
     beta = prior_normal_vector(mus = c(-1, 0, 5), sigmas = c(1, 1, 10))
 )
@@ -115,7 +124,9 @@ In order to know which position corresponds to which design matrix column and th
 It is also possible to not link the longitudinal and the survival models, by using
 the special `linkNone()` link specification. For example, 
 
-```{r simple_model_no_link}
+```{r}
+#| label: simple_model_no_link
+
 simple_model_no_link <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(),
@@ -130,7 +141,9 @@ would allow to fit the two models separately, but in the same MCMC chain.
 It is also possible to specify only the longitudinal or the survival model.
 Then these can be estimated on their own with separate MCMC chains.
 
-```{r single_models}
+```{r}
+#| label: single_models
+
 single_longitudinal <- JointModel(
     longitudinal = LongitudinalRandomSlope()
 )
@@ -157,7 +170,9 @@ Here we start from a simulated data set.
 
 So let's run the code for that:
 
-```{r simulate_data}
+```{r}
+#| label: simulate_data
+
 set.seed(129)
 sim_data <- SimJointData(
     design = list(
@@ -199,7 +214,9 @@ Next we bring the data into the right format.
 We start with extracting data into individual data sets, and then reducing the
 longitudinal data to specific time points.
 
-```{r individual_data}
+```{r}
+#| label: individual_data
+
 os_data <- sim_data@survival
 long_data <- sim_data@longitudinal
 ```
@@ -216,7 +233,9 @@ The survival data has:
 - study ID
 - treatment arm
 
-```{r os_data_structure}
+```{r}
+#| label: os_data_structure
+
 head(os_data)
 ```
 
@@ -229,7 +248,9 @@ The longitudinal data has:
 - treatment arm
 - observation flag
 
-```{r lm_data_structure}
+```{r}
+#| label: lm_data_structure
+
 head(long_data)
 ```
 
@@ -238,7 +259,9 @@ column names to the required variables happens. This means that in our applicati
 we don't have to use the same variable names as seen above, but we can use custom 
 names and then apply the mapping here.
 
-```{r data_joint}
+```{r}
+#| label: data_joint
+
 joint_data <- DataJoint(
     subject = DataSubject(
         data = os_data,
@@ -260,7 +283,9 @@ joint_data <- DataJoint(
 
 Note that we can also actively look into the design matrix of the `DataSurvival` object. This can be helpful if we want to know which coefficients are at which position, e.g. for setting the right prior means and standard deviations with `prior_normal_vector()`. It works like this:
 
-```{r design_matrix}
+```{r}
+#| label: design_matrix
+
 head(model.matrix(joint_data@survival))
 ```
 
@@ -275,7 +300,9 @@ Now let's have a look how we can fit the (joint) models.
 It is always possible to read out the Stan code that is contained in the
 `JointModel` object, using `write_stan()`:
 
-```{r debug_stan}
+```{r}
+#| label: debug_stan
+
 tmp <- tempfile()
 write_stan(simple_model, destination = tmp)
 first_part <- head(readLines(tmp), 10)
@@ -288,7 +315,9 @@ Finally, `sampleStanModel()` is kicking off the MCMC sampler via `cmdstanr` in
 the backend. Note that in practice you would increase the number of 
 warm-up and sampling iterations.
 
-```{r sampling}
+```{r}
+#| label: sampling
+
 mcmc_results <- sampleStanModel(
     simple_model,
     data = joint_data,
@@ -305,7 +334,9 @@ After the sampling finishes, we can inspect the parameter distributions.
 This is using the `cmdstanr` functions, because the `results` element is of class
 `CmdStanMCMC`.
 
-```{r inspect_distributions}
+```{r}
+#| label: inspect_distributions
+
 vars <- c(
     "lm_rs_intercept",
     "lm_rs_slope_mu",
@@ -343,7 +374,9 @@ Using the `draws()` method on the `results` element, we can extract the samples
 in a format that is understood by `bayesplot`. We can e.g. look 
 at some simple trace plots:
 
-```{r fig.width=6}
+```{r}
+#| fig-width: 6
+
 vars_draws <- cmdstanr::as.CmdStanMCMC(mcmc_results)$draws(vars)
 
 library(bayesplot)
@@ -357,7 +390,9 @@ samples from the result, and then plot them for all subjects or those
 that we are interested in. For illustration, we will plot here the first
 10 subjects:
 
-```{r fig.width=6}
+```{r}
+#| fig-width: 6
+
 selected_subjects <- head(os_data$subject, 10)
 long_quantities <- LongitudinalQuantities(
     mcmc_results,
@@ -375,7 +410,9 @@ autoplot(long_quantities)
 And using the `SurvivalQuantities()` method we can do the same for the estimated survival
 functions.
 
-```{r fig.width=6}
+```{r}
+#| fig-width: 6
+
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
     grid = GridFixed(
@@ -390,7 +427,10 @@ autoplot(surv_quantities)
 We can also aggregate the estimated survival curves from groups of subjects, 
 using the corresponding method.
 
-```{r, warning=FALSE, fig.width=6}
+```{r}
+#| warning: false
+#| fig-width: 6
+
 surv_quantities <- SurvivalQuantities(
     mcmc_results,
     grid = GridGrouped(
@@ -439,7 +479,7 @@ getPredictionNames(LongitudinalGSF())
 The `brierScore()` method can be used to extract the Brier Scores (predictive performance measure)
 from our `SurvivalQuantities` object.
 
-```{R}
+```{r}
 sq <- SurvivalQuantities(
     mcmc_results,
     grid = GridFixed(times = c(1, 50, 100, 400, 800)),

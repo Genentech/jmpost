@@ -63,7 +63,8 @@ Suggests:
     brms,
     tidyr,
     loo,
-    withr
+    withr,
+    quarto
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
 Config/testthat/parallel: true
@@ -130,7 +131,7 @@ Collate:
     'simulate.R'
     'standalone-s3-register.R'
     'zzz.R'
-VignetteBuilder: knitr
+VignetteBuilder: knitr, quarto
 RdMacros: Rdpack
 LazyData: true
 Config/roxygen2/version: 8.0.0

@@ -1,20 +1,21 @@
 ---
 title: "Fitting a Custom Longitudinal Model"
 package: jmpost
-output:
-  rmarkdown::html_vignette:
-          toc: true
+format:
+  html:
+    toc: true
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Fitting a Custom Longitudinal Model}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options:
-  chunk_output_type: console
 ---
 
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -86,7 +87,7 @@ performance if you have small numbers of observations per each subject).
 
 For reference the following libraries will be used during this example:
 
-```{R}
+```{r}
 library(jmpost)
 library(ggplot2)
 library(dplyr)
@@ -99,7 +100,7 @@ In order to be confident that our model is working correctly we will first gener
 data. This will allow us to compare the true parameter values with the estimated parameter values.
 This can be done using the `SimJointData` constructor function as follows:
 
-```{R}
+```{r}
 # Define our simulation parameters + object
 SimWang <- setClass(
     "SimWang",
@@ -189,7 +190,7 @@ ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
 The longitudinal model can be implemented by extending the `LongitudinalModel` class. This can be
 done as follows:
 
-```{R}
+```{r}
 WangModel <- setClass(
     "WangModel",
     contains = "LongitudinalModel"
@@ -277,7 +278,10 @@ the generated Stan declarations include lower bounds.
 The `StanModule` object contains the model-specific Stan code. Parameters listed in
 `ParameterList()` should not be declared again in this Stan code. For this
 particular model the Stan code specified in the `custom-model.stan` file is as follows:
-```{R, results='asis', echo=FALSE} 
+```{r}
+#| output: asis
+#| echo: false
+
 x <- readLines("./custom-model.stan")
 cat(c("\```stan", x, "\```"), sep = "\n")
 ```
@@ -287,7 +291,7 @@ cat(c("\```stan", x, "\```"), sep = "\n")
 As stated in the introduction, the link function for this model is going to be the derivative
 of the growth function. This can be implemented in using the `jmpost` framework as follows:
 
-```{R}
+```{r}
 enableLink.WangModel <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -305,13 +309,19 @@ link <- LinkComponent(
 ```
 
 Where the Stan code for the `custom-model-enable-link.stan` file is as follows:
-```{R, results='asis', echo=FALSE}
+```{r}
+#| output: asis
+#| echo: false
+
 x <- readLines("./custom-model-enable-link.stan")
 cat(c("\```stan", x, "\```"), sep = "\n")
 ```
 
 And the Stan code for the `custom-model-dsld.stan` file is as follows:
-```{R, results='asis', echo=FALSE}
+```{r}
+#| output: asis
+#| echo: false
+
 x <- readLines("./custom-model-dsld.stan")
 cat(c("\```stan", x, "\```"), sep = "\n")
 ```
@@ -325,7 +335,7 @@ method is required to avoid duplicating the implementation of the `link_function
 ## Sampling the Joint model
 
 With our longitudinal model defined we can now specify and sample from the full joint model.
-```{R}
+```{r}
 model <- JointModel(
     longitudinal = longmodel,
     survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
@@ -375,14 +385,17 @@ generated quantity objects and functions as outlined in the "Extending jmpost" v
 
 This can be done as follows:
 
-```{R}
+```{r}
 enableGQ.WangModel <- function(object, ...) {
     StanModule("custom-model-gq.stan")
 }
 ```
 
 Where the Stan code for the `custom-model-gq.stan` file is as follows:
-```{R, results='asis', echo=FALSE}
+```{r}
+#| output: asis
+#| echo: false
+
 x <- readLines("./custom-model-gq.stan")
 cat(c("\```stan", x, "\```"), sep = "\n")
 ```
@@ -390,7 +403,7 @@ cat(c("\```stan", x, "\```"), sep = "\n")
 With the above in place we are now able to generate quantities as needed;
 this can be done at the subject level via:
 
-```{R}
+```{r}
 selected_subjects <- head(dat_os$subject, 4)
 long_quantities_idv <- LongitudinalQuantities(
     model_samples,
@@ -401,7 +414,7 @@ autoplot(long_quantities_idv)
 
 Or at the population level via:
 
-```{R}
+```{r}
 long_quantities_pop <- LongitudinalQuantities(
     model_samples,
     grid = GridPopulation()
