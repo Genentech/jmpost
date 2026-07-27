@@ -44,6 +44,26 @@ test_that("Parameter declaration helpers render Stan code", {
             "rep_vector(prior_const_theta, n_subjects);"
         )
     )
+    expect_equal(
+        render_stan_const_declaration(
+            "theta",
+            "n_subjects",
+            c(eps, Inf),
+            is_vector = TRUE
+        ),
+        paste0(
+            "vector<lower=", eps, ">[n_subjects] theta = prior_const_theta;"
+        )
+    )
+    expect_equal(
+        render_stan_const_declaration(
+            "theta",
+            1,
+            c(eps, Inf),
+            is_vector = TRUE
+        ),
+        paste0("real<lower=", eps, "> theta = prior_const_theta[1];")
+    )
 })
 
 test_that("Parameter declaration blocks depend on prior_const", {
@@ -71,6 +91,18 @@ test_that("Parameter declaration blocks depend on prior_const", {
     expect_equal(
         fixed_module@transformed_parameters,
         paste0("    real<lower=", eps, "> theta = prior_const_theta;")
+    )
+
+    fixed_vector <- Parameter(
+        name = "theta",
+        prior = prior_const_vector(c(1, 2)),
+        size = 2
+    )
+    fixed_vector_module <- as.StanModule.ParameterDeclaration(fixed_vector)
+    expect_equal(fixed_vector_module@parameters, "")
+    expect_equal(
+        fixed_vector_module@transformed_parameters,
+        "    vector[2] theta = prior_const_theta;"
     )
 })
 

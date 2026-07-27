@@ -154,15 +154,30 @@ render_stan_parameter_declaration <- function(name, size, limits) {
 #'   parameter size.
 #' @typed limits: numeric
 #'   lower and upper parameter limits.
+#' @typed is_vector: flag
+#'   whether the supplied constant is a vector.
 #'
 #' @return A length-one character vector.
 #'
 #' @keywords internal
-render_stan_const_declaration <- function(name, size, limits) {
+render_stan_const_declaration <- function(
+    name,
+    size,
+    limits,
+    is_vector = FALSE
+) {
     constraints <- render_stan_parameter_limits(limits)
     value <- glue::glue("prior_const_{name}")
     if (length(size) == 1 && is.numeric(size) && size == 1) {
+        if (is_vector) {
+            value <- glue::glue("{value}[1]")
+        }
         return(glue::glue("real{constraints} {name} = {value};"))
+    }
+    if (is_vector) {
+        return(glue::glue(
+            "vector{constraints}[{size}] {name} = {value};"
+        ))
     }
     glue::glue(
         "vector{constraints}[{size}] {name} = rep_vector({value}, {size});"
@@ -186,7 +201,8 @@ as.StanModule.ParameterDeclaration <- function(object, ...) {
         render_stan_const_declaration(
             name = object@name,
             size = object@size,
-            limits = object@prior@limits
+            limits = object@prior@limits,
+            is_vector = object@prior@.allow_vectors
         )
     } else {
         render_stan_parameter_declaration(

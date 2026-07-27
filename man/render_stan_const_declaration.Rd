@@ -4,7 +4,7 @@
 \alias{render_stan_const_declaration}
 \title{Render Stan Constant Parameter Declaration}
 \usage{
-render_stan_const_declaration(name, size, limits)
+render_stan_const_declaration(name, size, limits, is_vector = FALSE)
 }
 \arguments{
 \item{name}{(\code{string}) parameter name.}
@@ -12,6 +12,8 @@ render_stan_const_declaration(name, size, limits)
 \item{size}{(\code{numeric_OR_character}) parameter size.}
 
 \item{limits}{(\code{numeric}) lower and upper parameter limits.}
+
+\item{is_vector}{(\code{flag}) whether the supplied constant is a vector.}
 }
 \value{
 A length-one character vector.

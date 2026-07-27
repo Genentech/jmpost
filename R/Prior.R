@@ -724,6 +724,44 @@ prior_const <- function(value) {
     )
 }
 
+#' Constant Prior Distribution for a Vector
+#'
+#' @typed values: numeric
+#'   the fixed parameter values.
+#' @family Prior
+#' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_const_vector(c(0, 1))
+prior_const_vector <- function(values) {
+    assert_that(
+        is.numeric(values) && length(values) > 0,
+        msg = "`values` must be a non-empty numeric vector"
+    )
+    Prior(
+        parameters = list(values = values),
+        display = "const(values = [{toString(values)}])",
+        repr_model = "",
+        repr_data = "vector[{size}] prior_const_{name};",
+        centre = values,
+        sample = \(n) {
+            matrix(
+                values,
+                nrow = n,
+                ncol = length(values),
+                byrow = TRUE
+            )
+        },
+        validation = list(
+            values = \(x) is.numeric(x) && length(x) > 0
+        ),
+        .allow_vectors = TRUE,
+        .is_const = TRUE
+    )
+}
+
 #' Cauchy Prior Distribution
 #'
 #' @typed mu: number
