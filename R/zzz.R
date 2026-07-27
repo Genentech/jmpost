@@ -32,7 +32,7 @@
             )
         }
     }
-    return(invisible(NULL))
+    invisible()
 }
 
 .onLoad <- function(...) {

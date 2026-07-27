@@ -76,5 +76,5 @@ ensure_test_data_1 <- function(positive_epsilon = FALSE) {
         jdata = jdat,
         jsamples = mp
     )
-    return(invisible(results))
+    invisible(results)
 }

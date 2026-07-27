@@ -62,7 +62,8 @@ Suggests:
     prodlim,
     brms,
     tidyr,
-    loo
+    loo,
+    withr
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
 Config/testthat/parallel: true

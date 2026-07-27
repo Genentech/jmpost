@@ -77,4 +77,5 @@ set_options <- function() {
             options(jmpost_opts[opt])
         }
     }
+    invisible()
 }

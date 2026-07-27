@@ -178,10 +178,12 @@ NULL
 .QuantityGenerator <- setClass(
     "QuantityGenerator"
 )
+
 #' `QuantityGenerator` -> `list`
+#'
 #' @description
-#' Converts a `QuantityGenerator` object to a list containing the required input data for a stan
-#' model.
+#' Just a placeholder which will error when used.
+#'
 #' @typed object: QuantityGenerator
 #'   object to convert to a list.
 #' @typed data: DataJoint
@@ -190,7 +192,7 @@ NULL
 #' @keywords internal
 #' @exportS3Method NULL
 #'
-#' @returns A named `list` suitable for use as Stan data.
+#' @returns Will always throw an error.
 as_stan_list.QuantityGenerator <- function(object, data, ...) {
     stop("as_stan_list.QuantityGenerator not implemented")
 }

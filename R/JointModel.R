@@ -162,6 +162,7 @@ write_stan.JointModel <- function(object, destination, ...) {
     fi <- file(destination, open = "w")
     writeLines(as.character(object), con = fi)
     close(fi)
+    invisible()
 }
 
 
