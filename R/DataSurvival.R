@@ -128,9 +128,24 @@ model.matrix.DataSurvival <- function(
 ) {
     design_mat <- stats::model.matrix(vars$frm, data = df)
     remove_index <- grep("(Intercept)", colnames(design_mat), fixed = TRUE)
-    design_mat <- design_mat[, -remove_index, drop = FALSE]
+    if (length(remove_index) > 0) {
+        design_mat <- design_mat[, -remove_index, drop = FALSE]
+    }
     rownames(design_mat) <- NULL
     design_mat
+}
+
+#' Extract Covariate Names for Survival Data
+#'
+#' @typed object: DataSurvival
+#'  Survival data object to extract covariate names from.
+#' @param ... not used.
+#'
+#' @family covariates
+#' @export
+covariates.DataSurvival <- function(object, ...) {
+    design_mat <- model.matrix(object, ...)
+    colnames(design_mat)
 }
 
 #' @rdname as_stan_list.DataObject

@@ -166,6 +166,46 @@ size <- function(object) {
 }
 
 
+# auxiliaryInitialValues ----
+
+#' `auxiliaryInitialValues`
+#'
+#' Obtain initial values for any additional Stan parameters introduced by an object.
+#'
+#' @param object where to get the auxiliary initial values from.
+#' @param ... additional options.
+#'
+#' @details
+#' Some objects, such as shrinkage priors, declare additional Stan parameters
+#' beyond the main model parameter. This helper returns named initial values for
+#' those additional parameters.
+#'
+#' @keywords internal
+auxiliaryInitialValues <- function(object, ...) {
+    UseMethod("auxiliaryInitialValues")
+}
+
+
+# auxiliarySize ----
+
+#' `auxiliarySize`
+#'
+#' Obtain sizes for any additional Stan parameters introduced by an object.
+#'
+#' @param object where to get the auxiliary parameter sizes from.
+#' @param ... additional options.
+#'
+#' @details
+#' Some objects, such as shrinkage priors, declare additional Stan parameters
+#' beyond the main model parameter. This helper returns named sizes for those
+#' additional parameters so their initial values can be expanded consistently.
+#'
+#' @keywords internal
+auxiliarySize <- function(object, ...) {
+    UseMethod("auxiliarySize")
+}
+
+
 # generateQuantities ----
 
 #' `generateQuantities`
@@ -525,4 +565,29 @@ set_limits <- function(object, lower = -Inf, upper = Inf) {
 #' @export
 saveObject <- function(object, file, ...) {
     UseMethod("saveObject")
+}
+
+
+#' Extract Covariate Names
+#'
+#' @typed object: ANY
+#'   the object to extract covariate names from.
+#' @param ... additional arguments added by methods.
+#'
+#' @family covariates
+#' @export
+covariates <- function(object, ...) {
+    UseMethod("covariates")
+}
+
+#' Extract Covariate Shrinkage Factors from the Posterior Samples
+#'
+#' @typed object: ANY
+#'   the object to extract shrinkage factors from.
+#' @param ... additional arguments added by methods.
+#'
+#' @family shrinkage
+#' @export
+shrinkage <- function(object, ...) {
+    UseMethod("shrinkage")
 }

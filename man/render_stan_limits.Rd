@@ -2,12 +2,18 @@
 % Please edit documentation in R/Prior.R
 \name{render_stan_limits}
 \alias{render_stan_limits}
+\alias{render_stan_limits.Prior}
+\alias{render_stan_limits.numeric}
 \title{Creates Stan Syntax for Truncated distributions}
 \usage{
-render_stan_limits(limits)
+render_stan_limits(object)
+
+\method{render_stan_limits}{Prior}(object)
+
+\method{render_stan_limits}{numeric}(object)
 }
 \arguments{
-\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+\item{object}{(\code{Prior | numeric}) prior or lower and upper limits for a truncated distribution.}
 }
 \value{
 (\code{character}) the Stan syntax for truncated distributions
@@ -15,4 +21,11 @@ render_stan_limits(limits)
 \description{
 This function creates the Stan syntax for truncated distributions
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{render_stan_limits(Prior)}: method for \link{Prior} objects.
+
+\item \code{render_stan_limits(numeric)}: method for numeric vectors.
+
+}}
 \keyword{internal}

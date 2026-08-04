@@ -1,7 +1,6 @@
 # Print method for SurvivalExponential works as expected
 
     Code
-      x <- SurvivalExponential()
       print(x)
     Output
       
@@ -13,7 +12,6 @@
 ---
 
     Code
-      x <- SurvivalExponential(beta = prior_gamma(3, 4))
       print(x)
     Output
       
@@ -22,10 +20,20 @@
           beta_os_cov ~ gamma(alpha = 3, beta = 4)
       
 
+---
+
+    Code
+      print(x)
+    Output
+      
+      Exponential Survival Model with parameters:
+          sm_exp_lambda = const(value = 1)
+          beta_os_cov ~ normal(mu = 0, sigma = 2)
+      
+
 # Different priors for the beta components are possible
 
     Code
-      x <- SurvivalExponential(beta = prior_normal(0, 1))
       print(x)
     Output
       
@@ -37,7 +45,6 @@
 ---
 
     Code
-      x <- SurvivalExponential(beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3)))
       print(x)
     Output
       

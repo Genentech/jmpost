@@ -120,11 +120,6 @@ transformed data {
 
 
 parameters {
-    //
-    // Source - base/survival.stan
-    //
-    // Covariate coefficients.
-    vector[p_os_cov_design] beta_os_cov;
 {{ stan.parameters }}
 }
 

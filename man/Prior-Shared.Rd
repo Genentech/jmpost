@@ -13,6 +13,8 @@
 
 \item{name}{(\code{character}) the name of the parameter the prior distribution is for}
 
+\item{size}{(\code{numeric} or \code{character}) the parameter size.}
+
 \item{...}{Not Used.}
 }
 \description{

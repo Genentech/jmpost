@@ -266,3 +266,156 @@ test_that("jmpost and brms get similar loo for survival models", {
         cor(b_est$pointwise[, "looic"], j_est$pointwise[, "looic"]) > 0.95
     )
 })
+
+
+test_that("jmpost and brms get similar horseshoe estimates for survival models", {
+    skip_if_not(is_full_test())
+
+    set.seed(9826)
+    n <- 500
+    dat_surv <- dplyr::tibble(
+        pt = sprintf("pt_%06i", seq_len(n)),
+        lambda_0 = 365 / 150,
+        ones = 1,
+        cov1 = rnorm(n),
+        cov2 = rnorm(n),
+        cov3 = rnorm(n),
+        lambda = lambda_0 * exp(cov1 * 0.5 + cov2 * -0.3),
+        time = rexp(n, 1 / lambda),
+        event = 1
+    )
+
+    mp_brms <- brms::brm(
+        time ~ 0 + ones + cov1 + cov2 + cov3, # No intercept and no centering, please.
+        family = brms::exponential(),
+        data = dat_surv,
+        prior = brms::prior(
+            "horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.3, scale_slab = 2)",
+            class = "b"
+        ),
+        warmup = 5000,
+        iter = 10000,
+        chains = 4,
+        cores = 4,
+        seed = 9826,
+        backend = "cmdstanr",
+        save_pars = brms::save_pars(manual = "hs_local")
+    )
+
+    dat_surv2 <- dat_surv |>
+        dplyr::mutate(arm = "A") |>
+        dplyr::mutate(study = "A")
+
+    dat_surv_bl <- dat_surv2 |>
+        dplyr::select(pt, arm, study) |>
+        dplyr::group_by(pt) |>
+        dplyr::slice(1) |>
+        dplyr::ungroup()
+
+    jdat <- DataJoint(
+        subject = DataSubject(
+            data = dat_surv_bl,
+            subject = "pt",
+            arm = "arm",
+            study = "study"
+        ),
+        survival = DataSurvival(
+            data = dat_surv2,
+            formula = Surv(time, event) ~ 0 + ones + cov1 + cov2 + cov3
+        )
+    )
+
+    jm <- JointModel(
+        survival = SurvivalExponential(
+            # Let's use an approximate point mass
+            # at lambda = 1 to get the same model as brms.
+            lambda = prior_const(1),
+            beta = prior_horseshoe(
+                df = 1,
+                df_global = 1,
+                df_slab = 4,
+                scale_global = 0.3,
+                scale_slab = 2
+            )
+        )
+    )
+
+    mp <- sampleStanModel(
+        jm,
+        data = jdat,
+        iter_warmup = 5000,
+        iter_sampling = 5000,
+        chains = 4,
+        refresh = 200,
+        parallel_chains = 4,
+        seed = 9826
+    )
+
+    b_draws <- posterior::as_draws(mp_brms)
+    stanmod <- cmdstanr::as.CmdStanMCMC(mp)
+    j_draws <- stanmod$draws()
+
+    summary_quantiles <- function(draws) {
+        apply(
+            as.matrix(draws),
+            2,
+            quantile,
+            probs = c(0.1, 0.5, 0.9),
+            names = FALSE
+        )
+    }
+
+    b_beta <- b_draws |>
+        posterior::subset_draws(
+            variable = c("b_ones", "b_cov1", "b_cov2", "b_cov3")
+        ) |>
+        posterior::as_draws_df() |>
+        dplyr::mutate(
+            b_ones = -b_ones,
+            b_cov1 = -b_cov1,
+            b_cov2 = -b_cov2,
+            b_cov3 = -b_cov3
+        )
+
+    j_beta <- j_draws |>
+        posterior::subset_draws(variable = "beta_os_cov") |>
+        posterior::as_draws_df()
+
+    expect_equal(
+        summary_quantiles(j_beta),
+        summary_quantiles(b_beta),
+        tolerance = 0.01,
+        ignore_attr = TRUE
+    )
+
+    # Also compare shrinkage factors.
+    b_shrink_pars <- b_draws |>
+        posterior::subset_draws(
+            variable = c("hs_slab", "hs_global", "hs_local")
+        ) |>
+        posterior::as_draws_df()
+
+    b_c2 <- 2^2 * b_shrink_pars$hs_slab
+    b_g2 <- b_shrink_pars$hs_global^2
+    shrink_fun <- function(hs_local) {
+        1 / (1 + b_g2 * hs_local^2 / b_c2)
+    }
+    b_shrinkage <- dplyr::tibble(
+        cov1 = shrink_fun(b_shrink_pars$`hs_local[1]`),
+        cov2 = shrink_fun(b_shrink_pars$`hs_local[2]`),
+        cov3 = shrink_fun(b_shrink_pars$`hs_local[3]`),
+        cov4 = shrink_fun(b_shrink_pars$`hs_local[4]`)
+    )
+
+    j_shrinkage <- shrinkage(mp) |>
+        posterior::as_draws_df() |>
+        dplyr::as_tibble() |>
+        dplyr::select(ones, cov1, cov2, cov3)
+
+    expect_equal(
+        summary_quantiles(j_shrinkage),
+        summary_quantiles(b_shrinkage),
+        tolerance = 0.01,
+        ignore_attr = TRUE
+    )
+})

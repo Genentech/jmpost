@@ -7,18 +7,14 @@ test_that("LongitudinalGSF works as expected with default arguments", {
 
 
 test_that("Print method for LongitudinalGSF works as expected", {
-    expect_snapshot({
-        x <- LongitudinalGSF()
-        print(x)
-    })
+    x <- LongitudinalGSF()
+    expect_snapshot(print(x))
 
-    expect_snapshot({
-        x <- LongitudinalGSF(
-            sigma = prior_normal(0, 1),
-            mu_kg = prior_gamma(2, 1)
-        )
-        print(x)
-    })
+    x <- LongitudinalGSF(
+        sigma = prior_normal(0, 1),
+        mu_kg = prior_gamma(2, 1)
+    )
+    expect_snapshot(print(x))
 })
 
 

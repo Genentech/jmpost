@@ -4,12 +4,14 @@
 \alias{as.StanModule.Prior}
 \title{\code{Prior} -> \code{StanModule}}
 \usage{
-\method{as.StanModule}{Prior}(object, name, ...)
+\method{as.StanModule}{Prior}(object, name, size = 1, ...)
 }
 \arguments{
 \item{object}{(\code{Prior}) a prior Distribution}
 
 \item{name}{(\code{character}) the name of the parameter the prior distribution is for}
+
+\item{size}{(\code{numeric} or \code{character}) the parameter size.}
 
 \item{...}{Not Used.}
 }

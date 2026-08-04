@@ -9,24 +9,6 @@ functions {
     }
 }
 
-parameters{
-    // Declare individual subject parameters
-    vector<lower=0>[n_subjects] baseline_idv;
-    vector<lower=0>[n_subjects] shrinkage_idv;
-    vector<lower=0>[n_subjects] growth_idv;
-
-    // Declare population level parameters
-    real<lower=0> mu_baseline;
-    real<lower=0> mu_shrinkage;
-    real<lower=0> mu_growth;
-    real<lower=0> sigma_baseline;
-    real<lower=0> sigma_shrinkage;
-    real<lower=0> sigma_growth;
-
-    // Declare standard deviation for the overall model error
-    real<lower=0> sigma;
-}
-
 transformed parameters{
 
     // Calculated the fitted Tumour values
@@ -53,4 +35,3 @@ model {
     shrinkage_idv ~ lognormal(log(mu_shrinkage), sigma_shrinkage);
     growth_idv ~ lognormal(log(mu_growth), sigma_growth);
 }
-

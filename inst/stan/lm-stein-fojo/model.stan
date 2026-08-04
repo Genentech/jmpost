@@ -2,38 +2,6 @@
 
 
 
-parameters{
-    //
-    // Source - lm-stein-fojo/model.stan
-    //
-
-    vector[n_studies] lm_sf_mu_bsld;
-    vector[n_arms] lm_sf_mu_ks;
-    vector[n_arms] lm_sf_mu_kg;
-
-    vector<lower={{ machine_double_eps }}>[n_studies] lm_sf_omega_bsld;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_sf_omega_ks;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_sf_omega_kg;
-
-{% if centred -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_bsld;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_ks;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_kg;
-{% else -%}
-    vector[n_subjects] lm_sf_eta_tilde_bsld;
-    vector[n_subjects] lm_sf_eta_tilde_ks;
-    vector[n_subjects] lm_sf_eta_tilde_kg;
-{%- endif -%}
-
-    // Standard deviation of the error term
-    real<lower={{ machine_double_eps }}> lm_sf_sigma;
-
-}
-
-
-
-
-
 transformed parameters{
     //
     // Source - lm-stein-fojo/model.stan
@@ -93,4 +61,3 @@ model {
     lm_sf_psi_kg ~ lognormal(lm_sf_mu_kg[subject_arm_index], lm_sf_omega_kg[subject_arm_index]);
 {%- endif -%}
 }
-

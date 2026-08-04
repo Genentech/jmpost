@@ -15,8 +15,15 @@ Prior(
   centre,
   validation,
   sample,
+  repr_parameters = "",
+  repr_transformed_parameters = "",
+  repr_generated_quantities = "",
+  auxiliary_initial_values = function(name, size) list(),
+  auxiliary_size = function(name, size) list(),
   limits = c(-Inf, Inf),
-  .allow_vectors = FALSE
+  .omit_zero_lower_truncation = FALSE,
+  .allow_vectors = FALSE,
+  .is_const = FALSE
 )
 }
 \arguments{
@@ -35,9 +42,25 @@ the same names as the \code{paramaters} slot.}
 
 \item{sample}{(\code{function}) a function to sample from the prior distribution.}
 
-\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution}
+\item{repr_parameters}{(\code{string}) the Stan code representation for the parameters block.}
+
+\item{repr_transformed_parameters}{(\code{string}) the Stan code representation for the transformed parameters block.}
+
+\item{repr_generated_quantities}{(\code{string}) the Stan code representation for the generated quantities block.}
+
+\item{auxiliary_initial_values}{(\code{function}) a function that returns initial values for extra Stan parameters
+introduced by the prior.}
+
+\item{auxiliary_size}{(\code{function}) a function that returns sizes for extra Stan parameters introduced
+by the prior.}
+
+\item{limits}{(\code{numeric}) the lower and upper limits for a truncated distribution.}
+
+\item{.omit_zero_lower_truncation}{(\code{flag}) whether to omit a lower-zero truncation adjustment.}
 
 \item{.allow_vectors}{(\code{flag}) whether to allow vector parameters.}
+
+\item{.is_const}{(\code{flag}) whether this prior fixes the parameter at a constant value.}
 }
 \description{
 Specifies the prior distribution in a Stan Model
@@ -51,6 +74,16 @@ Specifies the prior distribution in a Stan Model
 
 \item{\code{repr_data}}{(\code{string})\cr See arguments.}
 
+\item{\code{repr_parameters}}{(\code{string})\cr See arguments.}
+
+\item{\code{repr_transformed_parameters}}{(\code{string})\cr See arguments.}
+
+\item{\code{repr_generated_quantities}}{(\code{string})\cr See arguments.}
+
+\item{\code{auxiliary_initial_values}}{(\code{function})\cr See arguments.}
+
+\item{\code{auxiliary_size}}{(\code{function})\cr See arguments.}
+
 \item{\code{centre}}{(\code{numeric})\cr See arguments.}
 
 \item{\code{validation}}{(\code{list})\cr See arguments.}
@@ -61,7 +94,11 @@ Specifies the prior distribution in a Stan Model
 
 \item{\code{limits}}{(\code{numeric})\cr See arguments.}
 
+\item{\code{.omit_zero_lower_truncation}}{(\code{logical})\cr See arguments.}
+
 \item{\code{.allow_vectors}}{(\code{logical})\cr See arguments.}
+
+\item{\code{.is_const}}{(\code{logical})\cr See arguments.}
 }}
 
 \seealso{

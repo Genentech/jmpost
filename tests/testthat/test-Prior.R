@@ -138,11 +138,47 @@ test_that("Invalid prior parameters are rejected", {
     # Ensure that validation doesn't wrongly reject priors with no user specified parameters
     expect_s4_class(prior_init_only(prior_normal(3, 1)), "Prior")
     expect_s4_class(prior_std_normal(), "Prior")
+    expect_s4_class(prior_const(1), "Prior")
+})
+
+test_that("prior_const() works as expected", {
+    x <- prior_const(1)
+
+    expect_equal(initialValues(x), 1)
+    expect_equal(as.character(set_limits(x, lower = 0)), "const(value = 1)")
+    expect_equal(
+        as_stan_list(x, name = "sm_exp_lambda"),
+        list(prior_const_sm_exp_lambda = 1)
+    )
+    expect_equal(
+        as.StanModule(x, name = "sm_exp_lambda")@data,
+        "    real prior_const_sm_exp_lambda;"
+    )
+    expect_equal(as.StanModule(x, name = "sm_exp_lambda")@model, "")
+    expect_equal(
+        as.StanModule(x, name = "bob")@data,
+        "    real prior_const_bob;"
+    )
+
+    pars <- ParameterList(
+        Parameter(name = "fixed", prior = x, size = 1),
+        Parameter(name = "sampled", prior = prior_normal(0, 1), size = 1)
+    )
+    expect_equal(names(initialValues(pars, n_chains = 1)[[1]]), "sampled")
+    expect_equal(
+        as_stan_list(pars),
+        list(
+            prior_const_fixed = 1,
+            prior_mu_sampled = 0,
+            prior_sigma_sampled = 1
+        )
+    )
 })
 
 
 test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_cauchy(0, 0.8)))
+    expect_snapshot(print(prior_const(1)))
     expect_snapshot(print(prior_normal(0, 0.8)))
     expect_snapshot(print(prior_std_normal()))
     expect_snapshot(print(prior_beta(5, 1)))
@@ -210,7 +246,7 @@ test_that("Limits work as expected", {
     expect_true(all(ivs > 0))
     expect_equal(
         as.StanModule(x, name = "tim")@model,
-        "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim) T[0, ];"
+        "    tim ~ cauchy(prior_mu_tim, prior_sigma_tim);"
     )
 
     ## Put an impossible constraint on the distribution
@@ -221,6 +257,44 @@ test_that("Limits work as expected", {
         as.StanModule(x, name = "phil")@model,
         "    phil ~ lognormal(prior_mu_phil, prior_sigma_phil) T[, 0];"
     )
+})
+
+
+test_that("redundant positive-support prior truncation is omitted", {
+    positive_priors <- list(
+        cauchy = prior_cauchy(0, 1),
+        gamma = prior_gamma(2, 1),
+        invgamma = prior_invgamma(2, 1),
+        loglogistic = prior_loglogistic(2, 3),
+        lognormal = prior_lognormal(0, 1)
+    )
+
+    for (prior in positive_priors) {
+        x <- set_limits(prior, lower = 0)
+        expect_false(grepl("T\\[0, \\]", as.character(x)))
+        expect_false(grepl(
+            "T\\[0, \\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+
+        x <- set_limits(prior, lower = 1e-8)
+        expect_true(grepl("T\\[1e-08, \\]", as.character(x)))
+        expect_true(grepl(
+            "T\\[1e-08, \\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+
+        x <- set_limits(prior, lower = 0, upper = 1)
+        expect_true(grepl("T\\[0, 1\\]", as.character(x)))
+        expect_true(grepl(
+            "T\\[0, 1\\]",
+            as.StanModule(x, name = "theta")@model
+        ))
+    }
+
+    x <- set_limits(prior_normal(0, 1), lower = 0)
+    expect_true(grepl("T\\[0, \\]", as.character(x)))
+    expect_true(grepl("T\\[0, \\]", as.StanModule(x, name = "theta")@model))
 })
 
 
@@ -269,6 +343,16 @@ test_that("Parameters in priors must be length 1 #422", {
         prior_gamma(c(1, 2), 2),
         "Parameter `alpha`"
     )
+
+    expect_error(
+        prior_horseshoe(df = -1),
+        regexp = "Invalid.*`df`"
+    )
+
+    expect_error(
+        prior_horseshoe(scale_global = -1),
+        regexp = "Invalid.*`scale_global`"
+    )
 })
 
 test_that("prior_normal_vector works as expected", {
@@ -296,5 +380,132 @@ test_that("prior_normal_vector works as expected", {
             prior_dim_mus_bob = 3,
             prior_dim_sigmas_bob = 3
         )
+    )
+})
+
+test_that("prior_horseshoe works as expected", {
+    x <- prior_horseshoe(
+        df = 1,
+        df_global = 2,
+        df_slab = 3,
+        scale_global = 0.4,
+        scale_slab = 2
+    )
+
+    expect_equal(
+        as.character(x),
+        paste0(
+            "horseshoe(df = 1, df_global = 2, df_slab = 3, ",
+            "scale_global = 0.4, scale_slab = 2)"
+        )
+    )
+
+    x_inits <- initialValues(x)
+    expect_numeric(x_inits, len = 1)
+
+    auxiliary_inits <- auxiliaryInitialValues(x, name = "beta", size = 3)
+    expect_equal(
+        names(auxiliary_inits),
+        c("prior_local_beta", "prior_global_beta", "prior_slab_beta")
+    )
+    expect_numeric(auxiliary_inits$prior_local_beta, len = 3, lower = 0)
+    expect_numeric(auxiliary_inits$prior_global_beta, len = 1, lower = 0)
+    expect_numeric(auxiliary_inits$prior_slab_beta, len = 1, lower = 0)
+
+    expect_equal(
+        auxiliarySize(x, name = "beta", size = "p"),
+        list(
+            prior_local_beta = "p",
+            prior_global_beta = 1,
+            prior_slab_beta = 1
+        )
+    )
+
+    x_stan_module <- as.StanModule(x, name = "beta", size = "p")
+    expect_equal(
+        x_stan_module@data,
+        c(
+            "    real<lower=0> prior_df_beta;",
+            "    real<lower=0> prior_df_global_beta;",
+            "    real<lower=0> prior_df_slab_beta;",
+            "    real<lower=0> prior_scale_global_beta;",
+            "    real<lower=0> prior_scale_slab_beta;"
+        )
+    )
+    expect_equal(
+        x_stan_module@parameters,
+        c(
+            "    vector<lower=0>[p] prior_local_beta;",
+            "    real<lower=0> prior_global_beta;",
+            "    real<lower=0> prior_slab_beta;"
+        )
+    )
+    expect_true(
+        any(grepl(
+            "vector<lower=0>\\[p\\] prior_scales_beta",
+            x_stan_module@transformed_parameters
+        ))
+    )
+    expect_true(
+        any(grepl(
+            "vector<lower=0, upper=1>\\[p\\] prior_shrinkage_factors_beta",
+            x_stan_module@generated_quantities
+        ))
+    )
+    expect_true(
+        any(grepl(
+            "shrinkage_horseshoe(prior_local_beta, prior_global_beta, prior_c2_beta)",
+            x_stan_module@generated_quantities,
+            fixed = TRUE
+        ))
+    )
+    expect_true(
+        any(grepl(
+            "beta ~ normal(rep_vector(0, p), prior_scales_beta);",
+            x_stan_module@model,
+            fixed = TRUE
+        ))
+    )
+    expect_equal(
+        as_stan_list(x, name = "beta"),
+        list(
+            prior_df_beta = 1,
+            prior_df_global_beta = 2,
+            prior_df_slab_beta = 3,
+            prior_scale_global_beta = 0.4,
+            prior_scale_slab_beta = 2
+        )
+    )
+
+    # Check the model syntax.
+    header <- merge(
+        StanModule("base/functions.stan"),
+        StanModule(
+            "data {
+    int<lower=1> p;
+}
+parameters {
+    vector[p] beta;
+}"
+        )
+    )
+    stan_file <- cmdstanr::write_stan_file(
+        as.character(merge(header, x_stan_module)),
+        dir = tempdir()
+    )
+    model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
+    expect_true(model_obj$check_syntax(quiet = TRUE))
+})
+
+test_that("default auxiliary prior methods return empty lists", {
+    x <- prior_normal(0, 1)
+
+    expect_equal(
+        auxiliaryInitialValues(x, name = "beta", size = 3),
+        list()
+    )
+    expect_equal(
+        auxiliarySize(x, name = "beta", size = 3),
+        list()
     )
 })

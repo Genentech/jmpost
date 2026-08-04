@@ -2,42 +2,6 @@
 
 
 
-parameters{
-    //
-    // Source - lm-claret-bruno/model.stan
-    //
-
-    vector[n_studies] lm_clbr_mu_b;
-    vector[n_arms] lm_clbr_mu_g;
-    vector[n_arms] lm_clbr_mu_c;
-    vector[n_arms] lm_clbr_mu_p;
-
-    vector<lower={{ machine_double_eps }}>[n_studies] lm_clbr_omega_b;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_g;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_c;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_clbr_omega_p;
-
-{% if centred -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_b;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_g;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_c;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_clbr_ind_p;
-{% else -%}
-    vector[n_subjects] lm_clbr_eta_b;
-    vector[n_subjects] lm_clbr_eta_g;
-    vector[n_subjects] lm_clbr_eta_c;
-    vector[n_subjects] lm_clbr_eta_p;
-{%- endif -%}
-
-    // Standard deviation of the error term
-    real<lower={{ machine_double_eps }}> lm_clbr_sigma;
-
-}
-
-
-
-
-
 transformed parameters{
     //
     // Source - lm-claret-bruno/model.stan

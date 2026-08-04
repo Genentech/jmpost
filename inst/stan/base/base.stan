@@ -38,11 +38,13 @@ parameters{
 {{ longitudinal.parameters }}
 {{ link.parameters }}
 {{ survival.parameters }}
+{{ priors.parameters }}
 }
 
 
 
 transformed parameters{
+{{ priors.transformed_parameters }}
 {{ longitudinal.transformed_parameters }}
 {{ link.transformed_parameters }}
 {{ survival.transformed_parameters }}
@@ -69,6 +71,5 @@ generated quantities{
 {{ longitudinal.generated_quantities }}
 {{ link.generated_quantities }}
 {{ survival.generated_quantities }}
+{{ priors.generated_quantities }}
 }
-
-

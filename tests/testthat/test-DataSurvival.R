@@ -124,6 +124,29 @@ test_that("model.matrix for DataSurvival works as expected", {
     expect_snapshot_value(res, tolerance = 1e-2, style = "deparse")
 })
 
+test_that("model.matrix for DataSurvival preserves no-intercept formulas", {
+    x <- data.frame(
+        vtime = c(10, 20, 30, 25, 15),
+        vevent = c(1, 1, 0, 1, 0),
+        ones = 1,
+        vcov1 = c(-1, -0.5, 0, 0.5, 1),
+        vcov2 = c(1, 2, 3, 4, 5)
+    )
+
+    obj <- DataSurvival(
+        data = x,
+        formula = Surv(vtime, vevent) ~ 0 + ones + vcov1 + vcov2
+    )
+
+    expected <- model.matrix(~ 0 + ones + vcov1 + vcov2, data = x)
+    rownames(expected) <- NULL
+
+    res <- as_stan_list(obj)
+    expect_equal(res$p_os_cov_design, 3)
+    expect_equal(res$os_cov_design, expected)
+    expect_equal(covariates(obj), c("ones", "vcov1", "vcov2"))
+})
+
 test_that("mirror_design_matrix() works as expected", {
     set.seed(3102)
     N <- 50

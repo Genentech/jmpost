@@ -2,42 +2,6 @@
 
 
 
-parameters{
-    //
-    // Source - lm-gsf/model.stan
-    //
-
-    vector[n_studies] lm_gsf_mu_bsld;
-    vector[n_arms] lm_gsf_mu_ks;
-    vector[n_arms] lm_gsf_mu_kg;
-    vector[n_arms] lm_gsf_mu_phi;
-
-    vector<lower={{ machine_double_eps }}>[n_studies] lm_gsf_omega_bsld;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_ks;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_kg;
-    vector<lower={{ machine_double_eps }}>[n_arms] lm_gsf_omega_phi;
-
-{% if centred -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_bsld;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_ks;
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsf_psi_kg;
-    vector[n_subjects] lm_gsf_psi_phi_logit;
-{% else -%}
-    vector[n_subjects] lm_gsf_eta_tilde_bsld;
-    vector[n_subjects] lm_gsf_eta_tilde_ks;
-    vector[n_subjects] lm_gsf_eta_tilde_kg;
-    vector[n_subjects] lm_gsf_eta_tilde_phi;
-{%- endif -%}
-
-    // Standard deviation of the error term
-    real<lower={{ machine_double_eps }}> lm_gsf_sigma;
-
-}
-
-
-
-
-
 transformed parameters{
     //
     // Source - lm-gsf/model.stan
@@ -107,4 +71,3 @@ model {
     lm_gsf_psi_phi_logit ~ normal(lm_gsf_mu_phi[subject_arm_index], lm_gsf_omega_phi[subject_arm_index]);
 {%- endif -%}
 }
-

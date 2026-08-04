@@ -109,6 +109,73 @@ Where:
 - $\Gamma(.)$ is the complete gamma function
 - $\gamma(., .)$ is the lower incomplete gamma function
 
+## Covariate Selection with Regularized Horseshoe Prior
+
+In the survival model the covariate coefficients $\beta$ typically just have a normal prior distribution, using `prior_normal()` or `prior_normal_vector()`. However, if the user wishes to perform covariate selection then they can instead use the regularized horseshoe prior via `prior_horseshoe()`. Here we explain how the prior is defined and how the hyperparameters can be set. Note that we use the same parametrization and notation as in the `brms` package [@Buerkner2017].
+
+The horseshoe prior is a global-local shrinkage prior [@CarvalhoEtAl2010]. The global parameter shrinks all coefficients towards zero, while coefficient-specific local parameters allow some coefficients to escape the shrinkage. The regularized horseshoe prior [@PiironenVehtari2017] additionally introduces a slab component that regularizes coefficients that are far from zero. This is useful for covariate selection because all candidate covariates can be included in one model fit, with irrelevant coefficients strongly shrunk towards zero.
+
+For $p$ covariate coefficients $\beta_{j}, j = 1, \dotsc, p$, the regularized horseshoe prior applied with `prior_horseshoe()`, and with positive hyperparameters $\nu_{\lambda}, \nu_{\tau}, \nu_c, s_{\tau}, s_c$, can be written as
+
+$$
+\begin{align*}
+z_j &\sim \operatorname{Normal}(0, 1), \\
+\lambda_j &\sim t^+_{\nu_{\lambda}}(0, 1), \\
+\tau &\sim t^+_{\nu_{\tau}}(0, s_{\tau}), \\
+\xi &\sim \text{Inv-Gamma}\!\left(\frac{\nu_c}{2}, \frac{\nu_c}{2}\right), \\
+c^2 &= s_c^2 \xi, \\
+\tilde{\lambda}_j &=
+\left(
+\frac{c^2\lambda_{j}^2}
+{c^2 + \tau^2\lambda_{j}^2}
+\right)^{1/2}, \\
+\beta_j &= z_j\tau\tilde{\lambda}_j, \qquad j = 1, \dotsc, p .
+\end{align*}
+$$
+
+Here $t^+_{\nu}(0, s)$ denotes a half-Student-$t$ distribution with degrees of freedom $\nu$ and scale $s$. The $p$ local shrinkage parameters $\lambda_j$ control the amount of shrinkage for each coefficient, while the global shrinkage parameter $\tau$ controls the overall amount of shrinkage across all coefficients. The slab scale $s_c$ and slab degrees of freedom $\nu_c$ determine how strongly large coefficients are regularized.
+
+Equivalently, conditional on $\lambda_j$, $\tau$, and $c$, this implies
+
+$$
+\beta_j \mid \lambda_j, \tau, c
+\sim
+\operatorname{Normal}\!\left(
+0,\,
+\tau^2
+\frac{c^2\lambda_j^2}{c^2 + \tau^2\lambda_j^2}
+\right).
+$$
+
+The arguments of `prior_horseshoe()` correspond to these hyperparameters:
+
+- `df`: local degrees of freedom, $\nu_{\lambda}$
+- `df_global`: global degrees of freedom, $\nu_{\tau}$
+- `df_slab`: slab degrees of freedom, $\nu_c$
+- `scale_global`: global scale, $s_{\tau}$
+- `scale_slab`: slab scale, $s_c$
+
+As a special case, setting $\nu_{\lambda} = 1$ and $\nu_{\tau} = 1$ gives half-Cauchy priors for the local and global shrinkage parameters. The slab part has the interpretation
+
+$$
+c^2 \sim \text{Inv-Gamma}\!\left(
+\frac{\nu_c}{2},
+\frac{\nu_c s_c^2}{2}
+\right),
+$$
+
+which corresponds to a Student-$t$ slab with $\nu_c$ degrees of freedom and scale $s_c$ for coefficients that escape the main shrinkage. Smaller values of $s_{\tau}$ imply stronger prior shrinkage towards zero, while larger values allow more coefficients to remain non-zero. The slab scale should be chosen large enough to permit clinically or scientifically plausible covariate effects, but not so large that unrealistically large effects are left essentially unregularized.
+
+A useful summary of the amount of shrinkage applied to coefficient $j$ is the shrinkage factor
+
+$$
+\kappa_j =
+\frac{1}{1 + \tau^2\lambda_j^2 / c^2}.
+$$
+
+Values of $\kappa_j$ close to 1 indicate strong shrinkage towards zero, while values close to 0 indicate little shrinkage. Regularized horseshoe priors have been applied in PK/PD covariate selection by @PourzanjaniDavis2026, where the main practical advantage is the ability to assess all candidate covariates in a single Bayesian model fit.
+
+
 
 # Longitudinal Model Specification
 
@@ -568,4 +635,3 @@ the censoring distribution). Both of these default options can be changed if req
 
 
 # References
-

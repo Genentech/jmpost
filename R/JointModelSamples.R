@@ -183,3 +183,30 @@ saveObject.JointModelSamples <- function(object, file, ...) {
     try(object@results$profiles(), silent = TRUE)
     saveRDS(object, file, ...)
 }
+
+#' Extract shrinkage factors from a `JointModelSamples` object
+#'
+#' @typed object: JointModelSamples
+#'   the object to extract shrinkage factors from.
+#' @param ... not used.
+#' @return the shrinkage factors correctly named after the covariate names.
+#'
+#' @family shrinkage
+#' @export
+shrinkage.JointModelSamples <- function(object, ...) {
+    draws <- cmdstanr::as.CmdStanMCMC(object)$draws()
+    assert_class(object@data@survival, "DataSurvival")
+    covariate_names <- covariates(object@data@survival)
+    assert_subset(
+        "prior_shrinkage_factors_beta_os_cov[1]",
+        posterior::variables(draws)
+    )
+    shrinkage_draws <- subset(
+        draws,
+        variable = "prior_shrinkage_factors_beta_os_cov"
+    )
+    shrinkage_vars <- posterior::variables(shrinkage_draws)
+    assert_true(identical(length(covariate_names), length(shrinkage_vars)))
+    posterior::variables(shrinkage_draws) <- covariate_names
+    shrinkage_draws
+}

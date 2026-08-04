@@ -93,6 +93,45 @@ test_that("initialValues() works also for vectorized parameters", {
     expect_equal(ivs[[1]], ivs[[2]])
 })
 
+test_that("initialValues() includes auxiliary prior parameters", {
+    pars <- ParameterList(
+        Parameter(
+            name = "beta",
+            prior = prior_horseshoe(
+                df = 1,
+                df_global = 1,
+                df_slab = 4,
+                scale_global = 0.3,
+                scale_slab = 2
+            ),
+            size = "p"
+        )
+    )
+
+    set.seed(342)
+    initial_values <- initialValues(pars, n_chains = 2)
+
+    expect_equal(
+        names(initial_values[[1]]),
+        c(
+            "beta",
+            "prior_local_beta",
+            "prior_global_beta",
+            "prior_slab_beta"
+        )
+    )
+    expect_equal(names(initial_values[[1]]), names(initial_values[[2]]))
+    expect_true(initial_values[[1]]$prior_global_beta > 0)
+    expect_true(initial_values[[1]]$prior_slab_beta > 0)
+    expect_false(identical(initial_values[[1]], initial_values[[2]]))
+
+    expanded <- ensure_initial_values(initial_values, list(p = 3), pars)
+    expect_length(expanded[[1]]$beta, 3)
+    expect_length(expanded[[1]]$prior_local_beta, 3)
+    expect_length(expanded[[1]]$prior_global_beta, 1)
+    expect_length(expanded[[1]]$prior_slab_beta, 1)
+})
+
 test_that("ensure_initial_values() works as expected", {
     pars <- ParameterList(
         Parameter(name = "p1", prior = prior_beta(4, 2), size = 1),

@@ -16,6 +16,58 @@ test_that("Can load and compile SurvivalExponential() model", {
     expect_stan_syntax(x)
 })
 
+test_that("SurvivalExponential() can fix lambda with prior_const()", {
+    default_model <- JointModel(survival = SurvivalExponential())
+    default_stan_code <- paste(
+        as.character(as.StanModule(default_model)),
+        collapse = "\n"
+    )
+    expect_match(
+        default_stan_code,
+        "real<lower=[^>]+> sm_exp_lambda;"
+    )
+
+    jm <- JointModel(
+        survival = SurvivalExponential(lambda = prior_const(1))
+    )
+
+    x <- as.StanModule(jm)
+    expect_stan_syntax(x)
+
+    stan_code <- paste(as.character(x), collapse = "\n")
+    expect_match(stan_code, "real prior_const_sm_exp_lambda;", fixed = TRUE)
+    expect_match(
+        stan_code,
+        "real<lower=[^>]+> sm_exp_lambda = prior_const_sm_exp_lambda;"
+    )
+    expect_false(grepl(
+        "real<lower=[^>]+> sm_exp_lambda;",
+        stan_code,
+        perl = TRUE
+    ))
+
+    expect_equal(
+        as_stan_list(jm@parameters)$prior_const_sm_exp_lambda,
+        1
+    )
+    expect_false(
+        "sm_exp_lambda" %in% names(initialValues(jm, n_chains = 1)[[1]])
+    )
+
+    beta_const <- JointModel(
+        survival = SurvivalExponential(beta = prior_const(0))
+    )
+    expect_stan_syntax(as.StanModule(beta_const))
+})
+
+test_that("SurvivalExponential() does not print truncation for prior_const()", {
+    x <- SurvivalExponential(lambda = prior_const(1))
+    expect_equal(
+        as.character(x@parameters@parameters[[1]]),
+        "sm_exp_lambda = const(value = 1)"
+    )
+})
+
 
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
     skip_if_not(is_full_test())
@@ -84,31 +136,26 @@ test_that("SurvivalExponential can recover true parameter (including covariates)
 
 
 test_that("Print method for SurvivalExponential works as expected", {
-    expect_snapshot({
-        x <- SurvivalExponential()
-        print(x)
-    })
+    x <- SurvivalExponential()
+    expect_snapshot(print(x))
 
-    expect_snapshot({
-        x <- SurvivalExponential(beta = prior_gamma(3, 4))
-        print(x)
-    })
+    x <- SurvivalExponential(beta = prior_gamma(3, 4))
+    expect_snapshot(print(x))
+
+    x <- SurvivalExponential(lambda = prior_const(1))
+    expect_snapshot(print(x))
 })
 
 test_that("Different priors for the beta components are possible", {
     # Same iid prior for all beta components:
-    expect_snapshot({
-        x <- SurvivalExponential(beta = prior_normal(0, 1))
-        print(x)
-    })
+    x <- SurvivalExponential(beta = prior_normal(0, 1))
+    expect_snapshot(print(x))
 
     # Different priors for each beta component:
-    expect_snapshot({
-        x <- SurvivalExponential(
-            beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3))
-        )
-        print(x)
-    })
+    x <- SurvivalExponential(
+        beta = prior_normal_vector(c(0, 1, 2), c(1, 2, 3))
+    )
+    expect_snapshot(print(x))
 
     skip_if_not(is_full_test())
 
