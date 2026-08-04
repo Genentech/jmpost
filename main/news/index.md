@@ -33,6 +33,19 @@
   [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md)
   which can be used to assign different normal prior distributions to
   the coefficients of the survival model covariates.
+- Added
+  [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md)
+  which fixes a parameter at a constant value, i.e. uses a point-mass
+  prior distribution.
+- Added
+  [`prior_horseshoe()`](https://genentech.github.io/jmpost/reference/prior_horseshoe.md)
+  which uses a horseshoe prior for the components of a parameter vector,
+  typically the coefficients of the survival model covariates.
+- The Stan files associated with models no longer hardcode the parameter
+  declarations. This task is now handled with the `Prior` objects. If a
+  constant value is used for a parameter instead of a prior
+  distribution, then this parameter is declared in the `data` block and
+  reassigned in the `transformed_parameters` block.
 - Included new Gamma distribution survival model
   ([\#411](https://github.com/Genentech/jmpost/issues/411)).
 - Reworked LOO calculations to apply to each individual submodel and

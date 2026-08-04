@@ -20,11 +20,12 @@ LongitudinalModel(
 
 - stan:
 
-  (`StanModule`) code containing the Stan code specification.
+  (`StanModule`) code containing the model-specific Stan code
+  specification.
 
 - parameters:
 
-  (`ParameterList`) the parameter specification.
+  (`ParameterList`) the parameter declaration and prior specification.
 
 - name:
 

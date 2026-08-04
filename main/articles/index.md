@@ -6,6 +6,8 @@
   Quickstart](https://genentech.github.io/jmpost/articles/quickstart.md):
 - [Statistical
   Specifications](https://genentech.github.io/jmpost/articles/statistical-specification.md):
+- [Covariate Selection with the Horseshoe
+  Prior](https://genentech.github.io/jmpost/articles/covariate-selection-horseshoe.md):
 - [Fitting a Custom Longitudinal
   Model](https://genentech.github.io/jmpost/articles/custom-model.md):
 - [Extending

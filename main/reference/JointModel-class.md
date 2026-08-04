@@ -44,7 +44,7 @@ JointModel(longitudinal = NULL, survival = NULL, link = Link())
 - `parameters`:
 
   (`ParameterList`)\
-  the parameter specification.
+  the parameter declaration and prior specification.
 
 ## See also
 

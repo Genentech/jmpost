@@ -88,7 +88,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(loo)
-#> This is loo version 2.9.0
+#> This is loo version 2.10.0
 #> - Online documentation and vignettes at mc-stan.org/loo
 #> - As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session.
 ```
@@ -205,28 +205,65 @@ longmodel <- WangModel(
         stan = StanModule("custom-model.stan"),
         scaled_variance = FALSE,
         parameters = ParameterList(
-            Parameter(name = "mu_baseline", prior = prior_lognormal(log(60), 1), size = 1),
-            Parameter(name = "mu_shrinkage", prior = prior_lognormal(log(2), 1), size = 1),
-            Parameter(name = "mu_growth", prior = prior_lognormal(log(10), 1), size = 1),
-            Parameter(name = "sigma_baseline", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma_shrinkage", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma_growth", prior = prior_lognormal(0.3, 1), size = 1),
-            Parameter(name = "sigma", prior = prior_lognormal(1.5, 1), size = 1),
+            Parameter(
+                name = "mu_baseline",
+                prior = set_limits(prior_lognormal(log(60), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "mu_shrinkage",
+                prior = set_limits(prior_lognormal(log(2), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "mu_growth",
+                prior = set_limits(prior_lognormal(log(10), 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_baseline",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_shrinkage",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma_growth",
+                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
+            Parameter(
+                name = "sigma",
+                prior = set_limits(prior_lognormal(1.5, 1), lower = getOption("jmpost.double_eps")),
+                size = 1
+            ),
             # The following is only required if we want jmpost to generate
             # initial values automatically for us
             Parameter(
                 name = "baseline_idv",
-                prior = prior_init_only(prior_lognormal(log(60), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(60), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "shrinkage_idv",
-                prior = prior_init_only(prior_lognormal(log(2), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(2), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "growth_idv",
-                prior = prior_init_only(prior_lognormal(log(10), 1)),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(log(10), 1)),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             )
         )
@@ -241,13 +278,26 @@ Please note that:
   construction, in order to indicate whether a multiplicative error
   model is used. Here we have an additive error model, therefore
   `scaled_variance` is set to `FALSE`.
-- The `parameters` argument is used to specify the priors for the model
-  and the `name` argument for the `Parameter`’s objects must match the
-  name of the parameter used within the corresponding Stan code.
+- The `parameters` argument declares the model parameters and specifies
+  their priors. The `name` argument for each
+  [`Parameter()`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
+  must match the name used within the corresponding Stan code. This
+  includes hierarchical subject-level parameters such as `baseline_idv`,
+  where
+  [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
+  is used so that `jmpost` declares the parameter and can generate
+  initial values, but does not add a prior statement.
+- Since this model requires positive parameters, the priors are wrapped
+  in
+  [`set_limits()`](https://genentech.github.io/jmpost/reference/set_limits.md)
+  so that the generated Stan declarations include lower bounds.
 
-The `StanModule` object contains all of the stan code used to implement
-the model. For this particular model the Stan code specified in the
-`custom-model.stan` file is as follows:
+The `StanModule` object contains the model-specific Stan code.
+Parameters listed in
+[`ParameterList()`](https://genentech.github.io/jmpost/reference/ParameterList-class.md)
+should not be declared again in this Stan code. For this particular
+model the Stan code specified in the `custom-model.stan` file is as
+follows:
 
 ``` stan
 
@@ -259,24 +309,6 @@ functions {
                        growth .* tumour_time;
         return tumour_value;
     }
-}
-
-parameters{
-    // Declare individual subject parameters
-    vector<lower=0>[n_subjects] baseline_idv;
-    vector<lower=0>[n_subjects] shrinkage_idv;
-    vector<lower=0>[n_subjects] growth_idv;
-
-    // Declare population level parameters
-    real<lower=0> mu_baseline;
-    real<lower=0> mu_shrinkage;
-    real<lower=0> mu_growth;
-    real<lower=0> sigma_baseline;
-    real<lower=0> sigma_shrinkage;
-    real<lower=0> sigma_growth;
-
-    // Declare standard deviation for the overall model error
-    real<lower=0> sigma;
 }
 
 transformed parameters{
@@ -409,11 +441,31 @@ model_samples <- sampleStanModel(
 )
 #> Running MCMC with 1 chain...
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: lognormal_lpdf: Scale parameter is 0, but must be positive finite! (in '/tmp/RtmpXLeYXL/model-b3e342b7ccd.stan', line 485, column 4 to column 66)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBqk4Ta/model-c0a5cd7f662.stan', line 508, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
-#> Chain 1 finished in 8.9 seconds.
+#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBqk4Ta/model-c0a5cd7f662.stan', line 508, column 4 to column 79)
+#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
+#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
+#> Chain 1
+#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBqk4Ta/model-c0a5cd7f662.stan', line 508, column 4 to column 79)
+#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
+#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
+#> Chain 1
+#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBqk4Ta/model-c0a5cd7f662.stan', line 508, column 4 to column 79)
+#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
+#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
+#> Chain 1
+#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBqk4Ta/model-c0a5cd7f662.stan', line 508, column 4 to column 79)
+#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
+#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
+#> Chain 1
+#> Chain 1 finished in 9.5 seconds.
 
 vars <- c(
     "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
@@ -423,12 +475,12 @@ cmdstanr::as.CmdStanMCMC(model_samples)$summary(vars)
 #> # A tibble: 6 × 10
 #>   variable       mean median     sd    mad     q5    q95  rhat ess_bulk ess_tail
 #>   <chr>         <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl>    <dbl>    <dbl>
-#> 1 mu_baseline  61.6   61.6   2.31   2.30   57.8   65.4   1.000    1688.     566.
-#> 2 mu_shrinkage  2.04   2.04  0.0717 0.0686  1.92   2.16  1.00     1721.     689.
-#> 3 mu_growth    10.2   10.2   0.309  0.316   9.73  10.7   0.999    1416.     637.
-#> 4 sigma         1.52   1.52  0.0429 0.0447  1.45   1.59  1.000     705.     744.
-#> 5 link_dsld     0.219  0.219 0.0274 0.0285  0.175  0.263 1.00     1401.     719.
-#> 6 sm_exp_lamb…  1.01   0.994 0.204  0.213   0.706  1.36  1.00      632.     645.
+#> 1 mu_baseline  61.6   61.5   2.10   2.06   58.3   65.0   1.00     1753.     592.
+#> 2 mu_shrinkage  2.04   2.04  0.0629 0.0656  1.94   2.14  1.00     1453.     803.
+#> 3 mu_growth    10.2   10.2   0.293  0.295   9.75  10.7   1.000    1914.     695.
+#> 4 sigma         1.52   1.52  0.0426 0.0408  1.45   1.59  1.01      764.     729.
+#> 5 link_dsld     0.220  0.219 0.0276 0.0259  0.174  0.267 1.01     1099.     610.
+#> 6 sm_exp_lamb…  0.981  0.971 0.203  0.208   0.676  1.34  1.00      689.     330.
 ```
 
 ## Generating Quantities of Interest

@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://genentech.github.io/jmpost/404.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/articles/covariate-selection-horseshoe.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/custom-model.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/extending-jmpost.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/articles/index.html</loc></url>
@@ -85,6 +86,7 @@
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Link.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.ParameterDeclaration.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.Prior.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/as.StanModule.html</loc></url>
@@ -125,6 +127,8 @@
 <url><loc>https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/autoplot.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/auxiliaryInitialValues.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/auxiliarySize.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/brierScore.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/brier_score.html</loc></url>
@@ -132,6 +136,8 @@
 <url><loc>https://genentech.github.io/jmpost/reference/coalesceGridTime.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/collapse_quantities.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/compileStanModel.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/covariates.DataSurvival.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/covariates.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/cut_data.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/decompose_subjects.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/decorated_render.html</loc></url>
@@ -169,7 +175,9 @@
 <url><loc>https://genentech.github.io/jmpost/reference/populationHR.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_beta.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_cauchy.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_const.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_gamma.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/prior_horseshoe.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_init_only.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_invgamma.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/prior_logistic.html</loc></url>
@@ -182,7 +190,10 @@
 <url><loc>https://genentech.github.io/jmpost/reference/prior_uniform.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/read_stan.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/remove_missing_rows.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/render_stan_const_declaration.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/render_stan_limits.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/render_stan_parameter_declaration.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/render_stan_parameter_limits.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/replace_with_lookup.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/resolvePromise.Link.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/resolvePromise.PromiseLinkComponent.html</loc></url>
@@ -198,6 +209,8 @@
 <url><loc>https://genentech.github.io/jmpost/reference/sf_sld.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/show-object.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/show.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/shrinkage.JointModelSamples.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/shrinkage.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/simulate.JointModelSamples.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/size.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc></url>

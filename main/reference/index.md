@@ -60,6 +60,8 @@
   : Beta Prior Distribution
 - [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md)
   : Cauchy Prior Distribution
+- [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md)
+  : Constant Prior Distribution
 - [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md)
   : Gamma Prior Distribution
 - [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md)
@@ -74,6 +76,8 @@
   : Normal Prior Distribution
 - [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md)
   : Normal Prior for a Vector Distribution
+- [`prior_horseshoe()`](https://genentech.github.io/jmpost/reference/prior_horseshoe.md)
+  : Regularized Horseshoe Prior for a Vector Distribution
 - [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
   : Uniform Prior Distribution
 - [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md)
@@ -243,6 +247,14 @@
 - [`populationHR()`](https://genentech.github.io/jmpost/reference/populationHR.md)
   : Calculate Population Hazard Ratios
 
+- [`shrinkage()`](https://genentech.github.io/jmpost/reference/shrinkage.md)
+  : Extract Covariate Shrinkage Factors from the Posterior Samples
+
+- [`shrinkage(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/shrinkage.JointModelSamples.md)
+  :
+
+  Extract shrinkage factors from a `JointModelSamples` object
+
 ## Stan Code
 
 - [`Parameter()`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
@@ -266,7 +278,19 @@
   : Parameter-List Getter Functions
 
 - [`initialValues(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.md)
+  [`auxiliaryInitialValues(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.md)
+  [`auxiliarySize(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/Prior-Getter-Methods.md)
   : Prior Getter Functions
+
+- [`auxiliaryInitialValues()`](https://genentech.github.io/jmpost/reference/auxiliaryInitialValues.md)
+  :
+
+  `auxiliaryInitialValues`
+
+- [`auxiliarySize()`](https://genentech.github.io/jmpost/reference/auxiliarySize.md)
+  :
+
+  `auxiliarySize`
 
 - [`read_stan()`](https://genentech.github.io/jmpost/reference/read_stan.md)
   : Stan Code as Character
@@ -325,6 +349,11 @@
   :
 
   `Parameter` -\> `StanModule`
+
+- [`as.StanModule(`*`<ParameterDeclaration>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.ParameterDeclaration.md)
+  :
+
+  `Parameter` Declaration -\> `StanModule`
 
 - [`as.StanModule(`*`<ParameterList>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.ParameterList.md)
   :
@@ -508,6 +537,12 @@
 
 - [`sampleSubjects()`](https://genentech.github.io/jmpost/reference/sampleSubjects.md)
   : Generate Simulated Subjects
+
+- [`covariates()`](https://genentech.github.io/jmpost/reference/covariates.md)
+  : Extract Covariate Names
+
+- [`covariates(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/covariates.DataSurvival.md)
+  : Extract Covariate Names for Survival Data
 
 - [`enableLink()`](https://genentech.github.io/jmpost/reference/enableLink.md)
   : Enable Link Generic

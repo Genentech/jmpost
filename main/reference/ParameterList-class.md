@@ -3,7 +3,10 @@
 This class extends the general
 [`list`](https://rdrr.io/r/base/list.html) type for containing
 [`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
-specifications.
+specifications. When converted to a
+[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md),
+the list supplies the Stan declarations and prior statements for those
+parameters.
 
 ## Usage
 

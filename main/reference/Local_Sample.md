@@ -11,6 +11,8 @@ local_rnorm(...)
 
 local_rnorm_vector(n, mus, sigmas)
 
+local_rhorseshoe(n, df, df_global, df_slab, scale_global, scale_slab)
+
 local_rcauchy(...)
 
 local_rgamma(...)

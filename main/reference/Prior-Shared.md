@@ -24,6 +24,10 @@ constructors.
 
   (`character`) the name of the parameter the prior distribution is for
 
+- size:
+
+  (`numeric` or `character`) the parameter size.
+
 - ...:
 
   Not Used.

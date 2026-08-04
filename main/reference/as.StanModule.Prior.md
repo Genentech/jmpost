@@ -10,7 +10,7 @@ object
 
 ``` r
 # S3 method for class 'Prior'
-as.StanModule(object, name, ...)
+as.StanModule(object, name, size = 1, ...)
 ```
 
 ## Arguments
@@ -22,6 +22,10 @@ as.StanModule(object, name, ...)
 - name:
 
   (`character`) the name of the parameter the prior distribution is for
+
+- size:
+
+  (`numeric` or `character`) the parameter size.
 
 - ...:
 

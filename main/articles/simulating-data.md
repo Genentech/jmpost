@@ -240,14 +240,14 @@ knitr::kable(
 
 | variable | mean | median | sd | mad | q5 | q95 | rhat | ess_bulk | ess_tail |
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| lm_sf_mu_bsld\[1\] | 4.079 | 4.078 | 0.021 | 0.021 | 4.045 | 4.113 | 1.010 | 499.031 | 874.038 |
-| lm_sf_mu_ks\[1\] | -2.864 | -2.864 | 0.027 | 0.026 | -2.908 | -2.821 | 1.001 | 655.016 | 1062.161 |
-| lm_sf_mu_ks\[2\] | -4.975 | -4.975 | 0.029 | 0.029 | -5.022 | -4.928 | 1.010 | 707.218 | 1134.503 |
-| lm_sf_mu_kg\[1\] | -5.372 | -5.374 | 0.046 | 0.045 | -5.447 | -5.297 | 1.008 | 437.717 | 704.556 |
-| lm_sf_mu_kg\[2\] | -5.336 | -5.337 | 0.043 | 0.043 | -5.405 | -5.264 | 1.005 | 388.108 | 430.017 |
-| lm_sf_omega_bsld\[1\] | 0.207 | 0.207 | 0.014 | 0.014 | 0.185 | 0.231 | 1.004 | 642.744 | 1055.525 |
-| lm_sf_omega_ks\[1\] | 0.185 | 0.183 | 0.019 | 0.018 | 0.157 | 0.217 | 1.011 | 478.458 | 776.004 |
-| lm_sf_omega_ks\[2\] | 0.211 | 0.209 | 0.022 | 0.021 | 0.179 | 0.249 | 1.014 | 487.256 | 875.852 |
+| lm_sf_mu_bsld\[1\] | 4.080 | 4.080 | 0.021 | 0.021 | 4.046 | 4.116 | 1.003 | 655.155 | 1150.529 |
+| lm_sf_mu_ks\[1\] | -2.866 | -2.866 | 0.026 | 0.025 | -2.910 | -2.824 | 1.005 | 493.669 | 582.824 |
+| lm_sf_mu_ks\[2\] | -4.975 | -4.975 | 0.028 | 0.029 | -5.023 | -4.928 | 1.003 | 461.255 | 764.489 |
+| lm_sf_mu_kg\[1\] | -5.374 | -5.374 | 0.045 | 0.044 | -5.448 | -5.298 | 1.006 | 318.105 | 751.021 |
+| lm_sf_mu_kg\[2\] | -5.337 | -5.337 | 0.044 | 0.043 | -5.412 | -5.266 | 1.008 | 416.516 | 681.971 |
+| lm_sf_omega_bsld\[1\] | 0.207 | 0.206 | 0.014 | 0.014 | 0.186 | 0.232 | 1.010 | 527.880 | 1136.191 |
+| lm_sf_omega_ks\[1\] | 0.185 | 0.183 | 0.019 | 0.019 | 0.157 | 0.217 | 1.010 | 376.374 | 960.140 |
+| lm_sf_omega_ks\[2\] | 0.209 | 0.208 | 0.021 | 0.021 | 0.177 | 0.245 | 1.013 | 206.574 | 526.991 |
 
 ## Simulating from a Fitted Model
 
@@ -280,22 +280,22 @@ Now we can inspect the new simulated data.
 
 head(new_model_data@longitudinal)
 #>       subject   arm   study       time      sld observed
-#> 1 subject_001 Arm-A Study-X  -2.000000 52.45178     TRUE
-#> 2 subject_001 Arm-A Study-X   1.092538 50.42547     TRUE
-#> 3 subject_001 Arm-A Study-X  31.020617 18.29569     TRUE
-#> 4 subject_001 Arm-A Study-X  60.795321 14.45488     TRUE
-#> 5 subject_001 Arm-A Study-X  91.002436 18.35262     TRUE
-#> 6 subject_001 Arm-A Study-X 120.535991 24.59377     TRUE
+#> 1 subject_001 Arm-A Study-X  -2.000000 51.40883     TRUE
+#> 2 subject_001 Arm-A Study-X   1.092538 49.43356     TRUE
+#> 3 subject_001 Arm-A Study-X  31.020617 18.29308     TRUE
+#> 4 subject_001 Arm-A Study-X  60.795321 15.55358     TRUE
+#> 5 subject_001 Arm-A Study-X  91.002436 20.51844     TRUE
+#> 6 subject_001 Arm-A Study-X 120.535991 27.88200     TRUE
 head(new_model_data@survival)
 #> # A tibble: 6 × 7
 #>   subject     study   arm    time event cov_cat cov_cont
 #>   <fct>       <fct>   <fct> <dbl> <dbl> <fct>      <dbl>
-#> 1 subject_001 Study-X Arm-A   422     1 B         -1.12 
-#> 2 subject_002 Study-X Arm-A   186     1 C         -0.990
-#> 3 subject_003 Study-X Arm-A   136     1 C         -1.37 
-#> 4 subject_004 Study-X Arm-A   477     1 C         -1.36 
+#> 1 subject_001 Study-X Arm-A   369     1 B         -1.12 
+#> 2 subject_002 Study-X Arm-A   200     1 C         -0.990
+#> 3 subject_003 Study-X Arm-A   170     1 C         -1.37 
+#> 4 subject_004 Study-X Arm-A   481     1 C         -1.36 
 #> 5 subject_005 Study-X Arm-A    20     1 B          2.00 
-#> 6 subject_006 Study-X Arm-A   180     1 B          0.696
+#> 6 subject_006 Study-X Arm-A   182     1 B          0.696
 ```
 
 ``` r

@@ -9,6 +9,12 @@ object
 ``` r
 # S3 method for class 'Prior'
 initialValues(object, ...)
+
+# S3 method for class 'Prior'
+auxiliaryInitialValues(object, name, size, ...)
+
+# S3 method for class 'Prior'
+auxiliarySize(object, name, size, ...)
 ```
 
 ## Arguments
@@ -21,9 +27,21 @@ initialValues(object, ...)
 
   Not Used.
 
+- name:
+
+  (`character`) the name of the parameter the prior distribution is for
+
+- size:
+
+  (`numeric` or `character`) the parameter size.
+
 ## Functions
 
 - `initialValues(Prior)`: The prior's initial value
+
+- `auxiliaryInitialValues(Prior)`: The prior's auxiliary initial values
+
+- `auxiliarySize(Prior)`: The prior's auxiliary parameter sizes
 
 ## See also
 

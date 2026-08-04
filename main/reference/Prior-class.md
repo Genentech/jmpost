@@ -13,8 +13,15 @@ Prior(
   centre,
   validation,
   sample,
+  repr_parameters = "",
+  repr_transformed_parameters = "",
+  repr_generated_quantities = "",
+  auxiliary_initial_values = function(name, size) list(),
+  auxiliary_size = function(name, size) list(),
   limits = c(-Inf, Inf),
-  .allow_vectors = FALSE
+  .omit_zero_lower_truncation = FALSE,
+  .allow_vectors = FALSE,
+  .is_const = FALSE
 )
 ```
 
@@ -50,13 +57,45 @@ Prior(
 
   (`function`) a function to sample from the prior distribution.
 
+- repr_parameters:
+
+  (`string`) the Stan code representation for the parameters block.
+
+- repr_transformed_parameters:
+
+  (`string`) the Stan code representation for the transformed parameters
+  block.
+
+- repr_generated_quantities:
+
+  (`string`) the Stan code representation for the generated quantities
+  block.
+
+- auxiliary_initial_values:
+
+  (`function`) a function that returns initial values for extra Stan
+  parameters introduced by the prior.
+
+- auxiliary_size:
+
+  (`function`) a function that returns sizes for extra Stan parameters
+  introduced by the prior.
+
 - limits:
 
-  (`numeric`) the lower and upper limits for a truncated distribution
+  (`numeric`) the lower and upper limits for a truncated distribution.
+
+- .omit_zero_lower_truncation:
+
+  (`flag`) whether to omit a lower-zero truncation adjustment.
 
 - .allow_vectors:
 
   (`flag`) whether to allow vector parameters.
+
+- .is_const:
+
+  (`flag`) whether this prior fixes the parameter at a constant value.
 
 ## Slots
 
@@ -73,6 +112,31 @@ Prior(
 - `repr_data`:
 
   (`string`)\
+  See arguments.
+
+- `repr_parameters`:
+
+  (`string`)\
+  See arguments.
+
+- `repr_transformed_parameters`:
+
+  (`string`)\
+  See arguments.
+
+- `repr_generated_quantities`:
+
+  (`string`)\
+  See arguments.
+
+- `auxiliary_initial_values`:
+
+  (`function`)\
+  See arguments.
+
+- `auxiliary_size`:
+
+  (`function`)\
   See arguments.
 
 - `centre`:
@@ -100,7 +164,17 @@ Prior(
   (`numeric`)\
   See arguments.
 
+- `.omit_zero_lower_truncation`:
+
+  (`logical`)\
+  See arguments.
+
 - `.allow_vectors`:
+
+  (`logical`)\
+  See arguments.
+
+- `.is_const`:
 
   (`logical`)\
   See arguments.
