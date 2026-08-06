@@ -164,3 +164,20 @@ functions {
         return shrinkage;
     }
 }
+
+    // Efficient computation of the horseshoe scale parameters.
+    vector scales_horseshoe(vector lambda, real tau, real c2) {
+        int K = rows(lambda);
+        vector[K] lambda2 = square(lambda);
+        vector[K] lambda_tilde = sqrt(c2 * lambda2 ./ (c2 + tau^2 * lambda2));
+        return lambda_tilde * tau;
+    }
+
+    // Similar for shrinkage factors calculation.
+    vector shrinkage_horseshoe(vector lambda, real tau, real c2) {
+        int K = rows(lambda);
+        vector[K] lambda2 = square(lambda);
+        vector[K] shrinkage = 1 ./ (1 + (tau^2 * lambda2) ./ c2);
+        return shrinkage;
+    }
+}
