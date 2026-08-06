@@ -12,8 +12,7 @@ functions {
     ) {
         int n = rows(time);
         vector[n] psi_ks_mod = if_gte0_else(time, psi_ks, 0);
-        vector[n] result = fmin(
-            8000.0,
+        vector[n] result = safe_finite(
             psi_bsld  .* (
                 exp(- psi_ks_mod .* time)
                 + exp(psi_kg .* time)
@@ -23,4 +22,3 @@ functions {
         return result;
     }
 }
-

@@ -8,6 +8,23 @@ functions {
         return -0.9189385332046727;
     }
 
+    // Largest finite value used to prevent overflow in model calculations.
+    real safe_finite_limit() {
+        return 8000.0;
+    }
+
+    real safe_finite(real value) {
+        return fmin(value, safe_finite_limit());
+    }
+
+    vector safe_finite(vector value) {
+        return fmin(value, safe_finite_limit());
+    }
+
+    matrix safe_finite(matrix value) {
+        return fmin(value, safe_finite_limit());
+    }
+
 
     // Vectorized version of normal_lpdf, i.e. returns log normal density values.
     vector vect_normal_log_dens(vector y, vector mu, vector sigma) {

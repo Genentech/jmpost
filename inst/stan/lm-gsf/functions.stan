@@ -14,12 +14,10 @@ functions {
         int nrow = rows(time);
         vector[nrow] psi_phi_mod = if_gte0_else(time, psi_phi, 0);
 
-        vector[nrow] result = fmin(
-            8000.0,
+        vector[nrow] result = safe_finite(
             psi_bsld .* 
             (psi_phi_mod .* exp(- psi_ks .* time) + (1 - psi_phi_mod) .* exp(psi_kg .* time))
         );
         return result;
     }
 }
-

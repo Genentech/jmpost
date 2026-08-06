@@ -14,10 +14,7 @@ functions {
         vector[nrows] psi_kg = link_function_inputs[,3];
         matrix[nrows, ncols] result;
         for (i in 1:ncols) {
-            result[,i] = fmin(
-                sld(time[,i], psi_bsld, psi_ks, psi_kg),
-                8000.0
-            );
+            result[,i] = safe_finite(sld(time[,i], psi_bsld, psi_ks, psi_kg));
         }
         return result;
     }
