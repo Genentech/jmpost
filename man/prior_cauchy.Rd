@@ -24,10 +24,7 @@ prior_cauchy(0, 1)
 Other Prior:
 \code{\link[=prior_beta]{prior_beta()}},
 \code{\link[=prior_const]{prior_const()}},
-<<<<<<< HEAD
 \code{\link[=prior_const_vector]{prior_const_vector()}},
-=======
->>>>>>> main
 \code{\link[=prior_gamma]{prior_gamma()}},
 \code{\link[=prior_horseshoe]{prior_horseshoe()}},
 \code{\link[=prior_init_only]{prior_init_only()}},
