@@ -79,7 +79,7 @@ setValidity(
             return("`data` should not have 0 rows")
         }
         sbj <- object@data[[object@subject]]
-        if (!(is(sbj, "character") | is(sbj, "factor"))) {
+        if (!(is(sbj, "character") || is(sbj, "factor"))) {
             return("`data[[subject]]` should be of type character or factor")
         }
     }
