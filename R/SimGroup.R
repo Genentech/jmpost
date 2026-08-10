@@ -51,7 +51,7 @@ setValidity(
         if (length(object@study) != 1) {
             return("`study` must be a length 1 string")
         }
-        if (any(object@n < 1) | any(object@n %% 1 != 0)) {
+        if (any(object@n < 1) || any(object@n %% 1 != 0)) {
             return("`n` must be positive integer")
         }
         return(TRUE)
