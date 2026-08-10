@@ -40,7 +40,9 @@ test_that("Parameter declaration helpers render Stan code", {
     expect_equal(
         render_stan_const_declaration("theta", "n_subjects", c(eps, Inf)),
         paste0(
-            "vector<lower=", eps, ">[n_subjects] theta = ",
+            "vector<lower=",
+            eps,
+            ">[n_subjects] theta = ",
             "rep_vector(prior_const_theta, n_subjects);"
         )
     )
@@ -52,7 +54,9 @@ test_that("Parameter declaration helpers render Stan code", {
             is_vector = TRUE
         ),
         paste0(
-            "vector<lower=", eps, ">[n_subjects] theta = prior_const_theta;"
+            "vector<lower=",
+            eps,
+            ">[n_subjects] theta = prior_const_theta;"
         )
     )
     expect_equal(

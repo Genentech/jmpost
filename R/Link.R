@@ -118,7 +118,7 @@ setValidity(
                 logical(1)
             )
         )
-        if (contains_promise & object@resolved) {
+        if (contains_promise && object@resolved) {
             return("Object cannot be resolved if it contains promises")
         }
 

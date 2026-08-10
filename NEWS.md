@@ -8,6 +8,7 @@
 - Added support for truncated prior distributions e.g. you can now apply a normal prior to a strictly positive parameter and jmpost will take care of adjusting the density accordingly (#429).
 - Added `prior_normal_vector()` which can be used to assign different normal prior distributions to the coefficients of the survival model covariates.
 - Added `prior_const()` and `prior_const_vector()` which fixes a parameter (vector) at a constant value, i.e. uses a point-mass prior distribution.
+- Added `prior_horseshoe()` which uses a horseshoe prior for the components of a parameter vector, typically the coefficients of the survival model covariates.
 - The Stan files associated with models no longer hardcode the parameter declarations. This task is now handled with the `Prior` objects. If a constant value is used for a parameter instead of a prior distribution, then this parameter is declared in the `data` block and reassigned in the `transformed_parameters` block.
 - Included new Gamma distribution survival model (#411).
 - Reworked LOO calculations to apply to each individual submodel and disabled LOO calculations for the overall joint model (#402).

@@ -205,7 +205,6 @@ test_that("prior_const_vector() works as expected", {
     )
 })
 
-
 test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_cauchy(0, 0.8)))
     expect_snapshot(print(prior_const(1)))

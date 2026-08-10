@@ -131,7 +131,7 @@ Collate:
     'simulate.R'
     'standalone-s3-register.R'
     'zzz.R'
-VignetteBuilder: knitr, quarto
+VignetteBuilder: quarto
 RdMacros: Rdpack
 LazyData: true
 Config/roxygen2/version: 8.0.0
