@@ -155,8 +155,10 @@ joint_data_sim <- SimJointData(
         beta_cont = 0.3
     ),
     longitudinal = SimWang(
-        times = c(1, 50, 100, 200, 300, 400, 600,
-                800, 1000, 1300, 1600) / 365,
+        times = c(
+            1, 50, 100, 200, 300, 400, 600,
+            800, 1000, 1300, 1600
+        ) / 365,
         mu_b = 60,
         mu_s = 2,
         mu_g = 10,
@@ -181,7 +183,7 @@ ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
     geom_line() +
     geom_point() +
     labs(x = "Time (years)", y = "Tumour Size", col = "Subject") +
-    theme_bw() + 
+    theme_bw() +
     theme(legend.position = "bottom")
 ```
 
