@@ -382,42 +382,42 @@ mcmc_results <- sampleStanModel(
 #> 
 #> Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 522, column 4 to column 100)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 522, column 4 to column 100)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 522, column 4 to column 100)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 522, column 4 to column 100)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 522, column 4 to column 100)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 523, column 4 to column 97)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 523, column 4 to column 97)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 523, column 4 to column 97)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 523, column 4 to column 97)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is inf, but must be positive finite! (in '/tmp/RtmprInXye/model-d1f76021e9c.stan', line 522, column 4 to column 100)
+#> Chain 1 Exception: normal_lpdf: Scale parameter[1] is 0, but must be positive! (in '/tmp/RtmpRCbDNN/model-ddbf8bb372.stan', line 504, column 4 to line 507, column 6)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
@@ -432,7 +432,7 @@ mcmc_results <- sampleStanModel(
 #> Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) 
 #> Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) 
 #> Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) 
-#> Chain 1 finished in 72.9 seconds.
+#> Chain 1 finished in 18.9 seconds.
 ```
 
 ### Convergence checks
@@ -454,22 +454,21 @@ vars <- c(
     "beta_os_cov"
 )
 cmdstanr::as.CmdStanMCMC(mcmc_results)$summary(vars)
-#> Warning: The ESS has been capped to avoid unstable estimates.
 #> # A tibble: 12 × 10
 #>    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk
 #>    <chr>          <dbl>    <dbl>   <dbl>   <dbl>    <dbl>   <dbl> <dbl>    <dbl>
-#>  1 lm_rs_inte… 27.5      2.75e+1 1.08    1.09    25.7     29.3    1.01      185.
-#>  2 lm_rs_slop…  1.02     1.02e+0 0.0299  0.0301   0.967    1.07   1.00      493.
-#>  3 lm_rs_slop…  1.97     1.97e+0 0.0322  0.0321   1.92     2.03   1.00      703.
-#>  4 lm_rs_slop…  0.209    2.06e-1 0.0240  0.0212   0.173    0.250  1.00      886.
-#>  5 lm_rs_slop…  0.215    2.10e-1 0.0240  0.0194   0.180    0.261  1.00      621.
-#>  6 lm_rs_sigma 19.5      1.94e+1 0.529   0.523   18.6     20.3    0.999     253.
-#>  7 link_dsld   -0.0252  -2.13e-2 0.218   0.224   -0.371    0.352  1.00      708.
-#>  8 sm_weibull…  0.00955  8.18e-3 0.00589 0.00444  0.00337  0.0192 0.999     894.
-#>  9 sm_weibull…  0.886    8.87e-1 0.0707  0.0702   0.774    1.00   1.02     1349.
-#> 10 beta_os_co…  0.0103   9.20e-4 0.241   0.248   -0.358    0.415  1.00      760.
-#> 11 beta_os_co…  0.331    3.19e-1 0.276   0.262   -0.112    0.780  0.999     617.
-#> 12 beta_os_co…  0.361    3.52e-1 0.117   0.113    0.170    0.558  1.00      955.
+#>  1 lm_rs_inte… 27.5     27.5     1.17    1.12    25.6     29.5    1.00      273.
+#>  2 lm_rs_slop…  1.02     1.02    0.0303  0.0295   0.968    1.07   1.00      538.
+#>  3 lm_rs_slop…  1.97     1.97    0.0293  0.0303   1.93     2.02   1.01      514.
+#>  4 lm_rs_slop…  0.209    0.208   0.0221  0.0224   0.175    0.248  1.00      727.
+#>  5 lm_rs_slop…  0.213    0.210   0.0230  0.0210   0.178    0.255  1.00      870.
+#>  6 lm_rs_sigma 19.4     19.4     0.508   0.532   18.6     20.2    0.999     949.
+#>  7 link_dsld   -0.0340  -0.0388  0.193   0.197   -0.347    0.289  1.00      582.
+#>  8 sm_weibull…  0.00993  0.00866 0.00588 0.00480  0.00339  0.0210 1.00      258.
+#>  9 sm_weibull…  0.884    0.888   0.0720  0.0697   0.759    1.00   1.00      284.
+#> 10 beta_os_co…  0.00162  0.00221 0.233   0.211   -0.389    0.376  0.999     735.
+#> 11 beta_os_co…  0.318    0.333   0.257   0.251   -0.126    0.737  1.00      875.
+#> 12 beta_os_co…  0.359    0.361   0.111   0.108    0.162    0.538  1.00      976.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -530,20 +529,20 @@ long_quantities <- LongitudinalQuantities(
 )
 as.data.frame(long_quantities) |> head()
 #>         group time   values
-#> 1 subject_001    0 27.15983
-#> 2 subject_001    0 27.54887
-#> 3 subject_001    0 29.37812
-#> 4 subject_001    0 27.75666
-#> 5 subject_001    0 29.13080
-#> 6 subject_001    0 29.87546
+#> 1 subject_001    0 27.50467
+#> 2 subject_001    0 27.87574
+#> 3 subject_001    0 28.56791
+#> 4 subject_001    0 29.28698
+#> 5 subject_001    0 27.61396
+#> 6 subject_001    0 28.76094
 summary(long_quantities) |> head()
 #>         group time   median    lower    upper
-#> 1 subject_001    0 27.53052 25.46996 29.66832
-#> 2 subject_002    0 27.53052 25.46996 29.66832
-#> 3 subject_003    0 27.53052 25.46996 29.66832
-#> 4 subject_004    0 27.53052 25.46996 29.66832
-#> 5 subject_005    0 27.53052 25.46996 29.66832
-#> 6 subject_006    0 27.53052 25.46996 29.66832
+#> 1 subject_001    0 27.53431 25.27757 29.98844
+#> 2 subject_002    0 27.53431 25.27757 29.98844
+#> 3 subject_003    0 27.53431 25.27757 29.98844
+#> 4 subject_004    0 27.53431 25.27757 29.98844
+#> 5 subject_005    0 27.53431 25.27757 29.98844
+#> 6 subject_006    0 27.53431 25.27757 29.98844
 autoplot(long_quantities)
 ```
 
@@ -661,7 +660,7 @@ sq <- SurvivalQuantities(
 )
 brierScore(sq)
 #>          1         50        100        400        800 
-#> 0.01952908 0.17166443 0.23753014 0.14883807 0.06102718
+#> 0.01951320 0.17200463 0.23767646 0.14893899 0.06094075
 ```
 
 ### Initial Values

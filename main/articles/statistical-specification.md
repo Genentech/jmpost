@@ -11,7 +11,7 @@ This package can only be used to fit proportional hazards models of the
 form:
 
 ``` math
-\log(h_i(t \mid \theta, \psi_i)) = \log(h_0(t \mid \theta)) + X_i \beta + \sum_j G_j(t \mid \psi_i) 
+\log(h_i(t \mid \theta, \psi_i)) = \log(h_0(t \mid \theta)) + X_i \beta + \sum_j G_j(t \mid \psi_i)
 ```
 
 Where:
@@ -380,7 +380,7 @@ parameter the mean of the distribution is used.
 ``` math
 \begin{align*}
 y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
-SLD_{ij} &= 
+SLD_{ij} &=
 \begin{cases}
 b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
 b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
@@ -514,10 +514,10 @@ parameterisation and setting the “random effects” term to be 0.
 ``` math
 \begin{align*}
 y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
-SLD_{ij} &= 
-\begin{cases} b_i e^{g_i t_{ij}} & 
-\text{if } t_{ij} < 0, \\ 
-b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+SLD_{ij} &=
+\begin{cases} b_i e^{g_i t_{ij}} &
+\text{if } t_{ij} < 0, \\
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) &
 \text{if } t_{ij} \geq 0. \end{cases}\\
 \\
 b_i &\sim \text{LogNormal}(\mu_{bl(i)}, \omega_{b l(i)}) \\
@@ -576,7 +576,7 @@ y_{ij} \sim N(SLD_{ij}, \sigma^2)
 G(t_{ij} \mid b_i, g_i, c_i, p_i) = \begin{cases}
 b_i g_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0 \\
 \left(
-    g_i - p_i e^{-c_i t_{ij}} 
+    g_i - p_i e^{-c_i t_{ij}}
 \right)
 SLD_{ij}
  & \text{if } t_{ij}\geq 0
@@ -642,8 +642,8 @@ models estimated probability of them dying within said interval. Within
 ```
 
 ``` math
-\hat{W}_i(t) = 
-    \frac{\mathbb{1}_{(T_i \gt t)}}{\hat{G}(t)} + 
+\hat{W}_i(t) =
+    \frac{\mathbb{1}_{(T_i \gt t)}}{\hat{G}(t)} +
     \frac{\mathbb{1}_{(T_i \le t)} \cdot \Delta_i}{\hat{G}(T_i)}
 ```
 
@@ -672,26 +672,26 @@ can be changed if required.
 ## References
 
 Blanche P, Proust-Lima C, Loubère L, Berr C, Dartigues J-F,
-Jacqmin-Gadda H (2015). “Quantifying and Comparing Dynamic Predictive
+Jacqmin-Gadda H (2015). ‘Quantifying and Comparing Dynamic Predictive
 Accuracy of Joint Models for Longitudinal Marker and Time-to-Event in
-Presence of Censoring and Competing Risks.” *Biometrics*, **71**(1),
+Presence of Censoring and Competing Risks’. *Biometrics*, **71**(1),
 102–113. https://doi.org/<https://doi.org/10.1111/biom.12232>.
 
-Bürkner P-C (2017). “brms: An R Package for Bayesian Multilevel Models
-Using Stan.” *Journal of Statistical Software*, **80**(1), 1–28.
+Bürkner P-C (2017). ‘brms: An R Package for Bayesian Multilevel Models
+Using Stan’. *Journal of Statistical Software*, **80**(1), 1–28.
 [https://doi.org/10.18637/jss.v080.i01.](https://doi.org/10.18637/jss.v080.i01)
 
-Carvalho CM, Polson NG, Scott JG (2010). “The Horseshoe Estimator for
-Sparse Signals.” *Biometrika*, **97**(2), 465–480.
+Carvalho CM, Polson NG, Scott JG (2010). ‘The Horseshoe Estimator for
+Sparse Signals’. *Biometrika*, **97**(2), 465–480.
 [https://doi.org/10.1093/biomet/asq017.](https://doi.org/10.1093/biomet/asq017)
 
-Piironen J, Vehtari A (2017). “Sparsity Information and Regularization
-in the Horseshoe and Other Shrinkage Priors.” *Electronic Journal of
+Piironen J, Vehtari A (2017). ‘Sparsity Information and Regularization
+in the Horseshoe and Other Shrinkage Priors’. *Electronic Journal of
 Statistics*, **11**(2), 5018–5051.
 [https://doi.org/10.1214/17-EJS1337SI.](https://doi.org/10.1214/17-EJS1337SI)
 
-Pourzanjani A, Davis C (2026). “The Regularized Horseshoe for Covariate
+Pourzanjani A, Davis C (2026). ‘The Regularized Horseshoe for Covariate
 Selection Improves Convenience and Predictive Performance in Population
-PK/PD Models.” *CPT: Pharmacometrics & Systems Pharmacology*, **15**(2),
+PK/PD Models’. *CPT: Pharmacometrics & Systems Pharmacology*, **15**(2),
 e70198.
 [https://doi.org/10.1002/psp4.70198.](https://doi.org/10.1002/psp4.70198)

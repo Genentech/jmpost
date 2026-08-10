@@ -31,7 +31,7 @@ standard deviation for parameter $`\theta`$.
 
 **Survival Model**:
 ``` math
-\log(h_i(t)) = \log(\lambda_0) + X_i \beta + G(t \mid b_i, s_i, g_i) 
+\log(h_i(t)) = \log(\lambda_0) + X_i \beta + G(t \mid b_i, s_i, g_i)
 ```
 
 Where:
@@ -155,8 +155,10 @@ joint_data_sim <- SimJointData(
         beta_cont = 0.3
     ),
     longitudinal = SimWang(
-        times = c(1, 50, 100, 200, 300, 400, 600,
-                800, 1000, 1300, 1600) / 365,
+        times = c(
+            1, 50, 100, 200, 300, 400, 600,
+            800, 1000, 1300, 1600
+        ) / 365,
         mu_b = 60,
         mu_s = 2,
         mu_g = 10,
@@ -181,7 +183,7 @@ ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
     geom_line() +
     geom_point() +
     labs(x = "Time (years)", y = "Tumour Size", col = "Subject") +
-    theme_bw() + 
+    theme_bw() +
     theme(legend.position = "bottom")
 ```
 
@@ -441,27 +443,27 @@ model_samples <- sampleStanModel(
 )
 #> Running MCMC with 1 chain...
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpSwtsEr/model-c097f1615ae.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpSwtsEr/model-c097f1615ae.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpSwtsEr/model-c097f1615ae.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpSwtsEr/model-c097f1615ae.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpSwtsEr/model-c097f1615ae.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1

@@ -371,15 +371,15 @@ the selected covariates for scientific conclusions.
 
 ## References
 
-Bürkner P-C (2017). “brms: An R Package for Bayesian Multilevel Models
-Using Stan.” *Journal of Statistical Software*, **80**(1), 1–28.
+Bürkner P-C (2017). ‘brms: An R Package for Bayesian Multilevel Models
+Using Stan’. *Journal of Statistical Software*, **80**(1), 1–28.
 [https://doi.org/10.18637/jss.v080.i01.](https://doi.org/10.18637/jss.v080.i01)
 
-Carvalho CM, Polson NG, Scott JG (2010). “The Horseshoe Estimator for
-Sparse Signals.” *Biometrika*, **97**(2), 465–480.
+Carvalho CM, Polson NG, Scott JG (2010). ‘The Horseshoe Estimator for
+Sparse Signals’. *Biometrika*, **97**(2), 465–480.
 [https://doi.org/10.1093/biomet/asq017.](https://doi.org/10.1093/biomet/asq017)
 
-Piironen J, Vehtari A (2017). “Sparsity Information and Regularization
-in the Horseshoe and Other Shrinkage Priors.” *Electronic Journal of
+Piironen J, Vehtari A (2017). ‘Sparsity Information and Regularization
+in the Horseshoe and Other Shrinkage Priors’. *Electronic Journal of
 Statistics*, **11**(2), 5018–5051.
 [https://doi.org/10.1214/17-EJS1337SI.](https://doi.org/10.1214/17-EJS1337SI)
