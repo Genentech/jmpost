@@ -1,22 +1,24 @@
 ---
 title: "Statistical Specifications"
 package: jmpost
-bibliography: '`r system.file("REFERENCES.bib", package = "jmpost")`'
-csl: '`r system.file("jss.csl", package = "jmpost")`'
-output:
-  rmarkdown::html_vignette:
-          toc: true
+bibliography: ../inst/REFERENCES.bib
+csl: ../inst/jss.csl
+format:
+  html:
+    toc: true
+    html-math-method: mathml
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Statistical Specifications}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options:
-  chunk_output_type: console
 ---
 
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"

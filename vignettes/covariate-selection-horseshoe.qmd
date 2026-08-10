@@ -1,21 +1,23 @@
 ---
 title: "Covariate Selection with the Horseshoe Prior"
 package: jmpost
-bibliography: '`r system.file("REFERENCES.bib", package = "jmpost")`'
-csl: '`r system.file("jss.csl", package = "jmpost")`'
-output:
-  rmarkdown::html_vignette:
-          toc: true
+bibliography: ../inst/REFERENCES.bib
+csl: ../inst/jss.csl
+format:
+  html:
+    toc: true
+    html-math-method: mathml
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Covariate Selection with the Horseshoe Prior}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options:
-  chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -84,7 +86,9 @@ model contains one categorical and one continuous candidate covariate. The
 categorical covariate contributes two columns to the design matrix, so the
 survival model has three covariate coefficients in total.
 
-```{r simulate-data}
+```{r}
+#| label: simulate-data
+
 set.seed(129)
 sim_data <- SimJointData(
     design = list(
@@ -117,7 +121,9 @@ sim_data <- SimJointData(
 
 Then we prepare the corresponding objects:
 
-```{r prepare-data}
+```{r}
+#| label: prepare-data
+
 os_data <- sim_data@survival
 long_data <- sim_data@longitudinal
 
@@ -144,7 +150,9 @@ Before setting priors or interpreting the output, it is a good habit to check th
 matrix. With `covariates()` we can access the column names, which map to the
 corresponding survival coefficients that receive the horseshoe prior.
 
-```{r design-matrix}
+```{r}
+#| label: design-matrix
+
 head(model.matrix(joint_data@survival))
 survival_covariates <- covariates(joint_data@survival)
 survival_covariates
@@ -156,7 +164,9 @@ Now we define a joint model. The longitudinal model and the association link use
 standard priors. The survival model uses `prior_horseshoe()` for the vector of
 survival covariate coefficients:
 
-```{r model-specification}
+```{r}
+#| label: model-specification
+
 joint_model <- JointModel(
     longitudinal = LongitudinalRandomSlope(),
     survival = SurvivalWeibullPH(
@@ -181,7 +191,9 @@ when the data support them.
 The following code fits the model. In a serious analysis, increase the number
 of warmup and sampling iterations and check convergence carefully.
 
-```{r fit-model}
+```{r}
+#| label: fit-model
+
 fit <- sampleStanModel(
     joint_model,
     data = joint_data,
@@ -201,7 +213,9 @@ fit <- sampleStanModel(
 After fitting, let's inspect the coefficient posterior and standard MCMC diagnostics.
 The survival covariate coefficients are stored in `beta_os_cov`.
 
-```{r inspect-coefficients}
+```{r}
+#| label: inspect-coefficients
+
 stan_fit <- cmdstanr::as.CmdStanMCMC(fit)
 
 stan_fit$summary(
@@ -215,7 +229,9 @@ stan_fit$summary(
 
 The coefficient names come from the design matrix:
 
-```{r name-coefficients}
+```{r}
+#| label: name-coefficients
+
 beta_summary <- stan_fit$summary("beta_os_cov")
 beta_summary$covariate <- survival_covariates
 beta_summary[, c("covariate", "median", "q5", "q95", "rhat", "ess_bulk")]
@@ -232,7 +248,9 @@ Let's use the `shrinkage()` function to extract the posterior draws of $\kappa_j
 draws are named with the survival covariate names, so they can be plotted or
 summarised directly.
 
-```{r shrinkage-factors}
+```{r}
+#| label: shrinkage-factors
+
 shrinkage_draws <- shrinkage(fit)
 posterior::variables(shrinkage_draws)
 
@@ -241,7 +259,11 @@ summary(shrinkage_draws)
 
 One compact visual summary is a density plot of the shrinkage factors.
 
-```{r shrinkage-density, fig.width=7, fig.height=4}
+```{r}
+#| label: shrinkage-density
+#| fig-width: 7
+#| fig-height: 4
+
 library(bayesplot)
 
 mcmc_dens_overlay(shrinkage_draws) +
@@ -257,7 +279,12 @@ covariate's shrinkage factor is a bit more distributed towards smaller values.
 A second useful display is the median shrinkage factor with an interval for each
 covariate:
 
-```{r shrinkage-intervals, fig.width=7, fig.height=4, message=FALSE}
+```{r}
+#| label: shrinkage-intervals
+#| fig-width: 7
+#| fig-height: 4
+#| message: false
+
 library(dplyr)
 library(ggplot2)
 

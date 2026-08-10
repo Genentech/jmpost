@@ -1,13 +1,17 @@
 ---
 title: "Simulating Data"
-output: rmarkdown::html_vignette
+format:
+  html:
+    html-math-method: mathml
 vignette: >
   %\VignetteIndexEntry{Simulating Data}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r}
+#| include: false
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>",
@@ -17,7 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(jmpost)
 ```
 
@@ -28,7 +34,9 @@ The data simulation is based on specifying the longitudinal model and the surviv
 ## Example
 
 
-```{r simulate_data}
+```{r}
+#| label: simulate_data
+
 set.seed(129)
 sim_data <- SimJointData(
     design = list(
@@ -185,7 +193,10 @@ sf_model <- JointModel(
 ```
 
 
-```{r, message = FALSE, results='hide'}
+```{r}
+#| message: false
+#| output: false
+
 set.seed(202671)
 mcmc_results <- sampleStanModel(
     sf_model,
@@ -199,7 +210,9 @@ mcmc_results <- sampleStanModel(
 ```
 
 
-```{r, results='asis'}
+```{r}
+#| output: asis
+
 knitr::kable(
     mcmc_results@results$summary(
         c("lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg", "lm_sf_omega_bsld", "lm_sf_omega_ks", "lm_sf_omega_ks")
@@ -274,4 +287,3 @@ legend("topright",
     legend = c("Arm-A from model", "Arm-B from model", "Arm-A original", "Arm-B original")
 )
 ```
-

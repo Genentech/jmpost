@@ -164,4 +164,3 @@ functions {
         return shrinkage;
     }
 }
-
