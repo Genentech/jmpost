@@ -34,3 +34,14 @@ getPredictionNames(object, ...)
 - ...:
 
   Not used.
+
+## Value
+
+A character vector of required prediction parameter names, or `NULL`.
+
+## Examples
+
+``` r
+getPredictionNames(LongitudinalGSF())
+#> [1] "b"   "s"   "g"   "phi"
+```

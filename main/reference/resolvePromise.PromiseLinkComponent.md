@@ -33,3 +33,5 @@ resolvePromise(object, model, ...)
 ## Value
 
 (`LinkComponent`) the resolved `LinkComponent` object
+
+The resolved `LinkComponent` object.

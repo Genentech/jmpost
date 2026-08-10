@@ -25,6 +25,8 @@ render_stan_limits(object)
 
 (`character`) the Stan syntax for truncated distributions
 
+A character vector containing the Stan truncation syntax.
+
 ## Methods (by class)
 
 - `render_stan_limits(Prior)`: method for

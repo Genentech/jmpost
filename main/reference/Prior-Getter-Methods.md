@@ -35,6 +35,10 @@ auxiliarySize(object, name, size, ...)
 
   (`numeric` or `character`) the parameter size.
 
+## Value
+
+The requested prior initial values or auxiliary-parameter information.
+
 ## Functions
 
 - `initialValues(Prior)`: The prior's initial value

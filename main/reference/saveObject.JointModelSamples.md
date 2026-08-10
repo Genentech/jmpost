@@ -27,6 +27,10 @@ saveObject(object, file, ...)
   (`ANY`) additional arguments to
   [`saveRDS`](https://rdrr.io/r/base/readRDS.html).
 
+## Value
+
+Invisibly returns `NULL` after saving the object.
+
 ## See also
 
 Other saveObject:

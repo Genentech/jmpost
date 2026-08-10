@@ -27,6 +27,10 @@ PromiseLinkComponent(fun, prior, key)
 
   (`character`) Link identifier. See Details.
 
+## Value
+
+A `PromiseLinkComponent` object.
+
 ## Details
 
 The `fun` slot should be a function of signature
@@ -43,3 +47,14 @@ object does not have the same `key` slot value as the original
 
   (`function`)\
   a function that returns a `LinkComponent`. See details.
+
+## Examples
+
+``` r
+promise <- PromiseLinkComponent(linkDSLD, prior_normal(0, 2), "link_dsld")
+resolvePromise(promise, LongitudinalGSF())
+#> 
+#> LinkComponent with parameter:
+#>     link_dsld ~ normal(mu = 0, sigma = 2)
+#> 
+```

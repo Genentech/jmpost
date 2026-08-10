@@ -15,6 +15,10 @@ LongitudinalRandomEffects(object)
 
   (`JointModelSamples`) samples as drawn from a Joint Model.
 
+## Value
+
+A `RandomEffectQuantities` object.
+
 ## See also
 
 Other RandomEffectQuantities:
@@ -25,3 +29,11 @@ Other RandomEffectQuantities:
 
 Other JointModelSamples:
 [`as_print_string.JointModelSamples()`](https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+LongitudinalRandomEffects(fit)
+} # }
+```

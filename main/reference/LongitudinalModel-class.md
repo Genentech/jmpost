@@ -42,6 +42,10 @@ LongitudinalModel(
   additional arguments for
   [`StanModel()`](https://genentech.github.io/jmpost/reference/StanModel-class.md).
 
+## Value
+
+A `LongitudinalModel` object.
+
 ## Slots
 
 - `scaled_variance`:
@@ -49,3 +53,13 @@ LongitudinalModel(
   logical scalar, whether the variance should be scaled by the expected
   value, corresponding to a multiplicative model. If not, then an
   additive error model is used.
+
+## Examples
+
+``` r
+LongitudinalModel(scaled_variance = FALSE)
+#> 
+#> <Unnamed> Longitudinal Model (additive error) with parameters:
+#>     <No Parameters>
+#> 
+```

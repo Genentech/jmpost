@@ -22,6 +22,10 @@ prior_student_t(nu, mu, sigma)
 
   (`number`) Scale parameter.
 
+## Value
+
+A `Prior` object.
+
 ## See also
 
 Other Prior:
@@ -39,3 +43,13 @@ Other Prior:
 [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md),
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
+
+## Examples
+
+``` r
+prior_student_t(4, 0, 1)
+#> 
+#> Prior Object:
+#>    student_t(nu = 4, mu = 0, sigma = 1)
+#> 
+```

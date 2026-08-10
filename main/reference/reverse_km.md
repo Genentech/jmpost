@@ -27,6 +27,10 @@ reverse_km_cen_first(t, times, events)
   (`numeric`) event indicator for `times`. Either 1 for an event or 0
   for censor.
 
+## Value
+
+The reverse Kaplan-Meier estimate at each requested time.
+
 ## Details
 
 With regards to ties between censor and event times; the standard

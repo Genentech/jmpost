@@ -17,3 +17,15 @@ as_formula(x, ...)
 - ...:
 
   Not used.
+
+## Value
+
+A `formula` object.
+
+## Examples
+
+``` r
+as_formula("response ~ time")
+#> response ~ time
+#> <environment: 0x55e2da429c88>
+```

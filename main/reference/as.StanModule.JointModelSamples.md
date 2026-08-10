@@ -30,3 +30,7 @@ as.StanModule(object, generator, type, ...)
 - ...:
 
   additional options.
+
+## Value
+
+A `StanModule` object.

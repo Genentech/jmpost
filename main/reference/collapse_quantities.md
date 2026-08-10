@@ -20,6 +20,10 @@ collapse_quantities(quantities_raw, collapser)
 
   (`QuantityCollapser`) specifies which columns to combine together.
 
+## Value
+
+An array of collapsed posterior quantities.
+
 ## Details
 
 This function essentially implements the group wise average by

@@ -78,6 +78,10 @@ simulate(
 
   unused Unused.
 
+## Value
+
+A `SimJointData` object containing posterior-predictive simulations.
+
 ## Details
 
 Simulates a set of patients based on the covariates of those used in the

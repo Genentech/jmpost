@@ -36,6 +36,10 @@ autoplot(object, conf.level = 0.95, add_km = FALSE, add_wrap = TRUE, ...)
 
   not used.
 
+## Value
+
+A `ggplot` object.
+
 ## See also
 
 Other SurvivalQuantities:

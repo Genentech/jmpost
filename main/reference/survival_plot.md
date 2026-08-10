@@ -48,6 +48,10 @@ survival_plot(
 
   (`character` or `expression`) label to display on the x-axis.
 
+## Value
+
+A `ggplot` object.
+
 ## Details
 
 ### `data`

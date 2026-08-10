@@ -18,6 +18,10 @@ auxiliarySize(object, ...)
 
   additional options.
 
+## Value
+
+A named `list` of auxiliary parameter sizes.
+
 ## Details
 
 Some objects, such as shrinkage priors, declare additional Stan

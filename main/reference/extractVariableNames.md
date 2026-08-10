@@ -15,6 +15,10 @@ extractVariableNames(object)
 
   the data object.
 
+## Value
+
+A named list mapping source variables to standard names.
+
 ## See also
 
 Other extractVariableNames:

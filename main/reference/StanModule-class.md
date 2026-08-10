@@ -19,6 +19,10 @@ StanModule(x = "", ...)
 
   additional arguments passed to the constructor.
 
+## Value
+
+A `StanModule` object.
+
 ## Slots
 
 - `functions`:
@@ -62,3 +66,22 @@ Other StanModule:
 [`as.character.StanModule()`](https://genentech.github.io/jmpost/reference/as.character.StanModule.md),
 [`as.list.StanModule()`](https://genentech.github.io/jmpost/reference/as.list.StanModule.md),
 [`as_print_string.StanModule()`](https://genentech.github.io/jmpost/reference/as_print_string.StanModule.md)
+
+## Examples
+
+``` r
+code <- "
+parameters {
+  real x;
+}
+model {
+  x ~ normal(0, 1);
+}
+"
+StanModule(code)
+#> 
+#>    StanModule Object with components:
+#>        parameters
+#>        model 
+#> 
+```

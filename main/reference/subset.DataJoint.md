@@ -28,6 +28,10 @@ subset(x, subjects, ...)
 
   Not used.
 
+## Value
+
+A `DataJoint` object restricted to the requested subjects.
+
 ## See also
 
 Other DataJoint:

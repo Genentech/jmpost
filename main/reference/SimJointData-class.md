@@ -35,6 +35,10 @@ SimJointData(
 
   (`flag`) whether to suppress info messages
 
+## Value
+
+A `SimJointData` object.
+
 ## Details
 
 The `design` argument is used to specify how many distinct groups should
@@ -60,3 +64,21 @@ objects e.g.
 
   (`data.frame`)\
   the simulated survival data.
+
+## Examples
+
+``` r
+set.seed(1)
+SimJointData(
+  design = list(SimGroup(3, "A", "Study 1")),
+  longitudinal = SimLongitudinalRandomSlope(
+    times = c(0, 10),
+    slope_mu = 0.01,
+    slope_sigma = 0.5
+  ),
+  survival = SimSurvivalExponential(lambda = 1 / 300)
+)
+#> 
+#> A SimJointData Object
+#> 
+```

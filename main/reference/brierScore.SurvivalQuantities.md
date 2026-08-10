@@ -34,6 +34,10 @@ brierScore(object, maintain_cen_order = TRUE, event_offset = TRUE, ...)
 
   not used.
 
+## Value
+
+A `data.frame` containing Brier scores by time and group.
+
 ## References
 
 Blanche P, Proust-Lima C, Loubère L, Berr C, Dartigues J, Jacqmin-Gadda

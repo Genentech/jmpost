@@ -19,3 +19,17 @@ compileStanModel(object)
 - object:
 
   the module.
+
+## Value
+
+A compiled
+[`cmdstanr::CmdStanModel`](https://mc-stan.org/cmdstanr/reference/CmdStanModel.html)
+object.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+compileStanModel(JointModel(LongitudinalGSF()))
+} # }
+```

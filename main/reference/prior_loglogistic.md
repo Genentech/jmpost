@@ -18,6 +18,10 @@ prior_loglogistic(alpha, beta)
 
   (`number`) Shape parameter.
 
+## Value
+
+A `Prior` object.
+
 ## See also
 
 Other Prior:
@@ -35,3 +39,13 @@ Other Prior:
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
 [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
+
+## Examples
+
+``` r
+prior_loglogistic(2, 3)
+#> 
+#> Prior Object:
+#>    loglogistic(alpha = 2, beta = 3)
+#> 
+```

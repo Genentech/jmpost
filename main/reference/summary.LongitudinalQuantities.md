@@ -23,6 +23,10 @@ summary(object, conf.level = 0.95, ...)
 
   not used.
 
+## Value
+
+A `data.frame` containing posterior summary statistics.
+
 ## See also
 
 Other LongitudinalQuantities:

@@ -19,3 +19,7 @@ subjects_to_list(subjects = NULL, data)
 - data:
 
   (`DataJoint`) Survival and Longitudinal Data.
+
+## Value
+
+A named list grouping the requested subject identifiers.

@@ -30,3 +30,17 @@ generateQuantities(object, generator, type, ...)
 
   (`character`) type of quantities to be generated, must be either
   "survival" or "longitudinal".
+
+## Value
+
+A
+[`cmdstanr::CmdStanGQ`](https://mc-stan.org/cmdstanr/reference/CmdStanGQ.html)
+object containing generated quantities.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+generateQuantities(fit, generator, "survival")
+} # }
+```

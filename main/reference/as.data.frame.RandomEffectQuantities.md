@@ -20,6 +20,10 @@ as.data.frame(x, ...)
 
   not used.
 
+## Value
+
+A `data.frame` representation of the object.
+
 ## See also
 
 Other RandomEffectQuantities:

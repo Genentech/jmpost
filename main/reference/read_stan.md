@@ -14,3 +14,7 @@ read_stan(string)
 
   Character, either the absolute path of a stan file, or the name of the
   stan file in the package directory or the stan code as a string.
+
+## Value
+
+A character vector containing Stan program code.

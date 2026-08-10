@@ -25,6 +25,10 @@ as_print_string(object, indent = 1, ...)
 
   Not Used.
 
+## Value
+
+A character vector suitable for printing.
+
 ## See also
 
 Other DataSurvival:

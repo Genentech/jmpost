@@ -23,6 +23,10 @@ as.StanModule(object, ...)
 
   Not Used.
 
+## Value
+
+A `StanModule` object.
+
 ## See also
 
 Other Link:

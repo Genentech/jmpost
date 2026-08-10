@@ -39,6 +39,11 @@ size(object)
 
   Not Used.
 
+## Value
+
+The requested parameter-list property: names, initial values, or total
+size.
+
 ## Functions
 
 - `names(ParameterList)`: The parameter-list's parameter names

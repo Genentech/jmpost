@@ -41,6 +41,11 @@ linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 
   Not used.
 
+## Value
+
+A `Link` or `LinkComponent` object representing the requested
+association.
+
 ## Functions
 
 - `linkNone()`: No link (fit the survival and longitudinal models
@@ -55,3 +60,21 @@ linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 - `linkGrowth()`: Growth Parameter link
 
 - `linkShrinkage()`: Shrinkage Parameter link
+
+## Examples
+
+``` r
+linkNone()
+#> 
+#> No Link
+linkDSLD()
+#> 
+#> LinkComponent with parameter:
+#>     link_dsld ~ normal(mu = 0, sigma = 2)
+#> 
+linkTTG(prior_normal(0, 1), model = LongitudinalGSF())
+#> 
+#> LinkComponent with parameter:
+#>     link_ttg ~ normal(mu = 0, sigma = 1)
+#> 
+```

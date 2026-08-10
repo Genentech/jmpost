@@ -20,6 +20,10 @@ as.list(x, ...)
 
   Not Used.
 
+## Value
+
+A named `list` representation of the object.
+
 ## See also
 
 Other Link:

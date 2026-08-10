@@ -25,6 +25,10 @@ autoplot(object, conf.level = 0.95, ...)
 
   not used.
 
+## Value
+
+A `ggplot` object.
+
 ## See also
 
 Other LongitudinalQuantities:

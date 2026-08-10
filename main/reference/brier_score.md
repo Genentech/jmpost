@@ -53,6 +53,10 @@ bs_get_weights(
   Setting this as `TRUE` mirrors the implementation of the `{pec}`
   package.
 
+## Value
+
+A numeric vector or matrix of Brier-score components.
+
 ## Details
 
 - `bs_get_squared_dist()` - implements the squared distance part of the

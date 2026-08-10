@@ -14,6 +14,10 @@ prior_const(value)
 
   (`number`) the fixed parameter value.
 
+## Value
+
+A `Prior` object.
+
 ## See also
 
 Other Prior:
@@ -31,3 +35,13 @@ Other Prior:
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
 [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
+
+## Examples
+
+``` r
+prior_const(0)
+#> 
+#> Prior Object:
+#>    const(value = 0)
+#> 
+```

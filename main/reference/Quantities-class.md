@@ -23,6 +23,10 @@ Quantities(quantities, times, groups)
 
   (`character`) labels for which group the quantity belongs to.
 
+## Value
+
+A `Quantities` object.
+
 ## Details
 
 Each row of the matrix represents a sample and each column represents a

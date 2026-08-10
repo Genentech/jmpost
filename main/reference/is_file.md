@@ -16,3 +16,7 @@ is_file(filename = NULL)
 - filename:
 
   (`string`) file name.
+
+## Value
+
+`TRUE` if the input identifies an existing file; otherwise `FALSE`.

@@ -19,3 +19,9 @@ as.CmdStanMCMC.JointModelSamples(object, ...)
 - ...:
 
   additional options
+
+## Value
+
+The underlying
+[`cmdstanr::CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html)
+object.

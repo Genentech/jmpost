@@ -73,6 +73,10 @@ GridPrediction(times = NULL, newdata, params = list())
   [`getPredictionNames()`](https://genentech.github.io/jmpost/reference/getPredictionNames.md)
   for the required parameters.
 
+## Value
+
+A `Grid` object of the requested type.
+
 ## Details
 
 - `GridFixed()` is used to specify a fixed set of timepoints to generate
@@ -132,3 +136,71 @@ as:
 
 [`SurvivalQuantities`](https://genentech.github.io/jmpost/reference/SurvivalQuantities-class.md),
 [`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md)
+
+## Examples
+
+``` r
+GridFixed(subjects = c("subject 1", "subject 2"), times = c(0, 10))
+#> An object of class "GridFixed"
+#> Slot "subjects":
+#> [1] "subject 1" "subject 2"
+#> 
+#> Slot "times":
+#> [1]  0 10
+#> 
+GridGrouped(groups = list(control = c("subject 1", "subject 2")))
+#> An object of class "GridGrouped"
+#> Slot "groups":
+#> $control
+#> [1] "subject 1" "subject 2"
+#> 
+#> 
+#> Slot "times":
+#> NULL
+#> 
+GridEven(subjects = c("subject 1", "subject 2"), length.out = 20)
+#> An object of class "GridEven"
+#> Slot "subjects":
+#> [1] "subject 1" "subject 2"
+#> 
+#> Slot "length.out":
+#> [1] 20
+#> 
+GridObserved()
+#> An object of class "GridObserved"
+#> Slot "subjects":
+#> NULL
+#> 
+GridEvent()
+#> An object of class "GridEvent"
+#> Slot "subjects":
+#> NULL
+#> 
+GridPopulation(times = seq(0, 100, by = 10))
+#> An object of class "GridPopulation"
+#> Slot "times":
+#>  [1]   0  10  20  30  40  50  60  70  80  90 100
+#> 
+GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
+#> An object of class "GridManual"
+#> Slot "spec":
+#> $`subject 1`
+#> [1] 0 5
+#> 
+#> $`subject 2`
+#> [1]  0 10
+#> 
+#> 
+GridPrediction(times = c(0, 10), newdata = data.frame(age = 60))
+#> An object of class "GridPrediction"
+#> Slot "times":
+#> [1]  0 10
+#> 
+#> Slot "newdata":
+#>   age
+#> 1  60
+#> 
+#> Slot "params":
+#> list()
+#> 
+```

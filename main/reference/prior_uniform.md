@@ -18,6 +18,10 @@ prior_uniform(alpha, beta)
 
   (`number`) maximum value parameter.
 
+## Value
+
+A `Prior` object.
+
 ## See also
 
 Other Prior:
@@ -35,3 +39,13 @@ Other Prior:
 [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md),
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
 [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md)
+
+## Examples
+
+``` r
+prior_uniform(0, 1)
+#> 
+#> Prior Object:
+#>    uniform(alpha = 0, beta = 1)
+#> 
+```

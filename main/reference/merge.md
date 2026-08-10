@@ -52,3 +52,20 @@ merge(x, y, ...)
 - stan_blocks:
 
   (`list`) reference list of stan blocks.
+
+## Value
+
+A merged object of the same class as `x` and `y`.
+
+## Examples
+
+``` r
+x <- ParameterList(Parameter(prior_normal(0, 1), "x"))
+y <- ParameterList(Parameter(prior_normal(0, 1), "y"))
+merge(x, y)
+#> 
+#> ParameterList Object:
+#>     x ~ normal(mu = 0, sigma = 1)
+#>     y ~ normal(mu = 0, sigma = 1)
+#> 
+```

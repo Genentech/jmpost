@@ -29,3 +29,14 @@ enableGQ(object, ...)
 
 [`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)
 object
+
+## Examples
+
+``` r
+enableGQ(LongitudinalGSF())
+#> 
+#>    StanModule Object with components:
+#>        functions
+#>        generated_quantities 
+#> 
+```

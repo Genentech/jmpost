@@ -19,3 +19,18 @@ SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 2))
 - beta:
 
   (`Prior`) for covariates coefficients `beta`.
+
+## Value
+
+A `SurvivalExponential` object.
+
+## Examples
+
+``` r
+SurvivalExponential()
+#> 
+#> Exponential Survival Model with parameters:
+#>     sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+#>     beta_os_cov ~ normal(mu = 0, sigma = 2)
+#> 
+```

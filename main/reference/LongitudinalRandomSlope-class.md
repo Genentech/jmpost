@@ -44,8 +44,26 @@ LongitudinalRandomSlope(
   additive model. (See the "Statistical Specifications" vignette for
   more details.)
 
+## Value
+
+A `LongitudinalRandomSlope` object.
+
 ## Available Links
 
 - [`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
 
 - [`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+## Examples
+
+``` r
+LongitudinalRandomSlope()
+#> 
+#> Random Slope Longitudinal Model (additive error) with parameters:
+#>     lm_rs_intercept ~ normal(mu = 30, sigma = 10)
+#>     lm_rs_slope_mu ~ normal(mu = 1, sigma = 3)
+#>     lm_rs_slope_sigma ~ lognormal(mu = 0, sigma = 1.5)
+#>     lm_rs_sigma ~ lognormal(mu = 0, sigma = 1.5)
+#>     lm_rs_ind_rnd_slope ~ <None>
+#> 
+```

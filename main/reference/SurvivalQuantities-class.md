@@ -25,6 +25,10 @@ SurvivalQuantities(object, grid, type = c("surv", "haz", "loghaz", "cumhaz"))
   (`character`) quantity to be generated. Must be one of `surv`, `haz`,
   `loghaz`, `cumhaz`.
 
+## Value
+
+A `SurvivalQuantities` object.
+
 ## Slots
 
 - `quantities`:
@@ -76,3 +80,11 @@ Other SurvivalQuantities:
 [`autoplot.SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.md),
 [`brierScore.SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/brierScore.SurvivalQuantities.md),
 [`summary.SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/summary.SurvivalQuantities.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+SurvivalQuantities(fit, GridFixed(times = seq(0, 100, by = 10)))
+} # }
+```

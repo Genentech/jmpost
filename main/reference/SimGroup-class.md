@@ -23,6 +23,10 @@ SimGroup(n, arm, study)
 
   (`character`) study name.
 
+## Value
+
+A `SimGroup` object.
+
 ## Slots
 
 - `n`:

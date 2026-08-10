@@ -50,3 +50,11 @@ within the joint modeling framework.” *Statistics in Medicine*,
 [doi:10.1002/sim.8713](https://doi.org/10.1002/sim.8713) ,
 https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.8713,
 <https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.8713>.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+populationHR(fit, quantiles = c(0.01, 0.99))
+} # }
+```

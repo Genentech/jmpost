@@ -23,3 +23,7 @@ mirror_design_matrix(olddata, newdata)
 - newdata:
 
   (`data.frame`) The new data to be used to generate the design matrix
+
+## Value
+
+A model matrix whose columns match the original design matrix.

@@ -25,6 +25,10 @@ DataLongitudinal(data, formula, threshold = NULL)
   (`numeric`) cut-off value to be used to declare an observation as
   censored (below detection limit).
 
+## Value
+
+A `DataLongitudinal` object.
+
 ## Slots
 
 - `data`:
@@ -55,3 +59,16 @@ Other DataLongitudinal:
 [`as_print_string.DataLongitudinal()`](https://genentech.github.io/jmpost/reference/as_print_string.DataLongitudinal.md),
 [`as_stan_list.DataSubject()`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md),
 [`extractVariableNames.DataLongitudinal()`](https://genentech.github.io/jmpost/reference/extractVariableNames.DataLongitudinal.md)
+
+## Examples
+
+``` r
+DataLongitudinal(tumor_data, sld ~ year, threshold = 5)
+#> 
+#>    Longitudinal-Data Object:
+#>       # of Rows     = 1093
+#>       # of Columns  = 4
+#>       # of Cen-Obvs = 16
+#>       Formula       = sld ~ year 
+#> 
+```

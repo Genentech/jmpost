@@ -39,6 +39,10 @@ prior_horseshoe(
 
   (`number`) scale of the Student-t slab.
 
+## Value
+
+A `Prior` object.
+
 ## See also
 
 Other Prior:
@@ -56,3 +60,13 @@ Other Prior:
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
 [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
+
+## Examples
+
+``` r
+prior_horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.1, scale_slab = 2)
+#> 
+#> Prior Object:
+#>    horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.1, scale_slab = 2)
+#> 
+```

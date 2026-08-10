@@ -1,7 +1,6 @@
 # `QuantityGenerator` -\> `list`
 
-Converts a `QuantityGenerator` object to a list containing the required
-input data for a stan model.
+Just a placeholder which will error when used.
 
 ## Usage
 
@@ -32,3 +31,7 @@ as_stan_list(object, data, ...)
 - ...:
 
   Not currently used.
+
+## Value
+
+Will always throw an error.

@@ -19,6 +19,10 @@ auxiliaryInitialValues(object, ...)
 
   additional options.
 
+## Value
+
+A named `list` of initial values for auxiliary parameters.
+
 ## Details
 
 Some objects, such as shrinkage priors, declare additional Stan

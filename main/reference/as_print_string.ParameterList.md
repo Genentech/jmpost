@@ -23,6 +23,10 @@ as_print_string(object, ...)
 
   Not Used.
 
+## Value
+
+A character vector suitable for printing.
+
 ## See also
 
 Other ParameterList:

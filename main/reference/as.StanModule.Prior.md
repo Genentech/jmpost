@@ -31,6 +31,10 @@ as.StanModule(object, name, size = 1, ...)
 
   Not Used.
 
+## Value
+
+A `StanModule` object.
+
 ## See also
 
 Other Prior-internal:

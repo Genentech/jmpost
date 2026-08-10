@@ -34,3 +34,17 @@ SurvivalModel(
 
   additional arguments for
   [`StanModel()`](https://genentech.github.io/jmpost/reference/StanModel-class.md).
+
+## Value
+
+A `SurvivalModel` object.
+
+## Examples
+
+``` r
+SurvivalModel()
+#> 
+#> <Unnamed> Survival Model with parameters:
+#>     <No Parameters>
+#> 
+```

@@ -35,3 +35,7 @@ coalesceGridTime(object, times, ...)
   Not used
 
   Method used to replace NULL times on grid objects (if appropriate)
+
+## Value
+
+A `Grid` object with missing time points replaced.

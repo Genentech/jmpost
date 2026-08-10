@@ -26,3 +26,7 @@ resolvePromise(object, model, ...)
 - ...:
 
   Not Used.
+
+## Value
+
+A `Link` object with all promised components resolved.

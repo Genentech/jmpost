@@ -75,6 +75,10 @@ LongitudinalClaretBruno(
 
   (`logical`) whether to use the centred parameterization.
 
+## Value
+
+A `LongitudinalClaretBruno` object.
+
 ## Available Links
 
 - [`linkDSLD()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
@@ -84,3 +88,25 @@ LongitudinalClaretBruno(
 - [`linkIdentity()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
 
 - [`linkGrowth()`](https://genentech.github.io/jmpost/reference/standard-link-user.md)
+
+## Examples
+
+``` r
+LongitudinalClaretBruno()
+#> 
+#> Claret-Bruno Longitudinal Model (additive error) with parameters:
+#>     lm_clbr_mu_b ~ normal(mu = 4.09434, sigma = 0.5)
+#>     lm_clbr_mu_g ~ normal(mu = 0, sigma = 0.5)
+#>     lm_clbr_mu_c ~ normal(mu = -0.91629, sigma = 0.5)
+#>     lm_clbr_mu_p ~ normal(mu = 0.69315, sigma = 0.5)
+#>     lm_clbr_omega_b ~ lognormal(mu = -1.60944, sigma = 0.5)
+#>     lm_clbr_omega_g ~ lognormal(mu = -1.60944, sigma = 0.5)
+#>     lm_clbr_omega_c ~ lognormal(mu = -1.60944, sigma = 0.5)
+#>     lm_clbr_omega_p ~ lognormal(mu = -1.60944, sigma = 0.5)
+#>     lm_clbr_sigma ~ lognormal(mu = -2.30259, sigma = 0.5)
+#>     lm_clbr_eta_b ~ std_normal()
+#>     lm_clbr_eta_g ~ std_normal()
+#>     lm_clbr_eta_c ~ std_normal()
+#>     lm_clbr_eta_p ~ std_normal()
+#> 
+```

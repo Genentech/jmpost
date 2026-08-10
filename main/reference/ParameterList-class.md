@@ -20,6 +20,10 @@ ParameterList(...)
 
   (`Parameter`) which parameter specifications to include.
 
+## Value
+
+A `ParameterList` object.
+
 ## Slots
 
 - `parameters`:
@@ -37,3 +41,17 @@ Other ParameterList:
 [`as.list.ParameterList()`](https://genentech.github.io/jmpost/reference/as.list.ParameterList.md),
 [`as_print_string.ParameterList()`](https://genentech.github.io/jmpost/reference/as_print_string.ParameterList.md),
 [`as_stan_list.ParameterList()`](https://genentech.github.io/jmpost/reference/as_stan_list.ParameterList.md)
+
+## Examples
+
+``` r
+ParameterList(
+  Parameter(prior_normal(0, 1), "intercept"),
+  Parameter(prior_normal(0, 2), "slope")
+)
+#> 
+#> ParameterList Object:
+#>     intercept ~ normal(mu = 0, sigma = 1)
+#>     slope ~ normal(mu = 0, sigma = 2)
+#> 
+```

@@ -24,6 +24,10 @@ as.list(x, stan_blocks = STAN_BLOCKS, ...)
 
   Not Used.
 
+## Value
+
+A named `list` representation of the object.
+
 ## See also
 
 Other StanModule:

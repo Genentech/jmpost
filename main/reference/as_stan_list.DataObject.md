@@ -73,6 +73,10 @@ as.list(x, ...)
   The list of variable names to be used for generating the design
   matrix.
 
+## Value
+
+A named `list` suitable for use as Stan data.
+
 ## See also
 
 Other DataSubject:

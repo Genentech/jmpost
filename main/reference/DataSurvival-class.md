@@ -23,6 +23,10 @@ DataSurvival(data, formula)
   more details, though note that this package only supports right
   censoring.
 
+## Value
+
+A `DataSurvival` object.
+
 ## Slots
 
 - `data`:
@@ -47,3 +51,16 @@ Other DataSurvival:
 [`as_print_string.DataSurvival()`](https://genentech.github.io/jmpost/reference/as_print_string.DataSurvival.md),
 [`as_stan_list.DataSubject()`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md),
 [`extractVariableNames.DataSurvival()`](https://genentech.github.io/jmpost/reference/extractVariableNames.DataSurvival.md)
+
+## Examples
+
+``` r
+DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
+#> 
+#>    Survival-Data Object:
+#>       # of Rows     = 203
+#>       # of Columns  = 12
+#>       # of Events   = 108
+#>       Formula       = Surv(os_time, os_event) ~ age + sex 
+#> 
+```

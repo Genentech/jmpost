@@ -27,3 +27,19 @@ SurvivalGamma(
 - beta:
 
   (`Prior`) for covariates coefficients `beta`.
+
+## Value
+
+A `SurvivalGamma` object.
+
+## Examples
+
+``` r
+SurvivalGamma()
+#> 
+#> Gamma Survival Model with parameters:
+#>     sm_gamma_k ~ gamma(alpha = 2, beta = 0.5)
+#>     sm_gamma_theta ~ gamma(alpha = 2, beta = 0.5)
+#>     beta_os_cov ~ normal(mu = 0, sigma = 2)
+#> 
+```

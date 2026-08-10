@@ -47,6 +47,10 @@ SimSurvival(
 
   (`character`) the name of the object.
 
+## Value
+
+A `SimSurvival` object.
+
 ## Slots
 
 - `time_max`:
@@ -110,3 +114,12 @@ Other SimSurvival:
 [`SimSurvivalGamma()`](https://genentech.github.io/jmpost/reference/SimSurvivalGamma.md),
 [`SimSurvivalLogLogistic()`](https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.md),
 [`SimSurvivalWeibullPH()`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)
+
+## Examples
+
+``` r
+SimSurvival(loghazard = function(time, ...) rep(log(1 / 100), length(time)))
+#> 
+#> A SimSurvival Object
+#> 
+```

@@ -23,6 +23,10 @@ StanModel(stan, parameters, name = "<Unnamed>")
 
   (`character`) display name for the model object.
 
+## Value
+
+A `StanModel` object.
+
 ## Slots
 
 - `stan`:
@@ -44,3 +48,13 @@ StanModel(stan, parameters, name = "<Unnamed>")
 
 Other StanModel:
 [`as.list.StanModel()`](https://genentech.github.io/jmpost/reference/as.list.StanModel.md)
+
+## Examples
+
+``` r
+StanModel(StanModule(), ParameterList(), name = "Example model")
+#> 
+#> Example model Model Object with parameters:
+#>     <No Parameters>
+#> 
+```

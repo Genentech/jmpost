@@ -20,6 +20,10 @@ LongitudinalQuantities(object, grid)
   calculate the quantities for. See
   [Grid-Functions](https://genentech.github.io/jmpost/reference/Grid-Functions.md).
 
+## Value
+
+A `LongitudinalQuantities` object.
+
 ## Details
 
 Note that unlike
@@ -45,3 +49,11 @@ Other LongitudinalQuantities:
 [`as.data.frame.LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/as.data.frame.LongitudinalQuantities.md),
 [`autoplot.LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.md),
 [`summary.LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/summary.LongitudinalQuantities.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+LongitudinalQuantities(fit, GridEven(length.out = 25))
+} # }
+```

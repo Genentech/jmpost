@@ -15,6 +15,10 @@ SimLongitudinal(times = seq(0, 100, 50))
 
   (`numeric`) the times to generate observations at.
 
+## Value
+
+A `SimLongitudinal` object.
+
 ## See also
 
 Other SimLongitudinal:
@@ -22,3 +26,12 @@ Other SimLongitudinal:
 [`SimLongitudinalGSF-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md),
 [`SimLongitudinalRandomSlope-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md),
 [`SimLongitudinalSteinFojo-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.md)
+
+## Examples
+
+``` r
+SimLongitudinal(times = c(0, 30, 60))
+#> 
+#> A SimLongitudinal Object
+#> 
+```

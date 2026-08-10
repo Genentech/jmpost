@@ -29,6 +29,10 @@ DataJoint(subject, survival = NULL, longitudinal = NULL)
   (`DataLongitudinal`) object created by
   [`DataLongitudinal()`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md).
 
+## Value
+
+A `DataJoint` object.
+
 ## Slots
 
 - `subject`:
@@ -56,3 +60,40 @@ Other DataObjects:
 Other DataJoint:
 [`as_stan_list.DataSubject()`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md),
 [`subset.DataJoint()`](https://genentech.github.io/jmpost/reference/subset.DataJoint.md)
+
+## Examples
+
+``` r
+subjects <- data.frame(id = c("1", "2"), arm = "A", study = "S")
+survival <- data.frame(id = c("1", "2"), time = c(5, 8), event = c(1, 0))
+longitudinal <- data.frame(
+  id = rep(c("1", "2"), each = 2),
+  time = rep(c(0, 1), 2),
+  response = c(10, 9, 12, 11)
+)
+DataJoint(
+  DataSubject(subjects, "id", "arm", "study"),
+  DataSurvival(survival, Surv(time, event) ~ 1),
+  DataLongitudinal(longitudinal, response ~ time)
+)
+#> 
+#>  Joint-Data Object Containing:
+#> 
+#>       Subject-Data Object:
+#>           # of Subjects = 2
+#>           # of Studies  = 1
+#>           # of Arms     = 1
+#> 
+#>       Survival-Data Object:
+#>           # of Rows     = 2
+#>           # of Columns  = 3
+#>           # of Events   = 1
+#>           Formula       = Surv(time, event) ~ 1
+#> 
+#>       Longitudinal-Data Object:
+#>           # of Rows     = 4
+#>           # of Columns  = 3
+#>           # of Cen-Obvs = 0
+#>           Formula       = response ~ time 
+#> 
+```

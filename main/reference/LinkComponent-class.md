@@ -27,6 +27,10 @@ LinkComponent(stan, prior, key, ...)
   additional arguments for
   [`StanModel()`](https://genentech.github.io/jmpost/reference/StanModel-class.md).
 
+## Value
+
+A `LinkComponent` object.
+
 ## Details
 
 This object provides key information needed to construct a link
@@ -64,3 +68,17 @@ Other LinkComponent:
 [`as.list.LinkComponent()`](https://genentech.github.io/jmpost/reference/as.list.LinkComponent.md),
 [`getParameters()`](https://genentech.github.io/jmpost/reference/getParameters.md),
 [`initialValues()`](https://genentech.github.io/jmpost/reference/initialValues.md)
+
+## Examples
+
+``` r
+LinkComponent(
+  stan = StanModule(),
+  prior = prior_normal(0, 1),
+  key = "custom_link"
+)
+#> 
+#> LinkComponent with parameter:
+#>     custom_link ~ normal(mu = 0, sigma = 1)
+#> 
+```

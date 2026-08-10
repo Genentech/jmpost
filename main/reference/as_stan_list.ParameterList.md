@@ -22,6 +22,10 @@ as_stan_list(object, ...)
 
   Not Used.
 
+## Value
+
+A named `list` suitable for use as Stan data.
+
 ## See also
 
 Other as_stan_list:

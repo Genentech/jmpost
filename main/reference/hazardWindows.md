@@ -17,3 +17,7 @@ hazardWindows(object, ...)
 - ...:
 
   Not used.
+
+## Value
+
+A `data.frame` describing the hazard-evaluation intervals.

@@ -71,3 +71,7 @@ show(object)
 - object:
 
   Object to be printed
+
+## Value
+
+Invisibly returns `NULL` after printing the object.

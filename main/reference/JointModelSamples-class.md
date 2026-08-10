@@ -3,6 +3,10 @@
 Contains samples from a
 [`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md).
 
+## Value
+
+A `JointModelSamples` object.
+
 ## Slots
 
 - `model`:
@@ -19,3 +23,12 @@ Contains samples from a
 
   ([`cmdstanr::CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html))\
   the STAN samples.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# JointModelSamples objects are returned by sampleStanModel().
+fit <- sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+} # }
+```

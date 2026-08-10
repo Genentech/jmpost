@@ -9,3 +9,15 @@ object.
 ``` r
 PromiseLongitudinalModel()
 ```
+
+## Value
+
+A `PromiseLongitudinalModel` object.
+
+## Examples
+
+``` r
+PromiseLongitudinalModel()
+#> An object of class "PromiseLongitudinalModel"
+#> <S4 Type Object>
+```

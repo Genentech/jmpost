@@ -30,6 +30,10 @@ DataSubject(data, subject, arm, study)
   (`character`) the name of the variable containing the study
   identifier.
 
+## Value
+
+A `DataSubject` object.
+
 ## Slots
 
 - `data`:
@@ -64,3 +68,16 @@ Other DataSubject:
 [`as_print_string.DataSubject()`](https://genentech.github.io/jmpost/reference/as_print_string.DataSubject.md),
 [`as_stan_list.DataSubject()`](https://genentech.github.io/jmpost/reference/as_stan_list.DataObject.md),
 [`extractVariableNames.DataSubject()`](https://genentech.github.io/jmpost/reference/extractVariableNames.DataSubject.md)
+
+## Examples
+
+``` r
+dat <- transform(os_data, study = "Study 1")
+DataSubject(dat, subject = "id", arm = "arm", study = "study")
+#> 
+#>    Subject-Data Object:
+#>       # of Subjects = 203
+#>       # of Studies  = 1
+#>       # of Arms     = 2 
+#> 
+```

@@ -26,6 +26,10 @@ longitudinal_plot(data, data_obs = NULL, add_ci = FALSE)
 
   (`logical`) Should confidence intervals be added? Default = `TRUE`.
 
+## Value
+
+A `ggplot` object.
+
 ## Details
 
 ### `data`

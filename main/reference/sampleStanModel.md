@@ -24,3 +24,15 @@ sampleStanModel(object, data, ...)
 - data:
 
   (`DataJoint` or `list`) input data.
+
+## Value
+
+A `JointModelSamples` object.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+} # }
+```

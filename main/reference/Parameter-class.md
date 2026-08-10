@@ -24,6 +24,10 @@ Parameter(prior, name, size = 1)
 
   (`numeric` or `string`) dimension of the parameter.
 
+## Value
+
+A `Parameter` object.
+
 ## Slots
 
 - `name`:
@@ -48,3 +52,13 @@ Other Parameter:
 [`as.StanModule.Parameter()`](https://genentech.github.io/jmpost/reference/as.StanModule.Parameter.md),
 [`as.character.Parameter()`](https://genentech.github.io/jmpost/reference/as.character.Parameter.md),
 [`as_stan_list.Parameter()`](https://genentech.github.io/jmpost/reference/as_stan_list.Parameter.md)
+
+## Examples
+
+``` r
+Parameter(prior = prior_normal(0, 1), name = "beta")
+#> 
+#> Parameter Object:
+#>    beta ~ normal(mu = 0, sigma = 1)
+#> 
+```

@@ -41,6 +41,11 @@ add_pfs(
   (`logical`) If `FALSE` set longitudinal observations after the
   progression time to `observed = FALSE`
 
+## Value
+
+The input `SimJointData` object with progression-free survival columns
+`pfs_time` and `pfs_event` added.
+
 ## Details
 
 Both thresholds must be met for a progression to be declared.
@@ -57,15 +62,15 @@ data@survival # now has pfs_time and pfs_event columns
 #> # A tibble: 100 × 9
 #>    subject     study   arm    time cov_cont cov_cat event pfs_time pfs_event
 #>    <chr>       <fct>   <fct> <dbl>    <dbl> <fct>   <dbl>    <dbl>     <dbl>
-#>  1 subject_001 Study-1 Arm-A     1 -1.40    C           1     1            1
-#>  2 subject_002 Study-1 Arm-A     8  0.255   A           1     8            1
-#>  3 subject_003 Study-1 Arm-A     9 -2.44    A           1     9            1
-#>  4 subject_004 Study-1 Arm-A    15 -0.00557 C           1    15            1
-#>  5 subject_005 Study-1 Arm-A     5  0.622   C           1     5            1
-#>  6 subject_006 Study-1 Arm-A     1  1.15    A           1     1            1
-#>  7 subject_007 Study-1 Arm-A    12 -1.82    B           1    12            1
-#>  8 subject_008 Study-1 Arm-A     2 -0.247   C           1     2            1
-#>  9 subject_009 Study-1 Arm-A     6 -0.244   A           1     1.51         1
-#> 10 subject_010 Study-1 Arm-A     3 -0.283   A           1     3            1
+#>  1 subject_001 Study-1 Arm-A     3  -0.470  A           1        3         1
+#>  2 subject_002 Study-1 Arm-A    15  -0.806  B           1       15         1
+#>  3 subject_003 Study-1 Arm-A     5  -0.941  B           1        5         1
+#>  4 subject_004 Study-1 Arm-A    11   0.143  A           1       11         1
+#>  5 subject_005 Study-1 Arm-A    13  -1.43   B           1       13         1
+#>  6 subject_006 Study-1 Arm-A     1  -0.814  B           1        1         1
+#>  7 subject_007 Study-1 Arm-A     7  -0.100  C           1        7         1
+#>  8 subject_008 Study-1 Arm-A     5   0.0808 C           1        5         1
+#>  9 subject_009 Study-1 Arm-A    27  -0.0793 B           1       27         1
+#> 10 subject_010 Study-1 Arm-A    13  -0.690  A           1       13         1
 #> # ℹ 90 more rows
 ```

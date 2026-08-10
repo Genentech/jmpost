@@ -21,6 +21,10 @@ as.data.frame(x, ...)
 
   Not Used.
 
+## Value
+
+A `data.frame` representation of the object.
+
 ## See also
 
 Other DataSubject:

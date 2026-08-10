@@ -47,6 +47,10 @@ SimSurvivalLogLogistic(
 
   (`numeric`) the categorical covariate coefficients.
 
+## Value
+
+A `SimSurvival` object.
+
 ## Hazard Evaluation
 
 Event times are simulated by sampling a cumulative hazard limit from a
@@ -69,3 +73,12 @@ Other SimSurvival:
 [`SimSurvivalExponential()`](https://genentech.github.io/jmpost/reference/SimSurvivalExponential.md),
 [`SimSurvivalGamma()`](https://genentech.github.io/jmpost/reference/SimSurvivalGamma.md),
 [`SimSurvivalWeibullPH()`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)
+
+## Examples
+
+``` r
+SimSurvivalLogLogistic(a = 300, b = 2)
+#> 
+#> A SimSurvivalLogLogistic Object
+#> 
+```

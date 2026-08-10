@@ -31,6 +31,10 @@ size(object)
 
   Not used.
 
+## Value
+
+The requested parameter property: its name, initial values, or size.
+
 ## Functions
 
 - `names(Parameter)`: The parameter's name

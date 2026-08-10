@@ -22,7 +22,19 @@ saveObject(object, file, ...)
 
   (`ANY`) additional arguments.
 
+## Value
+
+Invisibly returns `NULL` after saving the object.
+
 ## See also
 
 Other saveObject:
 [`saveObject.JointModelSamples()`](https://genentech.github.io/jmpost/reference/saveObject.JointModelSamples.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+saveObject(fit, "joint-model-fit.rds")
+} # }
+```

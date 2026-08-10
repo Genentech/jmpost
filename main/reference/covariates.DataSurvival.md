@@ -19,6 +19,10 @@ covariates(object, ...)
 
   not used.
 
+## Value
+
+A character vector containing the covariate names.
+
 ## See also
 
 Other covariates:

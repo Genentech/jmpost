@@ -24,3 +24,15 @@ write_stan(object, destination, ...)
 - ...:
 
   Additional arguments
+
+## Value
+
+Invisibly returns `NULL` after writing the Stan program.
+
+## Examples
+
+``` r
+path <- tempfile(fileext = ".stan")
+write_stan(JointModel(LongitudinalGSF()), path)
+unlink(path)
+```

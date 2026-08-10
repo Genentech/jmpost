@@ -13,3 +13,7 @@ size(object)
 - object:
 
   where to get the parameter sizes from.
+
+## Value
+
+A numeric value or named list describing parameter sizes.

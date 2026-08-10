@@ -26,6 +26,10 @@ ensure_initial_values(initial_values, data, parameters)
 
   (`ParameterList`) the parameters object
 
+## Value
+
+A list of initial values, one element per chain.
+
 ## Details
 
 This function is mostly a thin wrapper around `expand_initial_values` to

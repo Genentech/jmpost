@@ -19,6 +19,10 @@ as.StanModule(object, ...)
 
   additional options.
 
+## Value
+
+A `StanModule` object.
+
 ## See also
 
 Other as.StanModule:

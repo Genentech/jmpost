@@ -53,6 +53,10 @@ SimLongitudinalRandomSlope(
   (`logical`) whether the variance should be scaled by the expected
   value (see the "Statistical Specifications" vignette for more details)
 
+## Value
+
+A `SimLongitudinalRandomSlope` object.
+
 ## Slots
 
 - `intercept`:
@@ -97,3 +101,12 @@ Other SimLongitudinal:
 [`SimLongitudinalClaretBruno-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.md),
 [`SimLongitudinalGSF-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md),
 [`SimLongitudinalSteinFojo-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.md)
+
+## Examples
+
+``` r
+SimLongitudinalRandomSlope(times = c(0, 30, 60))
+#> 
+#> A SimLongitudinalRandomSlope Object
+#> 
+```

@@ -58,6 +58,10 @@ local_rinvgamma(n, alpha, beta)
 
   (`number`) Parameter for underlying distribution.
 
+## Value
+
+A numeric vector of random draws.
+
 ## Details
 
 ### Log-Logistic

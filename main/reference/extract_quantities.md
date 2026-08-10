@@ -30,3 +30,9 @@ extract_quantities(
 
   (`character`) quantity to be generated. Must be one of `surv`, `haz`,
   `loghaz`, `cumhaz`, `lm_identity`.
+
+## Value
+
+A
+[posterior::draws_matrix](https://mc-stan.org/posterior/reference/draws_matrix.html)
+containing the requested generated quantities.

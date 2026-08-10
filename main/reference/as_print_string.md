@@ -36,3 +36,7 @@ as_print_string(object, ...)
 - ...:
 
   additional options.
+
+## Value
+
+A character vector suitable for printing.

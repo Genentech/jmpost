@@ -17,6 +17,10 @@ length(x)
 
   (`Link`) a link object.
 
+## Value
+
+A single integer giving the number of link components.
+
 ## See also
 
 Other Link:

@@ -23,3 +23,7 @@ validate_time_grid(time_grid)
 - time_grid:
 
   (`numeric`) A vector of times which quantities will be evaluated at.
+
+## Value
+
+Invisibly returns `time_grid`; invalid grids raise an error.

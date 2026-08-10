@@ -22,6 +22,10 @@ as.character(x, ...)
 
   Not Used.
 
+## Value
+
+A character vector.
+
 ## See also
 
 Other StanModule:

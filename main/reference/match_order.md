@@ -26,3 +26,7 @@ match_order(x)
   There is no specific handling of ties. It is assuming that in the case
   of ties for `x` that the vector you are re-indexing also has tied
   values thus the specific tied element selection does not matter.
+
+## Value
+
+An integer vector giving the order that groups identical values.

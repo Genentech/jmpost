@@ -22,6 +22,10 @@ subset_and_add_grouping(dat, groupings)
   `group` will be added onto the dataset specifying which group the row
   belongs to.
 
+## Value
+
+A subsetted `data.frame` with a grouping column.
+
 ## Details
 
 Example of usage

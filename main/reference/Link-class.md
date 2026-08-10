@@ -19,6 +19,10 @@ Link(...)
   [`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md))
   an arbitrary number of link components.
 
+## Value
+
+A `Link` object.
+
 ## Slots
 
 - `components`:

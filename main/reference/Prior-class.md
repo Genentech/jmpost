@@ -97,6 +97,10 @@ Prior(
 
   (`flag`) whether this prior fixes the parameter at a constant value.
 
+## Value
+
+A `Prior` object.
+
 ## Slots
 
 - `parameters`:
@@ -186,3 +190,14 @@ Other Prior-internal:
 [`as.StanModule.Prior()`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md),
 [`as.character.Prior()`](https://genentech.github.io/jmpost/reference/as.character.Prior.md),
 [`as_stan_list.Prior()`](https://genentech.github.io/jmpost/reference/as_stan_list.Prior.md)
+
+## Examples
+
+``` r
+# Prior objects are normally created with a distribution helper.
+prior_normal(0, 1)
+#> 
+#> Prior Object:
+#>    normal(mu = 0, sigma = 1)
+#> 
+```

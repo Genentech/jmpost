@@ -84,6 +84,10 @@ SimLongitudinalSteinFojo(
   (`logical`) whether the variance should be scaled by the expected
   value (see the "Statistical Specifications" vignette for more details)
 
+## Value
+
+A `SimLongitudinalSteinFojo` object.
+
 ## Slots
 
 - `sigma`:
@@ -158,3 +162,12 @@ Other SimLongitudinal:
 [`SimLongitudinalClaretBruno-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.md),
 [`SimLongitudinalGSF-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md),
 [`SimLongitudinalRandomSlope-class`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)
+
+## Examples
+
+``` r
+SimLongitudinalSteinFojo(times = c(0, 30, 60))
+#> 
+#> A SimLongitudinalSteinFojo Object
+#> 
+```

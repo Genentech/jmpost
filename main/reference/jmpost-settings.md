@@ -58,6 +58,10 @@ MCMC sampler in the beginning of the sampling process.
 set_options()
 ```
 
+## Value
+
+Invisibly returns `NULL` after initializing the package options.
+
 ## Examples
 
 ``` r

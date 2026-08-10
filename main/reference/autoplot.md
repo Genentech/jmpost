@@ -9,3 +9,11 @@ for details.
 Other autoplot:
 [`autoplot.LongitudinalQuantities()`](https://genentech.github.io/jmpost/reference/autoplot.LongitudinalQuantities.md),
 [`autoplot.SurvivalQuantities()`](https://genentech.github.io/jmpost/reference/autoplot.SurvivalQuantities.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+autoplot(survival_quantities)
+} # }
+```

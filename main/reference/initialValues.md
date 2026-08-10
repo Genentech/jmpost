@@ -34,6 +34,10 @@ initialValues(object, n_chains, ...)
 
   the number of initial values to generate. See details.
 
+## Value
+
+Initial values for the object, usually as a numeric vector or list.
+
 ## Details
 
 There are multiple ways of specifying initial values to Stan, see the
@@ -53,3 +57,10 @@ Other LinkComponent:
 [`as.StanModule.LinkComponent()`](https://genentech.github.io/jmpost/reference/as.StanModule.LinkComponent.md),
 [`as.list.LinkComponent()`](https://genentech.github.io/jmpost/reference/as.list.LinkComponent.md),
 [`getParameters()`](https://genentech.github.io/jmpost/reference/getParameters.md)
+
+## Examples
+
+``` r
+initialValues(prior_normal(0, 1))
+#> [1] 0.3020954
+```

@@ -28,7 +28,7 @@ Authors:
 
 - Isaac Gravestock <isaac.gravestock@roche.com>
 
-- Craig Gower-Page <craig.gower-page@roche.com>
+- Craig Gower-Page <craig.gower-page@novartis.com>
 
 - Francois Mercier <francois.mercier@roche.com>
 

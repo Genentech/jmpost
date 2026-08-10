@@ -101,6 +101,11 @@ QuantityGeneratorSubject(times, subjects = NULL)
 
   (`character`) vector of subjects to extract quantities for.
 
+## Value
+
+A `QuantityGenerator` or `QuantityCollapser` object, according to the
+function called.
+
 ## Details
 
 The `as.QuantityGenerator` must return a `QuantityGenerator` object. The
@@ -127,3 +132,13 @@ The `as.QuantityGenerator` must return a `QuantityGenerator` object. The
 
   (`list`)\
   See Arguments for details.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+grid <- GridFixed(times = c(0, 10))
+as.QuantityGenerator(grid, joint_data)
+as.QuantityCollapser(grid, joint_data)
+} # }
+```

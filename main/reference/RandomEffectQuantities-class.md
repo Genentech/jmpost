@@ -23,6 +23,10 @@ RandomEffectQuantities(quantities, subject, parameter)
 
   (`character`) labels specifying which parameter the value is.
 
+## Value
+
+A `RandomEffectQuantities` object.
+
 ## Details
 
 Each row of the matrix represents a sample and each column represents a

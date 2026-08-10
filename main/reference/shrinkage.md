@@ -18,7 +18,19 @@ shrinkage(object, ...)
 
   additional arguments added by methods.
 
+## Value
+
+A named numeric vector or matrix of shrinkage factors.
+
 ## See also
 
 Other shrinkage:
 [`shrinkage.JointModelSamples()`](https://genentech.github.io/jmpost/reference/shrinkage.JointModelSamples.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+shrinkage(fit)
+} # }
+```

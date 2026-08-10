@@ -39,3 +39,15 @@ getRandomEffectsNames(object, ...)
 - ...:
 
   Not used.
+
+## Value
+
+A named character vector of random-effect parameter names, or `NULL`.
+
+## Examples
+
+``` r
+getRandomEffectsNames(LongitudinalGSF())
+#>                 b                 s                 g               phi 
+#> "lm_gsf_psi_bsld"   "lm_gsf_psi_ks"   "lm_gsf_psi_kg"  "lm_gsf_psi_phi" 
+```
