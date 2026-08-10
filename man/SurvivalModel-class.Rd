@@ -23,7 +23,13 @@ SurvivalModel(
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
+\value{
+A \code{SurvivalModel} object.
+}
 \description{
 This class extends the general \code{\link{StanModel}} class to comprise the survival
 model specification.
+}
+\examples{
+SurvivalModel()
 }

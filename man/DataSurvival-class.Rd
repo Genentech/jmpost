@@ -15,6 +15,9 @@ DataSurvival(data, formula)
 \item{formula}{(\code{formula}) of the form \code{Surv(time, event) ~ cov1 + cov2 + ...}.
 See \code{\link[survival:Surv]{survival::Surv()}} for more details, though note that this package only supports right censoring.}
 }
+\value{
+A \code{DataSurvival} object.
+}
 \description{
 The \code{\link{DataSurvival}} class handles the processing of the survival data
 for fitting a \code{\link{JointModel}}.
@@ -27,6 +30,9 @@ for fitting a \code{\link{JointModel}}.
 \item{\code{formula}}{(\code{formula})\cr See Arguments for details.}
 }}
 
+\examples{
+DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
+}
 \seealso{
 Other DataObjects:
 \code{\link{DataJoint-class}},

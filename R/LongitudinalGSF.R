@@ -59,6 +59,11 @@ NULL
 #'
 #' @importFrom stats qlogis
 #' @export
+#'
+#' @returns A `LongitudinalGSF` object.
+#'
+#' @examples
+#' LongitudinalGSF()
 LongitudinalGSF <- function(
     mu_bsld = prior_normal(log(60), 1),
     mu_ks = prior_normal(log(0.5), 1),
@@ -186,12 +191,16 @@ LongitudinalGSF <- function(
 
 
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalGSF <- function(object, ...) {
     StanModule("lm-gsf/quantities.stan")
 }
 
 
 #' @export
+#'
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalGSF <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -201,6 +210,8 @@ enableLink.LongitudinalGSF <- function(object, ...) {
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_dsld",
@@ -210,6 +221,8 @@ linkDSLD.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkTTG.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_ttg",
@@ -219,6 +232,8 @@ linkTTG.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalGSF <- function(
     prior = prior_normal(0, 2),
     model,
@@ -232,6 +247,8 @@ linkIdentity.LongitudinalGSF <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_growth",
@@ -242,6 +259,8 @@ linkGrowth.LongitudinalGSF <- function(prior = prior_normal(0, 2), model, ...) {
 
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkShrinkage.LongitudinalGSF <- function(
     prior = prior_normal(0, 2),
     model,

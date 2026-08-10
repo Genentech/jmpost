@@ -51,6 +51,9 @@ containing the subject identifier.}
 
 \item{vars}{(\code{list})\cr The list of variable names to be used for generating the design matrix.}
 }
+\value{
+A named \code{list} suitable for use as Stan data.
+}
 \description{
 Coerces a data object into a \code{list} of data components required
 for fitting a \code{\link{JointModel}}. See the "Extending jmpost" vignette for more details.

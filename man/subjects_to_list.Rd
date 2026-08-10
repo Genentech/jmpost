@@ -11,6 +11,9 @@ subjects_to_list(subjects = NULL, data)
 
 \item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
 }
+\value{
+A named list grouping the requested subject identifiers.
+}
 \description{
 If \code{subjects} is \code{NULL} this will return a named list of all subjects in \code{data}.
 Else it will return \code{subjects} as a named list ensuring that all subjects exist in \code{data}.

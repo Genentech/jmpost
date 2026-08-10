@@ -16,6 +16,8 @@ NULL
 
 #' @rdname Grid-Functions
 #' @export
+#'
+#' @returns A `Grid` object of the requested type.
 GridEven <- function(subjects = NULL, length.out = 30) {
     .GridEven(
         subjects = subjects,
@@ -80,6 +82,8 @@ as.QuantityCollapser.GridEven <- function(object, data, ...) {
 
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridEven <- function(x, data, ...) {
     subjects_to_list(x@subjects, data)
 }

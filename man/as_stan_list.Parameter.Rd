@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A named \code{list} suitable for use as Stan data.
+}
 \description{
 Converts a Parameter object to a list of parameter data values
 for a Stan model.

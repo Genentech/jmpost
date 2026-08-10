@@ -11,6 +11,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A \code{data.frame} representation of the object.
+}
 \description{
 Returns a \code{data.frame} of the subject-level random effect parameter samples.
 }

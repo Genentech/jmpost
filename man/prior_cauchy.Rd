@@ -11,8 +11,14 @@ prior_cauchy(mu, sigma)
 
 \item{sigma}{(\code{number}) scale.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Cauchy Prior Distribution
+}
+\examples{
+prior_cauchy(0, 1)
 }
 \seealso{
 Other Prior:

@@ -17,6 +17,9 @@ to calculate the quantities at}
 
 \item{...}{additional options.}
 }
+\value{
+A \code{StanModule} object.
+}
 \description{
 Converts a \code{JointModelSamples} object into a \code{StanModule} object ensuring
 that the resulting \code{StanModule} object is able to generate post sampling

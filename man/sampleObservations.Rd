@@ -28,6 +28,9 @@ sampleObservations(object, times_df)
 
 \item{times_df}{(\code{data.frame}) the times at which to generate observations. See details.}
 }
+\value{
+A \code{data.frame} containing simulated observations.
+}
 \description{
 Generate Simulated Observations
 }
@@ -42,4 +45,10 @@ times_df <- tidyr::expand_grid(
     time = c(0, 1, 2, 3)
   )
 }\if{html}{\out{</div>}}
+}
+\examples{
+sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
+subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
+subject_parameters <- sampleSubjects(sim, subjects)
+sampleObservations(sim, transform(subject_parameters, time = 0))
 }

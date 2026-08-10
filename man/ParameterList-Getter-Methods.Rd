@@ -22,6 +22,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+The requested parameter-list property: names, initial values, or total size.
+}
 \description{
 Getter functions for the slots of a \code{\link{ParameterList}} object
 }

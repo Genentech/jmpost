@@ -10,6 +10,11 @@ NULL
 
 #' @rdname getParameters
 #' @export
+#'
+#' @returns A `ParameterList` object.
+#'
+#' @examples
+#' getParameters(LongitudinalGSF())
 getParameters.default <- function(object, ...) {
     if (missing(object) || is.null(object)) {
         return(NULL)
@@ -26,6 +31,13 @@ getParameters.default <- function(object, ...) {
 ## merge-StanModel,NULL ----
 
 #' @rdname merge
+#'
+#' @returns A merged object of the same class as `x` and `y`.
+#'
+#' @examples
+#' x <- ParameterList(Parameter(prior_normal(0, 1), "x"))
+#' y <- ParameterList(Parameter(prior_normal(0, 1), "y"))
+#' merge(x, y)
 setMethod(
     "merge",
     signature = c("StanModel", "NULL"),

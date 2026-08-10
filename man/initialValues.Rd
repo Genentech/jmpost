@@ -26,6 +26,9 @@ initialValues(object, ...)
 
 \item{n_chains}{the number of initial values to generate. See details.}
 }
+\value{
+Initial values for the object, usually as a numeric vector or list.
+}
 \description{
 Obtain the \code{list} of initial values to be passed to the Stan sampler.
 }
@@ -37,6 +40,9 @@ for a single chain. As such the \code{n_chains} argument specifies the number of
 to generate.
 
 See the Vignette for further details of how to specify initial values.
+}
+\examples{
+initialValues(prior_normal(0, 1))
 }
 \seealso{
 Other LinkComponent:

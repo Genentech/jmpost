@@ -15,6 +15,9 @@ overlaid for reference.  See details.}
 
 \item{add_ci}{(\code{logical}) Should confidence intervals be added? Default = \code{TRUE}.}
 }
+\value{
+A \code{ggplot} object.
+}
 \description{
 Internal plotting function to create longitudinal plots
 This function predominately exists to extract core logic into its own function

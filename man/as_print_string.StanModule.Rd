@@ -11,6 +11,9 @@
 
 \item{indent}{(\code{numeric}) how much white space to prefix the print string with.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Converts \code{\link{StanModule}} object into a printable string.
 }

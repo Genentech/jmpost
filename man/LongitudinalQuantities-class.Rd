@@ -15,6 +15,9 @@ LongitudinalQuantities(object, grid)
 \item{grid}{(\code{Grid}) object that specifies which subjects and time points to calculate the
 quantities for. See \link{Grid-Functions}.}
 }
+\value{
+A \code{LongitudinalQuantities} object.
+}
 \description{
 Constructor function to generate a \code{LongitudinalQuantities} object.
 }
@@ -31,6 +34,11 @@ element of \code{group}}
 \item{\code{data}}{(\code{DataJoint})\cr Survival and Longitudinal Data.}
 }}
 
+\examples{
+\dontrun{
+LongitudinalQuantities(fit, GridEven(length.out = 25))
+}
+}
 \seealso{
 Other LongitudinalQuantities:
 \code{\link[=as.data.frame.LongitudinalQuantities]{as.data.frame.LongitudinalQuantities()}},

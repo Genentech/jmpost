@@ -12,6 +12,9 @@ distinct quantity.}
 
 \item{collapser}{(\code{QuantityCollapser}) specifies which columns to combine together.}
 }
+\value{
+An array of collapsed posterior quantities.
+}
 \description{
 This function takes a matrix of quantity samples and aggregates them by calculating the
 pointwise average.

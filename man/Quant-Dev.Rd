@@ -101,6 +101,9 @@ QuantityGeneratorSubject(times, subjects = NULL)
 
 \item{subjects}{(\code{character}) vector of subjects to extract quantities for.}
 }
+\value{
+A \code{QuantityGenerator} or \code{QuantityCollapser} object, according to the function called.
+}
 \description{
 Developer details for \code{QuantityX} objects/methods. This page just outlines the arguments
 and slots of these objects/methods. For the full implementation details please see \link{Grid-Dev}
@@ -121,4 +124,11 @@ The \code{as.QuantityCollapser} must return a \code{QuantityCollapser} object.
 \item{\code{indexes}}{(\code{list})\cr See Arguments for details.}
 }}
 
+\examples{
+\dontrun{
+grid <- GridFixed(times = c(0, 10))
+as.QuantityGenerator(grid, joint_data)
+as.QuantityCollapser(grid, joint_data)
+}
+}
 \keyword{internal}

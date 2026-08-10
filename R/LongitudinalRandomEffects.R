@@ -47,6 +47,8 @@ NULL
     )
 )
 #' @rdname RandomEffectQuantities-class
+#'
+#' @returns A `RandomEffectQuantities` object.
 RandomEffectQuantities <- function(quantities, subject, parameter) {
     .RandomEffectQuantities(
         quantities = quantities,
@@ -82,6 +84,8 @@ setValidity(
 #' @family RandomEffectQuantities
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.RandomEffectQuantities <- function(object, indent = 1, ...) {
     parameter_string <- paste0("        ", unique(object@parameter))
     template <- c(
@@ -122,6 +126,8 @@ setMethod(
 #' @keywords internal
 #' @family RandomEffectQuantities
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.RandomEffectQuantities <- function(x, ...) {
     data.frame(
         subject = rep(x@subject, each = nrow(x@quantities)),
@@ -177,6 +183,13 @@ summary.RandomEffectQuantities <- function(object, conf.level = 0.95, ...) {
 #' @family RandomEffectQuantities
 #' @family JointModelSamples
 #' @export
+#'
+#' @returns A `RandomEffectQuantities` object.
+#'
+#' @examples
+#' \dontrun{
+#' LongitudinalRandomEffects(fit)
+#' }
 LongitudinalRandomEffects <- function(object) {
     assert_class(object, "JointModelSamples")
 

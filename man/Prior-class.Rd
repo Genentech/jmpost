@@ -62,6 +62,9 @@ by the prior.}
 
 \item{.is_const}{(\code{flag}) whether this prior fixes the parameter at a constant value.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Specifies the prior distribution in a Stan Model
 }
@@ -101,6 +104,10 @@ Specifies the prior distribution in a Stan Model
 \item{\code{.is_const}}{(\code{logical})\cr See arguments.}
 }}
 
+\examples{
+# Prior objects are normally created with a distribution helper.
+prior_normal(0, 1)
+}
 \seealso{
 Other Prior-internal:
 \code{\link{Prior-Getter-Methods}},

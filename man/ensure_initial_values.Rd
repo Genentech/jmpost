@@ -16,6 +16,9 @@ size as the corresponding element in \code{data} by broadcasting the value.}
 
 \item{parameters}{(\code{ParameterList}) the parameters object}
 }
+\value{
+A list of initial values, one element per chain.
+}
 \description{
 Ensure that initial values are correctly specified
 }

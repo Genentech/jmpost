@@ -43,6 +43,14 @@ merge(x, y, ...)
 
 \item{stan_blocks}{(\code{list}) reference list of stan blocks.}
 }
+\value{
+A merged object of the same class as \code{x} and \code{y}.
+}
 \description{
 Merge two \code{StanModule} or \code{ParameterList} objects.
+}
+\examples{
+x <- ParameterList(Parameter(prior_normal(0, 1), "x"))
+y <- ParameterList(Parameter(prior_normal(0, 1), "y"))
+merge(x, y)
 }

@@ -62,6 +62,9 @@ NULL
 #' @family SimLongitudinal
 #' @name SimLongitudinalClaretBruno-class
 #' @exportClass SimLongitudinalClaretBruno
+#'
+#' @examples
+#' SimLongitudinalClaretBruno(times = c(0, 30, 60))
 .SimLongitudinalClaretBruno <- setClass(
     "SimLongitudinalClaretBruno",
     contains = "SimLongitudinal",
@@ -85,6 +88,8 @@ NULL
 
 #' @rdname SimLongitudinalClaretBruno-class
 #' @export
+#'
+#' @returns A `SimLongitudinalClaretBruno` object.
 SimLongitudinalClaretBruno <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550) / 365,
     sigma = 0.01,

@@ -14,6 +14,9 @@ values passed to \code{groupings}.}
 to contain. If \code{groupings} is a list then an additional variable \code{group} will be added
 onto the dataset specifying which group the row belongs to.}
 }
+\value{
+A subsetted \code{data.frame} with a grouping column.
+}
 \description{
 \code{subset_and_add_grouping}
 }

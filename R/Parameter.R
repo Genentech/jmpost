@@ -51,6 +51,11 @@ setClassUnion(name = "numeric_OR_character", c("numeric", "character"))
 #' @typed size: "`numeric` or `string`"
 #'   dimension of the parameter.
 #' @rdname Parameter-class
+#'
+#' @returns A `Parameter` object.
+#'
+#' @examples
+#' Parameter(prior = prior_normal(0, 1), name = "beta")
 Parameter <- function(prior, name, size = 1) {
     .Parameter(
         prior = prior,
@@ -85,6 +90,8 @@ setValidity(
 #' @family Parameter
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.Parameter <- function(object, ...) {
     merge(
         as.StanModule.ParameterDeclaration(object),
@@ -212,6 +219,8 @@ as.StanModule.ParameterDeclaration <- function(object, ...) {
 #' @family as_stan_list
 #' @family Parameter
 #' @export
+#'
+#' @returns A named `list` suitable for use as Stan data.
 as_stan_list.Parameter <- function(object, ...) {
     as_stan_list(object@prior, name = object@name)
 }
@@ -233,6 +242,8 @@ NULL
 
 #' @describeIn Parameter-Getter-Methods The parameter's name
 #' @export
+#'
+#' @returns The requested parameter property: its name, initial values, or size.
 names.Parameter <- function(x) x@name
 
 #' @describeIn Parameter-Getter-Methods The parameter's initial values
@@ -250,6 +261,8 @@ size.Parameter <- function(object) object@size
 #' @inheritParams Parameter-Shared
 #' @family Parameter
 #' @export
+#'
+#' @returns A character vector.
 as.character.Parameter <- function(x, ...) {
     if (x@prior@.is_const) {
         return(paste0(x@name, " = ", as.character(x@prior)))

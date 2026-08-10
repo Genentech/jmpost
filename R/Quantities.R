@@ -47,6 +47,8 @@ NULL
     )
 )
 #' @rdname Quantities-class
+#'
+#' @returns A `Quantities` object.
 Quantities <- function(quantities, times, groups) {
     .Quantities(
         quantities = quantities,
@@ -72,6 +74,8 @@ setValidity(
 
 
 #' @export
+#'
+#' @returns An integer vector containing the dimensions of the `Quantities` object.
 dim.Quantities <- function(x) {
     dim(x@quantities)
 }
@@ -84,6 +88,8 @@ dim.Quantities <- function(x) {
 #' @keywords internal
 #' @family Quantities
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.Quantities <- function(x, ...) {
     data.frame(
         group = rep(x@groups, each = nrow(x@quantities)),
@@ -144,6 +150,8 @@ summary.Quantities <- function(object, conf.level = 0.95, ...) {
 #' The [Grid-Dev] page provides an example of what this function implements
 #'
 #' @keywords internal
+#'
+#' @returns An array of collapsed posterior quantities.
 collapse_quantities <- function(quantities_raw, collapser) {
     assert_class(quantities_raw, "matrix")
     assert_class(collapser, "QuantityCollapser")
@@ -177,6 +185,8 @@ collapse_quantities <- function(quantities_raw, collapser) {
 #'   quantity to be generated.
 #'   Must be one of `surv`, `haz`, `loghaz`, `cumhaz`, `lm_identity`.
 #' @keywords internal
+#'
+#' @returns A [posterior::draws_matrix] containing the requested generated quantities.
 extract_quantities <- function(
     gq,
     type = c("surv", "haz", "loghaz", "cumhaz", "lm_identity")
@@ -206,6 +216,8 @@ extract_quantities <- function(
 #' @family Quantities
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.Quantities <- function(object, indent = 1, ...) {
     template <- c(
         "Quantities Object:",

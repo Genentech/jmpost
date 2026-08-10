@@ -16,6 +16,9 @@ StanModel(stan, parameters, name = "<Unnamed>")
 
 \item{name}{(\code{character}) display name for the model object.}
 }
+\value{
+A \code{StanModel} object.
+}
 \description{
 Stan Model Object and Constructor Function
 }
@@ -29,6 +32,9 @@ Stan Model Object and Constructor Function
 \item{\code{name}}{(\code{character})\cr display name for the model object.}
 }}
 
+\examples{
+StanModel(StanModule(), ParameterList(), name = "Example model")
+}
 \seealso{
 Other StanModel:
 \code{\link[=as.list.StanModel]{as.list.StanModel()}}

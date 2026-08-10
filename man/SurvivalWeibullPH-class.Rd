@@ -20,7 +20,13 @@ SurvivalWeibullPH(
 
 \item{beta}{(\code{Prior}) for covariates coefficients \code{beta}.}
 }
+\value{
+A \code{SurvivalWeibullPH} object.
+}
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the
 Weibull proportional hazards survival model.
+}
+\examples{
+SurvivalWeibullPH()
 }

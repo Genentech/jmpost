@@ -33,6 +33,9 @@ NULL
 #' @family SimLongitudinal
 #' @name SimLongitudinalRandomSlope-class
 #' @exportClass SimLongitudinalRandomSlope
+#'
+#' @examples
+#' SimLongitudinalRandomSlope(times = c(0, 30, 60))
 .SimLongitudinalRandomSlope <- setClass(
     "SimLongitudinalRandomSlope",
     contains = "SimLongitudinal",
@@ -49,6 +52,8 @@ NULL
 
 #' @rdname SimLongitudinalRandomSlope-class
 #' @export
+#'
+#' @returns A `SimLongitudinalRandomSlope` object.
 SimLongitudinalRandomSlope <- function(
     times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
     intercept = 50,

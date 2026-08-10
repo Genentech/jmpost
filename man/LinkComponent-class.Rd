@@ -18,6 +18,9 @@ LinkComponent(stan, prior, key, ...)
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
+\value{
+A \code{LinkComponent} object.
+}
 \description{
 \code{LinkComponent}
 }
@@ -41,6 +44,13 @@ For full details about the specification of a \code{LinkComponent} please see
 \item{\code{parameters}}{(\code{ParameterList})\cr The parameter specification.}
 }}
 
+\examples{
+LinkComponent(
+  stan = StanModule(),
+  prior = prior_normal(0, 1),
+  key = "custom_link"
+)
+}
 \seealso{
 Other LinkComponent:
 \code{\link[=as.StanModule.LinkComponent]{as.StanModule.LinkComponent()}},

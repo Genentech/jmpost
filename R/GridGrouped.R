@@ -99,6 +99,8 @@ as.QuantityCollapser.GridGrouped <- function(object, data, ...) {
 }
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridGrouped <- function(x, ...) {
     x@groups
 }

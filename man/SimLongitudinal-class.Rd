@@ -12,9 +12,15 @@ SimLongitudinal(times = seq(0, 100, 50))
 \arguments{
 \item{times}{(\code{numeric}) the times to generate observations at.}
 }
+\value{
+A \code{SimLongitudinal} object.
+}
 \description{
 This class exists to be extended by other classes that simulate longitudinal data.
 It is not intended to be used directly.
+}
+\examples{
+SimLongitudinal(times = c(0, 30, 60))
 }
 \seealso{
 Other SimLongitudinal:

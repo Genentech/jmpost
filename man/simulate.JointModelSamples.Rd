@@ -48,6 +48,9 @@ model fitting.}
 \item{...}{unused
 Unused.}
 }
+\value{
+A \code{SimJointData} object containing posterior-predictive simulations.
+}
 \description{
 Simulate Patients from Posterior Predictive Distribution
 }

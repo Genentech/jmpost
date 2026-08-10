@@ -43,6 +43,11 @@ NULL
 #' @family SurvivalQuantities
 #' @name SurvivalQuantities-class
 #' @export SurvivalQuantities
+#'
+#' @examples
+#' \dontrun{
+#' SurvivalQuantities(fit, GridFixed(times = seq(0, 100, by = 10)))
+#' }
 .SurvivalQuantities <- setClass(
     Class = "SurvivalQuantities",
     slots = c(
@@ -65,6 +70,8 @@ NULL
 #'   Must be one of `surv`, `haz`, `loghaz`, `cumhaz`.
 #'
 #' @rdname SurvivalQuantities-class
+#'
+#' @returns A `SurvivalQuantities` object.
 SurvivalQuantities <- function(
     object,
     grid,
@@ -123,6 +130,8 @@ SurvivalQuantities <- function(
 #' @param ... not used.
 #' @family SurvivalQuantities
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.SurvivalQuantities <- function(x, ...) {
     as.data.frame(x@quantities)
 }
@@ -140,6 +149,8 @@ as.data.frame.SurvivalQuantities <- function(x, ...) {
 #' @family SurvivalQuantities
 #' @family summary
 #' @export
+#'
+#' @returns A `data.frame` containing posterior summary statistics.
 summary.SurvivalQuantities <- function(
     object,
     conf.level = 0.95,
@@ -166,6 +177,8 @@ summary.SurvivalQuantities <- function(
 #' @family SurvivalQuantities
 #' @family autoplot
 #' @export
+#'
+#' @returns A `ggplot` object.
 autoplot.SurvivalQuantities <- function(
     object,
     conf.level = 0.95,
@@ -249,6 +262,8 @@ autoplot.SurvivalQuantities <- function(
 #' - `event` (`numeric`) \cr 1/0 status indicator for the event.
 #' - `group` (`character`) \cr which group the event belongs to, should correspond to values in `data$group`.
 #' @keywords internal
+#'
+#' @returns A `ggplot` object.
 survival_plot <- function(
     data,
     add_ci = TRUE,
@@ -346,6 +361,8 @@ setMethod(
 #' @references
 #' \insertAllCited{}
 #' @export
+#'
+#' @returns A `data.frame` containing Brier scores by time and group.
 brierScore.SurvivalQuantities <- function(
     object,
     maintain_cen_order = TRUE,

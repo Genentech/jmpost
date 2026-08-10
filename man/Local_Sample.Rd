@@ -53,6 +53,9 @@ local_rinvgamma(n, alpha, beta)
 
 \item{beta}{(\code{number}) Parameter for underlying distribution.}
 }
+\value{
+A numeric vector of random draws.
+}
 \description{
 These functions only exist so that they can be mocked during unit
 tests in order to provide deterministic values. In most cases

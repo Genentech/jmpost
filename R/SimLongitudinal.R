@@ -9,6 +9,9 @@
 #' @name SimLongitudinal-class
 #' @family SimLongitudinal
 #' @exportClass SimLongitudinal
+#'
+#' @examples
+#' SimLongitudinal(times = c(0, 30, 60))
 .SimLongitudinal <- setClass(
     "SimLongitudinal",
     slots = list(
@@ -18,6 +21,8 @@
 
 #' @rdname SimLongitudinal-class
 #' @export
+#'
+#' @returns A `SimLongitudinal` object.
 SimLongitudinal <- function(times = seq(0, 100, 50)) {
     .SimLongitudinal(times = times)
 }

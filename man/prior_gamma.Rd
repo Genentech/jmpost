@@ -11,8 +11,14 @@ prior_gamma(alpha, beta)
 
 \item{beta}{(\code{number}) inverse scale.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Gamma Prior Distribution
+}
+\examples{
+prior_gamma(2, 1)
 }
 \seealso{
 Other Prior:

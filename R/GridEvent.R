@@ -49,6 +49,8 @@ as.QuantityCollapser.GridEvent <- function(object, data, ...) {
 }
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridEvent <- function(x, data, ...) {
     subjects_to_list(x@subjects, data)
 }

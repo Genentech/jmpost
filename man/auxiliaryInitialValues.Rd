@@ -11,6 +11,9 @@ auxiliaryInitialValues(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A named \code{list} of initial values for auxiliary parameters.
+}
 \description{
 Obtain initial values for any additional Stan parameters introduced by an object.
 }

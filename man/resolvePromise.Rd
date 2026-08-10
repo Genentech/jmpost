@@ -17,6 +17,13 @@ resolvePromise(object, ...)
 If \code{object} is not a promise will just return itself else will resolve the promise
 and return the promised object.}
 }
+\value{
+The input object, or the value obtained by resolving a promise.
+}
 \description{
 Resolve a Promise
+}
+\examples{
+resolvePromise(1)
+resolvePromise(linkDSLD(), LongitudinalGSF())
 }

@@ -13,6 +13,9 @@
 
 \item{...}{(\code{ANY}) additional arguments to \code{\link{saveRDS}}.}
 }
+\value{
+Invisibly returns \code{NULL} after saving the object.
+}
 \description{
 This function is just a wrapper around \code{saveRDS} that saves the object to a file
 ensuring that all of the Stan samples are correctly stored. Note that as

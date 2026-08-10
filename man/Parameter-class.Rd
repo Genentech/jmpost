@@ -16,6 +16,9 @@ Parameter(prior, name, size = 1)
 
 \item{size}{(\code{numeric} or \code{string}) dimension of the parameter.}
 }
+\value{
+A \code{Parameter} object.
+}
 \description{
 Stores the name, the prior distribution and the size of a parameter.
 If \code{size} is a string then this indicates the name of the variable
@@ -31,6 +34,9 @@ within the stan data object that specifies the size of this parameter.
 \item{\code{size}}{(\code{numeric} or \code{string})\cr dimension of the parameter.}
 }}
 
+\examples{
+Parameter(prior = prior_normal(0, 1), name = "beta")
+}
 \seealso{
 Other Parameter:
 \code{\link{Parameter-Getter-Methods}},

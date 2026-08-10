@@ -11,6 +11,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A character vector.
+}
 \description{
 Converts a \code{\link{StanModule}} object into a valid Stan program file where each
 line of the returned \code{character} vector represents a line of the program

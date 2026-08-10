@@ -46,6 +46,11 @@ NULL
 
 #' @inheritParams stanmodel_arguments
 #' @rdname StanModel-class
+#'
+#' @returns A `StanModel` object.
+#'
+#' @examples
+#' StanModel(StanModule(), ParameterList(), name = "Example model")
 StanModel <- function(stan, parameters, name = "<Unnamed>") {
     .StanModel(
         stan = stan,
@@ -65,6 +70,8 @@ StanModel <- function(stan, parameters, name = "<Unnamed>") {
 #' @param ... Not Used.
 #' @family StanModel
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.StanModel <- function(x, ...) {
     as.list(x@stan)
 }
@@ -77,6 +84,8 @@ getParameters.StanModel <- function(object, ...) object@parameters
 
 
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.StanModel <- function(object, ...) {
     string <- sprintf(
         "\n%s Model Object with parameters:\n%s\n\n",

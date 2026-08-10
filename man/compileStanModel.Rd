@@ -15,6 +15,14 @@ compileStanModel(object)
 \arguments{
 \item{object}{the module.}
 }
+\value{
+A compiled \code{cmdstanr::CmdStanModel} object.
+}
 \description{
 Compile the Stan module.
+}
+\examples{
+\dontrun{
+compileStanModel(JointModel(LongitudinalGSF()))
+}
 }

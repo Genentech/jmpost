@@ -13,6 +13,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A character vector suitable for printing.
+}
 \description{
 Converts \code{\link{DataLongitudinal}} object into a printable string.
 }

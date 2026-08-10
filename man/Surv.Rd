@@ -9,4 +9,7 @@ An object of class \code{Surv}.
 \description{
 See \code{\link[survival:Surv]{survival::Surv()}} for details.
 }
+\examples{
+Surv(c(5, 8, 12), c(1, 0, 1))
+}
 \keyword{internal}

@@ -11,8 +11,15 @@ covariates(object, ...)
 
 \item{...}{additional arguments added by methods.}
 }
+\value{
+A character vector containing the covariate names.
+}
 \description{
 Extract Covariate Names
+}
+\examples{
+surv_data <- DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
+covariates(surv_data)
 }
 \seealso{
 Other covariates:

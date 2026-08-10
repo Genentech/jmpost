@@ -79,6 +79,19 @@ add_missing_stan_blocks <- function(x, stan_blocks = STAN_BLOCKS) {
 # StanModule-constructors ----
 
 #' @rdname StanModule-class
+#'
+#' @returns A `StanModule` object.
+#'
+#' @examples
+#' code <- "
+#' parameters {
+#'   real x;
+#' }
+#' model {
+#'   x ~ normal(0, 1);
+#' }
+#' "
+#' StanModule(code)
 StanModule <- function(
     x = "",
     ...
@@ -123,6 +136,8 @@ StanModule <- function(
 #' line of the returned `character` vector represents a line of the program
 #' @family StanModule
 #' @export
+#'
+#' @returns A character vector.
 as.character.StanModule <- function(x, ...) {
     as_stan_file(
         functions = x@functions,
@@ -168,7 +183,7 @@ setMethod(
 # compileStanModel-StanModule,character ----
 
 #' @rdname compileStanModel
-#' @exportS3Method NULL
+#' @export
 compileStanModel.StanModule <- function(object) {
     exe_dir <- getOption("jmpost.cache_dir")
     if (!dir.exists(exe_dir)) {
@@ -221,6 +236,8 @@ compileStanModel.StanModule <- function(object) {
 #' @param ... Not Used.
 #' @family StanModule
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
     string <- as.character(x)
     li <- as_stan_fragments(string)
@@ -242,6 +259,8 @@ as.list.StanModule <- function(x, stan_blocks = STAN_BLOCKS, ...) {
 #'   file name.
 #'
 #' @keywords internal
+#'
+#' @returns `TRUE` if the input identifies an existing file; otherwise `FALSE`.
 is_file <- function(filename = NULL) {
     if (is.null(filename)) {
         return(FALSE)
@@ -266,6 +285,8 @@ is_file <- function(filename = NULL) {
 #'
 #' @param string Character, either the absolute path of a stan file, or the name of the stan
 #' file in the package directory or the stan code as a string.
+#'
+#' @returns A character vector containing Stan program code.
 read_stan <- function(string) {
     local_inst_file <- file.path("inst", "stan", string)
     system_file <- system.file(file.path("stan", string), package = "jmpost")
@@ -457,6 +478,8 @@ as_stan_fragments <- function(x, stan_blocks = STAN_BLOCKS) {
 #'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.StanModule <- function(object, indent = 1, ...) {
     slots <- names(getSlots("StanModule"))
     components <- Filter(

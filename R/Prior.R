@@ -109,6 +109,12 @@ NULL
 #' @typed .is_const: flag
 #'   whether this prior fixes the parameter at a constant value.
 #' @rdname Prior-class
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' # Prior objects are normally created with a distribution helper.
+#' prior_normal(0, 1)
 Prior <- function(
     parameters,
     display,
@@ -230,6 +236,8 @@ set_limits.Prior <- function(object, lower = -Inf, upper = Inf) {
 #' @inheritParams Prior-Shared
 #' @family Prior-internal
 #' @export
+#'
+#' @returns A character vector.
 as.character.Prior <- function(x, ...) {
     parameters_rounded <- lapply(x@parameters, round, 5)
 
@@ -257,6 +265,8 @@ as.character.Prior <- function(x, ...) {
 #' @keywords internal
 #' @typedreturn character
 #'   the Stan syntax for truncated distributions
+#'
+#' @returns A character vector containing the Stan truncation syntax.
 render_stan_limits <- function(object) {
     UseMethod("render_stan_limits")
 }
@@ -311,6 +321,8 @@ setMethod(
 #' @family Prior-internal
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.Prior <- function(object, name, size = 1, ...) {
     stan_repr <- c(
         object@repr_data,
@@ -367,6 +379,8 @@ as.StanModule.Prior <- function(object, name, size = 1, ...) {
 #' @family as_stan_list
 #' @family Prior-internal
 #' @export
+#'
+#' @returns A named `list` suitable for use as Stan data.
 as_stan_list.Prior <- function(object, name, ...) {
     vals <- object@parameters
     if (object@.is_const) {
@@ -394,6 +408,8 @@ NULL
 
 #' @describeIn Prior-Getter-Methods The prior's initial value
 #' @export
+#'
+#' @returns The requested prior initial values or auxiliary-parameter information.
 initialValues.Prior <- function(object, ...) {
     n_samples <- 100
     centre_value <- object@centre
@@ -482,6 +498,11 @@ auxiliarySize.Prior <- function(object, name, size, ...) {
 #'   standard deviation.
 #' @family Prior
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_normal(0, 1)
 prior_normal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
@@ -509,6 +530,11 @@ prior_normal <- function(mu, sigma) {
 #'   standard deviations.
 #' @family Prior
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_normal_vector(c(0, 1), c(1, 2))
 prior_normal_vector <- function(mus, sigmas) {
     Prior(
         parameters = list(
@@ -553,6 +579,11 @@ prior_normal_vector <- function(mus, sigmas) {
 #'   scale of the Student-t slab.
 #' @family Prior
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.1, scale_slab = 2)
 prior_horseshoe <- function(
     df = 1,
     df_global = 1,
@@ -650,6 +681,11 @@ prior_horseshoe <- function(
 #'
 #' @family Prior
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_std_normal()
 prior_std_normal <- function() {
     Prior(
         parameters = list(),
@@ -668,6 +704,11 @@ prior_std_normal <- function() {
 #'   the fixed parameter value.
 #' @family Prior
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_const(0)
 prior_const <- function(value) {
     Prior(
         parameters = list(value = value),
@@ -692,6 +733,11 @@ prior_const <- function(value) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_cauchy(0, 1)
 prior_cauchy <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
@@ -721,6 +767,11 @@ prior_cauchy <- function(mu, sigma) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_gamma(2, 1)
 prior_gamma <- function(alpha, beta) {
     Prior(
         parameters = list(alpha = alpha, beta = beta),
@@ -749,6 +800,11 @@ prior_gamma <- function(alpha, beta) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_lognormal(0, 1)
 prior_lognormal <- function(mu, sigma) {
     Prior(
         parameters = list(mu = mu, sigma = sigma),
@@ -777,6 +833,11 @@ prior_lognormal <- function(mu, sigma) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_beta(2, 3)
 prior_beta <- function(a, b) {
     Prior(
         parameters = list(a = a, b = b),
@@ -806,6 +867,11 @@ prior_beta <- function(a, b) {
 #' are fixed within the model and cannot be altered by the user.
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_init_only(prior_normal(0, 1))
 prior_init_only <- function(dist) {
     Prior(
         parameters = list(),
@@ -832,6 +898,11 @@ prior_init_only <- function(dist) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_uniform(0, 1)
 prior_uniform <- function(alpha, beta) {
     assert_that(
         alpha < beta,
@@ -866,6 +937,11 @@ prior_uniform <- function(alpha, beta) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_student_t(4, 0, 1)
 prior_student_t <- function(nu, mu, sigma) {
     Prior(
         parameters = list(
@@ -900,6 +976,11 @@ prior_student_t <- function(nu, mu, sigma) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_logistic(0, 1)
 prior_logistic <- function(mu, sigma) {
     Prior(
         parameters = list(
@@ -931,6 +1012,11 @@ prior_logistic <- function(mu, sigma) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_loglogistic(2, 3)
 prior_loglogistic <- function(alpha, beta) {
     Prior(
         parameters = list(
@@ -965,6 +1051,11 @@ prior_loglogistic <- function(alpha, beta) {
 #' @family Prior
 #'
 #' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_invgamma(3, 2)
 prior_invgamma <- function(alpha, beta) {
     Prior(
         parameters = list(
@@ -1010,6 +1101,8 @@ prior_invgamma <- function(alpha, beta) {
 # nolint end
 #' @importFrom stats median
 #' @export
+#'
+#' @returns A single numeric value giving the prior median.
 median.Prior <- function(x, na.rm, ...) {
     vals <- replicate(
         n = 500,
@@ -1077,6 +1170,8 @@ median.Prior <- function(x, na.rm, ...) {
 NULL
 
 #' @rdname Local_Sample
+#'
+#' @returns A numeric vector of random draws.
 local_rnorm <- \(...) rnorm(...)
 
 #' @rdname Local_Sample

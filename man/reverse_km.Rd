@@ -17,6 +17,9 @@ reverse_km_cen_first(t, times, events)
 
 \item{events}{(\code{numeric}) event indicator for \code{times}. Either 1 for an event or 0 for censor.}
 }
+\value{
+The reverse Kaplan-Meier estimate at each requested time.
+}
 \description{
 Calculates the survival estimates of the censoring distribution
 using the Kaplan-Meier estimate.

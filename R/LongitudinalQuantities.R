@@ -32,6 +32,11 @@ NULL
 #' @family LongitudinalQuantities
 #' @name LongitudinalQuantities-class
 #' @export LongitudinalQuantities
+#'
+#' @examples
+#' \dontrun{
+#' LongitudinalQuantities(fit, GridEven(length.out = 25))
+#' }
 .LongitudinalQuantities <- setClass(
     "LongitudinalQuantities",
     slots = c(
@@ -47,6 +52,8 @@ NULL
 #'   object that specifies which subjects and time points to calculate the
 #'   quantities for. See [Grid-Functions].
 #' @rdname LongitudinalQuantities-class
+#'
+#' @returns A `LongitudinalQuantities` object.
 LongitudinalQuantities <- function(
     object,
     grid
@@ -95,6 +102,8 @@ LongitudinalQuantities <- function(
 #' @param ... not used.
 #' @family LongitudinalQuantities
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.LongitudinalQuantities <- function(x, ...) {
     as.data.frame(x@quantities)
 }
@@ -112,6 +121,8 @@ as.data.frame.LongitudinalQuantities <- function(x, ...) {
 #' @family LongitudinalQuantities
 #' @family summary
 #' @export
+#'
+#' @returns A `data.frame` containing posterior summary statistics.
 summary.LongitudinalQuantities <- function(
     object,
     conf.level = 0.95,
@@ -152,6 +163,8 @@ summary.LongitudinalQuantities <- function(
 #' - `group` (`character`) \cr which group the event belongs to, should correspond to
 #' values in `data$group`.
 #' @keywords internal
+#'
+#' @returns A `ggplot` object.
 longitudinal_plot <- function(
     data,
     data_obs = NULL,
@@ -190,6 +203,8 @@ longitudinal_plot <- function(
 #' @family LongitudinalQuantities
 #' @family autoplot
 #' @export
+#'
+#' @returns A `ggplot` object.
 autoplot.LongitudinalQuantities <- function(object, conf.level = 0.95, ...) {
     include_ci <- !is.null(conf.level) &&
         is.numeric(conf.level) &&

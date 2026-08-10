@@ -11,6 +11,9 @@ mirror_design_matrix(olddata, newdata)
 
 \item{newdata}{(\code{data.frame}) The new data to be used to generate the design matrix}
 }
+\value{
+A model matrix whose columns match the original design matrix.
+}
 \description{
 This function takes a \code{DataSurvival} object and a \code{data.frame} object and generates
 a design matrix for the \code{data.frame} that has the identical structure to the

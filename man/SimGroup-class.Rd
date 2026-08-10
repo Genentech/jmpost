@@ -16,6 +16,9 @@ SimGroup(n, arm, study)
 
 \item{study}{(\code{character}) study name.}
 }
+\value{
+A \code{SimGroup} object.
+}
 \description{
 Specifies a simulation group to be used by \code{\link[=SimJointData]{SimJointData()}}.
 }

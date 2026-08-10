@@ -232,6 +232,8 @@ is_windows <- function() {
 #'   evaluated at.
 #'
 #' @keywords internal
+#'
+#' @returns Invisibly returns `time_grid`; invalid grids raise an error.
 validate_time_grid <- function(time_grid) {
     assert_that(
         !any(is.na(time_grid)),

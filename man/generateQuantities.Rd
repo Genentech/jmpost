@@ -20,6 +20,14 @@ to calculate the quantities at}
 \item{type}{(\code{character}) type of quantities to be generated, must be either "survival" or
 "longitudinal".}
 }
+\value{
+A \code{cmdstanr::CmdStanGQ} object containing generated quantities.
+}
 \description{
 Obtain the generated quantities from a Stan Model.
+}
+\examples{
+\dontrun{
+generateQuantities(fit, generator, "survival")
+}
 }

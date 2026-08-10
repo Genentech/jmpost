@@ -11,6 +11,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A character vector containing the covariate names.
+}
 \description{
 Extract Covariate Names for Survival Data
 }

@@ -75,6 +75,8 @@ as.QuantityCollapser.GridManual <- function(object, data, ...) {
 
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridManual <- function(x, data, ...) {
     subs <- as.list(names(x@spec))
     names(subs) <- names(x@spec)

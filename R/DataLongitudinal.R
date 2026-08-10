@@ -49,6 +49,11 @@ NULL
 #'   cut-off value to be used to declare an observation as censored
 #'   (below detection limit).
 #' @rdname DataLongitudinal-class
+#'
+#' @returns A `DataLongitudinal` object.
+#'
+#' @examples
+#' DataLongitudinal(tumor_data, sld ~ year, threshold = 5)
 DataLongitudinal <- function(data, formula, threshold = NULL) {
     .DataLongitudinal(
         data = remove_missing_rows(data, formula),
@@ -131,6 +136,8 @@ harmonise.DataLongitudinal <- function(object, subject_var, subject_ord, ...) {
 #' The subject variable is cast to factor.
 #' @family DataLongitudinal
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.DataLongitudinal <- function(x, ...) {
     x <- x@data
     rownames(x) <- NULL
@@ -261,6 +268,8 @@ as.list.DataLongitudinal <- function(x, ...) {
 #'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.DataLongitudinal <- function(object, indent = 1, ...) {
     template <- c(
         "Longitudinal-Data Object:",

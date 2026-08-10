@@ -11,8 +11,14 @@ prior_lognormal(mu, sigma)
 
 \item{sigma}{(\code{number}) standard deviation of the logarithm.}
 }
+\value{
+A \code{Prior} object.
+}
 \description{
 Log-Normal Prior Distribution
+}
+\examples{
+prior_lognormal(0, 1)
 }
 \seealso{
 Other Prior:

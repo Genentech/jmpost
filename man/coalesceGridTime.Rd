@@ -28,6 +28,9 @@ coalesceGridTime(object, times, ...)
 
 Method used to replace NULL times on grid objects (if appropriate)}
 }
+\value{
+A \code{Grid} object with missing time points replaced.
+}
 \description{
 Coalesce Time
 }

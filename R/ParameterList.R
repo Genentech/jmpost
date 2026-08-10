@@ -38,6 +38,14 @@ NULL
 #' @typed ...: Parameter
 #'   which parameter specifications to include.
 #' @rdname ParameterList-class
+#'
+#' @returns A `ParameterList` object.
+#'
+#' @examples
+#' ParameterList(
+#'   Parameter(prior_normal(0, 1), "intercept"),
+#'   Parameter(prior_normal(0, 2), "slope")
+#' )
 ParameterList <- function(...) {
     .ParameterList(parameters = list(...))
 }
@@ -71,6 +79,8 @@ setValidity(
 #' @family ParameterList
 #' @family as.StanModule
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.ParameterList <- function(object, ...) {
     stan_modules <- lapply(
         object@parameters,
@@ -93,6 +103,8 @@ as.StanModule.ParameterList <- function(object, ...) {
 #' @family as_stan_list
 #' @family ParameterList
 #' @export
+#'
+#' @returns A named `list` suitable for use as Stan data.
 as_stan_list.ParameterList <- function(object, ...) {
     stan_lists <- lapply(
         object@parameters,
@@ -126,6 +138,8 @@ setMethod(
 #' @inheritParams ParameterList-Shared
 #' @family ParameterList
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.ParameterList <- function(x, ...) {
     as.list(as.StanModule(x))
 }
@@ -144,6 +158,8 @@ NULL
 
 #' @describeIn ParameterList-Getter-Methods The parameter-list's parameter names
 #' @export
+#'
+#' @returns The requested parameter-list property: names, initial values, or total size.
 names.ParameterList <- function(x) {
     vapply(x@parameters, names, character(1))
 }
@@ -203,6 +219,8 @@ size.ParameterList <- function(object) {
 #' @family ParameterList
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.ParameterList <- function(object, ...) {
     x <- vapply(object@parameters, as.character, character(1))
     if (length(x) == 0) {

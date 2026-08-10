@@ -11,6 +11,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A \code{data.frame} representation of the object.
+}
 \description{
 \code{Quantities} -> \code{data.frame}
 }

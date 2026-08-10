@@ -7,6 +7,9 @@
 \usage{
 set_options()
 }
+\value{
+Invisibly returns \code{NULL} after initializing the package options.
+}
 \description{
 Define settings that modify the behaviour of the \code{jmpost} package
 

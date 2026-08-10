@@ -27,7 +27,13 @@ getPredictionNames(object, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A character vector of required prediction parameter names, or \code{NULL}.
+}
 \description{
 Utility function that returns the names of the required parameters for predicting
 survival quantities with \code{\link{GridPrediction}}.
+}
+\examples{
+getPredictionNames(LongitudinalGSF())
 }

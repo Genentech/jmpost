@@ -51,6 +51,11 @@ NULL
 #'   whether to use the centred parameterization.
 #'
 #' @export
+#'
+#' @returns A `LongitudinalSteinFojo` object.
+#'
+#' @examples
+#' LongitudinalSteinFojo()
 LongitudinalSteinFojo <- function(
     mu_bsld = prior_normal(log(60), 1),
     mu_ks = prior_normal(log(0.5), 1),
@@ -156,11 +161,15 @@ LongitudinalSteinFojo <- function(
 
 
 #' @export
+#'
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalSteinFojo <- function(object, ...) {
     StanModule("lm-stein-fojo/quantities.stan")
 }
 
 #' @export
+#'
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalSteinFojo <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -170,6 +179,8 @@ enableLink.LongitudinalSteinFojo <- function(object, ...) {
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalSteinFojo <- function(
     prior = prior_normal(0, 2),
     model,
@@ -183,6 +194,8 @@ linkDSLD.LongitudinalSteinFojo <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkTTG.LongitudinalSteinFojo <- function(
     prior = prior_normal(0, 2),
     model,
@@ -196,6 +209,8 @@ linkTTG.LongitudinalSteinFojo <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalSteinFojo <- function(
     prior = prior_normal(0, 2),
     model,
@@ -209,6 +224,8 @@ linkIdentity.LongitudinalSteinFojo <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalSteinFojo <- function(
     prior = prior_normal(0, 2),
     model,
@@ -222,6 +239,8 @@ linkGrowth.LongitudinalSteinFojo <- function(
 }
 
 #' @export
+#'
+#' @returns A `LinkComponent` object.
 linkShrinkage.LongitudinalSteinFojo <- function(
     prior = prior_normal(0, 2),
     model,

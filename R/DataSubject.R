@@ -46,6 +46,12 @@ NULL
 #'   the name of the variable containing the study identifier.
 #' @rdname DataSubject-class
 #' @export
+#'
+#' @returns A `DataSubject` object.
+#'
+#' @examples
+#' dat <- transform(os_data, study = "Study 1")
+#' DataSubject(dat, subject = "id", arm = "arm", study = "study")
 DataSubject <- function(data, subject, arm, study) {
     vars <- c(subject, arm, study)
     vars_frm_chr <- paste0("~ ", paste(vars, collapse = " + "))
@@ -73,7 +79,7 @@ setValidity(
             return("`data` should not have 0 rows")
         }
         sbj <- object@data[[object@subject]]
-        if (!(is(sbj, "character") | is(sbj, "factor"))) {
+        if (!(is(sbj, "character") || is(sbj, "factor"))) {
             return("`data[[subject]]` should be of type character or factor")
         }
     }
@@ -154,6 +160,8 @@ as.list.DataSubject <- function(x, ...) {
 #' The subject variable is cast to factor.
 #' @family DataSubject
 #' @export
+#'
+#' @returns A `data.frame` representation of the object.
 as.data.frame.DataSubject <- function(x, ...) {
     x <- x@data
     rownames(x) <- NULL
@@ -197,6 +205,8 @@ harmonise.DataSubject <- function(object, ...) {
 #' @typed indent: numeric
 #'   how much white space to prefix the print string with.
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.DataSubject <- function(object, indent = 1, ...) {
     template <- c(
         "Subject-Data Object:",

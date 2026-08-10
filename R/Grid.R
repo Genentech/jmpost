@@ -76,6 +76,16 @@
 #' ```
 #' @seealso [`SurvivalQuantities`], [`LongitudinalQuantities`]
 #' @name Grid-Functions
+#'
+#' @examples
+#' GridFixed(subjects = c("subject 1", "subject 2"), times = c(0, 10))
+#' GridGrouped(groups = list(control = c("subject 1", "subject 2")))
+#' GridEven(subjects = c("subject 1", "subject 2"), length.out = 20)
+#' GridObserved()
+#' GridEvent()
+#' GridPopulation(times = seq(0, 100, by = 10))
+#' GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
+#' GridPrediction(times = c(0, 10), newdata = data.frame(age = 60))
 NULL
 
 
@@ -168,17 +178,21 @@ NULL
 .QuantityGenerator <- setClass(
     "QuantityGenerator"
 )
+
 #' `QuantityGenerator` -> `list`
+#'
 #' @description
-#' Converts a `QuantityGenerator` object to a list containing the required input data for a stan
-#' model.
+#' Just a placeholder which will error when used.
+#'
 #' @typed object: QuantityGenerator
 #'   object to convert to a list.
 #' @typed data: DataJoint
 #'   Survival and Longitudinal Data.
 #' @param ... Not currently used.
 #' @keywords internal
-#' @exportS3Method NULL
+#' @export
+#'
+#' @returns Will always throw an error.
 as_stan_list.QuantityGenerator <- function(object, data, ...) {
     stop("as_stan_list.QuantityGenerator not implemented")
 }
@@ -215,6 +229,8 @@ setValidity(
 )
 
 #' @export
+#'
+#' @returns A single integer giving the number of collapsed quantities.
 length.QuantityCollapser <- function(x) {
     length(x@indexes)
 }
@@ -232,6 +248,8 @@ length.QuantityCollapser <- function(x) {
 #' Else it will return `subjects` as a named list ensuring that all subjects exist in `data`.
 #'
 #' @keywords internal
+#'
+#' @returns A named list grouping the requested subject identifiers.
 subjects_to_list <- function(subjects = NULL, data) {
     data_list <- as.list(data)
     subjects_exp <- if (is.null(subjects)) {

@@ -23,8 +23,10 @@
 
 \item{...}{Not currently used.}
 }
+\value{
+Will always throw an error.
+}
 \description{
-Converts a \code{QuantityGenerator} object to a list containing the required input data for a stan
-model.
+Just a placeholder which will error when used.
 }
 \keyword{internal}

@@ -20,7 +20,13 @@ SurvivalLogLogistic(
 
 \item{beta}{(\code{Prior}) Prior distribution for covariates coefficients \code{beta}.}
 }
+\value{
+A \code{SurvivalLogLogistic} object.
+}
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the
 log-logistic survival model.
+}
+\examples{
+SurvivalLogLogistic()
 }

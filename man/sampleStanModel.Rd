@@ -16,6 +16,14 @@ sampleStanModel(object, ...)
 
 \item{data}{(\code{DataJoint} or \code{list}) input data.}
 }
+\value{
+A \code{JointModelSamples} object.
+}
 \description{
 Sample from a Stan Module.
+}
+\examples{
+\dontrun{
+sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+}
 }

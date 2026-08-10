@@ -9,6 +9,9 @@ extractVariableNames(object)
 \arguments{
 \item{object}{the data object.}
 }
+\value{
+A named list mapping source variables to standard names.
+}
 \description{
 Extract a \code{list} that maps the variable names in a user-defined
 \code{data.frame} to standardised values.

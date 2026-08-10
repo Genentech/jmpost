@@ -10,6 +10,9 @@ validate_time_grid(time_grid)
 \item{time_grid}{(\code{numeric}) A vector of times which quantities will be
 evaluated at.}
 }
+\value{
+Invisibly returns \code{time_grid}; invalid grids raise an error.
+}
 \description{
 Validate that the provided time grid is:
 \itemize{

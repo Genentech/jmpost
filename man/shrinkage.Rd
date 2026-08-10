@@ -11,8 +11,16 @@ shrinkage(object, ...)
 
 \item{...}{additional arguments added by methods.}
 }
+\value{
+A named numeric vector or matrix of shrinkage factors.
+}
 \description{
 Extract Covariate Shrinkage Factors from the Posterior Samples
+}
+\examples{
+\dontrun{
+shrinkage(fit)
+}
 }
 \seealso{
 Other shrinkage:

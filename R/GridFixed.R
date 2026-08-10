@@ -55,6 +55,8 @@ as.QuantityCollapser.GridFixed <- function(object, data, ...) {
 
 
 #' @export
+#'
+#' @returns A named `list` representation of the object.
 as.list.GridFixed <- function(x, data, ...) {
     subjects_to_list(x@subjects, data)
 }

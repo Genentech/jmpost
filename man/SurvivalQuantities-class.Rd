@@ -18,6 +18,9 @@ quantities for. See \link{Grid-Functions}.}
 \item{type}{(\code{character}) quantity to be generated.
 Must be one of \code{surv}, \code{haz}, \code{loghaz}, \code{cumhaz}.}
 }
+\value{
+A \code{SurvivalQuantities} object.
+}
 \description{
 Constructor function to generate a \code{SurvivalQuantities} object.
 }
@@ -51,6 +54,11 @@ of \code{c("sub1", "sub2")} and \code{c("sub3", "sub4")} respectively.
 If \code{groups=NULL} then all subjects from original dataset will be selected
 }
 
+\examples{
+\dontrun{
+SurvivalQuantities(fit, GridFixed(times = seq(0, 100, by = 10)))
+}
+}
 \seealso{
 Other SurvivalQuantities:
 \code{\link[=as.data.frame.SurvivalQuantities]{as.data.frame.SurvivalQuantities()}},

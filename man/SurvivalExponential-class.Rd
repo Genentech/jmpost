@@ -14,7 +14,13 @@ SurvivalExponential(lambda = prior_gamma(2, 5), beta = prior_normal(0, 2))
 
 \item{beta}{(\code{Prior}) for covariates coefficients \code{beta}.}
 }
+\value{
+A \code{SurvivalExponential} object.
+}
 \description{
 This class extends the general \code{\link{SurvivalModel}} class for using the
 exponential survival model.
+}
+\examples{
+SurvivalExponential()
 }

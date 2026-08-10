@@ -11,8 +11,16 @@ brierScore(object, ...)
 
 \item{...}{additional options.}
 }
+\value{
+A numeric Brier score or a \code{data.frame} of scores over time.
+}
 \description{
 Returns the Brier Score for a given model
+}
+\examples{
+\dontrun{
+brierScore(survival_quantities)
+}
 }
 \seealso{
 Other brierScore:

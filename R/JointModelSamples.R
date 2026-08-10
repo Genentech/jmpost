@@ -16,6 +16,14 @@ setOldClass("CmdStanMCMC")
 #'
 #' @aliases JointModelSamples
 #' @export
+#'
+#' @returns A `JointModelSamples` object.
+#'
+#' @examples
+#' \dontrun{
+#' # JointModelSamples objects are returned by sampleStanModel().
+#' fit <- sampleStanModel(JointModel(LongitudinalGSF()), data = joint_data)
+#' }
 .JointModelSamples <- setClass(
     "JointModelSamples",
     slots = c(
@@ -64,6 +72,8 @@ generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
 #'
 #' @inheritParams generateQuantities
 #' @export
+#'
+#' @returns A `StanModule` object.
 as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
     assert_that(
         is(generator, "QuantityGenerator"),
@@ -107,6 +117,8 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
 #'   how much white space to prefix the print string with.
 #' @keywords internal
 #' @export
+#'
+#' @returns A character vector suitable for printing.
 as_print_string.JointModelSamples <- function(object, indent = 1, ...) {
     sizes <- vapply(
         cmdstanr::as.CmdStanMCMC(object)$metadata()[["stan_variable_sizes"]],
@@ -154,6 +166,8 @@ setMethod(
 
 
 #' @rdname as.CmdStanMCMC
+#'
+#' @returns The underlying `cmdstanr::CmdStanMCMC` object.
 as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
     return(object@results)
 }
@@ -176,6 +190,8 @@ as.CmdStanMCMC.JointModelSamples <- function(object, ...) {
 #' @family saveObject
 #'
 #' @export
+#'
+#' @returns Invisibly returns `NULL` after saving the object.
 saveObject.JointModelSamples <- function(object, file, ...) {
     object@results$draws()
     try(object@results$sampler_diagnostics(), silent = TRUE)

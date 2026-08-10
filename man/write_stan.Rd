@@ -16,6 +16,14 @@ write_stan(object, destination, ...)
 
 \item{...}{Additional arguments}
 }
+\value{
+Invisibly returns \code{NULL} after writing the Stan program.
+}
 \description{
 Write the Stan code for a Stan module.
+}
+\examples{
+path <- tempfile(fileext = ".stan")
+write_stan(JointModel(LongitudinalGSF()), path)
+unlink(path)
 }

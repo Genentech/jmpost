@@ -29,6 +29,9 @@ linkShrinkage(prior, model = PromiseLongitudinalModel(), ...)
 
 \item{...}{Not used.}
 }
+\value{
+A \code{Link} or \code{LinkComponent} object representing the requested association.
+}
 \description{
 These functions are used to enable the use of the corresponding link function between
 the survival and longitudinal models in a joint model. Note that the exact implementation
@@ -50,3 +53,8 @@ of the link function is model specific, see
 \item \code{linkShrinkage()}: Shrinkage Parameter link
 
 }}
+\examples{
+linkNone()
+linkDSLD()
+linkTTG(prior_normal(0, 1), model = LongitudinalGSF())
+}

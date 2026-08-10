@@ -20,6 +20,9 @@ by each group/subject.}
 
 \item{...}{not used.}
 }
+\value{
+A \code{ggplot} object.
+}
 \description{
 Automatic Plotting for `SurvivalQuantities``
 }

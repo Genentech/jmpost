@@ -12,6 +12,9 @@ as.CmdStanMCMC.JointModelSamples(object, ...)
 
 \item{...}{additional options}
 }
+\value{
+The underlying \code{cmdstanr::CmdStanMCMC} object.
+}
 \description{
 Coerces an object to a \code{\link[cmdstanr:CmdStanMCMC]{cmdstanr::CmdStanMCMC}} object
 }

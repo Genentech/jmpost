@@ -13,6 +13,9 @@
 
 \item{...}{Not Used.}
 }
+\value{
+A \code{Link} object with all promised components resolved.
+}
 \description{
 Loops over all components and ensures that any \code{\link{PromiseLinkComponent}} objects
 are resolved to \code{\link{LinkComponent}} objects.

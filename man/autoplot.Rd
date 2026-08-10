@@ -6,6 +6,11 @@
 \description{
 See \code{\link[ggplot2:autoplot]{ggplot2::autoplot()}} for details.
 }
+\examples{
+\dontrun{
+autoplot(survival_quantities)
+}
+}
 \seealso{
 Other autoplot:
 \code{\link[=autoplot.LongitudinalQuantities]{autoplot.LongitudinalQuantities()}},

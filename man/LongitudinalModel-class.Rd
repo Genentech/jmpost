@@ -28,6 +28,9 @@ then an additive error model is used.}
 
 \item{...}{additional arguments for \code{\link[=StanModel]{StanModel()}}.}
 }
+\value{
+A \code{LongitudinalModel} object.
+}
 \description{
 This class extends the general \code{\link{StanModel}} class to comprise the longitudinal
 model specification.
@@ -40,3 +43,6 @@ by the expected value, corresponding to a multiplicative model. If not,
 then an additive error model is used.}
 }}
 
+\examples{
+LongitudinalModel(scaled_variance = FALSE)
+}

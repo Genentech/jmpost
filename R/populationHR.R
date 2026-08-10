@@ -22,6 +22,11 @@
 #' matrix containing the parameter estimates for each sample.
 #' @export
 #' @importFrom splines bs
+#'
+#' @examples
+#' \dontrun{
+#' populationHR(fit, quantiles = c(0.01, 0.99))
+#' }
 populationHR <- function(
     object,
     hr_formula = object@data@survival@formula,

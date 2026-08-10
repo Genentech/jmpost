@@ -28,6 +28,9 @@ sampleSubjects(object, subjects_df)
 
 \item{subjects_df}{(\code{data.frame}) the subjects to generate observations for. See details.}
 }
+\value{
+A \code{data.frame} containing simulated subject-level parameters.
+}
 \description{
 Generate Simulated Subjects
 }
@@ -42,4 +45,9 @@ with the following columns:
 
 This method takes care of generating all the individual subject data required for the
 \code{\link{sampleObservations}} method to generate the observations.
+}
+\examples{
+subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
+sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
+sampleSubjects(sim, subjects)
 }

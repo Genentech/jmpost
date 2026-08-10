@@ -14,6 +14,9 @@
 
 \item{...}{not used.}
 }
+\value{
+A \code{ggplot} object.
+}
 \description{
 Automatic Plotting for \code{LongitudinalQuantities}
 }
