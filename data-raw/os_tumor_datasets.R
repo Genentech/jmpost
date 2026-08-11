@@ -22,11 +22,11 @@ tumor_data <- here("data-raw/journal.pcbi.1009822.s006.xlsx") |>
         id = factor(as.character(patient_anonmyized)),
         day = as.integer(treatment_day),
         year = day / 365.25,
-        target_lesion_long_diam_mm = case_match(
+        target_lesion_long_diam_mm = recode_values(
             target_lesion_long_diam_mm,
             "TOO SMALL TO MEASURE" ~ "2",
             "NOT EVALUABLE" ~ NA_character_,
-            .default = target_lesion_long_diam_mm
+            default = target_lesion_long_diam_mm
         ),
         sld = as.numeric(target_lesion_long_diam_mm),
         sld = ifelse(sld == 0, 2, sld),
