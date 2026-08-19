@@ -341,26 +341,30 @@ importFrom(ggplot2,autoplot)
 importFrom(ggplot2.utils,geom_km)
 importFrom(glue,as_glue)
 importFrom(splines,bs)
-importFrom(stats,.checkMFClasses)
-importFrom(stats,acf)
-importFrom(stats,as.formula)
-importFrom(stats,delete.response)
-importFrom(stats,dgamma)
-importFrom(stats,median)
-importFrom(stats,model.frame)
-importFrom(stats,model.matrix)
-importFrom(stats,pgamma)
-importFrom(stats,qlogis)
-importFrom(stats,rbeta)
-importFrom(stats,rcauchy)
-importFrom(stats,rgamma)
-importFrom(stats,rlnorm)
-importFrom(stats,rlogis)
-importFrom(stats,rnorm)
-importFrom(stats,rt)
-importFrom(stats,runif)
-importFrom(stats,simulate)
-importFrom(stats,terms)
-importFrom(survival,Surv)
-importFrom(survival,coxph)
+importFrom(stats,
+  .checkMFClasses,
+  acf,
+  as.formula,
+  delete.response,
+  dgamma,
+  median,
+  model.frame,
+  model.matrix,
+  pgamma,
+  qlogis,
+  rbeta,
+  rcauchy,
+  rgamma,
+  rlnorm,
+  rlogis,
+  rnorm,
+  rt,
+  runif,
+  simulate,
+  terms
+)
+importFrom(survival,
+  Surv,
+  coxph
+)
 importFrom(tibble,add_case)
