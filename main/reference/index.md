@@ -62,6 +62,8 @@
   : Cauchy Prior Distribution
 - [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md)
   : Constant Prior Distribution
+- [`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md)
+  : Constant Prior Distribution for a Vector
 - [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md)
   : Gamma Prior Distribution
 - [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md)

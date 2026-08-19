@@ -44,7 +44,7 @@ Blanche P, Proust-Lima C, Loubère L, Berr C, Dartigues J, Jacqmin-Gadda
 H (2015). “Quantifying and comparing dynamic predictive accuracy of
 joint models for longitudinal marker and time-to-event in presence of
 censoring and competing risks.” *Biometrics*, **71**(1), 102-113.
-[doi:10.1111/biom.12232](https://doi.org/10.1111/biom.12232) ,
+[doi:10.1111/biom.12232](https://doi.org/10.1111/biom.12232) .
 https://onlinelibrary.wiley.com/doi/pdf/10.1111/biom.12232,
 <https://onlinelibrary.wiley.com/doi/abs/10.1111/biom.12232>.
 

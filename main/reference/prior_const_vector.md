@@ -1,22 +1,18 @@
-# Beta Prior Distribution
+# Constant Prior Distribution for a Vector
 
-Beta Prior Distribution
+Constant Prior Distribution for a Vector
 
 ## Usage
 
 ``` r
-prior_beta(a, b)
+prior_const_vector(values)
 ```
 
 ## Arguments
 
-- a:
+- values:
 
-  (`number`) first parameter.
-
-- b:
-
-  (`number`) second parameter
+  (`numeric`) the fixed parameter values.
 
 ## Value
 
@@ -25,9 +21,9 @@ A `Prior` object.
 ## See also
 
 Other Prior:
+[`prior_beta()`](https://genentech.github.io/jmpost/reference/prior_beta.md),
 [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md),
 [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md),
-[`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md),
 [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md),
 [`prior_horseshoe()`](https://genentech.github.io/jmpost/reference/prior_horseshoe.md),
 [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md),
@@ -44,9 +40,9 @@ Other Prior:
 ## Examples
 
 ``` r
-prior_beta(2, 3)
+prior_const_vector(c(0, 1))
 #> 
 #> Prior Object:
-#>    beta(a = 2, b = 3)
+#>    const(values = [0, 1])
 #> 
 ```

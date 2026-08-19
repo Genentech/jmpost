@@ -35,8 +35,10 @@
   the coefficients of the survival model covariates.
 - Added
   [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md)
-  which fixes a parameter at a constant value, i.e. uses a point-mass
-  prior distribution.
+  and
+  [`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md)
+  which fixes a parameter (vector) at a constant value, i.e. uses a
+  point-mass prior distribution.
 - Added
   [`prior_horseshoe()`](https://genentech.github.io/jmpost/reference/prior_horseshoe.md)
   which uses a horseshoe prior for the components of a parameter vector,

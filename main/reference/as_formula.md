@@ -27,5 +27,5 @@ A `formula` object.
 ``` r
 as_formula("response ~ time")
 #> response ~ time
-#> <environment: 0x55a8995384a0>
+#> <environment: 0x563c8b9aeea8>
 ```

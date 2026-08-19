@@ -6,7 +6,7 @@ vector parameter at a data-supplied constant value.
 ## Usage
 
 ``` r
-render_stan_const_declaration(name, size, limits)
+render_stan_const_declaration(name, size, limits, is_vector = FALSE)
 ```
 
 ## Arguments
@@ -22,6 +22,10 @@ render_stan_const_declaration(name, size, limits)
 - limits:
 
   (`numeric`) lower and upper parameter limits.
+
+- is_vector:
+
+  (`flag`) whether the supplied constant is a vector.
 
 ## Value
 

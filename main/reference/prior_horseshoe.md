@@ -49,6 +49,7 @@ Other Prior:
 [`prior_beta()`](https://genentech.github.io/jmpost/reference/prior_beta.md),
 [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md),
 [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md),
+[`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md),
 [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md),
 [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md),
 [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md),

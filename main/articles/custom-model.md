@@ -88,7 +88,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(loo)
-#> This is loo version 2.10.0
+#> This is loo version 2.10.1
 #> - Online documentation and vignettes at mc-stan.org/loo
 #> - As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session.
 ```
@@ -443,31 +443,31 @@ model_samples <- sampleStanModel(
 )
 #> Running MCMC with 1 chain...
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
 #> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpNOOmeY/model-cdb248f2ed1.stan', line 525, column 4 to column 79)
+#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
 #> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 #> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 #> Chain 1
-#> Chain 1 finished in 10.2 seconds.
+#> Chain 1 finished in 10.3 seconds.
 
 vars <- c(
     "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
