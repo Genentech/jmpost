@@ -175,6 +175,35 @@ test_that("prior_const() works as expected", {
     )
 })
 
+test_that("prior_const_vector() works as expected", {
+    x <- prior_const_vector(c(1, 2, 3))
+
+    expect_equal(
+        as.character(x),
+        "const(values = [1, 2, 3])"
+    )
+    expect_equal(initialValues(x), c(1, 2, 3))
+    expect_equal(
+        as_stan_list(x, name = "bob"),
+        list(prior_const_bob = c(1, 2, 3))
+    )
+    expect_equal(
+        as.StanModule(x, name = "bob", size = 3)@data,
+        "    vector[3] prior_const_bob;"
+    )
+    expect_equal(as.StanModule(x, name = "bob", size = 3)@model, "")
+
+    expect_error(
+        prior_const_vector(numeric()),
+        "`values` must be a non-empty numeric vector",
+        fixed = TRUE
+    )
+    expect_error(
+        prior_const_vector("not numeric"),
+        "`values` must be a non-empty numeric vector",
+        fixed = TRUE
+    )
+})
 
 test_that("show() works for Prior objects", {
     expect_snapshot(print(prior_cauchy(0, 0.8)))

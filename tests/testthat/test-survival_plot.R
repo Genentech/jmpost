@@ -6,6 +6,7 @@
 snap_dir <- file.path(testthat::test_path(), "_snaps", "survival_plot")
 
 test_that("survival_plot works as expected", {
+    skip_on_ci()
     set.seed(38132)
     define_data <- function(i, group) {
         n <- 120

@@ -53,11 +53,42 @@ test_that("SurvivalExponential() can fix lambda with prior_const()", {
     expect_false(
         "sm_exp_lambda" %in% names(initialValues(jm, n_chains = 1)[[1]])
     )
+})
 
+test_that("SurvivalExponential() can fix beta with prior_const_vector()", {
     beta_const <- JointModel(
         survival = SurvivalExponential(beta = prior_const(0))
     )
     expect_stan_syntax(as.StanModule(beta_const))
+
+    beta_const_vector <- JointModel(
+        survival = SurvivalExponential(
+            beta = prior_const_vector(c(1, 2, 3))
+        )
+    )
+    beta_const_vector_module <- as.StanModule(beta_const_vector)
+    expect_stan_syntax(beta_const_vector_module)
+    beta_const_vector_code <- paste(
+        as.character(beta_const_vector_module),
+        collapse = "\n"
+    )
+    expect_match(
+        beta_const_vector_code,
+        "vector[p_os_cov_design] prior_const_beta_os_cov;",
+        fixed = TRUE
+    )
+    expect_match(
+        beta_const_vector_code,
+        paste0(
+            "vector[p_os_cov_design] beta_os_cov = ",
+            "prior_const_beta_os_cov;"
+        ),
+        fixed = TRUE
+    )
+    expect_equal(
+        as_stan_list(beta_const_vector@parameters)$prior_const_beta_os_cov,
+        c(1, 2, 3)
+    )
 })
 
 test_that("SurvivalExponential() does not print truncation for prior_const()", {
@@ -67,7 +98,6 @@ test_that("SurvivalExponential() does not print truncation for prior_const()", {
         "sm_exp_lambda = const(value = 1)"
     )
 })
-
 
 test_that("SurvivalExponential can recover true parameter (including covariates)", {
     skip_if_not(is_full_test())

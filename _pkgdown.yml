@@ -59,6 +59,7 @@ reference:
       - prior_beta
       - prior_cauchy
       - prior_const
+      - prior_const_vector
       - prior_gamma
       - prior_invgamma
       - prior_logistic
