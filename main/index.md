@@ -36,13 +36,7 @@ thank you!
 
 You can install the current development version from GitHub with:
 
-``` r
-
-if (!require("remotes")) {
-    install.packages("remotes")
-}
-remotes::install_github("genentech/jmpost")
-```
+`if`` ``(``!`[`require`](https://rdrr.io/r/base/library.html)`(`[`"remotes"`](https://remotes.r-lib.org)`)``)`` ``{`` `` `[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"remotes"``)`` ``}`` ``remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"genentech/jmpost"``)`
 
 Please note that this package requires
 [`cmdstanr`](https://mc-stan.org/cmdstanr/).
@@ -62,80 +56,20 @@ structure of the input data and use
 [`DataJoint()`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)
 to bring it into the right format.
 
-``` r
-
-library(jmpost)
-#> Registered S3 methods overwritten by 'ggpp':
-#>   method                  from   
-#>   heightDetails.titleGrob ggplot2
-#>   widthDetails.titleGrob  ggplot2
-set.seed(321)
-sim_data <- SimJointData(
-    design = list(
-        SimGroup(50, "Arm-A", "Study-X"),
-        SimGroup(50, "Arm-B", "Study-X")
-    ),
-    longitudinal = SimLongitudinalRandomSlope(
-        times = c(1, 50, 100, 150, 200, 250, 300),
-    ),
-    survival = SimSurvivalWeibullPH(
-        lambda = 1 / 300,
-        gamma = 0.97
-    )
-)
-#> INFO: 1 subject(s) did not die before max(times)
-
-joint_data <- DataJoint(
-    subject = DataSubject(
-        data = sim_data@survival,
-        subject = "subject",
-        arm = "arm",
-        study = "study"
-    ),
-    survival = DataSurvival(
-        data = sim_data@survival,
-        formula = Surv(time, event) ~ cov_cat + cov_cont
-    ),
-    longitudinal = DataLongitudinal(
-        data = sim_data@longitudinal,
-        formula = sld ~ time,
-        threshold = 5
-    )
-)
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`jmpost`](https://genentech.github.io/jmpost/)`)`` ``#> Registered S3 methods overwritten by 'ggpp':`` ``#> method from `` ``#> heightDetails.titleGrob ggplot2`` ``#> widthDetails.titleGrob ggplot2`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``321``)`` ``sim_data`` ``<-`` `[`SimJointData`](https://genentech.github.io/jmpost/reference/SimJointData-class.md)`(`` `` design ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-A"``, ``"Study-X"``)``,`` `` `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-B"``, ``"Study-X"``)`` `` ``)``,`` `` longitudinal ``=`` `[`SimLongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)`(`` `` times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``50``, ``100``, ``150``, ``200``, ``250``, ``300``)``,`` `` ``)``,`` `` survival ``=`` `[`SimSurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)`(`` `` lambda ``=`` ``1`` ``/`` ``300``,`` `` gamma ``=`` ``0.97`` `` ``)`` ``)`` ``#> INFO: 1 subject(s) did not die before max(times)`` `` ``joint_data`` ``<-`` `[`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)`(`` `` subject ``=`` `[`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)`(`` `` data ``=`` ``sim_data``@``survival``,`` `` subject ``=`` ``"subject"``,`` `` arm ``=`` ``"arm"``,`` `` study ``=`` ``"study"`` `` ``)``,`` `` survival ``=`` `[`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)`(`` `` data ``=`` ``sim_data``@``survival``,`` `` formula ``=`` `[`Surv`](https://genentech.github.io/jmpost/reference/Surv.md)`(``time``, ``event``)`` ``~`` ``cov_cat`` ``+`` ``cov_cont`` `` ``)``,`` `` longitudinal ``=`` `[`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)`(`` `` data ``=`` ``sim_data``@``longitudinal``,`` `` formula ``=`` ``sld`` ``~`` ``time``,`` `` threshold ``=`` ``5`` `` ``)`` ``)`
 
 Then we specify the joint model, here we use a Generalized Stein-Fojo
 model for the longitudinal part, and a Weibull proportional hazards
 model for the survival part. The longitudinal model impacts the hazard
 via a term for the derivative and another term for the time-to-growth.
 
-``` r
-
-joint_model <- JointModel(
-    longitudinal = LongitudinalGSF(),
-    survival = SurvivalWeibullPH(),
-    link = Link(
-        linkDSLD(),
-        linkTTG()
-    )
-)
-```
+`joint_model`` ``<-`` `[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`` `` longitudinal ``=`` `[`LongitudinalGSF`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)`(``)``,`` `` survival ``=`` `[`SurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.md)`(``)``,`` `` link ``=`` `[`Link`](https://genentech.github.io/jmpost/reference/Link-class.md)`(`` `` `[`linkDSLD`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)``,`` `` `[`linkTTG`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)`` `` ``)`` ``)`
 
 Finally we can sample the parameters via MCMC from the underlying Stan
 model. Note that in a real application you will choose more warm up and
 sampling iterations.
 
-``` r
-
-mcmc_results <- sampleStanModel(
-    joint_model,
-    data = joint_data,
-    iter_sampling = 100,
-    iter_warmup = 100,
-    chains = 1,
-    parallel_chains = 1
-)
-```
+`mcmc_results`` ``<-`` `[`sampleStanModel`](https://genentech.github.io/jmpost/reference/sampleStanModel.md)`(`` `` ``joint_model``,`` `` data ``=`` ``joint_data``,`` `` iter_sampling ``=`` ``100``,`` `` iter_warmup ``=`` ``100``,`` `` chains ``=`` ``1``,`` `` parallel_chains ``=`` ``1`` ``)`
 
 ## Citing `jmpost`
 

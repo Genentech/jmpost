@@ -69,29 +69,7 @@ following have been omitted from this example:
 
 For reference the following libraries will be used during this example:
 
-``` r
-
-library(jmpost)
-#> Registered S3 methods overwritten by 'ggpp':
-#>   method                  from   
-#>   heightDetails.titleGrob ggplot2
-#>   widthDetails.titleGrob  ggplot2
-#> CmdStan path set to: /root/.cmdstan/cmdstan-2.39.0
-library(ggplot2)
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-library(loo)
-#> This is loo version 2.10.1
-#> - Online documentation and vignettes at mc-stan.org/loo
-#> - As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session.
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`jmpost`](https://genentech.github.io/jmpost/)`)`` ``#> Registered S3 methods overwritten by 'ggpp':`` ``#> method from `` ``#> heightDetails.titleGrob ggplot2`` ``#> widthDetails.titleGrob ggplot2`` ``#> CmdStan path set to: /root/.cmdstan/cmdstan-2.39.0`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`` ``#> `` ``#> Attaching package: 'dplyr'`` ``#> The following objects are masked from 'package:stats':`` ``#> `` ``#> filter, lag`` ``#> The following objects are masked from 'package:base':`` ``#> `` ``#> intersect, setdiff, setequal, union`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`loo`](https://mc-stan.org/loo/)`)`` ``#> This is loo version 2.10.1`` ``#> - Online documentation and vignettes at mc-stan.org/loo`` ``#> - As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session.`
 
 ## Generating Simulated Data
 
@@ -100,92 +78,7 @@ first generate some simulated data. This will allow us to compare the
 true parameter values with the estimated parameter values. This can be
 done using the `SimJointData` constructor function as follows:
 
-``` r
-
-# Define our simulation parameters + object
-SimWang <- setClass(
-    "SimWang",
-    contains = "SimLongitudinal",
-    slots = c(
-        times = "numeric",
-        mu_b = "numeric",
-        mu_s = "numeric",
-        mu_g = "numeric",
-        omega_b = "numeric",
-        omega_s = "numeric",
-        omega_g = "numeric",
-        sigma = "numeric",
-        link_dsld = "numeric"
-    )
-)
-
-# Method to generate individual subjects parameters from the hierarchical distributions
-sampleSubjects.SimWang <- function(object, subjects_df) {
-    nsub <- nrow(subjects_df)
-    subjects_df$b <- stats::rlnorm(nsub, log(object@mu_b), object@omega_b)
-    subjects_df$s <- stats::rlnorm(nsub, log(object@mu_s), object@omega_s)
-    subjects_df$g <- stats::rlnorm(nsub, log(object@mu_g), object@omega_g)
-    subjects_df
-}
-
-# Method to generate observations for each individual subject
-sampleObservations.SimWang <- function(object, times_df) {
-    nobs <- nrow(times_df)
-    calc_mu <- function(time, b, s, g) b * exp(-s * time) + g * time
-    calc_dsld <- function(time, b, s, g) -s * b * exp(-s * time) + g
-
-    times_df$mu_sld <- calc_mu(times_df$time, times_df$b, times_df$s, times_df$g)
-    times_df$dsld <- calc_dsld(times_df$time, times_df$b, times_df$s, times_df$g)
-    times_df$sld <- stats::rnorm(nobs, times_df$mu_sld, object@sigma)
-    times_df$log_haz_link <- object@link_dsld * times_df$dsld
-    times_df
-}
-
-
-# Generate simulated data
-set.seed(1622)
-joint_data_sim <- SimJointData(
-    design = list(SimGroup(80, "Arm-A", "Study-X")),
-    survival = SimSurvivalExponential(
-        lambda = (1 / 400) * 365,
-        time_max = 4,
-        time_step = 1 / 365,
-        lambda_censor = 1 / 9000,
-        beta_cat = c("A" = 0, "B" = -0.1, "C" = 0.5),
-        beta_cont = 0.3
-    ),
-    longitudinal = SimWang(
-        times = c(
-            1, 50, 100, 200, 300, 400, 600,
-            800, 1000, 1300, 1600
-        ) / 365,
-        mu_b = 60,
-        mu_s = 2,
-        mu_g = 10,
-        omega_b = 0.3,
-        omega_s = 0.3,
-        omega_g = 0.3,
-        sigma = 1.5,
-        link_dsld = 0.2
-    ),
-    .silent = TRUE
-)
-
-dat_lm <- joint_data_sim@longitudinal
-dat_os <- joint_data_sim@survival
-
-
-# Select 6 random subjects to plot
-dat_lm_plot <- dat_lm |>
-    filter(subject %in% sample(dat_os$subject, 6))
-
-ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
-    geom_line() +
-    geom_point() +
-    labs(x = "Time (years)", y = "Tumour Size", col = "Subject") +
-    theme_bw() +
-    theme(legend.position = "bottom")
-```
+`# Define our simulation parameters + object`` ``SimWang`` ``<-`` ``setClass``(`` `` ``"SimWang"``,`` `` contains ``=`` ``"SimLongitudinal"``,`` `` slots ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`` `` times ``=`` ``"numeric"``,`` `` mu_b ``=`` ``"numeric"``,`` `` mu_s ``=`` ``"numeric"``,`` `` mu_g ``=`` ``"numeric"``,`` `` omega_b ``=`` ``"numeric"``,`` `` omega_s ``=`` ``"numeric"``,`` `` omega_g ``=`` ``"numeric"``,`` `` sigma ``=`` ``"numeric"``,`` `` link_dsld ``=`` ``"numeric"`` `` ``)`` ``)`` `` ``# Method to generate individual subjects parameters from the hierarchical distributions`` ``sampleSubjects.SimWang`` ``<-`` ``function``(``object``, ``subjects_df``)`` ``{`` `` ``nsub`` ``<-`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``subjects_df``)`` `` ``subjects_df``$``b`` ``<-`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``nsub``, `[`log`](https://rdrr.io/r/base/Log.html)`(``object``@``mu_b``)``, ``object``@``omega_b``)`` `` ``subjects_df``$``s`` ``<-`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``nsub``, `[`log`](https://rdrr.io/r/base/Log.html)`(``object``@``mu_s``)``, ``object``@``omega_s``)`` `` ``subjects_df``$``g`` ``<-`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``nsub``, `[`log`](https://rdrr.io/r/base/Log.html)`(``object``@``mu_g``)``, ``object``@``omega_g``)`` `` ``subjects_df`` ``}`` `` ``# Method to generate observations for each individual subject`` ``sampleObservations.SimWang`` ``<-`` ``function``(``object``, ``times_df``)`` ``{`` `` ``nobs`` ``<-`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``times_df``)`` `` ``calc_mu`` ``<-`` ``function``(``time``, ``b``, ``s``, ``g``)`` ``b`` ``*`` `[`exp`](https://rdrr.io/r/base/Log.html)`(``-``s`` ``*`` ``time``)`` ``+`` ``g`` ``*`` ``time`` `` ``calc_dsld`` ``<-`` ``function``(``time``, ``b``, ``s``, ``g``)`` ``-``s`` ``*`` ``b`` ``*`` `[`exp`](https://rdrr.io/r/base/Log.html)`(``-``s`` ``*`` ``time``)`` ``+`` ``g`` `` `` ``times_df``$``mu_sld`` ``<-`` ``calc_mu``(``times_df``$``time``, ``times_df``$``b``, ``times_df``$``s``, ``times_df``$``g``)`` `` ``times_df``$``dsld`` ``<-`` ``calc_dsld``(``times_df``$``time``, ``times_df``$``b``, ``times_df``$``s``, ``times_df``$``g``)`` `` ``times_df``$``sld`` ``<-`` ``stats``::`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``nobs``, ``times_df``$``mu_sld``, ``object``@``sigma``)`` `` ``times_df``$``log_haz_link`` ``<-`` ``object``@``link_dsld`` ``*`` ``times_df``$``dsld`` `` ``times_df`` ``}`` `` `` ``# Generate simulated data`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1622``)`` ``joint_data_sim`` ``<-`` `[`SimJointData`](https://genentech.github.io/jmpost/reference/SimJointData-class.md)`(`` `` design ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``80``, ``"Arm-A"``, ``"Study-X"``)``)``,`` `` survival ``=`` `[`SimSurvivalExponential`](https://genentech.github.io/jmpost/reference/SimSurvivalExponential.md)`(`` `` lambda ``=`` ``(``1`` ``/`` ``400``)`` ``*`` ``365``,`` `` time_max ``=`` ``4``,`` `` time_step ``=`` ``1`` ``/`` ``365``,`` `` lambda_censor ``=`` ``1`` ``/`` ``9000``,`` `` beta_cat ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"A"`` ``=`` ``0``, ``"B"`` ``=`` ``-``0.1``, ``"C"`` ``=`` ``0.5``)``,`` `` beta_cont ``=`` ``0.3`` `` ``)``,`` `` longitudinal ``=`` ``SimWang``(`` `` times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`` `` ``1``, ``50``, ``100``, ``200``, ``300``, ``400``, ``600``,`` `` ``800``, ``1000``, ``1300``, ``1600`` `` ``)`` ``/`` ``365``,`` `` mu_b ``=`` ``60``,`` `` mu_s ``=`` ``2``,`` `` mu_g ``=`` ``10``,`` `` omega_b ``=`` ``0.3``,`` `` omega_s ``=`` ``0.3``,`` `` omega_g ``=`` ``0.3``,`` `` sigma ``=`` ``1.5``,`` `` link_dsld ``=`` ``0.2`` `` ``)``,`` `` .silent ``=`` ``TRUE`` ``)`` `` ``dat_lm`` ``<-`` ``joint_data_sim``@``longitudinal`` ``dat_os`` ``<-`` ``joint_data_sim``@``survival`` `` `` ``# Select 6 random subjects to plot`` ``dat_lm_plot`` ``<-`` ``dat_lm`` ``|>`` `` `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``subject`` `[`%in%`](https://rdrr.io/r/base/match.html)` `[`sample`](https://rdrr.io/r/base/sample.html)`(``dat_os``$``subject``, ``6``)``)`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``dat_lm_plot``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``time``, y ``=`` ``sld``, group ``=`` ``subject``, color ``=`` ``subject``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``)`` ``+`` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`` `` `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``"Time (years)"``, y ``=`` ``"Tumour Size"``, col ``=`` ``"Subject"``)`` ``+`` `` `[`theme_bw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`` ``+`` `` `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"bottom"``)`
 
 ![](custom-model_files/figure-html/unnamed-chunk-2-1.png)
 
@@ -194,84 +87,7 @@ ggplot(dat_lm_plot, aes(x = time, y = sld, group = subject, color = subject)) +
 The longitudinal model can be implemented by extending the
 `LongitudinalModel` class. This can be done as follows:
 
-``` r
-
-WangModel <- setClass(
-    "WangModel",
-    contains = "LongitudinalModel"
-)
-
-longmodel <- WangModel(
-    LongitudinalModel(
-        name = "Wang",
-        stan = StanModule("custom-model.stan"),
-        scaled_variance = FALSE,
-        parameters = ParameterList(
-            Parameter(
-                name = "mu_baseline",
-                prior = set_limits(prior_lognormal(log(60), 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "mu_shrinkage",
-                prior = set_limits(prior_lognormal(log(2), 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "mu_growth",
-                prior = set_limits(prior_lognormal(log(10), 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "sigma_baseline",
-                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "sigma_shrinkage",
-                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "sigma_growth",
-                prior = set_limits(prior_lognormal(0.3, 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            Parameter(
-                name = "sigma",
-                prior = set_limits(prior_lognormal(1.5, 1), lower = getOption("jmpost.double_eps")),
-                size = 1
-            ),
-            # The following is only required if we want jmpost to generate
-            # initial values automatically for us
-            Parameter(
-                name = "baseline_idv",
-                prior = set_limits(
-                    prior_init_only(prior_lognormal(log(60), 1)),
-                    lower = getOption("jmpost.double_eps")
-                ),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "shrinkage_idv",
-                prior = set_limits(
-                    prior_init_only(prior_lognormal(log(2), 1)),
-                    lower = getOption("jmpost.double_eps")
-                ),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "growth_idv",
-                prior = set_limits(
-                    prior_init_only(prior_lognormal(log(10), 1)),
-                    lower = getOption("jmpost.double_eps")
-                ),
-                size = "n_subjects"
-            )
-        )
-    )
-)
-```
+`WangModel`` ``<-`` ``setClass``(`` `` ``"WangModel"``,`` `` contains ``=`` ``"LongitudinalModel"`` ``)`` `` ``longmodel`` ``<-`` ``WangModel``(`` `` `[`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)`(`` `` name ``=`` ``"Wang"``,`` `` stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"custom-model.stan"``)``,`` `` scaled_variance ``=`` ``FALSE``,`` `` parameters ``=`` `[`ParameterList`](https://genentech.github.io/jmpost/reference/ParameterList-class.md)`(`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"mu_baseline"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``60``)``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"mu_shrinkage"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``2``)``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"mu_growth"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``10``)``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"sigma_baseline"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(``0.3``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"sigma_shrinkage"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(``0.3``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"sigma_growth"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(``0.3``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"sigma"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(``1.5``, ``1``)``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)``,`` `` size ``=`` ``1`` `` ``)``,`` `` ``# The following is only required if we want jmpost to generate`` `` ``# initial values automatically for us`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"baseline_idv"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`` `` `[`prior_init_only`](https://genentech.github.io/jmpost/reference/prior_init_only.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``60``)``, ``1``)``)``,`` `` lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)`` `` ``)``,`` `` size ``=`` ``"n_subjects"`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"shrinkage_idv"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`` `` `[`prior_init_only`](https://genentech.github.io/jmpost/reference/prior_init_only.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``2``)``, ``1``)``)``,`` `` lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)`` `` ``)``,`` `` size ``=`` ``"n_subjects"`` `` ``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(`` `` name ``=`` ``"growth_idv"``,`` `` prior ``=`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(`` `` `[`prior_init_only`](https://genentech.github.io/jmpost/reference/prior_init_only.md)`(`[`prior_lognormal`](https://genentech.github.io/jmpost/reference/prior_lognormal.md)`(`[`log`](https://rdrr.io/r/base/Log.html)`(``10``)``, ``1``)``)``,`` `` lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)`` `` ``)``,`` `` size ``=`` ``"n_subjects"`` `` ``)`` `` ``)`` `` ``)`` ``)`
 
 Please note that:
 
@@ -347,23 +163,7 @@ As stated in the introduction, the link function for this model is going
 to be the derivative of the growth function. This can be implemented in
 using the `jmpost` framework as follows:
 
-``` r
-
-enableLink.WangModel <- function(object, ...) {
-    object@stan <- merge(
-        object@stan,
-        StanModule("custom-model-enable-link.stan")
-    )
-    object
-}
-
-
-link <- LinkComponent(
-    stan = StanModule("custom-model-dsld.stan"),
-    prior = prior_normal(0, 1),
-    key = "link_dsld"
-)
-```
+`enableLink.WangModel`` ``<-`` ``function``(``object``, ``...``)`` ``{`` `` ``object``@``stan`` ``<-`` `[`merge`](https://genentech.github.io/jmpost/reference/merge.md)`(`` `` ``object``@``stan``,`` `` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"custom-model-enable-link.stan"``)`` `` ``)`` `` ``object`` ``}`` `` `` ``link`` ``<-`` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(`` `` stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"custom-model-dsld.stan"``)``,`` `` prior ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``1``)``,`` `` key ``=`` ``"link_dsld"`` ``)`
 
 Where the Stan code for the `custom-model-enable-link.stan` file is as
 follows:
@@ -407,83 +207,7 @@ method is required to avoid duplicating the implementation of the
 With our longitudinal model defined we can now specify and sample from
 the full joint model.
 
-``` r
-
-model <- JointModel(
-    longitudinal = longmodel,
-    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
-    link = link
-)
-
-joint_data <- DataJoint(
-    subject = DataSubject(
-        data = dat_os,
-        subject = "subject",
-        arm = "arm",
-        study = "study"
-    ),
-    survival = DataSurvival(
-        data = dat_os,
-        formula = Surv(time, event) ~ cov_cat + cov_cont
-    ),
-    longitudinal = DataLongitudinal(
-        data = dat_lm,
-        formula = sld ~ time
-    )
-)
-
-model_samples <- sampleStanModel(
-    model,
-    data = joint_data,
-    iter_warmup = 800,
-    iter_sampling = 1000,
-    chains = 1,
-    refresh = 0,
-    parallel_chains = 1
-)
-#> Running MCMC with 1 chain...
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpwZARVk/model-12961505c261.stan', line 525, column 4 to column 79)
-#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-#> Chain 1
-#> Chain 1 finished in 10.3 seconds.
-
-vars <- c(
-    "mu_baseline", "mu_shrinkage", "mu_growth", "sigma",
-    "link_dsld", "sm_exp_lambda"
-)
-cmdstanr::as.CmdStanMCMC(model_samples)$summary(vars)
-#> # A tibble: 6 × 10
-#>   variable       mean median     sd    mad     q5    q95  rhat ess_bulk ess_tail
-#>   <chr>         <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl>    <dbl>    <dbl>
-#> 1 mu_baseline  61.6   61.5   2.10   2.06   58.3   65.0   1.00     1753.     592.
-#> 2 mu_shrinkage  2.04   2.04  0.0629 0.0656  1.94   2.14  1.00     1453.     803.
-#> 3 mu_growth    10.2   10.2   0.293  0.295   9.75  10.7   1.000    1914.     695.
-#> 4 sigma         1.52   1.52  0.0426 0.0408  1.45   1.59  1.01      764.     729.
-#> 5 link_dsld     0.220  0.219 0.0276 0.0259  0.174  0.267 1.01     1099.     610.
-#> 6 sm_exp_lamb…  0.981  0.971 0.203  0.208   0.676  1.34  1.00      689.     330.
-```
+`model`` ``<-`` `[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`` `` longitudinal ``=`` ``longmodel``,`` `` survival ``=`` `[`SurvivalExponential`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)`(``lambda ``=`` `[`prior_gamma`](https://genentech.github.io/jmpost/reference/prior_gamma.md)`(``1``, ``1``)``)``,`` `` link ``=`` ``link`` ``)`` `` ``joint_data`` ``<-`` `[`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)`(`` `` subject ``=`` `[`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)`(`` `` data ``=`` ``dat_os``,`` `` subject ``=`` ``"subject"``,`` `` arm ``=`` ``"arm"``,`` `` study ``=`` ``"study"`` `` ``)``,`` `` survival ``=`` `[`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)`(`` `` data ``=`` ``dat_os``,`` `` formula ``=`` `[`Surv`](https://genentech.github.io/jmpost/reference/Surv.md)`(``time``, ``event``)`` ``~`` ``cov_cat`` ``+`` ``cov_cont`` `` ``)``,`` `` longitudinal ``=`` `[`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)`(`` `` data ``=`` ``dat_lm``,`` `` formula ``=`` ``sld`` ``~`` ``time`` `` ``)`` ``)`` `` ``model_samples`` ``<-`` `[`sampleStanModel`](https://genentech.github.io/jmpost/reference/sampleStanModel.md)`(`` `` ``model``,`` `` data ``=`` ``joint_data``,`` `` iter_warmup ``=`` ``800``,`` `` iter_sampling ``=`` ``1000``,`` `` chains ``=`` ``1``,`` `` refresh ``=`` ``0``,`` `` parallel_chains ``=`` ``1`` ``)`` ``#> Running MCMC with 1 chain...`` ``#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`` ``#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpZDMQTk/model-129725a7b211.stan', line 525, column 4 to column 79)`` ``#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`` ``#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`` ``#> Chain 1`` ``#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`` ``#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpZDMQTk/model-129725a7b211.stan', line 525, column 4 to column 79)`` ``#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`` ``#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`` ``#> Chain 1`` ``#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`` ``#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpZDMQTk/model-129725a7b211.stan', line 525, column 4 to column 79)`` ``#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`` ``#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`` ``#> Chain 1`` ``#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`` ``#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpZDMQTk/model-129725a7b211.stan', line 525, column 4 to column 79)`` ``#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`` ``#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`` ``#> Chain 1`` ``#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`` ``#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpZDMQTk/model-129725a7b211.stan', line 525, column 4 to column 79)`` ``#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`` ``#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`` ``#> Chain 1`` ``#> Chain 1 finished in 8.7 seconds.`` `` ``vars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(`` `` ``"mu_baseline"``, ``"mu_shrinkage"``, ``"mu_growth"``, ``"sigma"``,`` `` ``"link_dsld"``, ``"sm_exp_lambda"`` ``)`` ``cmdstanr``::`[`as.CmdStanMCMC`](https://rdrr.io/pkg/cmdstanr/man/cmdstan_coercion.html)`(``model_samples``)``$``summary``(``vars``)`` ``#> # A tibble: 6 × 10`` ``#> variable mean median sd mad q5 q95 rhat ess_bulk ess_tail`` ``#> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>`` ``#> 1 mu_baseline 61.6 61.5 2.10 2.06 58.3 65.0 1.00 1753. 592.`` ``#> 2 mu_shrinkage 2.04 2.04 0.0629 0.0656 1.94 2.14 1.00 1453. 803.`` ``#> 3 mu_growth 10.2 10.2 0.293 0.295 9.75 10.7 1.000 1914. 695.`` ``#> 4 sigma 1.52 1.52 0.0426 0.0408 1.45 1.59 1.01 764. 729.`` ``#> 5 link_dsld 0.220 0.219 0.0276 0.0259 0.174 0.267 1.01 1099. 610.`` ``#> 6 sm_exp_lamb… 0.981 0.971 0.203 0.208 0.676 1.34 1.00 689. 330.`
 
 ## Generating Quantities of Interest
 
@@ -494,12 +218,7 @@ vignette.
 
 This can be done as follows:
 
-``` r
-
-enableGQ.WangModel <- function(object, ...) {
-    StanModule("custom-model-gq.stan")
-}
-```
+`enableGQ.WangModel`` ``<-`` ``function``(``object``, ``...``)`` ``{`` `` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"custom-model-gq.stan"``)`` ``}`
 
 Where the Stan code for the `custom-model-gq.stan` file is as follows:
 
@@ -538,27 +257,12 @@ generated quantities {
 With the above in place we are now able to generate quantities as
 needed; this can be done at the subject level via:
 
-``` r
-
-selected_subjects <- head(dat_os$subject, 4)
-long_quantities_idv <- LongitudinalQuantities(
-    model_samples,
-    grid = GridFixed(subjects = selected_subjects)
-)
-autoplot(long_quantities_idv)
-```
+`selected_subjects`` ``<-`` `[`head`](https://rdrr.io/r/utils/head.html)`(``dat_os``$``subject``, ``4``)`` ``long_quantities_idv`` ``<-`` `[`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md)`(`` `` ``model_samples``,`` `` grid ``=`` `[`GridFixed`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)`(``subjects ``=`` ``selected_subjects``)`` ``)`` `[`autoplot`](https://genentech.github.io/jmpost/reference/autoplot.md)`(``long_quantities_idv``)`
 
 ![](custom-model_files/figure-html/unnamed-chunk-11-1.png)
 
 Or at the population level via:
 
-``` r
-
-long_quantities_pop <- LongitudinalQuantities(
-    model_samples,
-    grid = GridPopulation()
-)
-autoplot(long_quantities_pop)
-```
+`long_quantities_pop`` ``<-`` `[`LongitudinalQuantities`](https://genentech.github.io/jmpost/reference/LongitudinalQuantities-class.md)`(`` `` ``model_samples``,`` `` grid ``=`` `[`GridPopulation`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)`(``)`` ``)`` `[`autoplot`](https://genentech.github.io/jmpost/reference/autoplot.md)`(``long_quantities_pop``)`
 
 ![](custom-model_files/figure-html/unnamed-chunk-12-1.png)

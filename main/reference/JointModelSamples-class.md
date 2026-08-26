@@ -21,7 +21,7 @@ A `JointModelSamples` object.
 
 - `results`:
 
-  ([`cmdstanr::CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html))\
+  ([`cmdstanr::CmdStanMCMC`](https://rdrr.io/pkg/cmdstanr/man/CmdStanMCMC.html))\
   the STAN samples.
 
 ## Examples

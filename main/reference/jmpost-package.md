@@ -22,17 +22,17 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Isaac Gravestock <isaac.gravestock@roche.com>
+**Maintainer**: Daniel Sabanes Bove <daniel@rconis.com>
 
 Authors:
 
-- Isaac Gravestock <isaac.gravestock@roche.com>
+- Daniel Sabanes Bove <daniel@rconis.com>
+
+- Isaac Gravestock <isaac.gravestock@bayer.com>
 
 - Craig Gower-Page <craig.gower-page@novartis.com>
 
 - Francois Mercier <francois.mercier@roche.com>
-
-- Daniel Sabanes Bove <daniel@rconis.com>
 
 - Georgios Kazantzidis <georgios.kazantzidis@roche.com>
 

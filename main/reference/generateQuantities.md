@@ -34,7 +34,7 @@ generateQuantities(object, generator, type, ...)
 ## Value
 
 A
-[`cmdstanr::CmdStanGQ`](https://mc-stan.org/cmdstanr/reference/CmdStanGQ.html)
+[`cmdstanr::CmdStanGQ`](https://rdrr.io/pkg/cmdstanr/man/CmdStanGQ.html)
 object containing generated quantities.
 
 ## Examples

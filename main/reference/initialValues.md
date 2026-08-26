@@ -42,7 +42,7 @@ Initial values for the object, usually as a numeric vector or list.
 
 There are multiple ways of specifying initial values to Stan, see the
 `init` argument in
-[cmdstanr::model-method-sample](https://mc-stan.org/cmdstanr/reference/model-method-sample.html)
+[cmdstanr::model-method-sample](https://rdrr.io/pkg/cmdstanr/man/model-method-sample.html)
 for full details. Within this package we supply initial values via a
 list of lists where each inner list contains the initial values for a
 single chain. As such the `n_chains` argument specifies the number of
