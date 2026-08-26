@@ -1,0 +1,169 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    embed-resources: true
+bibliography: references.bib
+---
+
+# Longitudinal models with covariates
+
+The current formulation of the TGI models has one model per arm.
+
+We need another formulation where we have one model per study - and then have a linear predictor for the shrinkage and growth terms.
+
+## Requirements
+
+- Have some sort of backwards compatibility.
+  - This can be achieved by defaulting the covariates used to the dummy variables for the study and treatment arm, as explained below in the statistical specifications.
+- 3 modeling options need to be supported:
+  - linear model: `intercept + X * beta`
+  - proportional: `intercept * (1 + X * beta)`
+  - exponential: `intercept^(X * beta)`
+- Possibility to have different covariates affecting different parameters.
+- Simulation functions would also need to be able to take covariates for TGI.
+
+## Statistical specifications
+
+Basically everywhere where we so far had the treatment arm index $k(i)$ or the study index $l(i)$ in the parameters, we replace this with a (potentially transformed) linear predictor $\eta_i$ that depends on the covariates $x_i$ of the individual $i$.
+Furthermore, these covariates can be different for the different parameters.
+
+Let's write this out for some of the longitudinal models we support in `jmpost`.
+
+### Random-Slope model
+
+$$
+y_{ij} = \mu_{i} + s_i t_{ij} + \epsilon_{ij}
+$$
+
+where:
+
+- $y_{ij}$ is the tumour size for subject $i$ at timepoint $j$
+- $t_{ij}$ is the timepoint $j$ for subject $i$
+- $\mu_i$ is the intercept for subject $i$, parametrized as a linear predictor $\eta_{\mu,i}$ of covariates $x_{\mu,i}$:
+  $$
+    \mu_i = \eta_{\mu,i} = \beta_{\mu,0} + x_{\mu,i}^T \beta_{\mu}
+  $$
+- $s_i$ is the slope for subject $i$, with $s_i \sim N(\mu_{s,i}, \sigma_{s,i})$.
+  - Here both $\mu_{s,i}$ and $\sigma_{s,i}$ are parametrized with linear predictors
+  - First we have
+    $$ 
+        \mu_{s,i} = \eta_{\mu_s,i} = \beta_{\mu_s,0} + x_{\mu_s,i}^T \beta_{\mu_s}
+    $$
+  - And then we have
+    $$
+        \log(\sigma_{s,i}) = \eta_{\sigma_{s,i}} = \beta_{\sigma_s,0} + x_{\sigma_s,i}^T \beta_{\sigma_s}
+    $$
+
+This condenses back to the original model formulation without covariates if:
+
+- $x_{\mu,i}$ only contains dummy variables for the study
+- $x_{\mu_s,i}$ only contains dummy variables for the treatment arm
+- $x_{\sigma_s,i}$ only contains dummy variables for the treatment arm
+
+### Stein-Fojo Model
+
+$$\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+\\
+SLD_{ij} &=
+\begin{cases}
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+s_i &\sim \text{LogNormal}(\mu_{s,i}, \omega_{s,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i}$ is the mean of the log-normal distribution for the baseline tumour size $b_i$, parametrized as a linear predictor $\eta_{\mu_b,i}$ of covariates $x_{\mu_b,i}$:
+  $$
+    \mu_{b,i} = \eta_{\mu_b,i} = \beta_{\mu_b,0} + x_{\mu_b,i}^T \beta_{\mu_b}
+  $$
+- $\omega_{b,i}$ is the variance of the log-normal distribution for the baseline tumour size $b_i$, parametrized as the exponential of a linear predictor $\eta_{\omega_b,i}$ with covariates $x_{\omega_b,i}$:
+  $$
+    \log(\omega_{b,i}) = \eta_{\omega_b,i} = \beta_{\omega_b,0} + x_{\omega_b,i}^T \beta_{\omega_b}
+  $$
+- And in the same way for $\mu_{s,i}$, $\omega_{s,i}$, $\mu_{g,i}$, and $\omega_{g,i}$.
+
+Note that this condenses back to the original model formulation without covariates if:
+
+- $x_{\mu_b,i}$ and $x_{\omega_b,i}$ only contain dummy variables for the study
+- $x_{\mu_s,i}$ and $x_{\omega_s,i}$ only contain dummy variables for the treatment arm
+- $x_{\mu_g,i}$ and $x_{\omega_g,i}$ only contain dummy variables for the treatment arm
+
+### Different parametrizations of the "linear" predictors
+
+In the above formulations, we have always used a linear predictor of the form $\eta_i = \beta_0 + x_i^T \beta$. However, we also want to support other parametrizations, so overall we need the following options:
+
+- linear: $\eta_i = \beta_0 + x_i^T \beta$
+- proportional: $\eta_i = \beta_0 (1 + x_i^T \beta)$
+- exponential: $\eta_i = \beta_0^{(x_i^T \beta)}$
+
+In principle these can be inserted in the above model definitions.
+For the exponential parametrization we need to be careful with the baseline parameter $\beta_0$, as it needs to be positive.
+
+### GSF Model
+
+With the above note, let's keep the GSF model at the level of linear predictors.
+
+$$
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases}
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+s_i &\sim \text{LogNormal}(\mu_{s,i}, \omega_{s,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi,i}, \omega_{\phi,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i} = \eta_{\mu_b,i}$
+- $\omega_{b,i} = \exp(\eta_{\omega_b,i})$
+- $\mu_{s,i} = \eta_{\mu_s,i}$
+- $\omega_{s,i} = \exp(\eta_{\omega_s,i})$
+- $\mu_{g,i} = \eta_{\mu_g,i}$
+- $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
+- $\mu_{\phi,i} = \eta_{\mu_\phi,i}$
+- $\omega_{\phi,i} = \exp(\eta_{\omega_\phi,i})$
+
+### Claret-Bruno Model
+
+$$
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases} b_i e^{g_i t_{ij}} & 
+\text{if } t_{ij} < 0, \\ 
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+\text{if } t_{ij} \geq 0. \end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+c_i &\sim \text{LogNormal}(\mu_{c,i}, \omega_{c,i}) \\
+p_i &\sim \text{LogNormal}(\mu_{p,i}, \omega_{p,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i} = \eta_{\mu_b,i}$
+- $\omega_{b,i} = \exp(\eta_{\omega_b,i})$
+- $\mu_{g,i} = \eta_{\mu_g,i}$
+- $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
+- $\mu_{c,i} = \eta_{\mu_c,i}$
+- $\omega_{c,i} = \exp(\eta_{\omega_c,i})$      
+- $\mu_{p,i} = \eta_{\mu_p,i}$
+- $\omega_{p,i} = \exp(\eta_{\omega_p,i})$
