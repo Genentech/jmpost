@@ -19,14 +19,14 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@roche.com}
+\strong{Maintainer}: Daniel Sabanes Bove \email{daniel@rconis.com}
 
 Authors:
 \itemize{
-  \item Isaac Gravestock \email{isaac.gravestock@roche.com}
+  \item Daniel Sabanes Bove \email{daniel@rconis.com}
+  \item Isaac Gravestock \email{isaac.gravestock@bayer.com}
   \item Craig Gower-Page \email{craig.gower-page@novartis.com}
   \item Francois Mercier \email{francois.mercier@roche.com}
-  \item Daniel Sabanes Bove \email{daniel@rconis.com}
   \item Georgios Kazantzidis \email{georgios.kazantzidis@roche.com}
   \item Xiaoyan Fang \email{xiaoyan.fang@roche.com}
 }
