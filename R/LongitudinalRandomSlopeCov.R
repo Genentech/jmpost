@@ -33,6 +33,13 @@ NULL
     )
 )
 
+#' Supported covariate-predictor parametrizations
+#'
+#' Names of the parametrizations accepted by the covariate-based longitudinal
+#' models and simulators.
+#'
+#' @keywords internal
+#' @returns A character vector.
 .longitudinal_cov_parametrizations <- c(
     "linear",
     "proportional",
@@ -40,6 +47,13 @@ NULL
     "log-linear"
 )
 
+#' Validate a longitudinal covariate formula
+#'
+#' @param x The object to validate as a one-sided formula.
+#' @param argument Name of the user-facing argument, used in error messages.
+#'
+#' @keywords internal
+#' @returns `x`, validated as a one-sided formula.
 .validate_covariate_formula <- function(x, argument) {
     assert_formula(x)
     assert_that(
@@ -49,6 +63,13 @@ NULL
     x
 }
 
+#' Validate a covariate-predictor parametrization
+#'
+#' @param x Character scalar naming the parametrization.
+#' @param argument Name of the user-facing argument, used in error messages.
+#'
+#' @keywords internal
+#' @returns `x`, validated against the supported parametrizations.
 .validate_covariate_parametrization <- function(x, argument) {
     assert_string(x, na.ok = FALSE)
     assert_that(
@@ -62,6 +83,17 @@ NULL
     x
 }
 
+#' Build a subject-level covariate design matrix
+#'
+#' Builds a model matrix and removes its intercept column. Single-level factors
+#' are supported and contribute no columns under reference coding.
+#'
+#' @param formula One-sided formula describing the subject-level covariates.
+#' @param data Data frame containing one row per subject.
+#' @param argument Name of the user-facing formula argument, used in errors.
+#'
+#' @keywords internal
+#' @returns A numeric design matrix without an intercept column.
 .covariate_design_matrix <- function(formula, data, argument = "formula") {
     variables <- all.vars(formula)
     missing_variables <- setdiff(variables, names(data))
@@ -100,6 +132,15 @@ NULL
     design
 }
 
+#' Render a covariate predictor as Stan code
+#'
+#' @param prefix Prefix shared by the intercept, coefficient, and design-matrix
+#'   Stan variables.
+#' @param parametrization Character scalar naming the predictor
+#'   parametrization.
+#'
+#' @keywords internal
+#' @returns A character scalar containing a Stan expression.
 .covariate_predictor_stan <- function(prefix, parametrization) {
     intercept <- paste0(prefix, "_intercept")
     design <- paste0(prefix, "_design")
@@ -113,6 +154,16 @@ NULL
     )
 }
 
+#' Apply positivity constraints to a predictor intercept prior
+#'
+#' @param prior A [`Prior`] object for the predictor intercept.
+#' @param parametrization Character scalar naming the predictor
+#'   parametrization.
+#' @param positive Whether the resulting parameter must be positive even when
+#'   the parametrization itself does not require a positive intercept.
+#'
+#' @keywords internal
+#' @returns The input prior, with a positive lower limit when required.
 .positive_intercept_prior <- function(prior, parametrization, positive = FALSE) {
     if (parametrization == "exponential" || positive) {
         set_limits(prior, lower = getOption("jmpost.double_eps"))
@@ -121,6 +172,14 @@ NULL
     }
 }
 
+#' Obtain a predictor's reference-level initial value
+#'
+#' @param prior A [`Prior`] object for the predictor intercept.
+#' @param parametrization Character scalar naming the predictor
+#'   parametrization.
+#'
+#' @keywords internal
+#' @returns The median reference-level parameter value on its natural scale.
 .predictor_reference_value <- function(prior, parametrization) {
     value <- median(prior)
     if (parametrization == "log-linear") exp(value) else value
@@ -338,13 +397,26 @@ linkGrowth.LongitudinalRandomSlopeCov <- function(
     )
 }
 
+#' Create longitudinal-model-specific Stan data
+#'
+#' @param model A [`LongitudinalModel`] object.
+#' @param subject A [`DataSubject`] object.
+#'
+#' @keywords internal
+#' @returns A named list of model-specific Stan data components.
 longitudinal_model_stan_data <- function(model, subject) {
-    UseMethod("longitudinal_model_stan_data")
+    if (is(model, "LongitudinalRandomSlopeCov")) {
+        return(.random_slope_cov_stan_data(
+            model,
+            subject
+        ))
+    }
+    longitudinal_model_stan_data.default(model, subject)
 }
 
+#' @rdname longitudinal_model_stan_data
 #' @keywords internal
-#' @exportS3Method NULL
-longitudinal_model_stan_data.LongitudinalRandomSlopeCov <- function(
+.random_slope_cov_stan_data <- function(
     model,
     subject
 ) {
@@ -375,7 +447,7 @@ longitudinal_model_stan_data.LongitudinalRandomSlopeCov <- function(
     )
 }
 
-#' @exportS3Method NULL
+#' @rdname longitudinal_model_stan_data
 longitudinal_model_stan_data.default <- function(model, subject) {
     list()
 }

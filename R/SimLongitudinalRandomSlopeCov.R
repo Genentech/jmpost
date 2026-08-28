@@ -95,6 +95,18 @@ SimLongitudinalRandomSlopeCov <- function(
     )
 }
 
+#' Normalise simulation coefficients to a design matrix
+#'
+#' An empty vector represents zero coefficients. For convenience, a full set of
+#' dummy coefficients may be supplied when its reference-level coefficient is
+#' zero; that leading zero is removed to match reference coding.
+#'
+#' @param coefficients Numeric vector of simulation coefficients.
+#' @param n Required number of design-matrix coefficients.
+#' @param argument Name of the user-facing argument, used in error messages.
+#'
+#' @keywords internal
+#' @returns A numeric coefficient vector of length `n`.
 .simulation_coefficients <- function(coefficients, n, argument) {
     if (length(coefficients) == 0) {
         return(rep(0, n))
@@ -114,6 +126,16 @@ SimLongitudinalRandomSlopeCov <- function(
     coefficients
 }
 
+#' Evaluate a covariate predictor in R
+#'
+#' @param design Numeric subject-level design matrix.
+#' @param intercept Numeric scalar predictor intercept.
+#' @param coefficients Numeric vector with one coefficient per design column.
+#' @param parametrization Character scalar naming the predictor
+#'   parametrization.
+#'
+#' @keywords internal
+#' @returns A numeric vector with one predicted value per design row.
 .covariate_predictor_r <- function(
     design,
     intercept,
@@ -129,6 +151,7 @@ SimLongitudinalRandomSlopeCov <- function(
     )
 }
 
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimLongitudinalRandomSlopeCov <- function(object, subjects_df) {
     assert_that(
@@ -202,6 +225,7 @@ sampleSubjects.SimLongitudinalRandomSlopeCov <- function(object, subjects_df) {
         )
 }
 
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalRandomSlopeCov <- function(object, times_df) {
     times_df |>
@@ -218,6 +242,7 @@ sampleObservations.SimLongitudinalRandomSlopeCov <- function(object, times_df) {
         )
 }
 
+#' @rdname as_print_string
 #' @exportS3Method NULL
 as_print_string.SimLongitudinalRandomSlopeCov <- function(object, ...) {
     "SimLongitudinalRandomSlopeCov"
