@@ -320,3 +320,128 @@ SimLongitudinalRandomSlopeCov(
   link_identity = 0  
 )
 ```
+
+## Prototype example
+
+The simulated longitudinal model uses study and treatment arm. The survival
+simulator also generates a continuous (`cov_cont`) and categorical (`cov_cat`)
+baseline covariate. We include those additional covariates in the fitted
+longitudinal model as adjustment variables; their true longitudinal effects are
+zero here. Study changes the subject intercept, while treatment arm changes the
+mean and standard deviation of the random slope. The `log-linear` slope-SD
+predictor keeps the standard deviation positive.
+
+```r
+set.seed(2026)
+
+simulated_data <- SimJointData(
+  design = list(
+    SimGroup(50, "A", "Study-1"),
+    SimGroup(50, "B", "Study-1"),
+    SimGroup(50, "A", "Study-2"),
+    SimGroup(50, "B", "Study-2")
+  ),
+  longitudinal = SimLongitudinalRandomSlopeCov(
+    times = c(0, 50, 100, 150, 200),
+    mu_formula = ~ study,
+    slope_mu_formula = ~ arm,
+    slope_sigma_formula = ~ arm,
+    mu_intercept = 30,
+    mu_coefficients = 5,
+    slope_mu_intercept = 0.01,
+    slope_mu_coefficients = 0.02,
+    slope_sigma_intercept = log(0.5),
+    slope_sigma_coefficients = log(0.7 / 0.5),
+    sigma = 2,
+    link_dsld = 0.1
+  ),
+  survival = SimSurvivalExponential(
+    lambda = 1 / 300,
+    time_max = 500,
+    time_step = 1,
+    beta_cont = 0.2,
+    beta_cat = c("A" = 0, "B" = -0.3, "C" = 0.2)
+  )
+)
+```
+
+Construct the corresponding longitudinal model. `cov_cont` adjusts the
+intercept predictor, and `cov_cat` adjusts the mean-slope predictor in
+addition to the covariates used to simulate the longitudinal data.
+
+```r
+joint_model <- JointModel(
+  longitudinal = LongitudinalRandomSlopeCov(
+    mu_formula = ~ study + cov_cont,
+    slope_mu_formula = ~ arm + cov_cat,
+    slope_sigma_formula = ~ arm,
+    mu_intercept_prior = prior_normal(30, 10),
+    mu_coefficients_prior = prior_normal(0, 5),
+    slope_mu_intercept_prior = prior_normal(0.01, 0.02),
+    slope_mu_coefficients_prior = prior_normal(0, 0.02),
+    slope_sigma_intercept_prior = prior_normal(log(0.5), 0.5),
+    slope_sigma_coefficients_prior = prior_normal(0, 0.5),
+    sigma = prior_lognormal(log(2), 0.5)
+  ),
+  survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+  link = linkDSLD()
+)
+
+joint_data <- DataJoint(
+  subject = DataSubject(
+    data = simulated_data@survival,
+    subject = "subject",
+    arm = "arm",
+    study = "study"
+  ),
+  survival = DataSurvival(
+    data = simulated_data@survival,
+    formula = Surv(time, event) ~ cov_cont + cov_cat
+  ),
+  longitudinal = DataLongitudinal(
+    data = simulated_data@longitudinal,
+    formula = sld ~ time
+  )
+)
+```
+
+For this small prototype, use short chains to check that the complete workflow
+runs. A real analysis should use more iterations and convergence diagnostics.
+
+```r
+fit <- sampleStanModel(
+  joint_model,
+  data = joint_data,
+  iter_warmup = 250,
+  iter_sampling = 250,
+  chains = 2,
+  parallel_chains = 2,
+  seed = 2026,
+  refresh = 0,
+  show_exceptions = FALSE,
+  show_messages = FALSE
+)
+```
+
+The summary exposes the reference-level parameters, their covariate
+coefficients, and standard MCMC diagnostics. With the reference coding used
+above, the second `lm_rsc_mu_coefficients` element corresponds to `cov_cont`;
+the second and third `lm_rsc_slope_mu_coefficients` elements correspond to the
+non-reference `cov_cat` levels. These effects should be near zero because they
+were not used in the longitudinal simulation.
+
+```r
+fit@results$summary(
+  variables = c(
+    "lm_rsc_mu_intercept",
+    "lm_rsc_mu_coefficients",
+    "lm_rsc_slope_mu_intercept",
+    "lm_rsc_slope_mu_coefficients",
+    "lm_rsc_slope_sigma_intercept",
+    "lm_rsc_slope_sigma_coefficients",
+    "lm_rsc_sigma",
+    "link_dsld",
+    "beta_os_cov"
+  )
+)
+```
