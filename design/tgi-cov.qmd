@@ -167,3 +167,57 @@ where
 - $\omega_{c,i} = \exp(\eta_{\omega_c,i})$      
 - $\mu_{p,i} = \eta_{\mu_p,i}$
 - $\omega_{p,i} = \exp(\eta_{\omega_p,i})$
+
+## Interface
+
+The next topic is how to specify the covariates in the interface.
+
+Probably the best way for full backwards compatibility is to introduce new classes for the above more general models. This will also allow us to test the equality in the special case discussed above where the covariates version reduces to the original version.
+
+### `LongitudinalRandomSlopeCov` example
+
+Let's work this through in the example of the random slope model.
+
+The old constructor signature was:
+
+```r
+LongitudinalRandomSlope(
+  intercept = prior_normal(30, 10),
+  slope_mu = prior_normal(1, 3),
+  slope_sigma = prior_lognormal(0, 1.5),
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
+)
+```
+
+- The proposed new constructor takes now formulas for the linear predictors. Note that the actual data is still provided separately via the `DataLongitudinal` object, so the formulas are only used to extract the covariates from the data.
+- The new constructor also needs to support the different parametrizations of the linear predictors, so we need to add an argument for that. This also needs to be specific to the different parameters, as we might want to have different parametrizations for the different parameters.
+- Finally we also have different model parameters now: E.g. instead of `intercept` we model the the corresponding intercept $\beta_{\mu,0}$ and coefficients $\beta_{\mu}$.
+- On the other hand the `sigma` still stays the same, as it is not affected by covariates.
+- We rename here `intercept` to `mu` otherwise it would be confusing to talk about the intercept of the intercept.
+
+```r
+LongitudinalRandomSlopeCov(
+  # Covariate specifications for the linear predictors.
+  mu_formula = ~ study,
+  slope_mu_formula = ~ arm,
+  slope_sigma_formula = ~ arm,
+  # Parametrization of the linear predictors.
+  mu_parametrization = "linear",
+  slope_mu_parametrization = "linear",
+  slope_sigma_parametrization = "log-linear", # Because we take log(sigma) with linear predictor.
+  # Priors for the coefficients of the linear predictors.
+  mu_intercept_prior = prior_normal(30, 10),
+  mu_coefficients_prior = prior_normal(0, 3),
+  slope_mu_intercept_prior = prior_normal(1, 3),
+  slope_mu_coefficients_prior = prior_normal(0, 3),
+  slope_sigma_intercept_prior = prior_normal(0, 1.5),
+  slope_sigma_coefficients_prior = prior_normal(0, 1.5),
+  # Error term specifications (still the same as in LongitudinalRandomSlope).
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
+)
+```
+
+So we see that we have quite a lot more arguments now, but the idea is that we can have a lot more flexibility in specifying the model.
+
