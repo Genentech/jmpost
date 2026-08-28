@@ -256,6 +256,16 @@ test_that("covariate predictor helpers implement all parametrizations", {
         "exp(rep_vector(theta_intercept",
         fixed = TRUE
     )
+    expect_match(
+        .covariate_predictor_stan(
+            "theta",
+            "log-linear",
+            design_prefix = "gq_theta",
+            n_rows = "gq_n_quant"
+        ),
+        "rep_vector(theta_intercept, gq_n_quant) + gq_theta_design",
+        fixed = TRUE
+    )
 
     positive_prior <- .positive_intercept_prior(
         prior_normal(1, 1),
@@ -273,4 +283,293 @@ test_that("covariate predictor helpers implement all parametrizations", {
         longitudinal_model_stan_data(LongitudinalRandomSlope(), NULL),
         list()
     )
+})
+
+test_that("covariate random-slope model exposes downstream parameter names", {
+    model <- LongitudinalRandomSlopeCov()
+
+    expect_equal(
+        getRandomEffectsNames(model),
+        c("slope" = "lm_rsc_ind_rnd_slope")
+    )
+    expect_equal(
+        getPredictionNames(model),
+        c("intercept", "slope")
+    )
+})
+
+test_that("generated quantities rebuild model-aware Stan data", {
+    subject <- DataSubject(
+        data.frame(
+            subject = c("S1", "S2"),
+            arm = c("A", "B"),
+            study = c("X", "Y"),
+            age = c(50, 60)
+        ),
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    )
+    longitudinal <- DataLongitudinal(
+        data.frame(
+            subject = rep(c("S1", "S2"), each = 2),
+            time = rep(0:1, 2),
+            value = 1:4
+        ),
+        value ~ time
+    )
+    data <- DataJoint(subject, longitudinal = longitudinal)
+    model <- JointModel(LongitudinalRandomSlopeCov(
+        mu_formula = ~study + age,
+        slope_mu_formula = ~arm,
+        slope_sigma_formula = ~arm
+    ))
+    samples <- .JointModelSamples(
+        model = model,
+        data = data,
+        results = structure(list(), class = "CmdStanMCMC")
+    )
+    captured <- new.env(parent = emptyenv())
+    compiled_model <- list(
+        generate_quantities = function(data, fitted_params) {
+            captured$data <- data
+            "generated quantities"
+        }
+    )
+
+    result <- testthat::with_mocked_bindings(
+        generateQuantities(
+            samples,
+            generator = QuantityGeneratorSubject(0, "S1"),
+            type = "longitudinal"
+        ),
+        compileStanModel = function(...) compiled_model,
+        .package = "jmpost"
+    )
+
+    expect_equal(result, "generated quantities")
+    expect_equal(captured$data$p_lm_rsc_mu, 2)
+    expect_equal(captured$data$p_lm_rsc_slope_mu, 1)
+    expect_equal(captured$data$p_lm_rsc_slope_sigma, 1)
+    expect_equal(dim(captured$data$lm_rsc_mu_design), c(2, 2))
+})
+
+test_that("covariate random-slope quantity models pass the parser", {
+    mock_samples <- .JointModelSamples(
+        model = JointModel(longitudinal = LongitudinalRandomSlopeCov()),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+
+    subject_module <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorSubject(1, "A"),
+        type = "longitudinal"
+    )
+    expect_stan_syntax(subject_module)
+
+    population_module <- as.StanModule(
+        mock_samples,
+        generator = QuantityGeneratorPopulation(
+            times = 1,
+            studies = "X",
+            arms = "A",
+            newdata = data.frame(study = "X", arm = "A")
+        ),
+        type = "longitudinal"
+    )
+    expect_match(
+        as.character(population_module),
+        "rep_vector(lm_rsc_mu_intercept, gq_n_quant)",
+        fixed = TRUE
+    )
+    expect_stan_syntax(population_module)
+
+    survival_samples <- .JointModelSamples(
+        model = JointModel(
+            longitudinal = LongitudinalRandomSlopeCov(),
+            survival = SurvivalExponential(),
+            link = linkDSLD()
+        ),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    survival_module <- as.StanModule(
+        survival_samples,
+        generator = QuantityGeneratorPrediction(
+            times = 1,
+            newdata = data.frame(covariate = 0),
+            params = list(intercept = 30, slope = 1)
+        ),
+        type = "survival"
+    )
+    expect_stan_syntax(survival_module)
+})
+
+test_that("population quantities accept all predictor covariates in newdata", {
+    subject <- DataSubject(
+        data.frame(
+            subject = paste0("S", 1:4),
+            arm = factor(c("A", "B", "A", "B")),
+            study = factor(c("X", "X", "Y", "Y")),
+            age = c(50, 60, 55, 65),
+            sex = factor(c("F", "M", "F", "M")),
+            variability_covariate = c(0.2, 0.3, 0.4, 0.5)
+        ),
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    )
+    longitudinal <- DataLongitudinal(
+        data.frame(
+            subject = rep(paste0("S", 1:4), each = 2),
+            time = rep(0:1, 4),
+            value = seq_len(8)
+        ),
+        value ~ time
+    )
+    data <- DataJoint(subject, longitudinal = longitudinal)
+    model <- JointModel(LongitudinalRandomSlopeCov(
+        mu_formula = ~study + age,
+        slope_mu_formula = ~arm + sex,
+        slope_sigma_formula = ~variability_covariate
+    ))
+    profiles <- data.frame(
+        study = c("X", "Y"),
+        arm = c("A", "B"),
+        age = c(52, 62),
+        sex = c("F", "M")
+    )
+    grid <- GridPopulation(
+        times = c(0, 10),
+        newdata = profiles
+    )
+    generator <- as.QuantityGenerator(grid, data, model = model)
+    stan_data <- as_stan_list(generator, data = data, model = model)
+
+    expect_equal(generator@times, c(0, 0, 10, 10))
+    expect_equal(
+        generator@newdata,
+        profiles[c(1, 2, 1, 2), ],
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        stan_data$gq_lm_rsc_mu_design,
+        cbind(
+            studyY = c(0, 1, 0, 1),
+            age = c(52, 62, 52, 62)
+        ),
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        stan_data$gq_lm_rsc_slope_mu_design,
+        cbind(
+            armB = c(0, 1, 0, 1),
+            sexM = c(0, 1, 0, 1)
+        ),
+        ignore_attr = TRUE
+    )
+    expect_false("gq_lm_rsc_slope_sigma_design" %in% names(stan_data))
+
+    collapser <- as.QuantityCollapser(grid, data, model = model)
+    expect_equal(
+        collapser@groups,
+        rep(
+            c(
+                "study=X; arm=A; age=52; sex=F",
+                "study=Y; arm=B; age=62; sex=M"
+            ),
+            2
+        )
+    )
+})
+
+test_that("population quantities require newdata for additional covariates", {
+    subject <- DataSubject(
+        data.frame(
+            subject = c("S1", "S2"),
+            arm = c("A", "B"),
+            study = c("X", "X"),
+            age = c(50, 60)
+        ),
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    )
+    data <- DataJoint(subject)
+    model <- JointModel(LongitudinalRandomSlopeCov(mu_formula = ~study + age))
+
+    expect_error(
+        as.QuantityGenerator(GridPopulation(0), data, model = model),
+        "newdata"
+    )
+    expect_error(
+        as.QuantityGenerator(
+            GridPopulation(
+                0,
+                newdata = data.frame(study = "X", arm = "A")
+            ),
+            data,
+            model = model
+        ),
+        "age"
+    )
+})
+
+test_that("population quantities infer study-arm profiles when sufficient", {
+    subject <- DataSubject(
+        data.frame(
+            subject = c("S1", "S2", "S3"),
+            arm = c("A", "B", "B"),
+            study = c("X", "X", "Y")
+        ),
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    )
+    data <- DataJoint(subject)
+    model <- JointModel(LongitudinalRandomSlopeCov())
+
+    generator <- as.QuantityGenerator(
+        GridPopulation(times = 0),
+        data,
+        model = model
+    )
+    stan_data <- as_stan_list(generator, data = data, model = model)
+
+    expect_equal(generator@arms, c("A", "B", "B"))
+    expect_equal(generator@studies, c("X", "X", "Y"))
+    expect_equal(dim(stan_data$gq_lm_rsc_mu_design), c(3, 1))
+    expect_equal(dim(stan_data$gq_lm_rsc_slope_mu_design), c(3, 1))
+})
+
+test_that("LongitudinalRandomEffects extracts covariate random slopes", {
+    subject <- DataSubject(
+        data.frame(
+            subject = c("S1", "S2"),
+            arm = c("A", "B"),
+            study = c("X", "X")
+        ),
+        "subject",
+        "arm",
+        "study"
+    )
+    draws <- function(variables, ...) {
+        expect_equal(
+            variables,
+            c("lm_rsc_ind_rnd_slope[1]", "lm_rsc_ind_rnd_slope[2]")
+        )
+        matrix(c(0.1, 0.2, 0.3, 0.4), nrow = 2)
+    }
+    samples <- .JointModelSamples(
+        model = JointModel(LongitudinalRandomSlopeCov()),
+        data = DataJoint(subject),
+        results = structure(list(draws = draws), class = "CmdStanMCMC")
+    )
+
+    result <- LongitudinalRandomEffects(samples)
+
+    expect_equal(result@subject, c("S1", "S2"))
+    expect_equal(result@parameter, c("slope", "slope"))
+    expect_equal(dim(result@quantities), c(2, 2))
 })

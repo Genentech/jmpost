@@ -490,46 +490,35 @@ bayesplot::mcmc_dens(survival_coefficient_draws) +
 The postprocessing functions listed in the
 [reference index](https://genentech.github.io/jmpost/main/reference/index.html#postprocessing)
 remain appropriate for the covariate model, but the generated-quantities path
-needs a few model-specific additions before all of them can be used. The
-summary and plotting layers themselves do not depend on the longitudinal model
-parametrization.
+required a few model-specific additions. These additions are described below;
+the summary and plotting layers themselves do not depend on the longitudinal
+model parametrization.
 
 ### Investigation result
 
 | Functionality | Current status with `LongitudinalRandomSlopeCov` | Required adjustment |
 |---|---|---|
 | Access to `fit@results`, `as.CmdStanMCMC()`, and posterior summaries/plots | Works as before | None |
-| `LongitudinalRandomEffects()` | Does not yet identify the random slope for the new class | Add `getRandomEffectsNames.LongitudinalRandomSlopeCov()` returning `c(slope = "lm_rsc_ind_rnd_slope")` |
-| `generateQuantities()` | Does not pass the model when rebuilding the Stan data, so the three covariate design matrices and their dimensions are missing | Change `as_stan_list(object@data)` to `as_stan_list(object@data, object@model)` in `generateQuantities.JointModelSamples()` |
-| `LongitudinalQuantities()` for fitted subjects, with `GridObserved()`, `GridFixed()`, `GridEvent()`, `GridEven()`, `GridManual()`, or `GridGrouped()` | Not yet available because the new model has no generated-quantities module | Add `enableGQ.LongitudinalRandomSlopeCov()` and a quantities module using `lm_rsc_ind_intercept` and `lm_rsc_ind_rnd_slope` |
-| `LongitudinalQuantities()` with `GridPopulation()` | Needs an interface decision | Arm and study indexes are no longer sufficient when a predictor contains arbitrary covariates such as age. A population grid must provide covariate values/new data, or this grid type should initially be rejected for covariate models |
-| `SurvivalQuantities()` for fitted subjects/groups | The survival calculation itself is unchanged, but it currently encounters the same missing-design-matrix problem in `generateQuantities()` | The model-aware `as_stan_list()` change above is sufficient |
-| `SurvivalQuantities()` with `GridPrediction()` | The grid supplies longitudinal link inputs directly, but the new class currently reports no prediction parameter names | Add `getPredictionNames.LongitudinalRandomSlopeCov()` returning `c("intercept", "slope")`, matching `LongitudinalRandomSlope` |
+| `LongitudinalRandomEffects()` | Works as before | The new class maps `slope` to `lm_rsc_ind_rnd_slope` |
+| `generateQuantities()` | Works with the covariate model | Stan data is rebuilt with `as_stan_list(object@data, object@model)`, so the fitted design matrices are available |
+| `LongitudinalQuantities()` for fitted subjects, with `GridObserved()`, `GridFixed()`, `GridEvent()`, `GridEven()`, `GridManual()`, or `GridGrouped()` | Works as before | The new generated-quantities module uses `lm_rsc_ind_intercept` and `lm_rsc_ind_rnd_slope` |
+| `LongitudinalQuantities()` with `GridPopulation()` | Works with an explicit population profile | Supply arm, study, and all population-mean predictor covariates together through `GridPopulation(newdata = ...)` |
+| `SurvivalQuantities()` for fitted subjects/groups | Works as before | The survival calculation is unchanged; it uses the model-aware generated-quantities data path |
+| `SurvivalQuantities()` with `GridPrediction()` | Works with the existing random-slope prediction interface | The new class reports `c("intercept", "slope")`, matching `LongitudinalRandomSlope` |
 | `summary()` and `autoplot()` for longitudinal/survival quantities | Work unchanged once the corresponding quantities object can be created | None |
-| `brierScore()` and `populationHR()` | No model-specific logic; both work through `SurvivalQuantities()` | No direct change; they become available after the survival generated-quantities fix |
+| `brierScore()` and `populationHR()` | Work as before | No direct change; both operate through `SurvivalQuantities()` |
 | `shrinkage()` | Depends on the survival covariate prior and names, not on the longitudinal parametrization | None |
 
-The current dispatch and Stan-data results can be seen without sampling:
+The generated-quantities data path now retains the covariate design matrices:
 
 ```{r}
 cov_longitudinal <- joint_model@longitudinal
 
 getRandomEffectsNames(cov_longitudinal)
-# NULL; should be c(slope = "lm_rsc_ind_rnd_slope")
+# c(slope = "lm_rsc_ind_rnd_slope")
 
 getPredictionNames(cov_longitudinal)
-# NULL; should be c("intercept", "slope")
-
-setdiff(
-    c(
-        "p_lm_rsc_mu", "lm_rsc_mu_design",
-        "p_lm_rsc_slope_mu", "lm_rsc_slope_mu_design",
-        "p_lm_rsc_slope_sigma", "lm_rsc_slope_sigma_design"
-    ),
-    names(as_stan_list(joint_data))
-)
-# All six names are missing. This is the data path currently used by
-# generateQuantities.JointModelSamples().
+# c("intercept", "slope")
 
 setdiff(
     c(
@@ -539,17 +528,14 @@ setdiff(
     ),
     names(as_stan_list(joint_data, joint_model))
 )
-# character(0)
+# character(0) - so we got all of them.
 ```
 
-After the small class-specific additions above, the usual subject-level
-workflow should remain unchanged:
+The usual subject-level workflow therefore remains unchanged:
 
 ```{r}
-#| eval: false
-
 random_effects <- LongitudinalRandomEffects(fit)
-summary(random_effects)
+head(summary(random_effects))
 
 longitudinal_quantities <- LongitudinalQuantities(
     fit,
@@ -558,7 +544,7 @@ longitudinal_quantities <- LongitudinalQuantities(
         times = seq(0, 200, by = 25)
     )
 )
-summary(longitudinal_quantities)
+head(summary(longitudinal_quantities))
 autoplot(longitudinal_quantities)
 
 survival_quantities <- SurvivalQuantities(
@@ -566,11 +552,13 @@ survival_quantities <- SurvivalQuantities(
     grid = GridFixed(times = seq(0, 300, by = 25)),
     type = "surv"
 )
-summary(survival_quantities)
+head(summary(survival_quantities))
 autoplot(survival_quantities)
 brierScore(survival_quantities)
 
-populationHR(fit)
+pop_hr <- populationHR(fit, hr_formula = ~arm, quantiles = c(0.1, 0.9))
+hr_est <- exp(pop_hr$summary["armB", ])
+hr_est
 ```
 
 Prediction for a new survival-covariate profile also keeps the existing
@@ -579,8 +567,6 @@ parameters passed to the link function. The formulas used to estimate those
 parameters do not change the link interface.
 
 ```{r}
-#| eval: false
-
 new_subject <- data.frame(
     cov_cont = 0.25,
     cov_cat = factor("B", levels = c("A", "B", "C"))
@@ -598,13 +584,28 @@ autoplot(predicted_survival)
 ```
 
 By contrast, a population longitudinal prediction must say which values to use
-for every variable in `mu_formula`, `slope_mu_formula`, and
-`slope_sigma_formula`. For example, `study = "Study-1"` and `arm = "B"` are
-not enough for the prototype model because `cov_cont` and `cov_cat` also occur
-in its predictors. This is the one downstream area that needs a user-facing
-extension rather than only an S3 method or internal data-plumbing change.
+for every variable in `mu_formula` and `slope_mu_formula`. These values are
+supplied in one place: each row of `GridPopulation(newdata = ...)` defines one
+population profile. The `slope_sigma_formula` covariates are not needed because
+`GridPopulation()` returns the population mean trajectory. Factor levels and
+design-matrix columns are matched to the subject data used to fit the model. If
+the formulas only use study and arm, omitting `newdata` retains the previous
+behavior of generating every observed study-arm combination.
 
-Focused regression tests should cover subject-level longitudinal quantities,
-all four survival quantity types, survival prediction, random-effect
-extraction, and the dependent `brierScore()` and `populationHR()` calls. A
-separate test should define the chosen behavior for `GridPopulation()`.
+```{r}
+population_profiles <- data.frame(
+    study = c("Study-1", "Study-1"),
+    arm = c("A", "B"),
+    cov_cont = c(0, 0),
+    cov_cat = factor(c("A", "A"), levels = c("A", "B", "C"))
+)
+
+population_quantities <- LongitudinalQuantities(
+    fit,
+    grid = GridPopulation(
+        times = seq(0, 200, by = 25),
+        newdata = population_profiles
+    )
+)
+autoplot(population_quantities)
+```

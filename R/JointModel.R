@@ -94,8 +94,8 @@ JointModel <- function(
 #' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.JointModel <- function(object, ...) {
     merge(
-        enableGQ(object@survival),
-        enableGQ(object@longitudinal)
+        enableGQ(object@survival, ...),
+        enableGQ(object@longitudinal, ...)
     )
 }
 

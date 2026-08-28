@@ -77,7 +77,10 @@ NULL
         msg = sprintf(
             "`%s` must be one of %s",
             argument,
-            paste(sprintf("`%s`", .longitudinal_cov_parametrizations), collapse = ", ")
+            paste(
+                sprintf("`%s`", .longitudinal_cov_parametrizations),
+                collapse = ", "
+            )
         )
     )
     x
@@ -134,24 +137,136 @@ NULL
 
 #' Render a covariate predictor as Stan code
 #'
-#' @param prefix Prefix shared by the intercept, coefficient, and design-matrix
-#'   Stan variables.
+#' @param prefix Prefix shared by the intercept and coefficient Stan variables.
 #' @param parametrization Character scalar naming the predictor
 #'   parametrization.
+#' @param design_prefix Prefix for the design-matrix Stan variable.
+#' @param n_rows Stan expression giving the number of predictor rows.
 #'
 #' @keywords internal
 #' @returns A character scalar containing a Stan expression.
-.covariate_predictor_stan <- function(prefix, parametrization) {
+.covariate_predictor_stan <- function(
+    prefix,
+    parametrization,
+    design_prefix = prefix,
+    n_rows = "n_subjects"
+) {
     intercept <- paste0(prefix, "_intercept")
-    design <- paste0(prefix, "_design")
+    design <- paste0(design_prefix, "_design")
     coefficients <- paste0(prefix, "_coefficients")
 
-    switch(parametrization,
-        linear = sprintf("rep_vector(%s, n_subjects) + %s * %s", intercept, design, coefficients),
-        proportional = sprintf("%s * (rep_vector(1, n_subjects) + %s * %s)", intercept, design, coefficients),
-        exponential = sprintf("%s * exp(%s * %s)", intercept, design, coefficients),
-        `log-linear` = sprintf("exp(rep_vector(%s, n_subjects) + %s * %s)", intercept, design, coefficients)
+    switch(
+        parametrization,
+        linear = sprintf(
+            "rep_vector(%s, %s) + %s * %s",
+            intercept,
+            n_rows,
+            design,
+            coefficients
+        ),
+        proportional = sprintf(
+            "%s * (rep_vector(1, %s) + %s * %s)",
+            intercept,
+            n_rows,
+            design,
+            coefficients
+        ),
+        exponential = sprintf(
+            "%s * exp(%s * %s)",
+            intercept,
+            design,
+            coefficients
+        ),
+        `log-linear` = sprintf(
+            "exp(rep_vector(%s, %s) + %s * %s)",
+            intercept,
+            n_rows,
+            design,
+            coefficients
+        )
     )
+}
+
+#' Build a covariate design matrix for new subject profiles
+#'
+#' Uses the fitted subject data to preserve factor levels, contrasts, and column
+#' order when constructing a design matrix for population predictions.
+#'
+#' @param formula One-sided formula describing the subject-level covariates.
+#' @param newdata Data frame containing the population profiles to predict.
+#' @param reference_data Subject data used to fit the model.
+#' @param argument Name of the user-facing formula argument, used in errors.
+#'
+#' @keywords internal
+#' @returns A numeric design matrix matching the fitted design matrix.
+.covariate_prediction_design_matrix <- function(
+    formula,
+    newdata,
+    reference_data,
+    argument = "formula"
+) {
+    variables <- all.vars(formula)
+    missing_variables <- setdiff(variables, names(newdata))
+    assert_that(
+        length(missing_variables) == 0,
+        msg = sprintf(
+            "All variables in `%s` must be present in `newdata`; missing: %s",
+            argument,
+            paste(missing_variables, collapse = ", ")
+        )
+    )
+
+    reference_frame <- stats::model.frame(
+        formula,
+        data = reference_data,
+        na.action = stats::na.fail
+    )
+    sentinel_level <- ".__jmpost_unused_level__"
+    for (variable in names(reference_frame)) {
+        values <- reference_frame[[variable]]
+        if (is.character(values)) {
+            values <- factor(values)
+        }
+        if (is.factor(values) && nlevels(values) == 1) {
+            levels(values) <- c(levels(values), sentinel_level)
+        }
+        reference_frame[[variable]] <- values
+    }
+
+    model_terms <- stats::terms(reference_frame)
+    reference_design <- stats::model.matrix(model_terms, reference_frame)
+    xlevels <- stats::.getXlevels(model_terms, reference_frame)
+    new_frame <- stats::model.frame(
+        model_terms,
+        data = newdata,
+        xlev = xlevels,
+        na.action = stats::na.fail
+    )
+    design <- stats::model.matrix(
+        model_terms,
+        new_frame,
+        contrasts.arg = attr(reference_design, "contrasts")
+    )
+    remove_columns <- colnames(design) == "(Intercept)" |
+        grepl(sentinel_level, colnames(design), fixed = TRUE)
+    if (any(remove_columns)) {
+        design <- design[, !remove_columns, drop = FALSE]
+    }
+    rownames(design) <- NULL
+
+    reference_columns <- colnames(.covariate_design_matrix(
+        formula,
+        reference_data,
+        argument
+    ))
+    assert_that(
+        identical(colnames(design), reference_columns),
+        msg = sprintf(
+            "The design matrix for `%s` does not match the fitted model",
+            argument
+        )
+    )
+    design
 }
 
 #' Apply positivity constraints to a predictor intercept prior
@@ -164,7 +279,11 @@ NULL
 #'
 #' @keywords internal
 #' @returns The input prior, with a positive lower limit when required.
-.positive_intercept_prior <- function(prior, parametrization, positive = FALSE) {
+.positive_intercept_prior <- function(
+    prior,
+    parametrization,
+    positive = FALSE
+) {
     if (parametrization == "exponential" || positive) {
         set_limits(prior, lower = getOption("jmpost.double_eps"))
     } else {
@@ -343,6 +462,39 @@ LongitudinalRandomSlopeCov <- function(
 
 #' @export
 #'
+#' @returns A `StanModule` object containing the generated-quantities code.
+enableGQ.LongitudinalRandomSlopeCov <- function(
+    object,
+    generator = NULL,
+    type = NULL,
+    ...
+) {
+    include_subject <- identical(type, "longitudinal") &&
+        is(generator, "QuantityGeneratorSubject")
+    include_population <- identical(type, "longitudinal") &&
+        is(generator, "QuantityGeneratorPopulation")
+
+    StanModule(decorated_render(
+        .x = read_stan("lm-random-slope-cov/quantities.stan"),
+        include_gq_longitudinal_idv = include_subject,
+        include_gq_longitudinal_pop = include_population,
+        mu_population_predictor = .covariate_predictor_stan(
+            "lm_rsc_mu",
+            object@mu_parametrization,
+            design_prefix = "gq_lm_rsc_mu",
+            n_rows = "gq_n_quant"
+        ),
+        slope_mu_population_predictor = .covariate_predictor_stan(
+            "lm_rsc_slope_mu",
+            object@slope_mu_parametrization,
+            design_prefix = "gq_lm_rsc_slope_mu",
+            n_rows = "gq_n_quant"
+        )
+    ))
+}
+
+#' @export
+#'
 #' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalRandomSlopeCov <- function(object, ...) {
     object@stan <- merge(
@@ -397,6 +549,18 @@ linkGrowth.LongitudinalRandomSlopeCov <- function(
     )
 }
 
+#' @rdname getPredictionNames
+#' @export
+getPredictionNames.LongitudinalRandomSlopeCov <- function(object, ...) {
+    c("intercept", "slope")
+}
+
+#' @rdname getRandomEffectsNames
+#' @export
+getRandomEffectsNames.LongitudinalRandomSlopeCov <- function(object, ...) {
+    c("slope" = "lm_rsc_ind_rnd_slope")
+}
+
 #' Create longitudinal-model-specific Stan data
 #'
 #' @param model A [`LongitudinalModel`] object.
@@ -444,6 +608,36 @@ longitudinal_model_stan_data <- function(model, subject) {
         lm_rsc_slope_mu_design = slope_mu_design,
         p_lm_rsc_slope_sigma = ncol(slope_sigma_design),
         lm_rsc_slope_sigma_design = slope_sigma_design
+    )
+}
+
+#' Create population-prediction Stan data for a covariate random-slope model
+#'
+#' @param model A [`LongitudinalRandomSlopeCov`] object.
+#' @param subject A [`DataSubject`] object containing the fitted subject data.
+#' @param newdata Population profiles supplied through [`GridPopulation()`].
+#'
+#' @keywords internal
+#' @returns A named list of population generated-quantities design matrices.
+.random_slope_cov_population_stan_data <- function(
+    model,
+    subject,
+    newdata
+) {
+    subject_data <- as.data.frame(harmonise(subject))
+    list(
+        gq_lm_rsc_mu_design = .covariate_prediction_design_matrix(
+            model@mu_formula,
+            newdata,
+            subject_data,
+            "mu_formula"
+        ),
+        gq_lm_rsc_slope_mu_design = .covariate_prediction_design_matrix(
+            model@slope_mu_formula,
+            newdata,
+            subject_data,
+            "slope_mu_formula"
+        )
     )
 }
 

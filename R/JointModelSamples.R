@@ -43,7 +43,7 @@ setOldClass("CmdStanMCMC")
 #'   "longitudinal".
 #' @export
 generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
-    data <- as_stan_list(object@data) |>
+    data <- as_stan_list(object@data, object@model) |>
         append(as_stan_list(object@model@parameters)) |>
         append(as_stan_list(
             generator,
@@ -81,6 +81,23 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
         type %in% c("survival", "longitudinal")
     )
 
+    longitudinal_gq_population_data <- if (
+        (type == "longitudinal") &&
+            is(generator, "QuantityGeneratorPopulation") &&
+            is(object@model@longitudinal, "LongitudinalRandomSlopeCov")
+    ) {
+        paste(
+            "matrix[gq_n_quant, p_lm_rsc_mu] gq_lm_rsc_mu_design;",
+            paste0(
+                "matrix[gq_n_quant, p_lm_rsc_slope_mu] ",
+                "gq_lm_rsc_slope_mu_design;"
+            ),
+            sep = "\n"
+        )
+    } else {
+        ""
+    }
+
     quant_stanobj <- read_stan("base/quantities.stan") |>
         decorated_render(
             include_gq_longitudinal_idv = (type == "longitudinal") &
@@ -90,7 +107,9 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
             include_gq_survival_idv = (type == "survival") &
                 is(generator, "QuantityGeneratorSubject"),
             include_gq_survival_pred = (type == "survival") &
-                is(generator, "QuantityGeneratorPrediction")
+                is(generator, "QuantityGeneratorPrediction"),
+            longitudinal_gq_population_data =
+                longitudinal_gq_population_data
         ) |>
         StanModule()
 
@@ -98,7 +117,11 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
         merge,
         list(
             as.StanModule(object@model),
-            enableGQ(object@model),
+            enableGQ(
+                object@model,
+                generator = generator,
+                type = type
+            ),
             quant_stanobj
         )
     )
