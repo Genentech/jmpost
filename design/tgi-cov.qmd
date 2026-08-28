@@ -547,14 +547,29 @@ longitudinal_quantities <- LongitudinalQuantities(
 head(summary(longitudinal_quantities))
 autoplot(longitudinal_quantities)
 
+subj_df <- as.data.frame(joint_data@subject)
 survival_quantities <- SurvivalQuantities(
     fit,
-    grid = GridFixed(times = seq(0, 300, by = 25)),
+    grid = GridGrouped(
+        times = seq(0, 300, by = 25),
+        groups = with(
+            subj_df,
+            split(as.character(subject), arm)
+        )
+    ),
     type = "surv"
 )
 head(summary(survival_quantities))
 autoplot(survival_quantities)
-brierScore(survival_quantities)
+
+survival_quantities_for_brier <- SurvivalQuantities(
+    fit,
+    grid = GridFixed(
+        times = seq(0, 300, by = 25)
+    ),
+    type = "surv"
+)
+brierScore(survival_quantities_for_brier)
 
 pop_hr <- populationHR(fit, hr_formula = ~arm, quantiles = c(0.1, 0.9))
 hr_est <- exp(pop_hr$summary["armB", ])
