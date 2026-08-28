@@ -274,3 +274,49 @@ as_stan_list(data, model)
 call which can take into account then the details of the `model`, in particular the covariates used for the different parameters.
 
 The other good news is that since `as_stan_list` is a generic function, we can still support the previous `as_stan_list(data)` call for backwards compatibility, and just have a new method for `as_stan_list(data, model)`.
+
+## Simulation functionality
+
+The current simulation function is e.g. 
+
+```r
+SimLongitudinalRandomSlope(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  intercept = 50,
+  slope_mu = c(0.01, 0.03),
+  slope_sigma = c(0.5, 0.6),
+  sigma = 2,
+  link_dsld = 0,
+  link_identity = 0,
+  scaled_variance = FALSE
+)
+```
+
+We now add an additional function each for the TGI covariates model, e.g.:
+
+```r
+SimLongitudinalRandomSlopeCov(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  # Covariate specifications for the linear predictors.
+  mu_formula = ~ study,
+  slope_mu_formula = ~ arm,
+  slope_sigma_formula = ~ arm,
+  # Parametrization of the linear predictors.
+  mu_parametrization = "linear",
+  slope_mu_parametrization = "linear",
+  slope_sigma_parametrization = "log-linear",
+  # Coefficients of the linear predictors.
+  mu_intercept = 50,
+  mu_coefficients = c(0, -5),
+  slope_mu_intercept = 0.01,
+  slope_mu_coefficients = c(0, -0.01),
+  slope_sigma_intercept = 5,
+  slope_sigma_coefficients = c(0, -0.1),
+  # Error term specifications (still the same as in SimLongitudinalRandomSlope).
+  sigma = 2,
+  scaled_variance = FALSE,
+  # Link specifications (still the same as in SimLongitudinalRandomSlope).
+  link_dsld = 0,
+  link_identity = 0  
+)
+```
