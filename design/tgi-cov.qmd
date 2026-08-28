@@ -27,7 +27,7 @@ We need another formulation where we have one model per study - and then have a 
 
 ## Statistical specifications
 
-Basically everywhere where we so far had the treatment arm index $k(i)$ or the study index $l(i)$ in the parameters, we replace this with a (potentially transformed) linear predictor $\eta_i$ that depends on the covariates $x_i$ of the individual $i$.
+Basically everywhere where we so far had the treatment arm index $k(i)$ or the study index $l(i)$ in the parameters, we replace this with a (potentially transformed) linear predictor $\eta_i$ that depends on the covariates $x_i$ of the individual $i$. These are baseline covariates which are constant over time, e.g. study, treatment arm, age, sex, etc.
 Furthermore, these covariates can be different for the different parameters.
 
 Let's write this out for some of the longitudinal models we support in `jmpost`.
@@ -190,7 +190,8 @@ LongitudinalRandomSlope(
 )
 ```
 
-- The proposed new constructor takes now formulas for the linear predictors. Note that the actual data is still provided separately via the `DataLongitudinal` object, so the formulas are only used to extract the covariates from the data.
+- The proposed new constructor takes now formulas for the linear predictors. Note that the actual baseline covariates data is still provided separately via the `DataSubject` object, so the formulas are only used to extract the covariates from the data.
+  - One detail: These formulas will be used internally to create the design matrices *without* a constant intercept column of 1s. Technically, the user would thus need to specify `0 + ...` in the formula to avoid an intercept column. But this would be cumbersome. Therefore we will automatically remove the intercept column from the design matrix if it is present, so that the user can just specify `~ study` instead of `~ 0 + study`.
 - The new constructor also needs to support the different parametrizations of the linear predictors, so we need to add an argument for that. This also needs to be specific to the different parameters, as we might want to have different parametrizations for the different parameters.
 - Finally we also have different model parameters now: E.g. instead of `intercept` we model the the corresponding intercept $\beta_{\mu,0}$ and coefficients $\beta_{\mu}$.
 - On the other hand the `sigma` still stays the same, as it is not affected by covariates.
@@ -221,3 +222,55 @@ LongitudinalRandomSlopeCov(
 
 So we see that we have quite a lot more arguments now, but the idea is that we can have a lot more flexibility in specifying the model.
 
+## Data handling
+
+Let's check if something needs to be changed in the data handling. The current workflow is:
+
+```r
+model <- JointModel(
+    longitudinal = longmodel,
+    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    link = link
+)
+
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = dat_os,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time
+    )
+)
+
+model_samples <- sampleStanModel(
+    model,
+    data = joint_data,
+    iter_warmup = 800,
+    iter_sampling = 1000,
+    chains = 1,
+    refresh = 0,
+    parallel_chains = 1
+)
+```
+
+So in this current workflow the `joint_data` is created with all the data objects. This includes the `DataLongitudinal` object, which takes a formula for the longitudinal outcome - but this only specifies the names of the outcome (e.g. `sld`) and the time variables (e.g. `time`). Subject level, i.e. baseline, covariates live in the `DataSubject` object, so this is the one where actually need to extract the baseline covariates from.
+
+But it would not take into account details from the `longmodel` object, e.g. which covariates are used for which parameters. So we need to change this.
+
+Currently `sampleStanModel` calls `as_stan_list(data)` on the `joint_data` object. We can replace this with the more general
+
+```r
+as_stan_list(data, model)
+```
+
+call which can take into account then the details of the `model`, in particular the covariates used for the different parameters.
+
+The other good news is that since `as_stan_list` is a generic function, we can still support the previous `as_stan_list(data)` call for backwards compatibility, and just have a new method for `as_stan_list(data, model)`.
