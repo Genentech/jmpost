@@ -33,7 +33,7 @@
 
 \method{as.list}{DataSurvival}(x, ...)
 
-\method{as_stan_list}{DataJoint}(object, ...)
+\method{as_stan_list}{DataJoint}(object, model = NULL, ...)
 
 \method{as.list}{DataJoint}(x, ...)
 }
@@ -50,6 +50,9 @@ containing the subject identifier.}
 \item{df}{(\code{data.frame})\cr The data frame to be used for generating the design matrix.}
 
 \item{vars}{(\code{list})\cr The list of variable names to be used for generating the design matrix.}
+
+\item{model}{(\code{JointModel} or \code{NULL}) Optional model specification used to
+add model-specific data components.}
 }
 \value{
 A named \code{list} suitable for use as Stan data.

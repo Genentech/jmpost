@@ -204,7 +204,7 @@ sampleStanModel.JointModel <- function(object, data, ...) {
     args <- list(...)
 
     args[["data"]] <- append(
-        as_stan_list(data),
+        as_stan_list(data, object),
         as_stan_list(object@parameters)
     )
 
