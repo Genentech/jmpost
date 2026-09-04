@@ -253,9 +253,19 @@ createLongitudinalSimObject.LongitudinalSteinFojoCov <- function(
     ...
 ) {
     args <- list(...)
-    parameter_names <- c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g")
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g"
+    )
     for (name in parameter_names) {
-        args[[paste0(name, "_formula")]] <- slot(object, paste0(name, "_formula"))
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
         args[[paste0(name, "_parametrization")]] <- slot(
             object,
             paste0(name, "_parametrization")
@@ -299,6 +309,44 @@ createLongitudinalSimObject.LongitudinalGSF <- function(object, draw, ...) {
     args$link_shrinkage <- get_vars(draw, "link_shrinkage")
 
     do.call(SimLongitudinalGSF, args)
+}
+
+#' @exportS3Method
+createLongitudinalSimObject.LongitudinalGSFCov <- function(object, draw, ...) {
+    args <- list(...)
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g",
+        "mu_phi",
+        "omega_phi"
+    )
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_gsfc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_gsfc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_gsfc_sigma")
+    for (name in c("dsld", "ttg", "identity", "growth", "shrinkage")) {
+        args[[paste0("link_", name)]] <- get_vars(draw, paste0("link_", name))
+    }
+    do.call(SimLongitudinalGSFCov, args)
 }
 
 #' @exportS3Method
@@ -447,8 +495,7 @@ SimJointDataResults <- function(
 
     cov_cols <- cbind(
         data.frame(subject = subject@data[[subject@subject]]),
-        subject@data[
-            ,
+        subject@data[,
             all.vars(delete.response(terms(surv_formula))),
             drop = FALSE
         ]
