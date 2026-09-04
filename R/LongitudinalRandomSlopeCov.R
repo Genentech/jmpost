@@ -614,6 +614,17 @@ required_longitudinal_covs.LongitudinalRandomSlopeCov <- function(object, ...) {
     ))
 }
 
+#' @rdname required_simulation_covariates
+#' @export
+required_simulation_covariates.LongitudinalRandomSlopeCov <- function(
+    object,
+    ...
+) {
+    unique(unlist(lapply(c("mu", "slope_mu", "slope_sigma"), function(name) {
+        all.vars(slot(object, paste0(name, "_formula")))
+    })))
+}
+
 #' @rdname longitudinal_model_stan_data
 #' @keywords internal
 #' @export

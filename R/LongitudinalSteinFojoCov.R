@@ -371,6 +371,18 @@ required_longitudinal_covs.LongitudinalSteinFojoCov <- function(object, ...) {
     })))
 }
 
+#' @rdname required_simulation_covariates
+#' @export
+required_simulation_covariates.LongitudinalSteinFojoCov <- function(
+    object,
+    ...
+) {
+    unique(unlist(lapply(
+        c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"),
+        function(name) all.vars(slot(object, paste0(name, "_formula")))
+    )))
+}
+
 #' Create covariate Stein-Fojo population-prediction Stan data
 #'
 #' @keywords internal

@@ -690,6 +690,29 @@ required_longitudinal_covs.default <- function(object, ...) {
 }
 
 
+#' Required Longitudinal Simulation Covariates
+#'
+#' Return the subject-level covariates required to simulate a longitudinal
+#' model from posterior draws. Unlike [required_longitudinal_covs()], this
+#' includes covariates used only by variability predictors.
+#'
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object.
+#' @param ... Not used.
+#' @export
+#'
+#' @returns A character vector of covariate names.
+required_simulation_covariates <- function(object, ...) {
+    UseMethod("required_simulation_covariates")
+}
+
+#' @rdname required_simulation_covariates
+#' @export
+required_simulation_covariates.default <- function(object, ...) {
+    character()
+}
+
+
 #' As Formula
 #'
 #' Utility wrapper function to convert an object to a formula.

@@ -46,19 +46,9 @@ simulate.JointModelSamples <- function(
     scaled_variance = FALSE,
     ...
 ) {
-    longitudinal_covariates <- if (
-        is(object@model@longitudinal, "LongitudinalSteinFojoCov")
-    ) {
-        unique(unlist(lapply(
-            c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"),
-            function(name) all.vars(slot(
-                object@model@longitudinal,
-                paste0(name, "_formula")
-            ))
-        )))
-    } else {
-        character()
-    }
+    longitudinal_covariates <- required_simulation_covariates(
+        object@model@longitudinal
+    )
     subj_data <- if (is.null(newdata)) {
         dplyr::left_join(
             object@data@subject@data[, unique(c(
@@ -194,6 +184,40 @@ createLongitudinalSimObject.LongitudinalRandomSlope <- function(
     args$link_identity <- get_vars(draw, "link_identity")
     args$scaled_variance <- NULL # not defined for random slope
     do.call(SimLongitudinalRandomSlope, args)
+}
+
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalRandomSlopeCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c("mu", "slope_mu", "slope_sigma")
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_rsc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_rsc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_rsc_sigma")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_identity <- get_vars(draw, "link_identity")
+    do.call(SimLongitudinalRandomSlopeCov, args)
 }
 
 #' @exportS3Method
@@ -412,10 +436,22 @@ SimJointDataResults <- function(
         study = subject@data[[subject@study]],
         arm = subject@data[[subject@arm]]
     )
+    additional_subject_columns <- setdiff(
+        names(subject@data),
+        c(subject@subject, subject@study, subject@arm)
+    )
+    baseline <- cbind(
+        baseline,
+        subject@data[, additional_subject_columns, drop = FALSE]
+    )
 
     cov_cols <- cbind(
-        subject = subject@data[[subject@subject]],
-        subject@data[, all.vars(delete.response(terms(surv_formula)))]
+        data.frame(subject = subject@data[[subject@subject]]),
+        subject@data[
+            ,
+            all.vars(delete.response(terms(surv_formula))),
+            drop = FALSE
+        ]
     )
 
     os_baseline <- sampleSubjectsFromObs(
