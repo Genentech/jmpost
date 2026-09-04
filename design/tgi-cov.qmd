@@ -335,6 +335,12 @@ predictor keeps the standard deviation positive.
 
 ```{r}
 library(jmpost)
+
+# Keep strictly positive Stan parameters away from floating-point zero during
+# early warmup proposals.
+options(jmpost.double_eps = 1e-10)
+
+days_per_year <- 365
 set.seed(2026)
 
 simulated_data <- SimJointData(
@@ -386,7 +392,8 @@ joint_model <- JointModel(
         slope_sigma_coefficients_prior = prior_normal(0, 0.5),
         sigma = prior_lognormal(log(2), 0.5)
     ),
-    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    # Gamma(shape, rate), centred on the simulated daily rate 1 / 300.
+    survival = SurvivalExponential(lambda = prior_gamma(2, 600)),
     link = linkDSLD()
 )
 
@@ -648,7 +655,7 @@ stein_fojo_simulated_data <- SimJointData(
         SimGroup(50, "B", "Study-2")
     ),
     longitudinal = SimLongitudinalSteinFojoCov(
-        times = c(0, 50, 100, 150, 200) / 365,
+        times = c(0, 50, 100, 150, 200) / days_per_year,
         mu_b_formula = ~study,
         omega_b_formula = ~study,
         mu_s_formula = ~arm,
@@ -671,9 +678,12 @@ stein_fojo_simulated_data <- SimJointData(
         link_dsld = 0.1
     ),
     survival = SimSurvivalExponential(
-        lambda = 1 / 300,
-        time_max = 500,
-        time_step = 1,
+        # The Stein-Fojo rates and longitudinal times are expressed in years,
+        # so survival and censoring rates and times use years as well.
+        lambda = days_per_year / 300,
+        time_max = 500 / days_per_year,
+        time_step = 1 / days_per_year,
+        lambda_censor = days_per_year / 3000,
         beta_cont = 0.2,
         beta_cat = c("A" = 0, "B" = -0.3, "C" = 0.2)
     )
@@ -705,7 +715,10 @@ stein_fojo_model <- JointModel(
         omega_g_coefficients_prior = prior_normal(0, 0.5),
         sigma = prior_lognormal(log(2), 0.5)
     ),
-    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    # Gamma(shape, rate), centred on the simulated annual rate 365 / 300.
+    survival = SurvivalExponential(
+        lambda = prior_gamma(2, 2 / (days_per_year / 300))
+    ),
     link = linkDSLD()
 )
 
@@ -739,9 +752,9 @@ stein_fojo_fit <- sampleStanModel(
     chains = 2,
     parallel_chains = 2,
     seed = 2026,
-    refresh = 0,
-    show_exceptions = FALSE,
-    show_messages = FALSE
+    refresh = 100,
+    show_exceptions = TRUE,
+    show_messages = TRUE
 )
 ```
 
