@@ -845,11 +845,25 @@ gsf_cov_model <- JointModel(
     ),
     link = linkDSLD()
 )
-
-# Fit with the same data workflow used above:
-# gsf_cov_fit <- sampleStanModel(gsf_cov_model, data = stein_fojo_data, ...)
 ```
 
 The GSF-covariate parameters use the `lm_gsfc` prefix. For example,
 `lm_gsfc_mu_phi_coefficients` contains the arm effects on the logit-scale
 treatment-sensitive fraction.
+
+Let's run the sampler again:
+
+```{r}
+gsf_cov_fit <- sampleStanModel(
+    gsf_cov_model,
+    data = stein_fojo_data,
+    iter_warmup = 500,
+    iter_sampling = 500,
+    chains = 2,
+    parallel_chains = 2,
+    seed = 2026,
+    refresh = 100,
+    show_exceptions = TRUE,
+    show_messages = TRUE
+)
+```
