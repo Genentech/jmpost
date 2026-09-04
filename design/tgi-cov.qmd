@@ -628,3 +628,8 @@ population_quantities <- LongitudinalQuantities(
 )
 autoplot(population_quantities)
 ```
+
+## Stein-Fojo example
+
+This is the first non-linear longitudinal model we are testing.
+
