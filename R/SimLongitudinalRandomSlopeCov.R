@@ -146,7 +146,7 @@ SimLongitudinalRandomSlopeCov <- function(
     switch(parametrization,
         linear = intercept + linear_term,
         proportional = intercept * (1 + linear_term),
-        exponential = intercept * exp(linear_term),
+        exponential = intercept ^ linear_term,
         `log-linear` = exp(intercept + linear_term)
     )
 }

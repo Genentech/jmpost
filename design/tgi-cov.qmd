@@ -106,7 +106,7 @@ In the above formulations, we have always used a linear predictor of the form $\
 - exponential: $\eta_i = \beta_0^{(x_i^T \beta)}$
 
 In principle these can be inserted in the above model definitions.
-For the exponential parametrization we need to be careful with the baseline parameter $\beta_0$, as it needs to be positive.
+For the exponential parametrization we need to be careful with the baseline parameter $\beta_0$, as it needs to be positive. At the reference level, where $x_i^T \beta = 0$, this parametrization gives $\eta_i = 1$.
 
 ### GSF Model
 

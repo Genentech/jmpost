@@ -238,8 +238,13 @@ test_that("covariate predictor helpers implement all parametrizations", {
         c(2, 3)
     )
     expect_equal(
-        .covariate_predictor_r(design, 2, log(3), "exponential"),
-        c(2, 6)
+        .covariate_predictor_r(design, 2, 2, "exponential"),
+        c(1, 4)
+    )
+    expect_match(
+        .covariate_predictor_stan("theta", "exponential"),
+        "theta_intercept ^ (theta_design * theta_coefficients)",
+        fixed = TRUE
     )
     expect_equal(
         .covariate_predictor_r(design, log(2), log(3), "log-linear"),
@@ -278,6 +283,10 @@ test_that("covariate predictor helpers implement all parametrizations", {
     expect_equal(
         .predictor_reference_value(prior_const(log(2)), "log-linear"),
         2
+    )
+    expect_equal(
+        .predictor_reference_value(prior_const(2), "exponential"),
+        1
     )
     expect_identical(
         longitudinal_model_stan_data(LongitudinalRandomSlope(), NULL),
