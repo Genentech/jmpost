@@ -525,6 +525,32 @@ test_that("population quantities require newdata for additional covariates", {
     )
 })
 
+test_that("required_longitudinal_covs() returns population predictor covariates", {
+    random_slope <- LongitudinalRandomSlopeCov(
+        mu_formula = ~study + age,
+        slope_mu_formula = ~arm + sex,
+        slope_sigma_formula = ~variability_covariate
+    )
+    stein_fojo <- LongitudinalSteinFojoCov(
+        mu_b_formula = ~study + age,
+        omega_b_formula = ~variability_covariate,
+        mu_s_formula = ~arm + sex,
+        omega_s_formula = ~variability_covariate,
+        mu_g_formula = ~age,
+        omega_g_formula = ~variability_covariate
+    )
+
+    expect_equal(
+        required_longitudinal_covs(random_slope),
+        c("study", "age", "arm", "sex")
+    )
+    expect_equal(
+        required_longitudinal_covs(stein_fojo),
+        c("study", "age", "arm", "sex")
+    )
+    expect_equal(required_longitudinal_covs(LongitudinalRandomSlope()), character())
+})
+
 test_that("population quantities infer study-arm profiles when sufficient", {
     subject <- DataSubject(
         data.frame(

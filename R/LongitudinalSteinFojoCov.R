@@ -329,13 +329,11 @@ getRandomEffectsNames.LongitudinalSteinFojoCov <- function(object, ...) {
     result
 }
 
-#' Variables required for covariate Stein-Fojo population predictions
-#'
-#' @keywords internal
-#' @returns A character vector.
-.stein_fojo_cov_population_variables <- function(model) {
+#' @rdname required_longitudinal_covs
+#' @export
+required_longitudinal_covs.LongitudinalSteinFojoCov <- function(object, ...) {
     unique(unlist(lapply(c("mu_b", "mu_s", "mu_g"), function(name) {
-        all.vars(slot(model, paste0(name, "_formula")))
+        all.vars(slot(object, paste0(name, "_formula")))
     })))
 }
 

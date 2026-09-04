@@ -633,6 +633,28 @@ getRandomEffectsNames.default <- function(object, ...) {
 }
 
 
+#' Required Longitudinal Covariates
+#'
+#' Return the subject-level covariates required to generate longitudinal
+#' population quantities for a model.
+#'
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object.
+#' @param ... Not used.
+#' @export
+#'
+#' @returns A character vector of covariate names.
+required_longitudinal_covs <- function(object, ...) {
+    UseMethod("required_longitudinal_covs")
+}
+
+#' @rdname required_longitudinal_covs
+#' @export
+required_longitudinal_covs.default <- function(object, ...) {
+    character()
+}
+
+
 #' As Formula
 #'
 #' Utility wrapper function to convert an object to a formula.

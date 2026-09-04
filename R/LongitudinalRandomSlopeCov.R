@@ -568,6 +568,15 @@ getRandomEffectsNames.LongitudinalRandomSlopeCov <- function(object, ...) {
     c("slope" = "lm_rsc_ind_rnd_slope")
 }
 
+#' @rdname required_longitudinal_covs
+#' @export
+required_longitudinal_covs.LongitudinalRandomSlopeCov <- function(object, ...) {
+    unique(c(
+        all.vars(object@mu_formula),
+        all.vars(object@slope_mu_formula)
+    ))
+}
+
 #' Create longitudinal-model-specific Stan data
 #'
 #' @param model A [`LongitudinalModel`] object.
