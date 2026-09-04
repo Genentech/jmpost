@@ -25,6 +25,23 @@ functions {
         return fmin(value, safe_finite_limit());
     }
 
+    // Smallest positive value used to prevent underflow in model calculations.
+    real safe_positive_limit() {
+        return 1e-10;
+    }
+
+    real safe_positive(real value) {
+        return fmax(value, safe_positive_limit());
+    }
+
+    vector safe_positive(vector value) {
+        return fmax(value, safe_positive_limit());
+    }
+
+    matrix safe_positive(matrix value) {
+        return fmax(value, safe_positive_limit());
+    }
+
 
     // Vectorized version of normal_lpdf, i.e. returns log normal density values.
     vector vect_normal_log_dens(vector y, vector mu, vector sigma) {

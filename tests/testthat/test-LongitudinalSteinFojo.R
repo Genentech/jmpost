@@ -429,7 +429,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
     })
 
     summary_post <- function(model, vars, exp = FALSE) {
-        dat <- model$summary(
+        dat <- suppressWarnings(model$summary(
             vars,
             mean = mean,
             q01 = \(x) purrr::set_names(quantile(x, 0.01), ""),
@@ -437,7 +437,7 @@ test_that("Can recover known distributional parameters from a SF joint model wit
             rhat = posterior::rhat,
             ess_bulk = posterior::ess_bulk,
             ess_tail = posterior::ess_tail
-        )
+        ))
         if (exp) {
             dat$q01 <- dat$q01 |> exp()
             dat$q99 <- dat$q99 |> exp()

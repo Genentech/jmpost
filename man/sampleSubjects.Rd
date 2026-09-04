@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R, R/SimLongitudinalClaretBruno.R,
 %   R/SimLongitudinalGSF.R, R/SimLongitudinalRandomSlope.R,
 %   R/SimLongitudinalRandomSlopeCov.R, R/SimLongitudinalSteinFojo.R,
-%   R/SimSurvival.R
+%   R/SimLongitudinalSteinFojoCov.R, R/SimSurvival.R
 \name{sampleSubjects}
 \alias{sampleSubjects}
 \alias{sampleSubjects.SimLongitudinalClaretBruno}
@@ -10,6 +10,7 @@
 \alias{sampleSubjects.SimLongitudinalRandomSlope}
 \alias{sampleSubjects.SimLongitudinalRandomSlopeCov}
 \alias{sampleSubjects.SimLongitudinalSteinFojo}
+\alias{sampleSubjects.SimLongitudinalSteinFojoCov}
 \alias{sampleSubjects.SimSurvival}
 \title{Generate Simulated Subjects}
 \usage{
@@ -24,6 +25,8 @@ sampleSubjects(object, subjects_df)
 \method{sampleSubjects}{SimLongitudinalRandomSlopeCov}(object, subjects_df)
 
 \method{sampleSubjects}{SimLongitudinalSteinFojo}(object, subjects_df)
+
+\method{sampleSubjects}{SimLongitudinalSteinFojoCov}(object, subjects_df)
 
 \method{sampleSubjects}{SimSurvival}(object, subjects_df)
 }

@@ -1,3 +1,16 @@
+gq_population_stan_data.UserCovariateLongitudinalModel <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    list(
+        declarations = "real gq_custom_population_design;",
+        data = list(gq_custom_population_design = matrix(1, 1, 1))
+    )
+}
+
+
 test_that("LongitudinalRandomSlopeCov constructs its parameters and Stan code", {
     model <- LongitudinalRandomSlopeCov(
         mu_formula = ~ study + age,
@@ -39,6 +52,20 @@ test_that("LongitudinalRandomSlopeCov constructs its parameters and Stan code", 
     ))
     expect_match(linked_stan, "lm_rsc_ind_intercept", fixed = TRUE)
     expect_match(linked_stan, "link_dsld_contrib", fixed = TRUE)
+})
+
+test_that("gq_population_stan_data() dispatches to user longitudinal models", {
+    generator <- QuantityGeneratorPopulation(
+        times = 1,
+        studies = "X",
+        arms = "A"
+    )
+    model <- structure(list(), class = "UserCovariateLongitudinalModel")
+
+    result <- gq_population_stan_data(generator, model)
+
+    expect_equal(result$declarations, "real gq_custom_population_design;")
+    expect_equal(result$data$gq_custom_population_design, matrix(1, 1, 1))
 })
 
 test_that("model-aware as_stan_list creates subject covariate designs", {
@@ -523,6 +550,117 @@ test_that("population quantities require newdata for additional covariates", {
         ),
         "age"
     )
+})
+
+test_that("required_longitudinal_covs() returns population predictor covariates", {
+    random_slope <- LongitudinalRandomSlopeCov(
+        mu_formula = ~study + age,
+        slope_mu_formula = ~arm + sex,
+        slope_sigma_formula = ~variability_covariate
+    )
+    stein_fojo <- LongitudinalSteinFojoCov(
+        mu_b_formula = ~study + age,
+        omega_b_formula = ~variability_covariate,
+        mu_s_formula = ~arm + sex,
+        omega_s_formula = ~variability_covariate,
+        mu_g_formula = ~age,
+        omega_g_formula = ~variability_covariate
+    )
+
+    expect_equal(
+        required_longitudinal_covs(random_slope),
+        c("study", "age", "arm", "sex")
+    )
+    expect_equal(
+        required_longitudinal_covs(stein_fojo),
+        c("study", "age", "arm", "sex")
+    )
+    expect_equal(required_longitudinal_covs(LongitudinalRandomSlope()), character())
+})
+
+test_that("required_simulation_covariates() includes variability predictors", {
+    random_slope <- LongitudinalRandomSlopeCov(
+        mu_formula = ~study + age,
+        slope_mu_formula = ~arm + sex,
+        slope_sigma_formula = ~variability_covariate
+    )
+    stein_fojo <- LongitudinalSteinFojoCov(
+        mu_b_formula = ~study + age,
+        omega_b_formula = ~variability_covariate,
+        mu_s_formula = ~arm + sex,
+        omega_s_formula = ~variability_covariate,
+        mu_g_formula = ~age,
+        omega_g_formula = ~variability_covariate
+    )
+
+    expect_equal(
+        required_simulation_covariates(random_slope),
+        c("study", "age", "arm", "sex", "variability_covariate")
+    )
+    expect_equal(
+        required_simulation_covariates(stein_fojo),
+        c("study", "age", "variability_covariate", "arm", "sex")
+    )
+    expect_equal(
+        required_simulation_covariates(LongitudinalRandomSlope()),
+        character()
+    )
+})
+
+test_that("posterior random-slope covariate draws create a matching simulator", {
+    model <- LongitudinalRandomSlopeCov()
+    values <- c(
+        lm_rsc_mu_intercept = 1,
+        `lm_rsc_mu_coefficients[1]` = 0,
+        lm_rsc_slope_mu_intercept = 0.1,
+        `lm_rsc_slope_mu_coefficients[1]` = 0,
+        lm_rsc_slope_sigma_intercept = -1,
+        `lm_rsc_slope_sigma_coefficients[1]` = 0,
+        lm_rsc_sigma = 0.2
+    )
+
+    simulator <- createLongitudinalSimObject(
+        model,
+        matrix(values, nrow = 1, dimnames = list(NULL, names(values)))
+    )
+
+    expect_s4_class(simulator, "SimLongitudinalRandomSlopeCov")
+    expect_equal(simulator@mu_formula, model@mu_formula)
+    expect_equal(simulator@slope_sigma_coefficients, 0)
+})
+
+test_that("posterior simulation preserves longitudinal covariates", {
+    subject <- DataSubject(
+        data.frame(
+            subject = c("S1", "S2"),
+            arm = c("A", "A"),
+            study = c("X", "X"),
+            covariate = c(-1, 1),
+            age = c(50, 60)
+        ),
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    )
+    longitudinal <- SimLongitudinalRandomSlopeCov(
+        times = c(0, 1),
+        mu_formula = ~covariate,
+        slope_mu_formula = ~covariate,
+        slope_sigma_formula = ~covariate
+    )
+
+    survival <- SimSurvivalExponential(lambda = 1000, time_max = 1)
+    survival@beta_os_cov <- 0
+    result <- SimJointDataResults(
+        subject = subject,
+        surv_formula = survival::Surv(time, event) ~ age,
+        longitudinal = rep(list(longitudinal), 2),
+        survival = rep(list(survival), 2),
+        .silent = TRUE
+    )
+
+    expect_s4_class(result, "SimJointData")
+    expect_equal(nrow(result@longitudinal), 4)
 })
 
 test_that("population quantities infer study-arm profiles when sufficient", {

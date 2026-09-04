@@ -24,7 +24,7 @@ test_that("SurvivalExponential() can fix lambda with prior_const()", {
     )
     expect_match(
         default_stan_code,
-        "real<lower=[^>]+> sm_exp_lambda;"
+        "real<lower=[^,>]+, upper=8000> sm_exp_lambda;"
     )
 
     jm <- JointModel(
@@ -38,10 +38,10 @@ test_that("SurvivalExponential() can fix lambda with prior_const()", {
     expect_match(stan_code, "real prior_const_sm_exp_lambda;", fixed = TRUE)
     expect_match(
         stan_code,
-        "real<lower=[^>]+> sm_exp_lambda = prior_const_sm_exp_lambda;"
+        "real<lower=[^,>]+, upper=8000> sm_exp_lambda = prior_const_sm_exp_lambda;"
     )
     expect_false(grepl(
-        "real<lower=[^>]+> sm_exp_lambda;",
+        "real<lower=[^,>]+, upper=8000> sm_exp_lambda;",
         stan_code,
         perl = TRUE
     ))

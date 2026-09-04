@@ -84,23 +84,28 @@ as_stan_list.QuantityGeneratorPopulation <- function(
     } else {
         model
     }
-    if (is(longitudinal_model, "LongitudinalRandomSlopeCov")) {
-        assert_that(
-            !is.null(object@newdata) &&
-                nrow(object@newdata) == ret[["gq_n_quant"]],
-            msg = paste0(
-                "Population quantities for `LongitudinalRandomSlopeCov` ",
-                "require `GridPopulation(newdata = ...)`"
-            )
-        )
-        ret <- append(
-            ret,
-            .random_slope_cov_population_stan_data(
-                longitudinal_model,
-                data@subject,
-                object@newdata
-            )
-        )
-    }
+    ret <- append(
+        ret,
+        gq_population_stan_data(
+            object,
+            model = longitudinal_model,
+            data = data
+        )$data
+    )
     return(ret)
+}
+
+
+#' @rdname gq_population_stan_data
+#' @export
+#' @rawNamespace S3method(gq_population_stan_data,QuantityGeneratorPopulation)
+gq_population_stan_data.QuantityGeneratorPopulation <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    # Note: We need to specify `model` here as second argument in order
+    # to dispatch the appropriate method based on the class of `model`.
+    UseMethod("gq_population_stan_data", model)
 }

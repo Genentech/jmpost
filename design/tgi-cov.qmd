@@ -335,6 +335,12 @@ predictor keeps the standard deviation positive.
 
 ```{r}
 library(jmpost)
+
+# Keep strictly positive Stan parameters away from floating-point zero during
+# early warmup proposals.
+options(jmpost.double_eps = 1e-10)
+
+days_per_year <- 365
 set.seed(2026)
 
 simulated_data <- SimJointData(
@@ -386,7 +392,8 @@ joint_model <- JointModel(
         slope_sigma_coefficients_prior = prior_normal(0, 0.5),
         sigma = prior_lognormal(log(2), 0.5)
     ),
-    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    # Gamma(shape, rate), centred on the simulated daily rate 1 / 300.
+    survival = SurvivalExponential(lambda = prior_gamma(2, 600)),
     link = linkDSLD()
 )
 
@@ -627,4 +634,173 @@ population_quantities <- LongitudinalQuantities(
     )
 )
 autoplot(population_quantities)
+```
+
+## Stein-Fojo example
+
+This nonlinear example follows the same structure as the random-slope
+prototype. Baseline tumour size varies by study, while shrinkage and growth
+vary by treatment arm. `cov_cont` is included in the baseline-size predictor
+when fitting, even though its simulated effect is zero. The survival model
+continues to use the separate categorical covariate.
+
+```{r}
+set.seed(2026)
+
+stein_fojo_simulated_data <- SimJointData(
+    design = list(
+        SimGroup(50, "A", "Study-1"),
+        SimGroup(50, "B", "Study-1"),
+        SimGroup(50, "A", "Study-2"),
+        SimGroup(50, "B", "Study-2")
+    ),
+    longitudinal = SimLongitudinalSteinFojoCov(
+        times = c(0, 50, 100, 150, 200) / days_per_year,
+        mu_b_formula = ~study,
+        omega_b_formula = ~study,
+        mu_s_formula = ~arm,
+        omega_s_formula = ~arm,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
+        mu_b_intercept = log(60),
+        mu_b_coefficients = log(75 / 60),
+        omega_b_intercept = log(0.2),
+        omega_b_coefficients = log(0.25 / 0.2),
+        mu_s_intercept = log(0.5),
+        mu_s_coefficients = log(0.4 / 0.5),
+        omega_s_intercept = log(0.2),
+        omega_s_coefficients = log(0.25 / 0.2),
+        mu_g_intercept = log(0.3),
+        mu_g_coefficients = log(0.4 / 0.3),
+        omega_g_intercept = log(0.15),
+        omega_g_coefficients = log(0.2 / 0.15),
+        sigma = 2,
+        link_dsld = 0.1
+    ),
+    survival = SimSurvivalExponential(
+        # The Stein-Fojo rates and longitudinal times are expressed in years,
+        # so survival and censoring rates and times use years as well.
+        lambda = days_per_year / 300,
+        time_max = 500 / days_per_year,
+        time_step = 1 / days_per_year,
+        lambda_censor = days_per_year / 3000,
+        beta_cont = 0.2,
+        beta_cat = c("A" = 0, "B" = -0.3, "C" = 0.2)
+    )
+)
+```
+
+Now we specify the joint model with the new `LongitudinalSteinFojoCov` class:
+
+```{r}
+stein_fojo_model <- JointModel(
+    longitudinal = LongitudinalSteinFojoCov(
+        mu_b_formula = ~ study + cov_cont,
+        omega_b_formula = ~study,
+        mu_s_formula = ~arm,
+        omega_s_formula = ~arm,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
+        mu_b_intercept_prior = prior_normal(log(60), 1),
+        mu_b_coefficients_prior = prior_normal(0, 1),
+        omega_b_intercept_prior = prior_normal(log(0.2), 0.5),
+        omega_b_coefficients_prior = prior_normal(0, 0.5),
+        mu_s_intercept_prior = prior_normal(log(0.5), 1),
+        mu_s_coefficients_prior = prior_normal(0, 1),
+        omega_s_intercept_prior = prior_normal(log(0.2), 0.5),
+        omega_s_coefficients_prior = prior_normal(0, 0.5),
+        mu_g_intercept_prior = prior_normal(log(0.3), 1),
+        mu_g_coefficients_prior = prior_normal(0, 1),
+        omega_g_intercept_prior = prior_normal(log(0.15), 0.5),
+        omega_g_coefficients_prior = prior_normal(0, 0.5),
+        sigma = prior_lognormal(log(2), 0.5),
+        # Note: This can improve convergence of the baseline parameters
+        centred_baseline = TRUE,
+        centred_growth = FALSE,
+        centred_shrinkage = FALSE
+    ),
+    # Gamma(shape, rate), centred on the simulated annual rate 365 / 300.
+    survival = SurvivalExponential(
+        lambda = prior_gamma(2, 2 / (days_per_year / 300))
+    ),
+    link = linkDSLD()
+)
+
+stein_fojo_data <- DataJoint(
+    subject = DataSubject(
+        data = stein_fojo_simulated_data@survival,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = stein_fojo_simulated_data@survival,
+        formula = Surv(time, event) ~ cov_cat
+    ),
+    longitudinal = DataLongitudinal(
+        data = stein_fojo_simulated_data@longitudinal,
+        formula = sld ~ time
+    )
+)
+```
+
+As above, these short chains are only intended to exercise the complete
+workflow as well as to check whether there are any obvious convergence issues:
+
+```{r}
+stein_fojo_fit <- sampleStanModel(
+    stein_fojo_model,
+    data = stein_fojo_data,
+    iter_warmup = 500,
+    iter_sampling = 500,
+    chains = 2,
+    parallel_chains = 2,
+    seed = 2026,
+    refresh = 100,
+    show_exceptions = TRUE,
+    show_messages = TRUE
+)
+```
+
+The parameter names use the `lm_sfc` prefix. The second
+`lm_sfc_mu_b_coefficients` element is the additional `cov_cont` effect.
+
+```{r}
+sf_sum <- stein_fojo_fit@results$summary(
+    variables = c(
+        "lm_sfc_mu_b_intercept",
+        "lm_sfc_mu_b_coefficients",
+        "lm_sfc_omega_b_intercept",
+        "lm_sfc_omega_b_coefficients",
+        "lm_sfc_mu_s_intercept",
+        "lm_sfc_mu_s_coefficients",
+        "lm_sfc_omega_s_intercept",
+        "lm_sfc_omega_s_coefficients",
+        "lm_sfc_mu_g_intercept",
+        "lm_sfc_mu_g_coefficients",
+        "lm_sfc_omega_g_intercept",
+        "lm_sfc_omega_g_coefficients",
+        "lm_sfc_sigma",
+        "link_dsld",
+        "beta_os_cov"
+    )
+)
+sf_sum$rhat
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+stein_fojo_coefficient_draws <- stein_fojo_fit@results$draws(
+    variables = c(
+        "lm_sfc_mu_b_coefficients",
+        "lm_sfc_mu_s_coefficients",
+        "lm_sfc_mu_g_coefficients"
+    )
+)
+
+bayesplot::mcmc_dens(stein_fojo_coefficient_draws) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::labs(x = "Coefficient", y = "Posterior density")
 ```

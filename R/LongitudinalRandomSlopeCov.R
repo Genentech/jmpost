@@ -500,6 +500,43 @@ enableGQ.LongitudinalRandomSlopeCov <- function(
     ))
 }
 
+#' @rdname gq_population_stan_data
+#' @export
+gq_population_stan_data.LongitudinalRandomSlopeCov <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    result <- list(
+        declarations = paste(
+            "matrix[gq_n_quant, p_lm_rsc_mu] gq_lm_rsc_mu_design;",
+            paste0(
+                "matrix[gq_n_quant, p_lm_rsc_slope_mu] ",
+                "gq_lm_rsc_slope_mu_design;"
+            ),
+            sep = "\n"
+        ),
+        data = list()
+    )
+    if (!is.null(data)) {
+        assert_that(
+            !is.null(object@newdata) &&
+                nrow(object@newdata) == length(object@times),
+            msg = paste0(
+                "Population quantities for `LongitudinalRandomSlopeCov` ",
+                "require `GridPopulation(newdata = ...)`"
+            )
+        )
+        result$data <- .random_slope_cov_population_stan_data(
+            model,
+            data@subject,
+            object@newdata
+        )
+    }
+    result
+}
+
 #' @export
 #'
 #' @returns The longitudinal model with its link-related Stan code enabled.
@@ -568,26 +605,30 @@ getRandomEffectsNames.LongitudinalRandomSlopeCov <- function(object, ...) {
     c("slope" = "lm_rsc_ind_rnd_slope")
 }
 
-#' Create longitudinal-model-specific Stan data
-#'
-#' @param model A [`LongitudinalModel`] object.
-#' @param subject A [`DataSubject`] object.
-#'
-#' @keywords internal
-#' @returns A named list of model-specific Stan data components.
-longitudinal_model_stan_data <- function(model, subject) {
-    if (is(model, "LongitudinalRandomSlopeCov")) {
-        return(.random_slope_cov_stan_data(
-            model,
-            subject
-        ))
-    }
-    longitudinal_model_stan_data.default(model, subject)
+#' @rdname required_longitudinal_covs
+#' @export
+required_longitudinal_covs.LongitudinalRandomSlopeCov <- function(object, ...) {
+    unique(c(
+        all.vars(object@mu_formula),
+        all.vars(object@slope_mu_formula)
+    ))
+}
+
+#' @rdname required_simulation_covariates
+#' @export
+required_simulation_covariates.LongitudinalRandomSlopeCov <- function(
+    object,
+    ...
+) {
+    unique(unlist(lapply(c("mu", "slope_mu", "slope_sigma"), function(name) {
+        all.vars(slot(object, paste0(name, "_formula")))
+    })))
 }
 
 #' @rdname longitudinal_model_stan_data
 #' @keywords internal
-.random_slope_cov_stan_data <- function(
+#' @export
+longitudinal_model_stan_data.LongitudinalRandomSlopeCov <- function(
     model,
     subject
 ) {
@@ -646,9 +687,4 @@ longitudinal_model_stan_data <- function(model, subject) {
             "slope_mu_formula"
         )
     )
-}
-
-#' @rdname longitudinal_model_stan_data
-longitudinal_model_stan_data.default <- function(model, subject) {
-    list()
 }

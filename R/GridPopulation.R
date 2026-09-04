@@ -56,16 +56,7 @@ as.QuantityGenerator.GridPopulation <- function(
     if (!is.null(object@newdata)) {
         profiles <- object@newdata
     } else {
-        required_covariates <- if (
-            is(longitudinal_model, "LongitudinalRandomSlopeCov")
-        ) {
-            unique(c(
-                all.vars(longitudinal_model@mu_formula),
-                all.vars(longitudinal_model@slope_mu_formula)
-            ))
-        } else {
-            character()
-        }
+        required_covariates <- required_longitudinal_covs(longitudinal_model)
         additional_covariates <- setdiff(
             required_covariates,
             c(subject_vars$arm, subject_vars$study)
@@ -86,14 +77,11 @@ as.QuantityGenerator.GridPopulation <- function(
         profiles <- subject_data[population_indexes, , drop = FALSE]
     }
 
-    required_columns <- c(subject_vars$arm, subject_vars$study)
-    if (is(longitudinal_model, "LongitudinalRandomSlopeCov")) {
-        required_columns <- unique(c(
-            required_columns,
-            all.vars(longitudinal_model@mu_formula),
-            all.vars(longitudinal_model@slope_mu_formula)
-        ))
-    }
+    required_columns <- unique(c(
+        subject_vars$arm,
+        subject_vars$study,
+        required_longitudinal_covs(longitudinal_model)
+    ))
     missing_columns <- setdiff(required_columns, names(profiles))
     assert_that(
         length(missing_columns) == 0,

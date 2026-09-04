@@ -268,6 +268,41 @@ generateQuantities <- function(object, ...) {
 }
 
 
+#' Population Generated-Quantities Stan Data
+#'
+#' Obtain the model-specific Stan declarations and data needed for longitudinal
+#' population generated quantities.
+#'
+#' This generic first dispatches on the quantity generator.  Its
+#' [`QuantityGeneratorPopulation`] method then dispatches on `model`, allowing
+#' longitudinal-model authors to provide a
+#' `gq_population_stan_data.<model-class>()` method alongside their model.
+#'
+#' @param object A quantity generator.
+#' @param model A longitudinal model.
+#' @param data A [`DataJoint`] object, or `NULL` when only declarations are
+#'   required.
+#' @param ... Additional options.
+#' @export
+#'
+#' @returns A list with `declarations`, a character scalar of Stan data-block
+#' declarations, and `data`, a named list of Stan data values.
+gq_population_stan_data <- function(object, model, data = NULL, ...) {
+    UseMethod("gq_population_stan_data")
+}
+
+#' @rdname gq_population_stan_data
+#' @export
+gq_population_stan_data.default <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    list(declarations = "", data = list())
+}
+
+
 #' Prepare Data Object
 #'
 #' @typed object: "`DataSubject` or `DataLongitudinal` or `DataSurvival`"
@@ -630,6 +665,51 @@ getRandomEffectsNames <- function(object, ...) {
 #' @export
 getRandomEffectsNames.default <- function(object, ...) {
     NULL
+}
+
+
+#' Required Longitudinal Covariates
+#'
+#' Return the subject-level covariates required to generate longitudinal
+#' population quantities for a model.
+#'
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object.
+#' @param ... Not used.
+#' @export
+#'
+#' @returns A character vector of covariate names.
+required_longitudinal_covs <- function(object, ...) {
+    UseMethod("required_longitudinal_covs")
+}
+
+#' @rdname required_longitudinal_covs
+#' @export
+required_longitudinal_covs.default <- function(object, ...) {
+    character()
+}
+
+
+#' Required Longitudinal Simulation Covariates
+#'
+#' Return the subject-level covariates required to simulate a longitudinal
+#' model from posterior draws. Unlike [required_longitudinal_covs()], this
+#' includes covariates used only by variability predictors.
+#'
+#' @typed object: LongitudinalModel
+#'   A longitudinal model object.
+#' @param ... Not used.
+#' @export
+#'
+#' @returns A character vector of covariate names.
+required_simulation_covariates <- function(object, ...) {
+    UseMethod("required_simulation_covariates")
+}
+
+#' @rdname required_simulation_covariates
+#' @export
+required_simulation_covariates.default <- function(object, ...) {
+    character()
 }
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R, R/SimLongitudinalClaretBruno.R,
 %   R/SimLongitudinalGSF.R, R/SimLongitudinalRandomSlope.R,
 %   R/SimLongitudinalRandomSlopeCov.R, R/SimLongitudinalSteinFojo.R,
-%   R/SimSurvival.R
+%   R/SimLongitudinalSteinFojoCov.R, R/SimSurvival.R
 \name{sampleObservations}
 \alias{sampleObservations}
 \alias{sampleObservations.SimLongitudinalClaretBruno}
@@ -10,6 +10,7 @@
 \alias{sampleObservations.SimLongitudinalRandomSlope}
 \alias{sampleObservations.SimLongitudinalRandomSlopeCov}
 \alias{sampleObservations.SimLongitudinalSteinFojo}
+\alias{sampleObservations.SimLongitudinalSteinFojoCov}
 \alias{sampleObservations.SimSurvival}
 \title{Generate Simulated Observations}
 \usage{
@@ -24,6 +25,8 @@ sampleObservations(object, times_df)
 \method{sampleObservations}{SimLongitudinalRandomSlopeCov}(object, times_df)
 
 \method{sampleObservations}{SimLongitudinalSteinFojo}(object, times_df)
+
+\method{sampleObservations}{SimLongitudinalSteinFojoCov}(object, times_df)
 
 \method{sampleObservations}{SimSurvival}(object, times_df)
 }
