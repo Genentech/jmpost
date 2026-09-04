@@ -26,7 +26,7 @@ transformed parameters {
 {% if not centred_phi -%}
     vector[n_subjects] lm_gsfc_psi_phi_logit = logit(lm_gsfc_ind_mu_phi) + lm_gsfc_eta_tilde_phi .* lm_gsfc_ind_omega_phi;
 {%- endif %}
-    vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[n_subjects] lm_gsfc_psi_phi = inv_logit(lm_gsfc_psi_phi_logit);
+    vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[n_subjects] lm_gsfc_psi_phi = safe_inv_logit(lm_gsfc_psi_phi_logit, {{ machine_double_eps }});
     vector[n_tumour_all] Ypred = sld(tumour_time, lm_gsfc_psi_b[subject_tumour_index], lm_gsfc_psi_s[subject_tumour_index], lm_gsfc_psi_g[subject_tumour_index], lm_gsfc_psi_phi[subject_tumour_index]);
     long_obvs_log_lik[subject_tumour_index_obs] = vect_normal_log_dens(tumour_value[subject_tumour_index_obs], Ypred[subject_tumour_index_obs], {% if scaled_variance %} fmax(Ypred[subject_tumour_index_obs] * lm_gsfc_sigma, {{ machine_double_eps }}) {% else %} rep_vector(lm_gsfc_sigma, n_tumour_obs) {% endif %});
     if (n_tumour_cens > 0) long_obvs_log_lik[subject_tumour_index_cens] = vect_normal_log_cum(tumour_value_lloq, Ypred[subject_tumour_index_cens], {% if scaled_variance %} fmax(Ypred[subject_tumour_index_cens] * lm_gsfc_sigma, {{ machine_double_eps }}) {% else %} rep_vector(lm_gsfc_sigma, n_tumour_cens) {% endif %});

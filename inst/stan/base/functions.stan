@@ -42,6 +42,15 @@ functions {
         return fmax(value, safe_positive_limit());
     }
 
+    // Maps a real value from the logit scale to [epsilon, 1 - epsilon].
+    real safe_inv_logit(real value, real epsilon) {
+        return epsilon + (1 - 2 * epsilon) * inv_logit(value);
+    }
+
+    vector safe_inv_logit(vector value, real epsilon) {
+        return epsilon + (1 - 2 * epsilon) * inv_logit(value);
+    }
+
 
     // Vectorized version of normal_lpdf, i.e. returns log normal density values.
     vector vect_normal_log_dens(vector y, vector mu, vector sigma) {

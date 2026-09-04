@@ -52,6 +52,19 @@ test_that("LongitudinalGSFCov constructs all covariate predictors", {
     )
 })
 
+test_that("LongitudinalGSFCov keeps phi within its positive epsilon bounds", {
+    old_options <- options(jmpost.double_eps = 1e-10)
+    on.exit(options(old_options), add = TRUE)
+
+    stan_code <- as.character(JointModel(LongitudinalGSFCov()))
+    expect_match(
+        stan_code,
+        "lm_gsfc_psi_phi = safe_inv_logit(lm_gsfc_psi_phi_logit, 1e-10);",
+        fixed = TRUE
+    )
+    expect_stan_syntax(stan_code)
+})
+
 test_that("LongitudinalGSFCov supports links, quantities, and simulation", {
     model <- LongitudinalGSFCov()
     linked <- JointModel(model, SurvivalExponential(), linkDSLD())
