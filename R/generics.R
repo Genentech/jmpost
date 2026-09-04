@@ -3,6 +3,7 @@
 setClassUnion("empty", c("missing", "NULL"))
 setClassUnion("numeric_or_NULL", c("numeric", "NULL"))
 setClassUnion("character_or_NULL", c("character", "NULL"))
+setClassUnion("data.frame_or_NULL", c("data.frame", "NULL"))
 
 # merge ----
 

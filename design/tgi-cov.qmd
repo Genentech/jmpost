@@ -1,0 +1,630 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    embed-resources: true
+bibliography: references.bib
+---
+
+# Longitudinal models with covariates
+
+The current formulation of the TGI models has one model per arm.
+
+We need another formulation where we have one model per study - and then have a linear predictor for the shrinkage and growth terms.
+
+## Requirements
+
+- Have some sort of backwards compatibility.
+  - This can be achieved by defaulting the covariates used to the dummy variables for the study and treatment arm, as explained below in the statistical specifications.
+- 3 modeling options need to be supported:
+  - linear model: `intercept + X * beta`
+  - proportional: `intercept * (1 + X * beta)`
+  - exponential: `intercept^(X * beta)`
+- Possibility to have different covariates affecting different parameters.
+- Simulation functions would also need to be able to take covariates for TGI.
+
+## Statistical specifications
+
+Basically everywhere where we so far had the treatment arm index $k(i)$ or the study index $l(i)$ in the parameters, we replace this with a (potentially transformed) linear predictor $\eta_i$ that depends on the covariates $x_i$ of the individual $i$. These are baseline covariates which are constant over time, e.g. study, treatment arm, age, sex, etc.
+Furthermore, these covariates can be different for the different parameters.
+
+Let's write this out for some of the longitudinal models we support in `jmpost`.
+
+### Random-Slope model
+
+$$
+y_{ij} = \mu_{i} + s_i t_{ij} + \epsilon_{ij}
+$$
+
+where:
+
+- $y_{ij}$ is the tumour size for subject $i$ at timepoint $j$
+- $t_{ij}$ is the timepoint $j$ for subject $i$
+- $\mu_i$ is the intercept for subject $i$, parametrized as a linear predictor $\eta_{\mu,i}$ of covariates $x_{\mu,i}$:
+  $$
+    \mu_i = \eta_{\mu,i} = \beta_{\mu,0} + x_{\mu,i}^T \beta_{\mu}
+  $$
+- $s_i$ is the slope for subject $i$, with $s_i \sim N(\mu_{s,i}, \sigma_{s,i})$.
+  - Here both $\mu_{s,i}$ and $\sigma_{s,i}$ are parametrized with linear predictors
+  - First we have
+    $$ 
+        \mu_{s,i} = \eta_{\mu_s,i} = \beta_{\mu_s,0} + x_{\mu_s,i}^T \beta_{\mu_s}
+    $$
+  - And then we have
+    $$
+        \log(\sigma_{s,i}) = \eta_{\sigma_{s,i}} = \beta_{\sigma_s,0} + x_{\sigma_s,i}^T \beta_{\sigma_s}
+    $$
+
+This condenses back to the original model formulation without covariates if:
+
+- $x_{\mu,i}$ only contains dummy variables for the study
+- $x_{\mu_s,i}$ only contains dummy variables for the treatment arm
+- $x_{\sigma_s,i}$ only contains dummy variables for the treatment arm
+
+### Stein-Fojo Model
+
+$$\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\
+\\
+SLD_{ij} &=
+\begin{cases}
+b_i[e^{-s_it_{ij}} + e^{g_i t_{ij}} - 1] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+s_i &\sim \text{LogNormal}(\mu_{s,i}, \omega_{s,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i}$ is the mean of the log-normal distribution for the baseline tumour size $b_i$, parametrized as a linear predictor $\eta_{\mu_b,i}$ of covariates $x_{\mu_b,i}$:
+  $$
+    \mu_{b,i} = \eta_{\mu_b,i} = \beta_{\mu_b,0} + x_{\mu_b,i}^T \beta_{\mu_b}
+  $$
+- $\omega_{b,i}$ is the variance of the log-normal distribution for the baseline tumour size $b_i$, parametrized as the exponential of a linear predictor $\eta_{\omega_b,i}$ with covariates $x_{\omega_b,i}$:
+  $$
+    \log(\omega_{b,i}) = \eta_{\omega_b,i} = \beta_{\omega_b,0} + x_{\omega_b,i}^T \beta_{\omega_b}
+  $$
+- And in the same way for $\mu_{s,i}$, $\omega_{s,i}$, $\mu_{g,i}$, and $\omega_{g,i}$.
+
+Note that this condenses back to the original model formulation without covariates if:
+
+- $x_{\mu_b,i}$ and $x_{\omega_b,i}$ only contain dummy variables for the study
+- $x_{\mu_s,i}$ and $x_{\omega_s,i}$ only contain dummy variables for the treatment arm
+- $x_{\mu_g,i}$ and $x_{\omega_g,i}$ only contain dummy variables for the treatment arm
+
+### Different parametrizations of the "linear" predictors
+
+In the above formulations, we have always used a linear predictor of the form $\eta_i = \beta_0 + x_i^T \beta$. However, we also want to support other parametrizations, so overall we need the following options:
+
+- linear: $\eta_i = \beta_0 + x_i^T \beta$
+- proportional: $\eta_i = \beta_0 (1 + x_i^T \beta)$
+- exponential: $\eta_i = \beta_0^{(x_i^T \beta)}$
+
+In principle these can be inserted in the above model definitions.
+For the exponential parametrization we need to be careful with the baseline parameter $\beta_0$, as it needs to be positive. At the reference level, where $x_i^T \beta = 0$, this parametrization gives $\eta_i = 1$.
+
+### GSF Model
+
+With the above note, let's keep the GSF model at the level of linear predictors.
+
+$$
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases}
+b_i[\phi_i e^{-s_it_{ij}} + (1-\phi_i)e^{g_i t_{ij}}] & \text{if } t_{ij}\geq 0 \\
+b_i e^{g_i t_{ij}} & \text{if } t_{ij}\lt 0
+\end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+s_i &\sim \text{LogNormal}(\mu_{s,i}, \omega_{s,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+\phi_i &\sim \text{LogitNormal}(\mu_{\phi,i}, \omega_{\phi,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i} = \eta_{\mu_b,i}$
+- $\omega_{b,i} = \exp(\eta_{\omega_b,i})$
+- $\mu_{s,i} = \eta_{\mu_s,i}$
+- $\omega_{s,i} = \exp(\eta_{\omega_s,i})$
+- $\mu_{g,i} = \eta_{\mu_g,i}$
+- $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
+- $\mu_{\phi,i} = \eta_{\mu_\phi,i}$
+- $\omega_{\phi,i} = \exp(\eta_{\omega_\phi,i})$
+
+### Claret-Bruno Model
+
+$$
+\begin{align*}
+y_{ij} &\sim N(SLD_{ij},\ SLD_{ij}^2 \sigma^2) \\ \\
+SLD_{ij} &= 
+\begin{cases} b_i e^{g_i t_{ij}} & 
+\text{if } t_{ij} < 0, \\ 
+b_i  \cdot \exp\left(g_i  t_{ij} - \frac{p_i}{c_i}  \left(1 - e^{-c_i t_{ij} }\right)\right) & 
+\text{if } t_{ij} \geq 0. \end{cases}\\
+\\
+b_i &\sim \text{LogNormal}(\mu_{b,i}, \omega_{b,i}) \\
+g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
+c_i &\sim \text{LogNormal}(\mu_{c,i}, \omega_{c,i}) \\
+p_i &\sim \text{LogNormal}(\mu_{p,i}, \omega_{p,i}) \\
+\end{align*}
+$$
+
+where
+
+- $\mu_{b,i} = \eta_{\mu_b,i}$
+- $\omega_{b,i} = \exp(\eta_{\omega_b,i})$
+- $\mu_{g,i} = \eta_{\mu_g,i}$
+- $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
+- $\mu_{c,i} = \eta_{\mu_c,i}$
+- $\omega_{c,i} = \exp(\eta_{\omega_c,i})$      
+- $\mu_{p,i} = \eta_{\mu_p,i}$
+- $\omega_{p,i} = \exp(\eta_{\omega_p,i})$
+
+## Interface
+
+The next topic is how to specify the covariates in the interface.
+
+Probably the best way for full backwards compatibility is to introduce new classes for the above more general models. This will also allow us to test the equality in the special case discussed above where the covariates version reduces to the original version.
+
+### `LongitudinalRandomSlopeCov` example
+
+Let's work this through in the example of the random slope model.
+
+The old constructor signature was:
+
+```r
+LongitudinalRandomSlope(
+  intercept = prior_normal(30, 10),
+  slope_mu = prior_normal(1, 3),
+  slope_sigma = prior_lognormal(0, 1.5),
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
+)
+```
+
+- The proposed new constructor takes now formulas for the linear predictors. Note that the actual baseline covariates data is still provided separately via the `DataSubject` object, so the formulas are only used to extract the covariates from the data.
+  - One detail: These formulas will be used internally to create the design matrices *without* a constant intercept column of 1s. Technically, the user would thus need to specify `0 + ...` in the formula to avoid an intercept column. But this would be cumbersome. Therefore we will automatically remove the intercept column from the design matrix if it is present, so that the user can just specify `~ study` instead of `~ 0 + study`.
+- The new constructor also needs to support the different parametrizations of the linear predictors, so we need to add an argument for that. This also needs to be specific to the different parameters, as we might want to have different parametrizations for the different parameters.
+- Finally we also have different model parameters now: E.g. instead of `intercept` we model the the corresponding intercept $\beta_{\mu,0}$ and coefficients $\beta_{\mu}$.
+- On the other hand the `sigma` still stays the same, as it is not affected by covariates.
+- We rename here `intercept` to `mu` otherwise it would be confusing to talk about the intercept of the intercept.
+
+```r
+LongitudinalRandomSlopeCov(
+  # Covariate specifications for the linear predictors.
+  mu_formula = ~ study,
+  slope_mu_formula = ~ arm,
+  slope_sigma_formula = ~ arm,
+  # Parametrization of the linear predictors.
+  mu_parametrization = "linear",
+  slope_mu_parametrization = "linear",
+  slope_sigma_parametrization = "log-linear", # Because we take log(sigma) with linear predictor.
+  # Priors for the coefficients of the linear predictors.
+  mu_intercept_prior = prior_normal(30, 10),
+  mu_coefficients_prior = prior_normal(0, 3),
+  slope_mu_intercept_prior = prior_normal(1, 3),
+  slope_mu_coefficients_prior = prior_normal(0, 3),
+  slope_sigma_intercept_prior = prior_normal(0, 1.5),
+  slope_sigma_coefficients_prior = prior_normal(0, 1.5),
+  # Error term specifications (still the same as in LongitudinalRandomSlope).
+  sigma = prior_lognormal(0, 1.5),
+  scaled_variance = FALSE
+)
+```
+
+So we see that we have quite a lot more arguments now, but the idea is that we can have a lot more flexibility in specifying the model.
+
+## Data handling
+
+Let's check if something needs to be changed in the data handling. The current workflow is:
+
+```r
+model <- JointModel(
+    longitudinal = longmodel,
+    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    link = link
+)
+
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = dat_os,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ cov_cat + cov_cont
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time
+    )
+)
+
+model_samples <- sampleStanModel(
+    model,
+    data = joint_data,
+    iter_warmup = 800,
+    iter_sampling = 1000,
+    chains = 1,
+    refresh = 0,
+    parallel_chains = 1
+)
+```
+
+So in this current workflow the `joint_data` is created with all the data objects. This includes the `DataLongitudinal` object, which takes a formula for the longitudinal outcome - but this only specifies the names of the outcome (e.g. `sld`) and the time variables (e.g. `time`). Subject level, i.e. baseline, covariates live in the `DataSubject` object, so this is the one where actually need to extract the baseline covariates from.
+
+But it would not take into account details from the `longmodel` object, e.g. which covariates are used for which parameters. So we need to change this.
+
+Currently `sampleStanModel` calls `as_stan_list(data)` on the `joint_data` object. We can replace this with the more general
+
+```r
+as_stan_list(data, model)
+```
+
+call which can take into account then the details of the `model`, in particular the covariates used for the different parameters.
+
+The other good news is that since `as_stan_list` is a generic function, we can still support the previous `as_stan_list(data)` call for backwards compatibility, and just have a new method for `as_stan_list(data, model)`.
+
+## Simulation functionality
+
+The current simulation function is e.g. 
+
+```r
+SimLongitudinalRandomSlope(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  intercept = 50,
+  slope_mu = c(0.01, 0.03),
+  slope_sigma = c(0.5, 0.6),
+  sigma = 2,
+  link_dsld = 0,
+  link_identity = 0,
+  scaled_variance = FALSE
+)
+```
+
+We now add an additional function each for the TGI covariates model, e.g.:
+
+```r
+SimLongitudinalRandomSlopeCov(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  # Covariate specifications for the linear predictors.
+  mu_formula = ~ study,
+  slope_mu_formula = ~ arm,
+  slope_sigma_formula = ~ arm,
+  # Parametrization of the linear predictors.
+  mu_parametrization = "linear",
+  slope_mu_parametrization = "linear",
+  slope_sigma_parametrization = "log-linear",
+  # Coefficients of the linear predictors.
+  mu_intercept = 50,
+  mu_coefficients = c(0, -5),
+  slope_mu_intercept = 0.01,
+  slope_mu_coefficients = c(0, -0.01),
+  slope_sigma_intercept = 5,
+  slope_sigma_coefficients = c(0, -0.1),
+  # Error term specifications (still the same as in SimLongitudinalRandomSlope).
+  sigma = 2,
+  scaled_variance = FALSE,
+  # Link specifications (still the same as in SimLongitudinalRandomSlope).
+  link_dsld = 0,
+  link_identity = 0  
+)
+```
+
+## Prototype example
+
+The simulated longitudinal model uses study and treatment arm. The survival
+simulator also generates a continuous (`cov_cont`) and categorical (`cov_cat`)
+baseline covariate. We include `cov_cont` in the fitted
+longitudinal model; their true longitudinal effect is zero here though.
+We also include `cov_cat` in the fitted survival model, in order to illustrate that
+the covariates of the two models can be different (and they can also be overlapping).
+Study changes the subject intercept, while treatment arm changes the
+mean and standard deviation of the random slope. The `log-linear` slope-SD
+predictor keeps the standard deviation positive.
+
+```{r}
+library(jmpost)
+set.seed(2026)
+
+simulated_data <- SimJointData(
+    design = list(
+        SimGroup(50, "A", "Study-1"),
+        SimGroup(50, "B", "Study-1"),
+        SimGroup(50, "A", "Study-2"),
+        SimGroup(50, "B", "Study-2")
+    ),
+    longitudinal = SimLongitudinalRandomSlopeCov(
+        times = c(0, 50, 100, 150, 200),
+        mu_formula = ~study,
+        slope_mu_formula = ~arm,
+        slope_sigma_formula = ~arm,
+        mu_intercept = 30,
+        mu_coefficients = 5,
+        slope_mu_intercept = 0.01,
+        slope_mu_coefficients = 0.02,
+        slope_sigma_intercept = log(0.5),
+        slope_sigma_coefficients = log(0.7 / 0.5),
+        sigma = 2,
+        link_dsld = 0.1
+    ),
+    survival = SimSurvivalExponential(
+        lambda = 1 / 300,
+        time_max = 500,
+        time_step = 1,
+        beta_cont = 0.2,
+        beta_cat = c("A" = 0, "B" = -0.3, "C" = 0.2)
+    )
+)
+```
+
+Construct the corresponding longitudinal model. `cov_cont` adjusts the
+intercept predictor, and a dichotomized version of it adjusts the mean-slope predictor.
+This illustrates that the full flexibility of design formulas is available for specifying how covariates enter the model.
+
+```{r}
+joint_model <- JointModel(
+    longitudinal = LongitudinalRandomSlopeCov(
+        mu_formula = ~ study + cov_cont,
+        slope_mu_formula = ~ arm + I(cov_cont > 0),
+        slope_sigma_formula = ~arm,
+        mu_intercept_prior = prior_normal(30, 10),
+        mu_coefficients_prior = prior_normal(0, 5),
+        slope_mu_intercept_prior = prior_normal(0.01, 0.02),
+        slope_mu_coefficients_prior = prior_normal(0, 0.02),
+        slope_sigma_intercept_prior = prior_normal(log(0.5), 0.5),
+        slope_sigma_coefficients_prior = prior_normal(0, 0.5),
+        sigma = prior_lognormal(log(2), 0.5)
+    ),
+    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    link = linkDSLD()
+)
+
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = simulated_data@survival,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = simulated_data@survival,
+        # Note: Here we just use cov_cat - the covariates can be different from
+        # the longitudinal model.
+        formula = Surv(time, event) ~ cov_cat
+    ),
+    longitudinal = DataLongitudinal(
+        data = simulated_data@longitudinal,
+        formula = sld ~ time
+    )
+)
+```
+
+For this small prototype, use short chains to check that the complete workflow
+runs. A real analysis should use more iterations and convergence diagnostics.
+
+```{r}
+fit <- sampleStanModel(
+    joint_model,
+    data = joint_data,
+    iter_warmup = 250,
+    iter_sampling = 250,
+    chains = 2,
+    parallel_chains = 2,
+    seed = 2026,
+    refresh = 0,
+    show_exceptions = FALSE,
+    show_messages = FALSE
+)
+```
+
+The summary exposes the reference-level parameters, their covariate
+coefficients, and standard MCMC diagnostics. With the reference coding used
+above, the second `lm_rsc_mu_coefficients` element corresponds to `cov_cont`;
+the second and third `lm_rsc_slope_mu_coefficients` elements correspond to the
+non-reference `cov_cat` levels. These effects should be near zero because they
+were not used in the longitudinal simulation.
+
+```{r}
+fit@results$summary(
+    variables = c(
+        "lm_rsc_mu_intercept",
+        "lm_rsc_mu_coefficients",
+        "lm_rsc_slope_mu_intercept",
+        "lm_rsc_slope_mu_coefficients",
+        "lm_rsc_slope_sigma_intercept",
+        "lm_rsc_slope_sigma_coefficients",
+        "lm_rsc_sigma",
+        "link_dsld",
+        "beta_os_cov"
+    )
+)
+```
+
+Density plots provide a complementary view of the posterior uncertainty. The
+vertical line marks zero, which is particularly useful for the additional
+baseline-covariate effects.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+longitudinal_coefficient_draws <- fit@results$draws(
+    variables = c(
+        "lm_rsc_mu_coefficients",
+        "lm_rsc_slope_mu_coefficients",
+        "lm_rsc_slope_sigma_coefficients"
+    )
+)
+
+bayesplot::mcmc_dens(longitudinal_coefficient_draws) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::labs(x = "Coefficient", y = "Posterior density")
+```
+
+The same display can be used for the survival covariates and the longitudinal
+association parameter.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+
+survival_coefficient_draws <- fit@results$draws(
+    variables = c("beta_os_cov", "link_dsld")
+)
+
+bayesplot::mcmc_dens(survival_coefficient_draws) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::labs(x = "Coefficient", y = "Posterior density")
+```
+
+
+## Downstream processing
+
+The postprocessing functions listed in the
+[reference index](https://genentech.github.io/jmpost/main/reference/index.html#postprocessing)
+remain appropriate for the covariate model, but the generated-quantities path
+required a few model-specific additions. These additions are described below;
+the summary and plotting layers themselves do not depend on the longitudinal
+model parametrization.
+
+### Investigation result
+
+| Functionality | Current status with `LongitudinalRandomSlopeCov` | Required adjustment |
+|---|---|---|
+| Access to `fit@results`, `as.CmdStanMCMC()`, and posterior summaries/plots | Works as before | None |
+| `LongitudinalRandomEffects()` | Works as before | The new class maps `slope` to `lm_rsc_ind_rnd_slope` |
+| `generateQuantities()` | Works with the covariate model | Stan data is rebuilt with `as_stan_list(object@data, object@model)`, so the fitted design matrices are available |
+| `LongitudinalQuantities()` for fitted subjects, with `GridObserved()`, `GridFixed()`, `GridEvent()`, `GridEven()`, `GridManual()`, or `GridGrouped()` | Works as before | The new generated-quantities module uses `lm_rsc_ind_intercept` and `lm_rsc_ind_rnd_slope` |
+| `LongitudinalQuantities()` with `GridPopulation()` | Works with an explicit population profile | Supply arm, study, and all population-mean predictor covariates together through `GridPopulation(newdata = ...)` |
+| `SurvivalQuantities()` for fitted subjects/groups | Works as before | The survival calculation is unchanged; it uses the model-aware generated-quantities data path |
+| `SurvivalQuantities()` with `GridPrediction()` | Works with the existing random-slope prediction interface | The new class reports `c("intercept", "slope")`, matching `LongitudinalRandomSlope` |
+| `summary()` and `autoplot()` for longitudinal/survival quantities | Work unchanged once the corresponding quantities object can be created | None |
+| `brierScore()` and `populationHR()` | Work as before | No direct change; both operate through `SurvivalQuantities()` |
+| `shrinkage()` | Depends on the survival covariate prior and names, not on the longitudinal parametrization | None |
+
+The generated-quantities data path now retains the covariate design matrices:
+
+```{r}
+cov_longitudinal <- joint_model@longitudinal
+
+getRandomEffectsNames(cov_longitudinal)
+# c(slope = "lm_rsc_ind_rnd_slope")
+
+getPredictionNames(cov_longitudinal)
+# c("intercept", "slope")
+
+setdiff(
+    c(
+        "p_lm_rsc_mu", "lm_rsc_mu_design",
+        "p_lm_rsc_slope_mu", "lm_rsc_slope_mu_design",
+        "p_lm_rsc_slope_sigma", "lm_rsc_slope_sigma_design"
+    ),
+    names(as_stan_list(joint_data, joint_model))
+)
+# character(0) - so we got all of them.
+```
+
+The usual subject-level workflow therefore remains unchanged:
+
+```{r}
+random_effects <- LongitudinalRandomEffects(fit)
+head(summary(random_effects))
+
+longitudinal_quantities <- LongitudinalQuantities(
+    fit,
+    grid = GridFixed(
+        subjects = c("subject_0001", "subject_0051"),
+        times = seq(0, 200, by = 25)
+    )
+)
+head(summary(longitudinal_quantities))
+autoplot(longitudinal_quantities)
+
+subj_df <- as.data.frame(joint_data@subject)
+survival_quantities <- SurvivalQuantities(
+    fit,
+    grid = GridGrouped(
+        times = seq(0, 300, by = 25),
+        groups = with(
+            subj_df,
+            split(as.character(subject), arm)
+        )
+    ),
+    type = "surv"
+)
+head(summary(survival_quantities))
+autoplot(survival_quantities)
+
+survival_quantities_for_brier <- SurvivalQuantities(
+    fit,
+    grid = GridFixed(
+        times = seq(0, 300, by = 25)
+    ),
+    type = "surv"
+)
+brierScore(survival_quantities_for_brier)
+
+pop_hr <- populationHR(fit, hr_formula = ~arm, quantiles = c(0.1, 0.9))
+hr_est <- exp(pop_hr$summary["armB", ])
+hr_est
+```
+
+Prediction for a new survival-covariate profile also keeps the existing
+random-slope interface: `intercept` and `slope` are the realized longitudinal
+parameters passed to the link function. The formulas used to estimate those
+parameters do not change the link interface.
+
+```{r}
+new_subject <- data.frame(
+    cov_cont = 0.25,
+    cov_cat = factor("B", levels = c("A", "B", "C"))
+)
+
+predicted_survival <- SurvivalQuantities(
+    fit,
+    grid = GridPrediction(
+        times = seq(0, 300, by = 25),
+        newdata = new_subject,
+        params = list(intercept = 35, slope = 0.015)
+    )
+)
+autoplot(predicted_survival)
+```
+
+By contrast, a population longitudinal prediction must say which values to use
+for every variable in `mu_formula` and `slope_mu_formula`. These values are
+supplied in one place: each row of `GridPopulation(newdata = ...)` defines one
+population profile. The `slope_sigma_formula` covariates are not needed because
+`GridPopulation()` returns the population mean trajectory. Factor levels and
+design-matrix columns are matched to the subject data used to fit the model. If
+the formulas only use study and arm, omitting `newdata` retains the previous
+behavior of generating every observed study-arm combination.
+
+```{r}
+population_profiles <- data.frame(
+    study = c("Study-1", "Study-1"),
+    arm = c("A", "B"),
+    cov_cont = c(0, 0),
+    cov_cat = factor(c("A", "A"), levels = c("A", "B", "C"))
+)
+
+population_quantities <- LongitudinalQuantities(
+    fit,
+    grid = GridPopulation(
+        times = seq(0, 200, by = 25),
+        newdata = population_profiles
+    )
+)
+autoplot(population_quantities)
+```
