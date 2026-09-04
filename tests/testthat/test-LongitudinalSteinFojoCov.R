@@ -42,6 +42,13 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
         ignore_attr = TRUE
     )
     expect_match(as.character(JointModel(model)), "lm_sfc_ind_mu_b", fixed = TRUE)
+    for (name in c("b", "s", "g")) {
+        expect_match(
+            as.character(JointModel(model)),
+            sprintf("lm_sfc_ind_omega_%s = safe_finite(", name),
+            fixed = TRUE
+        )
+    }
     expect_stan_syntax(JointModel(model))
 })
 

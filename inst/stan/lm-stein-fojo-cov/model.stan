@@ -7,11 +7,11 @@ data {
 
 transformed parameters {
     vector[n_subjects] lm_sfc_ind_mu_b = {{ mu_b_predictor }};
-    vector[n_subjects] lm_sfc_ind_omega_b = {{ omega_b_predictor }};
+    vector[n_subjects] lm_sfc_ind_omega_b = safe_finite({{ omega_b_predictor }});
     vector[n_subjects] lm_sfc_ind_mu_s = {{ mu_s_predictor }};
-    vector[n_subjects] lm_sfc_ind_omega_s = {{ omega_s_predictor }};
+    vector[n_subjects] lm_sfc_ind_omega_s = safe_finite({{ omega_s_predictor }});
     vector[n_subjects] lm_sfc_ind_mu_g = {{ mu_g_predictor }};
-    vector[n_subjects] lm_sfc_ind_omega_g = {{ omega_g_predictor }};
+    vector[n_subjects] lm_sfc_ind_omega_g = safe_finite({{ omega_g_predictor }});
 
 {% if not centred_baseline -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_b = safe_positive(
