@@ -716,8 +716,8 @@ stein_fojo_model <- JointModel(
         sigma = prior_lognormal(log(2), 0.5),
         # Note: This can improve convergence of the baseline parameters
         centred_baseline = TRUE,
-        centred_growth = TRUE,
-        centred_shrinkage = TRUE
+        centred_growth = FALSE,
+        centred_shrinkage = FALSE
     ),
     # Gamma(shape, rate), centred on the simulated annual rate 365 / 300.
     survival = SurvivalExponential(

@@ -11,7 +11,7 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
     expect_s4_class(model, "LongitudinalSteinFojoCov")
     expect_equal(model@mu_b_formula, ~study + age)
     expect_equal(model@omega_g_parametrization, "log-linear")
-    expect_false(model@centred_baseline)
+    expect_true(model@centred_baseline)
     expect_false(model@centred_shrinkage)
     expect_false(model@centred_growth)
     expect_setequal(
@@ -19,7 +19,7 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
         c(
             paste0("lm_sfc_", rep(c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"), each = 2), c("_intercept", "_coefficients")),
             "lm_sfc_sigma",
-            "lm_sfc_eta_tilde_b", "lm_sfc_eta_tilde_s", "lm_sfc_eta_tilde_g"
+            "lm_sfc_psi_b", "lm_sfc_eta_tilde_s", "lm_sfc_eta_tilde_g"
         )
     )
 
@@ -94,6 +94,26 @@ test_that("covariate Stein-Fojo effects can be centred independently", {
         ))
     }
     expect_stan_syntax(JointModel(model))
+})
+
+test_that("non-centred Stein-Fojo effects are floored at the positive epsilon", {
+    old_options <- options(jmpost.double_eps = 1e-10)
+    on.exit(options(old_options), add = TRUE)
+
+    model <- JointModel(LongitudinalSteinFojoCov())
+    stan_code <- as.character(model)
+    expect_match(
+        stan_code,
+        "lm_sfc_psi_g = safe_positive(",
+        fixed = TRUE
+    )
+    expect_match(
+        stan_code,
+        "exp(lm_sfc_ind_mu_g + lm_sfc_eta_tilde_g .* lm_sfc_ind_omega_g)",
+        fixed = TRUE
+    )
+    expect_match(stan_code, "return 1e-10;", fixed = TRUE)
+    expect_stan_syntax(model)
 })
 
 test_that("covariate Stein-Fojo reduces to the original formulation", {

@@ -14,18 +14,18 @@ transformed parameters {
     vector[n_subjects] lm_sfc_ind_omega_g = {{ omega_g_predictor }};
 
 {% if not centred_baseline -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_b = exp(
-        lm_sfc_ind_mu_b + lm_sfc_eta_tilde_b .* lm_sfc_ind_omega_b
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_b = safe_positive(
+        exp(lm_sfc_ind_mu_b + lm_sfc_eta_tilde_b .* lm_sfc_ind_omega_b)
     );
 {%- endif %}
 {% if not centred_shrinkage -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_s = exp(
-        lm_sfc_ind_mu_s + lm_sfc_eta_tilde_s .* lm_sfc_ind_omega_s
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_s = safe_positive(
+        exp(lm_sfc_ind_mu_s + lm_sfc_eta_tilde_s .* lm_sfc_ind_omega_s)
     );
 {%- endif %}
 {% if not centred_growth -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_g = exp(
-        lm_sfc_ind_mu_g + lm_sfc_eta_tilde_g .* lm_sfc_ind_omega_g
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_g = safe_positive(
+        exp(lm_sfc_ind_mu_g + lm_sfc_eta_tilde_g .* lm_sfc_ind_omega_g)
     );
 {%- endif %}
 

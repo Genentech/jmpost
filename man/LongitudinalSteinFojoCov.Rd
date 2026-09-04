@@ -31,7 +31,7 @@ LongitudinalSteinFojoCov(
   omega_g_coefficients_prior = prior_normal(0, 1),
   sigma = prior_lognormal(log(0.1), 1),
   scaled_variance = FALSE,
-  centred_baseline = FALSE,
+  centred_baseline = TRUE,
   centred_shrinkage = FALSE,
   centred_growth = FALSE
 )

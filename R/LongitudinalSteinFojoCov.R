@@ -98,7 +98,7 @@ LongitudinalSteinFojoCov <- function(
     omega_g_coefficients_prior = prior_normal(0, 1),
     sigma = prior_lognormal(log(0.1), 1),
     scaled_variance = FALSE,
-    centred_baseline = FALSE,
+    centred_baseline = TRUE,
     centred_shrinkage = FALSE,
     centred_growth = FALSE
 ) {
@@ -107,10 +107,19 @@ LongitudinalSteinFojoCov <- function(
     assert_flag(centred_growth)
 
     formula_names <- c(
-        "mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g"
     )
     formulas <- mget(paste0(formula_names, "_formula"), inherits = FALSE)
-    formulas <- Map(.validate_covariate_formula, formulas, paste0(formula_names, "_formula"))
+    formulas <- Map(
+        .validate_covariate_formula,
+        formulas,
+        paste0(formula_names, "_formula")
+    )
     names(formulas) <- formula_names
 
     parametrizations <- mget(
@@ -170,17 +179,26 @@ LongitudinalSteinFojoCov <- function(
 
     parameters <- list()
     for (name in formula_names) {
-        parameters <- append(parameters, list(
-            Parameter(
-                name = paste0("lm_sfc_", name, "_intercept"),
-                prior = get(paste0(name, "_intercept_prior"), inherits = FALSE)
-            ),
-            Parameter(
-                name = paste0("lm_sfc_", name, "_coefficients"),
-                prior = get(paste0(name, "_coefficients_prior"), inherits = FALSE),
-                size = paste0("p_lm_sfc_", name)
+        parameters <- append(
+            parameters,
+            list(
+                Parameter(
+                    name = paste0("lm_sfc_", name, "_intercept"),
+                    prior = get(
+                        paste0(name, "_intercept_prior"),
+                        inherits = FALSE
+                    )
+                ),
+                Parameter(
+                    name = paste0("lm_sfc_", name, "_coefficients"),
+                    prior = get(
+                        paste0(name, "_coefficients_prior"),
+                        inherits = FALSE
+                    ),
+                    size = paste0("p_lm_sfc_", name)
+                )
             )
-        ))
+        )
     }
     intercept_priors <- mget(
         paste0(formula_names, "_intercept_prior"),
@@ -215,18 +233,21 @@ LongitudinalSteinFojoCov <- function(
             size = "n_subjects"
         )
     }
-    parameters <- append(parameters, c(
-        list(Parameter(name = "lm_sfc_sigma", prior = sigma)),
-        unname(Map(
-            subject_parameter,
-            name = c("b", "s", "g"),
-            centred = c(
-                centred_baseline,
-                centred_shrinkage,
-                centred_growth
-            )
-        ))
-    ))
+    parameters <- append(
+        parameters,
+        c(
+            list(Parameter(name = "lm_sfc_sigma", prior = sigma)),
+            unname(Map(
+                subject_parameter,
+                name = c("b", "s", "g"),
+                centred = c(
+                    centred_baseline,
+                    centred_shrinkage,
+                    centred_growth
+                )
+            ))
+        )
+    )
 
     .LongitudinalSteinFojoCov(
         LongitudinalModel(
@@ -332,7 +353,11 @@ enableLink.LongitudinalSteinFojoCov <- function(object, ...) {
 
 #' @export
 #' @returns A `LinkComponent` object.
-linkDSLD.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, ...) {
+linkDSLD.LongitudinalSteinFojoCov <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_dsld",
         stan = StanModule("lm-stein-fojo/link_dsld.stan"),
@@ -342,7 +367,11 @@ linkDSLD.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model,
 
 #' @export
 #' @returns A `LinkComponent` object.
-linkTTG.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, ...) {
+linkTTG.LongitudinalSteinFojoCov <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_ttg",
         stan = StanModule("lm-stein-fojo/link_ttg.stan"),
@@ -352,7 +381,11 @@ linkTTG.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, 
 
 #' @export
 #' @returns A `LinkComponent` object.
-linkIdentity.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, ...) {
+linkIdentity.LongitudinalSteinFojoCov <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_identity",
         stan = StanModule("lm-stein-fojo/link_identity.stan"),
@@ -362,7 +395,11 @@ linkIdentity.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), mo
 
 #' @export
 #' @returns A `LinkComponent` object.
-linkGrowth.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, ...) {
+linkGrowth.LongitudinalSteinFojoCov <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_growth",
         stan = StanModule("lm-stein-fojo/link_growth.stan"),
@@ -372,7 +409,11 @@ linkGrowth.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), mode
 
 #' @export
 #' @returns A `LinkComponent` object.
-linkShrinkage.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), model, ...) {
+linkShrinkage.LongitudinalSteinFojoCov <- function(
+    prior = prior_normal(0, 2),
+    model,
+    ...
+) {
     LinkComponent(
         key = "link_shrinkage",
         stan = StanModule("lm-stein-fojo/link_shrinkage.stan"),
@@ -382,7 +423,9 @@ linkShrinkage.LongitudinalSteinFojoCov <- function(prior = prior_normal(0, 2), m
 
 #' @rdname getPredictionNames
 #' @export
-getPredictionNames.LongitudinalSteinFojoCov <- function(object, ...) c("b", "s", "g")
+getPredictionNames.LongitudinalSteinFojoCov <- function(object, ...) {
+    c("b", "s", "g")
+}
 
 #' @rdname getRandomEffectsNames
 #' @export
@@ -393,9 +436,19 @@ getRandomEffectsNames.LongitudinalSteinFojoCov <- function(object, ...) {
 #' @rdname longitudinal_model_stan_data
 #' @keywords internal
 #' @export
-longitudinal_model_stan_data.LongitudinalSteinFojoCov <- function(model, subject) {
+longitudinal_model_stan_data.LongitudinalSteinFojoCov <- function(
+    model,
+    subject
+) {
     subject_data <- as.data.frame(harmonise(subject))
-    parameter_names <- c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g")
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g"
+    )
     designs <- lapply(parameter_names, function(name) {
         .covariate_design_matrix(
             slot(model, paste0(name, "_formula")),
