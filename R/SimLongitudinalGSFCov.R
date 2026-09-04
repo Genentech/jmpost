@@ -75,7 +75,7 @@ SimLongitudinalGSFCov <- function(
     omega_s_parametrization = "log-linear",
     mu_g_parametrization = "linear",
     omega_g_parametrization = "log-linear",
-    mu_phi_parametrization = "linear",
+    mu_phi_parametrization = "logit-linear",
     omega_phi_parametrization = "log-linear",
     mu_b_intercept = log(60),
     mu_b_coefficients = numeric(),
@@ -207,7 +207,7 @@ sampleSubjects.SimLongitudinalGSFCov <- function(object, subjects_df) {
             ),
             psi_phi = stats::plogis(stats::rnorm(
                 dplyr::n(),
-                predicted$mu_phi,
+                stats::qlogis(predicted$mu_phi),
                 predicted$omega_phi
             ))
         )

@@ -19,7 +19,7 @@ LongitudinalGSFCov(
   omega_s_parametrization = "log-linear",
   mu_g_parametrization = "linear",
   omega_g_parametrization = "log-linear",
-  mu_phi_parametrization = "linear",
+  mu_phi_parametrization = "logit-linear",
   omega_phi_parametrization = "log-linear",
   mu_b_intercept_prior = prior_normal(log(60), 1),
   mu_b_coefficients_prior = prior_normal(0, 1),

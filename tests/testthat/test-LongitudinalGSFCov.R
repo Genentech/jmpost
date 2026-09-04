@@ -1,6 +1,7 @@
 test_that("LongitudinalGSFCov constructs all covariate predictors", {
     model <- LongitudinalGSFCov(mu_phi_formula = ~ arm + age)
     expect_s4_class(model, "LongitudinalGSFCov")
+    expect_equal(model@mu_phi_parametrization, "logit-linear")
     expect_true(model@centred_baseline)
     expect_false(model@centred_phi)
     expect_setequal(
@@ -44,6 +45,11 @@ test_that("LongitudinalGSFCov constructs all covariate predictors", {
     data <- longitudinal_model_stan_data(model, subject)
     expect_equal(data$p_lm_gsfc_mu_phi, 2)
     expect_stan_syntax(JointModel(model))
+    expect_match(
+        as.character(JointModel(model)),
+        "logit(lm_gsfc_ind_mu_phi)",
+        fixed = TRUE
+    )
 })
 
 test_that("LongitudinalGSFCov supports links, quantities, and simulation", {

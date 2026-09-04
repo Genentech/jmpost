@@ -24,7 +24,7 @@ transformed parameters {
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_gsfc_psi_g = safe_positive(exp(lm_gsfc_ind_mu_g + lm_gsfc_eta_tilde_g .* lm_gsfc_ind_omega_g));
 {%- endif %}
 {% if not centred_phi -%}
-    vector[n_subjects] lm_gsfc_psi_phi_logit = lm_gsfc_ind_mu_phi + lm_gsfc_eta_tilde_phi .* lm_gsfc_ind_omega_phi;
+    vector[n_subjects] lm_gsfc_psi_phi_logit = logit(lm_gsfc_ind_mu_phi) + lm_gsfc_eta_tilde_phi .* lm_gsfc_ind_omega_phi;
 {%- endif %}
     vector<lower={{ machine_double_eps }}, upper={{ 1 - machine_double_eps }}>[n_subjects] lm_gsfc_psi_phi = inv_logit(lm_gsfc_psi_phi_logit);
     vector[n_tumour_all] Ypred = sld(tumour_time, lm_gsfc_psi_b[subject_tumour_index], lm_gsfc_psi_s[subject_tumour_index], lm_gsfc_psi_g[subject_tumour_index], lm_gsfc_psi_phi[subject_tumour_index]);
@@ -43,6 +43,6 @@ model {
     lm_gsfc_psi_g ~ lognormal(lm_gsfc_ind_mu_g, lm_gsfc_ind_omega_g);
 {%- endif %}
 {% if centred_phi -%}
-    lm_gsfc_psi_phi_logit ~ normal(lm_gsfc_ind_mu_phi, lm_gsfc_ind_omega_phi);
+    lm_gsfc_psi_phi_logit ~ normal(logit(lm_gsfc_ind_mu_phi), lm_gsfc_ind_omega_phi);
 {%- endif %}
 }

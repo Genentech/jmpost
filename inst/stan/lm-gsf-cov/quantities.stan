@@ -16,6 +16,6 @@ generated quantities {
     long_gq_pop_parameters[, 1] = exp({{ mu_b_population_predictor }});
     long_gq_pop_parameters[, 2] = exp({{ mu_s_population_predictor }});
     long_gq_pop_parameters[, 3] = exp({{ mu_g_population_predictor }});
-    long_gq_pop_parameters[, 4] = inv_logit({{ mu_phi_population_predictor }});
+    long_gq_pop_parameters[, 4] = {{ mu_phi_population_predictor }};
 {%- endif %}
 }

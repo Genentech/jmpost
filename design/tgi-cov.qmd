@@ -136,7 +136,7 @@ where
 - $\omega_{s,i} = \exp(\eta_{\omega_s,i})$
 - $\mu_{g,i} = \eta_{\mu_g,i}$
 - $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
-- $\mu_{\phi,i} = \eta_{\mu_\phi,i}$
+- $\mu_{\phi,i} = \operatorname{logit}^{-1}(\eta_{\mu_\phi,i})$
 - $\omega_{\phi,i} = \exp(\eta_{\omega_\phi,i})$
 
 ### Claret-Bruno Model
@@ -804,3 +804,52 @@ bayesplot::mcmc_dens(stein_fojo_coefficient_draws) +
     ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
     ggplot2::labs(x = "Coefficient", y = "Posterior density")
 ```
+
+## Generalized Stein-Fojo example
+
+`LongitudinalGSFCov` extends the Stein-Fojo covariate formulation with a
+subject-specific treatment-sensitive fraction, `phi`. As with the shrinkage
+and growth predictors, `phi` can depend on its own covariates; it is modelled
+on the logit scale and transformed back to the interval `(0, 1)`.
+
+This compact specification uses study effects for baseline tumour size and
+treatment-arm effects for shrinkage, growth, and `phi`. It can be paired with
+the `DataJoint` object created above in exactly the same way as the
+Stein-Fojo model.
+
+```{r}
+gsf_cov_model <- JointModel(
+    longitudinal = LongitudinalGSFCov(
+        mu_b_formula = ~study,
+        omega_b_formula = ~study,
+        mu_s_formula = ~arm,
+        omega_s_formula = ~arm,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
+        mu_phi_formula = ~arm,
+        omega_phi_formula = ~arm,
+        mu_phi_parametrization = "logit-linear",
+        mu_b_intercept_prior = prior_normal(log(60), 1),
+        omega_b_intercept_prior = prior_normal(log(0.2), 0.5),
+        mu_s_intercept_prior = prior_normal(log(0.5), 1),
+        omega_s_intercept_prior = prior_normal(log(0.2), 0.5),
+        mu_g_intercept_prior = prior_normal(log(0.3), 1),
+        omega_g_intercept_prior = prior_normal(log(0.2), 0.5),
+        mu_phi_intercept_prior = prior_normal(qlogis(0.5), 1),
+        omega_phi_intercept_prior = prior_normal(log(0.2), 0.5),
+        sigma = prior_lognormal(log(2), 0.5),
+        centred_baseline = TRUE
+    ),
+    survival = SurvivalExponential(
+        lambda = prior_gamma(2, 2 / (days_per_year / 300))
+    ),
+    link = linkDSLD()
+)
+
+# Fit with the same data workflow used above:
+# gsf_cov_fit <- sampleStanModel(gsf_cov_model, data = stein_fojo_data, ...)
+```
+
+The GSF-covariate parameters use the `lm_gsfc` prefix. For example,
+`lm_gsfc_mu_phi_coefficients` contains the arm effects on the logit-scale
+treatment-sensitive fraction.

@@ -64,7 +64,7 @@ LongitudinalGSFCov <- function(
     omega_s_parametrization = "log-linear",
     mu_g_parametrization = "linear",
     omega_g_parametrization = "log-linear",
-    mu_phi_parametrization = "linear",
+    mu_phi_parametrization = "logit-linear",
     omega_phi_parametrization = "log-linear",
     mu_b_intercept_prior = prior_normal(log(60), 1),
     mu_b_coefficients_prior = prior_normal(0, 1),
@@ -188,10 +188,10 @@ LongitudinalGSFCov <- function(
             return(Parameter(
                 name = "lm_gsfc_psi_phi_logit",
                 prior = prior_init_only(prior_normal(
-                    .predictor_reference_value(
+                    stats::qlogis(.predictor_reference_value(
                         intercept_priors$mu_phi,
                         parametrizations$mu_phi
-                    ),
+                    )),
                     .predictor_reference_value(
                         intercept_priors$omega_phi,
                         parametrizations$omega_phi
