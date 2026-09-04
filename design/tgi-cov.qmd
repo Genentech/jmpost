@@ -649,12 +649,12 @@ stein_fojo_simulated_data <- SimJointData(
     ),
     longitudinal = SimLongitudinalSteinFojoCov(
         times = c(0, 50, 100, 150, 200) / 365,
-        mu_b_formula = ~ study,
-        omega_b_formula = ~ study,
-        mu_s_formula = ~ arm,
-        omega_s_formula = ~ arm,
-        mu_g_formula = ~ arm,
-        omega_g_formula = ~ arm,
+        mu_b_formula = ~study,
+        omega_b_formula = ~study,
+        mu_s_formula = ~arm,
+        omega_s_formula = ~arm,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
         mu_b_intercept = log(60),
         mu_b_coefficients = log(75 / 60),
         omega_b_intercept = log(0.2),
@@ -680,19 +680,17 @@ stein_fojo_simulated_data <- SimJointData(
 )
 ```
 
-The model adds `cov_cont` to the baseline log-mean predictor. Its coefficient
-should remain close to zero, whereas the study and arm coefficients recover
-the effects used for simulation.
+Now we specify the joint model with the new `LongitudinalSteinFojoCov` class:
 
 ```{r}
 stein_fojo_model <- JointModel(
     longitudinal = LongitudinalSteinFojoCov(
         mu_b_formula = ~ study + cov_cont,
-        omega_b_formula = ~ study,
-        mu_s_formula = ~ arm,
-        omega_s_formula = ~ arm,
-        mu_g_formula = ~ arm,
-        omega_g_formula = ~ arm,
+        omega_b_formula = ~study,
+        mu_s_formula = ~arm,
+        omega_s_formula = ~arm,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
         mu_b_intercept_prior = prior_normal(log(60), 1),
         mu_b_coefficients_prior = prior_normal(0, 1),
         omega_b_intercept_prior = prior_normal(log(0.2), 0.5),
@@ -730,14 +728,14 @@ stein_fojo_data <- DataJoint(
 ```
 
 As above, these short chains are only intended to exercise the complete
-workflow.
+workflow as well as to check whether there are any obvious convergence issues:
 
 ```{r}
 stein_fojo_fit <- sampleStanModel(
     stein_fojo_model,
     data = stein_fojo_data,
-    iter_warmup = 250,
-    iter_sampling = 250,
+    iter_warmup = 500,
+    iter_sampling = 500,
     chains = 2,
     parallel_chains = 2,
     seed = 2026,
@@ -751,7 +749,7 @@ The parameter names use the `lm_sfc` prefix. The second
 `lm_sfc_mu_b_coefficients` element is the additional `cov_cont` effect.
 
 ```{r}
-stein_fojo_fit@results$summary(
+sf_sum <- stein_fojo_fit@results$summary(
     variables = c(
         "lm_sfc_mu_b_intercept",
         "lm_sfc_mu_b_coefficients",
@@ -770,6 +768,7 @@ stein_fojo_fit@results$summary(
         "beta_os_cov"
     )
 )
+sf_sum$rhat
 ```
 
 ```{r}
