@@ -582,6 +582,12 @@ longitudinal_model_stan_data <- function(model, subject) {
             subject
         ))
     }
+    if (is(model, "LongitudinalSteinFojoCov")) {
+        return(.stein_fojo_cov_stan_data(
+            model,
+            subject
+        ))
+    }
     longitudinal_model_stan_data.default(model, subject)
 }
 

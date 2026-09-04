@@ -46,13 +46,27 @@ simulate.JointModelSamples <- function(
     scaled_variance = FALSE,
     ...
 ) {
+    longitudinal_covariates <- if (
+        is(object@model@longitudinal, "LongitudinalSteinFojoCov")
+    ) {
+        unique(unlist(lapply(
+            c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"),
+            function(name) all.vars(slot(
+                object@model@longitudinal,
+                paste0(name, "_formula")
+            ))
+        )))
+    } else {
+        character()
+    }
     subj_data <- if (is.null(newdata)) {
         dplyr::left_join(
-            object@data@subject@data[, c(
+            object@data@subject@data[, unique(c(
                 object@data@subject@subject,
                 object@data@subject@arm,
-                object@data@subject@study
-            )],
+                object@data@subject@study,
+                longitudinal_covariates
+            ))],
             object@data@survival@data[, c(
                 object@data@subject@subject,
                 all.vars(delete.response(terms(object@data@survival@formula)))
@@ -204,6 +218,40 @@ createLongitudinalSimObject.LongitudinalSteinFojo <- function(
     args$link_growth <- get_vars(draw, "link_growth")
     args$link_shrinkage <- get_vars(draw, "link_shrinkage")
     do.call(SimLongitudinalSteinFojo, args)
+}
+
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalSteinFojoCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g")
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(object, paste0(name, "_formula"))
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_sfc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_sfc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_sfc_sigma")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_ttg <- get_vars(draw, "link_ttg")
+    args$link_identity <- get_vars(draw, "link_identity")
+    args$link_growth <- get_vars(draw, "link_growth")
+    args$link_shrinkage <- get_vars(draw, "link_shrinkage")
+    do.call(SimLongitudinalSteinFojoCov, args)
 }
 
 #' @exportS3Method

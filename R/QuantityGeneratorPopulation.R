@@ -101,6 +101,23 @@ as_stan_list.QuantityGeneratorPopulation <- function(
                 object@newdata
             )
         )
+    } else if (is(longitudinal_model, "LongitudinalSteinFojoCov")) {
+        assert_that(
+            !is.null(object@newdata) &&
+                nrow(object@newdata) == ret[["gq_n_quant"]],
+            msg = paste0(
+                "Population quantities for `LongitudinalSteinFojoCov` ",
+                "require `GridPopulation(newdata = ...)`"
+            )
+        )
+        ret <- append(
+            ret,
+            .stein_fojo_cov_population_stan_data(
+                longitudinal_model,
+                data@subject,
+                object@newdata
+            )
+        )
     }
     return(ret)
 }

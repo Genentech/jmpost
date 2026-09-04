@@ -2,7 +2,8 @@
 % Please edit documentation in R/generics.R, R/SimLongitudinal.R,
 %   R/SimLongitudinalClaretBruno.R, R/SimLongitudinalGSF.R,
 %   R/SimLongitudinalRandomSlope.R, R/SimLongitudinalRandomSlopeCov.R,
-%   R/SimLongitudinalSteinFojo.R, R/SimSurvival.R
+%   R/SimLongitudinalSteinFojoCov.R, R/SimLongitudinalSteinFojo.R,
+%   R/SimSurvival.R
 \name{as_print_string}
 \alias{as_print_string}
 \alias{as_print_string.SimLongitudinal}
@@ -10,6 +11,7 @@
 \alias{as_print_string.SimLongitudinalGSF}
 \alias{as_print_string.SimLongitudinalRandomSlope}
 \alias{as_print_string.SimLongitudinalRandomSlopeCov}
+\alias{as_print_string.SimLongitudinalSteinFojoCov}
 \alias{as_print_string.SimLongitudinalSteinFojo}
 \alias{as_print_string.SimSurvival}
 \title{\code{as_print_string}}
@@ -25,6 +27,8 @@ as_print_string(object, ...)
 \method{as_print_string}{SimLongitudinalRandomSlope}(object, ...)
 
 \method{as_print_string}{SimLongitudinalRandomSlopeCov}(object, ...)
+
+\method{as_print_string}{SimLongitudinalSteinFojoCov}(object, ...)
 
 \method{as_print_string}{SimLongitudinalSteinFojo}(object, ...)
 

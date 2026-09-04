@@ -56,13 +56,13 @@ as.QuantityGenerator.GridPopulation <- function(
     if (!is.null(object@newdata)) {
         profiles <- object@newdata
     } else {
-        required_covariates <- if (
-            is(longitudinal_model, "LongitudinalRandomSlopeCov")
-        ) {
+        required_covariates <- if (is(longitudinal_model, "LongitudinalRandomSlopeCov")) {
             unique(c(
                 all.vars(longitudinal_model@mu_formula),
                 all.vars(longitudinal_model@slope_mu_formula)
             ))
+        } else if (is(longitudinal_model, "LongitudinalSteinFojoCov")) {
+            .stein_fojo_cov_population_variables(longitudinal_model)
         } else {
             character()
         }
@@ -92,6 +92,11 @@ as.QuantityGenerator.GridPopulation <- function(
             required_columns,
             all.vars(longitudinal_model@mu_formula),
             all.vars(longitudinal_model@slope_mu_formula)
+        ))
+    } else if (is(longitudinal_model, "LongitudinalSteinFojoCov")) {
+        required_columns <- unique(c(
+            required_columns,
+            .stein_fojo_cov_population_variables(longitudinal_model)
         ))
     }
     missing_columns <- setdiff(required_columns, names(profiles))

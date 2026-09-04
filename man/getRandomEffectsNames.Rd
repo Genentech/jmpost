@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R, R/JointModel.R,
 %   R/LongitudinalClaretBruno.R, R/LongitudinalGSF.R,
 %   R/LongitudinalRandomSlope.R, R/LongitudinalRandomSlopeCov.R,
-%   R/LongitudinalSteinFojo.R
+%   R/LongitudinalSteinFojoCov.R, R/LongitudinalSteinFojo.R
 \name{getRandomEffectsNames}
 \alias{getRandomEffectsNames}
 \alias{getRandomEffectsNames.default}
@@ -10,6 +10,7 @@
 \alias{getRandomEffectsNames.LongitudinalGSF}
 \alias{getRandomEffectsNames.LongitudinalRandomSlope}
 \alias{getRandomEffectsNames.LongitudinalRandomSlopeCov}
+\alias{getRandomEffectsNames.LongitudinalSteinFojoCov}
 \alias{getRandomEffectsNames.LongitudinalSteinFojo}
 \title{Get Random Effects Names}
 \usage{
@@ -26,6 +27,8 @@ getRandomEffectsNames(object, ...)
 \method{getRandomEffectsNames}{LongitudinalRandomSlope}(object, ...)
 
 \method{getRandomEffectsNames}{LongitudinalRandomSlopeCov}(object, ...)
+
+\method{getRandomEffectsNames}{LongitudinalSteinFojoCov}(object, ...)
 
 \method{getRandomEffectsNames}{LongitudinalSteinFojo}(object, ...)
 }

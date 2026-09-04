@@ -94,6 +94,17 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
             ),
             sep = "\n"
         )
+    } else if (
+        (type == "longitudinal") &&
+            is(generator, "QuantityGeneratorPopulation") &&
+            is(object@model@longitudinal, "LongitudinalSteinFojoCov")
+    ) {
+        paste(
+            "matrix[gq_n_quant, p_lm_sfc_mu_b] gq_lm_sfc_mu_b_design;",
+            "matrix[gq_n_quant, p_lm_sfc_mu_s] gq_lm_sfc_mu_s_design;",
+            "matrix[gq_n_quant, p_lm_sfc_mu_g] gq_lm_sfc_mu_g_design;",
+            sep = "\n"
+        )
     } else {
         ""
     }
