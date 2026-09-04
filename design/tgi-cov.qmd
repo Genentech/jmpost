@@ -714,7 +714,10 @@ stein_fojo_model <- JointModel(
         omega_g_intercept_prior = prior_normal(log(0.15), 0.5),
         omega_g_coefficients_prior = prior_normal(0, 0.5),
         sigma = prior_lognormal(log(2), 0.5),
-        centred_baseline = TRUE
+        # Note: This can improve convergence of the baseline parameters
+        centred_baseline = TRUE,
+        centred_growth = TRUE,
+        centred_shrinkage = TRUE
     ),
     # Gamma(shape, rate), centred on the simulated annual rate 365 / 300.
     survival = SurvivalExponential(
