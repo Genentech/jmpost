@@ -867,3 +867,23 @@ gsf_cov_fit <- sampleStanModel(
     show_messages = TRUE
 )
 ```
+
+Let's see the convergence diagnostics:
+
+```{r}
+gsf_sum <- gsf_cov_fit@results$summary(
+    variables = c(
+        "lm_gsfc_mu_b_intercept",
+        "lm_gsfc_omega_b_intercept",
+        "lm_gsfc_mu_s_intercept",
+        "lm_gsfc_omega_s_intercept",
+        "lm_gsfc_mu_g_intercept",
+        "lm_gsfc_omega_g_intercept",
+        "lm_gsfc_mu_phi_intercept",
+        "lm_gsfc_omega_phi_intercept",
+        "lm_gsfc_sigma"
+    )
+)
+gsf_sum
+```
+So that looks pretty good here: We see all the R-hat values below 1.01 indicating convergence.
