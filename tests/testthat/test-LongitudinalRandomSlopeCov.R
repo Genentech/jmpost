@@ -1,3 +1,16 @@
+gq_population_stan_data.UserCovariateLongitudinalModel <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    list(
+        declarations = "real gq_custom_population_design;",
+        data = list(gq_custom_population_design = matrix(1, 1, 1))
+    )
+}
+
+
 test_that("LongitudinalRandomSlopeCov constructs its parameters and Stan code", {
     model <- LongitudinalRandomSlopeCov(
         mu_formula = ~ study + age,
@@ -39,6 +52,20 @@ test_that("LongitudinalRandomSlopeCov constructs its parameters and Stan code", 
     ))
     expect_match(linked_stan, "lm_rsc_ind_intercept", fixed = TRUE)
     expect_match(linked_stan, "link_dsld_contrib", fixed = TRUE)
+})
+
+test_that("gq_population_stan_data() dispatches to user longitudinal models", {
+    generator <- QuantityGeneratorPopulation(
+        times = 1,
+        studies = "X",
+        arms = "A"
+    )
+    model <- structure(list(), class = "UserCovariateLongitudinalModel")
+
+    result <- gq_population_stan_data(generator, model)
+
+    expect_equal(result$declarations, "real gq_custom_population_design;")
+    expect_equal(result$data$gq_custom_population_design, matrix(1, 1, 1))
 })
 
 test_that("model-aware as_stan_list creates subject covariate designs", {

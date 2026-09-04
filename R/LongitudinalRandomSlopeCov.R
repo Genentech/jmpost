@@ -500,6 +500,43 @@ enableGQ.LongitudinalRandomSlopeCov <- function(
     ))
 }
 
+#' @rdname gq_population_stan_data
+#' @export
+gq_population_stan_data.LongitudinalRandomSlopeCov <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    result <- list(
+        declarations = paste(
+            "matrix[gq_n_quant, p_lm_rsc_mu] gq_lm_rsc_mu_design;",
+            paste0(
+                "matrix[gq_n_quant, p_lm_rsc_slope_mu] ",
+                "gq_lm_rsc_slope_mu_design;"
+            ),
+            sep = "\n"
+        ),
+        data = list()
+    )
+    if (!is.null(data)) {
+        assert_that(
+            !is.null(object@newdata) &&
+                nrow(object@newdata) == length(object@times),
+            msg = paste0(
+                "Population quantities for `LongitudinalRandomSlopeCov` ",
+                "require `GridPopulation(newdata = ...)`"
+            )
+        )
+        result$data <- .random_slope_cov_population_stan_data(
+            model,
+            data@subject,
+            object@newdata
+        )
+    }
+    result
+}
+
 #' @export
 #'
 #' @returns The longitudinal model with its link-related Stan code enabled.

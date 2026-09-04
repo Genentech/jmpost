@@ -268,6 +268,41 @@ generateQuantities <- function(object, ...) {
 }
 
 
+#' Population Generated-Quantities Stan Data
+#'
+#' Obtain the model-specific Stan declarations and data needed for longitudinal
+#' population generated quantities.
+#'
+#' This generic first dispatches on the quantity generator.  Its
+#' [`QuantityGeneratorPopulation`] method then dispatches on `model`, allowing
+#' longitudinal-model authors to provide a
+#' `gq_population_stan_data.<model-class>()` method alongside their model.
+#'
+#' @param object A quantity generator.
+#' @param model A longitudinal model.
+#' @param data A [`DataJoint`] object, or `NULL` when only declarations are
+#'   required.
+#' @param ... Additional options.
+#' @export
+#'
+#' @returns A list with `declarations`, a character scalar of Stan data-block
+#' declarations, and `data`, a named list of Stan data values.
+gq_population_stan_data <- function(object, model, data = NULL, ...) {
+    UseMethod("gq_population_stan_data")
+}
+
+#' @rdname gq_population_stan_data
+#' @export
+gq_population_stan_data.default <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    list(declarations = "", data = list())
+}
+
+
 #' Prepare Data Object
 #'
 #' @typed object: "`DataSubject` or `DataLongitudinal` or `DataSurvival`"

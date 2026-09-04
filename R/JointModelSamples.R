@@ -81,32 +81,13 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
         type %in% c("survival", "longitudinal")
     )
 
-    longitudinal_gq_population_data <- if (
-        (type == "longitudinal") &&
-            is(generator, "QuantityGeneratorPopulation") &&
-            is(object@model@longitudinal, "LongitudinalRandomSlopeCov")
-    ) {
-        paste(
-            "matrix[gq_n_quant, p_lm_rsc_mu] gq_lm_rsc_mu_design;",
-            paste0(
-                "matrix[gq_n_quant, p_lm_rsc_slope_mu] ",
-                "gq_lm_rsc_slope_mu_design;"
-            ),
-            sep = "\n"
-        )
-    } else if (
-        (type == "longitudinal") &&
-            is(generator, "QuantityGeneratorPopulation") &&
-            is(object@model@longitudinal, "LongitudinalSteinFojoCov")
-    ) {
-        paste(
-            "matrix[gq_n_quant, p_lm_sfc_mu_b] gq_lm_sfc_mu_b_design;",
-            "matrix[gq_n_quant, p_lm_sfc_mu_s] gq_lm_sfc_mu_s_design;",
-            "matrix[gq_n_quant, p_lm_sfc_mu_g] gq_lm_sfc_mu_g_design;",
-            sep = "\n"
+    longitudinal_gq_population_data <- if (type == "longitudinal") {
+        gq_population_stan_data(
+            generator,
+            model = object@model@longitudinal
         )
     } else {
-        ""
+        list(declarations = "", data = list())
     }
 
     quant_stanobj <- read_stan("base/quantities.stan") |>
@@ -120,7 +101,7 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
             include_gq_survival_pred = (type == "survival") &
                 is(generator, "QuantityGeneratorPrediction"),
             longitudinal_gq_population_data =
-                longitudinal_gq_population_data
+                longitudinal_gq_population_data$declarations
         ) |>
         StanModule()
 
