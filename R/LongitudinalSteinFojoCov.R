@@ -217,7 +217,7 @@ LongitudinalSteinFojoCov <- function(
     }
     parameters <- append(parameters, c(
         list(Parameter(name = "lm_sfc_sigma", prior = sigma)),
-        Map(
+        unname(Map(
             subject_parameter,
             name = c("b", "s", "g"),
             centred = c(
@@ -225,7 +225,7 @@ LongitudinalSteinFojoCov <- function(
                 centred_shrinkage,
                 centred_growth
             )
-        )
+        ))
     ))
 
     .LongitudinalSteinFojoCov(

@@ -71,6 +71,10 @@ test_that("covariate Stein-Fojo effects can be centred independently", {
             "lm_sfc_psi_b", "lm_sfc_psi_s", "lm_sfc_psi_g"
         )
     )
+    expect_setequal(
+        names(initialValues(model, n_chains = 1)[[1]]),
+        names(getParameters(model))
+    )
     for (name in c("b", "s", "g")) {
         expect_match(
             stan_code,
