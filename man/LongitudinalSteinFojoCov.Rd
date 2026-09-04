@@ -31,7 +31,9 @@ LongitudinalSteinFojoCov(
   omega_g_coefficients_prior = prior_normal(0, 1),
   sigma = prior_lognormal(log(0.1), 1),
   scaled_variance = FALSE,
-  centred_baseline = FALSE
+  centred_baseline = FALSE,
+  centred_shrinkage = FALSE,
+  centred_growth = FALSE
 )
 }
 \arguments{
@@ -56,8 +58,13 @@ LongitudinalSteinFojoCov(
 \item{scaled_variance}{Whether to use multiplicative observation error.}
 
 \item{centred_baseline}{Whether to use a centred parameterization for the
-subject-specific baseline effects. Shrinkage and growth remain
-non-centred.}
+subject-specific baseline effects.}
+
+\item{centred_shrinkage}{Whether to use a centred parameterization for the
+subject-specific shrinkage effects.}
+
+\item{centred_growth}{Whether to use a centred parameterization for the
+subject-specific growth effects.}
 }
 \value{
 A \code{LongitudinalSteinFojoCov} object.

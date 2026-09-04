@@ -31,7 +31,9 @@ NULL
         omega_s_parametrization = "character",
         mu_g_parametrization = "character",
         omega_g_parametrization = "character",
-        centred_baseline = "logical"
+        centred_baseline = "logical",
+        centred_shrinkage = "logical",
+        centred_growth = "logical"
     )
 )
 
@@ -58,8 +60,11 @@ NULL
 #' @param sigma Prior for the observation-error standard deviation.
 #' @param scaled_variance Whether to use multiplicative observation error.
 #' @param centred_baseline Whether to use a centred parameterization for the
-#'   subject-specific baseline effects. Shrinkage and growth remain
-#'   non-centred.
+#'   subject-specific baseline effects.
+#' @param centred_shrinkage Whether to use a centred parameterization for the
+#'   subject-specific shrinkage effects.
+#' @param centred_growth Whether to use a centred parameterization for the
+#'   subject-specific growth effects.
 #'
 #' @returns A `LongitudinalSteinFojoCov` object.
 #' @export
@@ -93,9 +98,13 @@ LongitudinalSteinFojoCov <- function(
     omega_g_coefficients_prior = prior_normal(0, 1),
     sigma = prior_lognormal(log(0.1), 1),
     scaled_variance = FALSE,
-    centred_baseline = FALSE
+    centred_baseline = FALSE,
+    centred_shrinkage = FALSE,
+    centred_growth = FALSE
 ) {
     assert_flag(centred_baseline)
+    assert_flag(centred_shrinkage)
+    assert_flag(centred_growth)
 
     formula_names <- c(
         "mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"
@@ -149,6 +158,8 @@ LongitudinalSteinFojoCov <- function(
         .x = read_stan("lm-stein-fojo-cov/model.stan"),
         scaled_variance = scaled_variance,
         centred_baseline = centred_baseline,
+        centred_shrinkage = centred_shrinkage,
+        centred_growth = centred_growth,
         mu_b_predictor = stan_predictors$mu_b,
         omega_b_predictor = stan_predictors$omega_b,
         mu_s_predictor = stan_predictors$mu_s,
@@ -171,43 +182,49 @@ LongitudinalSteinFojoCov <- function(
             )
         ))
     }
-    baseline_parameter <- if (centred_baseline) {
+    intercept_priors <- mget(
+        paste0(formula_names, "_intercept_prior"),
+        inherits = FALSE
+    )
+    names(intercept_priors) <- formula_names
+    subject_parameter <- function(name, centred) {
+        if (!centred) {
+            return(Parameter(
+                name = paste0("lm_sfc_eta_tilde_", name),
+                prior = prior_std_normal(),
+                size = "n_subjects"
+            ))
+        }
+        mu_prior <- intercept_priors[[paste0("mu_", name)]]
+        omega_prior <- intercept_priors[[paste0("omega_", name)]]
         Parameter(
-            name = "lm_sfc_psi_b",
+            name = paste0("lm_sfc_psi_", name),
             prior = set_limits(
                 prior_init_only(prior_lognormal(
                     .predictor_reference_value(
-                        mu_b_intercept_prior,
-                        parametrizations$mu_b
+                        mu_prior,
+                        parametrizations[[paste0("mu_", name)]]
                     ),
                     .predictor_reference_value(
-                        omega_b_intercept_prior,
-                        parametrizations$omega_b
+                        omega_prior,
+                        parametrizations[[paste0("omega_", name)]]
                     )
                 )),
                 lower = getOption("jmpost.double_eps")
             ),
             size = "n_subjects"
         )
-    } else {
-        Parameter(
-            name = "lm_sfc_eta_tilde_b",
-            prior = prior_std_normal(),
-            size = "n_subjects"
-        )
     }
-    parameters <- append(parameters, list(
-        Parameter(name = "lm_sfc_sigma", prior = sigma),
-        baseline_parameter,
-        Parameter(
-            name = "lm_sfc_eta_tilde_s",
-            prior = prior_std_normal(),
-            size = "n_subjects"
-        ),
-        Parameter(
-            name = "lm_sfc_eta_tilde_g",
-            prior = prior_std_normal(),
-            size = "n_subjects"
+    parameters <- append(parameters, c(
+        list(Parameter(name = "lm_sfc_sigma", prior = sigma)),
+        Map(
+            subject_parameter,
+            name = c("b", "s", "g"),
+            centred = c(
+                centred_baseline,
+                centred_shrinkage,
+                centred_growth
+            )
         )
     ))
 
@@ -230,7 +247,9 @@ LongitudinalSteinFojoCov <- function(
         omega_s_parametrization = parametrizations$omega_s,
         mu_g_parametrization = parametrizations$mu_g,
         omega_g_parametrization = parametrizations$omega_g,
-        centred_baseline = centred_baseline
+        centred_baseline = centred_baseline,
+        centred_shrinkage = centred_shrinkage,
+        centred_growth = centred_growth
     )
 }
 

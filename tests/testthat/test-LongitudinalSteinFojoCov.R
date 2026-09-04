@@ -12,6 +12,8 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
     expect_equal(model@mu_b_formula, ~study + age)
     expect_equal(model@omega_g_parametrization, "log-linear")
     expect_false(model@centred_baseline)
+    expect_false(model@centred_shrinkage)
+    expect_false(model@centred_growth)
     expect_setequal(
         names(getParameters(model)),
         c(
@@ -43,11 +45,17 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
     expect_stan_syntax(JointModel(model))
 })
 
-test_that("covariate Stein-Fojo supports a centred baseline", {
-    model <- LongitudinalSteinFojoCov(centred_baseline = TRUE)
+test_that("covariate Stein-Fojo effects can be centred independently", {
+    model <- LongitudinalSteinFojoCov(
+        centred_baseline = TRUE,
+        centred_shrinkage = TRUE,
+        centred_growth = TRUE
+    )
     stan_code <- as.character(JointModel(model))
 
     expect_true(model@centred_baseline)
+    expect_true(model@centred_shrinkage)
+    expect_true(model@centred_growth)
     expect_setequal(
         names(getParameters(model)),
         c(
@@ -59,17 +67,28 @@ test_that("covariate Stein-Fojo supports a centred baseline", {
                 ),
                 c("_intercept", "_coefficients")
             ),
-            "lm_sfc_sigma", "lm_sfc_psi_b",
-            "lm_sfc_eta_tilde_s", "lm_sfc_eta_tilde_g"
+            "lm_sfc_sigma",
+            "lm_sfc_psi_b", "lm_sfc_psi_s", "lm_sfc_psi_g"
         )
     )
-    expect_match(
-        stan_code,
-        "lm_sfc_psi_b ~ lognormal(lm_sfc_ind_mu_b, lm_sfc_ind_omega_b);",
-        fixed = TRUE
-    )
-    expect_false(grepl("lm_sfc_eta_tilde_b", stan_code, fixed = TRUE))
-    expect_true(all(initialValues(model, n_chains = 1)[[1]]$lm_sfc_psi_b > 0))
+    for (name in c("b", "s", "g")) {
+        expect_match(
+            stan_code,
+            sprintf(
+                "lm_sfc_psi_%1$s ~ lognormal(lm_sfc_ind_mu_%1$s, lm_sfc_ind_omega_%1$s);",
+                name
+            ),
+            fixed = TRUE
+        )
+        expect_false(grepl(
+            paste0("lm_sfc_eta_tilde_", name),
+            stan_code,
+            fixed = TRUE
+        ))
+        expect_true(all(
+            initialValues(model, n_chains = 1)[[1]][[paste0("lm_sfc_psi_", name)]] > 0
+        ))
+    }
     expect_stan_syntax(JointModel(model))
 })
 

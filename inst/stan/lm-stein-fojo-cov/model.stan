@@ -18,12 +18,16 @@ transformed parameters {
         lm_sfc_ind_mu_b + lm_sfc_eta_tilde_b .* lm_sfc_ind_omega_b
     );
 {%- endif %}
+{% if not centred_shrinkage -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_s = exp(
         lm_sfc_ind_mu_s + lm_sfc_eta_tilde_s .* lm_sfc_ind_omega_s
     );
+{%- endif %}
+{% if not centred_growth -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_g = exp(
         lm_sfc_ind_mu_g + lm_sfc_eta_tilde_g .* lm_sfc_ind_omega_g
     );
+{%- endif %}
 
     vector[n_tumour_all] Ypred = sld(
         tumour_time,
@@ -57,5 +61,11 @@ transformed parameters {
 model {
 {% if centred_baseline -%}
     lm_sfc_psi_b ~ lognormal(lm_sfc_ind_mu_b, lm_sfc_ind_omega_b);
+{%- endif %}
+{% if centred_shrinkage -%}
+    lm_sfc_psi_s ~ lognormal(lm_sfc_ind_mu_s, lm_sfc_ind_omega_s);
+{%- endif %}
+{% if centred_growth -%}
+    lm_sfc_psi_g ~ lognormal(lm_sfc_ind_mu_g, lm_sfc_ind_omega_g);
 {%- endif %}
 }
