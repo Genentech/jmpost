@@ -325,9 +325,11 @@ SimLongitudinalRandomSlopeCov(
 
 The simulated longitudinal model uses study and treatment arm. The survival
 simulator also generates a continuous (`cov_cont`) and categorical (`cov_cat`)
-baseline covariate. We include those additional covariates in the fitted
-longitudinal model as adjustment variables; their true longitudinal effects are
-zero here. Study changes the subject intercept, while treatment arm changes the
+baseline covariate. We include `cov_cont` in the fitted
+longitudinal model; their true longitudinal effect is zero here though.
+We also include `cov_cat` in the fitted survival model, in order to illustrate that
+the covariates of the two models can be different (and they can also be overlapping).
+Study changes the subject intercept, while treatment arm changes the
 mean and standard deviation of the random slope. The `log-linear` slope-SD
 predictor keeps the standard deviation positive.
 
@@ -367,14 +369,14 @@ simulated_data <- SimJointData(
 ```
 
 Construct the corresponding longitudinal model. `cov_cont` adjusts the
-intercept predictor, and `cov_cat` adjusts the mean-slope predictor in
-addition to the covariates used to simulate the longitudinal data.
+intercept predictor, and a dichotomized version of it adjusts the mean-slope predictor.
+This illustrates that the full flexibility of design formulas is available for specifying how covariates enter the model.
 
 ```{r}
 joint_model <- JointModel(
     longitudinal = LongitudinalRandomSlopeCov(
         mu_formula = ~ study + cov_cont,
-        slope_mu_formula = ~ arm + cov_cat,
+        slope_mu_formula = ~ arm + I(cov_cont > 0),
         slope_sigma_formula = ~arm,
         mu_intercept_prior = prior_normal(30, 10),
         mu_coefficients_prior = prior_normal(0, 5),
@@ -397,7 +399,9 @@ joint_data <- DataJoint(
     ),
     survival = DataSurvival(
         data = simulated_data@survival,
-        formula = Surv(time, event) ~ cov_cont + cov_cat
+        # Note: Here we just use cov_cat - the covariates can be different from
+        # the longitudinal model.
+        formula = Surv(time, event) ~ cov_cat
     ),
     longitudinal = DataLongitudinal(
         data = simulated_data@longitudinal,
