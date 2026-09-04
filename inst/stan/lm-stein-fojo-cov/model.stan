@@ -13,9 +13,11 @@ transformed parameters {
     vector[n_subjects] lm_sfc_ind_mu_g = {{ mu_g_predictor }};
     vector[n_subjects] lm_sfc_ind_omega_g = {{ omega_g_predictor }};
 
+{% if not centred_baseline -%}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_b = exp(
         lm_sfc_ind_mu_b + lm_sfc_eta_tilde_b .* lm_sfc_ind_omega_b
     );
+{%- endif %}
     vector<lower={{ machine_double_eps }}>[n_subjects] lm_sfc_psi_s = exp(
         lm_sfc_ind_mu_s + lm_sfc_eta_tilde_s .* lm_sfc_ind_omega_s
     );
@@ -50,4 +52,10 @@ transformed parameters {
             {%- endif -%}
         );
     }
+}
+
+model {
+{% if centred_baseline -%}
+    lm_sfc_psi_b ~ lognormal(lm_sfc_ind_mu_b, lm_sfc_ind_omega_b);
+{%- endif %}
 }

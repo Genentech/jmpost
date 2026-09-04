@@ -30,7 +30,8 @@ NULL
         mu_s_parametrization = "character",
         omega_s_parametrization = "character",
         mu_g_parametrization = "character",
-        omega_g_parametrization = "character"
+        omega_g_parametrization = "character",
+        centred_baseline = "logical"
     )
 )
 
@@ -56,6 +57,9 @@ NULL
 #' @param omega_g_intercept_prior,omega_g_coefficients_prior Priors for the growth log-SD predictor.
 #' @param sigma Prior for the observation-error standard deviation.
 #' @param scaled_variance Whether to use multiplicative observation error.
+#' @param centred_baseline Whether to use a centred parameterization for the
+#'   subject-specific baseline effects. Shrinkage and growth remain
+#'   non-centred.
 #'
 #' @returns A `LongitudinalSteinFojoCov` object.
 #' @export
@@ -88,8 +92,11 @@ LongitudinalSteinFojoCov <- function(
     omega_g_intercept_prior = prior_normal(log(0.2), 1),
     omega_g_coefficients_prior = prior_normal(0, 1),
     sigma = prior_lognormal(log(0.1), 1),
-    scaled_variance = FALSE
+    scaled_variance = FALSE,
+    centred_baseline = FALSE
 ) {
+    assert_flag(centred_baseline)
+
     formula_names <- c(
         "mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"
     )
@@ -141,6 +148,7 @@ LongitudinalSteinFojoCov <- function(
     stan <- StanModule(decorated_render(
         .x = read_stan("lm-stein-fojo-cov/model.stan"),
         scaled_variance = scaled_variance,
+        centred_baseline = centred_baseline,
         mu_b_predictor = stan_predictors$mu_b,
         omega_b_predictor = stan_predictors$omega_b,
         mu_s_predictor = stan_predictors$mu_s,
@@ -163,13 +171,34 @@ LongitudinalSteinFojoCov <- function(
             )
         ))
     }
-    parameters <- append(parameters, list(
-        Parameter(name = "lm_sfc_sigma", prior = sigma),
+    baseline_parameter <- if (centred_baseline) {
+        Parameter(
+            name = "lm_sfc_psi_b",
+            prior = set_limits(
+                prior_init_only(prior_lognormal(
+                    .predictor_reference_value(
+                        mu_b_intercept_prior,
+                        parametrizations$mu_b
+                    ),
+                    .predictor_reference_value(
+                        omega_b_intercept_prior,
+                        parametrizations$omega_b
+                    )
+                )),
+                lower = getOption("jmpost.double_eps")
+            ),
+            size = "n_subjects"
+        )
+    } else {
         Parameter(
             name = "lm_sfc_eta_tilde_b",
             prior = prior_std_normal(),
             size = "n_subjects"
-        ),
+        )
+    }
+    parameters <- append(parameters, list(
+        Parameter(name = "lm_sfc_sigma", prior = sigma),
+        baseline_parameter,
         Parameter(
             name = "lm_sfc_eta_tilde_s",
             prior = prior_std_normal(),
@@ -200,7 +229,8 @@ LongitudinalSteinFojoCov <- function(
         mu_s_parametrization = parametrizations$mu_s,
         omega_s_parametrization = parametrizations$omega_s,
         mu_g_parametrization = parametrizations$mu_g,
-        omega_g_parametrization = parametrizations$omega_g
+        omega_g_parametrization = parametrizations$omega_g,
+        centred_baseline = centred_baseline
     )
 }
 

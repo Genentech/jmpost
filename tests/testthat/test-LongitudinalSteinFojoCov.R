@@ -11,6 +11,7 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
     expect_s4_class(model, "LongitudinalSteinFojoCov")
     expect_equal(model@mu_b_formula, ~study + age)
     expect_equal(model@omega_g_parametrization, "log-linear")
+    expect_false(model@centred_baseline)
     expect_setequal(
         names(getParameters(model)),
         c(
@@ -39,6 +40,36 @@ test_that("LongitudinalSteinFojoCov constructs predictors and model data", {
         ignore_attr = TRUE
     )
     expect_match(as.character(JointModel(model)), "lm_sfc_ind_mu_b", fixed = TRUE)
+    expect_stan_syntax(JointModel(model))
+})
+
+test_that("covariate Stein-Fojo supports a centred baseline", {
+    model <- LongitudinalSteinFojoCov(centred_baseline = TRUE)
+    stan_code <- as.character(JointModel(model))
+
+    expect_true(model@centred_baseline)
+    expect_setequal(
+        names(getParameters(model)),
+        c(
+            paste0(
+                "lm_sfc_",
+                rep(
+                    c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g"),
+                    each = 2
+                ),
+                c("_intercept", "_coefficients")
+            ),
+            "lm_sfc_sigma", "lm_sfc_psi_b",
+            "lm_sfc_eta_tilde_s", "lm_sfc_eta_tilde_g"
+        )
+    )
+    expect_match(
+        stan_code,
+        "lm_sfc_psi_b ~ lognormal(lm_sfc_ind_mu_b, lm_sfc_ind_omega_b);",
+        fixed = TRUE
+    )
+    expect_false(grepl("lm_sfc_eta_tilde_b", stan_code, fixed = TRUE))
+    expect_true(all(initialValues(model, n_chains = 1)[[1]]$lm_sfc_psi_b > 0))
     expect_stan_syntax(JointModel(model))
 })
 

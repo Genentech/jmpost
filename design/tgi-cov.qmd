@@ -713,7 +713,8 @@ stein_fojo_model <- JointModel(
         mu_g_coefficients_prior = prior_normal(0, 1),
         omega_g_intercept_prior = prior_normal(log(0.15), 0.5),
         omega_g_coefficients_prior = prior_normal(0, 0.5),
-        sigma = prior_lognormal(log(2), 0.5)
+        sigma = prior_lognormal(log(2), 0.5),
+        centred_baseline = TRUE
     ),
     # Gamma(shape, rate), centred on the simulated annual rate 365 / 300.
     survival = SurvivalExponential(
