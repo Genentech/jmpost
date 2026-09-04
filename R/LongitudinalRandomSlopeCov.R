@@ -614,32 +614,10 @@ required_longitudinal_covs.LongitudinalRandomSlopeCov <- function(object, ...) {
     ))
 }
 
-#' Create longitudinal-model-specific Stan data
-#'
-#' @param model A [`LongitudinalModel`] object.
-#' @param subject A [`DataSubject`] object.
-#'
-#' @keywords internal
-#' @returns A named list of model-specific Stan data components.
-longitudinal_model_stan_data <- function(model, subject) {
-    if (is(model, "LongitudinalRandomSlopeCov")) {
-        return(.random_slope_cov_stan_data(
-            model,
-            subject
-        ))
-    }
-    if (is(model, "LongitudinalSteinFojoCov")) {
-        return(.stein_fojo_cov_stan_data(
-            model,
-            subject
-        ))
-    }
-    longitudinal_model_stan_data.default(model, subject)
-}
-
 #' @rdname longitudinal_model_stan_data
 #' @keywords internal
-.random_slope_cov_stan_data <- function(
+#' @export
+longitudinal_model_stan_data.LongitudinalRandomSlopeCov <- function(
     model,
     subject
 ) {
@@ -698,9 +676,4 @@ longitudinal_model_stan_data <- function(model, subject) {
             "slope_mu_formula"
         )
     )
-}
-
-#' @rdname longitudinal_model_stan_data
-longitudinal_model_stan_data.default <- function(model, subject) {
-    list()
 }

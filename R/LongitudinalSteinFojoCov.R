@@ -341,11 +341,10 @@ getRandomEffectsNames.LongitudinalSteinFojoCov <- function(object, ...) {
     c(b = "lm_sfc_psi_b", s = "lm_sfc_psi_s", g = "lm_sfc_psi_g")
 }
 
-#' Create covariate Stein-Fojo Stan data
-#'
+#' @rdname longitudinal_model_stan_data
 #' @keywords internal
-#' @returns A named list of model-specific Stan data components.
-.stein_fojo_cov_stan_data <- function(model, subject) {
+#' @export
+longitudinal_model_stan_data.LongitudinalSteinFojoCov <- function(model, subject) {
     subject_data <- as.data.frame(harmonise(subject))
     parameter_names <- c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g")
     designs <- lapply(parameter_names, function(name) {
