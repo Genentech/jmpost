@@ -65,4 +65,7 @@ A \code{LongitudinalGSFCov} object.
 Formula intercept columns are removed because each predictor has a separate
 intercept. \code{linear}, \code{proportional}, \code{exponential}, and \code{log-linear}
 parametrizations have the same meaning as in \code{\link[=LongitudinalSteinFojoCov]{LongitudinalSteinFojoCov()}}.
+In addition, the \code{logit-linear} parametrization is used for the
+\code{phi} parameter: This means that use a logit link for the linear predictor of \code{phi},
+which takes values between 0 and 1.
 }

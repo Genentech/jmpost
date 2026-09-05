@@ -9,3 +9,14 @@
 Separate covariate predictors model the log-normal distribution parameters
 for baseline, shrinkage, growth, and the logit-normal treatment fraction.
 }
+\section{Available Links}{
+
+\itemize{
+\item \code{\link[=linkDSLD]{linkDSLD()}}
+\item \code{\link[=linkTTG]{linkTTG()}}
+\item \code{\link[=linkIdentity]{linkIdentity()}}
+\item \code{\link[=linkGrowth]{linkGrowth()}}
+\item \code{\link[=linkShrinkage]{linkShrinkage()}}
+}
+}
+
