@@ -7,6 +7,13 @@ NULL
 #' Separate covariate predictors model the log-normal distribution parameters
 #' for baseline, shrinkage, growth, and the logit-normal treatment fraction.
 #'
+#' @section Available Links:
+#' - [`linkDSLD()`]
+#' - [`linkTTG()`]
+#' - [`linkIdentity()`]
+#' - [`linkGrowth()`]
+#' - [`linkShrinkage()`]
+#'
 #' @exportClass LongitudinalGSFCov
 .LongitudinalGSFCov <- setClass(
     "LongitudinalGSFCov",
