@@ -5,6 +5,19 @@ test_that("LongitudinalGSF works as expected with default arguments", {
     expect_s4_class(result, "LongitudinalGSF")
 })
 
+test_that("LongitudinalGSF keeps phi within its positive epsilon bounds", {
+    old_options <- options(jmpost.double_eps = 1e-10)
+    on.exit(options(old_options), add = TRUE)
+
+    stan_code <- as.character(JointModel(LongitudinalGSF()))
+    expect_match(
+        stan_code,
+        "lm_gsf_psi_phi = safe_inv_logit(lm_gsf_psi_phi_logit, 1e-10);",
+        fixed = TRUE
+    )
+    expect_stan_syntax(stan_code)
+})
+
 
 test_that("Print method for LongitudinalGSF works as expected", {
     x <- LongitudinalGSF()

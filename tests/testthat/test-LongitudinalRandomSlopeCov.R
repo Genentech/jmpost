@@ -277,6 +277,10 @@ test_that("covariate predictor helpers implement all parametrizations", {
         .covariate_predictor_r(design, log(2), log(3), "log-linear"),
         c(2, 6)
     )
+    expect_equal(
+        .covariate_predictor_r(design, -1, 0.5, "logit-linear"),
+        stats::plogis(c(-1, -0.5))
+    )
 
     expect_match(
         .covariate_predictor_stan("theta", "linear"),
@@ -286,6 +290,11 @@ test_that("covariate predictor helpers implement all parametrizations", {
     expect_match(
         .covariate_predictor_stan("theta", "log-linear"),
         "exp(rep_vector(theta_intercept",
+        fixed = TRUE
+    )
+    expect_match(
+        .covariate_predictor_stan("theta", "logit-linear"),
+        "inv_logit(rep_vector(theta_intercept",
         fixed = TRUE
     )
     expect_match(
