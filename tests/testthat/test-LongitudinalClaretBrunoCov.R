@@ -22,6 +22,26 @@ test_that("LongitudinalClaretBrunoCov constructs and renders", {
     expect_stan_syntax(code)
 })
 
+test_that("Claret-Bruno covariate model generates correctly named initial values", {
+    initial_values <- initialValues(
+        JointModel(longitudinal = LongitudinalClaretBrunoCov()),
+        n_chains = 1
+    )[[1]]
+
+    expect_true(all(c(
+        "lm_clbrc_psi_b",
+        "lm_clbrc_eta_tilde_g",
+        "lm_clbrc_eta_tilde_c",
+        "lm_clbrc_eta_tilde_p"
+    ) %in% names(initial_values)))
+    expect_false(any(c(
+        "b.lm_clbrc_psi_b",
+        "g.lm_clbrc_eta_tilde_g",
+        "c.lm_clbrc_eta_tilde_c",
+        "p.lm_clbrc_eta_tilde_p"
+    ) %in% names(initial_values)))
+})
+
 test_that("Claret-Bruno covariate model supports links and simulation", {
     model <- LongitudinalClaretBrunoCov()
     expect_equal(getPredictionNames(model), c("b", "g", "c", "p"))

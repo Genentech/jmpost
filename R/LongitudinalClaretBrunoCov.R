@@ -217,7 +217,7 @@ LongitudinalClaretBrunoCov <- function(
     parameters <- c(
         parameters,
         list(Parameter(name = "lm_clbrc_sigma", prior = sigma)),
-        Map(
+        unname(Map(
             subject_parameter,
             c("b", "g", "c", "p"),
             c(
@@ -226,7 +226,7 @@ LongitudinalClaretBrunoCov <- function(
                 centred_resistance,
                 centred_inhibition
             )
-        )
+        ))
     )
     args <- c(
         list(LongitudinalModel(

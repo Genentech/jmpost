@@ -52,6 +52,26 @@ test_that("LongitudinalGSFCov constructs all covariate predictors", {
     )
 })
 
+test_that("GSF covariate model generates correctly named initial values", {
+    initial_values <- initialValues(
+        JointModel(longitudinal = LongitudinalGSFCov()),
+        n_chains = 1
+    )[[1]]
+
+    expect_true(all(c(
+        "lm_gsfc_psi_b",
+        "lm_gsfc_eta_tilde_s",
+        "lm_gsfc_eta_tilde_g",
+        "lm_gsfc_eta_tilde_phi"
+    ) %in% names(initial_values)))
+    expect_false(any(c(
+        "b.lm_gsfc_psi_b",
+        "s.lm_gsfc_eta_tilde_s",
+        "g.lm_gsfc_eta_tilde_g",
+        "phi.lm_gsfc_eta_tilde_phi"
+    ) %in% names(initial_values)))
+})
+
 test_that("LongitudinalGSFCov keeps phi within its positive epsilon bounds", {
     old_options <- options(jmpost.double_eps = 1e-10)
     on.exit(options(old_options), add = TRUE)
