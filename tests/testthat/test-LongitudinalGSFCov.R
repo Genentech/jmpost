@@ -58,18 +58,24 @@ test_that("GSF covariate model generates correctly named initial values", {
         n_chains = 1
     )[[1]]
 
-    expect_true(all(c(
-        "lm_gsfc_psi_b",
-        "lm_gsfc_eta_tilde_s",
-        "lm_gsfc_eta_tilde_g",
-        "lm_gsfc_eta_tilde_phi"
-    ) %in% names(initial_values)))
-    expect_false(any(c(
-        "b.lm_gsfc_psi_b",
-        "s.lm_gsfc_eta_tilde_s",
-        "g.lm_gsfc_eta_tilde_g",
-        "phi.lm_gsfc_eta_tilde_phi"
-    ) %in% names(initial_values)))
+    expect_true(all(
+        c(
+            "lm_gsfc_psi_b",
+            "lm_gsfc_eta_tilde_s",
+            "lm_gsfc_eta_tilde_g",
+            "lm_gsfc_eta_tilde_phi"
+        ) %in%
+            names(initial_values)
+    ))
+    expect_false(any(
+        c(
+            "b.lm_gsfc_psi_b",
+            "s.lm_gsfc_eta_tilde_s",
+            "g.lm_gsfc_eta_tilde_g",
+            "phi.lm_gsfc_eta_tilde_phi"
+        ) %in%
+            names(initial_values)
+    ))
 })
 
 test_that("LongitudinalGSFCov keeps phi within its positive epsilon bounds", {
@@ -145,4 +151,95 @@ test_that("posterior GSF covariate draws create a matching simulator", {
     )
     expect_s4_class(simulator, "SimLongitudinalGSFCov")
     expect_equal(simulator@mu_phi_coefficients, 0)
+})
+
+test_that("GSF covariate model recovers its parameters", {
+    skip_if_not(is_full_test())
+
+    predictor_truth <- c(
+        mu_b_intercept = log(60),
+        mu_b_coefficients = log(1.1),
+        omega_b_intercept = log(0.2),
+        omega_b_coefficients = log(1.2),
+        mu_s_intercept = log(0.55),
+        mu_s_coefficients = log(0.85),
+        omega_s_intercept = log(0.2),
+        omega_s_coefficients = log(1.2),
+        mu_g_intercept = log(0.25),
+        mu_g_coefficients = log(1.2),
+        omega_g_intercept = log(0.18),
+        omega_g_coefficients = log(1.2),
+        mu_phi_intercept = qlogis(0.4),
+        mu_phi_coefficients = 0.35,
+        omega_phi_intercept = log(0.12),
+        omega_phi_coefficients = log(1.2)
+    )
+    sigma <- 0.015
+    set.seed(7043)
+    parameter_names <- unique(sub(
+        "_(intercept|coefficients)$",
+        "",
+        names(predictor_truth)
+    ))
+    formula_args <- setNames(
+        rep(list(~arm), length(parameter_names)),
+        paste0(parameter_names, "_formula")
+    )
+    simulated <- SimJointData(
+        design = list(
+            SimGroup(175, "Arm-A", "Study-X"),
+            SimGroup(175, "Arm-B", "Study-X")
+        ),
+        longitudinal = do.call(
+            SimLongitudinalGSFCov,
+            c(
+                list(times = seq(-0.25, 2.5, length.out = 16)),
+                formula_args,
+                as.list(predictor_truth),
+                list(sigma = sigma, scaled_variance = TRUE)
+            )
+        ),
+        survival = SimSurvivalExponential(0.1, time_max = 3, time_step = 1),
+        .silent = TRUE
+    )
+    data <- DataJoint(
+        subject = DataSubject(simulated@survival, "subject", "arm", "study"),
+        longitudinal = DataLongitudinal(simulated@longitudinal, sld ~ time)
+    )
+    prior_args <- Map(
+        function(value, name) {
+            prior_normal(value, if (grepl("intercept$", name)) 0.5 else 0.4)
+        },
+        predictor_truth,
+        names(predictor_truth)
+    )
+    names(prior_args) <- paste0(names(predictor_truth), "_prior")
+    longitudinal <- do.call(
+        LongitudinalGSFCov,
+        c(
+            formula_args,
+            prior_args,
+            list(
+                sigma = prior_lognormal(log(sigma), 0.5),
+                scaled_variance = TRUE
+            )
+        )
+    )
+    fit <- run_quietly(sampleStanModel(
+        JointModel(longitudinal = longitudinal, link = Link()),
+        data = data,
+        iter_warmup = 1000,
+        iter_sampling = 1500,
+        chains = 2,
+        parallel_chains = 2,
+        refresh = 0
+    ))
+    truth <- c(predictor_truth, sigma = sigma)
+    draws <- cmdstanr::as.CmdStanMCMC(fit)$draws(
+        paste0("lm_gsfc_", names(truth)),
+        format = "draws_matrix"
+    )
+    intervals <- apply(draws, 2, quantile, probs = c(0.01, 0.99))
+    expect_true(all(intervals[1, ] <= truth))
+    expect_true(all(intervals[2, ] >= truth))
 })
