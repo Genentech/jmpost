@@ -139,6 +139,7 @@ SimLongitudinalClaretBrunoCov <- function(
     do.call(.SimLongitudinalClaretBrunoCov, args)
 }
 
+#' @rdname sampleSubjects
 #' @export
 sampleSubjects.SimLongitudinalClaretBrunoCov <- function(object, subjects_df) {
     assert_that(
@@ -205,6 +206,7 @@ sampleSubjects.SimLongitudinalClaretBrunoCov <- function(object, subjects_df) {
         )
 }
 
+#' @rdname sampleObservations
 #' @export
 sampleObservations.SimLongitudinalClaretBrunoCov <- function(object, times_df) {
     times_df |>
@@ -244,6 +246,7 @@ sampleObservations.SimLongitudinalClaretBrunoCov <- function(object, times_df) {
         )
 }
 
+#' @rdname as_print_string
 #' @exportS3Method NULL
 as_print_string.SimLongitudinalClaretBrunoCov <- function(object, ...) {
     "SimLongitudinalClaretBrunoCov"
