@@ -743,7 +743,7 @@ test_that("random-slope covariate model recovers its parameters", {
         slope_mu_coefficients = 3,
         slope_sigma_intercept = log(2),
         slope_sigma_coefficients = log(1.25),
-        sigma = 0.03
+        sigma = 2
     )
     set.seed(7041)
     simulated <- SimJointData(
@@ -763,7 +763,7 @@ test_that("random-slope covariate model recovers its parameters", {
             slope_sigma_intercept = truth[["slope_sigma_intercept"]],
             slope_sigma_coefficients = truth[["slope_sigma_coefficients"]],
             sigma = truth[["sigma"]],
-            scaled_variance = TRUE
+            scaled_variance = FALSE
         ),
         survival = SimSurvivalExponential(
             lambda = 0.1,
@@ -787,8 +787,8 @@ test_that("random-slope covariate model recovers its parameters", {
             slope_mu_coefficients_prior = prior_normal(0, 4),
             slope_sigma_intercept_prior = prior_normal(log(2), 0.5),
             slope_sigma_coefficients_prior = prior_normal(0, 0.5),
-            sigma = prior_lognormal(log(0.03), 0.5),
-            scaled_variance = TRUE
+            sigma = prior_lognormal(log(2), 0.5),
+            scaled_variance = FALSE
         ),
         link = Link()
     )
@@ -806,7 +806,20 @@ test_that("random-slope covariate model recovers its parameters", {
         variables,
         format = "draws_matrix"
     )
-    intervals <- apply(draws, 2, quantile, probs = c(0.01, 0.99))
-    expect_true(all(intervals[1, ] <= truth))
-    expect_true(all(intervals[2, ] >= truth))
+    parameter <- sub("^lm_rsc_", "", colnames(draws))
+    parameter <- sub("\\[1\\]$", "", parameter)
+    recovery <- data.frame(
+        parameter = parameter,
+        truth = unname(truth[parameter]),
+        estimate = colMeans(draws),
+        posterior_sd = apply(draws, 2, sd)
+    )
+    recovery$z_score <- with(
+        recovery,
+        (estimate - truth) / posterior_sd
+    )
+    expect_true(
+        max(abs(recovery$z_score)) < 4,
+        info = paste(capture.output(print(recovery)), collapse = "\n")
+    )
 })

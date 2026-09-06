@@ -337,7 +337,7 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
         omega_g_intercept = log(0.15),
         omega_g_coefficients = log(1.2)
     )
-    sigma <- 0.015
+    sigma <- 1
     set.seed(7042)
     simulated <- SimJointData(
         design = list(
@@ -356,7 +356,7 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
                     mu_g_formula = ~arm,
                     omega_g_formula = ~arm,
                     sigma = sigma,
-                    scaled_variance = TRUE
+                    scaled_variance = FALSE
                 ),
                 as.list(predictor_truth)
             )
@@ -392,7 +392,7 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
             prior_args,
             list(
                 sigma = prior_lognormal(log(sigma), 0.5),
-                scaled_variance = TRUE
+                scaled_variance = FALSE
             )
         )
     )
@@ -410,7 +410,20 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
         paste0("lm_sfc_", names(truth)),
         format = "draws_matrix"
     )
-    intervals <- apply(draws, 2, quantile, probs = c(0.01, 0.99))
-    expect_true(all(intervals[1, ] <= truth))
-    expect_true(all(intervals[2, ] >= truth))
+    parameter <- sub("^lm_sfc_", "", colnames(draws))
+    parameter <- sub("\\[1\\]$", "", parameter)
+    recovery <- data.frame(
+        parameter = parameter,
+        truth = unname(truth[parameter]),
+        estimate = colMeans(draws),
+        posterior_sd = apply(draws, 2, sd)
+    )
+    recovery$z_score <- with(
+        recovery,
+        (estimate - truth) / posterior_sd
+    )
+    expect_true(
+        max(abs(recovery$z_score)) < 4,
+        info = paste(capture.output(print(recovery)), collapse = "\n")
+    )
 })

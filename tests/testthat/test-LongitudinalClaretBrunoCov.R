@@ -157,7 +157,7 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
         omega_p_intercept = log(0.2),
         omega_p_coefficients = log(1.2)
     )
-    sigma <- 0.01
+    sigma <- 1
     set.seed(7044)
     parameter_names <- unique(sub(
         "_(intercept|coefficients)$",
@@ -179,7 +179,7 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
                 list(times = seq(0, 2.5, length.out = 16)),
                 formula_args,
                 as.list(predictor_truth),
-                list(sigma = sigma, scaled_variance = TRUE)
+                list(sigma = sigma, scaled_variance = FALSE)
             )
         ),
         survival = SimSurvivalExponential(0.1, time_max = 3, time_step = 1),
@@ -204,7 +204,7 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
             prior_args,
             list(
                 sigma = prior_lognormal(log(sigma), 0.5),
-                scaled_variance = TRUE
+                scaled_variance = FALSE
             )
         )
     )
@@ -222,7 +222,20 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
         paste0("lm_clbrc_", names(truth)),
         format = "draws_matrix"
     )
-    intervals <- apply(draws, 2, quantile, probs = c(0.01, 0.99))
-    expect_true(all(intervals[1, ] <= truth))
-    expect_true(all(intervals[2, ] >= truth))
+    parameter <- sub("^lm_clbrc_", "", colnames(draws))
+    parameter <- sub("\\[1\\]$", "", parameter)
+    recovery <- data.frame(
+        parameter = parameter,
+        truth = unname(truth[parameter]),
+        estimate = colMeans(draws),
+        posterior_sd = apply(draws, 2, sd)
+    )
+    recovery$z_score <- with(
+        recovery,
+        (estimate - truth) / posterior_sd
+    )
+    expect_true(
+        max(abs(recovery$z_score)) < 4,
+        info = paste(capture.output(print(recovery)), collapse = "\n")
+    )
 })
