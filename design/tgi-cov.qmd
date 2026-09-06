@@ -887,3 +887,36 @@ gsf_sum <- gsf_cov_fit@results$summary(
 gsf_sum
 ```
 So that looks pretty good here: We see all the R-hat values below 1.01 indicating convergence.
+
+## Claret-Bruno example
+
+The covariate Claret-Bruno model completes the same construction for its four
+positive subject-level parameters. Each parameter is log-normally distributed,
+with its log-mean and log-standard-deviation controlled by separate predictors.
+
+```{r}
+claret_bruno_cov_model <- JointModel(
+    longitudinal = LongitudinalClaretBrunoCov(
+        mu_b_formula = ~study,
+        omega_b_formula = ~study,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
+        mu_c_formula = ~arm,
+        omega_c_formula = ~arm,
+        mu_p_formula = ~arm,
+        omega_p_formula = ~arm,
+        centred_baseline = TRUE
+    ),
+    survival = SurvivalExponential(
+        lambda = prior_gamma(2, 2 / (days_per_year / 300))
+    ),
+    link = linkDSLD()
+)
+```
+
+Here `mu_*` predictors supply the location parameter on the log scale and
+`omega_*` predictors supply a positive log-normal standard deviation. With the
+default `log-linear` parametrization for `omega_*`, the latter is
+`exp(intercept + X beta)`, exactly matching the equations above. The Stan
+implementation uses the same `(b, g, c, p)` ordering in the tumour trajectory,
+link inputs, and generated quantities.

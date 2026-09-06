@@ -375,6 +375,50 @@ createLongitudinalSimObject.LongitudinalClaretBruno <- function(
     do.call(SimLongitudinalClaretBruno, args)
 }
 
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalClaretBrunoCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_g",
+        "omega_g",
+        "mu_c",
+        "omega_c",
+        "mu_p",
+        "omega_p"
+    )
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_clbrc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_clbrc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_clbrc_sigma")
+    for (name in c("dsld", "ttg", "identity", "growth")) {
+        args[[paste0("link_", name)]] <- get_vars(draw, paste0("link_", name))
+    }
+    do.call(SimLongitudinalClaretBrunoCov, args)
+}
+
 
 # Survival Sim Object constructors --------
 
