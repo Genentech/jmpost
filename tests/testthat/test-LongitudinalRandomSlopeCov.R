@@ -244,7 +244,7 @@ test_that("covariate formula helpers cover validation and edge cases", {
         age = c(50, 60, 70)
     )
     expect_equal(
-        .covariate_design_matrix(~arm + age, data),
+        .covariate_design_matrix(~ arm + age, data),
         cbind(armB = c(0, 1, 0), age = c(50, 60, 70)),
         ignore_attr = TRUE
     )
@@ -365,7 +365,7 @@ test_that("generated quantities rebuild model-aware Stan data", {
     )
     data <- DataJoint(subject, longitudinal = longitudinal)
     model <- JointModel(LongitudinalRandomSlopeCov(
-        mu_formula = ~study + age,
+        mu_formula = ~ study + age,
         slope_mu_formula = ~arm,
         slope_sigma_formula = ~arm
     ))
@@ -475,8 +475,8 @@ test_that("population quantities accept all predictor covariates in newdata", {
     )
     data <- DataJoint(subject, longitudinal = longitudinal)
     model <- JointModel(LongitudinalRandomSlopeCov(
-        mu_formula = ~study + age,
-        slope_mu_formula = ~arm + sex,
+        mu_formula = ~ study + age,
+        slope_mu_formula = ~ arm + sex,
         slope_sigma_formula = ~variability_covariate
     ))
     profiles <- data.frame(
@@ -542,7 +542,7 @@ test_that("population quantities require newdata for additional covariates", {
         study = "study"
     )
     data <- DataJoint(subject)
-    model <- JointModel(LongitudinalRandomSlopeCov(mu_formula = ~study + age))
+    model <- JointModel(LongitudinalRandomSlopeCov(mu_formula = ~ study + age))
 
     expect_error(
         as.QuantityGenerator(GridPopulation(0), data, model = model),
@@ -563,14 +563,14 @@ test_that("population quantities require newdata for additional covariates", {
 
 test_that("required_longitudinal_covs() returns population predictor covariates", {
     random_slope <- LongitudinalRandomSlopeCov(
-        mu_formula = ~study + age,
-        slope_mu_formula = ~arm + sex,
+        mu_formula = ~ study + age,
+        slope_mu_formula = ~ arm + sex,
         slope_sigma_formula = ~variability_covariate
     )
     stein_fojo <- LongitudinalSteinFojoCov(
-        mu_b_formula = ~study + age,
+        mu_b_formula = ~ study + age,
         omega_b_formula = ~variability_covariate,
-        mu_s_formula = ~arm + sex,
+        mu_s_formula = ~ arm + sex,
         omega_s_formula = ~variability_covariate,
         mu_g_formula = ~age,
         omega_g_formula = ~variability_covariate
@@ -584,19 +584,22 @@ test_that("required_longitudinal_covs() returns population predictor covariates"
         required_longitudinal_covs(stein_fojo),
         c("study", "age", "arm", "sex")
     )
-    expect_equal(required_longitudinal_covs(LongitudinalRandomSlope()), character())
+    expect_equal(
+        required_longitudinal_covs(LongitudinalRandomSlope()),
+        character()
+    )
 })
 
 test_that("required_simulation_covariates() includes variability predictors", {
     random_slope <- LongitudinalRandomSlopeCov(
-        mu_formula = ~study + age,
-        slope_mu_formula = ~arm + sex,
+        mu_formula = ~ study + age,
+        slope_mu_formula = ~ arm + sex,
         slope_sigma_formula = ~variability_covariate
     )
     stein_fojo <- LongitudinalSteinFojoCov(
-        mu_b_formula = ~study + age,
+        mu_b_formula = ~ study + age,
         omega_b_formula = ~variability_covariate,
-        mu_s_formula = ~arm + sex,
+        mu_s_formula = ~ arm + sex,
         omega_s_formula = ~variability_covariate,
         mu_g_formula = ~age,
         omega_g_formula = ~variability_covariate
@@ -728,4 +731,95 @@ test_that("LongitudinalRandomEffects extracts covariate random slopes", {
     expect_equal(result@subject, c("S1", "S2"))
     expect_equal(result@parameter, c("slope", "slope"))
     expect_equal(dim(result@quantities), c(2, 2))
+})
+
+test_that("random-slope covariate model recovers its parameters", {
+    skip_if_not(is_full_test())
+
+    truth <- c(
+        mu_intercept = 60,
+        mu_coefficients = 8,
+        slope_mu_intercept = -8,
+        slope_mu_coefficients = 3,
+        slope_sigma_intercept = log(2),
+        slope_sigma_coefficients = log(1.25),
+        sigma = 2
+    )
+    set.seed(7041)
+    simulated <- SimJointData(
+        design = list(
+            SimGroup(175, "Arm-A", "Study-X"),
+            SimGroup(175, "Arm-B", "Study-X")
+        ),
+        longitudinal = SimLongitudinalRandomSlopeCov(
+            times = seq(0, 2.5, length.out = 14),
+            mu_formula = ~arm,
+            slope_mu_formula = ~arm,
+            slope_sigma_formula = ~arm,
+            mu_intercept = truth[["mu_intercept"]],
+            mu_coefficients = truth[["mu_coefficients"]],
+            slope_mu_intercept = truth[["slope_mu_intercept"]],
+            slope_mu_coefficients = truth[["slope_mu_coefficients"]],
+            slope_sigma_intercept = truth[["slope_sigma_intercept"]],
+            slope_sigma_coefficients = truth[["slope_sigma_coefficients"]],
+            sigma = truth[["sigma"]],
+            scaled_variance = FALSE
+        ),
+        survival = SimSurvivalExponential(
+            lambda = 0.1,
+            time_max = 3,
+            time_step = 1
+        ),
+        .silent = TRUE
+    )
+    data <- DataJoint(
+        subject = DataSubject(simulated@survival, "subject", "arm", "study"),
+        longitudinal = DataLongitudinal(simulated@longitudinal, sld ~ time)
+    )
+    model <- JointModel(
+        longitudinal = LongitudinalRandomSlopeCov(
+            mu_formula = ~arm,
+            slope_mu_formula = ~arm,
+            slope_sigma_formula = ~arm,
+            mu_intercept_prior = prior_normal(60, 10),
+            mu_coefficients_prior = prior_normal(0, 10),
+            slope_mu_intercept_prior = prior_normal(-8, 4),
+            slope_mu_coefficients_prior = prior_normal(0, 4),
+            slope_sigma_intercept_prior = prior_normal(log(2), 0.5),
+            slope_sigma_coefficients_prior = prior_normal(0, 0.5),
+            sigma = prior_lognormal(log(2), 0.5),
+            scaled_variance = FALSE
+        ),
+        link = Link()
+    )
+    fit <- run_quietly(sampleStanModel(
+        model,
+        data = data,
+        iter_warmup = 800,
+        iter_sampling = 1200,
+        chains = 2,
+        parallel_chains = 2,
+        refresh = 0
+    ))
+    variables <- paste0("lm_rsc_", names(truth))
+    draws <- cmdstanr::as.CmdStanMCMC(fit)$draws(
+        variables,
+        format = "draws_matrix"
+    )
+    parameter <- sub("^lm_rsc_", "", colnames(draws))
+    parameter <- sub("\\[1\\]$", "", parameter)
+    recovery <- data.frame(
+        parameter = parameter,
+        truth = unname(truth[parameter]),
+        estimate = colMeans(draws),
+        posterior_sd = apply(draws, 2, sd)
+    )
+    recovery$z_score <- with(
+        recovery,
+        (estimate - truth) / posterior_sd
+    )
+    expect_true(
+        max(abs(recovery$z_score)) < 4,
+        info = paste(capture.output(print(recovery)), collapse = "\n")
+    )
 })

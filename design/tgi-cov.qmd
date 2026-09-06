@@ -887,3 +887,103 @@ gsf_sum <- gsf_cov_fit@results$summary(
 gsf_sum
 ```
 So that looks pretty good here: We see all the R-hat values below 1.01 indicating convergence.
+
+## Claret-Bruno example
+
+The covariate Claret-Bruno model completes the same construction for its four
+positive subject-level parameters. Each parameter is log-normally distributed,
+with its log-mean and log-standard-deviation controlled by separate predictors.
+
+```{r}
+claret_bruno_cov_model <- JointModel(
+    longitudinal = LongitudinalClaretBrunoCov(
+        mu_b_formula = ~study,
+        omega_b_formula = ~study,
+        mu_g_formula = ~arm,
+        omega_g_formula = ~arm,
+        mu_c_formula = ~arm,
+        omega_c_formula = ~arm,
+        mu_p_formula = ~arm,
+        omega_p_formula = ~arm
+    ),
+    survival = SurvivalExponential(
+        lambda = prior_gamma(2, 2 / (days_per_year / 300))
+    ),
+    link = linkDSLD()
+)
+```
+
+Here `mu_*` predictors supply the location parameter on the log scale and
+`omega_*` predictors supply a positive log-normal standard deviation. With the
+default `log-linear` parametrization for `omega_*`, the latter is
+`exp(intercept + X beta)`, exactly matching the equations above. The Stan
+implementation uses the same `(b, g, c, p)` ordering in the tumour trajectory,
+link inputs, and generated quantities.
+
+As for the preceding examples, these short chains exercise the complete
+workflow and provide a basic convergence check:
+
+```{r}
+claret_bruno_cov_fit <- sampleStanModel(
+    claret_bruno_cov_model,
+    data = stein_fojo_data,
+    iter_warmup = 500,
+    iter_sampling = 500,
+    chains = 2,
+    parallel_chains = 2,
+    seed = 2026,
+    refresh = 100,
+    show_exceptions = TRUE,
+    show_messages = TRUE
+)
+```
+
+The Claret-Bruno covariate parameters use the `lm_clbrc` prefix. The
+convergence summary includes the reference-level locations and standard
+deviations, their covariate coefficients, the observation-error parameter,
+and the joint-model parameters:
+
+```{r}
+claret_bruno_cov_sum <- claret_bruno_cov_fit@results$summary(
+    variables = c(
+        "lm_clbrc_mu_b_intercept",
+        "lm_clbrc_mu_b_coefficients",
+        "lm_clbrc_omega_b_intercept",
+        "lm_clbrc_omega_b_coefficients",
+        "lm_clbrc_mu_g_intercept",
+        "lm_clbrc_mu_g_coefficients",
+        "lm_clbrc_omega_g_intercept",
+        "lm_clbrc_omega_g_coefficients",
+        "lm_clbrc_mu_c_intercept",
+        "lm_clbrc_mu_c_coefficients",
+        "lm_clbrc_omega_c_intercept",
+        "lm_clbrc_omega_c_coefficients",
+        "lm_clbrc_mu_p_intercept",
+        "lm_clbrc_mu_p_coefficients",
+        "lm_clbrc_omega_p_intercept",
+        "lm_clbrc_omega_p_coefficients",
+        "lm_clbrc_sigma",
+        "link_dsld",
+        "beta_os_cov"
+    )
+)
+claret_bruno_cov_sum$rhat
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+claret_bruno_coefficient_draws <- claret_bruno_cov_fit@results$draws(
+    variables = c(
+        "lm_clbrc_mu_b_coefficients",
+        "lm_clbrc_mu_g_coefficients",
+        "lm_clbrc_mu_c_coefficients",
+        "lm_clbrc_mu_p_coefficients"
+    )
+)
+
+bayesplot::mcmc_dens(claret_bruno_coefficient_draws) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::labs(x = "Coefficient", y = "Posterior density")
+```

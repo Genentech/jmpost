@@ -231,11 +231,11 @@ LongitudinalGSFCov <- function(
     parameters <- c(
         parameters,
         list(Parameter(name = "lm_gsfc_sigma", prior = sigma)),
-        Map(
+        unname(Map(
             subject_parameter,
             c("b", "s", "g", "phi"),
             c(centred_baseline, centred_shrinkage, centred_growth, centred_phi)
-        )
+        ))
     )
     .LongitudinalGSFCov(
         LongitudinalModel(
