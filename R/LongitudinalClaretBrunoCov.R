@@ -144,7 +144,7 @@ LongitudinalClaretBrunoCov <- function(
             parametrizations[[name]]
         )
     }
-    predictor_args <- setNames(
+    predictor_args <- stats::setNames(
         lapply(names, predictor),
         paste0(names, "_predictor")
     )
@@ -235,8 +235,8 @@ LongitudinalClaretBrunoCov <- function(
             parameters = do.call(ParameterList, parameters),
             scaled_variance = scaled_variance
         )),
-        setNames(formulas, paste0(names, "_formula")),
-        setNames(parametrizations, paste0(names, "_parametrization")),
+        stats::setNames(formulas, paste0(names, "_formula")),
+        stats::setNames(parametrizations, paste0(names, "_parametrization")),
         list(
             centred_baseline = centred_baseline,
             centred_growth = centred_growth,
@@ -303,7 +303,7 @@ gq_population_stan_data.LongitudinalClaretBrunoCov <- function(
             msg = "Population quantities for `LongitudinalClaretBrunoCov` require `GridPopulation(newdata = ...)`"
         )
         subject_data <- as.data.frame(harmonise(data@subject))
-        result$data <- setNames(
+        result$data <- stats::setNames(
             lapply(names, function(name) {
                 .covariate_prediction_design_matrix(
                     slot(model, paste0(name, "_formula")),
@@ -404,7 +404,7 @@ longitudinal_model_stan_data.LongitudinalClaretBrunoCov <- function(
         "mu_p",
         "omega_p"
     )
-    designs <- setNames(
+    designs <- stats::setNames(
         lapply(names, function(name) {
             .covariate_design_matrix(
                 slot(model, paste0(name, "_formula")),
@@ -416,7 +416,7 @@ longitudinal_model_stan_data.LongitudinalClaretBrunoCov <- function(
     )
     unlist(
         lapply(names, function(name) {
-            setNames(
+            stats::setNames(
                 list(ncol(designs[[name]]), designs[[name]]),
                 c(
                     paste0("p_lm_clbrc_", name),
