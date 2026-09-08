@@ -284,9 +284,9 @@ If using the non-centred parameterisation then the following alternative formula
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+b_i &= \exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= \exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= \exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim  N(0, 1) \\
@@ -437,9 +437,9 @@ If using the non-centred parameterisation then the following alternative formula
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+b_i &= \exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= \exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= \exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
 \phi_i &= \text{logistic}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
@@ -596,10 +596,10 @@ If using the non-centred parameterisation then the following alternative formula
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-g_i &= exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
-c_i &= exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
-p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
+b_i &= \exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+g_i &= \exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+c_i &= \exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
+p_i &= \exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{g i} &\sim  N(0, 1)  \\
