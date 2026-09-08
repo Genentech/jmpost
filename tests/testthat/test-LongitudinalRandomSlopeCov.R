@@ -1,4 +1,4 @@
-gq_population_stan_data.UserCovariateLongitudinalModel <- function(
+gq_population_stan_data.UserCovLongModel <- function(
     object,
     model,
     data = NULL,
@@ -60,7 +60,7 @@ test_that("gq_population_stan_data() dispatches to user longitudinal models", {
         studies = "X",
         arms = "A"
     )
-    model <- structure(list(), class = "UserCovariateLongitudinalModel")
+    model <- structure(list(), class = "UserCovLongModel")
 
     result <- gq_population_stan_data(generator, model)
 
