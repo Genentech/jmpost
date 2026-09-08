@@ -27,12 +27,6 @@ library(jmpost)
 ```
 
 
-# IMPORTANT
-
-Please note that this document is currently a work-in-progress and does not
-contain complete information for this package yet. 
-
-
 # Survival Model Specification
 
 This package can only be used to fit proportional hazards models of the form:
@@ -198,6 +192,40 @@ where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 
+### Covariate Version
+
+In the covariate version, the study- and treatment-arm-specific parameters are
+replaced by subject-specific predictors. For a model parameter $\theta$, let
+$\boldsymbol{x}_{\theta i}$ be the baseline covariates for subject $i$ and let
+$\boldsymbol{\beta}_{\theta}$ be their coefficients. The predictor may be
+parameterised as
+
+$$
+\eta_{\theta i} =
+\begin{cases}
+\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}
+    & \text{(linear)}, \\
+\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}\right)
+    & \text{(proportional)}, \\
+\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}}
+    & \text{(exponential)}.
+\end{cases}
+$$
+
+Different covariates and parameterisations may be used for each $\theta$. The
+random-slope model then becomes
+
+$$
+\begin{align*}
+y_{ij} &= \mu_i + s_i t_{ij} + \epsilon_{ij}, \\
+\mu_i &= \eta_{\mu i}, \\
+s_i &\sim N\!\left(\eta_{\mu_s i},\ \exp(\eta_{\sigma_s i})\right).
+\end{align*}
+$$
+
+The original model is recovered by using study indicators for $\mu_i$ and
+treatment-arm indicators for the mean and variance of $s_i$.
+
 ### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
 $$
@@ -274,6 +302,29 @@ If using the unscaled variance parameterisation then the following alternative f
 $$
 y_{ij} \sim N(SLD_{ij},\sigma^2)
 $$
+
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{s i} &= \eta_{\mu_s i}, &
+\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}),
+\end{aligned}
+$$
+
+so that $b_i \sim \operatorname{LogNormal}(\mu_{b i}, \omega_{b i})$,
+$s_i \sim \operatorname{LogNormal}(\mu_{s i}, \omega_{s i})$, and
+$g_i \sim \operatorname{LogNormal}(\mu_{g i}, \omega_{g i})$. The original
+model is recovered by using study indicators for the predictors of $b_i$ and
+treatment-arm indicators for those of $s_i$ and $g_i$.
 
 ### Derivative of the SLD Trajectory Link 
 
@@ -408,6 +459,30 @@ $$
 y_{ij} \sim N(SLD_{ij}, \sigma^2)
 $$
 
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{s i} &= \eta_{\mu_s i}, &
+\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\mu_{\phi i} &= \operatorname{logit}^{-1}(\eta_{\mu_\phi i}), &
+\omega_{\phi i} &= \exp(\eta_{\omega_\phi i}).
+\end{aligned}
+$$
+
+Thus $b_i$, $s_i$, and $g_i$ retain their log-normal distributions, while
+$\phi_i \sim \operatorname{LogitNormal}(\mu_{\phi i}, \omega_{\phi i})$.
+The original model is recovered by using study indicators for the predictors
+of $b_i$ and treatment-arm indicators for those of $s_i$, $g_i$, and $\phi_i$.
+
 
 ### Derivative of the SLD Trajectory Link 
 
@@ -537,6 +612,30 @@ If using the unscaled variance parameterisation then the following alternative f
 $$
 y_{ij} \sim N(SLD_{ij}, \sigma^2)
 $$
+
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\mu_{c i} &= \eta_{\mu_c i}, &
+\omega_{c i} &= \exp(\eta_{\omega_c i}), \\
+\mu_{p i} &= \eta_{\mu_p i}, &
+\omega_{p i} &= \exp(\eta_{\omega_p i}).
+\end{aligned}
+$$
+
+The subject parameters $b_i$, $g_i$, $c_i$, and $p_i$ retain their log-normal
+distributions with these population parameters. The original model is
+recovered by using study indicators for the predictors of $b_i$ and
+treatment-arm indicators for those of $g_i$, $c_i$, and $p_i$.
 
 
 ### Derivative of the SLD Trajectory Link 
