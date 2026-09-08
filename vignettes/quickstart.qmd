@@ -531,6 +531,7 @@ mcmc_results <- sampleStanModel(
 ```
 
 Note the following:
+
 -  `initialValues()` will return a list of lists where each sublist contains the initial
 values for the corresponding chain index.
 - `initialValues()` by default just returns 1 initial value for each parameter; the `sampleStanModel()`
