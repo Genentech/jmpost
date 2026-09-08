@@ -20,6 +20,8 @@ data {
 
     array [gq_n_quant] int <lower=1, upper=n_arms> gq_long_pop_arm_index;
     array [gq_n_quant] int <lower=1, upper=n_studies> gq_long_pop_study_index;
+
+{{ longitudinal_gq_population_data }}
 }
 
 

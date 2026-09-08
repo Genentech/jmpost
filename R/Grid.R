@@ -21,8 +21,12 @@
 #'   number of evenly spaced timepoints to generate quantities at.
 #'
 #' @typed newdata: data.frame
-#'   new data to generate quantities for. Must contain the same columns
-#'   and factor levels of the original data used in the [`DataSurvival`] object.
+#'   new data to generate quantities for. For `GridPrediction()`, it must
+#'   contain the same columns and factor levels as the original
+#'   [`DataSurvival`] object. For a covariate-based `GridPopulation()`
+#'   prediction, one row defines each population profile and contains the arm,
+#'   study, and all variables used by the longitudinal population-mean
+#'   predictors.
 #'
 #' @typed params: list
 #'   named list of parameters to fix the longitudinal model parameters at when
@@ -51,9 +55,12 @@
 #' - `GridEvent()` generates one quantity for each subject at their event/censor time
 #' as indicated by the `time` variable in the survival dataset.
 #'
-#' - `GridPopulation()` generates longitudinal model quantities based on the population parameters at the
-#' specified time points. Generates 1 set of quantities for each distinct combination of `arm`
-#' and `study` within the [`DataSubject`] object provided to the [`JointModel`].
+#' - `GridPopulation()` generates longitudinal model quantities based on the
+#' population parameters at the specified time points. By default it generates
+#' one set for each distinct combination of `arm` and `study` in the fitted
+#' [`DataSubject`] object. For covariate-based longitudinal models with
+#' additional predictors, supply one population profile per row through
+#' `newdata`; this keeps arm, study, and all additional covariates together.
 #'
 #' - `GridPrediction()` generates survival quantities based on any user-defined values at the
 #' specified time points. This is useful for generating quantities for a new dataset
@@ -84,6 +91,10 @@
 #' GridObserved()
 #' GridEvent()
 #' GridPopulation(times = seq(0, 100, by = 10))
+#' GridPopulation(
+#'   times = seq(0, 100, by = 10),
+#'   newdata = data.frame(study = "Study 1", arm = "A", age = 60)
+#' )
 #' GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
 #' GridPrediction(times = c(0, 10), newdata = data.frame(age = 60))
 NULL
@@ -160,6 +171,11 @@ NULL
 #'   object to convert to a `QuantityGenerator` or `QuantityCollapser`.
 #' @typed data: DataJoint
 #'   Survival and Longitudinal Data.
+#' @typed model: "`JointModel` or `NULL`"
+#'   optional fitted-model specification used for model-specific population
+#'   profiles.
+#' @typed newdata: "`data.frame` or `NULL`"
+#'   population profiles carried by a population quantity generator.
 #' @param ... Not currently used.
 #'
 #' @details
@@ -188,6 +204,8 @@ NULL
 #'   object to convert to a list.
 #' @typed data: DataJoint
 #'   Survival and Longitudinal Data.
+#' @typed model: "`JointModel` or `NULL`"
+#'   optional model used to add model-specific generated-quantities data.
 #' @param ... Not currently used.
 #' @keywords internal
 #' @export

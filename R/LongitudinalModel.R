@@ -63,6 +63,24 @@ LongitudinalModel <- function(
     )
 }
 
+#' Create longitudinal-model-specific Stan data
+#'
+#' @param model A [`LongitudinalModel`] object.
+#' @param subject A [`DataSubject`] object.
+#'
+#' @keywords internal
+#' @returns A named list of model-specific Stan data components.
+longitudinal_model_stan_data <- function(model, subject) {
+    UseMethod("longitudinal_model_stan_data")
+}
+
+#' @rdname longitudinal_model_stan_data
+#' @keywords internal
+#' @export
+longitudinal_model_stan_data.default <- function(model, subject) {
+    list()
+}
+
 #' @export
 #'
 #' @returns A character vector suitable for printing.

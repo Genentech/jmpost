@@ -24,7 +24,7 @@ transformed parameters{
     vector<
         lower={{ machine_double_eps }},
         upper={{ 1 - machine_double_eps }}
-    >[n_subjects] lm_gsf_psi_phi = inv_logit(lm_gsf_psi_phi_logit);
+    >[n_subjects] lm_gsf_psi_phi = safe_inv_logit(lm_gsf_psi_phi_logit, {{ machine_double_eps }});
 
     vector[n_tumour_all] Ypred;
 

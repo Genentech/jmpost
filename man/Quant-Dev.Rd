@@ -71,15 +71,15 @@ QuantityCollapser(times, groups, indexes)
 
 \method{as.QuantityCollapser}{GridObserved}(object, data, ...)
 
-\method{as.QuantityGenerator}{GridPopulation}(object, data, ...)
+\method{as.QuantityGenerator}{GridPopulation}(object, data, model = NULL, ...)
 
-\method{as.QuantityCollapser}{GridPopulation}(object, data, ...)
+\method{as.QuantityCollapser}{GridPopulation}(object, data, model = NULL, ...)
 
 \method{as.QuantityGenerator}{GridPrediction}(object, data, ...)
 
 \method{as.QuantityCollapser}{GridPrediction}(object, data, ...)
 
-QuantityGeneratorPopulation(times, studies = NULL, arms = NULL)
+QuantityGeneratorPopulation(times, studies = NULL, arms = NULL, newdata = NULL)
 
 QuantityGeneratorPrediction(times, newdata = NULL, params = NULL)
 
@@ -98,6 +98,11 @@ QuantityGeneratorSubject(times, subjects = NULL)
 \code{QuantityGenerator} should be combined to form the desired quantities.}
 
 \item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
+
+\item{model}{(\code{JointModel} or \code{NULL}) optional fitted-model specification used for model-specific population
+profiles.}
+
+\item{newdata}{(\code{data.frame} or \code{NULL}) population profiles carried by a population quantity generator.}
 
 \item{subjects}{(\code{character}) vector of subjects to extract quantities for.}
 }

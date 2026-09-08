@@ -5,7 +5,7 @@
     Output
       
       Exponential Survival Model with parameters:
-          sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+          sm_exp_lambda ~ gamma(alpha = 2, beta = 5) T[0, 8000]
           beta_os_cov ~ normal(mu = 0, sigma = 2)
       
 
@@ -16,7 +16,7 @@
     Output
       
       Exponential Survival Model with parameters:
-          sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+          sm_exp_lambda ~ gamma(alpha = 2, beta = 5) T[0, 8000]
           beta_os_cov ~ gamma(alpha = 3, beta = 4)
       
 
@@ -38,7 +38,7 @@
     Output
       
       Exponential Survival Model with parameters:
-          sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+          sm_exp_lambda ~ gamma(alpha = 2, beta = 5) T[0, 8000]
           beta_os_cov ~ normal(mu = 0, sigma = 1)
       
 
@@ -49,7 +49,7 @@
     Output
       
       Exponential Survival Model with parameters:
-          sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+          sm_exp_lambda ~ gamma(alpha = 2, beta = 5) T[0, 8000]
           beta_os_cov ~ normal(mus = [0, 1, 2], sigmas = [1, 2, 3])
       
 

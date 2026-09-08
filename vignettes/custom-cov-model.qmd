@@ -1,0 +1,613 @@
+---
+title: "Fitting a Custom Longitudinal Model with Covariates"
+package: jmpost
+format:
+  html:
+    toc: true
+    html-math-method: mathml
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Fitting a Custom Longitudinal Model with Covariates}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette gives a complete implementation of a custom longitudinal model
+whose population parameters depend on subject-level covariates. It extends the
+Wang, Sung et al. (2009) mixed exponential-decay and linear-growth example from
+the [custom longitudinal model vignette](custom-model.html). The general extension
+interfaces are described in [Extending jmpost](extending-jmpost.html).
+
+We use the longitudinal model
+
+$$
+\begin{align}
+y_i(t) &\sim N\left(b_i e^{-s_i t} + g_i t,\ \sigma^2\right), \\
+b_i &\sim \operatorname{LogNormal}\left(\eta_{b,i},\ \omega_b\right), \\
+s_i &\sim \operatorname{LogNormal}\left(\log(\mu_s),\ \omega_s\right), \\
+g_i &\sim \operatorname{LogNormal}\left(\eta_{g,i},\ \omega_g\right), \\
+\eta_{b,i} &= \beta_{b,0} + X_{b,i}\beta_b, \\
+\eta_{g,i} &= \beta_{g,0} + X_{g,i}\beta_g.
+\end{align}
+$$
+
+Here, $X_{b,i}$ and $X_{g,i}$ are independently specified design-matrix rows.
+Consequently, the baseline and growth distributions can use different
+covariates. The intercepts and coefficients are on the log scale, so the
+population medians of $b_i$ and $g_i$ are positive.
+
+The survival submodel and derivative link are the same as in the example
+without longitudinal covariates:
+
+$$
+\log h_i(t) = \log(\lambda_0) +
+\alpha\left\{-s_i b_i e^{-s_i t} + g_i\right\}.
+$$
+
+The example deliberately implements the covariate handling itself. For a
+real application, you would of course first check whether one of `jmpost`'s built-in covariate
+models already describes the required trajectory.
+
+```{r}
+library(jmpost)
+library(ggplot2)
+library(dplyr)
+```
+
+## Generating Simulated Data
+
+We begin with a simulator so that the fitted arm effects have known target
+values. Arm B has a 25% higher median baseline and a 40% higher median growth
+rate than Arm A.
+
+```{r}
+SimWangCov <- setClass(
+    "SimWangCov",
+    contains = "SimLongitudinal",
+    slots = c(
+        times = "numeric",
+        mu_baseline = "numeric",
+        baseline_arm_ratio = "numeric",
+        mu_shrinkage = "numeric",
+        mu_growth = "numeric",
+        growth_arm_ratio = "numeric",
+        omega_baseline = "numeric",
+        omega_shrinkage = "numeric",
+        omega_growth = "numeric",
+        sigma = "numeric",
+        link_dsld = "numeric"
+    )
+)
+
+sampleSubjects.SimWangCov <- function(object, subjects_df) {
+    arm_b <- as.numeric(subjects_df$arm == "Arm-B")
+    n_subjects <- nrow(subjects_df)
+
+    subjects_df$baseline <- rlnorm(
+        n_subjects,
+        log(object@mu_baseline) + log(object@baseline_arm_ratio) * arm_b,
+        object@omega_baseline
+    )
+    subjects_df$shrinkage <- rlnorm(
+        n_subjects,
+        log(object@mu_shrinkage),
+        object@omega_shrinkage
+    )
+    subjects_df$growth <- rlnorm(
+        n_subjects,
+        log(object@mu_growth) + log(object@growth_arm_ratio) * arm_b,
+        object@omega_growth
+    )
+    subjects_df
+}
+
+sampleObservations.SimWangCov <- function(object, times_df) {
+    expected <- with(
+        times_df,
+        baseline * exp(-shrinkage * time) + growth * time
+    )
+    derivative <- with(
+        times_df,
+        growth - baseline * shrinkage * exp(-shrinkage * time)
+    )
+
+    times_df$sld <- rnorm(nrow(times_df), expected, object@sigma)
+    times_df$log_haz_link <- object@link_dsld * derivative
+    times_df
+}
+
+set.seed(7294)
+simulated <- SimJointData(
+    design = list(
+        SimGroup(25, "Arm-A", "Study-X"),
+        SimGroup(25, "Arm-B", "Study-X")
+    ),
+    survival = SimSurvivalExponential(
+        lambda = 365 / 500,
+        time_max = 3,
+        time_step = 1 / 365,
+        lambda_censor = 1 / 30
+    ),
+    longitudinal = SimWangCov(
+        times = c(1, 60, 120, 240, 400, 650, 900) / 365,
+        mu_baseline = 60,
+        baseline_arm_ratio = 1.25,
+        mu_shrinkage = 2,
+        mu_growth = 10,
+        growth_arm_ratio = 1.4,
+        omega_baseline = 0.25,
+        omega_shrinkage = 0.25,
+        omega_growth = 0.25,
+        sigma = 1.5,
+        link_dsld = 0.02
+    ),
+    .silent = TRUE
+)
+
+dat_lm <- simulated@longitudinal
+dat_os <- simulated@survival
+
+dat_lm |>
+    filter(subject %in% head(unique(subject), 8)) |>
+    ggplot(aes(time, sld, group = subject, colour = arm)) +
+    geom_line(alpha = 0.7) +
+    geom_point() +
+    labs(x = "Time (years)", y = "Tumour size", colour = "Arm") +
+    theme_bw()
+```
+
+## Defining the Covariate-Aware Model
+
+A custom covariate model needs to retain its formulas so that the same design
+can be reconstructed for fitting and prediction. We therefore add two formula
+slots to the `LongitudinalModel` subclass.
+
+```{r}
+.WangCovModel <- setClass(
+    "WangCovModel",
+    contains = "LongitudinalModel",
+    slots = c(
+        baseline_formula = "formula",
+        growth_formula = "formula"
+    )
+)
+
+WangCovModel <- function(baseline_formula = ~arm,
+                         growth_formula = ~arm) {
+    stopifnot(
+        inherits(baseline_formula, "formula"),
+        length(baseline_formula) == 2,
+        inherits(growth_formula, "formula"),
+        length(growth_formula) == 2
+    )
+
+    .WangCovModel(
+        LongitudinalModel(
+            name = "Wang with Covariates",
+            stan = StanModule("custom-cov-model.stan"),
+            scaled_variance = FALSE,
+            parameters = ParameterList(
+                Parameter(
+                    name = "log_mu_baseline",
+                    prior = prior_normal(log(60), 0.5)
+                ),
+                Parameter(
+                    name = "beta_baseline",
+                    prior = prior_normal(0, 0.5),
+                    size = "p_baseline_cov"
+                ),
+                Parameter(
+                    name = "mu_shrinkage",
+                    prior = set_limits(
+                        prior_lognormal(log(2), 0.5),
+                        lower = getOption("jmpost.double_eps")
+                    )
+                ),
+                Parameter(
+                    name = "log_mu_growth",
+                    prior = prior_normal(log(10), 0.5)
+                ),
+                Parameter(
+                    name = "beta_growth",
+                    prior = prior_normal(0, 0.5),
+                    size = "p_growth_cov"
+                ),
+                Parameter(
+                    name = "sigma_baseline",
+                    prior = set_limits(
+                        prior_lognormal(log(0.25), 0.5),
+                        lower = getOption("jmpost.double_eps")
+                    )
+                ),
+                Parameter(
+                    name = "sigma_shrinkage",
+                    prior = set_limits(
+                        prior_lognormal(log(0.25), 0.5),
+                        lower = getOption("jmpost.double_eps")
+                    )
+                ),
+                Parameter(
+                    name = "sigma_growth",
+                    prior = set_limits(
+                        prior_lognormal(log(0.25), 0.5),
+                        lower = getOption("jmpost.double_eps")
+                    )
+                ),
+                Parameter(
+                    name = "sigma",
+                    prior = set_limits(
+                        prior_lognormal(log(1.5), 0.5),
+                        lower = getOption("jmpost.double_eps")
+                    )
+                ),
+                Parameter(
+                    name = "baseline_idv",
+                    prior = set_limits(
+                        prior_init_only(prior_lognormal(log(60), 0.5)),
+                        lower = getOption("jmpost.double_eps")
+                    ),
+                    size = "n_subjects"
+                ),
+                Parameter(
+                    name = "shrinkage_idv",
+                    prior = set_limits(
+                        prior_init_only(prior_lognormal(log(2), 0.5)),
+                        lower = getOption("jmpost.double_eps")
+                    ),
+                    size = "n_subjects"
+                ),
+                Parameter(
+                    name = "growth_idv",
+                    prior = set_limits(
+                        prior_init_only(prior_lognormal(log(10), 0.5)),
+                        lower = getOption("jmpost.double_eps")
+                    ),
+                    size = "n_subjects"
+                )
+            )
+        ),
+        baseline_formula = baseline_formula,
+        growth_formula = growth_formula
+    )
+}
+
+longmodel <- WangCovModel(
+    baseline_formula = ~arm,
+    growth_formula = ~arm
+)
+```
+
+The corresponding Stan program declares the two model-specific design matrices.
+It uses them to form subject-specific log-normal locations and also populates
+`long_obvs_log_lik`, which keeps the standard likelihood and `loo` processing
+available.
+
+```{r}
+#| output: asis
+#| echo: false
+
+x <- readLines("./custom-cov-model.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+## Supplying Model-Specific Stan Data
+
+`DataLongitudinal()` deliberately continues to use an `outcome ~ time` formula.
+Longitudinal covariates are subject-level variables and belong in the data passed
+to `DataSubject()`. A `longitudinal_model_stan_data.<class>()` method turns those
+variables into the model-specific Stan data.
+
+The helper below removes the usual intercept column because the Stan model has
+explicit intercept parameters. Its `reference` argument preserves the fitted
+factor levels, contrasts, and column order when the same formula is applied to
+new population profiles.
+
+```{r}
+covariate_design <- function(formula, data, reference = data) {
+    reference_frame <- model.frame(
+        formula,
+        data = reference,
+        na.action = na.fail
+    )
+    formula_terms <- terms(reference_frame)
+    reference_design <- model.matrix(formula_terms, reference_frame)
+
+    data_frame <- model.frame(
+        formula_terms,
+        data = data,
+        xlev = stats::.getXlevels(formula_terms, reference_frame),
+        na.action = na.fail
+    )
+    design <- model.matrix(
+        formula_terms,
+        data_frame,
+        contrasts.arg = attr(reference_design, "contrasts")
+    )
+    design[, colnames(design) != "(Intercept)", drop = FALSE]
+}
+
+longitudinal_model_stan_data.WangCovModel <- function(model, subject) {
+    subject_data <- as.data.frame(subject)
+    baseline_design <- covariate_design(
+        model@baseline_formula,
+        subject_data
+    )
+    growth_design <- covariate_design(
+        model@growth_formula,
+        subject_data
+    )
+
+    list(
+        p_baseline_cov = ncol(baseline_design),
+        baseline_cov_design = baseline_design,
+        p_growth_cov = ncol(growth_design),
+        growth_cov_design = growth_design
+    )
+}
+```
+
+The method name must end in the exact S4 class name. `jmpost` calls it while
+converting `DataJoint` to Stan data, so users do not need to construct or append
+the matrices themselves.
+
+## Defining the Link Function
+
+The link setup is unchanged by the population covariates: downstream link
+functions consume the realized subject parameters.
+
+```{r}
+enableLink.WangCovModel <- function(object, ...) {
+    object@stan <- merge(
+        object@stan,
+        StanModule("custom-cov-model-enable-link.stan")
+    )
+    object
+}
+
+link <- LinkComponent(
+    stan = StanModule("custom-cov-model-dsld.stan"),
+    prior = prior_normal(0, 0.5),
+    key = "link_dsld"
+)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+
+x <- readLines("./custom-cov-model-enable-link.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+```{r}
+#| output: asis
+#| echo: false
+
+x <- readLines("./custom-cov-model-dsld.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+## Sampling the Joint Model
+
+The subject data contains `arm`, which is used by both longitudinal formulas.
+The survival formula has no additional covariates in this simple example.
+
+```{r}
+#| output: false
+
+model <- JointModel(
+    longitudinal = longmodel,
+    survival = SurvivalExponential(lambda = prior_gamma(1, 1)),
+    link = link
+)
+
+joint_data <- DataJoint(
+    subject = DataSubject(
+        data = dat_os,
+        subject = "subject",
+        arm = "arm",
+        study = "study"
+    ),
+    survival = DataSurvival(
+        data = dat_os,
+        formula = Surv(time, event) ~ 1
+    ),
+    longitudinal = DataLongitudinal(
+        data = dat_lm,
+        formula = sld ~ time
+    )
+)
+
+model_samples <- sampleStanModel(
+    model,
+    data = joint_data,
+    iter_warmup = 400,
+    iter_sampling = 400,
+    chains = 1,
+    parallel_chains = 1,
+    refresh = 0,
+    adapt_delta = 0.9
+)
+```
+
+```{r}
+fit <- cmdstanr::as.CmdStanMCMC(model_samples)
+fit$summary(c(
+    "log_mu_baseline",
+    "beta_baseline",
+    "log_mu_growth",
+    "beta_growth",
+    "mu_shrinkage",
+    "sigma",
+    "link_dsld"
+))
+```
+
+The true arm coefficients are `log(1.25)` for baseline and `log(1.4)` for
+growth. The short, single-chain run keeps vignette execution manageable; use
+multiple chains and sampling iterations, and check all diagnostics, for a real application.
+
+## Enabling Downstream Processing
+
+Individual predictions only need each subject's fitted parameters (implemented with `QuantityGeneratorSubject`). Population
+predictions additionally need design matrices evaluated at the requested
+covariate profiles (implemented with `QuantityGeneratorPopulation`). We keep these cases separate so that Stan code never refers
+to population-only data while generating subject-level quantities.
+
+```{r}
+enableGQ.WangCovModel <- function(object,
+                                  generator = NULL,
+                                  type = NULL,
+                                  ...) {
+    if (!identical(type, "longitudinal")) {
+        return(StanModule())
+    }
+
+    result <- StanModule("custom-cov-model-gq.stan")
+    if (is(generator, "QuantityGeneratorSubject")) {
+        result <- merge(
+            result,
+            StanModule("custom-cov-model-gq-individual.stan")
+        )
+    } else if (is(generator, "QuantityGeneratorPopulation")) {
+        result <- merge(
+            result,
+            StanModule("custom-cov-model-gq-population.stan")
+        )
+    }
+    result
+}
+
+required_longitudinal_covs.WangCovModel <- function(object, ...) {
+    unique(c(
+        all.vars(object@baseline_formula),
+        all.vars(object@growth_formula)
+    ))
+}
+
+gq_population_stan_data.WangCovModel <- function(object,
+                                                 model,
+                                                 data = NULL,
+                                                 ...) {
+    result <- list(
+        declarations = paste(
+            "matrix[gq_n_quant, p_baseline_cov] gq_baseline_cov_design;",
+            "matrix[gq_n_quant, p_growth_cov] gq_growth_cov_design;",
+            sep = "\n"
+        ),
+        data = list()
+    )
+    if (is.null(data)) {
+        return(result)
+    }
+
+    stopifnot(!is.null(object@newdata))
+    subject_data <- as.data.frame(data@subject)
+    result$data <- list(
+        gq_baseline_cov_design = covariate_design(
+            model@baseline_formula,
+            object@newdata,
+            reference = subject_data
+        ),
+        gq_growth_cov_design = covariate_design(
+            model@growth_formula,
+            object@newdata,
+            reference = subject_data
+        )
+    )
+    result
+}
+
+getRandomEffectsNames.WangCovModel <- function(object, ...) {
+    c(
+        baseline = "baseline_idv",
+        shrinkage = "shrinkage_idv",
+        growth = "growth_idv"
+    )
+}
+```
+
+The shared prediction function is:
+
+```{r}
+#| output: asis
+#| echo: false
+
+x <- readLines("./custom-cov-model-gq.stan")
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+The subject-level and covariate-aware population parameter blocks are:
+
+```{r}
+#| output: asis
+#| echo: false
+
+x <- c(
+    readLines("./custom-cov-model-gq-individual.stan"),
+    "",
+    readLines("./custom-cov-model-gq-population.stan")
+)
+cat(c("\```stan", x, "\```"), sep = "\n")
+```
+
+We can now run the downstream methods. First, extract and summarize the three
+subject-level random effects:
+
+```{r}
+random_effects <- LongitudinalRandomEffects(model_samples)
+head(summary(random_effects))
+```
+
+Next, generate fitted trajectories for selected observed subjects:
+
+```{r}
+selected_subjects <- head(dat_os$subject, 4)
+long_quantities_idv <- LongitudinalQuantities(
+    model_samples,
+    grid = GridFixed(subjects = selected_subjects)
+)
+autoplot(long_quantities_idv)
+```
+
+Finally, compare population trajectories for the two arm profiles. Each row of
+`newdata` is a complete subject profile. It must include `study` and `arm` for
+the standard grouping indexes as well as every variable returned by
+`required_longitudinal_covs()`.
+
+```{r}
+population_profiles <- data.frame(
+    study = "Study-X",
+    arm = c("Arm-A", "Arm-B")
+)
+
+long_quantities_pop <- LongitudinalQuantities(
+    model_samples,
+    grid = GridPopulation(
+        times = seq(0, 2.5, length.out = 51),
+        newdata = population_profiles
+    )
+)
+
+head(summary(long_quantities_pop))
+autoplot(long_quantities_pop)
+```
+
+This last call exercises the complete covariate-aware path: `GridPopulation()`
+retains the profiles, `required_longitudinal_covs()` validates them,
+`gq_population_stan_data()` mirrors the fitted design matrices, and the custom
+generated-quantities Stan block evaluates the covariate-dependent population
+parameters.
