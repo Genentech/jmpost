@@ -445,7 +445,7 @@ $$
 b_i &= \exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
 s_i &= \exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
 g_i &= \exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
-\phi_i &= \text{logistic}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
+\phi_i &= \text{logit}^{-1}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
