@@ -498,12 +498,10 @@ required_longitudinal_covs.WangCovModel <- function(object, ...) {
     ))
 }
 
-gq_population_stan_data.WangCovModel <- function(
-  object,
-  model,
-  data = NULL,
-  ...
-) {
+gq_population_stan_data.WangCovModel <- function(object,
+                                                 model,
+                                                 data = NULL,
+                                                 ...) {
     result <- list(
         declarations = paste(
             "matrix[gq_n_quant, p_baseline_cov] gq_baseline_cov_design;",
