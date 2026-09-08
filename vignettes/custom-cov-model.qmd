@@ -185,10 +185,8 @@ slots to the `LongitudinalModel` subclass.
     )
 )
 
-WangCovModel <- function(
-  baseline_formula = ~arm,
-  growth_formula = ~arm
-) {
+WangCovModel <- function(baseline_formula = ~arm,
+                         growth_formula = ~arm) {
     stopifnot(
         inherits(baseline_formula, "formula"),
         length(baseline_formula) == 2,
@@ -470,12 +468,10 @@ covariate profiles (implemented with `QuantityGeneratorPopulation`). We keep the
 to population-only data while generating subject-level quantities.
 
 ```{r}
-enableGQ.WangCovModel <- function(
-  object,
-  generator = NULL,
-  type = NULL,
-  ...
-) {
+enableGQ.WangCovModel <- function(object,
+                                  generator = NULL,
+                                  type = NULL,
+                                  ...) {
     if (!identical(type, "longitudinal")) {
         return(StanModule())
     }
