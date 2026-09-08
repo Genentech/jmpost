@@ -101,11 +101,20 @@ SimLongitudinalSteinFojoCov <- function(
         mu_g_formula = .validate_covariate_formula(mu_g_formula, "mu_g_formula"),
         omega_g_formula = .validate_covariate_formula(omega_g_formula, "omega_g_formula"),
         mu_b_parametrization = .validate_covariate_parametrization(mu_b_parametrization, "mu_b_parametrization"),
-        omega_b_parametrization = .validate_covariate_parametrization(omega_b_parametrization, "omega_b_parametrization"),
+        omega_b_parametrization = .validate_covariate_parametrization(
+            omega_b_parametrization,
+            "omega_b_parametrization"
+        ),
         mu_s_parametrization = .validate_covariate_parametrization(mu_s_parametrization, "mu_s_parametrization"),
-        omega_s_parametrization = .validate_covariate_parametrization(omega_s_parametrization, "omega_s_parametrization"),
+        omega_s_parametrization = .validate_covariate_parametrization(
+            omega_s_parametrization,
+            "omega_s_parametrization"
+        ),
         mu_g_parametrization = .validate_covariate_parametrization(mu_g_parametrization, "mu_g_parametrization"),
-        omega_g_parametrization = .validate_covariate_parametrization(omega_g_parametrization, "omega_g_parametrization"),
+        omega_g_parametrization = .validate_covariate_parametrization(
+            omega_g_parametrization,
+            "omega_g_parametrization"
+        ),
         mu_b_intercept = mu_b_intercept,
         mu_b_coefficients = mu_b_coefficients,
         omega_b_intercept = omega_b_intercept,

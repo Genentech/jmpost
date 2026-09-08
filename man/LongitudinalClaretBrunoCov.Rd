@@ -46,17 +46,28 @@ LongitudinalClaretBrunoCov(
 )
 }
 \arguments{
-\item{mu_b_formula, omega_b_formula, mu_g_formula, omega_g_formula, mu_c_formula, omega_c_formula, mu_p_formula, omega_p_formula}{One-sided covariate formulas.}
+\item{mu_b_formula, mu_g_formula, mu_c_formula, mu_p_formula}{One-sided covariate formulas for the mean parameters.}
 
-\item{mu_b_parametrization, omega_b_parametrization, mu_g_parametrization, omega_g_parametrization, mu_c_parametrization, omega_c_parametrization, mu_p_parametrization, omega_p_parametrization}{Predictor parametrizations.}
+\item{omega_b_formula, omega_g_formula, omega_c_formula, omega_p_formula}{One-sided covariate formulas for the variance parameters.}
 
-\item{mu_b_intercept_prior, mu_b_coefficients_prior, omega_b_intercept_prior, omega_b_coefficients_prior, mu_g_intercept_prior, mu_g_coefficients_prior, omega_g_intercept_prior, omega_g_coefficients_prior, mu_c_intercept_prior, mu_c_coefficients_prior, omega_c_intercept_prior, omega_c_coefficients_prior, mu_p_intercept_prior, mu_p_coefficients_prior, omega_p_intercept_prior, omega_p_coefficients_prior}{Priors for predictor coefficients.}
+\item{mu_b_parametrization, mu_g_parametrization, mu_c_parametrization, mu_p_parametrization}{Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the variance parameters.}
+
+\item{mu_b_intercept_prior, mu_g_intercept_prior, mu_c_intercept_prior, mu_p_intercept_prior}{Priors for the intercepts of the mean parameters.}
+
+\item{mu_b_coefficients_prior, mu_g_coefficients_prior, mu_c_coefficients_prior, mu_p_coefficients_prior}{Priors for the coefficients of the mean parameters.}
+
+\item{omega_b_intercept_prior, omega_g_intercept_prior, omega_c_intercept_prior, omega_p_intercept_prior}{Priors for the intercepts of the variance parameters.}
+
+\item{omega_b_coefficients_prior, omega_g_coefficients_prior, omega_c_coefficients_prior, omega_p_coefficients_prior}{Priors for the coefficients of the variance parameters.}
 
 \item{sigma}{Observation-error standard deviation prior.}
 
 \item{scaled_variance}{Whether to use multiplicative observation error.}
 
-\item{centred_baseline, centred_growth, centred_resistance, centred_inhibition}{Whether to use centred parameterizations.}
+\item{centred_baseline, centred_growth, centred_resistance, centred_inhibition}{Whether to use centred
+parameterizations.}
 }
 \value{
 A \code{LongitudinalClaretBrunoCov} object.

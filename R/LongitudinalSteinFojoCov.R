@@ -47,10 +47,14 @@ NULL
 #' `intercept ^ (X beta)`, and `log-linear` uses
 #' `exp(intercept + X beta)`.
 #'
-#' @param mu_b_formula,omega_b_formula,mu_s_formula,omega_s_formula,mu_g_formula,omega_g_formula
-#'   One-sided formulas evaluated in the subject-level data.
-#' @param mu_b_parametrization,omega_b_parametrization,mu_s_parametrization,omega_s_parametrization,mu_g_parametrization,omega_g_parametrization
-#'   Predictor parametrizations.
+#' @param mu_b_formula,mu_s_formula,mu_g_formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @param omega_b_formula,omega_s_formula,omega_g_formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @param mu_b_parametrization,mu_s_parametrization,mu_g_parametrization
+#'   Parametrization for the mean parameters.
+#' @param omega_b_parametrization,omega_s_parametrization,omega_g_parametrization
+#'   Parametrization for the variance parameters.
 #' @param mu_b_intercept_prior,mu_b_coefficients_prior Priors for the baseline log-mean predictor.
 #' @param omega_b_intercept_prior,omega_b_coefficients_prior Priors for the baseline log-SD predictor.
 #' @param mu_s_intercept_prior,mu_s_coefficients_prior Priors for the shrinkage log-mean predictor.

@@ -50,9 +50,22 @@ NULL
 #' The `mu_phi` predictor is the location of the normal distribution on the
 #' logit scale; `phi` itself is obtained by applying the inverse-logit transform.
 #'
-#' @param mu_b_formula,omega_b_formula,mu_s_formula,omega_s_formula,mu_g_formula,omega_g_formula,mu_phi_formula,omega_phi_formula One-sided covariate formulas.
-#' @param mu_b_parametrization,omega_b_parametrization,mu_s_parametrization,omega_s_parametrization,mu_g_parametrization,omega_g_parametrization,mu_phi_parametrization,omega_phi_parametrization Predictor parametrizations.
-#' @param mu_b_intercept_prior,mu_b_coefficients_prior,omega_b_intercept_prior,omega_b_coefficients_prior,mu_s_intercept_prior,mu_s_coefficients_prior,omega_s_intercept_prior,omega_s_coefficients_prior,mu_g_intercept_prior,mu_g_coefficients_prior,omega_g_intercept_prior,omega_g_coefficients_prior,mu_phi_intercept_prior,mu_phi_coefficients_prior,omega_phi_intercept_prior,omega_phi_coefficients_prior Priors for predictor coefficients.
+#' @param mu_b_formula,mu_s_formula,mu_g_formula,mu_phi_formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @param omega_b_formula,omega_s_formula,omega_g_formula,omega_phi_formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @param mu_b_parametrization,mu_s_parametrization,mu_g_parametrization,mu_phi_parametrization
+#'   Parametrization for the mean parameters.
+#' @param omega_b_parametrization,omega_s_parametrization,omega_g_parametrization,omega_phi_parametrization
+#'   Parametrization for the variance parameters.
+#' @param mu_b_intercept_prior,mu_s_intercept_prior,mu_g_intercept_prior,mu_phi_intercept_prior
+#'   Priors for the intercepts of the mean parameters.
+#' @param mu_b_coefficients_prior,mu_s_coefficients_prior,mu_g_coefficients_prior,mu_phi_coefficients_prior
+#'   Priors for the coefficients of the mean parameters.
+#' @param omega_b_intercept_prior,omega_s_intercept_prior,omega_g_intercept_prior,omega_phi_intercept_prior
+#'   Priors for the intercepts of the variance parameters.
+#' @param omega_b_coefficients_prior,omega_s_coefficients_prior,omega_g_coefficients_prior,omega_phi_coefficients_prior
+#'   Priors for the coefficients of the variance parameters.
 #' @param sigma Observation-error standard deviation prior.
 #' @param scaled_variance Whether to use multiplicative observation error.
 #' @param centred_baseline,centred_shrinkage,centred_growth,centred_phi Whether to use centred parameterizations.

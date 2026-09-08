@@ -6,7 +6,14 @@ NULL
 #'
 #' @inheritParams LongitudinalClaretBrunoCov
 #' @param times Observation times.
-#' @param mu_b_intercept,mu_b_coefficients,omega_b_intercept,omega_b_coefficients,mu_g_intercept,mu_g_coefficients,omega_g_intercept,omega_g_coefficients,mu_c_intercept,mu_c_coefficients,omega_c_intercept,omega_c_coefficients,mu_p_intercept,mu_p_coefficients,omega_p_intercept,omega_p_coefficients Predictor coefficients.
+#' @param mu_b_intercept,mu_g_intercept,mu_c_intercept,mu_p_intercept
+#'   Intercepts for the mean parameters.
+#' @param mu_b_coefficients,mu_g_coefficients,mu_c_coefficients,mu_p_coefficients
+#'   Coefficients for the mean parameters.
+#' @param omega_b_intercept,omega_g_intercept,omega_c_intercept,omega_p_intercept
+#'   Intercepts for the variance parameters.
+#' @param omega_b_coefficients,omega_g_coefficients,omega_c_coefficients,omega_p_coefficients
+#'   Coefficients for the variance parameters.
 #' @param sigma Observation-error standard deviation.
 #' @param link_dsld,link_ttg,link_identity,link_growth Link coefficients.
 #' @exportClass SimLongitudinalClaretBrunoCov

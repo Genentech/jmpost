@@ -53,11 +53,21 @@ SimLongitudinalGSFCov(
 \arguments{
 \item{times}{Observation times.}
 
-\item{mu_b_formula, omega_b_formula, mu_s_formula, omega_s_formula, mu_g_formula, omega_g_formula, mu_phi_formula, omega_phi_formula}{One-sided covariate formulas.}
+\item{mu_b_formula, mu_s_formula, mu_g_formula, mu_phi_formula}{One-sided covariate formulas for the mean parameters.}
 
-\item{mu_b_parametrization, omega_b_parametrization, mu_s_parametrization, omega_s_parametrization, mu_g_parametrization, omega_g_parametrization, mu_phi_parametrization, omega_phi_parametrization}{Predictor parametrizations.}
+\item{omega_b_formula, omega_s_formula, omega_g_formula, omega_phi_formula}{One-sided covariate formulas for the variance parameters.}
 
-\item{mu_b_intercept, mu_b_coefficients, omega_b_intercept, omega_b_coefficients, mu_s_intercept, mu_s_coefficients, omega_s_intercept, omega_s_coefficients, mu_g_intercept, mu_g_coefficients, omega_g_intercept, omega_g_coefficients, mu_phi_intercept, mu_phi_coefficients, omega_phi_intercept, omega_phi_coefficients}{Predictor coefficients.}
+\item{mu_b_parametrization, mu_s_parametrization, mu_g_parametrization, mu_phi_parametrization}{Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization, omega_phi_parametrization}{Parametrization for the variance parameters.}
+
+\item{mu_b_intercept, mu_s_intercept, mu_g_intercept, mu_phi_intercept}{Intercepts for the mean parameters.}
+
+\item{mu_b_coefficients, mu_s_coefficients, mu_g_coefficients, mu_phi_coefficients}{Coefficients for the mean parameters.}
+
+\item{omega_b_intercept, omega_s_intercept, omega_g_intercept, omega_phi_intercept}{Intercepts for the variance parameters.}
+
+\item{omega_b_coefficients, omega_s_coefficients, omega_g_coefficients, omega_phi_coefficients}{Coefficients for the variance parameters.}
 
 \item{sigma}{Observation-error standard deviation.}
 

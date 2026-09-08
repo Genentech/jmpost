@@ -6,7 +6,14 @@ NULL
 #'
 #' @inheritParams LongitudinalGSFCov
 #' @param times Observation times.
-#' @param mu_b_intercept,mu_b_coefficients,omega_b_intercept,omega_b_coefficients,mu_s_intercept,mu_s_coefficients,omega_s_intercept,omega_s_coefficients,mu_g_intercept,mu_g_coefficients,omega_g_intercept,omega_g_coefficients,mu_phi_intercept,mu_phi_coefficients,omega_phi_intercept,omega_phi_coefficients Predictor coefficients.
+#' @param mu_b_intercept,mu_s_intercept,mu_g_intercept,mu_phi_intercept
+#'   Intercepts for the mean parameters.
+#' @param mu_b_coefficients,mu_s_coefficients,mu_g_coefficients,mu_phi_coefficients
+#'   Coefficients for the mean parameters.
+#' @param omega_b_intercept,omega_s_intercept,omega_g_intercept,omega_phi_intercept
+#'   Intercepts for the variance parameters.
+#' @param omega_b_coefficients,omega_s_coefficients,omega_g_coefficients,omega_phi_coefficients
+#'   Coefficients for the variance parameters.
 #' @param sigma Observation-error standard deviation.
 #' @param link_dsld,link_ttg,link_identity,link_growth,link_shrinkage Link coefficients.
 #' @exportClass SimLongitudinalGSFCov

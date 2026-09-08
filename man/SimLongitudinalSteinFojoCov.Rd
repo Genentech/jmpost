@@ -42,9 +42,13 @@ SimLongitudinalSteinFojoCov(
 \arguments{
 \item{times}{Observation times.}
 
-\item{mu_b_formula, omega_b_formula, mu_s_formula, omega_s_formula, mu_g_formula, omega_g_formula}{One-sided formulas evaluated in the subject-level data.}
+\item{mu_b_formula, mu_s_formula, mu_g_formula}{One-sided covariate formulas for the mean parameters.}
 
-\item{mu_b_parametrization, omega_b_parametrization, mu_s_parametrization, omega_s_parametrization, mu_g_parametrization, omega_g_parametrization}{Predictor parametrizations.}
+\item{omega_b_formula, omega_s_formula, omega_g_formula}{One-sided covariate formulas for the variance parameters.}
+
+\item{mu_b_parametrization, mu_s_parametrization, mu_g_parametrization}{Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization}{Parametrization for the variance parameters.}
 
 \item{mu_b_intercept, mu_b_coefficients}{Coefficients for the baseline log-mean predictor.}
 

@@ -52,11 +52,21 @@ SimLongitudinalClaretBrunoCov(
 \arguments{
 \item{times}{Observation times.}
 
-\item{mu_b_formula, omega_b_formula, mu_g_formula, omega_g_formula, mu_c_formula, omega_c_formula, mu_p_formula, omega_p_formula}{One-sided covariate formulas.}
+\item{mu_b_formula, mu_g_formula, mu_c_formula, mu_p_formula}{One-sided covariate formulas for the mean parameters.}
 
-\item{mu_b_parametrization, omega_b_parametrization, mu_g_parametrization, omega_g_parametrization, mu_c_parametrization, omega_c_parametrization, mu_p_parametrization, omega_p_parametrization}{Predictor parametrizations.}
+\item{omega_b_formula, omega_g_formula, omega_c_formula, omega_p_formula}{One-sided covariate formulas for the variance parameters.}
 
-\item{mu_b_intercept, mu_b_coefficients, omega_b_intercept, omega_b_coefficients, mu_g_intercept, mu_g_coefficients, omega_g_intercept, omega_g_coefficients, mu_c_intercept, mu_c_coefficients, omega_c_intercept, omega_c_coefficients, mu_p_intercept, mu_p_coefficients, omega_p_intercept, omega_p_coefficients}{Predictor coefficients.}
+\item{mu_b_parametrization, mu_g_parametrization, mu_c_parametrization, mu_p_parametrization}{Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the variance parameters.}
+
+\item{mu_b_intercept, mu_g_intercept, mu_c_intercept, mu_p_intercept}{Intercepts for the mean parameters.}
+
+\item{mu_b_coefficients, mu_g_coefficients, mu_c_coefficients, mu_p_coefficients}{Coefficients for the mean parameters.}
+
+\item{omega_b_intercept, omega_g_intercept, omega_c_intercept, omega_p_intercept}{Intercepts for the variance parameters.}
+
+\item{omega_b_coefficients, omega_g_coefficients, omega_c_coefficients, omega_p_coefficients}{Coefficients for the variance parameters.}
 
 \item{sigma}{Observation-error standard deviation.}
 
