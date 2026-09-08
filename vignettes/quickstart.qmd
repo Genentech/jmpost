@@ -22,12 +22,6 @@ library(jmpost)
 ```
 
 
-# IMPORTANT
-
-Please note that this document is currently a work-in-progress and does not
-contain complete information for this package yet. 
-
-
 # Introduction
 
 The `jmpost` package is used to fit joint models of time-to-event endpoints with an association term
