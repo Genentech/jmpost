@@ -143,12 +143,12 @@ SimLongitudinalRandomSlopeCov <- function(
     parametrization
 ) {
     linear_term <- drop(design %*% coefficients)
-    switch(parametrization,
+    switch(
+        parametrization,
         linear = intercept + linear_term,
         proportional = intercept * (1 + linear_term),
-        exponential = intercept ^ linear_term,
-        `log-linear` = exp(intercept + linear_term),
-        `logit-linear` = stats::plogis(intercept + linear_term)
+        exponential = intercept^linear_term,
+        `log-linear` = exp(intercept + linear_term)
     )
 }
 
@@ -238,7 +238,8 @@ sampleObservations.SimLongitudinalRandomSlopeCov <- function(object, times_df) {
                 object@sigma
             ),
             sld = stats::rnorm(dplyr::n(), .data$sld_mu, .data$sld_sd),
-            log_haz_link = object@link_dsld * .data$slope_ind +
+            log_haz_link = object@link_dsld *
+                .data$slope_ind +
                 object@link_identity * .data$sld_mu
         )
 }
