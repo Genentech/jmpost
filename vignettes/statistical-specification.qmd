@@ -203,11 +203,11 @@ parameterised as
 $$
 \eta_{\theta i} =
 \begin{cases}
-\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}
+\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}
     & \text{(linear)}, \\
-\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}\right)
+\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
     & \text{(proportional)}, \\
-\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\mathsf T}\boldsymbol{\beta}_{\theta}}
+\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}
     & \text{(exponential)}.
 \end{cases}
 $$
@@ -222,6 +222,9 @@ y_{ij} &= \mu_i + s_i t_{ij} + \epsilon_{ij}, \\
 s_i &\sim N\!\left(\eta_{\mu_s i},\ \exp(\eta_{\sigma_s i})\right).
 \end{align*}
 $$
+
+Here we can use a linear, proportional, or exponential parameterisation for $\eta_{\mu i}$,
+and typically use a log-linear parametrization for $\eta_{\sigma_s i}$, which means that $\log(\sigma_{s i}) = \eta_{\sigma_s i} = \alpha_{\sigma_s} + \boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
 
 The original model is recovered by using study indicators for $\mu_i$ and
 treatment-arm indicators for the mean and variance of $s_i$.
