@@ -15,7 +15,8 @@ NULL
 #' @typed mu_b: numeric
 #'   the mean baseline values.
 #' @typed mu_phi: numeric
-#'   the mean proportion of cells affected by the treatment
+#'   the logit-scale location of the proportion of cells affected by the
+#'   treatment.
 #' @typed omega_b: number
 #'   the baseline value standard deviation.
 #' @typed omega_s: number
@@ -23,8 +24,8 @@ NULL
 #' @typed omega_g: number
 #'   the growth rate standard deviation.
 #' @typed omega_phi: number
-#'   for the standard deviation of the proportion of cells
-#'   affected by the treatment `omega_phi`.
+#'   the logit-scale standard deviation of the proportion of cells affected by
+#'   the treatment.
 #' @typed link_dsld: number
 #'   the link coefficient for the derivative contribution.
 #' @typed link_ttg: number

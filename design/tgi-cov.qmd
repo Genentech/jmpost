@@ -128,6 +128,11 @@ g_i &\sim \text{LogNormal}(\mu_{g,i}, \omega_{g,i}) \\
 \end{align*}
 $$
 
+Here the logit-normal parameters are defined by
+$\operatorname{logit}(\phi_i) \sim
+N(\mu_{\phi,i}, \omega_{\phi,i})$, so $\mu_{\phi,i}$ is an unrestricted
+location on the logit scale.
+
 where
 
 - $\mu_{b,i} = \eta_{\mu_b,i}$
@@ -136,7 +141,7 @@ where
 - $\omega_{s,i} = \exp(\eta_{\omega_s,i})$
 - $\mu_{g,i} = \eta_{\mu_g,i}$
 - $\omega_{g,i} = \exp(\eta_{\omega_g,i})$
-- $\mu_{\phi,i} = \operatorname{logit}^{-1}(\eta_{\mu_\phi,i})$
+- $\mu_{\phi,i} = \eta_{\mu_\phi,i}$
 - $\omega_{\phi,i} = \exp(\eta_{\omega_\phi,i})$
 
 ### Claret-Bruno Model
@@ -828,7 +833,7 @@ gsf_cov_model <- JointModel(
         omega_g_formula = ~arm,
         mu_phi_formula = ~arm,
         omega_phi_formula = ~arm,
-        mu_phi_parametrization = "logit-linear",
+        mu_phi_parametrization = "linear",
         mu_b_intercept_prior = prior_normal(log(60), 1),
         omega_b_intercept_prior = prior_normal(log(0.2), 0.5),
         mu_s_intercept_prior = prior_normal(log(0.5), 1),

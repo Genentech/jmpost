@@ -392,10 +392,11 @@ Accessible via `linkShrinkage()`
 
 ### Population Quantities
 
-Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
-of the distribution is used. This is because this has the same interpretation as using a 
-non-centred parameterisation and setting the "random effects" term to be 0. For the $\phi$ parameter
-the mean of the distribution is used.
+When generating population quantities for the $b$, $s$, $g$, and $\phi$
+parameters, the median of the distribution is used. This has the same
+interpretation as using a non-centred parameterisation and setting the random
+effect to zero. In particular, the population quantity for $\phi$ is
+$\operatorname{logit}^{-1}(\mu_\phi)$.
 
 
 ## Generalized Stein-Fojo (GSF) Model
@@ -416,6 +417,10 @@ g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
 \end{align*}
 $$
 
+The logit-normal distribution is parameterised here as
+$\operatorname{logit}(\phi_i) \sim
+N(\mu_{\phi k(i)}, \omega_{\phi k(i)})$.
+
 Where:
 
 * $i$ is the subject index
@@ -429,8 +434,8 @@ Where:
 * $\phi_i$ is the subject proportion of cells affected by the treatment
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
-* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$.
+* $\mu_{\theta k(i)}$ is the population location on the transformed scale for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta k(i)}$ is the population standard deviation on the transformed scale for parameter $\theta$ in group $k(i)$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
@@ -473,12 +478,14 @@ $$
 \omega_{s i} &= \exp(\eta_{\omega_s i}), \\
 \mu_{g i} &= \eta_{\mu_g i}, &
 \omega_{g i} &= \exp(\eta_{\omega_g i}), \\
-\mu_{\phi i} &= \operatorname{logit}^{-1}(\eta_{\mu_\phi i}), &
+\mu_{\phi i} &= \eta_{\mu_\phi i}, &
 \omega_{\phi i} &= \exp(\eta_{\omega_\phi i}).
 \end{aligned}
 $$
 
 Thus $b_i$, $s_i$, and $g_i$ retain their log-normal distributions, while
+$\operatorname{logit}(\phi_i) \sim
+N(\mu_{\phi i}, \omega_{\phi i})$, equivalently
 $\phi_i \sim \operatorname{LogitNormal}(\mu_{\phi i}, \omega_{\phi i})$.
 The original model is recovered by using study indicators for the predictors
 of $b_i$ and treatment-arm indicators for those of $s_i$, $g_i$, and $\phi_i$.

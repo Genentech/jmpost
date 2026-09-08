@@ -47,9 +47,8 @@ NULL
 #' Formula intercept columns are removed because each predictor has a separate
 #' intercept. `linear`, `proportional`, `exponential`, and `log-linear`
 #' parametrizations have the same meaning as in [LongitudinalSteinFojoCov()].
-#' In addition, the `logit-linear` parametrization is used for the
-#' `phi` parameter: This means that use a logit link for the linear predictor of `phi`,
-#' which takes values between 0 and 1.
+#' The `mu_phi` predictor is the location of the normal distribution on the
+#' logit scale; `phi` itself is obtained by applying the inverse-logit transform.
 #'
 #' @param mu_b_formula,omega_b_formula,mu_s_formula,omega_s_formula,mu_g_formula,omega_g_formula,mu_phi_formula,omega_phi_formula One-sided covariate formulas.
 #' @param mu_b_parametrization,omega_b_parametrization,mu_s_parametrization,omega_s_parametrization,mu_g_parametrization,omega_g_parametrization,mu_phi_parametrization,omega_phi_parametrization Predictor parametrizations.
@@ -74,7 +73,7 @@ LongitudinalGSFCov <- function(
     omega_s_parametrization = "log-linear",
     mu_g_parametrization = "linear",
     omega_g_parametrization = "log-linear",
-    mu_phi_parametrization = "logit-linear",
+    mu_phi_parametrization = "linear",
     omega_phi_parametrization = "log-linear",
     mu_b_intercept_prior = prior_normal(log(60), 1),
     mu_b_coefficients_prior = prior_normal(0, 1),
@@ -198,10 +197,10 @@ LongitudinalGSFCov <- function(
             return(Parameter(
                 name = "lm_gsfc_psi_phi_logit",
                 prior = prior_init_only(prior_normal(
-                    stats::qlogis(.predictor_reference_value(
+                    .predictor_reference_value(
                         intercept_priors$mu_phi,
                         parametrizations$mu_phi
-                    )),
+                    ),
                     .predictor_reference_value(
                         intercept_priors$omega_phi,
                         parametrizations$omega_phi

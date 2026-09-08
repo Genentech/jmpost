@@ -19,7 +19,7 @@ LongitudinalGSFCov(
   omega_s_parametrization = "log-linear",
   mu_g_parametrization = "linear",
   omega_g_parametrization = "log-linear",
-  mu_phi_parametrization = "logit-linear",
+  mu_phi_parametrization = "linear",
   omega_phi_parametrization = "log-linear",
   mu_b_intercept_prior = prior_normal(log(60), 1),
   mu_b_coefficients_prior = prior_normal(0, 1),
@@ -65,7 +65,6 @@ A \code{LongitudinalGSFCov} object.
 Formula intercept columns are removed because each predictor has a separate
 intercept. \code{linear}, \code{proportional}, \code{exponential}, and \code{log-linear}
 parametrizations have the same meaning as in \code{\link[=LongitudinalSteinFojoCov]{LongitudinalSteinFojoCov()}}.
-In addition, the \code{logit-linear} parametrization is used for the
-\code{phi} parameter: This means that use a logit link for the linear predictor of \code{phi},
-which takes values between 0 and 1.
+The \code{mu_phi} predictor is the location of the normal distribution on the
+logit scale; \code{phi} itself is obtained by applying the inverse-logit transform.
 }
