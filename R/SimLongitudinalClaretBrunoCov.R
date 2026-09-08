@@ -156,7 +156,7 @@ sampleSubjects.SimLongitudinalClaretBrunoCov <- function(object, subjects_df) {
         "mu_p",
         "omega_p"
     )
-    predicted <- setNames(
+    predicted <- stats::setNames(
         lapply(names, function(name) {
             design <- .covariate_design_matrix(
                 slot(object, paste0(name, "_formula")),

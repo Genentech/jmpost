@@ -44,8 +44,7 @@ NULL
     "linear",
     "proportional",
     "exponential",
-    "log-linear",
-    "logit-linear"
+    "log-linear"
 )
 
 #' Validate a longitudinal covariate formula
@@ -184,13 +183,6 @@ NULL
             n_rows,
             design,
             coefficients
-        ),
-        `logit-linear` = sprintf(
-            "inv_logit(rep_vector(%s, %s) + %s * %s)",
-            intercept,
-            n_rows,
-            design,
-            coefficients
         )
     )
 }
@@ -311,8 +303,6 @@ NULL
     value <- median(prior)
     if (parametrization == "log-linear") {
         exp(value)
-    } else if (parametrization == "logit-linear") {
-        stats::plogis(value)
     } else if (parametrization == "exponential") {
         1
     } else {

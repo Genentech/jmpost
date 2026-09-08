@@ -1,7 +1,7 @@
 test_that("LongitudinalGSFCov constructs all covariate predictors", {
     model <- LongitudinalGSFCov(mu_phi_formula = ~ arm + age)
     expect_s4_class(model, "LongitudinalGSFCov")
-    expect_equal(model@mu_phi_parametrization, "logit-linear")
+    expect_equal(model@mu_phi_parametrization, "linear")
     expect_true(model@centred_baseline)
     expect_false(model@centred_phi)
     expect_setequal(
@@ -45,11 +45,13 @@ test_that("LongitudinalGSFCov constructs all covariate predictors", {
     data <- longitudinal_model_stan_data(model, subject)
     expect_equal(data$p_lm_gsfc_mu_phi, 2)
     expect_stan_syntax(JointModel(model))
+    stan_code <- as.character(JointModel(model))
     expect_match(
-        as.character(JointModel(model)),
-        "logit(lm_gsfc_ind_mu_phi)",
+        stan_code,
+        "lm_gsfc_psi_phi_logit = lm_gsfc_ind_mu_phi +",
         fixed = TRUE
     )
+    expect_false(grepl("logit(lm_gsfc_ind_mu_phi)", stan_code, fixed = TRUE))
 })
 
 test_that("GSF covariate model generates correctly named initial values", {
@@ -91,6 +93,22 @@ test_that("LongitudinalGSFCov keeps phi within its positive epsilon bounds", {
     expect_stan_syntax(stan_code)
 })
 
+test_that("centred GSF covariate phi uses the logit-scale location directly", {
+    stan_code <- as.character(JointModel(LongitudinalGSFCov(
+        centred_phi = TRUE
+    )))
+    expect_match(
+        stan_code,
+        paste0(
+            "lm_gsfc_psi_phi_logit ~ normal(lm_gsfc_ind_mu_phi, ",
+            "lm_gsfc_ind_omega_phi);"
+        ),
+        fixed = TRUE
+    )
+    expect_false(grepl("logit(lm_gsfc_ind_mu_phi)", stan_code, fixed = TRUE))
+    expect_stan_syntax(stan_code)
+})
+
 test_that("LongitudinalGSFCov supports links, quantities, and simulation", {
     model <- LongitudinalGSFCov()
     linked <- JointModel(model, SurvivalExponential(), linkDSLD())
@@ -105,8 +123,31 @@ test_that("LongitudinalGSFCov supports links, quantities, and simulation", {
             phi = "lm_gsfc_psi_phi"
         )
     )
+    samples <- .JointModelSamples(
+        model = JointModel(model),
+        data = structure(1, class = "DataJoint"),
+        results = structure(1, class = "CmdStanMCMC")
+    )
+    population_module <- as.StanModule(
+        samples,
+        generator = QuantityGeneratorPopulation(
+            times = 1,
+            studies = "X",
+            arms = "A",
+            newdata = data.frame(study = "X", arm = "A")
+        ),
+        type = "longitudinal"
+    )
+    expect_match(
+        as.character(population_module),
+        "long_gq_pop_parameters[, 4] = inv_logit(",
+        fixed = TRUE
+    )
+    expect_stan_syntax(population_module)
     sim <- SimLongitudinalGSFCov(
+        mu_phi_intercept = qlogis(0.8),
         mu_phi_coefficients = 0,
+        omega_phi_intercept = log(1e-10),
         omega_phi_coefficients = 0
     )
     subjects <- data.frame(
@@ -116,6 +157,7 @@ test_that("LongitudinalGSFCov supports links, quantities, and simulation", {
     )
     sampled <- sampleSubjects(sim, subjects)
     expect_true(all(sampled$psi_phi > 0 & sampled$psi_phi < 1))
+    expect_equal(sampled$psi_phi, rep(0.8, 2), tolerance = 1e-8)
     expect_true(all(is.finite(
         sampleObservations(sim, transform(sampled, time = 0))$sld
     )))
@@ -133,7 +175,7 @@ test_that("posterior GSF covariate draws create a matching simulator", {
         "mu_phi",
         "omega_phi"
     )
-    values <- setNames(
+    values <- stats::setNames(
         c(unlist(lapply(names, function(name) c(1, 0))), 0.1),
         c(
             unlist(lapply(names, function(name) {
@@ -181,7 +223,7 @@ test_that("GSF covariate model recovers its parameters", {
         "",
         names(predictor_truth)
     ))
-    formula_args <- setNames(
+    formula_args <- stats::setNames(
         rep(list(~arm), length(parameter_names)),
         paste0(parameter_names, "_formula")
     )

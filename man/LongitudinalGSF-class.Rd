@@ -28,7 +28,8 @@ LongitudinalGSF(
 
 \item{mu_kg}{(\code{Prior}) for the mean growth rate \code{mu_kg}.}
 
-\item{mu_phi}{(\code{Prior}) for the mean proportion of cells affected by the treatment \code{mu_phi}.}
+\item{mu_phi}{(\code{Prior}) for the logit-scale location of the proportion of cells affected by the
+treatment \code{mu_phi}.}
 
 \item{omega_bsld}{(\code{Prior}) for the baseline value standard deviation \code{omega_bsld}.}
 
@@ -36,8 +37,8 @@ LongitudinalGSF(
 
 \item{omega_kg}{(\code{Prior}) for the growth rate standard deviation \code{omega_kg}.}
 
-\item{omega_phi}{(\code{Prior}) for the standard deviation of the proportion of cells
-affected by the treatment \code{omega_phi}.}
+\item{omega_phi}{(\code{Prior}) for the logit-scale standard deviation of the proportion of cells affected
+by the treatment \code{omega_phi}.}
 
 \item{sigma}{(\code{Prior}) for the variance of the longitudinal values \code{sigma}.}
 

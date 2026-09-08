@@ -27,12 +27,6 @@ library(jmpost)
 ```
 
 
-# IMPORTANT
-
-Please note that this document is currently a work-in-progress and does not
-contain complete information for this package yet. 
-
-
 # Survival Model Specification
 
 This package can only be used to fit proportional hazards models of the form:
@@ -198,6 +192,43 @@ where:
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 
+### Covariate Version
+
+In the covariate version, the study- and treatment-arm-specific parameters are
+replaced by subject-specific predictors. For a model parameter $\theta$, let
+$\boldsymbol{x}_{\theta i}$ be the baseline covariates for subject $i$ and let
+$\boldsymbol{\beta}_{\theta}$ be their coefficients. The predictor may be
+parameterised as
+
+$$
+\eta_{\theta i} =
+\begin{cases}
+\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}
+    & \text{(linear)}, \\
+\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
+    & \text{(proportional)}, \\
+\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}
+    & \text{(exponential)}.
+\end{cases}
+$$
+
+Different covariates and parameterisations may be used for each $\theta$. The
+random-slope model then becomes
+
+$$
+\begin{align*}
+y_{ij} &= \mu_i + s_i t_{ij} + \epsilon_{ij}, \\
+\mu_i &= \eta_{\mu i}, \\
+s_i &\sim N\!\left(\eta_{\mu_s i},\ \exp(\eta_{\sigma_s i})\right).
+\end{align*}
+$$
+
+Here we can use a linear, proportional, or exponential parameterisation for $\eta_{\mu i}$,
+and typically use a log-linear parametrization for $\eta_{\sigma_s i}$, which means that $\log(\sigma_{s i}) = \eta_{\sigma_s i} = \alpha_{\sigma_s} + \boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
+
+The original model is recovered by using study indicators for $\mu_i$ and
+treatment-arm indicators for the mean and variance of $s_i$.
+
 ### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
 $$
@@ -245,7 +276,6 @@ Where:
 * $b_i$ is the subject baseline SLD measurement
 * $s_i$ is the subject kinetics shrinkage parameter
 * $g_i$ is the subject kinetics tumour growth parameter
-* $\phi_i$ is the subject proportion of cells affected by the treatment
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
@@ -256,9 +286,9 @@ If using the non-centred parameterisation then the following alternative formula
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+b_i &= \exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= \exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= \exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim  N(0, 1) \\
@@ -274,6 +304,29 @@ If using the unscaled variance parameterisation then the following alternative f
 $$
 y_{ij} \sim N(SLD_{ij},\sigma^2)
 $$
+
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{s i} &= \eta_{\mu_s i}, &
+\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}),
+\end{aligned}
+$$
+
+so that $b_i \sim \operatorname{LogNormal}(\mu_{b i}, \omega_{b i})$,
+$s_i \sim \operatorname{LogNormal}(\mu_{s i}, \omega_{s i})$, and
+$g_i \sim \operatorname{LogNormal}(\mu_{g i}, \omega_{g i})$. The original
+model is recovered by using study indicators for the predictors of $b_i$ and
+treatment-arm indicators for those of $s_i$ and $g_i$.
 
 ### Derivative of the SLD Trajectory Link 
 
@@ -341,10 +394,10 @@ Accessible via `linkShrinkage()`
 
 ### Population Quantities
 
-Note that when generating population quantities for the $b$, $s$ and $g$ parameters the median
-of the distribution is used. This is because this has the same interpretation as using a 
-non-centred parameterisation and setting the "random effects" term to be 0. For the $\phi$ parameter
-the mean of the distribution is used.
+When generating population quantities for the $b$, $s$, and $g$
+parameters, the median of the distribution is used. This has the same
+interpretation as using a non-centred parameterisation and setting the random
+effect to zero.
 
 
 ## Generalized Stein-Fojo (GSF) Model
@@ -365,6 +418,10 @@ g_i &\sim \text{LogNormal}(\mu_{gk(i)}, \omega_{g k(i)}) \\
 \end{align*}
 $$
 
+The logit-normal distribution is parameterised here as
+$\operatorname{logit}(\phi_i) \sim
+N(\mu_{\phi k(i)}, \omega_{\phi k(i)})$.
+
 Where:
 
 * $i$ is the subject index
@@ -378,18 +435,18 @@ Where:
 * $\phi_i$ is the subject proportion of cells affected by the treatment
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
-* $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
-* $\omega_{\theta k(i)}$ is the population variance for parameter $\theta$ in group $k(i)$.
+* $\mu_{\theta k(i)}$ is the population location on the transformed scale for parameter $\theta$ in group $k(i)$
+* $\omega_{\theta k(i)}$ is the population standard deviation on the transformed scale for parameter $\theta$ in group $k(i)$.
 
 
 If using the non-centred parameterisation then the following alternative formulation is used:
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-s_i &= exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
-g_i &= exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
-\phi_i &= \text{logistic}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
+b_i &= \exp(\mu_{bl(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+s_i &= \exp(\mu_{sk(i)} + \omega_{s k(i)} * \eta_{s i}) \\
+g_i &= \exp(\mu_{gk(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+\phi_i &= \text{logit}^{-1}(\mu_{\phi k(i)} + \omega_{\phi k(i)} * \eta_{\phi i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{s i} &\sim   N(0, 1)  \\
@@ -407,6 +464,32 @@ If using the unscaled variance parameterisation then the following alternative f
 $$
 y_{ij} \sim N(SLD_{ij}, \sigma^2)
 $$
+
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{s i} &= \eta_{\mu_s i}, &
+\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\mu_{\phi i} &= \eta_{\mu_\phi i}, &
+\omega_{\phi i} &= \exp(\eta_{\omega_\phi i}).
+\end{aligned}
+$$
+
+Thus $b_i$, $s_i$, and $g_i$ retain their log-normal distributions, while
+$\operatorname{logit}(\phi_i) \sim
+N(\mu_{\phi i}, \omega_{\phi i})$, equivalently
+$\phi_i \sim \operatorname{LogitNormal}(\mu_{\phi i}, \omega_{\phi i})$.
+The original model is recovered by using study indicators for the predictors
+of $b_i$ and treatment-arm indicators for those of $s_i$, $g_i$, and $\phi_i$.
 
 
 ### Derivative of the SLD Trajectory Link 
@@ -521,10 +604,10 @@ If using the non-centred parameterisation then the following alternative formula
 
 $$
 \begin{align*}
-b_i &= exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
-g_i &= exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
-c_i &= exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
-p_i &= exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
+b_i &= \exp(\mu_{b l(i)} + \omega_{b l(i)} * \eta_{b i}) \\
+g_i &= \exp(\mu_{g k(i)} + \omega_{g k(i)} * \eta_{g i}) \\
+c_i &= \exp(\mu_{c k(i)} + \omega_{c k(i)} * \eta_{c i}) \\
+p_i &= \exp(\mu_{p k(i)} + \omega_{p k(i)} * \eta_{p i}) \\
 \\
 \eta_{b i} &\sim  N(0, 1)\\
 \eta_{g i} &\sim  N(0, 1)  \\
@@ -537,6 +620,30 @@ If using the unscaled variance parameterisation then the following alternative f
 $$
 y_{ij} \sim N(SLD_{ij}, \sigma^2)
 $$
+
+### Covariate Version
+
+Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
+constructed from parameter-specific baseline covariates as in the linear,
+proportional, or exponential forms above. The population parameters become
+
+$$
+\begin{aligned}
+\mu_{b i} &= \eta_{\mu_b i}, &
+\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\mu_{g i} &= \eta_{\mu_g i}, &
+\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\mu_{c i} &= \eta_{\mu_c i}, &
+\omega_{c i} &= \exp(\eta_{\omega_c i}), \\
+\mu_{p i} &= \eta_{\mu_p i}, &
+\omega_{p i} &= \exp(\eta_{\omega_p i}).
+\end{aligned}
+$$
+
+The subject parameters $b_i$, $g_i$, $c_i$, and $p_i$ retain their log-normal
+distributions with these population parameters. The original model is
+recovered by using study indicators for the predictors of $b_i$ and
+treatment-arm indicators for those of $g_i$, $c_i$, and $p_i$.
 
 
 ### Derivative of the SLD Trajectory Link 

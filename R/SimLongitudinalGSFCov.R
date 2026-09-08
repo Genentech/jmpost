@@ -75,7 +75,7 @@ SimLongitudinalGSFCov <- function(
     omega_s_parametrization = "log-linear",
     mu_g_parametrization = "linear",
     omega_g_parametrization = "log-linear",
-    mu_phi_parametrization = "logit-linear",
+    mu_phi_parametrization = "linear",
     omega_phi_parametrization = "log-linear",
     mu_b_intercept = log(60),
     mu_b_coefficients = numeric(),
@@ -159,7 +159,7 @@ sampleSubjects.SimLongitudinalGSFCov <- function(object, subjects_df) {
         "mu_phi",
         "omega_phi"
     )
-    predicted <- setNames(
+    predicted <- stats::setNames(
         lapply(names, function(name) {
             design <- .covariate_design_matrix(
                 slot(object, paste0(name, "_formula")),
@@ -207,7 +207,7 @@ sampleSubjects.SimLongitudinalGSFCov <- function(object, subjects_df) {
             ),
             psi_phi = stats::plogis(stats::rnorm(
                 dplyr::n(),
-                stats::qlogis(predicted$mu_phi),
+                predicted$mu_phi,
                 predicted$omega_phi
             ))
         )
