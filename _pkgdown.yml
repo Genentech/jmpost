@@ -41,9 +41,13 @@ reference:
       - SimJointData
       - SimLongitudinal
       - SimLongitudinalGSF
+      - SimLongitudinalGSFCov
       - SimLongitudinalSteinFojo
+      - SimLongitudinalSteinFojoCov
       - SimLongitudinalClaretBruno
+      - SimLongitudinalClaretBrunoCov
       - SimLongitudinalRandomSlope
+      - SimLongitudinalRandomSlopeCov
       - SimSurvival
       - SimSurvivalLogLogistic
       - SimSurvivalExponential
@@ -76,9 +80,13 @@ reference:
   - title: Longitudinal Model Specification
     contents:
       - LongitudinalRandomSlope
+      - LongitudinalRandomSlopeCov
       - LongitudinalGSF
+      - LongitudinalGSFCov
       - LongitudinalSteinFojo
+      - LongitudinalSteinFojoCov
       - LongitudinalClaretBruno
+      - LongitudinalClaretBrunoCov
       - LongitudinalModel
 
   - title: Survival Model Specification
@@ -117,6 +125,7 @@ reference:
       - LongitudinalQuantities
       - SurvivalQuantities
       - generateQuantities
+      - gq_population_stan_data
       - LongitudinalRandomEffects
       - Grid-Functions
       - summary.LongitudinalQuantities
@@ -195,6 +204,8 @@ reference:
       - sampleSubjects
       - covariates
       - covariates.DataSurvival
+      - required_longitudinal_covs
+      - required_simulation_covariates
       - enableLink
       - enableGQ
       - as_formula
