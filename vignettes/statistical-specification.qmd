@@ -276,7 +276,6 @@ Where:
 * $b_i$ is the subject baseline SLD measurement
 * $s_i$ is the subject kinetics shrinkage parameter
 * $g_i$ is the subject kinetics tumour growth parameter
-* $\phi_i$ is the subject proportion of cells affected by the treatment
 * $k(i)$ is the treatment arm index for subject $i$
 * $l(i)$ is the study index for subject $i$
 * $\mu_{\theta k(i)}$ is the population mean for parameter $\theta$ in group $k(i)$
@@ -395,11 +394,10 @@ Accessible via `linkShrinkage()`
 
 ### Population Quantities
 
-When generating population quantities for the $b$, $s$, $g$, and $\phi$
+When generating population quantities for the $b$, $s$, and $g$
 parameters, the median of the distribution is used. This has the same
 interpretation as using a non-centred parameterisation and setting the random
-effect to zero. In particular, the population quantity for $\phi$ is
-$\operatorname{logit}^{-1}(\mu_\phi)$.
+effect to zero.
 
 
 ## Generalized Stein-Fojo (GSF) Model
