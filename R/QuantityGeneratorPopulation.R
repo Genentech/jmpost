@@ -97,8 +97,7 @@ as_stan_list.QuantityGeneratorPopulation <- function(
 
 
 #' @rdname gq_population_stan_data
-#' @export
-#' @rawNamespace S3method(gq_population_stan_data,QuantityGeneratorPopulation)
+#' @exportS3Method gq_population_stan_data QuantityGeneratorPopulation
 gq_population_stan_data.QuantityGeneratorPopulation <- function(
     object,
     model,
