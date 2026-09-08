@@ -116,7 +116,7 @@ test_that("posterior Claret-Bruno covariate draws create a simulator", {
         "mu_p",
         "omega_p"
     )
-    values <- setNames(
+    values <- stats::setNames(
         c(unlist(lapply(names, function(name) c(1, 0))), 0.1),
         c(
             unlist(lapply(names, function(name) {
@@ -164,7 +164,7 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
         "",
         names(predictor_truth)
     ))
-    formula_args <- setNames(
+    formula_args <- stats::setNames(
         rep(list(~arm), length(parameter_names)),
         paste0(parameter_names, "_formula")
     )

@@ -175,7 +175,7 @@ test_that("posterior GSF covariate draws create a matching simulator", {
         "mu_phi",
         "omega_phi"
     )
-    values <- setNames(
+    values <- stats::setNames(
         c(unlist(lapply(names, function(name) c(1, 0))), 0.1),
         c(
             unlist(lapply(names, function(name) {
@@ -223,7 +223,7 @@ test_that("GSF covariate model recovers its parameters", {
         "",
         names(predictor_truth)
     ))
-    formula_args <- setNames(
+    formula_args <- stats::setNames(
         rep(list(~arm), length(parameter_names)),
         paste0(parameter_names, "_formula")
     )

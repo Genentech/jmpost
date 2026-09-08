@@ -322,7 +322,7 @@ gq_population_stan_data.LongitudinalGSFCov <- function(
             msg = "Population quantities for `LongitudinalGSFCov` require `GridPopulation(newdata = ...)`"
         )
         subject_data <- as.data.frame(harmonise(data@subject))
-        result$data <- setNames(
+        result$data <- stats::setNames(
             lapply(names, function(name) {
                 .covariate_prediction_design_matrix(
                     slot(model, paste0(name, "_formula")),
@@ -425,7 +425,7 @@ longitudinal_model_stan_data.LongitudinalGSFCov <- function(model, subject) {
         "mu_phi",
         "omega_phi"
     )
-    designs <- setNames(
+    designs <- stats::setNames(
         lapply(names, function(name) {
             .covariate_design_matrix(
                 slot(model, paste0(name, "_formula")),
@@ -437,7 +437,7 @@ longitudinal_model_stan_data.LongitudinalGSFCov <- function(model, subject) {
     )
     unlist(
         lapply(names, function(name) {
-            setNames(
+            stats::setNames(
                 list(ncol(designs[[name]]), designs[[name]]),
                 c(
                     paste0("p_lm_gsfc_", name),

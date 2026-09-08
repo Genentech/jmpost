@@ -295,7 +295,7 @@ test_that("posterior Stein-Fojo covariate draws create a matching simulator", {
         "mu_g",
         "omega_g"
     )
-    values <- setNames(
+    values <- stats::setNames(
         c(
             unlist(lapply(parameter_names, function(name) c(1, 0))),
             0.1
@@ -381,7 +381,7 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
         names(predictor_truth)
     )
     names(prior_args) <- paste0(names(predictor_truth), "_prior")
-    formula_args <- setNames(
+    formula_args <- stats::setNames(
         rep(list(~arm), length(unique(predictor_names))),
         paste0(unique(predictor_names), "_formula")
     )
