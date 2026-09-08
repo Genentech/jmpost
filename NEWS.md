@@ -1,5 +1,6 @@
 # jmpost (development version)
 
+- Added longitudinal models supporting covariate modeling: `LongitudinalRandomSlopeCov`, `LongitudinalSteinFojoCov`, `LongitudinalGSFCov` and `LongitudinalClaretBrunoCov` classes implement the corresponding covariate versions of the already existing longitudinal models. Please see the quick start vignette for a short introduction. It is also possible to add new custom longitudinal models with covariates; a new vignette has been added to describe the required components.
 - `LongitudinalModel` objects now have a new slot `scaled_variance` which stores the used variance option, and this is part of the `print` output now thereby transparently communicating to the user the choice of the multiplicative or additive error model.
 - Changed default longitudinal model option `scaled_variance` to `FALSE`, corresponding to an additive error model (both for the simulation as well as for the inference functions). Also added this option to the random effects model for consistency with the other models.
 - Included new `populationHR()` function to calculate population effects from a `JointModelSample` object, by marginalising over the patient-level random effects (#447).
