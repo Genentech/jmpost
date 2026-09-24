@@ -66,7 +66,8 @@ NULL
 #' @typed omega_g_formula: formula
 #'   One-sided formula for subject-level covariate effects on the growth standard deviation.
 #' @typed omega_phi_formula: formula
-#'   One-sided formula for subject-level covariate effects on the standard deviation of the treatment fraction on the logit scale.
+#'   One-sided formula for subject-level covariate effects on the standard
+#'   deviation of the treatment fraction on the logit scale.
 #' @typed mu_b_parametrization: character
 #'   Parametrization of the baseline mean predictor.
 #' @typed mu_s_parametrization: character
@@ -76,13 +77,17 @@ NULL
 #' @typed mu_phi_parametrization: character
 #'   Parametrization of the mean predictor for the treatment fraction on the logit scale.
 #' @typed omega_b_parametrization: character
-#'   Parametrization of the baseline standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline standard deviation predictor. Only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_s_parametrization: character
-#'   Parametrization of the shrinkage standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the shrinkage standard deviation predictor. Only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
 #'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_phi_parametrization: character
-#'   Parametrization of the standard deviation predictor for the treatment fraction on the logit scale. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the standard deviation predictor for the treatment
+#'   fraction on the logit scale. Only `"exponential"` and `"log-linear"` are
+#'   supported.
 #' @typed mu_b_intercept_prior: Prior
 #'   Prior for the intercept of the baseline mean predictor.
 #' @typed mu_s_intercept_prior: Prior
@@ -114,7 +119,8 @@ NULL
 #' @typed omega_g_coefficients_prior: Prior
 #'   Prior for the covariate coefficients of the growth standard deviation predictor.
 #' @typed omega_phi_coefficients_prior: Prior
-#'   Prior for the covariate coefficients of the standard deviation predictor for the treatment fraction on the logit scale.
+#'   Prior for the covariate coefficients of the standard deviation predictor
+#'   for the treatment fraction on the logit scale.
 #' @typed sigma: Prior
 #'   Observation-error standard deviation prior.
 #' @typed scaled_variance: logical

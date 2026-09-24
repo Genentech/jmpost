@@ -72,13 +72,16 @@ NULL
 #' @typed mu_p_parametrization: character
 #'   Parametrization of the growth inhibition mean predictor.
 #' @typed omega_b_parametrization: character
-#'   Parametrization of the baseline tumour size standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline tumour size standard deviation predictor.
+#'   Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
 #'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_c_parametrization: character
-#'   Parametrization of the resistance standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the resistance standard deviation predictor. Only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_p_parametrization: character
-#'   Parametrization of the growth inhibition standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the growth inhibition standard deviation predictor.
+#'   Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_b_intercept_prior: Prior
 #'   Prior for the intercept of the baseline tumour size mean predictor.
 #' @typed mu_g_intercept_prior: Prior

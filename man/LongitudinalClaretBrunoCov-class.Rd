@@ -67,7 +67,8 @@ LongitudinalClaretBrunoCov(
 
 \item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size standard deviation predictor.
+Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
@@ -75,11 +76,13 @@ LongitudinalClaretBrunoCov(
 
 \item{mu_c_parametrization}{(\code{character}) Parametrization of the resistance mean predictor.}
 
-\item{omega_c_parametrization}{(\code{character}) Parametrization of the resistance standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_c_parametrization}{(\code{character}) Parametrization of the resistance standard deviation predictor. Only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_p_parametrization}{(\code{character}) Parametrization of the growth inhibition mean predictor.}
 
-\item{omega_p_parametrization}{(\code{character}) Parametrization of the growth inhibition standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_p_parametrization}{(\code{character}) Parametrization of the growth inhibition standard deviation predictor.
+Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_b_intercept_prior}{(\code{Prior}) Prior for the intercept of the baseline tumour size mean predictor.}
 

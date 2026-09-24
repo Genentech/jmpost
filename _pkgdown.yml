@@ -234,9 +234,10 @@ articles:
   - title: Articles
     navbar: ~
     contents:
-        - quickstart
-        - '`statistical-specification`'
-        - '`covariate-selection-horseshoe`'
-        - '`custom-model`'
-        - '`extending-jmpost`'
-        - '`simulating-data`'
+      - quickstart
+      - '`statistical-specification`'
+      - '`covariate-selection-horseshoe`'
+      - '`custom-model`'
+      - '`custom-cov-model`'
+      - '`extending-jmpost`'
+      - '`simulating-data`'

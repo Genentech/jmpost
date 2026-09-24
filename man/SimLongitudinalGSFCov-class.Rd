@@ -67,15 +67,18 @@ SimLongitudinalGSFCov(
 
 \item{mu_phi_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the mean of the treatment fraction on the logit scale.}
 
-\item{omega_phi_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the standard deviation of the treatment fraction on the logit scale.}
+\item{omega_phi_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the standard
+deviation of the treatment fraction on the logit scale.}
 
 \item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline standard deviation predictor. Only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_s_parametrization}{(\code{character}) Parametrization of the shrinkage mean predictor.}
 
-\item{omega_s_parametrization}{(\code{character}) Parametrization of the shrinkage standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_s_parametrization}{(\code{character}) Parametrization of the shrinkage standard deviation predictor. Only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
@@ -83,7 +86,9 @@ SimLongitudinalGSFCov(
 
 \item{mu_phi_parametrization}{(\code{character}) Parametrization of the mean predictor for the treatment fraction on the logit scale.}
 
-\item{omega_phi_parametrization}{(\code{character}) Parametrization of the standard deviation predictor for the treatment fraction on the logit scale. Only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_phi_parametrization}{(\code{character}) Parametrization of the standard deviation predictor for the treatment
+fraction on the logit scale. Only \code{"exponential"} and \code{"log-linear"} are
+supported.}
 
 \item{mu_b_intercept}{(\code{numeric}) Intercept for the baseline mean predictor.}
 

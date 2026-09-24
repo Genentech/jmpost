@@ -67,9 +67,11 @@ NULL
 #' @typed mu_g_parametrization: character
 #'   Parametrization of the growth mean predictor.
 #' @typed omega_b_parametrization: character
-#'   Parametrization of the baseline standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline standard deviation predictor. Only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_s_parametrization: character
-#'   Parametrization of the shrinkage standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the shrinkage standard deviation predictor. Only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
 #'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_b_intercept_prior: Prior
