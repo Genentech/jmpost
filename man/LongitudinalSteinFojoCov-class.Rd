@@ -40,53 +40,53 @@ LongitudinalSteinFojoCov(
 )
 }
 \arguments{
-\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline mean.}
 
-\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline standard deviation.}
 
-\item{mu_s_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_s_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the shrinkage mean.}
 
-\item{omega_s_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_s_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the shrinkage standard deviation.}
 
-\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth mean.}
 
-\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth standard deviation.}
 
-\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_s_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_s_parametrization}{(\code{character}) Parametrization of the shrinkage mean predictor.}
 
-\item{omega_s_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_s_parametrization}{(\code{character}) Parametrization of the shrinkage standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
-\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_g_parametrization}{(\code{character}) Parametrization of the growth standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_b_intercept_prior}{(\code{Prior}) Priors for the baseline log-mean predictor.}
+\item{mu_b_intercept_prior}{(\code{Prior}) Prior for the intercept of the baseline mean predictor.}
 
-\item{mu_b_coefficients_prior}{(\code{Prior}) Priors for the baseline log-mean predictor.}
+\item{mu_b_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the baseline mean predictor.}
 
-\item{omega_b_intercept_prior}{(\code{Prior}) Priors for the baseline log-SD predictor.}
+\item{omega_b_intercept_prior}{(\code{Prior}) Prior for the intercept of the baseline standard deviation predictor.}
 
-\item{omega_b_coefficients_prior}{(\code{Prior}) Priors for the baseline log-SD predictor.}
+\item{omega_b_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the baseline standard deviation predictor.}
 
-\item{mu_s_intercept_prior}{(\code{Prior}) Priors for the shrinkage log-mean predictor.}
+\item{mu_s_intercept_prior}{(\code{Prior}) Prior for the intercept of the shrinkage mean predictor.}
 
-\item{mu_s_coefficients_prior}{(\code{Prior}) Priors for the shrinkage log-mean predictor.}
+\item{mu_s_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the shrinkage mean predictor.}
 
-\item{omega_s_intercept_prior}{(\code{Prior}) Priors for the shrinkage log-SD predictor.}
+\item{omega_s_intercept_prior}{(\code{Prior}) Prior for the intercept of the shrinkage standard deviation predictor.}
 
-\item{omega_s_coefficients_prior}{(\code{Prior}) Priors for the shrinkage log-SD predictor.}
+\item{omega_s_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the shrinkage standard deviation predictor.}
 
-\item{mu_g_intercept_prior}{(\code{Prior}) Priors for the growth log-mean predictor.}
+\item{mu_g_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth mean predictor.}
 
-\item{mu_g_coefficients_prior}{(\code{Prior}) Priors for the growth log-mean predictor.}
+\item{mu_g_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth mean predictor.}
 
-\item{omega_g_intercept_prior}{(\code{Prior}) Priors for the growth log-SD predictor.}
+\item{omega_g_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth standard deviation predictor.}
 
-\item{omega_g_coefficients_prior}{(\code{Prior}) Priors for the growth log-SD predictor.}
+\item{omega_g_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth standard deviation predictor.}
 
 \item{sigma}{(\code{Prior}) Prior for the observation-error standard deviation.}
 

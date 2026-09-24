@@ -52,69 +52,69 @@ NULL
 #'
 #' @rdname LongitudinalGSFCov-class
 #' @typed mu_b_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline mean.
 #' @typed mu_s_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the shrinkage mean.
 #' @typed mu_g_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the growth mean.
 #' @typed mu_phi_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the mean of the treatment fraction on the logit scale.
 #' @typed omega_b_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline standard deviation.
 #' @typed omega_s_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the shrinkage standard deviation.
 #' @typed omega_g_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the growth standard deviation.
 #' @typed omega_phi_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the standard deviation of the treatment fraction on the logit scale.
 #' @typed mu_b_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the baseline mean predictor.
 #' @typed mu_s_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the shrinkage mean predictor.
 #' @typed mu_g_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the growth mean predictor.
 #' @typed mu_phi_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the mean predictor for the treatment fraction on the logit scale.
 #' @typed omega_b_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_s_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the shrinkage standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_phi_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the standard deviation predictor for the treatment fraction on the logit scale. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_b_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the baseline mean predictor.
 #' @typed mu_s_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the shrinkage mean predictor.
 #' @typed mu_g_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the growth mean predictor.
 #' @typed mu_phi_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the mean predictor for the treatment fraction on the logit scale.
 #' @typed mu_b_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the baseline mean predictor.
 #' @typed mu_s_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the shrinkage mean predictor.
 #' @typed mu_g_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the growth mean predictor.
 #' @typed mu_phi_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the mean predictor for the treatment fraction on the logit scale.
 #' @typed omega_b_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the baseline standard deviation predictor.
 #' @typed omega_s_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the shrinkage standard deviation predictor.
 #' @typed omega_g_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the growth standard deviation predictor.
 #' @typed omega_phi_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the standard deviation predictor for the treatment fraction on the logit scale.
 #' @typed omega_b_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the baseline standard deviation predictor.
 #' @typed omega_s_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the shrinkage standard deviation predictor.
 #' @typed omega_g_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the growth standard deviation predictor.
 #' @typed omega_phi_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the standard deviation predictor for the treatment fraction on the logit scale.
 #' @typed sigma: Prior
 #'   Observation-error standard deviation prior.
 #' @typed scaled_variance: logical

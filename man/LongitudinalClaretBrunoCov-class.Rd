@@ -49,69 +49,69 @@ LongitudinalClaretBrunoCov(
 )
 }
 \arguments{
-\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline tumour size mean.}
 
-\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline tumour size standard deviation.}
 
-\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth mean.}
 
-\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth standard deviation.}
 
-\item{mu_c_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_c_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the resistance mean.}
 
-\item{omega_c_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_c_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the resistance standard deviation.}
 
-\item{mu_p_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_p_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth inhibition mean.}
 
-\item{omega_p_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_p_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth inhibition standard deviation.}
 
-\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
-\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_g_parametrization}{(\code{character}) Parametrization of the growth standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_c_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_c_parametrization}{(\code{character}) Parametrization of the resistance mean predictor.}
 
-\item{omega_c_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_c_parametrization}{(\code{character}) Parametrization of the resistance standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_p_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_p_parametrization}{(\code{character}) Parametrization of the growth inhibition mean predictor.}
 
-\item{omega_p_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_p_parametrization}{(\code{character}) Parametrization of the growth inhibition standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_b_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+\item{mu_b_intercept_prior}{(\code{Prior}) Prior for the intercept of the baseline tumour size mean predictor.}
 
-\item{mu_b_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+\item{mu_b_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the baseline tumour size mean predictor.}
 
-\item{omega_b_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+\item{omega_b_intercept_prior}{(\code{Prior}) Prior for the intercept of the baseline tumour size standard deviation predictor.}
 
-\item{omega_b_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+\item{omega_b_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the baseline tumour size standard deviation predictor.}
 
-\item{mu_g_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+\item{mu_g_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth mean predictor.}
 
-\item{mu_g_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+\item{mu_g_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth mean predictor.}
 
-\item{omega_g_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+\item{omega_g_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth standard deviation predictor.}
 
-\item{omega_g_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+\item{omega_g_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth standard deviation predictor.}
 
-\item{mu_c_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+\item{mu_c_intercept_prior}{(\code{Prior}) Prior for the intercept of the resistance mean predictor.}
 
-\item{mu_c_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+\item{mu_c_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the resistance mean predictor.}
 
-\item{omega_c_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+\item{omega_c_intercept_prior}{(\code{Prior}) Prior for the intercept of the resistance standard deviation predictor.}
 
-\item{omega_c_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+\item{omega_c_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the resistance standard deviation predictor.}
 
-\item{mu_p_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+\item{mu_p_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth inhibition mean predictor.}
 
-\item{mu_p_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+\item{mu_p_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth inhibition mean predictor.}
 
-\item{omega_p_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+\item{omega_p_intercept_prior}{(\code{Prior}) Prior for the intercept of the growth inhibition standard deviation predictor.}
 
-\item{omega_p_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+\item{omega_p_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the growth inhibition standard deviation predictor.}
 
 \item{sigma}{(\code{Prior}) Observation-error standard deviation prior.}
 

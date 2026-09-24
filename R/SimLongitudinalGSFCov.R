@@ -8,49 +8,49 @@ NULL
 #' @typed times: numeric
 #'   Observation times.
 #' @typed mu_b_intercept: numeric
-#'   Intercepts for the mean parameters.
+#'   Intercept for the baseline mean predictor.
 #' @typed mu_s_intercept: numeric
-#'   Intercepts for the mean parameters.
+#'   Intercept for the shrinkage mean predictor.
 #' @typed mu_g_intercept: numeric
-#'   Intercepts for the mean parameters.
+#'   Intercept for the growth mean predictor.
 #' @typed mu_phi_intercept: numeric
-#'   Intercepts for the mean parameters.
+#'   Intercept for the treatment fraction on the logit scale mean predictor.
 #' @typed mu_b_coefficients: numeric
-#'   Coefficients for the mean parameters.
+#'   Covariate coefficients for the baseline mean predictor.
 #' @typed mu_s_coefficients: numeric
-#'   Coefficients for the mean parameters.
+#'   Covariate coefficients for the shrinkage mean predictor.
 #' @typed mu_g_coefficients: numeric
-#'   Coefficients for the mean parameters.
+#'   Covariate coefficients for the growth mean predictor.
 #' @typed mu_phi_coefficients: numeric
-#'   Coefficients for the mean parameters.
+#'   Covariate coefficients for the treatment fraction on the logit scale mean predictor.
 #' @typed omega_b_intercept: numeric
-#'   Intercepts for the variance parameters.
+#'   Intercept for the baseline standard deviation predictor.
 #' @typed omega_s_intercept: numeric
-#'   Intercepts for the variance parameters.
+#'   Intercept for the shrinkage standard deviation predictor.
 #' @typed omega_g_intercept: numeric
-#'   Intercepts for the variance parameters.
+#'   Intercept for the growth standard deviation predictor.
 #' @typed omega_phi_intercept: numeric
-#'   Intercepts for the variance parameters.
+#'   Intercept for the treatment fraction on the logit scale standard deviation predictor.
 #' @typed omega_b_coefficients: numeric
-#'   Coefficients for the variance parameters.
+#'   Covariate coefficients for the baseline standard deviation predictor.
 #' @typed omega_s_coefficients: numeric
-#'   Coefficients for the variance parameters.
+#'   Covariate coefficients for the shrinkage standard deviation predictor.
 #' @typed omega_g_coefficients: numeric
-#'   Coefficients for the variance parameters.
+#'   Covariate coefficients for the growth standard deviation predictor.
 #' @typed omega_phi_coefficients: numeric
-#'   Coefficients for the variance parameters.
+#'   Covariate coefficients for the treatment fraction on the logit scale standard deviation predictor.
 #' @typed sigma: numeric
 #'   Observation-error standard deviation.
 #' @typed link_dsld: numeric
-#'   Link coefficients.
+#'   Coefficient for the DSLD association link.
 #' @typed link_ttg: numeric
-#'   Link coefficients.
+#'   Coefficient for the TTG association link.
 #' @typed link_identity: numeric
-#'   Link coefficients.
+#'   Coefficient for the identity association link.
 #' @typed link_growth: numeric
-#'   Link coefficients.
+#'   Coefficient for the growth association link.
 #' @typed link_shrinkage: numeric
-#'   Link coefficients.
+#'   Coefficient for the shrinkage association link.
 #' @exportClass SimLongitudinalGSFCov
 .SimLongitudinalGSFCov <- setClass(
     "SimLongitudinalGSFCov",

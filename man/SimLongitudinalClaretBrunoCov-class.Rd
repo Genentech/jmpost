@@ -52,79 +52,79 @@ SimLongitudinalClaretBrunoCov(
 \arguments{
 \item{times}{(\code{numeric}) Observation times.}
 
-\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline tumour size mean.}
 
-\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline tumour size standard deviation.}
 
-\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth mean.}
 
-\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth standard deviation.}
 
-\item{mu_c_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_c_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the resistance mean.}
 
-\item{omega_c_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_c_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the resistance standard deviation.}
 
-\item{mu_p_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_p_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth inhibition mean.}
 
-\item{omega_p_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_p_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth inhibition standard deviation.}
 
-\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline tumour size standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
-\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_g_parametrization}{(\code{character}) Parametrization of the growth standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_c_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_c_parametrization}{(\code{character}) Parametrization of the resistance mean predictor.}
 
-\item{omega_c_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_c_parametrization}{(\code{character}) Parametrization of the resistance standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_p_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_p_parametrization}{(\code{character}) Parametrization of the growth inhibition mean predictor.}
 
-\item{omega_p_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_p_parametrization}{(\code{character}) Parametrization of the growth inhibition standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_b_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_b_intercept}{(\code{numeric}) Intercept for the baseline tumour size mean predictor.}
 
-\item{mu_b_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_b_coefficients}{(\code{numeric}) Covariate coefficients for the baseline tumour size mean predictor.}
 
-\item{omega_b_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_b_intercept}{(\code{numeric}) Intercept for the baseline tumour size standard deviation predictor.}
 
-\item{omega_b_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_b_coefficients}{(\code{numeric}) Covariate coefficients for the baseline tumour size standard deviation predictor.}
 
-\item{mu_g_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_g_intercept}{(\code{numeric}) Intercept for the growth mean predictor.}
 
-\item{mu_g_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_g_coefficients}{(\code{numeric}) Covariate coefficients for the growth mean predictor.}
 
-\item{omega_g_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_g_intercept}{(\code{numeric}) Intercept for the growth standard deviation predictor.}
 
-\item{omega_g_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_g_coefficients}{(\code{numeric}) Covariate coefficients for the growth standard deviation predictor.}
 
-\item{mu_c_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_c_intercept}{(\code{numeric}) Intercept for the resistance mean predictor.}
 
-\item{mu_c_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_c_coefficients}{(\code{numeric}) Covariate coefficients for the resistance mean predictor.}
 
-\item{omega_c_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_c_intercept}{(\code{numeric}) Intercept for the resistance standard deviation predictor.}
 
-\item{omega_c_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_c_coefficients}{(\code{numeric}) Covariate coefficients for the resistance standard deviation predictor.}
 
-\item{mu_p_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_p_intercept}{(\code{numeric}) Intercept for the growth inhibition mean predictor.}
 
-\item{mu_p_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_p_coefficients}{(\code{numeric}) Covariate coefficients for the growth inhibition mean predictor.}
 
-\item{omega_p_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_p_intercept}{(\code{numeric}) Intercept for the growth inhibition standard deviation predictor.}
 
-\item{omega_p_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_p_coefficients}{(\code{numeric}) Covariate coefficients for the growth inhibition standard deviation predictor.}
 
 \item{sigma}{(\code{numeric}) Observation-error standard deviation.}
 
-\item{link_dsld}{(\code{numeric}) Link coefficients.}
+\item{link_dsld}{(\code{numeric}) Coefficient for the DSLD association link.}
 
-\item{link_ttg}{(\code{numeric}) Link coefficients.}
+\item{link_ttg}{(\code{numeric}) Coefficient for the TTG association link.}
 
-\item{link_identity}{(\code{numeric}) Link coefficients.}
+\item{link_identity}{(\code{numeric}) Coefficient for the identity association link.}
 
-\item{link_growth}{(\code{numeric}) Link coefficients.}
+\item{link_growth}{(\code{numeric}) Coefficient for the growth association link.}
 
 \item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
 }

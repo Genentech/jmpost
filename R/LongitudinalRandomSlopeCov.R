@@ -330,29 +330,29 @@ NULL
 #'
 #' @rdname LongitudinalRandomSlopeCov-class
 #' @typed mu_formula: formula
-#'   One-sided formulas evaluated in the subject-level data.
+#'   One-sided formula for subject-level covariate effects on the subject intercept.
 #' @typed slope_mu_formula: formula
-#'   One-sided formulas evaluated in the subject-level data.
+#'   One-sided formula for subject-level covariate effects on the mean slope.
 #' @typed slope_sigma_formula: formula
-#'   One-sided formulas evaluated in the subject-level data.
+#'   One-sided formula for subject-level covariate effects on the slope standard deviation.
 #' @typed mu_parametrization: character
-#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#'   Parametrization of the subject intercept predictor.
 #' @typed slope_mu_parametrization: character
-#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#'   Parametrization of the mean slope predictor.
 #' @typed slope_sigma_parametrization: character
-#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#'   Parametrization of the slope standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_intercept_prior: Prior
-#'   Priors for the subject-intercept predictor.
+#'   Prior for the intercept of the subject intercept predictor.
 #' @typed mu_coefficients_prior: Prior
-#'   Priors for the subject-intercept predictor.
+#'   Prior for the covariate coefficients of the subject intercept predictor.
 #' @typed slope_mu_intercept_prior: Prior
-#'   Priors for the mean-slope predictor.
+#'   Prior for the intercept of the mean slope predictor.
 #' @typed slope_mu_coefficients_prior: Prior
-#'   Priors for the mean-slope predictor.
+#'   Prior for the covariate coefficients of the mean slope predictor.
 #' @typed slope_sigma_intercept_prior: Prior
-#'   Priors for the slope-SD predictor.
+#'   Prior for the intercept of the slope standard deviation predictor.
 #' @typed slope_sigma_coefficients_prior: Prior
-#'   Priors for the slope-SD predictor.
+#'   Prior for the covariate coefficients of the slope standard deviation predictor.
 #' @typed sigma: Prior
 #'   Prior for the observation-error standard deviation.
 #' @typed scaled_variance: logical

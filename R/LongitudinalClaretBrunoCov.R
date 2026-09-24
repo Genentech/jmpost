@@ -48,69 +48,69 @@ NULL
 #'
 #' @rdname LongitudinalClaretBrunoCov-class
 #' @typed mu_b_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline tumour size mean.
 #' @typed mu_g_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the growth mean.
 #' @typed mu_c_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the resistance mean.
 #' @typed mu_p_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the growth inhibition mean.
 #' @typed omega_b_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline tumour size standard deviation.
 #' @typed omega_g_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the growth standard deviation.
 #' @typed omega_c_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the resistance standard deviation.
 #' @typed omega_p_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the growth inhibition standard deviation.
 #' @typed mu_b_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the baseline tumour size mean predictor.
 #' @typed mu_g_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the growth mean predictor.
 #' @typed mu_c_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the resistance mean predictor.
 #' @typed mu_p_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the growth inhibition mean predictor.
 #' @typed omega_b_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline tumour size standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_c_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the resistance standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_p_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the growth inhibition standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_b_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the baseline tumour size mean predictor.
 #' @typed mu_g_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the growth mean predictor.
 #' @typed mu_c_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the resistance mean predictor.
 #' @typed mu_p_intercept_prior: Prior
-#'   Priors for the intercepts of the mean parameters.
+#'   Prior for the intercept of the growth inhibition mean predictor.
 #' @typed mu_b_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the baseline tumour size mean predictor.
 #' @typed mu_g_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the growth mean predictor.
 #' @typed mu_c_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the resistance mean predictor.
 #' @typed mu_p_coefficients_prior: Prior
-#'   Priors for the coefficients of the mean parameters.
+#'   Prior for the covariate coefficients of the growth inhibition mean predictor.
 #' @typed omega_b_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the baseline tumour size standard deviation predictor.
 #' @typed omega_g_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the growth standard deviation predictor.
 #' @typed omega_c_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the resistance standard deviation predictor.
 #' @typed omega_p_intercept_prior: Prior
-#'   Priors for the intercepts of the variance parameters.
+#'   Prior for the intercept of the growth inhibition standard deviation predictor.
 #' @typed omega_b_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the baseline tumour size standard deviation predictor.
 #' @typed omega_g_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the growth standard deviation predictor.
 #' @typed omega_c_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the resistance standard deviation predictor.
 #' @typed omega_p_coefficients_prior: Prior
-#'   Priors for the coefficients of the variance parameters.
+#'   Prior for the covariate coefficients of the growth inhibition standard deviation predictor.
 #' @typed sigma: Prior
 #'   Observation-error standard deviation prior.
 #' @typed scaled_variance: logical

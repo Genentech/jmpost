@@ -25,29 +25,29 @@ LongitudinalRandomSlopeCov(
 )
 }
 \arguments{
-\item{mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{mu_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the subject intercept.}
 
-\item{slope_mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{slope_mu_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the mean slope.}
 
-\item{slope_sigma_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{slope_sigma_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the slope standard deviation.}
 
-\item{mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{mu_parametrization}{(\code{character}) Parametrization of the subject intercept predictor.}
 
-\item{slope_mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{slope_mu_parametrization}{(\code{character}) Parametrization of the mean slope predictor.}
 
-\item{slope_sigma_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{slope_sigma_parametrization}{(\code{character}) Parametrization of the slope standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_intercept_prior}{(\code{Prior}) Priors for the subject-intercept predictor.}
+\item{mu_intercept_prior}{(\code{Prior}) Prior for the intercept of the subject intercept predictor.}
 
-\item{mu_coefficients_prior}{(\code{Prior}) Priors for the subject-intercept predictor.}
+\item{mu_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the subject intercept predictor.}
 
-\item{slope_mu_intercept_prior}{(\code{Prior}) Priors for the mean-slope predictor.}
+\item{slope_mu_intercept_prior}{(\code{Prior}) Prior for the intercept of the mean slope predictor.}
 
-\item{slope_mu_coefficients_prior}{(\code{Prior}) Priors for the mean-slope predictor.}
+\item{slope_mu_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the mean slope predictor.}
 
-\item{slope_sigma_intercept_prior}{(\code{Prior}) Priors for the slope-SD predictor.}
+\item{slope_sigma_intercept_prior}{(\code{Prior}) Prior for the intercept of the slope standard deviation predictor.}
 
-\item{slope_sigma_coefficients_prior}{(\code{Prior}) Priors for the slope-SD predictor.}
+\item{slope_sigma_coefficients_prior}{(\code{Prior}) Prior for the covariate coefficients of the slope standard deviation predictor.}
 
 \item{sigma}{(\code{Prior}) Prior for the observation-error standard deviation.}
 

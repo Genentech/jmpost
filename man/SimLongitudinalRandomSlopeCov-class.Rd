@@ -30,35 +30,35 @@ SimLongitudinalRandomSlopeCov(
 \arguments{
 \item{times}{(\code{numeric}) Observation times.}
 
-\item{mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{mu_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the subject intercept.}
 
-\item{slope_mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{slope_mu_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the mean slope.}
 
-\item{slope_sigma_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+\item{slope_sigma_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the slope standard deviation.}
 
-\item{mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{mu_parametrization}{(\code{character}) Parametrization of the subject intercept predictor.}
 
-\item{slope_mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{slope_mu_parametrization}{(\code{character}) Parametrization of the mean slope predictor.}
 
-\item{slope_sigma_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+\item{slope_sigma_parametrization}{(\code{character}) Parametrization of the slope standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_intercept}{(\code{numeric}) Coefficients for the subject intercept.}
+\item{mu_intercept}{(\code{numeric}) Intercept for the subject intercept predictor.}
 
-\item{mu_coefficients}{(\code{numeric}) Coefficients for the subject intercept.}
+\item{mu_coefficients}{(\code{numeric}) Covariate coefficients for the subject intercept predictor.}
 
-\item{slope_mu_intercept}{(\code{numeric}) Coefficients for the mean slope.}
+\item{slope_mu_intercept}{(\code{numeric}) Intercept for the mean slope predictor.}
 
-\item{slope_mu_coefficients}{(\code{numeric}) Coefficients for the mean slope.}
+\item{slope_mu_coefficients}{(\code{numeric}) Covariate coefficients for the mean slope predictor.}
 
-\item{slope_sigma_intercept}{(\code{numeric}) Coefficients for the slope SD.}
+\item{slope_sigma_intercept}{(\code{numeric}) Intercept for the slope standard deviation predictor.}
 
-\item{slope_sigma_coefficients}{(\code{numeric}) Coefficients for the slope SD.}
+\item{slope_sigma_coefficients}{(\code{numeric}) Covariate coefficients for the slope standard deviation predictor.}
 
 \item{sigma}{(\code{numeric}) Observation-error standard deviation.}
 
-\item{link_dsld}{(\code{numeric}) Link coefficients.}
+\item{link_dsld}{(\code{numeric}) Coefficient for the DSLD association link.}
 
-\item{link_identity}{(\code{numeric}) Link coefficients.}
+\item{link_identity}{(\code{numeric}) Coefficient for the identity association link.}
 
 \item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
 }

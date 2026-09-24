@@ -49,53 +49,53 @@ NULL
 #'
 #' @rdname LongitudinalSteinFojoCov-class
 #' @typed mu_b_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline mean.
 #' @typed mu_s_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the shrinkage mean.
 #' @typed mu_g_formula: formula
-#'   One-sided covariate formulas for the mean parameters.
+#'   One-sided formula for subject-level covariate effects on the growth mean.
 #' @typed omega_b_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the baseline standard deviation.
 #' @typed omega_s_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the shrinkage standard deviation.
 #' @typed omega_g_formula: formula
-#'   One-sided covariate formulas for the variance parameters.
+#'   One-sided formula for subject-level covariate effects on the growth standard deviation.
 #' @typed mu_b_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the baseline mean predictor.
 #' @typed mu_s_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the shrinkage mean predictor.
 #' @typed mu_g_parametrization: character
-#'   Parametrization for the mean parameters.
+#'   Parametrization of the growth mean predictor.
 #' @typed omega_b_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the baseline standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_s_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the shrinkage standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed omega_g_parametrization: character
-#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#'   Parametrization of the growth standard deviation predictor. Only `"exponential"` and `"log-linear"` are supported.
 #' @typed mu_b_intercept_prior: Prior
-#'   Priors for the baseline log-mean predictor.
+#'   Prior for the intercept of the baseline mean predictor.
 #' @typed mu_b_coefficients_prior: Prior
-#'   Priors for the baseline log-mean predictor.
+#'   Prior for the covariate coefficients of the baseline mean predictor.
 #' @typed omega_b_intercept_prior: Prior
-#'   Priors for the baseline log-SD predictor.
+#'   Prior for the intercept of the baseline standard deviation predictor.
 #' @typed omega_b_coefficients_prior: Prior
-#'   Priors for the baseline log-SD predictor.
+#'   Prior for the covariate coefficients of the baseline standard deviation predictor.
 #' @typed mu_s_intercept_prior: Prior
-#'   Priors for the shrinkage log-mean predictor.
+#'   Prior for the intercept of the shrinkage mean predictor.
 #' @typed mu_s_coefficients_prior: Prior
-#'   Priors for the shrinkage log-mean predictor.
+#'   Prior for the covariate coefficients of the shrinkage mean predictor.
 #' @typed omega_s_intercept_prior: Prior
-#'   Priors for the shrinkage log-SD predictor.
+#'   Prior for the intercept of the shrinkage standard deviation predictor.
 #' @typed omega_s_coefficients_prior: Prior
-#'   Priors for the shrinkage log-SD predictor.
+#'   Prior for the covariate coefficients of the shrinkage standard deviation predictor.
 #' @typed mu_g_intercept_prior: Prior
-#'   Priors for the growth log-mean predictor.
+#'   Prior for the intercept of the growth mean predictor.
 #' @typed mu_g_coefficients_prior: Prior
-#'   Priors for the growth log-mean predictor.
+#'   Prior for the covariate coefficients of the growth mean predictor.
 #' @typed omega_g_intercept_prior: Prior
-#'   Priors for the growth log-SD predictor.
+#'   Prior for the intercept of the growth standard deviation predictor.
 #' @typed omega_g_coefficients_prior: Prior
-#'   Priors for the growth log-SD predictor.
+#'   Prior for the covariate coefficients of the growth standard deviation predictor.
 #' @typed sigma: Prior
 #'   Prior for the observation-error standard deviation.
 #' @typed scaled_variance: logical

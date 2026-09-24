@@ -34,23 +34,23 @@ NULL
 #' @typed times: numeric
 #'   Observation times.
 #' @typed mu_intercept: numeric
-#'   Coefficients for the subject intercept.
+#'   Intercept for the subject intercept predictor.
 #' @typed mu_coefficients: numeric
-#'   Coefficients for the subject intercept.
+#'   Covariate coefficients for the subject intercept predictor.
 #' @typed slope_mu_intercept: numeric
-#'   Coefficients for the mean slope.
+#'   Intercept for the mean slope predictor.
 #' @typed slope_mu_coefficients: numeric
-#'   Coefficients for the mean slope.
+#'   Covariate coefficients for the mean slope predictor.
 #' @typed slope_sigma_intercept: numeric
-#'   Coefficients for the slope SD.
+#'   Intercept for the slope standard deviation predictor.
 #' @typed slope_sigma_coefficients: numeric
-#'   Coefficients for the slope SD.
+#'   Covariate coefficients for the slope standard deviation predictor.
 #' @typed sigma: numeric
 #'   Observation-error standard deviation.
 #' @typed link_dsld: numeric
-#'   Link coefficients.
+#'   Coefficient for the DSLD association link.
 #' @typed link_identity: numeric
-#'   Link coefficients.
+#'   Coefficient for the identity association link.
 #'
 #' @rdname SimLongitudinalRandomSlopeCov-class
 #' @returns A `SimLongitudinalRandomSlopeCov` object.

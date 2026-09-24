@@ -53,81 +53,81 @@ SimLongitudinalGSFCov(
 \arguments{
 \item{times}{(\code{numeric}) Observation times.}
 
-\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline mean.}
 
-\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_b_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the baseline standard deviation.}
 
-\item{mu_s_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_s_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the shrinkage mean.}
 
-\item{omega_s_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_s_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the shrinkage standard deviation.}
 
-\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth mean.}
 
-\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_g_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the growth standard deviation.}
 
-\item{mu_phi_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+\item{mu_phi_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the mean of the treatment fraction on the logit scale.}
 
-\item{omega_phi_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+\item{omega_phi_formula}{(\code{formula}) One-sided formula for subject-level covariate effects on the standard deviation of the treatment fraction on the logit scale.}
 
-\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_b_parametrization}{(\code{character}) Parametrization of the baseline mean predictor.}
 
-\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization of the baseline standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_s_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_s_parametrization}{(\code{character}) Parametrization of the shrinkage mean predictor.}
 
-\item{omega_s_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_s_parametrization}{(\code{character}) Parametrization of the shrinkage standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_g_parametrization}{(\code{character}) Parametrization of the growth mean predictor.}
 
-\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_g_parametrization}{(\code{character}) Parametrization of the growth standard deviation predictor. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_phi_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+\item{mu_phi_parametrization}{(\code{character}) Parametrization of the mean predictor for the treatment fraction on the logit scale.}
 
-\item{omega_phi_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_phi_parametrization}{(\code{character}) Parametrization of the standard deviation predictor for the treatment fraction on the logit scale. Only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{mu_b_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_b_intercept}{(\code{numeric}) Intercept for the baseline mean predictor.}
 
-\item{mu_b_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_b_coefficients}{(\code{numeric}) Covariate coefficients for the baseline mean predictor.}
 
-\item{omega_b_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_b_intercept}{(\code{numeric}) Intercept for the baseline standard deviation predictor.}
 
-\item{omega_b_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_b_coefficients}{(\code{numeric}) Covariate coefficients for the baseline standard deviation predictor.}
 
-\item{mu_s_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_s_intercept}{(\code{numeric}) Intercept for the shrinkage mean predictor.}
 
-\item{mu_s_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_s_coefficients}{(\code{numeric}) Covariate coefficients for the shrinkage mean predictor.}
 
-\item{omega_s_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_s_intercept}{(\code{numeric}) Intercept for the shrinkage standard deviation predictor.}
 
-\item{omega_s_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_s_coefficients}{(\code{numeric}) Covariate coefficients for the shrinkage standard deviation predictor.}
 
-\item{mu_g_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_g_intercept}{(\code{numeric}) Intercept for the growth mean predictor.}
 
-\item{mu_g_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_g_coefficients}{(\code{numeric}) Covariate coefficients for the growth mean predictor.}
 
-\item{omega_g_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_g_intercept}{(\code{numeric}) Intercept for the growth standard deviation predictor.}
 
-\item{omega_g_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_g_coefficients}{(\code{numeric}) Covariate coefficients for the growth standard deviation predictor.}
 
-\item{mu_phi_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+\item{mu_phi_intercept}{(\code{numeric}) Intercept for the treatment fraction on the logit scale mean predictor.}
 
-\item{mu_phi_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+\item{mu_phi_coefficients}{(\code{numeric}) Covariate coefficients for the treatment fraction on the logit scale mean predictor.}
 
-\item{omega_phi_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+\item{omega_phi_intercept}{(\code{numeric}) Intercept for the treatment fraction on the logit scale standard deviation predictor.}
 
-\item{omega_phi_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+\item{omega_phi_coefficients}{(\code{numeric}) Covariate coefficients for the treatment fraction on the logit scale standard deviation predictor.}
 
 \item{sigma}{(\code{numeric}) Observation-error standard deviation.}
 
-\item{link_dsld}{(\code{numeric}) Link coefficients.}
+\item{link_dsld}{(\code{numeric}) Coefficient for the DSLD association link.}
 
-\item{link_ttg}{(\code{numeric}) Link coefficients.}
+\item{link_ttg}{(\code{numeric}) Coefficient for the TTG association link.}
 
-\item{link_identity}{(\code{numeric}) Link coefficients.}
+\item{link_identity}{(\code{numeric}) Coefficient for the identity association link.}
 
-\item{link_growth}{(\code{numeric}) Link coefficients.}
+\item{link_growth}{(\code{numeric}) Coefficient for the growth association link.}
 
-\item{link_shrinkage}{(\code{numeric}) Link coefficients.}
+\item{link_shrinkage}{(\code{numeric}) Coefficient for the shrinkage association link.}
 
 \item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
 }
