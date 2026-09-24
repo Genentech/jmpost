@@ -46,27 +46,83 @@ NULL
 #' intercept. Predictor parametrizations have the same meaning as in
 #' [LongitudinalSteinFojoCov()].
 #'
-#' @param mu_b_formula,mu_g_formula,mu_c_formula,mu_p_formula
+#' @rdname LongitudinalClaretBrunoCov-class
+#' @typed mu_b_formula: formula
 #'   One-sided covariate formulas for the mean parameters.
-#' @param omega_b_formula,omega_g_formula,omega_c_formula,omega_p_formula
+#' @typed mu_g_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed mu_c_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed mu_p_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed omega_b_formula: formula
 #'   One-sided covariate formulas for the variance parameters.
-#' @param mu_b_parametrization,mu_g_parametrization,mu_c_parametrization,mu_p_parametrization
+#' @typed omega_g_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed omega_c_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed omega_p_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed mu_b_parametrization: character
 #'   Parametrization for the mean parameters.
-#' @param omega_b_parametrization,omega_g_parametrization,omega_c_parametrization,omega_p_parametrization
-#'   Parametrization for the standard deviation parameters; only
-#'   `"exponential"` and `"log-linear"` are supported.
-#' @param mu_b_intercept_prior,mu_g_intercept_prior,mu_c_intercept_prior,mu_p_intercept_prior
+#' @typed mu_g_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed mu_c_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed mu_p_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed omega_b_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_g_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_c_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_p_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed mu_b_intercept_prior: Prior
 #'   Priors for the intercepts of the mean parameters.
-#' @param mu_b_coefficients_prior,mu_g_coefficients_prior,mu_c_coefficients_prior,mu_p_coefficients_prior
+#' @typed mu_g_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_c_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_p_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_b_coefficients_prior: Prior
 #'   Priors for the coefficients of the mean parameters.
-#' @param omega_b_intercept_prior,omega_g_intercept_prior,omega_c_intercept_prior,omega_p_intercept_prior
+#' @typed mu_g_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed mu_c_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed mu_p_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed omega_b_intercept_prior: Prior
 #'   Priors for the intercepts of the variance parameters.
-#' @param omega_b_coefficients_prior,omega_g_coefficients_prior,omega_c_coefficients_prior,omega_p_coefficients_prior
+#' @typed omega_g_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_c_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_p_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_b_coefficients_prior: Prior
 #'   Priors for the coefficients of the variance parameters.
-#' @param sigma Observation-error standard deviation prior.
-#' @param scaled_variance Whether to use multiplicative observation error.
-#' @param centred_baseline,centred_growth,centred_resistance,centred_inhibition Whether to use centred
-#'   parameterizations.
+#' @typed omega_g_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed omega_c_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed omega_p_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed sigma: Prior
+#'   Observation-error standard deviation prior.
+#' @typed scaled_variance: logical
+#'   Whether to use multiplicative observation error.
+#' @typed centred_baseline: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_growth: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_resistance: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_inhibition: logical
+#'   Whether to use centred parameterizations.
 #' @returns A `LongitudinalClaretBrunoCov` object.
 #' @export
 LongitudinalClaretBrunoCov <- function(
@@ -269,6 +325,7 @@ LongitudinalClaretBrunoCov <- function(
 }
 
 #' @export
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalClaretBrunoCov <- function(
     object,
     generator = NULL,
@@ -298,6 +355,7 @@ enableGQ.LongitudinalClaretBrunoCov <- function(
     ))
 }
 
+#' @rdname gq_population_stan_data
 #' @export
 gq_population_stan_data.LongitudinalClaretBrunoCov <- function(
     object,
@@ -340,6 +398,7 @@ gq_population_stan_data.LongitudinalClaretBrunoCov <- function(
 }
 
 #' @export
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalClaretBrunoCov <- function(object, ...) {
     object@stan <- merge(
         object@stan,
@@ -348,6 +407,7 @@ enableLink.LongitudinalClaretBrunoCov <- function(object, ...) {
     object
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalClaretBrunoCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -360,6 +420,7 @@ linkDSLD.LongitudinalClaretBrunoCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkTTG.LongitudinalClaretBrunoCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -372,6 +433,7 @@ linkTTG.LongitudinalClaretBrunoCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalClaretBrunoCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -384,6 +446,7 @@ linkIdentity.LongitudinalClaretBrunoCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalClaretBrunoCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -395,10 +458,12 @@ linkGrowth.LongitudinalClaretBrunoCov <- function(
         prior = prior
     )
 }
+#' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalClaretBrunoCov <- function(object, ...) {
     c("b", "g", "c", "p")
 }
+#' @rdname getRandomEffectsNames
 #' @export
 getRandomEffectsNames.LongitudinalClaretBrunoCov <- function(object, ...) {
     c(
@@ -409,6 +474,7 @@ getRandomEffectsNames.LongitudinalClaretBrunoCov <- function(object, ...) {
     )
 }
 
+#' @rdname longitudinal_model_stan_data
 #' @export
 longitudinal_model_stan_data.LongitudinalClaretBrunoCov <- function(
     model,
@@ -448,12 +514,14 @@ longitudinal_model_stan_data.LongitudinalClaretBrunoCov <- function(
         recursive = FALSE
     )
 }
+#' @rdname required_longitudinal_covs
 #' @export
 required_longitudinal_covs.LongitudinalClaretBrunoCov <- function(object, ...) {
     unique(unlist(lapply(c("mu_b", "mu_g", "mu_c", "mu_p"), function(name) {
         all.vars(slot(object, paste0(name, "_formula")))
     })))
 }
+#' @rdname required_simulation_covariates
 #' @export
 required_simulation_covariates.LongitudinalClaretBrunoCov <- function(
     object,

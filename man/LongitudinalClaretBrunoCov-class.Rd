@@ -4,10 +4,137 @@
 \name{LongitudinalClaretBrunoCov-class}
 \alias{LongitudinalClaretBrunoCov-class}
 \alias{.LongitudinalClaretBrunoCov}
+\alias{LongitudinalClaretBrunoCov}
 \title{Claret-Bruno longitudinal model with subject-level covariates}
+\usage{
+LongitudinalClaretBrunoCov(
+  mu_b_formula = ~study,
+  omega_b_formula = ~study,
+  mu_g_formula = ~arm,
+  omega_g_formula = ~arm,
+  mu_c_formula = ~arm,
+  omega_c_formula = ~arm,
+  mu_p_formula = ~arm,
+  omega_p_formula = ~arm,
+  mu_b_parametrization = "linear",
+  omega_b_parametrization = "log-linear",
+  mu_g_parametrization = "linear",
+  omega_g_parametrization = "log-linear",
+  mu_c_parametrization = "linear",
+  omega_c_parametrization = "log-linear",
+  mu_p_parametrization = "linear",
+  omega_p_parametrization = "log-linear",
+  mu_b_intercept_prior = prior_normal(log(60), 1),
+  mu_b_coefficients_prior = prior_normal(0, 1),
+  omega_b_intercept_prior = prior_normal(log(0.2), 1),
+  omega_b_coefficients_prior = prior_normal(0, 1),
+  mu_g_intercept_prior = prior_normal(log(1), 1),
+  mu_g_coefficients_prior = prior_normal(0, 1),
+  omega_g_intercept_prior = prior_normal(log(0.2), 1),
+  omega_g_coefficients_prior = prior_normal(0, 1),
+  mu_c_intercept_prior = prior_normal(log(0.4), 1),
+  mu_c_coefficients_prior = prior_normal(0, 1),
+  omega_c_intercept_prior = prior_normal(log(0.2), 1),
+  omega_c_coefficients_prior = prior_normal(0, 1),
+  mu_p_intercept_prior = prior_normal(log(2), 1),
+  mu_p_coefficients_prior = prior_normal(0, 1),
+  omega_p_intercept_prior = prior_normal(log(0.2), 1),
+  omega_p_coefficients_prior = prior_normal(0, 1),
+  sigma = prior_lognormal(log(0.1), 1),
+  scaled_variance = FALSE,
+  centred_baseline = TRUE,
+  centred_growth = FALSE,
+  centred_resistance = FALSE,
+  centred_inhibition = FALSE
+)
+}
+\arguments{
+\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_c_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_c_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_p_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_p_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_c_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_c_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_p_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_p_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_b_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+
+\item{mu_b_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+
+\item{omega_b_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+
+\item{omega_b_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+
+\item{mu_g_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+
+\item{mu_g_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+
+\item{omega_g_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+
+\item{omega_g_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+
+\item{mu_c_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+
+\item{mu_c_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+
+\item{omega_c_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+
+\item{omega_c_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+
+\item{mu_p_intercept_prior}{(\code{Prior}) Priors for the intercepts of the mean parameters.}
+
+\item{mu_p_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the mean parameters.}
+
+\item{omega_p_intercept_prior}{(\code{Prior}) Priors for the intercepts of the variance parameters.}
+
+\item{omega_p_coefficients_prior}{(\code{Prior}) Priors for the coefficients of the variance parameters.}
+
+\item{sigma}{(\code{Prior}) Observation-error standard deviation prior.}
+
+\item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
+
+\item{centred_baseline}{(\code{logical}) Whether to use centred parameterizations.}
+
+\item{centred_growth}{(\code{logical}) Whether to use centred parameterizations.}
+
+\item{centred_resistance}{(\code{logical}) Whether to use centred parameterizations.}
+
+\item{centred_inhibition}{(\code{logical}) Whether to use centred parameterizations.}
+}
+\value{
+A \code{LongitudinalClaretBrunoCov} object.
+}
 \description{
 Separate covariate predictors model the log-normal distribution parameters
 for baseline tumour size, growth, resistance, and growth inhibition.
+
+Formula intercept columns are removed because every predictor has a separate
+intercept. Predictor parametrizations have the same meaning as in
+\code{\link[=LongitudinalSteinFojoCov]{LongitudinalSteinFojoCov()}}.
 }
 \section{Available Links}{
 

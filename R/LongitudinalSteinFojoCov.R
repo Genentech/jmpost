@@ -47,29 +47,65 @@ NULL
 #' `intercept ^ (X beta)`, and `log-linear` uses
 #' `exp(intercept + X beta)`.
 #'
-#' @param mu_b_formula,mu_s_formula,mu_g_formula
+#' @rdname LongitudinalSteinFojoCov-class
+#' @typed mu_b_formula: formula
 #'   One-sided covariate formulas for the mean parameters.
-#' @param omega_b_formula,omega_s_formula,omega_g_formula
+#' @typed mu_s_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed mu_g_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed omega_b_formula: formula
 #'   One-sided covariate formulas for the variance parameters.
-#' @param mu_b_parametrization,mu_s_parametrization,mu_g_parametrization
+#' @typed omega_s_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed omega_g_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed mu_b_parametrization: character
 #'   Parametrization for the mean parameters.
-#' @param omega_b_parametrization,omega_s_parametrization,omega_g_parametrization
-#'   Parametrization for the standard deviation parameters; only
-#'   `"exponential"` and `"log-linear"` are supported.
-#' @param mu_b_intercept_prior,mu_b_coefficients_prior Priors for the baseline log-mean predictor.
-#' @param omega_b_intercept_prior,omega_b_coefficients_prior Priors for the baseline log-SD predictor.
-#' @param mu_s_intercept_prior,mu_s_coefficients_prior Priors for the shrinkage log-mean predictor.
-#' @param omega_s_intercept_prior,omega_s_coefficients_prior Priors for the shrinkage log-SD predictor.
-#' @param mu_g_intercept_prior,mu_g_coefficients_prior Priors for the growth log-mean predictor.
-#' @param omega_g_intercept_prior,omega_g_coefficients_prior Priors for the growth log-SD predictor.
-#' @param sigma Prior for the observation-error standard deviation.
-#' @param scaled_variance Whether to use multiplicative observation error.
-#' @param centred_baseline Whether to use a centred parameterization for the
-#'   subject-specific baseline effects.
-#' @param centred_shrinkage Whether to use a centred parameterization for the
-#'   subject-specific shrinkage effects.
-#' @param centred_growth Whether to use a centred parameterization for the
-#'   subject-specific growth effects.
+#' @typed mu_s_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed mu_g_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed omega_b_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_s_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_g_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed mu_b_intercept_prior: Prior
+#'   Priors for the baseline log-mean predictor.
+#' @typed mu_b_coefficients_prior: Prior
+#'   Priors for the baseline log-mean predictor.
+#' @typed omega_b_intercept_prior: Prior
+#'   Priors for the baseline log-SD predictor.
+#' @typed omega_b_coefficients_prior: Prior
+#'   Priors for the baseline log-SD predictor.
+#' @typed mu_s_intercept_prior: Prior
+#'   Priors for the shrinkage log-mean predictor.
+#' @typed mu_s_coefficients_prior: Prior
+#'   Priors for the shrinkage log-mean predictor.
+#' @typed omega_s_intercept_prior: Prior
+#'   Priors for the shrinkage log-SD predictor.
+#' @typed omega_s_coefficients_prior: Prior
+#'   Priors for the shrinkage log-SD predictor.
+#' @typed mu_g_intercept_prior: Prior
+#'   Priors for the growth log-mean predictor.
+#' @typed mu_g_coefficients_prior: Prior
+#'   Priors for the growth log-mean predictor.
+#' @typed omega_g_intercept_prior: Prior
+#'   Priors for the growth log-SD predictor.
+#' @typed omega_g_coefficients_prior: Prior
+#'   Priors for the growth log-SD predictor.
+#' @typed sigma: Prior
+#'   Prior for the observation-error standard deviation.
+#' @typed scaled_variance: logical
+#'   Whether to use multiplicative observation error.
+#' @typed centred_baseline: logical
+#'   Whether to use a centred parameterization for the subject-specific baseline effects.
+#' @typed centred_shrinkage: logical
+#'   Whether to use a centred parameterization for the subject-specific shrinkage effects.
+#' @typed centred_growth: logical
+#'   Whether to use a centred parameterization for the subject-specific growth effects.
 #'
 #' @returns A `LongitudinalSteinFojoCov` object.
 #' @export

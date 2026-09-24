@@ -50,26 +50,83 @@ NULL
 #' The `mu_phi` predictor is the location of the normal distribution on the
 #' logit scale; `phi` itself is obtained by applying the inverse-logit transform.
 #'
-#' @param mu_b_formula,mu_s_formula,mu_g_formula,mu_phi_formula
+#' @rdname LongitudinalGSFCov-class
+#' @typed mu_b_formula: formula
 #'   One-sided covariate formulas for the mean parameters.
-#' @param omega_b_formula,omega_s_formula,omega_g_formula,omega_phi_formula
+#' @typed mu_s_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed mu_g_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed mu_phi_formula: formula
+#'   One-sided covariate formulas for the mean parameters.
+#' @typed omega_b_formula: formula
 #'   One-sided covariate formulas for the variance parameters.
-#' @param mu_b_parametrization,mu_s_parametrization,mu_g_parametrization,mu_phi_parametrization
+#' @typed omega_s_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed omega_g_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed omega_phi_formula: formula
+#'   One-sided covariate formulas for the variance parameters.
+#' @typed mu_b_parametrization: character
 #'   Parametrization for the mean parameters.
-#' @param omega_b_parametrization,omega_s_parametrization,omega_g_parametrization,omega_phi_parametrization
-#'   Parametrization for the standard deviation parameters; only
-#'   `"exponential"` and `"log-linear"` are supported.
-#' @param mu_b_intercept_prior,mu_s_intercept_prior,mu_g_intercept_prior,mu_phi_intercept_prior
+#' @typed mu_s_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed mu_g_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed mu_phi_parametrization: character
+#'   Parametrization for the mean parameters.
+#' @typed omega_b_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_s_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_g_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed omega_phi_parametrization: character
+#'   Parametrization for the standard deviation parameters; only `"exponential"` and `"log-linear"` are supported.
+#' @typed mu_b_intercept_prior: Prior
 #'   Priors for the intercepts of the mean parameters.
-#' @param mu_b_coefficients_prior,mu_s_coefficients_prior,mu_g_coefficients_prior,mu_phi_coefficients_prior
+#' @typed mu_s_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_g_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_phi_intercept_prior: Prior
+#'   Priors for the intercepts of the mean parameters.
+#' @typed mu_b_coefficients_prior: Prior
 #'   Priors for the coefficients of the mean parameters.
-#' @param omega_b_intercept_prior,omega_s_intercept_prior,omega_g_intercept_prior,omega_phi_intercept_prior
+#' @typed mu_s_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed mu_g_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed mu_phi_coefficients_prior: Prior
+#'   Priors for the coefficients of the mean parameters.
+#' @typed omega_b_intercept_prior: Prior
 #'   Priors for the intercepts of the variance parameters.
-#' @param omega_b_coefficients_prior,omega_s_coefficients_prior,omega_g_coefficients_prior,omega_phi_coefficients_prior
+#' @typed omega_s_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_g_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_phi_intercept_prior: Prior
+#'   Priors for the intercepts of the variance parameters.
+#' @typed omega_b_coefficients_prior: Prior
 #'   Priors for the coefficients of the variance parameters.
-#' @param sigma Observation-error standard deviation prior.
-#' @param scaled_variance Whether to use multiplicative observation error.
-#' @param centred_baseline,centred_shrinkage,centred_growth,centred_phi Whether to use centred parameterizations.
+#' @typed omega_s_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed omega_g_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed omega_phi_coefficients_prior: Prior
+#'   Priors for the coefficients of the variance parameters.
+#' @typed sigma: Prior
+#'   Observation-error standard deviation prior.
+#' @typed scaled_variance: logical
+#'   Whether to use multiplicative observation error.
+#' @typed centred_baseline: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_shrinkage: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_growth: logical
+#'   Whether to use centred parameterizations.
+#' @typed centred_phi: logical
+#'   Whether to use centred parameterizations.
 #' @returns A `LongitudinalGSFCov` object.
 #' @export
 LongitudinalGSFCov <- function(
@@ -287,6 +344,7 @@ LongitudinalGSFCov <- function(
 }
 
 #' @export
+#' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.LongitudinalGSFCov <- function(
     object,
     generator = NULL,
@@ -316,6 +374,7 @@ enableGQ.LongitudinalGSFCov <- function(
     ))
 }
 
+#' @rdname gq_population_stan_data
 #' @export
 gq_population_stan_data.LongitudinalGSFCov <- function(
     object,
@@ -358,12 +417,14 @@ gq_population_stan_data.LongitudinalGSFCov <- function(
 }
 
 #' @export
+#' @returns The longitudinal model with its link-related Stan code enabled.
 enableLink.LongitudinalGSFCov <- function(object, ...) {
     object@stan <- merge(object@stan, StanModule("lm-gsf-cov/link.stan"))
     object
 }
 
 #' @export
+#' @returns A `LinkComponent` object.
 linkDSLD.LongitudinalGSFCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -376,6 +437,7 @@ linkDSLD.LongitudinalGSFCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkTTG.LongitudinalGSFCov <- function(prior = prior_normal(0, 2), model, ...) {
     LinkComponent(
         key = "link_ttg",
@@ -384,6 +446,7 @@ linkTTG.LongitudinalGSFCov <- function(prior = prior_normal(0, 2), model, ...) {
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkIdentity.LongitudinalGSFCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -396,6 +459,7 @@ linkIdentity.LongitudinalGSFCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkGrowth.LongitudinalGSFCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -408,6 +472,7 @@ linkGrowth.LongitudinalGSFCov <- function(
     )
 }
 #' @export
+#' @returns A `LinkComponent` object.
 linkShrinkage.LongitudinalGSFCov <- function(
     prior = prior_normal(0, 2),
     model,
@@ -419,10 +484,12 @@ linkShrinkage.LongitudinalGSFCov <- function(
         prior = prior
     )
 }
+#' @rdname getPredictionNames
 #' @export
 getPredictionNames.LongitudinalGSFCov <- function(object, ...) {
     c("b", "s", "g", "phi")
 }
+#' @rdname getRandomEffectsNames
 #' @export
 getRandomEffectsNames.LongitudinalGSFCov <- function(object, ...) {
     c(
@@ -432,6 +499,7 @@ getRandomEffectsNames.LongitudinalGSFCov <- function(object, ...) {
         phi = "lm_gsfc_psi_phi"
     )
 }
+#' @rdname longitudinal_model_stan_data
 #' @export
 longitudinal_model_stan_data.LongitudinalGSFCov <- function(model, subject) {
     subject_data <- as.data.frame(harmonise(subject))
@@ -468,12 +536,14 @@ longitudinal_model_stan_data.LongitudinalGSFCov <- function(model, subject) {
         recursive = FALSE
     )
 }
+#' @rdname required_longitudinal_covs
 #' @export
 required_longitudinal_covs.LongitudinalGSFCov <- function(object, ...) {
     unique(unlist(lapply(c("mu_b", "mu_s", "mu_g", "mu_phi"), function(name) {
         all.vars(slot(object, paste0(name, "_formula")))
     })))
 }
+#' @rdname required_simulation_covariates
 #' @export
 required_simulation_covariates.LongitudinalGSFCov <- function(object, ...) {
     unique(unlist(lapply(

@@ -51,30 +51,85 @@ SimLongitudinalGSFCov(
 )
 }
 \arguments{
-\item{times}{Observation times.}
+\item{times}{(\code{numeric}) Observation times.}
 
-\item{mu_b_formula, mu_s_formula, mu_g_formula, mu_phi_formula}{One-sided covariate formulas for the mean parameters.}
+\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
 
-\item{omega_b_formula, omega_s_formula, omega_g_formula, omega_phi_formula}{One-sided covariate formulas for the variance parameters.}
+\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
 
-\item{mu_b_parametrization, mu_s_parametrization, mu_g_parametrization, mu_phi_parametrization}{Parametrization for the mean parameters.}
+\item{mu_s_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
 
-\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization, omega_phi_parametrization}{Parametrization for the standard deviation parameters; only
-\code{"exponential"} and \code{"log-linear"} are supported.}
+\item{omega_s_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
 
-\item{mu_b_intercept, mu_s_intercept, mu_g_intercept, mu_phi_intercept}{Intercepts for the mean parameters.}
+\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
 
-\item{mu_b_coefficients, mu_s_coefficients, mu_g_coefficients, mu_phi_coefficients}{Coefficients for the mean parameters.}
+\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
 
-\item{omega_b_intercept, omega_s_intercept, omega_g_intercept, omega_phi_intercept}{Intercepts for the variance parameters.}
+\item{mu_phi_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
 
-\item{omega_b_coefficients, omega_s_coefficients, omega_g_coefficients, omega_phi_coefficients}{Coefficients for the variance parameters.}
+\item{omega_phi_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
 
-\item{sigma}{Observation-error standard deviation.}
+\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
 
-\item{link_dsld, link_ttg, link_identity, link_growth, link_shrinkage}{Link coefficients.}
+\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
 
-\item{scaled_variance}{Whether to use multiplicative observation error.}
+\item{mu_s_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_s_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_phi_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_phi_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_b_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+
+\item{mu_b_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+
+\item{omega_b_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+
+\item{omega_b_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+
+\item{mu_s_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+
+\item{mu_s_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+
+\item{omega_s_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+
+\item{omega_s_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+
+\item{mu_g_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+
+\item{mu_g_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+
+\item{omega_g_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+
+\item{omega_g_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+
+\item{mu_phi_intercept}{(\code{numeric}) Intercepts for the mean parameters.}
+
+\item{mu_phi_coefficients}{(\code{numeric}) Coefficients for the mean parameters.}
+
+\item{omega_phi_intercept}{(\code{numeric}) Intercepts for the variance parameters.}
+
+\item{omega_phi_coefficients}{(\code{numeric}) Coefficients for the variance parameters.}
+
+\item{sigma}{(\code{numeric}) Observation-error standard deviation.}
+
+\item{link_dsld}{(\code{numeric}) Link coefficients.}
+
+\item{link_ttg}{(\code{numeric}) Link coefficients.}
+
+\item{link_identity}{(\code{numeric}) Link coefficients.}
+
+\item{link_growth}{(\code{numeric}) Link coefficients.}
+
+\item{link_shrinkage}{(\code{numeric}) Link coefficients.}
+
+\item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
 }
 \value{
 A \code{SimLongitudinalGSFCov} object.

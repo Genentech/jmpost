@@ -31,13 +31,28 @@ NULL
 #' Construct a random-slope simulator with subject-level covariates
 #'
 #' @inheritParams LongitudinalRandomSlopeCov
-#' @param times Observation times.
-#' @param mu_intercept,mu_coefficients Coefficients for the subject intercept.
-#' @param slope_mu_intercept,slope_mu_coefficients Coefficients for the mean slope.
-#' @param slope_sigma_intercept,slope_sigma_coefficients Coefficients for the slope SD.
-#' @param sigma Observation-error standard deviation.
-#' @param link_dsld,link_identity Link coefficients.
+#' @typed times: numeric
+#'   Observation times.
+#' @typed mu_intercept: numeric
+#'   Coefficients for the subject intercept.
+#' @typed mu_coefficients: numeric
+#'   Coefficients for the subject intercept.
+#' @typed slope_mu_intercept: numeric
+#'   Coefficients for the mean slope.
+#' @typed slope_mu_coefficients: numeric
+#'   Coefficients for the mean slope.
+#' @typed slope_sigma_intercept: numeric
+#'   Coefficients for the slope SD.
+#' @typed slope_sigma_coefficients: numeric
+#'   Coefficients for the slope SD.
+#' @typed sigma: numeric
+#'   Observation-error standard deviation.
+#' @typed link_dsld: numeric
+#'   Link coefficients.
+#' @typed link_identity: numeric
+#'   Link coefficients.
 #'
+#' @rdname SimLongitudinalRandomSlopeCov-class
 #' @returns A `SimLongitudinalRandomSlopeCov` object.
 #' @export
 SimLongitudinalRandomSlopeCov <- function(

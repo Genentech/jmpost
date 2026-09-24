@@ -328,16 +328,35 @@ NULL
 #' `intercept ^ (X beta)`, and `log-linear` uses
 #' `exp(intercept + X beta)`.
 #'
-#' @param mu_formula,slope_mu_formula,slope_sigma_formula One-sided formulas
-#'   evaluated in the subject-level data.
-#' @param mu_parametrization,slope_mu_parametrization,slope_sigma_parametrization
-#'   Predictor parametrizations. The slope standard deviation allows only
-#'   `"exponential"` and `"log-linear"`.
-#' @param mu_intercept_prior,mu_coefficients_prior Priors for the subject-intercept predictor.
-#' @param slope_mu_intercept_prior,slope_mu_coefficients_prior Priors for the mean-slope predictor.
-#' @param slope_sigma_intercept_prior,slope_sigma_coefficients_prior Priors for the slope-SD predictor.
-#' @param sigma Prior for the observation-error standard deviation.
-#' @param scaled_variance Whether to use multiplicative observation error.
+#' @rdname LongitudinalRandomSlopeCov-class
+#' @typed mu_formula: formula
+#'   One-sided formulas evaluated in the subject-level data.
+#' @typed slope_mu_formula: formula
+#'   One-sided formulas evaluated in the subject-level data.
+#' @typed slope_sigma_formula: formula
+#'   One-sided formulas evaluated in the subject-level data.
+#' @typed mu_parametrization: character
+#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#' @typed slope_mu_parametrization: character
+#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#' @typed slope_sigma_parametrization: character
+#'   Predictor parametrizations. The slope standard deviation allows only `"exponential"` and `"log-linear"`.
+#' @typed mu_intercept_prior: Prior
+#'   Priors for the subject-intercept predictor.
+#' @typed mu_coefficients_prior: Prior
+#'   Priors for the subject-intercept predictor.
+#' @typed slope_mu_intercept_prior: Prior
+#'   Priors for the mean-slope predictor.
+#' @typed slope_mu_coefficients_prior: Prior
+#'   Priors for the mean-slope predictor.
+#' @typed slope_sigma_intercept_prior: Prior
+#'   Priors for the slope-SD predictor.
+#' @typed slope_sigma_coefficients_prior: Prior
+#'   Priors for the slope-SD predictor.
+#' @typed sigma: Prior
+#'   Prior for the observation-error standard deviation.
+#' @typed scaled_variance: logical
+#'   Whether to use multiplicative observation error.
 #'
 #' @returns A `LongitudinalRandomSlopeCov` object.
 #' @export

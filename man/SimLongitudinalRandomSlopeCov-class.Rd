@@ -4,7 +4,69 @@
 \name{SimLongitudinalRandomSlopeCov-class}
 \alias{SimLongitudinalRandomSlopeCov-class}
 \alias{.SimLongitudinalRandomSlopeCov}
+\alias{SimLongitudinalRandomSlopeCov}
 \title{Simulate a random-slope longitudinal model with covariates}
+\usage{
+SimLongitudinalRandomSlopeCov(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550),
+  mu_formula = ~study,
+  slope_mu_formula = ~arm,
+  slope_sigma_formula = ~arm,
+  mu_parametrization = "linear",
+  slope_mu_parametrization = "linear",
+  slope_sigma_parametrization = "log-linear",
+  mu_intercept = 50,
+  mu_coefficients = numeric(),
+  slope_mu_intercept = 0.01,
+  slope_mu_coefficients = numeric(),
+  slope_sigma_intercept = log(0.5),
+  slope_sigma_coefficients = numeric(),
+  sigma = 2,
+  link_dsld = 0,
+  link_identity = 0,
+  scaled_variance = FALSE
+)
+}
+\arguments{
+\item{times}{(\code{numeric}) Observation times.}
+
+\item{mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+
+\item{slope_mu_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+
+\item{slope_sigma_formula}{(\code{formula}) One-sided formulas evaluated in the subject-level data.}
+
+\item{mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+
+\item{slope_mu_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+
+\item{slope_sigma_parametrization}{(\code{character}) Predictor parametrizations. The slope standard deviation allows only \code{"exponential"} and \code{"log-linear"}.}
+
+\item{mu_intercept}{(\code{numeric}) Coefficients for the subject intercept.}
+
+\item{mu_coefficients}{(\code{numeric}) Coefficients for the subject intercept.}
+
+\item{slope_mu_intercept}{(\code{numeric}) Coefficients for the mean slope.}
+
+\item{slope_mu_coefficients}{(\code{numeric}) Coefficients for the mean slope.}
+
+\item{slope_sigma_intercept}{(\code{numeric}) Coefficients for the slope SD.}
+
+\item{slope_sigma_coefficients}{(\code{numeric}) Coefficients for the slope SD.}
+
+\item{sigma}{(\code{numeric}) Observation-error standard deviation.}
+
+\item{link_dsld}{(\code{numeric}) Link coefficients.}
+
+\item{link_identity}{(\code{numeric}) Link coefficients.}
+
+\item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
+}
+\value{
+A \code{SimLongitudinalRandomSlopeCov} object.
+}
 \description{
 Simulate a random-slope longitudinal model with covariates
+
+Construct a random-slope simulator with subject-level covariates
 }

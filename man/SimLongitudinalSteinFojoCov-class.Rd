@@ -4,7 +4,114 @@
 \name{SimLongitudinalSteinFojoCov-class}
 \alias{SimLongitudinalSteinFojoCov-class}
 \alias{.SimLongitudinalSteinFojoCov}
+\alias{SimLongitudinalSteinFojoCov}
 \title{Simulate a Stein-Fojo longitudinal model with covariates}
+\usage{
+SimLongitudinalSteinFojoCov(
+  times = c(-100, -50, 0, 50, 100, 150, 250, 350, 450, 550)/365,
+  mu_b_formula = ~study,
+  omega_b_formula = ~study,
+  mu_s_formula = ~arm,
+  omega_s_formula = ~arm,
+  mu_g_formula = ~arm,
+  omega_g_formula = ~arm,
+  mu_b_parametrization = "linear",
+  omega_b_parametrization = "log-linear",
+  mu_s_parametrization = "linear",
+  omega_s_parametrization = "log-linear",
+  mu_g_parametrization = "linear",
+  omega_g_parametrization = "log-linear",
+  mu_b_intercept = log(60),
+  mu_b_coefficients = numeric(),
+  omega_b_intercept = log(0.2),
+  omega_b_coefficients = numeric(),
+  mu_s_intercept = log(0.5),
+  mu_s_coefficients = numeric(),
+  omega_s_intercept = log(0.2),
+  omega_s_coefficients = numeric(),
+  mu_g_intercept = log(0.3),
+  mu_g_coefficients = numeric(),
+  omega_g_intercept = log(0.2),
+  omega_g_coefficients = numeric(),
+  sigma = 0.01,
+  link_dsld = 0,
+  link_ttg = 0,
+  link_identity = 0,
+  link_growth = 0,
+  link_shrinkage = 0,
+  scaled_variance = FALSE
+)
+}
+\arguments{
+\item{times}{(\code{numeric}) Observation times.}
+
+\item{mu_b_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_b_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_s_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_s_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_g_formula}{(\code{formula}) One-sided covariate formulas for the mean parameters.}
+
+\item{omega_g_formula}{(\code{formula}) One-sided covariate formulas for the variance parameters.}
+
+\item{mu_b_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_b_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_s_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_s_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_g_parametrization}{(\code{character}) Parametrization for the mean parameters.}
+
+\item{omega_g_parametrization}{(\code{character}) Parametrization for the standard deviation parameters; only \code{"exponential"} and \code{"log-linear"} are supported.}
+
+\item{mu_b_intercept}{(\code{numeric}) Coefficients for the baseline log-mean predictor.}
+
+\item{mu_b_coefficients}{(\code{numeric}) Coefficients for the baseline log-mean predictor.}
+
+\item{omega_b_intercept}{(\code{numeric}) Coefficients for the baseline log-SD predictor.}
+
+\item{omega_b_coefficients}{(\code{numeric}) Coefficients for the baseline log-SD predictor.}
+
+\item{mu_s_intercept}{(\code{numeric}) Coefficients for the shrinkage log-mean predictor.}
+
+\item{mu_s_coefficients}{(\code{numeric}) Coefficients for the shrinkage log-mean predictor.}
+
+\item{omega_s_intercept}{(\code{numeric}) Coefficients for the shrinkage log-SD predictor.}
+
+\item{omega_s_coefficients}{(\code{numeric}) Coefficients for the shrinkage log-SD predictor.}
+
+\item{mu_g_intercept}{(\code{numeric}) Coefficients for the growth log-mean predictor.}
+
+\item{mu_g_coefficients}{(\code{numeric}) Coefficients for the growth log-mean predictor.}
+
+\item{omega_g_intercept}{(\code{numeric}) Coefficients for the growth log-SD predictor.}
+
+\item{omega_g_coefficients}{(\code{numeric}) Coefficients for the growth log-SD predictor.}
+
+\item{sigma}{(\code{numeric}) Observation-error standard deviation.}
+
+\item{link_dsld}{(\code{numeric}) Link coefficients.}
+
+\item{link_ttg}{(\code{numeric}) Link coefficients.}
+
+\item{link_identity}{(\code{numeric}) Link coefficients.}
+
+\item{link_growth}{(\code{numeric}) Link coefficients.}
+
+\item{link_shrinkage}{(\code{numeric}) Link coefficients.}
+
+\item{scaled_variance}{(\code{logical}) Whether to use multiplicative observation error.}
+}
+\value{
+A \code{SimLongitudinalSteinFojoCov} object.
+}
 \description{
 Simulate a Stein-Fojo longitudinal model with covariates
+
+Construct a covariate Stein-Fojo simulator
 }

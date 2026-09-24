@@ -46,16 +46,46 @@ NULL
 #' Construct a covariate Stein-Fojo simulator
 #'
 #' @inheritParams LongitudinalSteinFojoCov
-#' @param times Observation times.
-#' @param mu_b_intercept,mu_b_coefficients Coefficients for the baseline log-mean predictor.
-#' @param omega_b_intercept,omega_b_coefficients Coefficients for the baseline log-SD predictor.
-#' @param mu_s_intercept,mu_s_coefficients Coefficients for the shrinkage log-mean predictor.
-#' @param omega_s_intercept,omega_s_coefficients Coefficients for the shrinkage log-SD predictor.
-#' @param mu_g_intercept,mu_g_coefficients Coefficients for the growth log-mean predictor.
-#' @param omega_g_intercept,omega_g_coefficients Coefficients for the growth log-SD predictor.
-#' @param sigma Observation-error standard deviation.
-#' @param link_dsld,link_ttg,link_identity,link_growth,link_shrinkage Link coefficients.
+#' @typed times: numeric
+#'   Observation times.
+#' @typed mu_b_intercept: numeric
+#'   Coefficients for the baseline log-mean predictor.
+#' @typed mu_b_coefficients: numeric
+#'   Coefficients for the baseline log-mean predictor.
+#' @typed omega_b_intercept: numeric
+#'   Coefficients for the baseline log-SD predictor.
+#' @typed omega_b_coefficients: numeric
+#'   Coefficients for the baseline log-SD predictor.
+#' @typed mu_s_intercept: numeric
+#'   Coefficients for the shrinkage log-mean predictor.
+#' @typed mu_s_coefficients: numeric
+#'   Coefficients for the shrinkage log-mean predictor.
+#' @typed omega_s_intercept: numeric
+#'   Coefficients for the shrinkage log-SD predictor.
+#' @typed omega_s_coefficients: numeric
+#'   Coefficients for the shrinkage log-SD predictor.
+#' @typed mu_g_intercept: numeric
+#'   Coefficients for the growth log-mean predictor.
+#' @typed mu_g_coefficients: numeric
+#'   Coefficients for the growth log-mean predictor.
+#' @typed omega_g_intercept: numeric
+#'   Coefficients for the growth log-SD predictor.
+#' @typed omega_g_coefficients: numeric
+#'   Coefficients for the growth log-SD predictor.
+#' @typed sigma: numeric
+#'   Observation-error standard deviation.
+#' @typed link_dsld: numeric
+#'   Link coefficients.
+#' @typed link_ttg: numeric
+#'   Link coefficients.
+#' @typed link_identity: numeric
+#'   Link coefficients.
+#' @typed link_growth: numeric
+#'   Link coefficients.
+#' @typed link_shrinkage: numeric
+#'   Link coefficients.
 #'
+#' @rdname SimLongitudinalSteinFojoCov-class
 #' @returns A `SimLongitudinalSteinFojoCov` object.
 #' @export
 SimLongitudinalSteinFojoCov <- function(

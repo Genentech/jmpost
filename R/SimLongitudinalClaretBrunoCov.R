@@ -5,17 +5,50 @@ NULL
 #' Simulate a Claret-Bruno longitudinal model with covariates
 #'
 #' @inheritParams LongitudinalClaretBrunoCov
-#' @param times Observation times.
-#' @param mu_b_intercept,mu_g_intercept,mu_c_intercept,mu_p_intercept
+#' @typed times: numeric
+#'   Observation times.
+#' @typed mu_b_intercept: numeric
 #'   Intercepts for the mean parameters.
-#' @param mu_b_coefficients,mu_g_coefficients,mu_c_coefficients,mu_p_coefficients
+#' @typed mu_g_intercept: numeric
+#'   Intercepts for the mean parameters.
+#' @typed mu_c_intercept: numeric
+#'   Intercepts for the mean parameters.
+#' @typed mu_p_intercept: numeric
+#'   Intercepts for the mean parameters.
+#' @typed mu_b_coefficients: numeric
 #'   Coefficients for the mean parameters.
-#' @param omega_b_intercept,omega_g_intercept,omega_c_intercept,omega_p_intercept
+#' @typed mu_g_coefficients: numeric
+#'   Coefficients for the mean parameters.
+#' @typed mu_c_coefficients: numeric
+#'   Coefficients for the mean parameters.
+#' @typed mu_p_coefficients: numeric
+#'   Coefficients for the mean parameters.
+#' @typed omega_b_intercept: numeric
 #'   Intercepts for the variance parameters.
-#' @param omega_b_coefficients,omega_g_coefficients,omega_c_coefficients,omega_p_coefficients
+#' @typed omega_g_intercept: numeric
+#'   Intercepts for the variance parameters.
+#' @typed omega_c_intercept: numeric
+#'   Intercepts for the variance parameters.
+#' @typed omega_p_intercept: numeric
+#'   Intercepts for the variance parameters.
+#' @typed omega_b_coefficients: numeric
 #'   Coefficients for the variance parameters.
-#' @param sigma Observation-error standard deviation.
-#' @param link_dsld,link_ttg,link_identity,link_growth Link coefficients.
+#' @typed omega_g_coefficients: numeric
+#'   Coefficients for the variance parameters.
+#' @typed omega_c_coefficients: numeric
+#'   Coefficients for the variance parameters.
+#' @typed omega_p_coefficients: numeric
+#'   Coefficients for the variance parameters.
+#' @typed sigma: numeric
+#'   Observation-error standard deviation.
+#' @typed link_dsld: numeric
+#'   Link coefficients.
+#' @typed link_ttg: numeric
+#'   Link coefficients.
+#' @typed link_identity: numeric
+#'   Link coefficients.
+#' @typed link_growth: numeric
+#'   Link coefficients.
 #' @exportClass SimLongitudinalClaretBrunoCov
 .SimLongitudinalClaretBrunoCov <- setClass(
     "SimLongitudinalClaretBrunoCov",
