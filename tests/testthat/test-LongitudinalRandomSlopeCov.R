@@ -257,6 +257,50 @@ test_that("covariate formula helpers cover validation and edge cases", {
     expect_error(.covariate_design_matrix(~age, data), "missing values")
 })
 
+test_that("scale predictors require a positivity-preserving parametrization", {
+    scale_arguments <- list(
+        LongitudinalRandomSlopeCov = "slope_sigma_parametrization",
+        LongitudinalSteinFojoCov = "omega_b_parametrization",
+        LongitudinalGSFCov = "omega_phi_parametrization",
+        LongitudinalClaretBrunoCov = "omega_p_parametrization",
+        SimLongitudinalRandomSlopeCov = "slope_sigma_parametrization",
+        SimLongitudinalSteinFojoCov = "omega_b_parametrization",
+        SimLongitudinalGSFCov = "omega_phi_parametrization",
+        SimLongitudinalClaretBrunoCov = "omega_p_parametrization"
+    )
+
+    for (constructor_name in names(scale_arguments)) {
+        constructor <- get(constructor_name)
+        argument <- scale_arguments[[constructor_name]]
+        for (invalid in c("linear", "proportional")) {
+            expect_error(
+                do.call(constructor, stats::setNames(list(invalid), argument)),
+                "exponential.*log-linear"
+            )
+        }
+        for (valid in c("exponential", "log-linear")) {
+            args <- stats::setNames(list(valid), argument)
+            if (valid == "exponential") {
+                intercept_argument <- sub(
+                    "_parametrization$",
+                    "_intercept",
+                    argument
+                )
+                if (startsWith(constructor_name, "Sim")) {
+                    args[[intercept_argument]] <- 2
+                } else {
+                    args[[paste0(intercept_argument, "_prior")]] <-
+                        prior_const(2)
+                }
+            }
+            expect_s4_class(
+                do.call(constructor, args),
+                constructor_name
+            )
+        }
+    }
+})
+
 test_that("covariate predictor helpers implement all parametrizations", {
     design <- matrix(c(0, 1), ncol = 1)
     expect_equal(.covariate_predictor_r(design, 2, 0.5, "linear"), c(2, 2.5))

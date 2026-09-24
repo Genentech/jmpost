@@ -48,7 +48,8 @@ SimLongitudinalSteinFojoCov(
 
 \item{mu_b_parametrization, mu_s_parametrization, mu_g_parametrization}{Parametrization for the mean parameters.}
 
-\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization}{Parametrization for the variance parameters.}
+\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization}{Parametrization for the standard deviation parameters; only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_b_intercept, mu_b_coefficients}{Coefficients for the baseline log-mean predictor.}
 

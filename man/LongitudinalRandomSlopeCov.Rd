@@ -25,7 +25,8 @@ LongitudinalRandomSlopeCov(
 \item{mu_formula, slope_mu_formula, slope_sigma_formula}{One-sided formulas
 evaluated in the subject-level data.}
 
-\item{mu_parametrization, slope_mu_parametrization, slope_sigma_parametrization}{Predictor parametrizations.}
+\item{mu_parametrization, slope_mu_parametrization, slope_sigma_parametrization}{Predictor parametrizations. The slope standard deviation allows only
+\code{"exponential"} and \code{"log-linear"}.}
 
 \item{mu_intercept_prior, mu_coefficients_prior}{Priors for the subject-intercept predictor.}
 

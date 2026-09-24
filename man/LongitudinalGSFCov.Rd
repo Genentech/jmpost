@@ -52,7 +52,8 @@ LongitudinalGSFCov(
 
 \item{mu_b_parametrization, mu_s_parametrization, mu_g_parametrization, mu_phi_parametrization}{Parametrization for the mean parameters.}
 
-\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization, omega_phi_parametrization}{Parametrization for the variance parameters.}
+\item{omega_b_parametrization, omega_s_parametrization, omega_g_parametrization, omega_phi_parametrization}{Parametrization for the standard deviation parameters; only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_b_intercept_prior, mu_s_intercept_prior, mu_g_intercept_prior, mu_phi_intercept_prior}{Priors for the intercepts of the mean parameters.}
 

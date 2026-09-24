@@ -52,7 +52,8 @@ LongitudinalClaretBrunoCov(
 
 \item{mu_b_parametrization, mu_g_parametrization, mu_c_parametrization, mu_p_parametrization}{Parametrization for the mean parameters.}
 
-\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the variance parameters.}
+\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the standard deviation parameters; only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_b_intercept_prior, mu_g_intercept_prior, mu_c_intercept_prior, mu_p_intercept_prior}{Priors for the intercepts of the mean parameters.}
 

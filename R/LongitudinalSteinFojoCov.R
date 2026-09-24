@@ -54,7 +54,8 @@ NULL
 #' @param mu_b_parametrization,mu_s_parametrization,mu_g_parametrization
 #'   Parametrization for the mean parameters.
 #' @param omega_b_parametrization,omega_s_parametrization,omega_g_parametrization
-#'   Parametrization for the variance parameters.
+#'   Parametrization for the standard deviation parameters; only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @param mu_b_intercept_prior,mu_b_coefficients_prior Priors for the baseline log-mean predictor.
 #' @param omega_b_intercept_prior,omega_b_coefficients_prior Priors for the baseline log-SD predictor.
 #' @param mu_s_intercept_prior,mu_s_coefficients_prior Priors for the shrinkage log-mean predictor.
@@ -131,9 +132,15 @@ LongitudinalSteinFojoCov <- function(
         inherits = FALSE
     )
     parametrizations <- Map(
-        .validate_covariate_parametrization,
+        function(value, name) {
+            .validate_covariate_parametrization(
+                value,
+                paste0(name, "_parametrization"),
+                scale = startsWith(name, "omega_")
+            )
+        },
         parametrizations,
-        paste0(formula_names, "_parametrization")
+        formula_names
     )
     names(parametrizations) <- formula_names
 

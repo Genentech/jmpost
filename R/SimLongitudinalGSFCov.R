@@ -138,7 +138,8 @@ SimLongitudinalGSFCov <- function(
             "_parametrization"
         )]] <- .validate_covariate_parametrization(
             get(paste0(name, "_parametrization")),
-            paste0(name, "_parametrization")
+            paste0(name, "_parametrization"),
+            scale = startsWith(name, "omega_")
         )
         args[[paste0(name, "_intercept")]] <- get(paste0(name, "_intercept"))
         args[[paste0(name, "_coefficients")]] <- get(paste0(

@@ -58,7 +58,8 @@ SimLongitudinalClaretBrunoCov(
 
 \item{mu_b_parametrization, mu_g_parametrization, mu_c_parametrization, mu_p_parametrization}{Parametrization for the mean parameters.}
 
-\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the variance parameters.}
+\item{omega_b_parametrization, omega_g_parametrization, omega_c_parametrization, omega_p_parametrization}{Parametrization for the standard deviation parameters; only
+\code{"exponential"} and \code{"log-linear"} are supported.}
 
 \item{mu_b_intercept, mu_g_intercept, mu_c_intercept, mu_p_intercept}{Intercepts for the mean parameters.}
 

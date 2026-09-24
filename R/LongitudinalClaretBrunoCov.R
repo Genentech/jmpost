@@ -53,7 +53,8 @@ NULL
 #' @param mu_b_parametrization,mu_g_parametrization,mu_c_parametrization,mu_p_parametrization
 #'   Parametrization for the mean parameters.
 #' @param omega_b_parametrization,omega_g_parametrization,omega_c_parametrization,omega_p_parametrization
-#'   Parametrization for the variance parameters.
+#'   Parametrization for the standard deviation parameters; only
+#'   `"exponential"` and `"log-linear"` are supported.
 #' @param mu_b_intercept_prior,mu_g_intercept_prior,mu_c_intercept_prior,mu_p_intercept_prior
 #'   Priors for the intercepts of the mean parameters.
 #' @param mu_b_coefficients_prior,mu_g_coefficients_prior,mu_c_coefficients_prior,mu_p_coefficients_prior
@@ -134,9 +135,15 @@ LongitudinalClaretBrunoCov <- function(
     )
     names(formulas) <- names
     parametrizations <- Map(
-        .validate_covariate_parametrization,
+        function(value, name) {
+            .validate_covariate_parametrization(
+                value,
+                paste0(name, "_parametrization"),
+                scale = startsWith(name, "omega_")
+            )
+        },
         mget(paste0(names, "_parametrization"), inherits = FALSE),
-        paste0(names, "_parametrization")
+        names
     )
     names(parametrizations) <- names
     for (name in names) {

@@ -80,7 +80,8 @@ SimLongitudinalRandomSlopeCov <- function(
         ),
         slope_sigma_parametrization = .validate_covariate_parametrization(
             slope_sigma_parametrization,
-            "slope_sigma_parametrization"
+            "slope_sigma_parametrization",
+            scale = TRUE
         ),
         mu_intercept = mu_intercept,
         mu_coefficients = mu_coefficients,

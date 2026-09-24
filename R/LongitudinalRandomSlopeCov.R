@@ -47,6 +47,8 @@ NULL
     "log-linear"
 )
 
+.longitudinal_cov_sigma_parametrizations <- c("exponential", "log-linear")
+
 #' Validate a longitudinal covariate formula
 #'
 #' @param x The object to validate as a one-sided formula.
@@ -67,18 +69,24 @@ NULL
 #'
 #' @param x Character scalar naming the parametrization.
 #' @param argument Name of the user-facing argument, used in error messages.
+#' @param scale Whether the predictor represents a standard deviation.
 #'
 #' @keywords internal
 #' @returns `x`, validated against the supported parametrizations.
-.validate_covariate_parametrization <- function(x, argument) {
+.validate_covariate_parametrization <- function(x, argument, scale = FALSE) {
     assert_string(x, na.ok = FALSE)
+    allowed <- if (scale) {
+        .longitudinal_cov_sigma_parametrizations
+    } else {
+        .longitudinal_cov_parametrizations
+    }
     assert_that(
-        x %in% .longitudinal_cov_parametrizations,
+        x %in% allowed,
         msg = sprintf(
             "`%s` must be one of %s",
             argument,
             paste(
-                sprintf("`%s`", .longitudinal_cov_parametrizations),
+                sprintf("`%s`", allowed),
                 collapse = ", "
             )
         )
@@ -323,7 +331,8 @@ NULL
 #' @param mu_formula,slope_mu_formula,slope_sigma_formula One-sided formulas
 #'   evaluated in the subject-level data.
 #' @param mu_parametrization,slope_mu_parametrization,slope_sigma_parametrization
-#'   Predictor parametrizations.
+#'   Predictor parametrizations. The slope standard deviation allows only
+#'   `"exponential"` and `"log-linear"`.
 #' @param mu_intercept_prior,mu_coefficients_prior Priors for the subject-intercept predictor.
 #' @param slope_mu_intercept_prior,slope_mu_coefficients_prior Priors for the mean-slope predictor.
 #' @param slope_sigma_intercept_prior,slope_sigma_coefficients_prior Priors for the slope-SD predictor.
@@ -370,7 +379,8 @@ LongitudinalRandomSlopeCov <- function(
     )
     slope_sigma_parametrization <- .validate_covariate_parametrization(
         slope_sigma_parametrization,
-        "slope_sigma_parametrization"
+        "slope_sigma_parametrization",
+        scale = TRUE
     )
 
     mu_intercept_prior <- .positive_intercept_prior(

@@ -208,9 +208,21 @@ $$
 \alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
     & \text{(proportional)}, \\
 \alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}
-    & \text{(exponential)}.
+    & \text{(exponential)}, \\
+\exp\!\left(\alpha_{\theta} +
+    \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
+    & \text{(log-linear)}.
 \end{cases}
 $$
+
+Standard-deviation predictors use only the exponential or log-linear form.
+Both are positive: the exponential form is
+$\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}$
+with $\alpha_{\theta}>0$, and the log-linear form is
+$\exp(\alpha_{\theta}+\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta})$.
+The exponential form fixes the reference-profile standard deviation at one.
+When selecting it, the intercept prior must support a positive base; the
+default scale-intercept priors are chosen for the log-linear form.
 
 Different covariates and parameterisations may be used for each $\theta$. The
 random-slope model then becomes
@@ -219,12 +231,15 @@ $$
 \begin{align*}
 y_{ij} &= \mu_i + s_i t_{ij} + \epsilon_{ij}, \\
 \mu_i &= \eta_{\mu i}, \\
-s_i &\sim N\!\left(\eta_{\mu_s i},\ \exp(\eta_{\sigma_s i})\right).
+s_i &\sim N\!\left(\eta_{\mu_s i},\ \eta_{\sigma_s i}\right).
 \end{align*}
 $$
 
-Here we can use a linear, proportional, or exponential parameterisation for $\eta_{\mu i}$,
-and typically use a log-linear parametrization for $\eta_{\sigma_s i}$, which means that $\log(\sigma_{s i}) = \eta_{\sigma_s i} = \alpha_{\sigma_s} + \boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
+Any predictor form above can be used for $\eta_{\mu i}$. The slope
+standard deviation $\eta_{\sigma_s i}$ uses either the exponential or
+log-linear form. For the log-linear form,
+$\log(\sigma_{s i}) = \alpha_{\sigma_s} +
+\boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
 
 The original model is recovered by using study indicators for $\mu_i$ and
 treatment-arm indicators for the mean and variance of $s_i$.
@@ -308,17 +323,18 @@ $$
 ### Covariate Version
 
 Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as in the linear,
-proportional, or exponential forms above. The population parameters become
+constructed from parameter-specific baseline covariates as above. The
+standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
+exponential or log-linear form. The population parameters become
 
 $$
 \begin{aligned}
 \mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\omega_{b i} &= \eta_{\omega_b i}, \\
 \mu_{s i} &= \eta_{\mu_s i}, &
-\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\omega_{s i} &= \eta_{\omega_s i}, \\
 \mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \exp(\eta_{\omega_g i}),
+\omega_{g i} &= \eta_{\omega_g i},
 \end{aligned}
 $$
 
@@ -468,19 +484,20 @@ $$
 ### Covariate Version
 
 Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as in the linear,
-proportional, or exponential forms above. The population parameters become
+constructed from parameter-specific baseline covariates as above. The
+standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
+exponential or log-linear form. The population parameters become
 
 $$
 \begin{aligned}
 \mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\omega_{b i} &= \eta_{\omega_b i}, \\
 \mu_{s i} &= \eta_{\mu_s i}, &
-\omega_{s i} &= \exp(\eta_{\omega_s i}), \\
+\omega_{s i} &= \eta_{\omega_s i}, \\
 \mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\omega_{g i} &= \eta_{\omega_g i}, \\
 \mu_{\phi i} &= \eta_{\mu_\phi i}, &
-\omega_{\phi i} &= \exp(\eta_{\omega_\phi i}).
+\omega_{\phi i} &= \eta_{\omega_\phi i}.
 \end{aligned}
 $$
 
@@ -624,19 +641,20 @@ $$
 ### Covariate Version
 
 Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as in the linear,
-proportional, or exponential forms above. The population parameters become
+constructed from parameter-specific baseline covariates as above. The
+standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
+exponential or log-linear form. The population parameters become
 
 $$
 \begin{aligned}
 \mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \exp(\eta_{\omega_b i}), \\
+\omega_{b i} &= \eta_{\omega_b i}, \\
 \mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \exp(\eta_{\omega_g i}), \\
+\omega_{g i} &= \eta_{\omega_g i}, \\
 \mu_{c i} &= \eta_{\mu_c i}, &
-\omega_{c i} &= \exp(\eta_{\omega_c i}), \\
+\omega_{c i} &= \eta_{\omega_c i}, \\
 \mu_{p i} &= \eta_{\mu_p i}, &
-\omega_{p i} &= \exp(\eta_{\omega_p i}).
+\omega_{p i} &= \eta_{\omega_p i}.
 \end{aligned}
 $$
 
