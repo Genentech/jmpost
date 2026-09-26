@@ -209,9 +209,11 @@ The exponential form fixes the reference-profile standard deviation at one.
 When selecting it, the intercept prior must support a positive base; the
 default scale-intercept priors are chosen for the log-linear form.
 
-Different covariates and parameterisations may be used for each $\theta$.
+A couple of additional points worth calling out:
 
-Note that we use here location-scale models, where the mean and standard deviation of the response variable are modeled separately.
+- Different covariates and parameterisations may be used for each $\theta$.
+- Note that we use here location-scale models, where the mean and standard deviation of the response variable are modeled separately.
+- Regarding the detailed implementation in the Stan code, we have introduced the options to switch between centered and non-centered parameterizations for the random effects. By default the baseline random effects use the centered parameterization, because it has been found to generally improve the sampling efficiency and convergence of the model for the baseline parameters. On the other hand, the random effects of all other parameters by default use the non-centered parameterization. See the arguments of the constructors for the respective longitudinal models with covariates for details, for example `?LongitudinalSteinFojoCov` describes the arguments `centred_baseline`, `centred_shrinkage` and `centred_growth`.
 
 ## Random-Slope Model
 
