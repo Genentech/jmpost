@@ -211,6 +211,8 @@ default scale-intercept priors are chosen for the log-linear form.
 
 Different covariates and parameterisations may be used for each $\theta$.
 
+Note that we use here location-scale models, where the mean and standard deviation of the response variable are modeled separately.
+
 ## Random-Slope Model
 
 $$
