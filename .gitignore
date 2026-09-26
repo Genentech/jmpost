@@ -92,3 +92,4 @@ inst/stanmodels/stan_model
 !.gitkeep
 !**/.gitkeep
 
+design/.quarto/typst/available-fonts.json

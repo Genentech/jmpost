@@ -49,7 +49,7 @@ set_fixtures_gsf_link <- function() {
             mu_bsld = prior_normal(log(60), 0.5),
             mu_ks = prior_normal(log(0.6), 0.5),
             mu_kg = prior_normal(log(0.3), 0.5),
-            mu_phi = prior_normal(plogis(0.5), 0.5),
+            mu_phi = prior_normal(qlogis(0.5), 0.5),
             omega_bsld = prior_lognormal(log(0.2), 0.5),
             omega_ks = prior_lognormal(log(0.2), 0.5),
             omega_kg = prior_lognormal(log(0.2), 0.5),

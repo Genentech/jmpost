@@ -37,7 +37,8 @@ SimLongitudinalGSF(
 
 \item{mu_b}{(\code{numeric}) the mean baseline values.}
 
-\item{mu_phi}{(\code{numeric}) the mean proportion of cells affected by the treatment}
+\item{mu_phi}{(\code{numeric}) the logit-scale location of the proportion of cells affected by the
+treatment.}
 
 \item{omega_b}{(\code{number}) the baseline value standard deviation.}
 
@@ -45,8 +46,8 @@ SimLongitudinalGSF(
 
 \item{omega_g}{(\code{number}) the growth rate standard deviation.}
 
-\item{omega_phi}{(\code{number}) for the standard deviation of the proportion of cells
-affected by the treatment \code{omega_phi}.}
+\item{omega_phi}{(\code{number}) the logit-scale standard deviation of the proportion of cells affected by
+the treatment.}
 
 \item{link_dsld}{(\code{number}) the link coefficient for the derivative contribution.}
 

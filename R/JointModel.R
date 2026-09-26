@@ -94,8 +94,8 @@ JointModel <- function(
 #' @returns A `StanModule` object containing the generated-quantities code.
 enableGQ.JointModel <- function(object, ...) {
     merge(
-        enableGQ(object@survival),
-        enableGQ(object@longitudinal)
+        enableGQ(object@survival, ...),
+        enableGQ(object@longitudinal, ...)
     )
 }
 
@@ -204,7 +204,7 @@ sampleStanModel.JointModel <- function(object, data, ...) {
     args <- list(...)
 
     args[["data"]] <- append(
-        as_stan_list(data),
+        as_stan_list(data, object),
         as_stan_list(object@parameters)
     )
 

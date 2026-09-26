@@ -9,17 +9,24 @@ NULL
     slots = c(
         "times" = "numeric",
         "studies" = "character_or_NULL",
-        "arms" = "character_or_NULL"
+        "arms" = "character_or_NULL",
+        "newdata" = "data.frame_or_NULL"
     )
 )
 
 
 #' @rdname Quant-Dev
-QuantityGeneratorPopulation <- function(times, studies = NULL, arms = NULL) {
+QuantityGeneratorPopulation <- function(
+    times,
+    studies = NULL,
+    arms = NULL,
+    newdata = NULL
+) {
     .QuantityGeneratorPopulation(
         times = times,
         studies = studies,
-        arms = arms
+        arms = arms,
+        newdata = newdata
     )
 }
 
@@ -33,6 +40,12 @@ setValidity(
         if (length(object@times) != length(object@studies)) {
             return("Length of `times` and `studies` must be equal")
         }
+        if (
+            !is.null(object@newdata) &&
+                length(object@times) != nrow(object@newdata)
+        ) {
+            return("Length of `times` and rows in `newdata` must be equal")
+        }
         return(TRUE)
     }
 )
@@ -40,7 +53,12 @@ setValidity(
 
 #' @rdname as_stan_list.QuantityGenerator
 #' @export
-as_stan_list.QuantityGeneratorPopulation <- function(object, data, ...) {
+as_stan_list.QuantityGeneratorPopulation <- function(
+    object,
+    data,
+    model = NULL,
+    ...
+) {
     assert_that(
         is(data, "DataJoint")
     )
@@ -60,5 +78,33 @@ as_stan_list.QuantityGeneratorPopulation <- function(object, data, ...) {
         all(!is.na(ret[["gq_long_pop_arm_index"]])),
         all(!is.na(ret[["gq_long_pop_study_index"]]))
     )
+
+    longitudinal_model <- if (is(model, "JointModel")) {
+        model@longitudinal
+    } else {
+        model
+    }
+    ret <- append(
+        ret,
+        gq_population_stan_data(
+            object,
+            model = longitudinal_model,
+            data = data
+        )$data
+    )
     return(ret)
+}
+
+
+#' @rdname gq_population_stan_data
+#' @exportS3Method gq_population_stan_data QuantityGeneratorPopulation
+gq_population_stan_data.QuantityGeneratorPopulation <- function(
+    object,
+    model,
+    data = NULL,
+    ...
+) {
+    # Note: We need to specify `model` here as second argument in order
+    # to dispatch the appropriate method based on the class of `model`.
+    UseMethod("gq_population_stan_data", model)
 }

@@ -75,13 +75,21 @@ LongitudinalQuantities <- function(
 
     gq <- generateQuantities(
         object,
-        generator = as.QuantityGenerator(grid, object@data),
+        generator = as.QuantityGenerator(
+            grid,
+            object@data,
+            model = object@model
+        ),
         type = "longitudinal"
     )
 
     quantities_raw <- extract_quantities(gq, type = "lm_identity")
 
-    collapser <- as.QuantityCollapser(grid, object@data)
+    collapser <- as.QuantityCollapser(
+        grid,
+        object@data,
+        model = object@model
+    )
     quantities <- collapse_quantities(quantities_raw, collapser)
 
     .LongitudinalQuantities(

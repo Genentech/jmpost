@@ -43,7 +43,7 @@ setOldClass("CmdStanMCMC")
 #'   "longitudinal".
 #' @export
 generateQuantities.JointModelSamples <- function(object, generator, type, ...) {
-    data <- as_stan_list(object@data) |>
+    data <- as_stan_list(object@data, object@model) |>
         append(as_stan_list(object@model@parameters)) |>
         append(as_stan_list(
             generator,
@@ -81,6 +81,15 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
         type %in% c("survival", "longitudinal")
     )
 
+    longitudinal_gq_population_data <- if (type == "longitudinal") {
+        gq_population_stan_data(
+            generator,
+            model = object@model@longitudinal
+        )
+    } else {
+        list(declarations = "", data = list())
+    }
+
     quant_stanobj <- read_stan("base/quantities.stan") |>
         decorated_render(
             include_gq_longitudinal_idv = (type == "longitudinal") &
@@ -90,7 +99,9 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
             include_gq_survival_idv = (type == "survival") &
                 is(generator, "QuantityGeneratorSubject"),
             include_gq_survival_pred = (type == "survival") &
-                is(generator, "QuantityGeneratorPrediction")
+                is(generator, "QuantityGeneratorPrediction"),
+            longitudinal_gq_population_data =
+                longitudinal_gq_population_data$declarations
         ) |>
         StanModule()
 
@@ -98,7 +109,11 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
         merge,
         list(
             as.StanModule(object@model),
-            enableGQ(object@model),
+            enableGQ(
+                object@model,
+                generator = generator,
+                type = type
+            ),
             quant_stanobj
         )
     )

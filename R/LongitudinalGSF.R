@@ -35,7 +35,8 @@ NULL
 #' @typed mu_kg: Prior
 #'   for the mean growth rate `mu_kg`.
 #' @typed mu_phi: Prior
-#'   for the mean proportion of cells affected by the treatment `mu_phi`.
+#'   for the logit-scale location of the proportion of cells affected by the
+#'   treatment `mu_phi`.
 #'
 #' @typed omega_bsld: Prior
 #'   for the baseline value standard deviation `omega_bsld`.
@@ -44,8 +45,8 @@ NULL
 #' @typed omega_kg: Prior
 #'   for the growth rate standard deviation `omega_kg`.
 #' @typed omega_phi: Prior
-#'   for the standard deviation of the proportion of cells
-#'   affected by the treatment `omega_phi`.
+#'   for the logit-scale standard deviation of the proportion of cells affected
+#'   by the treatment `omega_phi`.
 #'
 #' @typed sigma: Prior
 #'   for the variance of the longitudinal values `sigma`.

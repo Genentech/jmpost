@@ -159,6 +159,8 @@ setValidity(
 #' @typed subject_var: character
 #'   the name of the variable
 #'   containing the subject identifier.
+#' @param model (`JointModel` or `NULL`) Optional model specification used to
+#'   add model-specific data components.
 #' @param ... not used.
 #'
 #' @description
@@ -171,10 +173,25 @@ setValidity(
 #' @export
 #'
 #' @returns A named `list` suitable for use as Stan data.
-as_stan_list.DataJoint <- function(object, ...) {
+as_stan_list.DataJoint <- function(object, model = NULL, ...) {
     vars <- extractVariableNames(object@subject)
     subject_var <- vars$subject
-    as_stan_list(object@subject) |>
+    subject_data <- as_stan_list(object@subject)
+
+    if (!is.null(model)) {
+        assert_class(model, "JointModel")
+        if (!is.null(model@longitudinal)) {
+            subject_data <- append(
+                subject_data,
+                longitudinal_model_stan_data(
+                    model = model@longitudinal,
+                    subject = object@subject
+                )
+            )
+        }
+    }
+
+    subject_data |>
         append(as_stan_list(object@survival)) |>
         append(as_stan_list(
             object@longitudinal,

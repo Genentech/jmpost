@@ -538,7 +538,14 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     # dat$true_values <- true_values
     # dat$gt_q01 <- dat$q01 <= true_values
     # dat$lt_q99 <- dat$q99 >= true_values
-    # dat[, c("variable", "true_values", "mean", "q01", "q99", "rhat", "ess_bulk", "ess_tail", "gt_q01", "lt_q99")] |> print()
+    # dat[
+    #     ,
+    #     c(
+    #         "variable", "true_values", "mean", "q01", "q99", "rhat",
+    #         "ess_bulk", "ess_tail", "gt_q01", "lt_q99"
+    #     )
+    # ] |>
+    #     print()
     #
     # nolint end
 

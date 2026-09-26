@@ -46,13 +46,17 @@ simulate.JointModelSamples <- function(
     scaled_variance = FALSE,
     ...
 ) {
+    longitudinal_covariates <- required_simulation_covariates(
+        object@model@longitudinal
+    )
     subj_data <- if (is.null(newdata)) {
         dplyr::left_join(
-            object@data@subject@data[, c(
+            object@data@subject@data[, unique(c(
                 object@data@subject@subject,
                 object@data@subject@arm,
-                object@data@subject@study
-            )],
+                object@data@subject@study,
+                longitudinal_covariates
+            ))],
             object@data@survival@data[, c(
                 object@data@subject@subject,
                 all.vars(delete.response(terms(object@data@survival@formula)))
@@ -185,6 +189,40 @@ createLongitudinalSimObject.LongitudinalRandomSlope <- function(
 #' @exportS3Method
 #'
 #' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalRandomSlopeCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c("mu", "slope_mu", "slope_sigma")
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_rsc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_rsc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_rsc_sigma")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_identity <- get_vars(draw, "link_identity")
+    do.call(SimLongitudinalRandomSlopeCov, args)
+}
+
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalSteinFojo <- function(
     object,
     draw,
@@ -204,6 +242,50 @@ createLongitudinalSimObject.LongitudinalSteinFojo <- function(
     args$link_growth <- get_vars(draw, "link_growth")
     args$link_shrinkage <- get_vars(draw, "link_shrinkage")
     do.call(SimLongitudinalSteinFojo, args)
+}
+
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalSteinFojoCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g"
+    )
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_sfc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_sfc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_sfc_sigma")
+    args$link_dsld <- get_vars(draw, "link_dsld")
+    args$link_ttg <- get_vars(draw, "link_ttg")
+    args$link_identity <- get_vars(draw, "link_identity")
+    args$link_growth <- get_vars(draw, "link_growth")
+    args$link_shrinkage <- get_vars(draw, "link_shrinkage")
+    do.call(SimLongitudinalSteinFojoCov, args)
 }
 
 #' @exportS3Method
@@ -230,6 +312,44 @@ createLongitudinalSimObject.LongitudinalGSF <- function(object, draw, ...) {
 }
 
 #' @exportS3Method
+createLongitudinalSimObject.LongitudinalGSFCov <- function(object, draw, ...) {
+    args <- list(...)
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g",
+        "mu_phi",
+        "omega_phi"
+    )
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_gsfc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_gsfc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_gsfc_sigma")
+    for (name in c("dsld", "ttg", "identity", "growth", "shrinkage")) {
+        args[[paste0("link_", name)]] <- get_vars(draw, paste0("link_", name))
+    }
+    do.call(SimLongitudinalGSFCov, args)
+}
+
+#' @exportS3Method
 #'
 #' @returns A `SimLongitudinal` object configured from the posterior draw.
 createLongitudinalSimObject.LongitudinalClaretBruno <- function(
@@ -253,6 +373,50 @@ createLongitudinalSimObject.LongitudinalClaretBruno <- function(
     args$link_growth <- get_vars(draw, "link_growth")
     args$link_shrinkage <- get_vars(draw, "link_shrinkage")
     do.call(SimLongitudinalClaretBruno, args)
+}
+
+#' @exportS3Method
+#'
+#' @returns A `SimLongitudinal` object configured from the posterior draw.
+createLongitudinalSimObject.LongitudinalClaretBrunoCov <- function(
+    object,
+    draw,
+    ...
+) {
+    args <- list(...)
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_g",
+        "omega_g",
+        "mu_c",
+        "omega_c",
+        "mu_p",
+        "omega_p"
+    )
+    for (name in parameter_names) {
+        args[[paste0(name, "_formula")]] <- slot(
+            object,
+            paste0(name, "_formula")
+        )
+        args[[paste0(name, "_parametrization")]] <- slot(
+            object,
+            paste0(name, "_parametrization")
+        )
+        args[[paste0(name, "_intercept")]] <- get_vars(
+            draw,
+            paste0("lm_clbrc_", name, "_intercept")
+        )
+        args[[paste0(name, "_coefficients")]] <- get_vars(
+            draw,
+            paste0("lm_clbrc_", name, "_coefficients")
+        )
+    }
+    args$sigma <- get_vars(draw, "lm_clbrc_sigma")
+    for (name in c("dsld", "ttg", "identity", "growth")) {
+        args[[paste0("link_", name)]] <- get_vars(draw, paste0("link_", name))
+    }
+    do.call(SimLongitudinalClaretBrunoCov, args)
 }
 
 
@@ -364,10 +528,21 @@ SimJointDataResults <- function(
         study = subject@data[[subject@study]],
         arm = subject@data[[subject@arm]]
     )
+    additional_subject_columns <- setdiff(
+        names(subject@data),
+        c(subject@subject, subject@study, subject@arm)
+    )
+    baseline <- cbind(
+        baseline,
+        subject@data[, additional_subject_columns, drop = FALSE]
+    )
 
     cov_cols <- cbind(
-        subject = subject@data[[subject@subject]],
-        subject@data[, all.vars(delete.response(terms(surv_formula)))]
+        data.frame(subject = subject@data[[subject@subject]]),
+        subject@data[,
+            all.vars(delete.response(terms(surv_formula))),
+            drop = FALSE
+        ]
     )
 
     os_baseline <- sampleSubjectsFromObs(
