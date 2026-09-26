@@ -175,6 +175,42 @@ Values of $\kappa_j$ close to 1 indicate strong shrinkage towards zero, while va
 
 # Longitudinal Model Specification
 
+The longitudinal models in `jmpost` have each two versions: one without covariates, and one with covariates.
+In each of the below subsections, we describe both versions. The models without covariates are simpler, and comprise parameters which are study- and treatment-arm-specific and correspondingly indexed.
+To start with, we describe the commonalities of the longitudinal models having covariates.
+
+## Models with Covariates {#models-with-covariates}
+
+In the longitudinal models with covariates, the study- and treatment-arm-specific parameters of the longitudinal models without covariates are replaced by subject-specific predictors. For a model parameter $\theta$, let
+$\boldsymbol{x}_{\theta i}$ be the baseline covariates for subject $i$ and let
+$\boldsymbol{\beta}_{\theta}$ be their coefficients, while $\boldsymbol{\alpha}_{\theta}$ is the intercept. The model parameter value for subject $i$ may then be derived from the intercept and slope parameters together with the covariates by one of the following forms:
+
+$$
+\theta_{i} =
+\begin{cases}
+\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}
+    & \text{(linear)}, \\
+\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
+    & \text{(proportional)}, \\
+\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}
+    & \text{(exponential)}, \\
+\exp\!\left(\alpha_{\theta} +
+    \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
+    & \text{(log-linear)}.
+\end{cases}
+$$
+
+Standard-deviation parameters can only use the exponential or log-linear form, because these are strictly positive.
+The exponential form is
+$\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}$
+with $\alpha_{\theta}>0$, and the log-linear form is
+$\exp(\alpha_{\theta}+\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta})$.
+The exponential form fixes the reference-profile standard deviation at one.
+When selecting it, the intercept prior must support a positive base; the
+default scale-intercept priors are chosen for the log-linear form.
+
+Different covariates and parameterisations may be used for each $\theta$.
+
 ## Random-Slope Model
 
 $$
@@ -194,55 +230,19 @@ where:
 
 ### Covariate Version
 
-In the covariate version, the study- and treatment-arm-specific parameters are
-replaced by subject-specific predictors. For a model parameter $\theta$, let
-$\boldsymbol{x}_{\theta i}$ be the baseline covariates for subject $i$ and let
-$\boldsymbol{\beta}_{\theta}$ be their coefficients. The predictor may be
-parameterised as
-
-$$
-\eta_{\theta i} =
-\begin{cases}
-\alpha_{\theta} + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}
-    & \text{(linear)}, \\
-\alpha_{\theta}\left(1 + \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
-    & \text{(proportional)}, \\
-\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}
-    & \text{(exponential)}, \\
-\exp\!\left(\alpha_{\theta} +
-    \boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}\right)
-    & \text{(log-linear)}.
-\end{cases}
-$$
-
-Standard-deviation predictors use only the exponential or log-linear form.
-Both are positive: the exponential form is
-$\alpha_{\theta}^{\,\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta}}$
-with $\alpha_{\theta}>0$, and the log-linear form is
-$\exp(\alpha_{\theta}+\boldsymbol{x}_{\theta i}^{\top}\boldsymbol{\beta}_{\theta})$.
-The exponential form fixes the reference-profile standard deviation at one.
-When selecting it, the intercept prior must support a positive base; the
-default scale-intercept priors are chosen for the log-linear form.
-
-Different covariates and parameterisations may be used for each $\theta$. The
-random-slope model then becomes
+Following [models with covariates](#models-with-covariates), the random-slope model then becomes
 
 $$
 \begin{align*}
 y_{ij} &= \mu_i + s_i t_{ij} + \epsilon_{ij}, \\
-\mu_i &= \eta_{\mu i}, \\
-s_i &\sim N\!\left(\eta_{\mu_s i},\ \eta_{\sigma_s i}\right).
+s_i &\sim N\!\left(\mu_{s i},\ \sigma_{s i}\right).
 \end{align*}
 $$
 
-Any predictor form above can be used for $\eta_{\mu i}$. The slope
-standard deviation $\eta_{\sigma_s i}$ uses either the exponential or
-log-linear form. For the log-linear form,
-$\log(\sigma_{s i}) = \alpha_{\sigma_s} +
-\boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
+Any predictor form above can be used for $\mu_i$. The mean $\mu_{s i}$ and standard deviation $\sigma_{s i}$ of the random slope standard deviation $s_i$ use either the exponential or log-linear parametrization. For example, under the log-linear parametrization,
+$\log(\sigma_{s i}) = \alpha_{\sigma_s} + \boldsymbol{x}_{\sigma_s i}^{\top}\boldsymbol{\beta}_{\sigma_s}$.
 
-The original model is recovered by using study indicators for $\mu_i$ and
-treatment-arm indicators for the mean and variance of $s_i$.
+The original model is recovered by using study indicators for the covariates of $\mu_i$ and treatment-arm indicators for the the covariates of $\mu_{s i}$ and $\sigma_{s i}$.
 
 ### Derivative of the SLD Trajectory Link / Growth Parameter Link
 
@@ -322,30 +322,16 @@ $$
 
 ### Covariate Version
 
-Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as above. The
-standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
-exponential or log-linear form. The population parameters become
+Following [models with covariates](#models-with-covariates),
+here we let $\theta_{i}$ be a subject-specific predictor for parameter $\theta$, constructed from parameter-specific baseline covariates. The standard-deviation predictors $\omega_{\theta i}$ can only use the exponential or log-linear form.
 
-$$
-\begin{aligned}
-\mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \eta_{\omega_b i}, \\
-\mu_{s i} &= \eta_{\mu_s i}, &
-\omega_{s i} &= \eta_{\omega_s i}, \\
-\mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \eta_{\omega_g i},
-\end{aligned}
-$$
+That means all population parameters, $\mu_{b i}$, $\omega_{b i}$, $\mu_{s i}$, $\omega_{s i}$, $\mu_{g i}$, and $\omega_{g i}$, are constructed from subject-specific predictors.
 
-so that $b_i \sim \operatorname{LogNormal}(\mu_{b i}, \omega_{b i})$,
-$s_i \sim \operatorname{LogNormal}(\mu_{s i}, \omega_{s i})$, and
-$g_i \sim \operatorname{LogNormal}(\mu_{g i}, \omega_{g i})$. The original
-model is recovered by using study indicators for the predictors of $b_i$ and
-treatment-arm indicators for those of $s_i$ and $g_i$.
+The original
+model is recovered by using study indicators for the predictors of $b_i$ and $\omega_{b i}$ and
+treatment-arm indicators for those of $s_i$ and $\omega_{s i}$ as well as those of $g_i$ and $\omega_{g i}$.
 
 ### Derivative of the SLD Trajectory Link 
-
 
 $$
 G(t_{ij} \mid b_i, s_i, g_i) = \begin{cases}
@@ -483,30 +469,12 @@ $$
 
 ### Covariate Version
 
-Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as above. The
-standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
-exponential or log-linear form. The population parameters become
+Following [models with covariates](#models-with-covariates),
+here we let $\theta_{i}$ be a subject-specific predictor for parameter $\theta$, constructed from parameter-specific baseline covariates. The standard-deviation predictors $\omega_{\theta i}$ can only use the exponential or log-linear form.
 
-$$
-\begin{aligned}
-\mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \eta_{\omega_b i}, \\
-\mu_{s i} &= \eta_{\mu_s i}, &
-\omega_{s i} &= \eta_{\omega_s i}, \\
-\mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \eta_{\omega_g i}, \\
-\mu_{\phi i} &= \eta_{\mu_\phi i}, &
-\omega_{\phi i} &= \eta_{\omega_\phi i}.
-\end{aligned}
-$$
+That means all population parameters, $\mu_{b i}$, $\omega_{b i}$, $\mu_{s i}$, $\omega_{s i}$, $\mu_{g i}$, $\omega_{g i}$, $\mu_{\phi i}$, and $\omega_{\phi i}$, are constructed from subject-specific predictors.
 
-Thus $b_i$, $s_i$, and $g_i$ retain their log-normal distributions, while
-$\operatorname{logit}(\phi_i) \sim
-N(\mu_{\phi i}, \omega_{\phi i})$, equivalently
-$\phi_i \sim \operatorname{LogitNormal}(\mu_{\phi i}, \omega_{\phi i})$.
-The original model is recovered by using study indicators for the predictors
-of $b_i$ and treatment-arm indicators for those of $s_i$, $g_i$, and $\phi_i$.
+The original model is recovered by using study indicators for the predictors of $b_i$ and $\omega_{b i}$ and treatment-arm indicators for those of $s_i$ and $\omega_{s i}$, $g_i$ and $\omega_{g i}$, and $\phi_i$ and $\omega_{\phi i}$.
 
 
 ### Derivative of the SLD Trajectory Link 
@@ -640,28 +608,12 @@ $$
 
 ### Covariate Version
 
-Let $\eta_{\theta i}$ be a subject-specific predictor for parameter $\theta$,
-constructed from parameter-specific baseline covariates as above. The
-standard-deviation predictors $\eta_{\omega_\theta i}$ use only the
-exponential or log-linear form. The population parameters become
+Following [models with covariates](#models-with-covariates),
+here we let $\theta_{i}$ be a subject-specific predictor for parameter $\theta$, constructed from parameter-specific baseline covariates. The standard-deviation predictors $\omega_{\theta i}$ can only use the exponential or log-linear form.
 
-$$
-\begin{aligned}
-\mu_{b i} &= \eta_{\mu_b i}, &
-\omega_{b i} &= \eta_{\omega_b i}, \\
-\mu_{g i} &= \eta_{\mu_g i}, &
-\omega_{g i} &= \eta_{\omega_g i}, \\
-\mu_{c i} &= \eta_{\mu_c i}, &
-\omega_{c i} &= \eta_{\omega_c i}, \\
-\mu_{p i} &= \eta_{\mu_p i}, &
-\omega_{p i} &= \eta_{\omega_p i}.
-\end{aligned}
-$$
+That means all population parameters, $\mu_{b i}$, $\omega_{b i}$, $\mu_{g i}$, $\omega_{g i}$, $\mu_{c i}$, $\omega_{c i}$, $\mu_{p i}$, and $\omega_{p i}$, are constructed from subject-specific predictors.
 
-The subject parameters $b_i$, $g_i$, $c_i$, and $p_i$ retain their log-normal
-distributions with these population parameters. The original model is
-recovered by using study indicators for the predictors of $b_i$ and
-treatment-arm indicators for those of $g_i$, $c_i$, and $p_i$.
+The original model is recovered by using study indicators for the predictors of $b_i$ and $\omega_{b i}$ and treatment-arm indicators for those of $g_i$ and $\omega_{g i}$, $c_i$ and $\omega_{c i}$, and $p_i$ and $\omega_{p i}$.
 
 
 ### Derivative of the SLD Trajectory Link 
