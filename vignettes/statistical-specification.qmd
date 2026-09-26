@@ -212,8 +212,8 @@ default scale-intercept priors are chosen for the log-linear form.
 A couple of additional points worth calling out:
 
 - Different covariates and parameterisations may be used for each $\theta$.
-- Note that we use here location-scale models, where the mean and standard deviation of the response variable are modeled separately.
-- Regarding the detailed implementation in the Stan code, we have introduced the options to switch between centered and non-centered parameterizations for the random effects. By default the baseline random effects use the centered parameterization, because it has been found to generally improve the sampling efficiency and convergence of the model for the baseline parameters. On the other hand, the random effects of all other parameters by default use the non-centered parameterization. See the arguments of the constructors for the respective longitudinal models with covariates for details, for example `?LongitudinalSteinFojoCov` describes the arguments `centred_baseline`, `centred_shrinkage` and `centred_growth`.
+- Note that we use here location-scale models, where the mean and standard deviation of the response variable are modelled separately.
+- Regarding the detailed implementation in the Stan code, we have introduced the options to switch between centred and non-centred parameterizations for the random effects. By default the baseline random effects use the centred parameterization, because it has been found to generally improve the sampling efficiency and convergence of the model for the baseline parameters. On the other hand, the random effects of all other parameters by default use the non-centred parameterization. See the arguments of the constructors for the respective longitudinal models with covariates for details, for example `?LongitudinalSteinFojoCov` describes the arguments `centred_baseline`, `centred_shrinkage` and `centred_growth`.
 
 ## Random-Slope Model
 
