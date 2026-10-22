@@ -115,6 +115,67 @@ survival_model
 
 In order to know which position corresponds to which design matrix column and thus coefficient, we can use the `model.matrix()` function on the `DataSurvival` object. This is explained in the section "Formatting Data" below in detail.
 
+### Priors on a transformed scale
+
+Sometimes prior information is available on a different scale from the model
+parameter. Use `transform` to specify the mapping **from the model parameter
+to the prior density scale**. For example, `sigma` is a residual standard
+deviation, so a prior on its variance can be specified as follows:
+
+```{r}
+#| label: variance_scale_prior
+
+variance_prior_model <- LongitudinalRandomSlope(
+    sigma = prior_normal(100, 100, transform = prior_transform_square())
+)
+```
+
+Here `sigma^2` has a normal distribution restricted to positive values.
+`jmpost` includes the Jacobian and maps model-imposed bounds to the variance
+scale when normalising the truncated density. The square transformation uses
+the positive branch and restricts the declared parameter to non-negative values.
+
+For log-scale intercepts, use `prior_transform_exp()`: for example,
+`prior_normal(60, 60, transform = prior_transform_exp())` places the normal
+prior on the exponential of the intercept. Use `prior_transform_exp(scale = 2)`
+for a prior on `exp(2 * intercept)`, such as a variance when the intercept is
+a log standard deviation. These transformations change the prior; they are
+independent of covariate predictor parametrizations.
+
+The same specification can be written with a wrapper:
+
+```{r}
+#| label: transformed_prior_wrapper
+
+variance_prior <- prior_transform(
+    prior_normal(100, 100), prior_transform_square()
+)
+```
+
+Both forms support scalar distribution helpers, including `prior_normal()`
+and `prior_invgamma()`. A scalar distribution is applied independently to
+each component of a vector parameter. Vector-specific helpers such as
+`prior_normal_vector()` and the horseshoe prior do not accept transformations.
+Initial values are drawn on the density scale within the mapped bounds,
+inverse-transformed and then shrunk on the model parameter scale.
+
+### Flat priors
+
+Use `prior_flat()` to add no prior density term on the declared parameter
+scale. Its `init` distribution only supplies initial values:
+
+```{r}
+#| label: flat_coefficient_prior
+
+flat_coefficient_model <- SurvivalWeibullPH(
+    beta = prior_flat(init = prior_normal(0, 1))
+)
+```
+
+Model-imposed bounds still apply. An unbounded flat prior is improper, and a
+proper posterior is not guaranteed. A flat prior is specific to its scale:
+flat on a log coefficient does not imply flat on its exponential.
+
 ## Separate Models
 
 It is also possible to not link the longitudinal and the survival models, by using

@@ -18,6 +18,10 @@ NULL
 #'   the name of the parameter the prior distribution is for
 #' @typed size: "`numeric` or `character`"
 #'   the parameter size.
+#' @typed transform: PriorTransform | NULL
+#'   optional package-defined transformation from the model parameter to the
+#'   prior density scale. See [prior_transform()] for support, Jacobians and
+#'   examples. `NULL` keeps the prior on the model parameter scale.
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -77,6 +81,7 @@ NULL
 
 #' @typed parameters: list
 #'   the prior distribution parameters.
+#' @inheritParams Prior-Shared
 #' @typed repr_model: string
 #'   the Stan code representation for the model block.
 #' @typed repr_data: string
@@ -137,9 +142,10 @@ Prior <- function(
     .omit_zero_lower_truncation = FALSE,
     .allow_vectors = FALSE,
     .is_const = FALSE,
-    repr_multiplier = \(name, size) ""
+    repr_multiplier = \(name, size) "",
+    transform = NULL
 ) {
-    .Prior(
+    object <- .Prior(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
@@ -158,6 +164,7 @@ Prior <- function(
         .allow_vectors = .allow_vectors,
         .is_const = .is_const
     )
+    if (is.null(transform)) object else prior_transform(object, transform)
 }
 
 
@@ -506,12 +513,14 @@ auxiliarySize.Prior <- function(object, name, size, ...) {
 #' @family Prior
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_normal(0, 1)
-prior_normal <- function(mu, sigma) {
+prior_normal <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "normal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name})",
@@ -727,12 +736,14 @@ prior_horseshoe <- function(
 #' @family Prior
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_std_normal()
-prior_std_normal <- function() {
+prior_std_normal <- function(transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(),
         display = "std_normal()",
         repr_model = "{name} ~ std_normal()",
@@ -817,12 +828,14 @@ prior_const_vector <- function(values) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_cauchy(0, 1)
-prior_cauchy <- function(mu, sigma) {
+prior_cauchy <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "cauchy(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name})",
@@ -851,12 +864,14 @@ prior_cauchy <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_gamma(2, 1)
-prior_gamma <- function(alpha, beta) {
+prior_gamma <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(alpha = alpha, beta = beta),
         repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name})",
         display = "gamma(alpha = {alpha}, beta = {beta})",
@@ -884,12 +899,14 @@ prior_gamma <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_lognormal(0, 1)
-prior_lognormal <- function(mu, sigma) {
+prior_lognormal <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "lognormal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name})",
@@ -917,12 +934,14 @@ prior_lognormal <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_beta(2, 3)
-prior_beta <- function(a, b) {
+prior_beta <- function(a, b, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(a = a, b = b),
         display = "beta(a = {a}, b = {b})",
         repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name})",
@@ -1019,16 +1038,18 @@ prior_flat <- function(init = prior_normal(0, 1)) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_uniform(0, 1)
-prior_uniform <- function(alpha, beta) {
+prior_uniform <- function(alpha, beta, transform = NULL) {
     assert_that(
         alpha < beta,
         msg = "`alpha`` must be less than `beta`"
     )
     Prior(
+        transform = transform,
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
         repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name})",
@@ -1058,12 +1079,14 @@ prior_uniform <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_student_t(4, 0, 1)
-prior_student_t <- function(nu, mu, sigma) {
+prior_student_t <- function(nu, mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             nu = nu,
             mu = mu,
@@ -1097,12 +1120,14 @@ prior_student_t <- function(nu, mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_logistic(0, 1)
-prior_logistic <- function(mu, sigma) {
+prior_logistic <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             mu = mu,
             sigma = sigma
@@ -1133,12 +1158,14 @@ prior_logistic <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_loglogistic(2, 3)
-prior_loglogistic <- function(alpha, beta) {
+prior_loglogistic <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             alpha = alpha,
             beta = beta
@@ -1172,12 +1199,14 @@ prior_loglogistic <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_invgamma(3, 2)
-prior_invgamma <- function(alpha, beta) {
+prior_invgamma <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             alpha = alpha,
             beta = beta

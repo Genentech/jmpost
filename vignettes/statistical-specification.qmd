@@ -105,6 +105,45 @@ Where:
 - $\Gamma(.)$ is the complete gamma function
 - $\gamma(., .)$ is the lower incomplete gamma function
 
+## Flat Prior
+
+`prior_flat()` instead contributes a constant density on the declared
+parameter scale. It is improper on an unbounded interval and is not invariant
+under a nonlinear change of scale. Its initialization distribution contributes
+no density term.
+
+## Priors on Transformed Parameters
+
+Let $x$ denote a declared model parameter and $y = g(x)$ the scale on which
+prior information is available. A transformed prior has density
+
+$$
+p_x(x) = \frac{p_y(g(x))}{F_y(g(u)) - F_y(g(l))}\, |g'(x)|,
+\qquad l < x < u,
+$$
+
+where $(l,u)$ is the admissible parameter interval, including distribution
+support. The supported transformations are increasing and one-to-one on
+their domains. `jmpost` evaluates truncation bounds on the $y$ scale and
+adds the log absolute Jacobian to the Stan target:
+
+| Transformation | Parameter domain | Log absolute Jacobian |
+|---|---|---|
+| `prior_transform_exp()` | $x \in \mathbb{R}$ | $x$ |
+| `prior_transform_exp(scale = a)`, $a>0$ | $x \in \mathbb{R}$ | $\log a + ax$ |
+| `prior_transform_square()` | $x>0$ | $\log 2 + \log x$ |
+
+For example, `prior_invgamma(1.5, 0.3, transform = prior_transform_exp(2))`
+places the inverse-gamma prior on $\exp(2x)$. If $x$ is a log standard
+deviation, this is a prior on the variance. It differs from placing an
+inverse-gamma prior directly on $x$. See the [quickstart](quickstart.qmd)
+for examples using residual variances and log-scale intercepts.
+
+The `transform` argument specifies the prior scale independently of the
+predictor parametrization. It includes a change-of-variable Jacobian;
+changing sampling coordinates with an affine multiplier preserves the
+specified prior distribution.
+
 ## Covariate Selection with Regularized Horseshoe Prior
 
 In the survival model the covariate coefficients $\beta$ typically just have a normal prior distribution, using `prior_normal()` or `prior_normal_vector()`. However, if the user wishes to perform covariate selection then they can instead use the regularized horseshoe prior via `prior_horseshoe()`. Here we explain how the prior is defined and how the hyperparameters can be set. Note that we use the same parametrization and notation as in the `brms` package [@Buerkner2017].

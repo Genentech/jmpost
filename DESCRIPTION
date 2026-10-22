@@ -89,6 +89,8 @@ Collate:
     'constants.R'
     'StanModule.R'
     'Prior.R'
+    'PriorTransform.R'
+    'TransformedPrior.R'
     'Parameter.R'
     'ParameterList.R'
     'StanModel.R'

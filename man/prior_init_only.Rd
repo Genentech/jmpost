@@ -37,6 +37,7 @@ Other Prior:
 \code{\link[=prior_normal_vector]{prior_normal_vector()}},
 \code{\link[=prior_std_normal]{prior_std_normal()}},
 \code{\link[=prior_student_t]{prior_student_t()}},
+\code{\link[=prior_transform]{prior_transform()}},
 \code{\link[=prior_uniform]{prior_uniform()}}
 }
 \concept{Prior}

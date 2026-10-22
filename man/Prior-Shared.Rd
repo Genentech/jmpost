@@ -15,6 +15,10 @@
 
 \item{size}{(\code{numeric} or \code{character}) the parameter size.}
 
+\item{transform}{(\code{PriorTransform | NULL}) optional package-defined transformation from the model parameter to the
+prior density scale. See \code{\link[=prior_transform]{prior_transform()}} for support, Jacobians and
+examples. \code{NULL} keeps the prior on the model parameter scale.}
+
 \item{...}{Not Used.}
 }
 \description{

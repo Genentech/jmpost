@@ -24,7 +24,8 @@ Prior(
   .omit_zero_lower_truncation = FALSE,
   .allow_vectors = FALSE,
   .is_const = FALSE,
-  repr_multiplier = function(name, size) ""
+  repr_multiplier = function(name, size) "",
+  transform = NULL
 )
 }
 \arguments{
@@ -65,6 +66,10 @@ by the prior.}
 
 \item{repr_multiplier}{(\code{function}) a function of \code{name} and \code{size} returning a Stan affine multiplier
 expression for an unbounded parameter, or an empty string for no transform.}
+
+\item{transform}{(\code{PriorTransform | NULL}) optional package-defined transformation from the model parameter to the
+prior density scale. See \code{\link[=prior_transform]{prior_transform()}} for support, Jacobians and
+examples. \code{NULL} keeps the prior on the model parameter scale.}
 }
 \value{
 A \code{Prior} object.

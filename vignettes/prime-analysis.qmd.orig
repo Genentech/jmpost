@@ -693,41 +693,37 @@ $\theta_5, \ldots, \theta_{10}$. The `omega_*` predictors use the default
 $\omega = \exp(\text{intercept})$. Observation error is additive
 (`scaled_variance = FALSE`) with standard deviation `sigma` $= \sqrt{\theta_4}$.
 
-To reproduce the NONMEM priors exactly, the priors need to be placed on the
-NONMEM scales, which differ from the scales of the `jmpost` parameters. The
-existing parametrisation arguments only transform the predictors, not the
-scale on which the prior is placed, and `jmpost` does not yet have priors on
-transformed parameters. The following are therefore **missing in `jmpost`**
-(placeholders used below, to be implemented in a separate step):
+To reproduce the NONMEM priors, place the distributions on the NONMEM
+scales using `transform`. The transformation maps a declared `jmpost`
+parameter to the scale on which the density is evaluated; `jmpost` adds the
+Jacobian automatically:
 
-1. `mu_{b,s,g}_intercept_prior`: normal prior on the natural scale
-   $\theta = \exp(\text{intercept})$, i.e. on the exponential transformation
-   of the intercept, including the log Jacobian `+ intercept`. Placeholder:
-   `prior_normal_exp(mean, sd)`. The positive NONMEM parameter bounds restrict
-   the normal prior to positive values; its truncation normaliser is constant.
-2. `omega_{b,s,g}_intercept_prior`: inverse-gamma prior (shape 1.5, scale 0.3) on
-   the variance $\omega^2 = \exp(2 \cdot \text{intercept})$, including the log
-   Jacobian `+ 2 * intercept`. Placeholder: `prior_invgamma_exp_variance(alpha, beta)`.
-   Note that `prior_invgamma()` exists but applies to the intercept itself, which
-   is not what is needed here.
-3. `sigma`: normal prior on the variance $\sigma^2$ (mean 100, SD 100), including
-   the log Jacobian `+ log(sigma)`. Placeholder: `prior_normal_square(mean, sd)`.
-   Note that `LongitudinalSteinFojoCov()` additionally applies a lower limit to
-   `sigma`, which adds a truncation term (a constant, so it does not change the
-   posterior shape) and has to work with the new prior.
-4. (Optional) the covariate coefficients $\theta_5, \ldots, \theta_{10}$ have
-   flat (improper) priors in NONMEM. `jmpost` has no improper prior, so we use
-   wide normal priors here.
+1. For `mu_{b,s,g}_intercept_prior`, use
+   `prior_normal(mean, sd, transform = prior_transform_exp())`. This places
+   the normal prior on $\theta = \exp(\text{intercept})$, restricted to positive
+   values, with log Jacobian `+ intercept`.
+2. For `omega_{b,s,g}_intercept_prior`, use
+   `prior_invgamma(1.5, 0.3, transform = prior_transform_exp(scale = 2))`.
+   The density is on $\omega^2 = \exp(2 \cdot \text{intercept})$, with log
+   Jacobian `log(2) + 2 * intercept`.
+3. For the residual standard deviation `sigma`, use
+   `prior_normal(100, 100, transform = prior_transform_square())`. The density
+   is on $\sigma^2$, with log Jacobian `log(2) + log(sigma)`.
+   `LongitudinalSteinFojoCov()` applies a positive lower bound to `sigma`;
+   the corresponding truncation bound on the density scale is its square.
+4. For the covariate coefficients $\theta_5, \ldots, \theta_{10}$, use
+   `prior_flat()`. This adds no prior density term on the coefficient scale;
+   its default normal distribution is used only for initial values.
 
-Ideally 1 to 3 would be one generic mechanism, i.e. a prior on a transformed
-parameter (`exp`, `exp(2 *)`, `square`) with the Jacobian handled automatically,
-rather than three separate priors.
+These transformations specify prior scales independently of the predictor
+parametrizations above. The truncation normalisers and the `log(2)` terms are
+constant here, so they do not change posterior shape.
 
 We use the default (non-centred) subject-level parametrisation for growth and
-shrinkage and the centred one for the baseline. The chunks below are not
-evaluated until the missing priors have been added.
+shrinkage and the centred one for the baseline. The model specification is
+lightweight to evaluate; sampling below remains disabled because it is costly.
 
-```{r nonmem_model, eval = FALSE}
+```{r nonmem_model}
 nm_spec <- JointModel(
     longitudinal = LongitudinalSteinFojoCov(
         mu_b_formula = ~ LIVERMET + LOG_AGE60 + ECOG_BIN,
@@ -743,19 +739,33 @@ nm_spec <- JointModel(
         omega_s_parametrization = "log-linear",
         omega_g_parametrization = "log-linear",
         # Baseline: theta3 ~ N(60, 60^2) on the positive natural scale.
-        mu_b_intercept_prior = prior_normal_exp(60, 60), # MISSING
-        mu_b_coefficients_prior = prior_normal(0, 10),
-        omega_b_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        mu_b_intercept_prior = prior_normal(
+            60, 60, transform = prior_transform_exp()
+        ),
+        mu_b_coefficients_prior = prior_flat(),
+        omega_b_intercept_prior = prior_invgamma(
+            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+        ),
         # Shrinkage: theta2 ~ N(0.50091, 0.50091^2).
-        mu_s_intercept_prior = prior_normal_exp(0.50091, 0.50091), # MISSING
-        mu_s_coefficients_prior = prior_normal(0, 10),
-        omega_s_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        mu_s_intercept_prior = prior_normal(
+            0.50091, 0.50091, transform = prior_transform_exp()
+        ),
+        mu_s_coefficients_prior = prior_flat(),
+        omega_s_intercept_prior = prior_invgamma(
+            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+        ),
         # Growth: theta1 ~ N(0.3, 0.3^2).
-        mu_g_intercept_prior = prior_normal_exp(0.3, 0.3), # MISSING
-        mu_g_coefficients_prior = prior_normal(0, 10),
-        omega_g_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        mu_g_intercept_prior = prior_normal(
+            0.3, 0.3, transform = prior_transform_exp()
+        ),
+        mu_g_coefficients_prior = prior_flat(),
+        omega_g_intercept_prior = prior_invgamma(
+            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+        ),
         # sigma^2 = theta4 ~ N(100, 100^2).
-        sigma = prior_normal_square(100, 100), # MISSING
+        sigma = prior_normal(
+            100, 100, transform = prior_transform_square()
+        ),
         scaled_variance = FALSE
     )
 )

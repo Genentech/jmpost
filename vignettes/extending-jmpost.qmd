@@ -296,8 +296,23 @@ model {
 
 There is however no prior specified in the Stan code for `lm_rs_slope_mu` or `lm_rs_slope_sigma`
 as these are handled by the `parameters` slot of the model object as mentioned above.
-The main reason for using this approach is that `jmpost` implements the priors in such a way
-that users can change them without having to re-compile the Stan model.
+The main reason for using this approach is that `jmpost` passes distribution
+hyperparameter values as Stan data, so users can change those values without
+having to re-compile the Stan model.
+
+Custom models can also accept transformed priors through the same `Parameter()`
+interface. For a declared standard deviation `sigma`, for example, a user can
+supply `prior_normal(100, 100, transform = prior_transform_square())` to put
+the density on `sigma^2`. `jmpost` handles the positive parameter domain,
+truncation on the variance scale and the Jacobian. Apply model-required bounds
+with `set_limits()` on the declared parameter scale. Do not add the same
+Jacobian or prior density again in the custom Stan code.
+
+Changing distribution hyperparameter values reuses the generated Stan code;
+changing the distribution family or transformation changes the code and
+requires compilation. For an explicitly flat prior, accept `prior_flat()`;
+use `prior_init_only()` for parameters whose density is already specified by
+a hierarchical relationship in the model.
 
 
 ## Custom Generated Quantities
