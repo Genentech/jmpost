@@ -972,6 +972,43 @@ prior_init_only <- function(dist) {
 }
 
 
+#' Flat Prior
+#'
+#' Specifies a constant density on the declared model parameter scale, for a
+#' scalar or each component of a vector. No prior density term or auxiliary
+#' parameters are added to the Stan model. Model-imposed parameter bounds still
+#' apply. An unbounded flat prior is improper; a proper posterior is not
+#' guaranteed.
+#'
+#' @typed init: Prior
+#'   distribution used only to generate initial values, including the usual
+#'   `jmpost.prior_shrinkage` towards its centre. Its density and limits do not
+#'   constrain the model parameter. Choose initial values compatible with any
+#'   model-imposed bounds.
+#' @family Prior
+#' @seealso [prior_init_only()]
+#' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_flat()
+#' prior_flat(init = prior_normal(0, 2))
+#' SurvivalWeibullPH(beta = prior_flat())
+prior_flat <- function(init = prior_normal(0, 1)) {
+    assert_that(is(init, "Prior"), msg = "`init` must be a Prior object")
+    Prior(
+        parameters = list(),
+        display = "flat()",
+        repr_model = "",
+        repr_data = "",
+        centre = init@centre,
+        sample = init@sample,
+        validation = list()
+    )
+}
+
+
 #' Uniform Prior Distribution
 #'
 #' @typed alpha: number

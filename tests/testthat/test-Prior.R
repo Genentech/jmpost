@@ -1,3 +1,51 @@
+test_that("flat priors omit density terms and retain sampled parameters", {
+    x <- prior_flat()
+    expect_equal(as.character(x), "flat()")
+    expect_equal(as.StanModule(x, name = "beta"), StanModule())
+    expect_equal(as_stan_list(x, name = "beta"), list())
+    expect_false(x@.is_const)
+
+    scalar <- as.StanModule(Parameter(x, "beta"))
+    expect_match(scalar@parameters, "real beta;", fixed = TRUE)
+    expect_equal(scalar@model, "")
+
+    bounded <- set_limits(x, lower = 0, upper = 10)
+    vector <- as.StanModule(Parameter(bounded, "beta", size = 3))
+    expect_match(
+        vector@parameters,
+        "vector<lower=0, upper=10>[3] beta;",
+        fixed = TRUE
+    )
+    expect_equal(vector@model, "")
+})
+
+
+test_that("flat prior initialization is configurable and respects model bounds", {
+    withr::local_options(list(jmpost.prior_shrinkage = 0.5))
+    with_mocked_bindings(
+        {
+            expect_equal(initialValues(prior_flat()), 2)
+            x <- prior_flat(init = prior_normal(2, 1))
+            expect_equal(initialValues(x), 3)
+            expect_equal(initialValues(set_limits(x, lower = 2)), 3)
+            expect_error(
+                initialValues(set_limits(x, upper = 2)),
+                "Unable to generate an initial value"
+            )
+        },
+        local_rnorm = \(n, ...) rep(4, n)
+    )
+    vector <- prior_flat(init = prior_const_vector(c(1, 2, 3)))
+    expect_equal(initialValues(vector), c(1, 2, 3))
+
+    # An initialization distribution's bounds must not alter the prior support.
+    x <- prior_flat(init = prior_uniform(1, 2))
+    expect_equal(x@limits, c(-Inf, Inf))
+    expect_equal(as.StanModule(x, name = "beta"), StanModule())
+    expect_error(prior_flat(init = 0), "`init` must be a Prior object")
+})
+
+
 test_that("Priors work as expected", {
     x <- prior_normal(4, 10)
     with_mocked_bindings(
