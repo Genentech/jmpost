@@ -97,7 +97,6 @@ reference:
       - SurvivalWeibullPH
       - SurvivalGamma
 
-
   - title: Link Specification
     contents:
       - linkDSLD
@@ -136,6 +135,7 @@ reference:
       - brierScore
       - brierScore.SurvivalQuantities
       - populationHR
+      - coef.JointModelSamples
       - shrinkage
       - shrinkage.JointModelSamples
 
@@ -224,6 +224,8 @@ reference:
   - title: Miscellaneous
     contents:
       - STAN_BLOCKS
+      - read_sas7bdat_from_zip
+      - connection_to_file
 
   - title: Data Sets
     contents:

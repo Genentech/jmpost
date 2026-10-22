@@ -36,6 +36,7 @@ NULL
 #' @slot repr_parameters (`string`)\cr See arguments.
 #' @slot repr_transformed_parameters (`string`)\cr See arguments.
 #' @slot repr_generated_quantities (`string`)\cr See arguments.
+#' @slot repr_multiplier (`function`)\cr See arguments.
 #' @slot auxiliary_initial_values (`function`)\cr See arguments.
 #' @slot auxiliary_size (`function`)\cr See arguments.
 #' @slot centre (`numeric`)\cr See arguments.
@@ -60,6 +61,7 @@ NULL
         "repr_parameters" = "character",
         "repr_transformed_parameters" = "character",
         "repr_generated_quantities" = "character",
+        "repr_multiplier" = "function",
         "auxiliary_initial_values" = "function",
         "auxiliary_size" = "function",
         "centre" = "numeric",
@@ -85,6 +87,9 @@ NULL
 #'   the Stan code representation for the transformed parameters block.
 #' @typed repr_generated_quantities: string
 #'   the Stan code representation for the generated quantities block.
+#' @typed repr_multiplier: function
+#'   a function of `name` and `size` returning a Stan affine multiplier
+#'   expression for an unbounded parameter, or an empty string for no transform.
 #' @typed auxiliary_initial_values: function
 #'   a function that returns initial values for extra Stan parameters
 #'   introduced by the prior.
@@ -131,7 +136,8 @@ Prior <- function(
     limits = c(-Inf, Inf),
     .omit_zero_lower_truncation = FALSE,
     .allow_vectors = FALSE,
-    .is_const = FALSE
+    .is_const = FALSE,
+    repr_multiplier = \(name, size) ""
 ) {
     .Prior(
         parameters = parameters,
@@ -140,6 +146,7 @@ Prior <- function(
         repr_parameters = repr_parameters,
         repr_transformed_parameters = repr_transformed_parameters,
         repr_generated_quantities = repr_generated_quantities,
+        repr_multiplier = repr_multiplier,
         auxiliary_initial_values = auxiliary_initial_values,
         auxiliary_size = auxiliary_size,
         centre = centre,
@@ -565,6 +572,16 @@ prior_normal_vector <- function(mus, sigmas) {
 
 #' Regularized Horseshoe Prior for a Vector Distribution
 #'
+#' Unbounded coefficients use a non-centred parameterization through Stan's
+#' affine multiplier transform. By default, standard-normal coefficients are
+#' multiplied by the regularized horseshoe scales. A finite `scale_noncentred`
+#' instead uses partial non-centring, limiting the multiplier to that scale.
+#' This can reduce dependence between strongly identified coefficients and
+#' their prior scales. It changes the sampling coordinates, not the prior.
+#' The coefficient names and initial-value interface are unchanged. Coefficients
+#' with finite bounds retain a centred parameterization because Stan does not
+#' allow bounds and affine multipliers on the same declaration.
+#'
 #' @typed df: number
 #'   degrees of freedom of the half-Student-t prior for local shrinkage
 #'   parameters.
@@ -577,6 +594,12 @@ prior_normal_vector <- function(mus, sigmas) {
 #'   scale of the half-Student-t prior for the global shrinkage parameter.
 #' @typed scale_slab: number
 #'   scale of the Student-t slab.
+#' @typed scale_noncentred: number
+#'   positive computational scale for partial non-centring, in coefficient
+#'   units. If the horseshoe standard deviation is `s`, the multiplier is
+#'   `s / sqrt(1 + (s / scale_noncentred)^2)`. The default `Inf` gives full
+#'   non-centring with multiplier `s`. This argument does not change the
+#'   horseshoe hyperparameters or the prior distribution.
 #' @family Prior
 #' @export
 #'
@@ -589,8 +612,11 @@ prior_horseshoe <- function(
     df_global = 1,
     df_slab = 4,
     scale_global = 1,
-    scale_slab = 2
+    scale_slab = 2,
+    scale_noncentred = Inf
 ) {
+    assert_number(scale_noncentred, lower = 0, finite = FALSE)
+    assert_that(scale_noncentred > 0)
     Prior(
         parameters = list(
             df = df,
@@ -637,6 +663,25 @@ prior_horseshoe <- function(
                 "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
             )
         ),
+        repr_multiplier = \(name, size) {
+            multiplier <- glue::glue(
+                "scales_horseshoe(prior_local_{name}, prior_global_{name}, ",
+                "square(prior_scale_slab_{name}) * prior_slab_{name})"
+            )
+            if (is.numeric(size) && size == 1) {
+                multiplier <- paste0("(", multiplier, ")[1]")
+            }
+            if (is.finite(scale_noncentred)) {
+                scalar <- is.numeric(size) && size == 1
+                divide <- if (scalar) "/" else "./"
+                one <- if (scalar) "1" else glue::glue("rep_vector(1, {size})")
+                multiplier <- glue::glue(
+                    "({multiplier}) {divide} sqrt({one} + ",
+                    "square(({multiplier}) / {scale_noncentred}))"
+                )
+            }
+            multiplier
+        },
         auxiliary_initial_values = \(name, size) {
             local_size <- if (is.numeric(size)) size else 1
             stats::setNames(

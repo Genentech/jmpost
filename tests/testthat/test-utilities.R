@@ -369,3 +369,48 @@ test_that("add_missing_stan_blocks() works as expected", {
     actual <- add_missing_stan_blocks(x, list("el1" = 1, "model" = 2))
     expect_equal(actual, list("data" = "abc", "model" = "das", "el1" = ""))
 })
+
+# connection_to_file ----
+
+test_that("connection_to_file copies an unopened connection to a file", {
+    src <- tempfile()
+    on.exit(unlink(src), add = TRUE)
+    bytes <- as.raw(0:255)
+    writeBin(bytes, src)
+
+    path <- connection_to_file(file(src))
+    on.exit(unlink(path), add = TRUE)
+    expect_equal(readBin(path, "raw", n = 1000), bytes)
+})
+
+test_that("connection_to_file works with an already open connection", {
+    src <- tempfile()
+    on.exit(unlink(src), add = TRUE)
+    bytes <- as.raw(c(1, 2, 3))
+    writeBin(bytes, src)
+
+    con <- file(src, open = "rb")
+    on.exit(close(con), add = TRUE)
+    path <- connection_to_file(con)
+    on.exit(unlink(path), add = TRUE)
+    expect_equal(readBin(path, "raw", n = 10), bytes)
+})
+
+# read_sas7bdat_from_zip ----
+
+test_that("read_sas7bdat_from_zip reads a dataset from the zip file", {
+    skip_if_not_installed("archive")
+    skip_if_not_installed("haven")
+    zip_file <- system.file("extdata", "prime_subset.zip", package = "jmpost")
+    adsl <- read_sas7bdat_from_zip(zip_file, "adsl_pds2019.sas7bdat")
+    expect_s3_class(adsl, "data.frame")
+    expect_gt(nrow(adsl), 0)
+    expect_true("SUBJID" %in% names(adsl))
+})
+
+test_that("read_sas7bdat_from_zip errors for a missing file", {
+    skip_if_not_installed("archive")
+    skip_if_not_installed("haven")
+    zip_file <- system.file("extdata", "prime_subset.zip", package = "jmpost")
+    expect_error(read_sas7bdat_from_zip(zip_file, "missing.sas7bdat"))
+})

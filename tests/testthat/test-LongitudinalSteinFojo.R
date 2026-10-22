@@ -704,3 +704,11 @@ test_that("Can recover known distributional parameters from unscaled variance SF
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 50))
 })
+
+
+test_that("LongitudinalSteinFojo has no covariate predictors", {
+    expect_identical(
+        covariates(LongitudinalSteinFojo(), data = make_covariate_subject()),
+        list()
+    )
+})

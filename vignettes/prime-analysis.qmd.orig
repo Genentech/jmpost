@@ -1,0 +1,773 @@
+---
+title: "Analyzing the PRIME Study Data"
+package: jmpost
+format:
+  html:
+    toc: true
+    html-math-method: mathml
+    embed-resources: true
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Analyzing the PRIME Study Data}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!-- prime-analysis.qmd is generated from prime-analysis.qmd.orig Please edit that file -->
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    warning = FALSE,
+    message = FALSE,
+    dev = "ragg_png",
+    tidy = "styler",
+    fig.path = "./prime-analysis-figures/",
+    fig.width = 6,
+    out.width = "100%"
+)
+```
+
+## Introduction
+
+This vignette prepares data from the PRIME study (ClinicalTrials.gov
+[NCT00364013](https://clinicaltrials.gov/study/NCT00364013)) for analysis with
+`jmpost`. PRIME was a randomised, multicentre, phase III study in previously
+untreated metastatic colorectal cancer. It compared first-line FOLFOX alone
+with FOLFOX plus panitumumab: 1,183 participants were randomised, with 590 in
+the comparator arm and 593 in the panitumumab arm. The study's primary aim was
+to assess whether adding panitumumab improved progression-free survival (PFS),
+with overall survival, response, duration of response, time to progression, and
+safety assessed as secondary outcomes. The study completed in August 2009.
+
+## Data
+
+We are fortunate to have access to the PRIME study data via Project Data Sphere (RRID:SCR_003726) 
+[@project-data-sphere].
+The supplied data are ADaM-format SAS datasets. We begin with the
+subject-level dataset (`adsl`) to obtain each participant's treatment assignment
+and survival or PFS outcome. Longitudinal tumour measurements are taken from
+the lesion dataset (`adls`): `VISITDY` provides the analysis time and `LSSLD`
+is the sum of longest diameters used as the tumour-size marker. We retain the
+participant identifier (`SUBJID`) in both datasets so that the subject-level
+event information can be joined to the repeated measurements. The biomarker (`biomark`) dataset contains the KRAS mutation status for each participant.
+
+First we read the datasets from the supplied zip file, using a simple helper function:
+
+```{r read_data}
+library(jmpost)
+zip_file <- system.file("extdata", "prime_subset.zip", package = "jmpost")
+
+adsl <- read_sas7bdat_from_zip(zip_file, "adsl_pds2019.sas7bdat")
+adls <- read_sas7bdat_from_zip(zip_file, "adls_pds2019.sas7bdat")
+biomark <- read_sas7bdat_from_zip(zip_file, "biomark_pds2019.sas7bdat")
+```
+
+Next we create the analysis datasets:
+
+```{r create_analysis_datasets}
+kras0 <- biomark |>
+    dplyr::select("SUBJID", "BMMTR1")
+
+event_df0 <- adsl |>
+    dplyr::left_join(kras0, by = "SUBJID") |>
+    dplyr::mutate(STUDY = "1", EVENTYR = DTHDY / 365.25, EVENTFL = DTH) |>
+    dplyr::select(
+        "SUBJID", "STUDY", "ATRT", "EVENTYR", "EVENTFL",
+        "AGE", "SEX",
+        ECOG = "B_ECOG", "DIAGTYPE", "LIVERMET",
+        KRAS = "BMMTR1"
+    ) |>
+    dplyr::mutate(
+        LIVERMET = factor(LIVERMET, levels = c("N", "Y")),
+        KRAS = factor(KRAS, levels = c("Wild-type", "Mutant")),
+        PRIMARY_SITE = factor(DIAGTYPE, levels = c("Colon", "Rectal")),
+        ECOG_BIN = forcats::fct_collapse(
+            dplyr::na_if(as.character(ECOG), ""),
+            "0" = "Fully active",
+            "1+" = c(
+                "In bed less than 50% of the time",
+                "Symptoms but ambulatory"
+            )
+        )
+    ) |>
+    dplyr::select(
+        "SUBJID", "STUDY", "ATRT", "EVENTYR", "EVENTFL",
+        "AGE", "SEX", "ECOG_BIN", "KRAS", "LIVERMET", "PRIMARY_SITE"
+    ) |>
+    na.omit()
+
+uid_event0 <- unique(event_df0$SUBJID)
+
+biom_df0 <- adls |>
+    dplyr::filter(LSCAT == "Target lesion", !is.na(LSSLD)) |>
+    dplyr::mutate(STUDY = "1", BIOMYR = VISITDY / 365.25, BIOMVAL = LSSLD) |>
+    dplyr::group_by(SUBJID, VISITDY) |>
+    dplyr::slice(1) |>
+    dplyr::ungroup() |>
+    dplyr::select("SUBJID", "BIOMYR", "BIOMVAL", "VISITDY") |>
+    dplyr::filter_out(dplyr::when_any(
+        SUBJID == "000424" & VISITDY == 442,
+        SUBJID == "000442" & VISITDY == 238,
+        SUBJID == "000710"
+    ))
+
+baseline_sld <- biom_df0 |>
+    dplyr::group_by(SUBJID) |>
+    dplyr::filter(VISITDY <= 0) |>
+    dplyr::filter(VISITDY == max(VISITDY)) |>
+    dplyr::summarize(BASE_SLD = BIOMVAL)
+
+uid_biom0 <- unique(baseline_sld$SUBJID)
+
+retain_uid <- intersect(uid_event0, uid_biom0)
+event_df <- event_df0 |>
+    dplyr::filter(SUBJID %in% retain_uid) |>
+    dplyr::left_join(baseline_sld, by = "SUBJID")
+
+desn0 <- event_df0 |>
+    dplyr::filter(SUBJID %in% retain_uid) |>
+    dplyr::select(SUBJID, STUDY, ATRT)
+
+biom_df <- biom_df0 |>
+    dplyr::filter(SUBJID %in% retain_uid) |>
+    dplyr::left_join(desn0, by = "SUBJID")
+```
+
+Because we want to use baseline covariates in the analysis, we need to make sure that we have discarded patients with missing baseline covariates.
+
+So in the end we have two analysis datasets:
+
+- `event_df` with `r nrow(event_df)` rows contains the subject-level
+information including the survival (`EVENTYR` is the time to event in years, and `EVENTFL` is the event indicator with 1 indicating the patient died and 0 if the time is censored), and 
+- `biom_df` with `r nrow(biom_df)` rows contains the longitudinal tumour measurements (with `BIOMYR` as the time in years and `BIOMVAL` as the sum of longest diameters in millimeters). Here we have filtered out certain observations for subject IDs `000424`, `000442`, and `000710`.
+
+```{r print_analysis_datasets}
+head(event_df)
+head(biom_df)
+```
+
+The `SUBJID` variable serves as the unique identifier for each participant across both datasets.
+
+We also center and scale the two continuous covariates, age and baseline SLD:
+
+```{r}
+event_df <- event_df |>
+    dplyr::mutate(AGE = scale(AGE), BASE_SLD = scale(BASE_SLD))
+```
+
+This is important to have the coefficients on the same scale and thus help with the prior setting and then the convergence of the MCMC sampling.
+
+## Analysis
+
+Now let's continue with the joint model analysis using the `jmpost` package. 
+
+We will use these covariates for overall survival as well as the growth and shrinkage means:
+
+```{r}
+cov_form <- ~ ATRT + AGE + SEX + ECOG_BIN + KRAS + LIVERMET + PRIMARY_SITE + BASE_SLD
+```
+
+First we create the `DataJoint` object that combines the subject-level and longitudinal data, specifying the appropriate formulas for the longitudinal and survival components:
+
+```{r joint_model_data_spec}
+library(jmpost)
+
+jm_dat <- DataJoint(
+    subject = DataSubject(
+        data = event_df,
+        subject = "SUBJID",
+        arm = "ATRT",
+        study = "STUDY"
+    ),
+    longitudinal = DataLongitudinal(
+        data = biom_df,
+        threshold = 3,
+        formula = BIOMVAL ~ BIOMYR
+    ),
+    survival = DataSurvival(
+        data = event_df,
+        formula = update(cov_form, Surv(EVENTYR, EVENTFL) ~ .)
+    )
+)
+```
+
+### Normal priors
+
+Next we specify the joint model including the same covariates now for the longitudinal component:
+
+```{r joint_model_specification}
+jm_spec <- JointModel(
+    longitudinal = LongitudinalSteinFojoCov(
+        # Baseline - there is only one study here so just intercept:
+        mu_b_formula = ~1,
+        omega_b_formula = ~1,
+        # Shrinkage - include covariates for the mean:
+        mu_s_formula = cov_form,
+        omega_s_formula = ~1,
+        # Growth - include covariates for the mean:
+        mu_g_formula = cov_form,
+        omega_g_formula = ~1,
+        # Baseline intercept priors:
+        mu_b_intercept_prior = prior_normal(4.09434, 1),
+        omega_b_intercept_prior = prior_normal(-1.60944, 1),
+        # Shrinkage priors:
+        mu_s_intercept_prior = prior_normal(-0.69315, 1),
+        mu_s_coefficients_prior = prior_normal(0, 1),
+        omega_s_intercept_prior = prior_normal(-1.60944, 1),
+        # Growth priors:
+        mu_g_intercept_prior = prior_normal(-1.20397, 1),
+        mu_g_coefficients_prior = prior_normal(0, 1),
+        omega_g_intercept_prior = prior_normal(-1.60944, 1),
+        sigma = prior_lognormal(log(10), 1)
+    ),
+    survival = SurvivalWeibullPH(beta = prior_normal(0, 1)),
+    # For a 10 mm/year difference, this puts approximately 95% prior probability on hazard ratios between 0.38 and 2.66:
+    link = linkDSLD(prior = prior_normal(0, 0.05))
+)
+```
+
+Then we can run our MCMC sampler:
+
+We start with a small HMC step size to reduce numerical underflow in early proposals. Stan continues
+to adapt the step size during warmup. These settings do not establish that
+100 warmup iterations are sufficient for the final analysis.
+
+```{r joint_model_mcmc}
+jm_samples_file <- system.file("extdata", "samples", "jm_samples_clean.rds", package = "jmpost")
+if (file.exists(jm_samples_file)) {
+    jm_samples <- readRDS(jm_samples_file)
+} else {
+    options("jmpost.prior_shrinkage" = 0.999)
+    set.seed(12345) # Reproduce the initial values generated in R.
+    jm_samples <- sampleStanModel(
+        jm_spec,
+        data = jm_dat,
+        iter_warmup = 1000,
+        iter_sampling = 1000,
+        # smaller starting step eliminated the gamma/lognormal exceptions:
+        step_size = 0.001,
+        chains = 4,
+        parallel_chains = 4,
+        seed = 12345
+    )
+    saveObject(jm_samples, file = jm_samples_file)
+}
+```
+
+Let's check the convergence of the MCMC chains for the population level parameters:
+
+```{r}
+pop_pars <- c(
+    "lm_sfc_mu_b_intercept",
+    "lm_sfc_mu_g_intercept",
+    "lm_sfc_mu_g_coefficients",
+    "lm_sfc_mu_s_intercept",
+    "lm_sfc_mu_s_coefficients",
+    "lm_sfc_omega_b_intercept",
+    "lm_sfc_omega_g_intercept",
+    "lm_sfc_omega_s_intercept",
+    "lm_sfc_sigma",
+    "sm_weibull_ph_gamma",
+    "sm_weibull_ph_lambda",
+    "beta_os_cov",
+    "link_coefficients"
+)
+
+jm_mcmc <- cmdstanr::as.CmdStanMCMC(jm_samples)
+jm_summary <- jm_mcmc$summary(pop_pars)
+summary(jm_summary$rhat)
+```
+
+Here we see that the sampling worked ok, as all the R-hat values are around 1.
+
+This is also confirmed when looking at the trace plots:
+
+```{r}
+jm_draws <- jm_mcmc$draws(pop_pars)
+
+library(bayesplot)
+mcmc_trace(jm_draws)
+```
+
+We can now inspect the covariate coefficients for overall survival (OS),
+tumour growth and tumour shrinkage. As in the covariate-selection vignette,
+`coef()` uses the fitted design-matrix column names to label the posterior
+summaries automatically. The growth and shrinkage models use the same
+covariate formula here. The table reports posterior
+medians and 90% credible intervals (`q5` to `q95`), alongside R-hat and bulk
+effective sample size.
+
+```{r coefficient-estimates}
+coefficient_summary <- coef(jm_samples) |>
+    dplyr::mutate(
+        component = dplyr::case_when(
+            component == "survival" ~ "OS",
+            predictor == "mu_g" ~ "Growth",
+            predictor == "mu_s" ~ "Shrinkage"
+        )
+    ) |>
+    dplyr::select(component, covariate, median, q5, q95, rhat, ess_bulk)
+knitr::kable(coefficient_summary, digits = 3)
+```
+
+The OS coefficients are on the log-hazard scale: exponentiating a coefficient
+gives the hazard ratio, conditional on the other covariates and the linked
+tumour trajectory. The growth and shrinkage coefficients act on the log scale
+of their respective rates, so exponentiating them gives a ratio of the
+population median rates. Positive coefficients therefore indicate higher
+mortality hazard, faster growth or faster shrinkage, respectively. For age and
+baseline SLD, each coefficient describes a one-standard-deviation increase;
+factor coefficients compare the named level with its reference level. Intervals
+that span zero indicate uncertainty about the direction of the association.
+
+### Horseshoe priors
+
+We can also try to use horseshoe priors in order to do variable selection:
+
+We use partial non-centring for the horseshoe coefficients and centre the
+subject-specific growth and shrinkage effects. These choices change the sampling
+coordinates while preserving the prior distributions and likelihood. The
+`scale_noncentred` argument below is a computational tuning parameter, separate
+from the global shrinkage and slab scales.
+Note that a longer warmup or sampling run alone did not resolve divergent
+transitions or persistent treedepth saturation.
+
+```{r joint_model_horseshoe_specification}
+jm_horseshoe_spec <- JointModel(
+    longitudinal = LongitudinalSteinFojoCov(
+        # Baseline - there is only one study here so just intercept:
+        mu_b_formula = ~1,
+        omega_b_formula = ~1,
+        # Shrinkage - include covariates for the mean:
+        mu_s_formula = cov_form,
+        omega_s_formula = ~1,
+        # Growth - include covariates for the mean:
+        mu_g_formula = cov_form,
+        omega_g_formula = ~1,
+        # Baseline intercept priors:
+        mu_b_intercept_prior = prior_normal(4.09434, 1),
+        omega_b_intercept_prior = prior_normal(-1.60944, 1),
+        # Shrinkage priors:
+        mu_s_intercept_prior = prior_normal(-0.69315, 1),
+        mu_s_coefficients_prior = prior_horseshoe(scale_noncentred = 0.1),
+        omega_s_intercept_prior = prior_normal(-1.60944, 1),
+        # Growth priors:
+        mu_g_intercept_prior = prior_normal(-1.20397, 1),
+        mu_g_coefficients_prior = prior_horseshoe(scale_noncentred = 0.1),
+        omega_g_intercept_prior = prior_normal(-1.60944, 1),
+        sigma = prior_lognormal(log(10), 1),
+        centred_shrinkage = TRUE,
+        centred_growth = TRUE
+    ),
+    survival = SurvivalWeibullPH(
+        beta = prior_horseshoe(scale_noncentred = 0.1)
+    ),
+    # For a 10 mm/year difference, this puts approximately 95% prior probability on hazard ratios between 0.38 and 2.66:
+    link = linkDSLD(prior = prior_normal(0, 0.05))
+)
+```
+
+Then we can run our MCMC sampler:
+
+```{r joint_model_horseshoe_mcmc}
+jm_horseshoe_samples_file <- system.file("extdata", "samples", "jm_horseshoe_samples.rds", package = "jmpost")
+if (file.exists(jm_horseshoe_samples_file)) {
+    jm_horseshoe_samples <- readRDS(jm_horseshoe_samples_file)
+} else {
+    options("jmpost.prior_shrinkage" = 0.999)
+    set.seed(54321) # Reproduce the initial values generated in R.
+    jm_horseshoe_samples <- sampleStanModel(
+        jm_horseshoe_spec,
+        data = jm_dat,
+        iter_warmup = 1000,
+        iter_sampling = 1000,
+        step_size = 0.001,
+        chains = 4,
+        parallel_chains = 4,
+        seed = 24680
+    )
+    saveObject(jm_horseshoe_samples, file = jm_horseshoe_samples_file)
+}
+```
+
+Let's check again the convergence:
+
+```{r}
+jm_horseshoe_mcmc <- cmdstanr::as.CmdStanMCMC(jm_horseshoe_samples)
+jm_horseshoe_mcmc$diagnostic_summary()
+```
+
+We assess convergence using the sampler diagnostics above. We see that across the 4 chains there was only a single divergent transition, none reached the maximum treedepth and the E-BFMI (Energy Bayesian Fraction of Missing Information) values are above 0.5, where already values above 0.3 would indicate good exploration of the posterior.
+
+Let's check the traceplots:
+
+```{r}
+jm_horseshoe_draws <- jm_horseshoe_mcmc$draws(pop_pars)
+mcmc_trace(jm_horseshoe_draws)
+```
+
+These look good, too.
+
+Let's look at the shrinkage factors:
+
+```{r}
+shrinkage_draws <- shrinkage(jm_horseshoe_samples)
+shrinkage_summary <- summary(shrinkage_draws)
+```
+
+Let's tabulate the variable, median and 5% and 95% quantiles:
+
+```{r}
+shrinkage_summary |>
+    dplyr::select(variable, median, q5, q95) |>
+    knitr::kable(digits = 3)
+```
+
+We see here that most covariates have high shrinkage values close to 1, which indicates that the covariate is not so important for the outcome it is used to model. Exceptions where the 95% quantile is below 1 are the following:
+
+- `longitudinal.mu_s:LIVERMETY`: liver metastases on shrinkage
+- `longitudinal.mu_g:BASE_SLD`: baseline SLD on growth
+- `ECOG_BIN1+`: ECOG 1+/0 on survival hazard
+
+And we can compare that with the coefficient estimates:
+
+```{r}
+coef(jm_horseshoe_samples) |>
+    dplyr::mutate(
+        component = dplyr::case_when(
+            component == "survival" ~ "OS",
+            predictor == "mu_g" ~ "Growth",
+            predictor == "mu_s" ~ "Shrinkage"
+        )
+    ) |>
+    dplyr::select(component, covariate, median, q5, q95) |>
+    knitr::kable(digits = 3)
+```
+
+Also here we see that the 95% credible interval excludes 0 for the covariates we have seen with shrinkage factors below 1:
+
+- `ECOG_BIN1+` on survival
+- `LIVERMETY` on shrinkage
+- `BASE_SLD` on growth
+
+Interestingly we also see in addition 
+
+- `AGE` on survival
+- `ECOG_BIN1+` on growth
+
+(Indeed if we use 4 digits for rounding the upper quantile above then we can also see them there already.)
+
+## Reproducing NONMEM results
+
+Finally we are going to try to reproduce results from NONMEM on the same data set.
+The reference is run 124 of the NONMEM model building report (NONMEM 7.5, FOCE
+with interaction): the final covariate model re-estimated with weakly
+informative priors via `$PRIOR NWPRI`.
+
+### The NONMEM model
+
+The NONMEM model is a **longitudinal-only** Stein-Fojo tumour growth inhibition
+(TGI) model, i.e. there is no survival submodel and no link. With time $t$ in
+years (treatment start at $t = 0$) the sum of longest diameters (SLD) of
+subject $i$ is
+
+$$
+y_{ij} = \mathrm{BSL}_i \left(\exp(\mathrm{KG}_i t_{ij}) + \exp(-\mathrm{KS}_i t_{ij}) - 1\right) + \varepsilon_{ij}
+\quad (t_{ij} > 0),
+\qquad
+y_{ij} = \mathrm{BSL}_i \exp(\mathrm{KG}_i t_{ij}) + \varepsilon_{ij}
+\quad (t_{ij} \leq 0),
+$$
+
+with additive normal residual error $\varepsilon_{ij} \sim N(0, \theta_4)$, where
+$\theta_4$ is a variance. This is the same structural model as
+`LongitudinalSteinFojoCov`. The growth rate KG, the shrinkage rate KS and the
+baseline BSL are log-normally distributed with independent random effects
+(diagonal $\Omega$) and a log-linear covariate model,
+e.g. $\log \mathrm{KG}_i = \log \theta_1 + \theta_8\, \mathrm{BECOG}_i + \eta_{1i}$.
+The final covariate model (run 118) contains:
+
+| Parameter | Covariates (effect on the log scale) |
+|---|---|
+| KG (growth) | `BECOG` (ECOG 1+ vs 0) |
+| KS (shrinkage) | `ATRT` (panitumumab + FOLFOX vs FOLFOX alone), `LIVERMET` (liver metastases yes vs no) |
+| BSL (baseline) | `LIVERMET`, `BECOG`, and age as `log(AGE / 60)` (power model, reference age 60 years) |
+
+Note that the continuous covariate (age) is therefore *not* centred and scaled
+as above, and that the reference group for the typical values $\theta_1$ to
+$\theta_3$ is: ECOG 0, no liver metastases, FOLFOX alone (for KS only), age 60.
+SEX, RECTAL (primary site) and MUTANT (KRAS) were not retained in the NONMEM
+covariate search.
+
+Run 124 adds the following priors, with all other parameters (the covariate
+coefficients $\theta_5, \ldots, \theta_{10}$) having no prior, i.e. flat:
+
+- Typical values on the natural (not log) scale, independent normal priors with
+  standard deviation equal to the prior mean:
+  $\theta_1$ (KG) $\sim N(0.3, 0.3^2)$,
+  $\theta_2$ (KS) $\sim N(0.50091, 0.50091^2)$,
+  $\theta_3$ (BSL) $\sim N(60, 60^2)$.
+- The residual *variance* $\theta_4 \sim N(100, 100^2)$.
+- The three random effect *variances* $\omega^2_{KG}, \omega^2_{KS}, \omega^2_{BSL}$ have independent
+  inverse-Wishart priors with prior value $0.2$ and 3 degrees of freedom, which
+  for $1 \times 1$ blocks are inverse-gamma priors with shape
+  $\alpha = \nu / 2 = 1.5$ and scale $\beta = \nu R / 2 = 0.3$. (This is
+  confirmed by the "PRIOR CONSTANT TO OBJECTIVE FUNCTION" of 31.07 in the
+  NONMEM output, which is reproduced exactly by these normal and
+  inverse-gamma densities.)
+
+Important differences to keep in mind when comparing:
+
+- NONMEM (FOCE-I with priors) reports a penalised maximum likelihood /
+  posterior mode estimate in the parametrisation of $\theta$ and $\Omega$, while
+  `jmpost` reports posterior summaries (here medians) from a full Bayesian
+  analysis with the random effects integrated out by MCMC. With 487 subjects
+  the prior has little influence, so we expect close but not identical values.
+- The `jmpost` parameters are the log typical values, the log standard
+  deviations $\omega$ and the residual standard deviation $\sigma$, whereas the
+  NONMEM priors are on $\theta$, $\omega^2$ and $\theta_4 = \sigma^2$. To
+  reproduce them exactly, priors on these transformed scales (with Jacobian)
+  are needed; see below.
+
+### NONMEM estimates
+
+We store the run 124 estimates (relative standard errors from the NONMEM
+covariance step with the R matrix) and convert them to the `jmpost` scale
+for later comparison:
+
+```{r nonmem_estimates}
+nonmem_124 <- tibble::tribble(
+    ~nonmem, ~predictor, ~covariate, ~estimate, ~rse_percent, ~scale,
+    "theta1: KG, ECOG 0", "mu_g", "(Intercept)", 0.3827, 6.8, "log",
+    "theta2: KS, FOLFOX alone, no liver metastases", "mu_s", "(Intercept)", 1.049, 17.2, "log",
+    "theta3: BSL, no liver metastases, ECOG 0, age 60", "mu_b", "(Intercept)", 60.96, 12.0, "log",
+    "theta4: residual variance", "sigma", NA, 138.3, 3.9, "sqrt",
+    "theta5: ATRT on KS", "mu_s", "ATRTPanitumumab + FOLFOX", 0.1365, 44.4, "identity",
+    "theta6: LIVERMET on BSL", "mu_b", "LIVERMETY", 0.6218, 19.7, "identity",
+    "theta7: LIVERMET on KS", "mu_s", "LIVERMETY", 0.788, 21.6, "identity",
+    "theta8: BECOG on KG", "mu_g", "ECOG_BIN1+", 0.3504, 27.7, "identity",
+    "theta9: AGE on BSL (power, per log(AGE / 60))", "mu_b", "LOG_AGE60", -0.6211, 25.6, "identity",
+    "theta10: BECOG on BSL", "mu_b", "ECOG_BIN1+", 0.249, 26.1, "identity",
+    "omega2 KG", "omega_g", "(Intercept)", 0.7984, 8.4, "half_log",
+    "omega2 KS", "omega_s", "(Intercept)", 0.2251, 11.4, "half_log",
+    "omega2 BSL", "omega_b", "(Intercept)", 0.4956, 6.9, "half_log"
+) |>
+    dplyr::mutate(
+        jmpost = dplyr::case_when(
+            scale == "log" ~ log(estimate),
+            scale == "sqrt" ~ sqrt(estimate),
+            scale == "half_log" ~ log(sqrt(estimate)),
+            scale == "identity" ~ estimate
+        )
+    )
+knitr::kable(nonmem_124, digits = 4)
+```
+
+Here `jmpost` is the NONMEM estimate on the scale of the corresponding `jmpost`
+parameter: log typical values for the intercepts (`lm_sfc_mu_*_intercept`),
+the residual standard deviation (`lm_sfc_sigma`), the log of the random effect
+standard deviations (`lm_sfc_omega_*_intercept`), and unchanged covariate
+coefficients (`lm_sfc_mu_*_coefficients`). The OFV of run 124 is 19476.183
+(including the prior term); it is not comparable to the `jmpost` log
+likelihood.
+
+### Data
+
+The NONMEM data set has 487 subjects with 2567 tumour measurements (after
+removal of 10 flagged records). Since there is no survival part, we do not need
+the KRAS, sex, primary site and baseline SLD covariates used above, and thus
+we do not have to drop the subjects with missing values in these. We therefore
+rebuild the subject-level data with only the covariates that are needed, and
+we use the raw age (before centring and scaling) to create `log(AGE / 60)`:
+
+```{r nonmem_data}
+nm_subject_df <- adsl |>
+    dplyr::select("SUBJID", "ATRT", "AGE", ECOG = "B_ECOG", "LIVERMET") |>
+    dplyr::mutate(
+        STUDY = "1",
+        LIVERMET = factor(LIVERMET, levels = c("N", "Y")),
+        ECOG_BIN = forcats::fct_collapse(
+            dplyr::na_if(as.character(ECOG), ""),
+            "0" = "Fully active",
+            "1+" = c(
+                "In bed less than 50% of the time",
+                "Symptoms but ambulatory"
+            )
+        ),
+        LOG_AGE60 = log(AGE / 60)
+    ) |>
+    dplyr::select("SUBJID", "STUDY", "ATRT", "LOG_AGE60", "ECOG_BIN", "LIVERMET") |>
+    na.omit() |>
+    dplyr::filter(SUBJID %in% biom_df0$SUBJID)
+
+nm_biom_df <- biom_df0 |>
+    dplyr::filter(SUBJID %in% nm_subject_df$SUBJID) |>
+    dplyr::left_join(nm_subject_df[, c("SUBJID", "STUDY", "ATRT")], by = "SUBJID")
+
+# Check that we are using the same data as NONMEM:
+stopifnot(
+    nrow(nm_subject_df) == 487,
+    nrow(nm_biom_df) == 2567
+)
+
+nm_dat <- DataJoint(
+    subject = DataSubject(
+        data = nm_subject_df,
+        subject = "SUBJID",
+        arm = "ATRT",
+        study = "STUDY"
+    ),
+    longitudinal = DataLongitudinal(
+        data = nm_biom_df,
+        formula = BIOMVAL ~ BIOMYR
+    )
+)
+```
+
+Note that we do not specify a `threshold`, so no observations are treated as
+censored, as in NONMEM.
+
+### The `jmpost` model
+
+The model maps to `LongitudinalSteinFojoCov` as follows. The `mu_*`
+predictors use the default `"linear"` parametrisation, `mu = intercept + X beta`,
+which enters as `psi = exp(mu + eta * omega)`. This is the mu-referenced NONMEM
+model, e.g. `MU_1 = LOG(THETA(1)) + THETA(8) * BECOG`: the intercepts are
+$\log \theta_1, \log \theta_2, \log \theta_3$ and the coefficients are
+$\theta_5, \ldots, \theta_{10}$. The `omega_*` predictors use the default
+`"log-linear"` parametrisation (intercept-only formulas), so
+$\omega = \exp(\text{intercept})$. Observation error is additive
+(`scaled_variance = FALSE`) with standard deviation `sigma` $= \sqrt{\theta_4}$.
+
+To reproduce the NONMEM priors exactly, the priors need to be placed on the
+NONMEM scales, which differ from the scales of the `jmpost` parameters. The
+existing parametrisation arguments only transform the predictors, not the
+scale on which the prior is placed, and `jmpost` does not yet have priors on
+transformed parameters. The following are therefore **missing in `jmpost`**
+(placeholders used below, to be implemented in a separate step):
+
+1. `mu_{b,s,g}_intercept_prior`: normal prior on the natural scale
+   $\theta = \exp(\text{intercept})$, i.e. on the exponential transformation
+   of the intercept, including the log Jacobian `+ intercept`. Placeholder:
+   `prior_normal_exp(mean, sd)`. The prior is not truncated at zero in NONMEM.
+2. `omega_{b,s,g}_intercept_prior`: inverse-gamma prior (shape 1.5, scale 0.3) on
+   the variance $\omega^2 = \exp(2 \cdot \text{intercept})$, including the log
+   Jacobian `+ 2 * intercept`. Placeholder: `prior_invgamma_exp_variance(alpha, beta)`.
+   Note that `prior_invgamma()` exists but applies to the intercept itself, which
+   is not what is needed here.
+3. `sigma`: normal prior on the variance $\sigma^2$ (mean 100, SD 100), including
+   the log Jacobian `+ log(sigma)`. Placeholder: `prior_normal_square(mean, sd)`.
+   Note that `LongitudinalSteinFojoCov()` additionally applies a lower limit to
+   `sigma`, which adds a truncation term (a constant, so it does not change the
+   posterior shape) and has to work with the new prior.
+4. (Optional) the covariate coefficients $\theta_5, \ldots, \theta_{10}$ have
+   flat (improper) priors in NONMEM. `jmpost` has no improper prior, so we use
+   wide normal priors here.
+
+Ideally 1 to 3 would be one generic mechanism, i.e. a prior on a transformed
+parameter (`exp`, `exp(2 *)`, `square`) with the Jacobian handled automatically,
+rather than three separate priors.
+
+We use the default (non-centred) subject-level parametrisation for growth and
+shrinkage and the centred one for the baseline. The chunks below are not
+evaluated until the missing priors have been added.
+
+```{r nonmem_model, eval = FALSE}
+nm_spec <- JointModel(
+    longitudinal = LongitudinalSteinFojoCov(
+        mu_b_formula = ~ LIVERMET + LOG_AGE60 + ECOG_BIN,
+        omega_b_formula = ~1,
+        mu_s_formula = ~ ATRT + LIVERMET,
+        omega_s_formula = ~1,
+        mu_g_formula = ~ECOG_BIN,
+        omega_g_formula = ~1,
+        mu_b_parametrization = "linear",
+        mu_s_parametrization = "linear",
+        mu_g_parametrization = "linear",
+        omega_b_parametrization = "log-linear",
+        omega_s_parametrization = "log-linear",
+        omega_g_parametrization = "log-linear",
+        # Baseline: theta1 ~ N(60, 60^2) on the natural scale.
+        mu_b_intercept_prior = prior_normal_exp(60, 60), # MISSING
+        mu_b_coefficients_prior = prior_normal(0, 10),
+        omega_b_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        # Shrinkage: theta2 ~ N(0.50091, 0.50091^2).
+        mu_s_intercept_prior = prior_normal_exp(0.50091, 0.50091), # MISSING
+        mu_s_coefficients_prior = prior_normal(0, 10),
+        omega_s_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        # Growth: theta3 ~ N(0.3, 0.3^2).
+        mu_g_intercept_prior = prior_normal_exp(0.3, 0.3), # MISSING
+        mu_g_coefficients_prior = prior_normal(0, 10),
+        omega_g_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
+        # sigma^2 = theta4 ~ N(100, 100^2).
+        sigma = prior_normal_square(100, 100), # MISSING
+        scaled_variance = FALSE
+    )
+)
+```
+
+Then we run the sampler:
+
+```{r nonmem_mcmc, eval = FALSE}
+nm_samples_file <- system.file("extdata", "samples", "nm_samples.rds", package = "jmpost")
+if (file.exists(nm_samples_file)) {
+    nm_samples <- readRDS(nm_samples_file)
+} else {
+    options("jmpost.prior_shrinkage" = 0.999)
+    set.seed(2468)
+    nm_samples <- sampleStanModel(
+        nm_spec,
+        data = nm_dat,
+        iter_warmup = 1000,
+        iter_sampling = 1000,
+        chains = 4,
+        parallel_chains = 4,
+        seed = 2468
+    )
+    saveObject(nm_samples, file = nm_samples_file)
+}
+```
+
+### Comparison
+
+Finally we compare the posterior medians with the NONMEM estimates (both on the
+`jmpost` scale):
+
+```{r nonmem_comparison, eval = FALSE}
+nm_pop_pars <- c(
+    "lm_sfc_mu_b_intercept",
+    "lm_sfc_mu_s_intercept",
+    "lm_sfc_mu_g_intercept",
+    "lm_sfc_omega_b_intercept",
+    "lm_sfc_omega_s_intercept",
+    "lm_sfc_omega_g_intercept",
+    "lm_sfc_sigma"
+)
+nm_mcmc <- cmdstanr::as.CmdStanMCMC(nm_samples)
+nm_summary <- nm_mcmc$summary(nm_pop_pars, "median", "q5", "q95", "rhat", "ess_bulk")
+knitr::kable(nm_summary, digits = 3)
+
+nm_coef <- coef(nm_samples) |>
+    dplyr::select(predictor, covariate, median, q5, q95, rhat, ess_bulk) |>
+    dplyr::left_join(
+        nonmem_124[, c("predictor", "covariate", "jmpost")],
+        by = c("predictor", "covariate")
+    ) |>
+    dplyr::rename(nonmem = jmpost)
+knitr::kable(nm_coef, digits = 3)
+```
+
+### Next steps
+
+The NONMEM analysis is a two-stage approach: the tumour growth inhibition (TGI)
+model above is fitted first, and the overall survival (OS) model is then fitted
+separately in R (a Weibull `survreg` model using the individual NONMEM estimates,
+e.g. `log(KG)` and baseline SLD, as covariates). A natural next step is to
+reproduce this OS modelling and compare it with both the joint model results
+above and the R results from NONMEM.
+

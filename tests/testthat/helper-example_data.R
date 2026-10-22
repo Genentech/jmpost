@@ -78,3 +78,16 @@ ensure_test_data_1 <- function(positive_epsilon = FALSE) {
     )
     invisible(results)
 }
+
+
+make_covariate_subject <- function() {
+    DataSubject(
+        data.frame(
+            subject = paste0("S", 1:4),
+            arm = c("A", "B", "A", "B"),
+            study = c("X", "X", "Y", "Y"),
+            age = c(50, 60, 55, 65)
+        ),
+        "subject", "arm", "study"
+    )
+}

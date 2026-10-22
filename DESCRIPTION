@@ -48,6 +48,8 @@ Imports:
     stats,
     splines
 Suggests: 
+    archive,
+    haven,
     cmdstanr,
     bayesplot,
     knitr,

@@ -553,3 +553,11 @@ test_that("Can recover known distributional parameters from unscaled variance Cl
     expect_true(all(dat$q99 >= true_values))
     expect_true(all(dat$ess_bulk > 50))
 })
+
+
+test_that("LongitudinalClaretBruno has no covariate predictors", {
+    expect_identical(
+        covariates(LongitudinalClaretBruno(), data = make_covariate_subject()),
+        list()
+    )
+})

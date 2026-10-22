@@ -29,7 +29,8 @@ Other RandomEffectQuantities:
 \code{\link[=summary.RandomEffectQuantities]{summary.RandomEffectQuantities()}}
 
 Other JointModelSamples:
-\code{\link[=as_print_string.JointModelSamples]{as_print_string.JointModelSamples()}}
+\code{\link[=as_print_string.JointModelSamples]{as_print_string.JointModelSamples()}},
+\code{\link[=coef.JointModelSamples]{coef.JointModelSamples()}}
 }
 \concept{JointModelSamples}
 \concept{RandomEffectQuantities}

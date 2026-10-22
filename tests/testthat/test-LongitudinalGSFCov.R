@@ -298,3 +298,20 @@ test_that("GSF covariate model recovers its parameters", {
         info = paste(capture.output(print(recovery)), collapse = "\n")
     )
 })
+
+
+test_that("LongitudinalGSFCov exposes covariates by parameter", {
+    expect_identical(
+        covariates(LongitudinalGSFCov(), data = make_covariate_subject()),
+        list(
+            lm_gsfc_mu_b_coefficients = "studyY",
+            lm_gsfc_omega_b_coefficients = "studyY",
+            lm_gsfc_mu_s_coefficients = "armB",
+            lm_gsfc_omega_s_coefficients = "armB",
+            lm_gsfc_mu_g_coefficients = "armB",
+            lm_gsfc_omega_g_coefficients = "armB",
+            lm_gsfc_mu_phi_coefficients = "armB",
+            lm_gsfc_omega_phi_coefficients = "armB"
+        )
+    )
+})

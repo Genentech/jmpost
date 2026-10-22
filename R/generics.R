@@ -793,7 +793,9 @@ saveObject <- function(object, file, ...) {
 #' @family covariates
 #' @export
 #'
-#' @returns A character vector containing the covariate names.
+#' @returns For [`DataSurvival`], a character vector containing the covariate
+#'   names. For [`LongitudinalModel`], a named list of character vectors, one
+#'   per covariate coefficient parameter; see [covariates.LongitudinalModel()].
 #'
 #' @examples
 #' surv_data <- DataSurvival(os_data, Surv(os_time, os_event) ~ age + sex)
@@ -811,7 +813,8 @@ covariates <- function(object, ...) {
 #' @family shrinkage
 #' @export
 #'
-#' @returns A named numeric vector or matrix of shrinkage factors.
+#' @returns For [`JointModelSamples`], a posterior draws object containing the
+#'   sampled prior shrinkage factors; see [shrinkage.JointModelSamples()].
 #'
 #' @examples
 #' \dontrun{

@@ -427,3 +427,46 @@ test_that("Stein-Fojo covariate model recovers its parameters", {
         info = paste(capture.output(print(recovery)), collapse = "\n")
     )
 })
+
+
+test_that("LongitudinalSteinFojoCov exposes covariates by parameter", {
+    expect_identical(
+        covariates(LongitudinalSteinFojoCov(), data = make_covariate_subject()),
+        list(
+            lm_sfc_mu_b_coefficients = "studyY",
+            lm_sfc_omega_b_coefficients = "studyY",
+            lm_sfc_mu_s_coefficients = "armB",
+            lm_sfc_omega_s_coefficients = "armB",
+            lm_sfc_mu_g_coefficients = "armB",
+            lm_sfc_omega_g_coefficients = "armB"
+        )
+    )
+})
+
+
+test_that("covariate names describe contrasts and formula terms", {
+    model <- LongitudinalSteinFojoCov(
+        mu_g_formula = ~ arm * age + I(age^2),
+        mu_s_formula = ~1
+    )
+    actual <- covariates(model, data = make_covariate_subject())
+    expect_identical(
+        actual$lm_sfc_mu_g_coefficients,
+        c("armB", "age", "I(age^2)", "armB:age")
+    )
+    expect_identical(actual$lm_sfc_mu_s_coefficients, character())
+})
+
+test_that("longitudinal covariates require suitable subject data", {
+    expect_error(
+        covariates(LongitudinalSteinFojoCov(), data = data.frame()),
+        "DataSubject"
+    )
+    expect_error(
+        covariates(
+            LongitudinalSteinFojoCov(mu_g_formula = ~missing_covariate),
+            data = make_covariate_subject()
+        ),
+        "missing_covariate"
+    )
+})

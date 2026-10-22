@@ -239,3 +239,20 @@ test_that("Claret-Bruno covariate model recovers its parameters", {
         info = paste(capture.output(print(recovery)), collapse = "\n")
     )
 })
+
+
+test_that("LongitudinalClaretBrunoCov exposes covariates by parameter", {
+    expect_identical(
+        covariates(LongitudinalClaretBrunoCov(), data = make_covariate_subject()),
+        list(
+            lm_clbrc_mu_b_coefficients = "studyY",
+            lm_clbrc_omega_b_coefficients = "studyY",
+            lm_clbrc_mu_g_coefficients = "armB",
+            lm_clbrc_omega_g_coefficients = "armB",
+            lm_clbrc_mu_c_coefficients = "armB",
+            lm_clbrc_omega_c_coefficients = "armB",
+            lm_clbrc_mu_p_coefficients = "armB",
+            lm_clbrc_omega_p_coefficients = "armB"
+        )
+    )
+})
