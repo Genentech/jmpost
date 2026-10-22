@@ -488,9 +488,30 @@ with additive normal residual error $\varepsilon_{ij} \sim N(0, \theta_4)$, wher
 $\theta_4$ is a variance. This is the same structural model as
 `LongitudinalSteinFojoCov`. The growth rate KG, the shrinkage rate KS and the
 baseline BSL are log-normally distributed with independent random effects
-(diagonal $\Omega$) and a log-linear covariate model,
-e.g. $\log \mathrm{KG}_i = \log \theta_1 + \theta_8\, \mathrm{BECOG}_i + \eta_{1i}$.
-The final covariate model (run 118) contains:
+(diagonal $\Omega$). The final covariate model (run 118, also used in run 124)
+is explicitly
+
+$$
+\begin{aligned}
+\mathrm{KG}_i
+    &= \theta_1 \exp\left(\theta_8\,\mathrm{BECOG}_i + \eta_{1i}\right), \\
+\mathrm{KS}_i
+    &= \theta_2 \exp\left(\theta_5\,\mathrm{ATRT}_i
+        + \theta_7\,\mathrm{LIVERMET}_i + \eta_{2i}\right), \\
+\mathrm{BSL}_i
+    &= \theta_3 \left(\frac{\mathrm{AGE}_i}{60}\right)^{\theta_9}
+        \exp\left(\theta_6\,\mathrm{LIVERMET}_i
+        + \theta_{10}\,\mathrm{BECOG}_i + \eta_{3i}\right), \\
+\eta_i
+    &\sim N_3\!\left(0,
+        \operatorname{diag}(\omega^2_{KG},\omega^2_{KS},\omega^2_{BSL})\right).
+\end{aligned}
+$$
+
+Here `BECOG` is 0 for ECOG 0 and 1 for ECOG 1+, `ATRT` is 0 for FOLFOX
+alone and 1 for panitumumab + FOLFOX, and `LIVERMET` is 0 for no and 1 for
+yes. The typical values $\theta_1$, $\theta_2$ and $\theta_3$ are conditional
+population medians. The covariate relationships are summarised below:
 
 | Parameter | Covariates (effect on the log scale) |
 |---|---|
@@ -521,18 +542,39 @@ coefficients $\theta_5, \ldots, \theta_{10}$) having no prior, i.e. flat:
   NONMEM output, which is reproduced exactly by these normal and
   inverse-gamma densities.)
 
+The control file constrains $\theta_1,\ldots,\theta_4$ to be positive.
+NONMEM evaluates the normal prior penalties within these bounds; the
+corresponding Bayesian priors are normal distributions restricted to positive
+values. Their truncation normalisers are constant because the prior
+hyperparameters are fixed, so they do not affect the estimates.
+
 Important differences to keep in mind when comparing:
 
 - NONMEM (FOCE-I with priors) reports a penalised maximum likelihood /
   posterior mode estimate in the parametrisation of $\theta$ and $\Omega$, while
   `jmpost` reports posterior summaries (here medians) from a full Bayesian
-  analysis with the random effects integrated out by MCMC. With 487 subjects
-  the prior has little influence, so we expect close but not identical values.
+  analysis that samples the random effects and marginalises them in the
+  population summaries. FOCE approximates the marginal likelihood, so even
+  matching priors and data do not imply identical estimates. Prior influence
+  can still matter for the reference-group KS, which is informed by only
+  38 subjects without liver metastases.
 - The `jmpost` parameters are the log typical values, the log standard
   deviations $\omega$ and the residual standard deviation $\sigma$, whereas the
   NONMEM priors are on $\theta$, $\omega^2$ and $\theta_4 = \sigma^2$. To
   reproduce them exactly, priors on these transformed scales (with Jacobian)
   are needed; see below.
+
+Comparing population posterior modes on the NONMEM scales would remove the
+mode-versus-median difference, but simply calling CmdStanR's
+[`$optimize()`](https://mc-stan.org/cmdstanr/reference/model-method-optimize.html)
+on the current hierarchical Stan model optimises population parameters and
+patient random effects together. This joint mode is not the population mode
+after integrating out the random effects, which is the quantity approximated
+by FOCE with priors. Modes also depend on the parameter scale and Jacobian
+adjustments. A closer optimisation-based comparison would therefore require
+an objective that marginalises the random effects and expresses the population
+density on the NONMEM scales; switching from sampling to optimisation alone
+does not guarantee closer agreement.
 
 ### NONMEM estimates
 
@@ -583,7 +625,13 @@ removal of 10 flagged records). Since there is no survival part, we do not need
 the KRAS, sex, primary site and baseline SLD covariates used above, and thus
 we do not have to drop the subjects with missing values in these. We therefore
 rebuild the subject-level data with only the covariates that are needed, and
-we use the raw age (before centring and scaling) to create `log(AGE / 60)`:
+we use the raw age (before centring and scaling) to create `log(AGE / 60)`.
+This second preparation differs from the joint-analysis preparation above:
+following the reference R script, blank ECOG is assigned `BECOG = 0` rather
+than discarded. This retains subject `000930` and their three measurements.
+The assignment reproduces the reference analysis's imputation decision; it
+does not establish that the subject's observed ECOG was 0. The tumour
+measurements and flagged-record exclusions are shared with `biom_df0` above.
 
 ```{r nonmem_data}
 nm_subject_df <- adsl |>
@@ -591,14 +639,15 @@ nm_subject_df <- adsl |>
     dplyr::mutate(
         STUDY = "1",
         LIVERMET = factor(LIVERMET, levels = c("N", "Y")),
-        ECOG_BIN = forcats::fct_collapse(
-            dplyr::na_if(as.character(ECOG), ""),
-            "0" = "Fully active",
-            "1+" = c(
+        BECOG = dplyr::case_when(
+            as.character(ECOG) %in% c("", "Fully active") ~ 0L,
+            as.character(ECOG) %in% c(
                 "In bed less than 50% of the time",
                 "Symptoms but ambulatory"
-            )
+            ) ~ 1L,
+            .default = NA_integer_
         ),
+        ECOG_BIN = factor(BECOG, levels = c(0, 1), labels = c("0", "1+")),
         LOG_AGE60 = log(AGE / 60)
     ) |>
     dplyr::select("SUBJID", "STUDY", "ATRT", "LOG_AGE60", "ECOG_BIN", "LIVERMET") |>
@@ -654,7 +703,8 @@ transformed parameters. The following are therefore **missing in `jmpost`**
 1. `mu_{b,s,g}_intercept_prior`: normal prior on the natural scale
    $\theta = \exp(\text{intercept})$, i.e. on the exponential transformation
    of the intercept, including the log Jacobian `+ intercept`. Placeholder:
-   `prior_normal_exp(mean, sd)`. The prior is not truncated at zero in NONMEM.
+   `prior_normal_exp(mean, sd)`. The positive NONMEM parameter bounds restrict
+   the normal prior to positive values; its truncation normaliser is constant.
 2. `omega_{b,s,g}_intercept_prior`: inverse-gamma prior (shape 1.5, scale 0.3) on
    the variance $\omega^2 = \exp(2 \cdot \text{intercept})$, including the log
    Jacobian `+ 2 * intercept`. Placeholder: `prior_invgamma_exp_variance(alpha, beta)`.
@@ -692,7 +742,7 @@ nm_spec <- JointModel(
         omega_b_parametrization = "log-linear",
         omega_s_parametrization = "log-linear",
         omega_g_parametrization = "log-linear",
-        # Baseline: theta1 ~ N(60, 60^2) on the natural scale.
+        # Baseline: theta3 ~ N(60, 60^2) on the positive natural scale.
         mu_b_intercept_prior = prior_normal_exp(60, 60), # MISSING
         mu_b_coefficients_prior = prior_normal(0, 10),
         omega_b_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
@@ -700,7 +750,7 @@ nm_spec <- JointModel(
         mu_s_intercept_prior = prior_normal_exp(0.50091, 0.50091), # MISSING
         mu_s_coefficients_prior = prior_normal(0, 10),
         omega_s_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
-        # Growth: theta3 ~ N(0.3, 0.3^2).
+        # Growth: theta1 ~ N(0.3, 0.3^2).
         mu_g_intercept_prior = prior_normal_exp(0.3, 0.3), # MISSING
         mu_g_coefficients_prior = prior_normal(0, 10),
         omega_g_intercept_prior = prior_invgamma_exp_variance(1.5, 0.3), # MISSING
