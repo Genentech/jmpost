@@ -10,7 +10,7 @@
 \usage{
 \method{as_stan_list}{QuantityGenerator}(object, data, ...)
 
-\method{as_stan_list}{QuantityGeneratorPopulation}(object, data, ...)
+\method{as_stan_list}{QuantityGeneratorPopulation}(object, data, model = NULL, ...)
 
 \method{as_stan_list}{QuantityGeneratorPrediction}(object, data, model, ...)
 
@@ -22,6 +22,8 @@
 \item{data}{(\code{DataJoint}) Survival and Longitudinal Data.}
 
 \item{...}{Not currently used.}
+
+\item{model}{(\code{JointModel} or \code{NULL}) optional model used to add model-specific generated-quantities data.}
 }
 \value{
 Will always throw an error.

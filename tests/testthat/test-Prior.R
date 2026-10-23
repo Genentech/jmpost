@@ -1,3 +1,51 @@
+test_that("flat priors omit density terms and retain sampled parameters", {
+    x <- prior_flat()
+    expect_equal(as.character(x), "flat()")
+    expect_equal(as.StanModule(x, name = "beta"), StanModule())
+    expect_equal(as_stan_list(x, name = "beta"), list())
+    expect_false(x@.is_const)
+
+    scalar <- as.StanModule(Parameter(x, "beta"))
+    expect_match(scalar@parameters, "real beta;", fixed = TRUE)
+    expect_equal(scalar@model, "")
+
+    bounded <- set_limits(x, lower = 0, upper = 10)
+    vector <- as.StanModule(Parameter(bounded, "beta", size = 3))
+    expect_match(
+        vector@parameters,
+        "vector<lower=0, upper=10>[3] beta;",
+        fixed = TRUE
+    )
+    expect_equal(vector@model, "")
+})
+
+
+test_that("flat prior initialization is configurable and respects model bounds", {
+    withr::local_options(list(jmpost.prior_shrinkage = 0.5))
+    with_mocked_bindings(
+        {
+            expect_equal(initialValues(prior_flat()), 2)
+            x <- prior_flat(init = prior_normal(2, 1))
+            expect_equal(initialValues(x), 3)
+            expect_equal(initialValues(set_limits(x, lower = 2)), 3)
+            expect_error(
+                initialValues(set_limits(x, upper = 2)),
+                "Unable to generate an initial value"
+            )
+        },
+        local_rnorm = \(n, ...) rep(4, n)
+    )
+    vector <- prior_flat(init = prior_const_vector(c(1, 2, 3)))
+    expect_equal(initialValues(vector), c(1, 2, 3))
+
+    # An initialization distribution's bounds must not alter the prior support.
+    x <- prior_flat(init = prior_uniform(1, 2))
+    expect_equal(x@limits, c(-Inf, Inf))
+    expect_equal(as.StanModule(x, name = "beta"), StanModule())
+    expect_error(prior_flat(init = 0), "`init` must be a Prior object")
+})
+
+
 test_that("Priors work as expected", {
     x <- prior_normal(4, 10)
     with_mocked_bindings(
@@ -537,4 +585,146 @@ test_that("default auxiliary prior methods return empty lists", {
         auxiliarySize(x, name = "beta", size = 3),
         list()
     )
+})
+
+test_that("horseshoe computational scales must be positive", {
+    for (scale in list(0, -1, -Inf, NA_real_, "small")) {
+        expect_error(prior_horseshoe(scale_noncentred = scale))
+    }
+    expect_s4_class(prior_horseshoe(scale_noncentred = Inf), "Prior")
+    expect_s4_class(prior_horseshoe(scale_noncentred = 0.1), "Prior")
+})
+
+test_that("horseshoe sampling coordinates have a standard-normal density", {
+    skip_if_not(is_full_test())
+
+    # Check the compiled density, including Stan's affine Jacobian. Merely
+    # checking the rendered declaration would miss a mismatched scale or an
+    # incorrect dependence between raw coefficients and the scale parameters.
+    parameter <- Parameter(name = "beta", prior = prior_horseshoe(), size = 3)
+    module <- merge(
+        StanModule("base/functions.stan"),
+        as.StanModule(parameter)
+    )
+    model <- compileStanModel(module)
+    z <- c(-0.7, 0.2, 1.1)
+
+    for (tau in c(0.01, 0.8)) {
+        lambda <- c(0.1, 1, 5)
+        c2 <- 4 * 1.3
+        scales <- tau * sqrt(c2 * lambda^2 / (c2 + tau^2 * lambda^2))
+        init <- list(
+            prior_local_beta = lambda,
+            prior_global_beta = tau,
+            prior_slab_beta = 1.3,
+            beta = scales * z
+        )
+        fit <- model$sample(
+            data = as_stan_list(parameter),
+            init = list(init),
+            fixed_param = TRUE,
+            iter_warmup = 0,
+            iter_sampling = 1,
+            chains = 1,
+            seed = 12345,
+            refresh = 0
+        )
+        unconstrained <- fit$unconstrain_variables(init)
+        expect_equal(tail(unconstrained, 3), z, ignore_attr = TRUE)
+
+        at_zero <- unconstrained
+        at_zero[6:8] <- 0
+        expect_equal(
+            fit$log_prob(unconstrained) - fit$log_prob(at_zero),
+            -sum(z^2) / 2
+        )
+        gradient <- fit$grad_log_prob(unconstrained)
+        expect_equal(tail(gradient, 3), -z, ignore_attr = TRUE)
+        expect_equal(
+            head(gradient, 5),
+            head(fit$grad_log_prob(at_zero), 5)
+        )
+    }
+})
+
+test_that("scale_noncentred preserves the horseshoe prior including Jacobians", {
+    skip_if_not(is_full_test())
+    # CmdStanR's model methods need the C++ source from a fresh compilation,
+    # rather than an executable reused from the package cache.
+    withr::local_options(list(jmpost.cache_dir = withr::local_tempdir()))
+
+    computational_scales <- c(centred = NA, full = Inf, small = 0.01, cap = 0.1)
+    fits <- list()
+    for (name in names(computational_scales)) {
+        scale <- computational_scales[[name]]
+        prior <- prior_horseshoe(
+            scale_noncentred = if (is.na(scale)) Inf else scale
+        )
+        if (is.na(scale)) {
+            # Independent reference: the original centred horseshoe, with an
+            # ordinary beta declaration and no affine transform.
+            prior@repr_multiplier <- \(name, size) ""
+        }
+        parameter <- Parameter(
+            name = "beta", size = 3, prior = prior
+        )
+        model <- compileStanModel(merge(
+            StanModule("base/functions.stan"), as.StanModule(parameter)
+        ))
+        fits[[name]] <- model$sample(
+            data = as_stan_list(parameter),
+            init = list(list(
+                prior_local_beta = c(0.1, 1, 5), prior_global_beta = 0.2,
+                prior_slab_beta = 1.3, beta = c(0.01, -0.08, 0.4)
+            )),
+            chains = 1, iter_warmup = 0, iter_sampling = 1,
+            fixed_param = TRUE, seed = 12345, refresh = 0
+        )
+    }
+    for (tau in c(0.005, 0.2, 2)) {
+        values <- list(
+            prior_local_beta = c(0.1, 1, 5), prior_global_beta = tau,
+            prior_slab_beta = 1.3, beta = c(0.01, -0.08, 0.4)
+        )
+        scales <- tau * sqrt(5.2 * values$prior_local_beta^2 /
+            (5.2 + tau^2 * values$prior_local_beta^2))
+        reference <- fits$centred
+        reference_u <- reference$unconstrain_variables(values)
+        reference_density <- reference$log_prob(reference_u, jacobian = FALSE)
+        reference_target <- reference$log_prob(reference_u, jacobian = TRUE)
+
+        for (name in names(computational_scales)[-1]) {
+            scale <- computational_scales[[name]]
+            multiplier <- scales / sqrt(1 + (scales / scale)^2)
+            fit <- fits[[name]]
+            unconstrained <- fit$unconstrain_variables(values)
+            context <- paste("scale_noncentred =", scale, "; tau =", tau)
+
+            # All parameterizations must give the same joint prior density at
+            # the same physical coefficients AND auxiliary shrinkage scales.
+            expect_equal(
+                fit$log_prob(unconstrained, jacobian = FALSE),
+                reference_density, info = context
+            )
+            # Sampling uses the density in raw coordinates. Its difference
+            # from the centred target must be precisely log |d beta / d raw|.
+            # The auxiliary log-transform Jacobians cancel in this comparison.
+            # Thus p(raw, scales) d raw = p(beta, scales) d beta, so integrating
+            # out the scales also leaves the marginal horseshoe prior intact.
+            expect_equal(
+                fit$log_prob(unconstrained, jacobian = TRUE) -
+                    reference_target,
+                sum(log(multiplier)), info = context
+            )
+            expect_equal(
+                tail(unconstrained, 3), values$beta / multiplier,
+                ignore_attr = TRUE, info = context
+            )
+            expect_equal(
+                tail(fit$grad_log_prob(unconstrained), 3),
+                -values$beta * multiplier / scales^2,
+                ignore_attr = TRUE, info = context
+            )
+        }
+    }
 })

@@ -18,6 +18,10 @@ NULL
 #'   the name of the parameter the prior distribution is for
 #' @typed size: "`numeric` or `character`"
 #'   the parameter size.
+#' @typed transform: PriorTransform | NULL
+#'   optional package-defined transformation from the model parameter to the
+#'   prior density scale. See [prior_transform()] for support, Jacobians and
+#'   examples. `NULL` keeps the prior on the model parameter scale.
 #' @param ... Not Used.
 #'
 #' @name Prior-Shared
@@ -36,6 +40,7 @@ NULL
 #' @slot repr_parameters (`string`)\cr See arguments.
 #' @slot repr_transformed_parameters (`string`)\cr See arguments.
 #' @slot repr_generated_quantities (`string`)\cr See arguments.
+#' @slot repr_multiplier (`function`)\cr See arguments.
 #' @slot auxiliary_initial_values (`function`)\cr See arguments.
 #' @slot auxiliary_size (`function`)\cr See arguments.
 #' @slot centre (`numeric`)\cr See arguments.
@@ -60,6 +65,7 @@ NULL
         "repr_parameters" = "character",
         "repr_transformed_parameters" = "character",
         "repr_generated_quantities" = "character",
+        "repr_multiplier" = "function",
         "auxiliary_initial_values" = "function",
         "auxiliary_size" = "function",
         "centre" = "numeric",
@@ -75,6 +81,7 @@ NULL
 
 #' @typed parameters: list
 #'   the prior distribution parameters.
+#' @inheritParams Prior-Shared
 #' @typed repr_model: string
 #'   the Stan code representation for the model block.
 #' @typed repr_data: string
@@ -85,6 +92,9 @@ NULL
 #'   the Stan code representation for the transformed parameters block.
 #' @typed repr_generated_quantities: string
 #'   the Stan code representation for the generated quantities block.
+#' @typed repr_multiplier: function
+#'   a function of `name` and `size` returning a Stan affine multiplier
+#'   expression for an unbounded parameter, or an empty string for no transform.
 #' @typed auxiliary_initial_values: function
 #'   a function that returns initial values for extra Stan parameters
 #'   introduced by the prior.
@@ -131,15 +141,18 @@ Prior <- function(
     limits = c(-Inf, Inf),
     .omit_zero_lower_truncation = FALSE,
     .allow_vectors = FALSE,
-    .is_const = FALSE
+    .is_const = FALSE,
+    repr_multiplier = \(name, size) "",
+    transform = NULL
 ) {
-    .Prior(
+    object <- .Prior(
         parameters = parameters,
         repr_model = repr_model,
         repr_data = repr_data,
         repr_parameters = repr_parameters,
         repr_transformed_parameters = repr_transformed_parameters,
         repr_generated_quantities = repr_generated_quantities,
+        repr_multiplier = repr_multiplier,
         auxiliary_initial_values = auxiliary_initial_values,
         auxiliary_size = auxiliary_size,
         centre = centre,
@@ -151,6 +164,7 @@ Prior <- function(
         .allow_vectors = .allow_vectors,
         .is_const = .is_const
     )
+    if (is.null(transform)) object else prior_transform(object, transform)
 }
 
 
@@ -499,12 +513,14 @@ auxiliarySize.Prior <- function(object, name, size, ...) {
 #' @family Prior
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_normal(0, 1)
-prior_normal <- function(mu, sigma) {
+prior_normal <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "normal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ normal(prior_mu_{name}, prior_sigma_{name})",
@@ -565,6 +581,16 @@ prior_normal_vector <- function(mus, sigmas) {
 
 #' Regularized Horseshoe Prior for a Vector Distribution
 #'
+#' Unbounded coefficients use a non-centred parameterization through Stan's
+#' affine multiplier transform. By default, standard-normal coefficients are
+#' multiplied by the regularized horseshoe scales. A finite `scale_noncentred`
+#' instead uses partial non-centring, limiting the multiplier to that scale.
+#' This can reduce dependence between strongly identified coefficients and
+#' their prior scales. It changes the sampling coordinates, not the prior.
+#' The coefficient names and initial-value interface are unchanged. Coefficients
+#' with finite bounds retain a centred parameterization because Stan does not
+#' allow bounds and affine multipliers on the same declaration.
+#'
 #' @typed df: number
 #'   degrees of freedom of the half-Student-t prior for local shrinkage
 #'   parameters.
@@ -577,6 +603,12 @@ prior_normal_vector <- function(mus, sigmas) {
 #'   scale of the half-Student-t prior for the global shrinkage parameter.
 #' @typed scale_slab: number
 #'   scale of the Student-t slab.
+#' @typed scale_noncentred: number
+#'   positive computational scale for partial non-centring, in coefficient
+#'   units. If the horseshoe standard deviation is `s`, the multiplier is
+#'   `s / sqrt(1 + (s / scale_noncentred)^2)`. The default `Inf` gives full
+#'   non-centring with multiplier `s`. This argument does not change the
+#'   horseshoe hyperparameters or the prior distribution.
 #' @family Prior
 #' @export
 #'
@@ -589,8 +621,11 @@ prior_horseshoe <- function(
     df_global = 1,
     df_slab = 4,
     scale_global = 1,
-    scale_slab = 2
+    scale_slab = 2,
+    scale_noncentred = Inf
 ) {
+    assert_number(scale_noncentred, lower = 0, finite = FALSE)
+    assert_that(scale_noncentred > 0)
     Prior(
         parameters = list(
             df = df,
@@ -637,6 +672,25 @@ prior_horseshoe <- function(
                 "shrinkage_horseshoe(prior_local_{name}, prior_global_{name}, prior_c2_{name});"
             )
         ),
+        repr_multiplier = \(name, size) {
+            multiplier <- glue::glue(
+                "scales_horseshoe(prior_local_{name}, prior_global_{name}, ",
+                "square(prior_scale_slab_{name}) * prior_slab_{name})"
+            )
+            if (is.numeric(size) && size == 1) {
+                multiplier <- paste0("(", multiplier, ")[1]")
+            }
+            if (is.finite(scale_noncentred)) {
+                scalar <- is.numeric(size) && size == 1
+                divide <- if (scalar) "/" else "./"
+                one <- if (scalar) "1" else glue::glue("rep_vector(1, {size})")
+                multiplier <- glue::glue(
+                    "({multiplier}) {divide} sqrt({one} + ",
+                    "square(({multiplier}) / {scale_noncentred}))"
+                )
+            }
+            multiplier
+        },
         auxiliary_initial_values = \(name, size) {
             local_size <- if (is.numeric(size)) size else 1
             stats::setNames(
@@ -682,12 +736,14 @@ prior_horseshoe <- function(
 #' @family Prior
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_std_normal()
-prior_std_normal <- function() {
+prior_std_normal <- function(transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(),
         display = "std_normal()",
         repr_model = "{name} ~ std_normal()",
@@ -772,12 +828,14 @@ prior_const_vector <- function(values) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_cauchy(0, 1)
-prior_cauchy <- function(mu, sigma) {
+prior_cauchy <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "cauchy(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ cauchy(prior_mu_{name}, prior_sigma_{name})",
@@ -806,12 +864,14 @@ prior_cauchy <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_gamma(2, 1)
-prior_gamma <- function(alpha, beta) {
+prior_gamma <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(alpha = alpha, beta = beta),
         repr_model = "{name} ~ gamma(prior_alpha_{name}, prior_beta_{name})",
         display = "gamma(alpha = {alpha}, beta = {beta})",
@@ -839,12 +899,14 @@ prior_gamma <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_lognormal(0, 1)
-prior_lognormal <- function(mu, sigma) {
+prior_lognormal <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(mu = mu, sigma = sigma),
         display = "lognormal(mu = {mu}, sigma = {sigma})",
         repr_model = "{name} ~ lognormal(prior_mu_{name}, prior_sigma_{name})",
@@ -872,12 +934,14 @@ prior_lognormal <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_beta(2, 3)
-prior_beta <- function(a, b) {
+prior_beta <- function(a, b, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(a = a, b = b),
         display = "beta(a = {a}, b = {b})",
         repr_model = "{name} ~ beta(prior_a_{name}, prior_b_{name})",
@@ -927,6 +991,43 @@ prior_init_only <- function(dist) {
 }
 
 
+#' Flat Prior
+#'
+#' Specifies a constant density on the declared model parameter scale, for a
+#' scalar or each component of a vector. No prior density term or auxiliary
+#' parameters are added to the Stan model. Model-imposed parameter bounds still
+#' apply. An unbounded flat prior is improper; a proper posterior is not
+#' guaranteed.
+#'
+#' @typed init: Prior
+#'   distribution used only to generate initial values, including the usual
+#'   `jmpost.prior_shrinkage` towards its centre. Its density and limits do not
+#'   constrain the model parameter. Choose initial values compatible with any
+#'   model-imposed bounds.
+#' @family Prior
+#' @seealso [prior_init_only()]
+#' @export
+#'
+#' @returns A `Prior` object.
+#'
+#' @examples
+#' prior_flat()
+#' prior_flat(init = prior_normal(0, 2))
+#' SurvivalWeibullPH(beta = prior_flat())
+prior_flat <- function(init = prior_normal(0, 1)) {
+    assert_that(is(init, "Prior"), msg = "`init` must be a Prior object")
+    Prior(
+        parameters = list(),
+        display = "flat()",
+        repr_model = "",
+        repr_data = "",
+        centre = init@centre,
+        sample = init@sample,
+        validation = list()
+    )
+}
+
+
 #' Uniform Prior Distribution
 #'
 #' @typed alpha: number
@@ -937,16 +1038,18 @@ prior_init_only <- function(dist) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_uniform(0, 1)
-prior_uniform <- function(alpha, beta) {
+prior_uniform <- function(alpha, beta, transform = NULL) {
     assert_that(
         alpha < beta,
         msg = "`alpha`` must be less than `beta`"
     )
     Prior(
+        transform = transform,
         parameters = list(alpha = alpha, beta = beta),
         display = "uniform(alpha = {alpha}, beta = {beta})",
         repr_model = "{name} ~ uniform(prior_alpha_{name}, prior_beta_{name})",
@@ -976,12 +1079,14 @@ prior_uniform <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_student_t(4, 0, 1)
-prior_student_t <- function(nu, mu, sigma) {
+prior_student_t <- function(nu, mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             nu = nu,
             mu = mu,
@@ -1015,12 +1120,14 @@ prior_student_t <- function(nu, mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_logistic(0, 1)
-prior_logistic <- function(mu, sigma) {
+prior_logistic <- function(mu, sigma, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             mu = mu,
             sigma = sigma
@@ -1051,12 +1158,14 @@ prior_logistic <- function(mu, sigma) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_loglogistic(2, 3)
-prior_loglogistic <- function(alpha, beta) {
+prior_loglogistic <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             alpha = alpha,
             beta = beta
@@ -1090,12 +1199,14 @@ prior_loglogistic <- function(alpha, beta) {
 #'
 #' @export
 #'
+#' @inheritParams Prior-Shared
 #' @returns A `Prior` object.
 #'
 #' @examples
 #' prior_invgamma(3, 2)
-prior_invgamma <- function(alpha, beta) {
+prior_invgamma <- function(alpha, beta, transform = NULL) {
     Prior(
+        transform = transform,
         parameters = list(
             alpha = alpha,
             beta = beta

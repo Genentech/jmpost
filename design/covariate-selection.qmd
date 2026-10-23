@@ -215,7 +215,7 @@ $$
 
 Here $\nu_{\lambda}$ is the local degrees of freedom (`df`), $\nu_{\tau}$ is the global degrees of freedom (`df_global`), $\nu_{c}$ is the slab degrees of freedom (`df_slab`), $s_{\tau}$ is the global scale (`scale_global`), and $s_{c}$ is the slab scale (`scale_slab`).
 
-This is the same regularized horseshoe construction in spirit, with a few minor differences. First, `brms` uses a non-centered parameterization: the coefficient is represented as a standard normal variable $z_j$ multiplied by the regularized scale $\tau\tilde{\lambda}_j$. Marginally, this gives the same as above,
+This is the same regularized horseshoe construction in spirit, with a few minor differences. First, `brms` uses a non-centred parameterization: the coefficient is represented as a standard normal variable $z_j$ multiplied by the regularized scale $\tau\tilde{\lambda}_j$. Marginally, this gives the same as above,
 
 $$
 \beta_j \vert \lambda_j, \tau, c \sim

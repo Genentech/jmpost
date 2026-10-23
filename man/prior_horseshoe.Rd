@@ -9,7 +9,8 @@ prior_horseshoe(
   df_global = 1,
   df_slab = 4,
   scale_global = 1,
-  scale_slab = 2
+  scale_slab = 2,
+  scale_noncentred = Inf
 )
 }
 \arguments{
@@ -24,12 +25,26 @@ parameter.}
 \item{scale_global}{(\code{number}) scale of the half-Student-t prior for the global shrinkage parameter.}
 
 \item{scale_slab}{(\code{number}) scale of the Student-t slab.}
+
+\item{scale_noncentred}{(\code{number}) positive computational scale for partial non-centring, in coefficient
+units. If the horseshoe standard deviation is \code{s}, the multiplier is
+\code{s / sqrt(1 + (s / scale_noncentred)^2)}. The default \code{Inf} gives full
+non-centring with multiplier \code{s}. This argument does not change the
+horseshoe hyperparameters or the prior distribution.}
 }
 \value{
 A \code{Prior} object.
 }
 \description{
-Regularized Horseshoe Prior for a Vector Distribution
+Unbounded coefficients use a non-centred parameterization through Stan's
+affine multiplier transform. By default, standard-normal coefficients are
+multiplied by the regularized horseshoe scales. A finite \code{scale_noncentred}
+instead uses partial non-centring, limiting the multiplier to that scale.
+This can reduce dependence between strongly identified coefficients and
+their prior scales. It changes the sampling coordinates, not the prior.
+The coefficient names and initial-value interface are unchanged. Coefficients
+with finite bounds retain a centred parameterization because Stan does not
+allow bounds and affine multipliers on the same declaration.
 }
 \examples{
 prior_horseshoe(df = 1, df_global = 1, df_slab = 4, scale_global = 0.1, scale_slab = 2)
@@ -40,6 +55,7 @@ Other Prior:
 \code{\link[=prior_cauchy]{prior_cauchy()}},
 \code{\link[=prior_const]{prior_const()}},
 \code{\link[=prior_const_vector]{prior_const_vector()}},
+\code{\link[=prior_flat]{prior_flat()}},
 \code{\link[=prior_gamma]{prior_gamma()}},
 \code{\link[=prior_init_only]{prior_init_only()}},
 \code{\link[=prior_invgamma]{prior_invgamma()}},
@@ -50,6 +66,7 @@ Other Prior:
 \code{\link[=prior_normal_vector]{prior_normal_vector()}},
 \code{\link[=prior_std_normal]{prior_std_normal()}},
 \code{\link[=prior_student_t]{prior_student_t()}},
+\code{\link[=prior_transform]{prior_transform()}},
 \code{\link[=prior_uniform]{prior_uniform()}}
 }
 \concept{Prior}

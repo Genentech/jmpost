@@ -12,7 +12,8 @@ shrinkage(object, ...)
 \item{...}{additional arguments added by methods.}
 }
 \value{
-A named numeric vector or matrix of shrinkage factors.
+For \code{\link{JointModelSamples}}, a posterior draws object containing the
+sampled prior shrinkage factors; see \code{\link[=shrinkage.JointModelSamples]{shrinkage.JointModelSamples()}}.
 }
 \description{
 Extract Covariate Shrinkage Factors from the Posterior Samples

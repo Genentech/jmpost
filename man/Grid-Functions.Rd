@@ -26,7 +26,7 @@ GridManual(spec)
 
 GridObserved(subjects = NULL)
 
-GridPopulation(times = NULL)
+GridPopulation(times = NULL, newdata = NULL)
 
 GridPrediction(times = NULL, newdata, params = list())
 }
@@ -46,8 +46,12 @@ observation time (for \code{\link{LongitudinalQuantities}}) or max event time (f
 element should be the required subjects with the element itself being a numeric vector of timepoints
 to generate the quantity at.}
 
-\item{newdata}{(\code{data.frame}) new data to generate quantities for. Must contain the same columns
-and factor levels of the original data used in the \code{\link{DataSurvival}} object.}
+\item{newdata}{(\code{data.frame}) new data to generate quantities for. For \code{GridPrediction()}, it must
+contain the same columns and factor levels as the original
+\code{\link{DataSurvival}} object. For a covariate-based \code{GridPopulation()}
+prediction, one row defines each population profile and contains the arm,
+study, and all variables used by the longitudinal population-mean
+predictors.}
 
 \item{params}{(\code{list}) named list of parameters to fix the longitudinal model parameters at when
 predicting survival quantities. See \code{\link[=getPredictionNames]{getPredictionNames()}} for the required parameters.}
@@ -72,9 +76,12 @@ subject.
 between each subjects first and last longitudinal observations.
 \item \code{GridEvent()} generates one quantity for each subject at their event/censor time
 as indicated by the \code{time} variable in the survival dataset.
-\item \code{GridPopulation()} generates longitudinal model quantities based on the population parameters at the
-specified time points. Generates 1 set of quantities for each distinct combination of \code{arm}
-and \code{study} within the \code{\link{DataSubject}} object provided to the \code{\link{JointModel}}.
+\item \code{GridPopulation()} generates longitudinal model quantities based on the
+population parameters at the specified time points. By default it generates
+one set for each distinct combination of \code{arm} and \code{study} in the fitted
+\code{\link{DataSubject}} object. For covariate-based longitudinal models with
+additional predictors, supply one population profile per row through
+\code{newdata}; this keeps arm, study, and all additional covariates together.
 \item \code{GridPrediction()} generates survival quantities based on any user-defined values at the
 specified time points. This is useful for generating quantities for a new dataset
 on specific longitudinal model parameters. See \code{\link[=getPredictionNames]{getPredictionNames()}} to determine which
@@ -105,6 +112,10 @@ GridEven(subjects = c("subject 1", "subject 2"), length.out = 20)
 GridObserved()
 GridEvent()
 GridPopulation(times = seq(0, 100, by = 10))
+GridPopulation(
+  times = seq(0, 100, by = 10),
+  newdata = data.frame(study = "Study 1", arm = "A", age = 60)
+)
 GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
 GridPrediction(times = c(0, 10), newdata = data.frame(age = 60))
 }

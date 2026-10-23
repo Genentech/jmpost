@@ -10,6 +10,25 @@ test_that("JointModel smoke tests", {
     expect_true(nchar(jm_char) > 3000)
 })
 
+test_that("horseshoe coefficients compose in joint and single-component models", {
+    longitudinal <- LongitudinalSteinFojoCov(
+        mu_s_coefficients_prior = prior_horseshoe(),
+        mu_g_coefficients_prior = prior_horseshoe()
+    )
+    survival <- SurvivalWeibullPH(beta = prior_horseshoe())
+    models <- list(
+        JointModel(longitudinal, survival, link = linkDSLD()),
+        JointModel(longitudinal = longitudinal),
+        JointModel(survival = survival)
+    )
+
+    for (model in models) {
+        module <- as.StanModule(model)
+        expect_true(any(grepl("<multiplier=", module@parameters, fixed = TRUE)))
+        expect_stan_syntax(module)
+    }
+})
+
 
 # Keep declaration snapshots focused on semantic Stan declarations, rather than
 # churn from blank lines or source comments introduced by StanModule merging.

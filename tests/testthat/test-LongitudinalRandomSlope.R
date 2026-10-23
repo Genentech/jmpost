@@ -369,3 +369,11 @@ test_that("Can generate valid initial values", {
     vals <- vals[names(vals) %in% pars]
     expect_true(all(vals > 0))
 })
+
+
+test_that("LongitudinalRandomSlope has no covariate predictors", {
+    expect_identical(
+        covariates(LongitudinalRandomSlope(), data = make_covariate_subject()),
+        list()
+    )
+})

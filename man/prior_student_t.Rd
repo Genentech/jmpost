@@ -4,7 +4,7 @@
 \alias{prior_student_t}
 \title{Student-t Prior Distribution}
 \usage{
-prior_student_t(nu, mu, sigma)
+prior_student_t(nu, mu, sigma, transform = NULL)
 }
 \arguments{
 \item{nu}{(\code{number}) Degrees of freedom parameter.}
@@ -12,6 +12,10 @@ prior_student_t(nu, mu, sigma)
 \item{mu}{(\code{number}) Location parameter.}
 
 \item{sigma}{(\code{number}) Scale parameter.}
+
+\item{transform}{(\code{PriorTransform | NULL}) optional package-defined transformation from the model parameter to the
+prior density scale. See \code{\link[=prior_transform]{prior_transform()}} for support, Jacobians and
+examples. \code{NULL} keeps the prior on the model parameter scale.}
 }
 \value{
 A \code{Prior} object.
@@ -28,6 +32,7 @@ Other Prior:
 \code{\link[=prior_cauchy]{prior_cauchy()}},
 \code{\link[=prior_const]{prior_const()}},
 \code{\link[=prior_const_vector]{prior_const_vector()}},
+\code{\link[=prior_flat]{prior_flat()}},
 \code{\link[=prior_gamma]{prior_gamma()}},
 \code{\link[=prior_horseshoe]{prior_horseshoe()}},
 \code{\link[=prior_init_only]{prior_init_only()}},
@@ -38,6 +43,7 @@ Other Prior:
 \code{\link[=prior_normal]{prior_normal()}},
 \code{\link[=prior_normal_vector]{prior_normal_vector()}},
 \code{\link[=prior_std_normal]{prior_std_normal()}},
+\code{\link[=prior_transform]{prior_transform()}},
 \code{\link[=prior_uniform]{prior_uniform()}}
 }
 \concept{Prior}

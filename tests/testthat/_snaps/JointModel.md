@@ -59,7 +59,7 @@
       vector[p_os_cov_design] beta_os_cov;
       
       transformed parameter constants
-      real<lower=0> sm_exp_lambda = prior_const_sm_exp_lambda;
+      real<lower=0, upper=8000> sm_exp_lambda = prior_const_sm_exp_lambda;
 
 # JointModel print method works as expected
 

@@ -12,7 +12,9 @@ covariates(object, ...)
 \item{...}{additional arguments added by methods.}
 }
 \value{
-A character vector containing the covariate names.
+For \code{\link{DataSurvival}}, a character vector containing the covariate
+names. For \code{\link{LongitudinalModel}}, a named list of character vectors, one
+per covariate coefficient parameter; see \code{\link[=covariates.LongitudinalModel]{covariates.LongitudinalModel()}}.
 }
 \description{
 Extract Covariate Names
@@ -23,6 +25,7 @@ covariates(surv_data)
 }
 \seealso{
 Other covariates:
-\code{\link[=covariates.DataSurvival]{covariates.DataSurvival()}}
+\code{\link[=covariates.DataSurvival]{covariates.DataSurvival()}},
+\code{\link[=covariates.LongitudinalModel]{covariates.LongitudinalModel()}}
 }
 \concept{covariates}

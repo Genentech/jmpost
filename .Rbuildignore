@@ -30,3 +30,6 @@
 ^.lycheeignore$
 ^\.vscode$
 ^[.]?air[.]toml$
+
+inst/extdata/samples/
+vignettes/\.rebuild_vignettes\.R

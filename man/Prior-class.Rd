@@ -23,7 +23,9 @@ Prior(
   limits = c(-Inf, Inf),
   .omit_zero_lower_truncation = FALSE,
   .allow_vectors = FALSE,
-  .is_const = FALSE
+  .is_const = FALSE,
+  repr_multiplier = function(name, size) "",
+  transform = NULL
 )
 }
 \arguments{
@@ -61,6 +63,13 @@ by the prior.}
 \item{.allow_vectors}{(\code{flag}) whether to allow vector parameters.}
 
 \item{.is_const}{(\code{flag}) whether this prior fixes the parameter at a constant value.}
+
+\item{repr_multiplier}{(\code{function}) a function of \code{name} and \code{size} returning a Stan affine multiplier
+expression for an unbounded parameter, or an empty string for no transform.}
+
+\item{transform}{(\code{PriorTransform | NULL}) optional package-defined transformation from the model parameter to the
+prior density scale. See \code{\link[=prior_transform]{prior_transform()}} for support, Jacobians and
+examples. \code{NULL} keeps the prior on the model parameter scale.}
 }
 \value{
 A \code{Prior} object.
@@ -82,6 +91,8 @@ Specifies the prior distribution in a Stan Model
 \item{\code{repr_transformed_parameters}}{(\code{string})\cr See arguments.}
 
 \item{\code{repr_generated_quantities}}{(\code{string})\cr See arguments.}
+
+\item{\code{repr_multiplier}}{(\code{function})\cr See arguments.}
 
 \item{\code{auxiliary_initial_values}}{(\code{function})\cr See arguments.}
 
