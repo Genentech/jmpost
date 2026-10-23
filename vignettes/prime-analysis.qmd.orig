@@ -4,7 +4,7 @@ package: jmpost
 format:
   html:
     toc: true
-    html-math-method: mathml
+    html-math-method: katex
     embed-resources: true
 link-citations: true
 vignette: >
@@ -25,6 +25,8 @@ knitr::opts_chunk$set(
     warning = FALSE,
     message = FALSE,
     dev = "ragg_png",
+    dpi = 192,
+    screenshot.opts = list(zoom = 2),
     tidy = "styler",
     fig.path = "./prime-analysis-figures/",
     fig.width = 6,
