@@ -238,7 +238,7 @@ to adapt the step size during warmup. These settings do not establish that
 100 warmup iterations are sufficient for the final analysis.
 
 ```{r joint_model_mcmc}
-jm_samples_file <- system.file("extdata", "samples", "jm_samples_clean.rds", package = "jmpost")
+jm_samples_file <- "samples/jm_samples_clean.rds"
 if (file.exists(jm_samples_file)) {
     jm_samples <- readRDS(jm_samples_file)
 } else {
@@ -375,7 +375,7 @@ jm_horseshoe_spec <- JointModel(
 Then we can run our MCMC sampler:
 
 ```{r joint_model_horseshoe_mcmc}
-jm_horseshoe_samples_file <- system.file("extdata", "samples", "jm_horseshoe_samples.rds", package = "jmpost")
+jm_horseshoe_samples_file <- "samples/jm_horseshoe_samples.rds"
 if (file.exists(jm_horseshoe_samples_file)) {
     jm_horseshoe_samples <- readRDS(jm_horseshoe_samples_file)
 } else {
@@ -607,8 +607,7 @@ nonmem_124 <- tibble::tribble(
 ) |>
     dplyr::rowwise() |>
     dplyr::mutate(
-        jmpost = switch(
-            scale,
+        jmpost = switch(scale,
             log = log(estimate),
             sqrt = sqrt(estimate),
             half_log = log(sqrt(estimate)),
@@ -793,7 +792,7 @@ nm_spec <- JointModel(
 Then we run the sampler:
 
 ```{r nonmem_mcmc}
-nm_samples_file <- system.file("extdata", "samples", "nm_samples.rds", package = "jmpost")
+nm_samples_file <- "samples/nm_samples.rds"
 if (file.exists(nm_samples_file)) {
     nm_samples <- readRDS(nm_samples_file)
 } else {
@@ -887,8 +886,7 @@ nm_comparison_draws <- posterior::as_draws_matrix(
 nm_native_summary <- lapply(seq_len(nrow(nm_comparison)), function(i) {
     draws <- nm_comparison_draws[, nm_comparison$variable[i]]
     # Invert the NONMEM-to-jmpost transformations defined earlier.
-    draws <- switch(
-        nm_comparison$scale[i],
+    draws <- switch(nm_comparison$scale[i],
         log = exp(draws),
         sqrt = draws^2,
         half_log = exp(2 * draws),
@@ -932,10 +930,14 @@ posterior-median distinction discussed above.
 
 ### Next steps
 
-The NONMEM analysis is a two-stage approach: the tumour growth inhibition (TGI)
+First, in order to get closer alignment between the longitudinal model results we could use `METHOD = NUTS` in the NONMEM software, in order to also run a no-u turn sampler, i.e. Bayesian MCMC.
+
+Second, current NONMEM analysis is a two-stage approach: the tumour growth inhibition (TGI)
 model above is fitted first, and the overall survival (OS) model is then fitted
 separately in R (a Weibull `survreg` model using the individual NONMEM estimates,
-e.g. `log(KG)` and baseline SLD, as covariates). A natural next step is to
-reproduce this OS modelling and compare it with both the joint model results
-above and the R results from NONMEM.
+e.g. `log(KG)` and baseline SLD, as covariates). 
+
+A natural next step is to use a full joint model instead also in NONMEM and get agreement with the `jmpost` results.
+
+
 

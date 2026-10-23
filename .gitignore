@@ -95,3 +95,6 @@ inst/stanmodels/stan_model
 design/.quarto/typst/available-fonts.json
 
 inst/extdata/samples/
+vignettes/samples/jm_horseshoe_samples.rds
+vignettes/samples/jm_samples_clean.rds
+vignettes/samples/nm_samples.rds
