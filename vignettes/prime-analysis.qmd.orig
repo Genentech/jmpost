@@ -582,35 +582,40 @@ does not guarantee closer agreement.
 
 ### NONMEM estimates
 
-We store the run 124 estimates (relative standard errors from the NONMEM
-covariance step with the R matrix) and convert them to the `jmpost` scale
-for later comparison:
+We store the run 124 estimates from `NONMEM/PRIME_TGI_124.ext`
+(final-estimate row `-1000000000`), with relative standard errors from the
+NONMEM covariance step with the R matrix, and convert them to the `jmpost`
+scale for later comparison. These values are embedded here so that rendering
+does not depend on the original NONMEM output directory:
 
 ```{r nonmem_estimates}
 nonmem_124 <- tibble::tribble(
     ~nonmem, ~predictor, ~covariate, ~estimate, ~rse_percent, ~scale,
-    "theta1: KG, ECOG 0", "mu_g", "(Intercept)", 0.3827, 6.8, "log",
-    "theta2: KS, FOLFOX alone, no liver metastases", "mu_s", "(Intercept)", 1.049, 17.2, "log",
-    "theta3: BSL, no liver metastases, ECOG 0, age 60", "mu_b", "(Intercept)", 60.96, 12.0, "log",
-    "theta4: residual variance", "sigma", NA, 138.3, 3.9, "sqrt",
-    "theta5: ATRT on KS", "mu_s", "ATRTPanitumumab + FOLFOX", 0.1365, 44.4, "identity",
-    "theta6: LIVERMET on BSL", "mu_b", "LIVERMETY", 0.6218, 19.7, "identity",
-    "theta7: LIVERMET on KS", "mu_s", "LIVERMETY", 0.788, 21.6, "identity",
-    "theta8: BECOG on KG", "mu_g", "ECOG_BIN1+", 0.3504, 27.7, "identity",
-    "theta9: AGE on BSL (power, per log(AGE / 60))", "mu_b", "LOG_AGE60", -0.6211, 25.6, "identity",
-    "theta10: BECOG on BSL", "mu_b", "ECOG_BIN1+", 0.249, 26.1, "identity",
-    "omega2 KG", "omega_g", "(Intercept)", 0.7984, 8.4, "half_log",
-    "omega2 KS", "omega_s", "(Intercept)", 0.2251, 11.4, "half_log",
-    "omega2 BSL", "omega_b", "(Intercept)", 0.4956, 6.9, "half_log"
+    "theta1: KG, ECOG 0", "mu_g", "(Intercept)", 0.382695, 6.8, "log",
+    "theta2: KS, FOLFOX alone, no liver metastases", "mu_s", "(Intercept)", 1.04936, 17.2, "log",
+    "theta3: BSL, no liver metastases, ECOG 0, age 60", "mu_b", "(Intercept)", 60.9599, 12.0, "log",
+    "theta4: residual variance", "sigma", NA, 138.252, 3.9, "sqrt",
+    "theta5: ATRT on KS", "mu_s", "ATRTPanitumumab + FOLFOX", 0.136518, 44.4, "identity",
+    "theta6: LIVERMET on BSL", "mu_b", "LIVERMETY", 0.621805, 19.7, "identity",
+    "theta7: LIVERMET on KS", "mu_s", "LIVERMETY", 0.787987, 21.6, "identity",
+    "theta8: BECOG on KG", "mu_g", "ECOG_BIN1+", 0.350402, 27.7, "identity",
+    "theta9: AGE on BSL (power, per log(AGE / 60))", "mu_b", "LOG_AGE60", -0.621084, 25.6, "identity",
+    "theta10: BECOG on BSL", "mu_b", "ECOG_BIN1+", 0.248961, 26.1, "identity",
+    "omega2 KG", "omega_g", "(Intercept)", 0.798437, 8.4, "half_log",
+    "omega2 KS", "omega_s", "(Intercept)", 0.225085, 11.4, "half_log",
+    "omega2 BSL", "omega_b", "(Intercept)", 0.495594, 6.9, "half_log"
 ) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
-        jmpost = dplyr::case_when(
-            scale == "log" ~ log(estimate),
-            scale == "sqrt" ~ sqrt(estimate),
-            scale == "half_log" ~ log(sqrt(estimate)),
-            scale == "identity" ~ estimate
+        jmpost = switch(
+            scale,
+            log = log(estimate),
+            sqrt = sqrt(estimate),
+            half_log = log(sqrt(estimate)),
+            identity = estimate
         )
-    )
+    ) |>
+    dplyr::ungroup()
 knitr::kable(nonmem_124, digits = 4)
 ```
 
@@ -787,7 +792,7 @@ nm_spec <- JointModel(
 
 Then we run the sampler:
 
-```{r nonmem_mcmc, eval = FALSE}
+```{r nonmem_mcmc}
 nm_samples_file <- system.file("extdata", "samples", "nm_samples.rds", package = "jmpost")
 if (file.exists(nm_samples_file)) {
     nm_samples <- readRDS(nm_samples_file)
@@ -810,10 +815,11 @@ if (file.exists(nm_samples_file)) {
 
 ### Comparison
 
-Finally we compare the posterior medians with the NONMEM estimates (both on the
-`jmpost` scale):
+The saved fit contains four chains with 1,000 post-warmup draws each. We
+first check the sampler diagnostics and retain the parameter names alongside
+the summaries on the internal `jmpost` scales.
 
-```{r nonmem_comparison, eval = FALSE}
+```{r nonmem_diagnostics}
 nm_pop_pars <- c(
     "lm_sfc_mu_b_intercept",
     "lm_sfc_mu_s_intercept",
@@ -824,18 +830,105 @@ nm_pop_pars <- c(
     "lm_sfc_sigma"
 )
 nm_mcmc <- cmdstanr::as.CmdStanMCMC(nm_samples)
-nm_summary <- nm_mcmc$summary(nm_pop_pars) |> dplyr::select("median", "q5", "q95", "rhat", "ess_bulk")
-knitr::kable(nm_summary, digits = 3)
+nm_mcmc$diagnostic_summary()
+nm_summary <- nm_mcmc$summary(nm_pop_pars)
+nm_coef <- coef(nm_samples)
 
-nm_coef <- coef(nm_samples) |>
-    dplyr::select(predictor, covariate, median, q5, q95, rhat, ess_bulk) |>
-    dplyr::left_join(
-        nonmem_124[, c("predictor", "covariate", "jmpost")],
-        by = c("predictor", "covariate")
-    ) |>
-    dplyr::rename(nonmem = jmpost)
-knitr::kable(nm_coef, digits = 3)
+nm_diagnostics <- dplyr::bind_rows(nm_summary, nm_coef) |>
+    dplyr::select(variable, median, q5, q95, rhat, ess_bulk)
+knitr::kable(nm_diagnostics, digits = 3)
 ```
+
+There are no divergent transitions or maximum-treedepth hits, and E-BFMI is
+above 0.5 in every chain. Mixing is slower for the growth intercept and its
+ECOG coefficient (bulk effective sample sizes approximately 250 and 319;
+R-hat approximately 1.007 and 1.011). These parameters would benefit from
+more effective draws before drawing conclusions about small differences.
+
+#### The same estimands side by side
+
+The next table puts **all 13 population parameters on the NONMEM scales**:
+typical KG and KS in inverse years, typical BSL in mm, residual variance in
+mm squared, covariate coefficients on their original log-effect/power scales,
+and between-subject variances of the log parameters. Reference groups are
+those specified above. The `jmpost` columns are posterior medians and 90%
+equal-tailed credible intervals, computed after transforming each draw.
+NONMEM reports FOCE-I estimates with priors and relative standard errors
+(RSE, %); these RSEs are covariance-step uncertainty measures, not posterior
+credible intervals.
+
+```{r nonmem_comparison}
+# Match by predictor and fitted design-matrix names, rather than row order.
+nm_parameter_map <- dplyr::bind_rows(
+    tibble::tibble(
+        predictor = c(
+            "mu_b", "mu_s", "mu_g", "omega_b", "omega_s", "omega_g",
+            "sigma"
+        ),
+        covariate = c(rep("(Intercept)", 6), NA_character_),
+        variable = nm_pop_pars
+    ),
+    dplyr::select(nm_coef, predictor, covariate, variable)
+)
+nm_comparison <- nonmem_124 |>
+    dplyr::left_join(
+        nm_parameter_map,
+        by = c("predictor", "covariate")
+    )
+stopifnot(
+    nrow(nm_comparison) == 13L,
+    !anyNA(nm_comparison$variable),
+    !anyDuplicated(nm_comparison$variable)
+)
+
+nm_comparison_draws <- posterior::as_draws_matrix(
+    nm_mcmc$draws(nm_comparison$variable)
+)
+nm_native_summary <- lapply(seq_len(nrow(nm_comparison)), function(i) {
+    draws <- nm_comparison_draws[, nm_comparison$variable[i]]
+    # Invert the NONMEM-to-jmpost transformations defined earlier.
+    draws <- switch(
+        nm_comparison$scale[i],
+        log = exp(draws),
+        sqrt = draws^2,
+        half_log = exp(2 * draws),
+        identity = draws
+    )
+    tibble::tibble(
+        median = median(draws),
+        q5 = unname(quantile(draws, 0.05)),
+        q95 = unname(quantile(draws, 0.95))
+    )
+}) |>
+    dplyr::bind_rows()
+nm_comparison <- dplyr::bind_cols(nm_comparison, nm_native_summary)
+
+nm_comparison |>
+    dplyr::transmute(
+        Estimand = nonmem,
+        `jmpost median` = median,
+        `jmpost 5%` = q5,
+        `jmpost 95%` = q95,
+        `NONMEM estimate` = estimate,
+        `NONMEM RSE (%)` = rse_percent
+    ) |>
+    knitr::kable(digits = 3)
+```
+
+The typical growth rate is approximately 0.341/year in `jmpost` versus
+0.383/year in NONMEM; typical shrinkage is 1.020/year versus 1.049/year.
+Baseline size is approximately 61.4 mm versus 61.0 mm. The covariate effects
+are close across the two methods, including the treatment effect on shrinkage
+(approximately 0.138 versus 0.137 on the log scale).
+
+The largest relative differences are in the between-subject variances for
+log KG and log KS: approximately 0.905 versus 0.798, and 0.275 versus 0.225,
+respectively. The NONMEM variance estimate for log KS (0.225) lies just
+below the `jmpost` 90% credible interval (0.226 to 0.337); the other 12
+NONMEM point estimates fall within the corresponding intervals. This is
+descriptive agreement; the intervals are not a formal test of equivalence.
+Matching the data, model and priors still leaves the FOCE approximation and posterior-mode versus
+posterior-median distinction discussed above.
 
 ### Next steps
 
