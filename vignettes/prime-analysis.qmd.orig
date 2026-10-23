@@ -98,8 +98,7 @@ event_df0 <- adsl |>
     dplyr::select(
         "SUBJID", "STUDY", "ATRT", "EVENTYR", "EVENTFL",
         "AGE", "SEX", "ECOG_BIN", "KRAS", "LIVERMET", "PRIMARY_SITE"
-    ) |>
-    na.omit()
+    )
 
 uid_event0 <- unique(event_df0$SUBJID)
 
@@ -126,6 +125,7 @@ uid_biom0 <- unique(baseline_sld$SUBJID)
 
 retain_uid <- intersect(uid_event0, uid_biom0)
 event_df <- event_df0 |>
+    na.omit() |>
     dplyr::filter(SUBJID %in% retain_uid) |>
     dplyr::left_join(baseline_sld, by = "SUBJID")
 
@@ -465,9 +465,13 @@ Interestingly we also see in addition
 ## Reproducing NONMEM results
 
 Finally we are going to try to reproduce results from NONMEM on the same data set.
-The reference is run 124 of the NONMEM model building report (NONMEM 7.5, FOCE
-with interaction): the final covariate model re-estimated with weakly
-informative priors via `$PRIOR NWPRI`.
+We include here some relevant snapshots.
+
+![NONMEM Data and methods section](prime-figures/nonmem-data-methods.png)
+
+![NONMEM Final covariate model results](prime-figures/nonmem-final-cov-model.png)
+
+![NONMEM Final parameter estimates](prime-figures/nonmem-final-with-priors.png)
 
 ### The NONMEM model
 
@@ -634,24 +638,14 @@ does not establish that the subject's observed ECOG was 0. The tumour
 measurements and flagged-record exclusions are shared with `biom_df0` above.
 
 ```{r nonmem_data}
-nm_subject_df <- adsl |>
-    dplyr::select("SUBJID", "ATRT", "AGE", ECOG = "B_ECOG", "LIVERMET") |>
+nm_subject_df <- event_df0 |>
     dplyr::mutate(
-        STUDY = "1",
-        LIVERMET = factor(LIVERMET, levels = c("N", "Y")),
-        BECOG = dplyr::case_when(
-            as.character(ECOG) %in% c("", "Fully active") ~ 0L,
-            as.character(ECOG) %in% c(
-                "In bed less than 50% of the time",
-                "Symptoms but ambulatory"
-            ) ~ 1L,
-            .default = NA_integer_
-        ),
-        ECOG_BIN = factor(BECOG, levels = c(0, 1), labels = c("0", "1+")),
-        LOG_AGE60 = log(AGE / 60)
+        LOG_AGE60 = log(AGE / 60),
+        ECOG_BIN = forcats::fct_na_value_to_level(ECOG_BIN, level = "0"),
+        SEX = forcats::fct_relevel(SEX, "Male"),
+        KRAS = forcats::fct_na_value_to_level(KRAS, level = "Wild-type")
     ) |>
-    dplyr::select("SUBJID", "STUDY", "ATRT", "LOG_AGE60", "ECOG_BIN", "LIVERMET") |>
-    na.omit() |>
+    dplyr::select("SUBJID", "STUDY", "ATRT", "LOG_AGE60", "SEX", "ECOG_BIN", "LIVERMET", "KRAS", "PRIMARY_SITE") |>
     dplyr::filter(SUBJID %in% biom_df0$SUBJID)
 
 nm_biom_df <- biom_df0 |>
@@ -663,7 +657,22 @@ stopifnot(
     nrow(nm_subject_df) == 487,
     nrow(nm_biom_df) == 2567
 )
+```
 
+We can compare the factor level observation counts with the ones from the NONMEM report to ensure that we (very likely) use the same dataset: "ATRT (treatment arm, 0/1; 245/243 subjects), AGE (continuous, median 61 y, range 27–85), SEX (0/1; 299/188), BECOG (baseline ECOG 0/1; 256/231), LIVERMET (liver metastases 0/1; 38/449), MUTANT (0/1; 304/183), RECTAL (0/1; 307/180)."
+
+```{r}
+table(nm_subject_df$ATRT) # not clear how NONMEM has 243 for Panitumumab + FOLFOX
+table(nm_subject_df$ECOG_BIN)
+table(nm_subject_df$LIVERMET)
+table(nm_subject_df$SEX)
+table(nm_subject_df$KRAS)
+table(nm_subject_df$PRIMARY_SITE)
+```
+
+Now that looks ok, and we specify the data object just with subject and longitudinal data:
+
+```{r}
 nm_dat <- DataJoint(
     subject = DataSubject(
         data = nm_subject_df,
@@ -701,15 +710,14 @@ Jacobian automatically:
 1. For `mu_{b,s,g}_intercept_prior`, use
    `prior_normal(mean, sd, transform = prior_transform_exp())`. This places
    the normal prior on $\theta = \exp(\text{intercept})$, restricted to positive
-   values, with log Jacobian `+ intercept`.
+   values.
 2. For `omega_{b,s,g}_intercept_prior`, use
    `prior_invgamma(1.5, 0.3, transform = prior_transform_exp(scale = 2))`.
-   The density is on $\omega^2 = \exp(2 \cdot \text{intercept})$, with log
-   Jacobian `log(2) + 2 * intercept`.
+   The density is on $\omega^2 = \exp(2 \cdot \text{intercept})$.
 3. For the residual standard deviation `sigma`, use
    `prior_normal(100, 100, transform = prior_transform_square())`. The density
-   is on $\sigma^2$, with log Jacobian `log(2) + log(sigma)`.
-   `LongitudinalSteinFojoCov()` applies a positive lower bound to `sigma`;
+   is on $\sigma^2$.
+   `LongitudinalSteinFojoCov()` applies a very small positive lower bound to `sigma`;
    the corresponding truncation bound on the density scale is its square.
 4. For the covariate coefficients $\theta_5, \ldots, \theta_{10}$, use
    `prior_flat()`. This adds no prior density term on the coefficient scale;
@@ -720,8 +728,7 @@ parametrizations above. The truncation normalisers and the `log(2)` terms are
 constant here, so they do not change posterior shape.
 
 We use the default (non-centred) subject-level parametrisation for growth and
-shrinkage and the centred one for the baseline. The model specification is
-lightweight to evaluate; sampling below remains disabled because it is costly.
+shrinkage and the centred one for the baseline.
 
 ```{r nonmem_model}
 nm_spec <- JointModel(
@@ -740,31 +747,38 @@ nm_spec <- JointModel(
         omega_g_parametrization = "log-linear",
         # Baseline: theta3 ~ N(60, 60^2) on the positive natural scale.
         mu_b_intercept_prior = prior_normal(
-            60, 60, transform = prior_transform_exp()
+            60, 60,
+            transform = prior_transform_exp()
         ),
         mu_b_coefficients_prior = prior_flat(),
         omega_b_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+            1.5, 0.3,
+            transform = prior_transform_exp(scale = 2)
         ),
         # Shrinkage: theta2 ~ N(0.50091, 0.50091^2).
         mu_s_intercept_prior = prior_normal(
-            0.50091, 0.50091, transform = prior_transform_exp()
+            0.50091, 0.50091,
+            transform = prior_transform_exp()
         ),
         mu_s_coefficients_prior = prior_flat(),
         omega_s_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+            1.5, 0.3,
+            transform = prior_transform_exp(scale = 2)
         ),
         # Growth: theta1 ~ N(0.3, 0.3^2).
         mu_g_intercept_prior = prior_normal(
-            0.3, 0.3, transform = prior_transform_exp()
+            0.3, 0.3,
+            transform = prior_transform_exp()
         ),
         mu_g_coefficients_prior = prior_flat(),
         omega_g_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(scale = 2)
+            1.5, 0.3,
+            transform = prior_transform_exp(scale = 2)
         ),
         # sigma^2 = theta4 ~ N(100, 100^2).
         sigma = prior_normal(
-            100, 100, transform = prior_transform_square()
+            100, 100,
+            transform = prior_transform_square()
         ),
         scaled_variance = FALSE
     )
@@ -787,6 +801,7 @@ if (file.exists(nm_samples_file)) {
         iter_sampling = 1000,
         chains = 4,
         parallel_chains = 4,
+        step_size = 0.001,
         seed = 2468
     )
     saveObject(nm_samples, file = nm_samples_file)
@@ -809,7 +824,7 @@ nm_pop_pars <- c(
     "lm_sfc_sigma"
 )
 nm_mcmc <- cmdstanr::as.CmdStanMCMC(nm_samples)
-nm_summary <- nm_mcmc$summary(nm_pop_pars, "median", "q5", "q95", "rhat", "ess_bulk")
+nm_summary <- nm_mcmc$summary(nm_pop_pars) |> dplyr::select("median", "q5", "q95", "rhat", "ess_bulk")
 knitr::kable(nm_summary, digits = 3)
 
 nm_coef <- coef(nm_samples) |>
