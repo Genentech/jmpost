@@ -1,6 +1,7 @@
 ---
 title: "Analyzing the PRIME Study Data"
 package: jmpost
+bibliography: ../inst/REFERENCES.bib
 format:
   html:
     toc: true
@@ -941,5 +942,4 @@ e.g. `log(KG)` and baseline SLD, as covariates).
 
 A natural next step is to use a full joint model instead also in NONMEM and get agreement with the `jmpost` results.
 
-
-
+## References
