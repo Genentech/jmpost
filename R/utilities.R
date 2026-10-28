@@ -352,3 +352,57 @@ is_cmdstanr_available <- function() {
 is_connection <- function(obj) {
     inherits(obj, "connection")
 }
+
+#' Copy a Connection to a Temporary File
+#'
+#' @param connection (`connection`)\cr a connection, opened or not. If it is
+#'   not open it is opened in binary mode and closed again afterwards.
+#'
+#' @returns The path to a temporary file containing the connection's bytes.
+#' @export
+connection_to_file <- function(connection) {
+    temp_file <- tempfile()
+    out <- file(temp_file, open = "wb")
+    on.exit(close(out), add = TRUE)
+
+    if (!isOpen(connection)) {
+        open(connection, "rb")
+        on.exit(close(connection), add = TRUE)
+    }
+
+    chunk_size <- 1e7
+    repeat {
+        chunk <- readBin(connection, what = "raw", n = chunk_size)
+        if (length(chunk) == 0) {
+            break
+        }
+        writeBin(chunk, out)
+    }
+    temp_file
+}
+
+#' Read a SAS Dataset from a Zip Archive
+#'
+#' @param zip_file (`string`)\cr path to the zip archive.
+#' @param file (`string`)\cr name of the `.sas7bdat` file within the archive.
+#'
+#' @returns A [tibble::tibble()] as returned by [haven::read_sas()].
+#'
+#' @examplesIf requireNamespace("archive", quietly = TRUE) && requireNamespace("haven", quietly = TRUE)
+#' zip_file <- system.file("extdata", "prime_subset.zip", package = "jmpost")
+#' adsl <- read_sas7bdat_from_zip(zip_file, "adsl_pds2019.sas7bdat")
+#' @export
+read_sas7bdat_from_zip <- function(
+    zip_file,
+    file
+) {
+    file_connection <- archive::archive_read(
+        zip_file,
+        file = file,
+        mode = "b"
+    )
+    file_path <- connection_to_file(file_connection)
+    on.exit(unlink(file_path), add = TRUE)
+
+    haven::read_sas(file_path)
+}

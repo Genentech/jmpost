@@ -26,6 +26,7 @@ Other Prior:
 \code{\link[=prior_cauchy]{prior_cauchy()}},
 \code{\link[=prior_const]{prior_const()}},
 \code{\link[=prior_const_vector]{prior_const_vector()}},
+\code{\link[=prior_flat]{prior_flat()}},
 \code{\link[=prior_gamma]{prior_gamma()}},
 \code{\link[=prior_horseshoe]{prior_horseshoe()}},
 \code{\link[=prior_invgamma]{prior_invgamma()}},
@@ -36,6 +37,7 @@ Other Prior:
 \code{\link[=prior_normal_vector]{prior_normal_vector()}},
 \code{\link[=prior_std_normal]{prior_std_normal()}},
 \code{\link[=prior_student_t]{prior_student_t()}},
+\code{\link[=prior_transform]{prior_transform()}},
 \code{\link[=prior_uniform]{prior_uniform()}}
 }
 \concept{Prior}

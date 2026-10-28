@@ -63,6 +63,81 @@ LongitudinalModel <- function(
     )
 }
 
+#' Create longitudinal-model-specific Stan data
+#'
+#' @param model A [`LongitudinalModel`] object.
+#' @param subject A [`DataSubject`] object.
+#'
+#' @keywords internal
+#' @returns A named list of model-specific Stan data components.
+longitudinal_model_stan_data <- function(model, subject) {
+    UseMethod("longitudinal_model_stan_data")
+}
+
+#' @rdname longitudinal_model_stan_data
+#' @keywords internal
+#' @export
+longitudinal_model_stan_data.default <- function(model, subject) {
+    list()
+}
+
+#' Extract covariate names for longitudinal model parameters
+#'
+#' Uses the subject-level design matrices prepared for fitting the model.
+#' Covariate names therefore include factor contrasts, transformations, and
+#' interactions, in the same order as the corresponding coefficients.
+#' Covariates are taken from subject data, rather than repeated measurements
+#' in a [`DataLongitudinal`] object.
+#'
+#' The default longitudinal-model method recognises design matrices named
+#' `<name>_design` paired with declared parameters named `<name>_coefficients`.
+#' Custom longitudinal models using another convention can provide their own
+#' `covariates()` method with the same return structure.
+#'
+#' @typed object: LongitudinalModel
+#'   the longitudinal model specification.
+#' @typed data: DataSubject
+#'   the subject data used to construct the model's design matrices.
+#' @param ... not used.
+#'
+#' @returns A named list of character vectors, keyed by coefficient parameter
+#'   name. Intercept-only predictors have an empty character vector. Models
+#'   without covariate predictors, such as [`LongitudinalSteinFojo`], return
+#'   an empty list.
+#'
+#' @family covariates
+#' @export
+#'
+#' @examples
+#' subject <- DataSubject(
+#'     data.frame(
+#'         id = c("1", "2"),
+#'         arm = c("A", "B"),
+#'         study = "Study 1",
+#'         age = c(50, 60)
+#'     ),
+#'     "id", "arm", "study"
+#' )
+#' model <- LongitudinalSteinFojoCov(mu_g_formula = ~ arm + age)
+#' covariates(model, data = subject)$lm_sfc_mu_g_coefficients
+#' covariates(LongitudinalSteinFojo(), data = subject)
+covariates.LongitudinalModel <- function(object, data, ...) {
+    assert_class(data, "DataSubject")
+    stan_data <- longitudinal_model_stan_data(object, subject = data)
+    if (is.null(names(stan_data))) {
+        return(list())
+    }
+    # Covariate predictors pair <name>_design with <name>_coefficients.
+    design_names <- names(stan_data)[endsWith(names(stan_data), "_design")]
+    parameters <- sub("_design$", "_coefficients", design_names)
+    selected <- parameters %in% names(getParameters(object))
+    designs <- stan_data[design_names[selected]]
+    stats::setNames(
+        lapply(designs, function(design) as.character(colnames(design))),
+        parameters[selected]
+    )
+}
+
 #' @export
 #'
 #' @returns A character vector suitable for printing.

@@ -48,6 +48,8 @@ Imports:
     stats,
     splines
 Suggests: 
+    archive,
+    haven,
     cmdstanr,
     bayesplot,
     knitr,
@@ -87,6 +89,8 @@ Collate:
     'constants.R'
     'StanModule.R'
     'Prior.R'
+    'PriorTransform.R'
+    'TransformedPrior.R'
     'Parameter.R'
     'ParameterList.R'
     'StanModel.R'
@@ -99,11 +103,15 @@ Collate:
     'SurvivalQuantities.R'
     'JointModelSamples.R'
     'LongitudinalClaretBruno.R'
+    'LongitudinalClaretBrunoCov.R'
     'LongitudinalGSF.R'
+    'LongitudinalGSFCov.R'
     'LongitudinalQuantities.R'
     'LongitudinalRandomEffects.R'
     'LongitudinalRandomSlope.R'
+    'LongitudinalRandomSlopeCov.R'
     'LongitudinalSteinFojo.R'
+    'LongitudinalSteinFojoCov.R'
     'Promise.R'
     'QuantityGeneratorPopulation.R'
     'QuantityGeneratorPrediction.R'
@@ -112,9 +120,13 @@ Collate:
     'SimJointData.R'
     'SimLongitudinal.R'
     'SimLongitudinalClaretBruno.R'
+    'SimLongitudinalClaretBrunoCov.R'
     'SimLongitudinalGSF.R'
+    'SimLongitudinalGSFCov.R'
     'SimLongitudinalRandomSlope.R'
+    'SimLongitudinalRandomSlopeCov.R'
     'SimLongitudinalSteinFojo.R'
+    'SimLongitudinalSteinFojoCov.R'
     'SimSurvival.R'
     'SurvivalExponential.R'
     'SurvivalGamma.R'
@@ -134,6 +146,6 @@ Collate:
 VignetteBuilder: quarto
 RdMacros: Rdpack
 LazyData: true
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Config/Needs/documentation: 
     roxytypes

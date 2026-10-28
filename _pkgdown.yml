@@ -41,9 +41,13 @@ reference:
       - SimJointData
       - SimLongitudinal
       - SimLongitudinalGSF
+      - SimLongitudinalGSFCov
       - SimLongitudinalSteinFojo
+      - SimLongitudinalSteinFojoCov
       - SimLongitudinalClaretBruno
+      - SimLongitudinalClaretBrunoCov
       - SimLongitudinalRandomSlope
+      - SimLongitudinalRandomSlopeCov
       - SimSurvival
       - SimSurvivalLogLogistic
       - SimSurvivalExponential
@@ -76,9 +80,13 @@ reference:
   - title: Longitudinal Model Specification
     contents:
       - LongitudinalRandomSlope
+      - LongitudinalRandomSlopeCov
       - LongitudinalGSF
+      - LongitudinalGSFCov
       - LongitudinalSteinFojo
+      - LongitudinalSteinFojoCov
       - LongitudinalClaretBruno
+      - LongitudinalClaretBrunoCov
       - LongitudinalModel
 
   - title: Survival Model Specification
@@ -88,7 +96,6 @@ reference:
       - SurvivalModel
       - SurvivalWeibullPH
       - SurvivalGamma
-
 
   - title: Link Specification
     contents:
@@ -117,6 +124,7 @@ reference:
       - LongitudinalQuantities
       - SurvivalQuantities
       - generateQuantities
+      - gq_population_stan_data
       - LongitudinalRandomEffects
       - Grid-Functions
       - summary.LongitudinalQuantities
@@ -127,6 +135,7 @@ reference:
       - brierScore
       - brierScore.SurvivalQuantities
       - populationHR
+      - coef.JointModelSamples
       - shrinkage
       - shrinkage.JointModelSamples
 
@@ -195,6 +204,8 @@ reference:
       - sampleSubjects
       - covariates
       - covariates.DataSurvival
+      - required_longitudinal_covs
+      - required_simulation_covariates
       - enableLink
       - enableGQ
       - as_formula
@@ -213,6 +224,8 @@ reference:
   - title: Miscellaneous
     contents:
       - STAN_BLOCKS
+      - read_sas7bdat_from_zip
+      - connection_to_file
 
   - title: Data Sets
     contents:
@@ -223,9 +236,10 @@ articles:
   - title: Articles
     navbar: ~
     contents:
-        - quickstart
-        - '`statistical-specification`'
-        - '`covariate-selection-horseshoe`'
-        - '`custom-model`'
-        - '`extending-jmpost`'
-        - '`simulating-data`'
+      - quickstart
+      - '`statistical-specification`'
+      - '`covariate-selection-horseshoe`'
+      - '`custom-model`'
+      - '`custom-cov-model`'
+      - '`extending-jmpost`'
+      - '`simulating-data`'

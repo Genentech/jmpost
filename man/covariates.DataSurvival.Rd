@@ -19,6 +19,7 @@ Extract Covariate Names for Survival Data
 }
 \seealso{
 Other covariates:
-\code{\link[=covariates]{covariates()}}
+\code{\link[=covariates]{covariates()}},
+\code{\link[=covariates.LongitudinalModel]{covariates.LongitudinalModel()}}
 }
 \concept{covariates}

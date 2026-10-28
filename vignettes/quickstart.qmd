@@ -22,12 +22,6 @@ library(jmpost)
 ```
 
 
-# IMPORTANT
-
-Please note that this document is currently a work-in-progress and does not
-contain complete information for this package yet. 
-
-
 # Introduction
 
 The `jmpost` package is used to fit joint models of time-to-event endpoints with an association term
@@ -120,6 +114,67 @@ survival_model
 ```
 
 In order to know which position corresponds to which design matrix column and thus coefficient, we can use the `model.matrix()` function on the `DataSurvival` object. This is explained in the section "Formatting Data" below in detail.
+
+### Priors on a transformed scale
+
+Sometimes prior information is available on a different scale from the model
+parameter. Use `transform` to specify the mapping **from the model parameter
+to the prior density scale**. For example, `sigma` is a residual standard
+deviation, so a prior on its variance can be specified as follows:
+
+```{r}
+#| label: variance_scale_prior
+
+variance_prior_model <- LongitudinalRandomSlope(
+    sigma = prior_normal(100, 100, transform = prior_transform_square())
+)
+```
+
+Here `sigma^2` has a normal distribution restricted to positive values.
+`jmpost` includes the Jacobian and maps model-imposed bounds to the variance
+scale when normalising the truncated density. The square transformation uses
+the positive branch and restricts the declared parameter to non-negative values.
+
+For log-scale intercepts, use `prior_transform_exp()`: for example,
+`prior_normal(60, 60, transform = prior_transform_exp())` places the normal
+prior on the exponential of the intercept. Use `prior_transform_exp(scale = 2)`
+for a prior on `exp(2 * intercept)`, such as a variance when the intercept is
+a log standard deviation. These transformations change the prior; they are
+independent of covariate predictor parametrizations.
+
+The same specification can be written with a wrapper:
+
+```{r}
+#| label: transformed_prior_wrapper
+
+variance_prior <- prior_transform(
+    prior_normal(100, 100), prior_transform_square()
+)
+```
+
+Both forms support scalar distribution helpers, including `prior_normal()`
+and `prior_invgamma()`. A scalar distribution is applied independently to
+each component of a vector parameter. Vector-specific helpers such as
+`prior_normal_vector()` and the horseshoe prior do not accept transformations.
+Initial values are drawn on the density scale within the mapped bounds,
+inverse-transformed and then shrunk on the model parameter scale.
+
+### Flat priors
+
+Use `prior_flat()` to add no prior density term on the declared parameter
+scale. Its `init` distribution only supplies initial values:
+
+```{r}
+#| label: flat_coefficient_prior
+
+flat_coefficient_model <- SurvivalWeibullPH(
+    beta = prior_flat(init = prior_normal(0, 1))
+)
+```
+
+Model-imposed bounds still apply. An unbounded flat prior is improper, and a
+proper posterior is not guaranteed. A flat prior is specific to its scale:
+flat on a log coefficient does not imply flat on its exponential.
 
 ## Separate Models
 
@@ -531,6 +586,7 @@ mcmc_results <- sampleStanModel(
 ```
 
 Note the following:
+
 -  `initialValues()` will return a list of lists where each sublist contains the initial
 values for the corresponding chain index.
 - `initialValues()` by default just returns 1 initial value for each parameter; the `sampleStanModel()`
@@ -545,3 +601,72 @@ valid value.
 - For constrained parameters (e.g. variance parameters that must be $> 0$) `initialValues()`
 will continuously sample and discard initial values until it generates one that meet the constraints.
 If after 100 attempts no valid initial value has been found then it will throw an error. 
+
+
+# Covariates in Longitudinal Models
+
+The covariate longitudinal models allow subject-level baseline covariates to
+affect the parameters of a longitudinal trajectory. They are provided by
+`LongitudinalRandomSlopeCov()`, `LongitudinalSteinFojoCov()`,
+`LongitudinalGSFCov()`, and `LongitudinalClaretBrunoCov()`.
+
+Each constructor uses one-sided formulas to specify the covariates for each
+model parameter. The variables in these formulas must be columns in the data
+passed to `DataSubject()`. The intercept column implied by a formula is removed
+because each predictor has a separate `*_intercept_prior`; the corresponding
+`*_coefficients_prior` controls the remaining design-matrix coefficients. For
+example, `~ arm + cov_cont` models differences from the reference arm together
+with a linear effect of `cov_cont`.
+
+Predictors can use `"linear"`, `"proportional"`, `"exponential"`, or
+`"log-linear"` parametrizations. The defaults use linear predictors for
+location parameters and log-linear predictors for scale parameters, keeping
+the latter positive. Covariates may differ between parameters and may overlap
+with, or differ from, the covariates in the survival model.
+
+The following short example uses the data prepared above. It lets the
+continuous baseline covariate affect the subject intercept, treatment arm
+affect the mean slope, and uses a common slope standard deviation. The usual
+`DataJoint()` and `sampleStanModel()` workflow is otherwise unchanged.
+
+```{r}
+#| label: covariate-longitudinal-model
+
+covariate_model <- JointModel(
+    longitudinal = LongitudinalRandomSlopeCov(
+        mu_formula = ~cov_cont,
+        slope_mu_formula = ~arm,
+        slope_sigma_formula = ~1,
+        mu_intercept_prior = prior_normal(30, 10),
+        mu_coefficients_prior = prior_normal(0, 3),
+        slope_mu_intercept_prior = prior_normal(1, 2),
+        slope_mu_coefficients_prior = prior_normal(0, 2),
+        slope_sigma_intercept_prior = prior_normal(log(0.2), 0.5),
+        sigma = prior_lognormal(log(20), 0.5)
+    )
+)
+
+set.seed(481)
+covariate_results <- sampleStanModel(
+    covariate_model,
+    data = joint_data,
+    iter_sampling = 100,
+    iter_warmup = 100,
+    chains = 1,
+    parallel_chains = 1,
+    refresh = 0
+)
+
+cmdstanr::as.CmdStanMCMC(covariate_results)$summary(
+    c(
+        "lm_rsc_mu_intercept",
+        "lm_rsc_mu_coefficients",
+        "lm_rsc_slope_mu_intercept",
+        "lm_rsc_slope_mu_coefficients"
+    )
+)
+```
+
+The coefficient names and their order follow the non-intercept columns of the
+formula's design matrix. In a real analysis, use informative priors where
+possible, run longer chains, and assess convergence as described above.

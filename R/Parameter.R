@@ -93,9 +93,11 @@ setValidity(
 #'
 #' @returns A `StanModule` object.
 as.StanModule.Parameter <- function(object, ...) {
+    # Affine multipliers may depend on the prior's auxiliary parameters, which
+    # must therefore be declared before the coefficient itself.
     merge(
-        as.StanModule.ParameterDeclaration(object),
-        as.StanModule(object@prior, name = object@name, size = object@size)
+        as.StanModule(object@prior, name = object@name, size = object@size),
+        as.StanModule.ParameterDeclaration(object)
     )
 }
 
@@ -131,12 +133,24 @@ render_stan_parameter_limits <- function(limits) {
 #'   parameter size.
 #' @typed limits: numeric
 #'   lower and upper parameter limits.
+#' @typed multiplier: string
+#'   Stan affine multiplier expression for an unbounded parameter.
 #'
 #' @return A length-one character vector.
 #'
 #' @keywords internal
-render_stan_parameter_declaration <- function(name, size, limits) {
+render_stan_parameter_declaration <- function(
+    name,
+    size,
+    limits,
+    multiplier = ""
+) {
     constraints <- render_stan_parameter_limits(limits)
+    # Stan does not allow bounds and an affine multiplier together. Retain the
+    # centred declaration for bounded parameters and its existing truncation.
+    if (constraints == "" && nzchar(multiplier)) {
+        constraints <- glue::glue("<multiplier={multiplier}>")
+    }
     if (length(size) == 1 && is.numeric(size) && size == 1) {
         return(glue::glue("real{constraints} {name};"))
     }
@@ -205,10 +219,19 @@ as.StanModule.ParameterDeclaration <- function(object, ...) {
             is_vector = object@prior@.allow_vectors
         )
     } else {
+        # Saved Prior objects from before affine transforms were introduced
+        # have no multiplier slot. They retain their original declarations.
+        repr_multiplier <- attr(object@prior, "repr_multiplier", exact = TRUE)
+        multiplier <- if (is.null(repr_multiplier)) {
+            ""
+        } else {
+            repr_multiplier(name = object@name, size = object@size)
+        }
         render_stan_parameter_declaration(
             name = object@name,
             size = object@size,
-            limits = object@prior@limits
+            limits = object@prior@limits,
+            multiplier = multiplier
         )
     }
 

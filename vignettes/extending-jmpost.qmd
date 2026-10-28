@@ -25,12 +25,6 @@ library(jmpost)
 ```
 
 
-# IMPORTANT
-
-Please note that this document is currently a work-in-progress and does not
-contain complete information for this package yet. 
-
-
 ## Custom Survival Distributions
 
 Survival distributions in `jmpost` are specified via their contribution to the log-hazard
@@ -113,6 +107,9 @@ declarations and prior distributions respectively (please see the "Prior Specifi
 Unlike the survival distributions, the longitudinal models are a lot more flexible and have less
 constraints on how they are implemented. That is there aren't any specific variables or functions
 that you need to define.
+
+For a complete worked implementation, including simulation, fitting, link functions, and generated
+quantities, see [Fitting a Custom Longitudinal Model](custom-model.html).
 
 That being said there are a several optional features of `jmpost` that do require the use of specific
 interfaces if you want to enable them for your model.
@@ -221,6 +218,61 @@ as your `lm_predict_value()` function would expect it to be for the
 Please see "Custom Generated Quantities" section below for implementation details for inserting
 custom generated quantity code.
 
+## Custom Longitudinal Models with Covariates
+
+Custom longitudinal models can make population parameters depend on subject-level (baseline) covariates.
+The covariates belong in the data supplied to `DataSubject()`; the `DataLongitudinal()` formula
+remains an outcome-and-time formula such as `sld ~ time`. The custom model is responsible for
+turning those subject variables into any design matrices declared by its Stan module.
+
+In addition to the interfaces described above, a covariate-aware model usually implements the
+following methods:
+
+- `longitudinal_model_stan_data.<class>(model, subject)` returns the model-specific design-matrix
+  dimensions and values used when fitting. The method should build its rows in the harmonised
+  `DataSubject` order.
+- `required_longitudinal_covs.<class>(object, ...)` returns the subject variables required by the
+  population-mean predictors. `GridPopulation()` uses this to validate its `newdata` profiles.
+- `gq_population_stan_data.<class>(object, model, data, ...)` returns a list with `declarations`
+  and `data`. The declarations are inserted into the generated-quantities Stan data block, while
+  `data` contains the corresponding design matrices evaluated for `object@newdata`.
+- `enableGQ.<class>()` constructs population parameters from those generated-quantities design
+  matrices. The design matrix for `newdata` must preserve the fitted factor levels, contrasts,
+  and column order.
+
+For example, a model containing the Stan declarations
+
+```stan
+data {
+    int<lower=0> p_baseline_cov;
+    matrix[n_subjects, p_baseline_cov] baseline_cov_design;
+}
+```
+
+can supply them at fitting time with an S3 method of the form
+
+```R
+longitudinal_model_stan_data.MyModel <- function(model, subject) {
+    design <- model.matrix(
+        model@baseline_formula,
+        data = as.data.frame(subject)
+    )[, -1, drop = FALSE]
+    list(
+        p_baseline_cov = ncol(design),
+        baseline_cov_design = design
+    )
+}
+```
+
+For predictions, call `GridPopulation(newdata = ...)` with one complete subject profile per row.
+At minimum, each profile contains the study, arm, and every variable named by
+`required_longitudinal_covs()`. When factors are present, do not build the prediction matrix from
+`newdata` alone: use the fitted subject data as the reference so that its levels and contrasts are
+reused.
+
+See [Fitting a Custom Longitudinal Model with Covariates](custom-cov-model.html) for a complete and runnable example. It defines separate covariate predictors, injects their Stan data, fits a joint
+model, and implements both individual and covariate-aware population generated quantities.
+
 ## Prior Specification
 
 When writing your own custom longitudinal or survival model it is important to understand
@@ -244,8 +296,23 @@ model {
 
 There is however no prior specified in the Stan code for `lm_rs_slope_mu` or `lm_rs_slope_sigma`
 as these are handled by the `parameters` slot of the model object as mentioned above.
-The main reason for using this approach is that `jmpost` implements the priors in such a way
-that users can change them without having to re-compile the Stan model.
+The main reason for using this approach is that `jmpost` passes distribution
+hyperparameter values as Stan data, so users can change those values without
+having to re-compile the Stan model.
+
+Custom models can also accept transformed priors through the same `Parameter()`
+interface. For a declared standard deviation `sigma`, for example, a user can
+supply `prior_normal(100, 100, transform = prior_transform_square())` to put
+the density on `sigma^2`. `jmpost` handles the positive parameter domain,
+truncation on the variance scale and the Jacobian. Apply model-required bounds
+with `set_limits()` on the declared parameter scale. Do not add the same
+Jacobian or prior density again in the custom Stan code.
+
+Changing distribution hyperparameter values reuses the generated Stan code;
+changing the distribution family or transformation changes the code and
+requires compilation. For an explicitly flat prior, accept `prior_flat()`;
+use `prior_init_only()` for parameters whose density is already specified by
+a hierarchical relationship in the model.
 
 
 ## Custom Generated Quantities

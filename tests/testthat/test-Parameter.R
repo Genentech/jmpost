@@ -110,6 +110,82 @@ test_that("Parameter declaration blocks depend on prior_const", {
     )
 })
 
+test_that("horseshoe coefficients use affine non-centring", {
+    prior <- prior_horseshoe()
+    multiplier <- paste0(
+        "scales_horseshoe(prior_local_beta, prior_global_beta, ",
+        "square(prior_scale_slab_beta) * prior_slab_beta)"
+    )
+
+    for (size in list(0, 1, 3, "p")) {
+        parameter <- Parameter(name = "beta", prior = prior, size = size)
+        module <- as.StanModule(parameter)
+        declaration <- if (identical(size, 1)) {
+            paste0("    real<multiplier=(", multiplier, ")[1]> beta;")
+        } else {
+            paste0(
+                "    vector<multiplier=", multiplier, ">[", size, "] beta;"
+            )
+        }
+        expect_equal(tail(module@parameters, 1), declaration)
+
+        # Stan must see the auxiliary parameters before the multiplier uses them.
+        expect_equal(
+            head(module@parameters, 3),
+            as.StanModule(prior, name = "beta", size = size)@parameters
+        )
+        header <- StanModule("data {\n    int<lower=0> p;\n}")
+        expect_stan_syntax(merge(
+            merge(StanModule("base/functions.stan"), header),
+            module
+        ))
+    }
+})
+
+test_that("bounded horseshoe coefficients retain their truncated prior", {
+    for (limits in list(c(0, Inf), c(-Inf, 1), c(-1, 1))) {
+        prior <- set_limits(prior_horseshoe(), limits[1], limits[2])
+        module <- as.StanModule(Parameter(name = "beta", prior = prior, size = 3))
+        expect_false(any(grepl("multiplier=", module@parameters, fixed = TRUE)))
+        expect_match(
+            tail(module@parameters, 1),
+            paste0("vector", render_stan_parameter_limits(limits), "[3] beta;"),
+            fixed = TRUE
+        )
+        expect_match(
+            tail(module@model, 1),
+            paste0("prior_scales_beta)", render_stan_limits.numeric(limits), ";"),
+            fixed = TRUE
+        )
+        expect_stan_syntax(merge(StanModule("base/functions.stan"), module))
+    }
+})
+
+test_that("partial horseshoe non-centring supports scalar and vector forms", {
+    prior <- prior_horseshoe(scale_noncentred = 0.1)
+    expect_equal(
+        as_stan_list(prior, name = "beta"),
+        as_stan_list(prior_horseshoe(), name = "beta")
+    )
+    for (size in list(0, 1, 3, "p")) {
+        module <- as.StanModule(Parameter(
+            name = "beta", prior = prior, size = size
+        ))
+        expect_match(tail(module@parameters, 1), "sqrt(", fixed = TRUE)
+        header <- StanModule("data {\n    int<lower=0> p;\n}")
+        expect_stan_syntax(merge(
+            merge(StanModule("base/functions.stan"), header), module
+        ))
+    }
+})
+
+test_that("saved priors without affine multiplier metadata still render", {
+    prior <- prior_normal(0, 1)
+    attr(prior, "repr_multiplier") <- NULL
+    module <- as.StanModule(Parameter(name = "beta", prior = prior))
+    expect_equal(module@parameters, "    real beta;")
+})
+
 test_that("show() works for Paramneter objects", {
     x <- Parameter(prior_normal(1, 3), "bob", "size1")
     expect_snapshot(print(x))
