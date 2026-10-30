@@ -7,6 +7,7 @@
 #' @slot kind (`character`)\cr Transformation identifier.
 #' @slot scale (`numeric`)\cr Positive multiplier inside the exponential.
 #' @seealso [prior_transform_exp()], [prior_transform_square()]
+#' @aliases PriorTransform
 #' @exportClass PriorTransform
 .PriorTransform <- setClass(
     "PriorTransform",
@@ -22,7 +23,8 @@ setValidity("PriorTransform", function(object) {
     }
     if (
         length(object@scale) != 1 ||
-            !is.finite(object@scale) || object@scale <= 0
+            !is.finite(object@scale) ||
+            object@scale <= 0
     ) {
         return("`scale` must be a finite positive number")
     }
