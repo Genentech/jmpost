@@ -4,6 +4,7 @@
 \name{PriorTransform-class}
 \alias{PriorTransform-class}
 \alias{.PriorTransform}
+\alias{PriorTransform}
 \title{Package-Defined Prior Transformation}
 \description{
 Describes a transformation from a model parameter to the scale on which a
