@@ -1,14 +1,16 @@
-pandoc: 3.10.2
+pandoc: 3.12.1
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   covariate-selection-horseshoe: covariate-selection-horseshoe.html
+  custom-cov-model: custom-cov-model.html
   custom-model: custom-model.html
   extending-jmpost: extending-jmpost.html
+  prime-analysis: prime-analysis.html
   quickstart: quickstart.html
   simulating-data: simulating-data.html
   statistical-specification: statistical-specification.html
-last_built: 2026-08-26T03:38Z
+last_built: 2026-10-30T02:31Z
 urls:
   reference: https://genentech.github.io/jmpost/main/reference
   article: https://genentech.github.io/jmpost/main/articles
