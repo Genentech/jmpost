@@ -60,11 +60,14 @@ reference:
   - title: Prior Distributions
     contents:
       - Prior
+      - PriorTransform
       - prior_beta
       - prior_cauchy
       - prior_const
       - prior_const_vector
+      - prior_flat
       - prior_gamma
+      - prior_init_only
       - prior_invgamma
       - prior_logistic
       - prior_loglogistic
@@ -75,7 +78,8 @@ reference:
       - prior_uniform
       - prior_std_normal
       - prior_student_t
-      - prior_init_only
+      - prior_transform
+      - prior-transformations
 
   - title: Longitudinal Model Specification
     contents:
@@ -204,6 +208,7 @@ reference:
       - sampleSubjects
       - covariates
       - covariates.DataSurvival
+      - covariates.LongitudinalModel
       - required_longitudinal_covs
       - required_simulation_covariates
       - enableLink
