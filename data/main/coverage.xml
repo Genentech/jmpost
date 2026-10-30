@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.924633431085044" branch-rate="0" lines-covered="6306" lines-valid="6820" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-10-28 13:30:14.056887">
+<coverage line-rate="0.924633431085044" branch-rate="0" lines-covered="6306" lines-valid="6820" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-10-30 02:40:41.591811">
   <sources>
     <source>/__w/jmpost/jmpost/jmpost</source>
   </sources>
@@ -9827,84 +9827,84 @@
           <methods>
             <method name="prior_transform_exp" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="63" hits="50" branch="false"/>
+                <line number="65" hits="50" branch="false"/>
               </lines>
             </method>
             <method name="prior_transform_square" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="70" hits="21" branch="false"/>
+                <line number="72" hits="21" branch="false"/>
               </lines>
             </method>
             <method name=".prior_transform_domain" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="77" hits="1" branch="false"/>
+                <line number="79" hits="1" branch="false"/>
               </lines>
             </method>
             <method name=".prior_transform_forward" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="81" hits="2170" branch="false"/>
-                <line number="82" hits="1" branch="false"/>
-                <line number="84" hits="67" branch="false"/>
+                <line number="83" hits="2170" branch="false"/>
+                <line number="84" hits="1" branch="false"/>
+                <line number="86" hits="67" branch="false"/>
               </lines>
             </method>
             <method name=".prior_transform_inverse" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="88" hits="2337" branch="false"/>
-                <line number="89" hits="3" branch="false"/>
-                <line number="91" hits="95" branch="false"/>
+                <line number="90" hits="2337" branch="false"/>
+                <line number="91" hits="3" branch="false"/>
+                <line number="93" hits="95" branch="false"/>
               </lines>
             </method>
             <method name=".prior_transform_stan" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="96" hits="73" branch="false"/>
-                <line number="97" hits="44" branch="false"/>
-                <line number="98" hits="37" branch="false"/>
+                <line number="98" hits="73" branch="false"/>
                 <line number="99" hits="44" branch="false"/>
-                <line number="100" hits="7" branch="false"/>
+                <line number="100" hits="37" branch="false"/>
                 <line number="101" hits="44" branch="false"/>
-                <line number="102" hits="44" branch="false"/>
+                <line number="102" hits="7" branch="false"/>
                 <line number="103" hits="44" branch="false"/>
                 <line number="104" hits="44" branch="false"/>
-                <line number="105" hits="37" branch="false"/>
+                <line number="105" hits="44" branch="false"/>
                 <line number="106" hits="44" branch="false"/>
-                <line number="107" hits="7" branch="false"/>
+                <line number="107" hits="37" branch="false"/>
                 <line number="108" hits="44" branch="false"/>
-                <line number="109" hits="44" branch="false"/>
-                <line number="111" hits="29" branch="false"/>
-                <line number="112" hits="29" branch="false"/>
+                <line number="109" hits="7" branch="false"/>
+                <line number="110" hits="44" branch="false"/>
+                <line number="111" hits="44" branch="false"/>
                 <line number="113" hits="29" branch="false"/>
                 <line number="114" hits="29" branch="false"/>
+                <line number="115" hits="29" branch="false"/>
+                <line number="116" hits="29" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="63" hits="50" branch="false"/>
-            <line number="70" hits="21" branch="false"/>
-            <line number="77" hits="1" branch="false"/>
-            <line number="81" hits="2170" branch="false"/>
-            <line number="82" hits="1" branch="false"/>
-            <line number="84" hits="67" branch="false"/>
-            <line number="88" hits="2337" branch="false"/>
-            <line number="89" hits="3" branch="false"/>
-            <line number="91" hits="95" branch="false"/>
-            <line number="96" hits="73" branch="false"/>
-            <line number="97" hits="44" branch="false"/>
-            <line number="98" hits="37" branch="false"/>
+            <line number="65" hits="50" branch="false"/>
+            <line number="72" hits="21" branch="false"/>
+            <line number="79" hits="1" branch="false"/>
+            <line number="83" hits="2170" branch="false"/>
+            <line number="84" hits="1" branch="false"/>
+            <line number="86" hits="67" branch="false"/>
+            <line number="90" hits="2337" branch="false"/>
+            <line number="91" hits="3" branch="false"/>
+            <line number="93" hits="95" branch="false"/>
+            <line number="98" hits="73" branch="false"/>
             <line number="99" hits="44" branch="false"/>
-            <line number="100" hits="7" branch="false"/>
+            <line number="100" hits="37" branch="false"/>
             <line number="101" hits="44" branch="false"/>
-            <line number="102" hits="44" branch="false"/>
+            <line number="102" hits="7" branch="false"/>
             <line number="103" hits="44" branch="false"/>
             <line number="104" hits="44" branch="false"/>
-            <line number="105" hits="37" branch="false"/>
+            <line number="105" hits="44" branch="false"/>
             <line number="106" hits="44" branch="false"/>
-            <line number="107" hits="7" branch="false"/>
+            <line number="107" hits="37" branch="false"/>
             <line number="108" hits="44" branch="false"/>
-            <line number="109" hits="44" branch="false"/>
-            <line number="111" hits="29" branch="false"/>
-            <line number="112" hits="29" branch="false"/>
+            <line number="109" hits="7" branch="false"/>
+            <line number="110" hits="44" branch="false"/>
+            <line number="111" hits="44" branch="false"/>
             <line number="113" hits="29" branch="false"/>
             <line number="114" hits="29" branch="false"/>
+            <line number="115" hits="29" branch="false"/>
+            <line number="116" hits="29" branch="false"/>
           </lines>
         </class>
         <class name="Promise.R" filename="R/Promise.R" line-rate="1" branch-rate="0" complexity="0">
