@@ -33,3 +33,6 @@
 
 inst/extdata/samples/
 vignettes/\.rebuild_vignettes\.R
+
+^\.markdownlintignore$
+^\.codex$

@@ -24,12 +24,7 @@ gq_population_stan_data(object, model, data = NULL, ...)
 
 \method{gq_population_stan_data}{LongitudinalSteinFojoCov}(object, model, data = NULL, ...)
 
-gq_population_stan_data.QuantityGeneratorPopulation(
-  object,
-  model,
-  data = NULL,
-  ...
-)
+\method{gq_population_stan_data}{QuantityGeneratorPopulation}(object, model, data = NULL, ...)
 }
 \arguments{
 \item{object}{A quantity generator.}
