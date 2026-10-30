@@ -237,7 +237,6 @@
   `generateQuantities`
 
 - [`gq_population_stan_data()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
-  [`gq_population_stan_data.QuantityGeneratorPopulation()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
   : Population Generated-Quantities Stan Data
 
 - [`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md)

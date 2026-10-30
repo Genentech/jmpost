@@ -434,31 +434,31 @@ the full joint model.
 `)`\
 `#> Running MCMC with 1 chain...`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpzpfvRy/model-157fa6e6107.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpzpfvRy/model-157fa6e6107.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpzpfvRy/model-157fa6e6107.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpzpfvRy/model-157fa6e6107.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpzpfvRy/model-157fa6e6107.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
-`#> Chain 1 finished in 5.5 seconds.`\
+`#> Chain 1 finished in 8.2 seconds.`\
 \
 `vars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(`\
 `    ``"mu_baseline"``, ``"mu_shrinkage"``, ``"mu_growth"``, ``"sigma"``,`\

@@ -23,12 +23,8 @@ gq_population_stan_data(object, model, data = NULL, ...)
 # S3 method for class 'LongitudinalSteinFojoCov'
 gq_population_stan_data(object, model, data = NULL, ...)
 
-gq_population_stan_data.QuantityGeneratorPopulation(
-  object,
-  model,
-  data = NULL,
-  ...
-)
+# S3 method for class 'QuantityGeneratorPopulation'
+gq_population_stan_data(object, model, data = NULL, ...)
 ```
 
 ## Arguments
