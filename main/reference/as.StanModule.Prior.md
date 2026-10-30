@@ -11,6 +11,9 @@ object
 ``` r
 # S3 method for class 'Prior'
 as.StanModule(object, name, size = 1, ...)
+
+# S3 method for class 'TransformedPrior'
+as.StanModule(object, name, size = 1, ...)
 ```
 
 ## Arguments

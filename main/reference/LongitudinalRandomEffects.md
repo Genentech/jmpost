@@ -28,7 +28,8 @@ Other RandomEffectQuantities:
 [`summary.RandomEffectQuantities()`](https://genentech.github.io/jmpost/reference/summary.RandomEffectQuantities.md)
 
 Other JointModelSamples:
-[`as_print_string.JointModelSamples()`](https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.md)
+[`as_print_string.JointModelSamples()`](https://genentech.github.io/jmpost/reference/as_print_string.JointModelSamples.md),
+[`coef.JointModelSamples()`](https://genentech.github.io/jmpost/reference/coef.JointModelSamples.md)
 
 ## Examples
 

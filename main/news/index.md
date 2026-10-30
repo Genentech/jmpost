@@ -2,6 +2,23 @@
 
 ## jmpost (development version)
 
+- Added
+  [`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md)
+  for a constant prior density on the model parameter scale, with a
+  configurable distribution used only for initial values.
+- Added package-defined exponential and positive-branch square prior
+  transformations through `transform` in scalar prior helpers or
+  [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md),
+  with automatic Jacobians, mapped truncation bounds and initial values.
+  Updated the quickstart, statistical specification, extension guide.
+- Added longitudinal models supporting covariate modeling:
+  `LongitudinalRandomSlopeCov`, `LongitudinalSteinFojoCov`,
+  `LongitudinalGSFCov` and `LongitudinalClaretBrunoCov` classes
+  implement the corresponding covariate versions of the already existing
+  longitudinal models. Please see the quick start vignette for a short
+  introduction. It is also possible to add new custom longitudinal
+  models with covariates; a new vignette has been added to describe the
+  required components.
 - `LongitudinalModel` objects now have a new slot `scaled_variance`
   which stores the used variance option, and this is part of the `print`
   output now thereby transparently communicating to the user the choice

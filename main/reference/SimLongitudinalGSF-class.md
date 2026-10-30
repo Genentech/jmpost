@@ -49,7 +49,8 @@ SimLongitudinalGSF(
 
 - mu_phi:
 
-  (`numeric`) the mean proportion of cells affected by the treatment
+  (`numeric`) the logit-scale location of the proportion of cells
+  affected by the treatment.
 
 - omega_b:
 
@@ -65,8 +66,8 @@ SimLongitudinalGSF(
 
 - omega_phi:
 
-  (`number`) for the standard deviation of the proportion of cells
-  affected by the treatment `omega_phi`.
+  (`number`) the logit-scale standard deviation of the proportion of
+  cells affected by the treatment.
 
 - link_dsld:
 

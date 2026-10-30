@@ -36,7 +36,11 @@ thank you!
 
 You can install the current development version from GitHub with:
 
-`if`` ``(``!`[`require`](https://rdrr.io/r/base/library.html)`(`[`"remotes"`](https://remotes.r-lib.org)`)``)`` ``{`` `` `[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"remotes"``)`` ``}`` ``remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"genentech/jmpost"``)`
+\
+`if`` ``(``!`[`require`](https://rdrr.io/r/base/library.html)`(`[`"remotes"`](https://remotes.r-lib.org)`)``)`` ``{`\
+`    `[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"remotes"``)`\
+`}`\
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"genentech/jmpost"``)`
 
 Please note that this package requires
 [`cmdstanr`](https://mc-stan.org/cmdstanr/).
@@ -56,20 +60,74 @@ structure of the input data and use
 [`DataJoint()`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)
 to bring it into the right format.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`jmpost`](https://genentech.github.io/jmpost/)`)`` ``#> Registered S3 methods overwritten by 'ggpp':`` ``#> method from `` ``#> heightDetails.titleGrob ggplot2`` ``#> widthDetails.titleGrob ggplot2`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``321``)`` ``sim_data`` ``<-`` `[`SimJointData`](https://genentech.github.io/jmpost/reference/SimJointData-class.md)`(`` `` design ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-A"``, ``"Study-X"``)``,`` `` `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-B"``, ``"Study-X"``)`` `` ``)``,`` `` longitudinal ``=`` `[`SimLongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)`(`` `` times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``50``, ``100``, ``150``, ``200``, ``250``, ``300``)``,`` `` ``)``,`` `` survival ``=`` `[`SimSurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)`(`` `` lambda ``=`` ``1`` ``/`` ``300``,`` `` gamma ``=`` ``0.97`` `` ``)`` ``)`` ``#> INFO: 1 subject(s) did not die before max(times)`` `` ``joint_data`` ``<-`` `[`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)`(`` `` subject ``=`` `[`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)`(`` `` data ``=`` ``sim_data``@``survival``,`` `` subject ``=`` ``"subject"``,`` `` arm ``=`` ``"arm"``,`` `` study ``=`` ``"study"`` `` ``)``,`` `` survival ``=`` `[`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)`(`` `` data ``=`` ``sim_data``@``survival``,`` `` formula ``=`` `[`Surv`](https://genentech.github.io/jmpost/reference/Surv.md)`(``time``, ``event``)`` ``~`` ``cov_cat`` ``+`` ``cov_cont`` `` ``)``,`` `` longitudinal ``=`` `[`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)`(`` `` data ``=`` ``sim_data``@``longitudinal``,`` `` formula ``=`` ``sld`` ``~`` ``time``,`` `` threshold ``=`` ``5`` `` ``)`` ``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`jmpost`](https://genentech.github.io/jmpost/)`)`\
+`#> Registered S3 methods overwritten by 'ggpp':`\
+`#>   method                  from   `\
+`#>   heightDetails.titleGrob ggplot2`\
+`#>   widthDetails.titleGrob  ggplot2`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``321``)`\
+`sim_data`` ``<-`` `[`SimJointData`](https://genentech.github.io/jmpost/reference/SimJointData-class.md)`(`\
+`    design ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
+`        `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-A"``, ``"Study-X"``)``,`\
+`        `[`SimGroup`](https://genentech.github.io/jmpost/reference/SimGroup-class.md)`(``50``, ``"Arm-B"``, ``"Study-X"``)`\
+`    ``)``,`\
+`    longitudinal ``=`` `[`SimLongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)`(`\
+`        times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``50``, ``100``, ``150``, ``200``, ``250``, ``300``)``,`\
+`    ``)``,`\
+`    survival ``=`` `[`SimSurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SimSurvivalWeibullPH.md)`(`\
+`        lambda ``=`` ``1`` ``/`` ``300``,`\
+`        gamma ``=`` ``0.97`\
+`    ``)`\
+`)`\
+`#> INFO: 1 subject(s) did not die before max(times)`\
+\
+`joint_data`` ``<-`` `[`DataJoint`](https://genentech.github.io/jmpost/reference/DataJoint-class.md)`(`\
+`    subject ``=`` `[`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)`(`\
+`        data ``=`` ``sim_data``@``survival``,`\
+`        subject ``=`` ``"subject"``,`\
+`        arm ``=`` ``"arm"``,`\
+`        study ``=`` ``"study"`\
+`    ``)``,`\
+`    survival ``=`` `[`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)`(`\
+`        data ``=`` ``sim_data``@``survival``,`\
+`        formula ``=`` `[`Surv`](https://genentech.github.io/jmpost/reference/Surv.md)`(``time``, ``event``)`` ``~`` ``cov_cat`` ``+`` ``cov_cont`\
+`    ``)``,`\
+`    longitudinal ``=`` `[`DataLongitudinal`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)`(`\
+`        data ``=`` ``sim_data``@``longitudinal``,`\
+`        formula ``=`` ``sld`` ``~`` ``time``,`\
+`        threshold ``=`` ``5`\
+`    ``)`\
+`)`
 
 Then we specify the joint model, here we use a Generalized Stein-Fojo
 model for the longitudinal part, and a Weibull proportional hazards
 model for the survival part. The longitudinal model impacts the hazard
 via a term for the derivative and another term for the time-to-growth.
 
-`joint_model`` ``<-`` `[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`` `` longitudinal ``=`` `[`LongitudinalGSF`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)`(``)``,`` `` survival ``=`` `[`SurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.md)`(``)``,`` `` link ``=`` `[`Link`](https://genentech.github.io/jmpost/reference/Link-class.md)`(`` `` `[`linkDSLD`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)``,`` `` `[`linkTTG`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)`` `` ``)`` ``)`
+\
+`joint_model`` ``<-`` `[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`\
+`    longitudinal ``=`` `[`LongitudinalGSF`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)`(``)``,`\
+`    survival ``=`` `[`SurvivalWeibullPH`](https://genentech.github.io/jmpost/reference/SurvivalWeibullPH-class.md)`(``)``,`\
+`    link ``=`` `[`Link`](https://genentech.github.io/jmpost/reference/Link-class.md)`(`\
+`        `[`linkDSLD`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)``,`\
+`        `[`linkTTG`](https://genentech.github.io/jmpost/reference/standard-link-user.md)`(``)`\
+`    ``)`\
+`)`
 
 Finally we can sample the parameters via MCMC from the underlying Stan
 model. Note that in a real application you will choose more warm up and
 sampling iterations.
 
-`mcmc_results`` ``<-`` `[`sampleStanModel`](https://genentech.github.io/jmpost/reference/sampleStanModel.md)`(`` `` ``joint_model``,`` `` data ``=`` ``joint_data``,`` `` iter_sampling ``=`` ``100``,`` `` iter_warmup ``=`` ``100``,`` `` chains ``=`` ``1``,`` `` parallel_chains ``=`` ``1`` ``)`
+\
+`mcmc_results`` ``<-`` `[`sampleStanModel`](https://genentech.github.io/jmpost/reference/sampleStanModel.md)`(`\
+`    ``joint_model``,`\
+`    data ``=`` ``joint_data``,`\
+`    iter_sampling ``=`` ``100``,`\
+`    iter_warmup ``=`` ``100``,`\
+`    chains ``=`` ``1``,`\
+`    parallel_chains ``=`` ``1`\
+`)`
 
 ## Citing `jmpost`
 
@@ -105,12 +163,20 @@ To cite `jmpost` please see
   : Abstract Simulation Class for Longitudinal Data
 - [`SimLongitudinalGSF()`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md)
   : Simulate Longitudinal Data from a GSF Model
+- [`SimLongitudinalGSFCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSFCov-class.md)
+  : Simulate a Generalized Stein-Fojo model with covariates
 - [`SimLongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.md)
   : Simulate Longitudinal Data from a Stein-Fojo Model
+- [`SimLongitudinalSteinFojoCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojoCov-class.md)
+  : Simulate a Stein-Fojo longitudinal model with covariates
 - [`SimLongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.md)
   : Simulate Longitudinal Data from a Claret-Bruno Model
+- [`SimLongitudinalClaretBrunoCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBrunoCov-class.md)
+  : Simulate a Claret-Bruno longitudinal model with covariates
 - [`SimLongitudinalRandomSlope()`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)
   : Simulate Longitudinal Data from a Random Slope Model
+- [`SimLongitudinalRandomSlopeCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlopeCov-class.md)
+  : Simulate a random-slope longitudinal model with covariates
 - [`SimSurvival()`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md)
   : Abstract Simulation Class for Survival Data
 - [`SimSurvivalLogLogistic()`](https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.md)
@@ -134,6 +200,10 @@ To cite `jmpost` please see
 
 - [`Prior()`](https://genentech.github.io/jmpost/reference/Prior-class.md)
   : Prior Object and Constructor Function
+- [`PriorTransform-class`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  [`.PriorTransform`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  [`PriorTransform`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  : Package-Defined Prior Transformation
 - [`prior_beta()`](https://genentech.github.io/jmpost/reference/prior_beta.md)
   : Beta Prior Distribution
 - [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md)
@@ -142,8 +212,12 @@ To cite `jmpost` please see
   : Constant Prior Distribution
 - [`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md)
   : Constant Prior Distribution for a Vector
+- [`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md)
+  : Flat Prior
 - [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md)
   : Gamma Prior Distribution
+- [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
+  : Initial Values Specification
 - [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md)
   : Inverse-Gamma Prior Distribution
 - [`prior_logistic()`](https://genentech.github.io/jmpost/reference/prior_logistic.md)
@@ -164,8 +238,11 @@ To cite `jmpost` please see
   : Standard Normal Prior Distribution
 - [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md)
   : Student-t Prior Distribution
-- [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
-  : Initial Values Specification
+- [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md)
+  : Prior on a Transformed Parameter
+- [`prior_transform_exp()`](https://genentech.github.io/jmpost/reference/prior-transformations.md)
+  [`prior_transform_square()`](https://genentech.github.io/jmpost/reference/prior-transformations.md)
+  : Transformations to the Prior Density Scale
 
 ## Longitudinal Model Specification
 
@@ -174,20 +251,33 @@ To cite `jmpost` please see
 
   `LongitudinalRandomSlope`
 
+- [`LongitudinalRandomSlopeCov()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlopeCov-class.md)
+  : Random-slope longitudinal model with subject-level covariates
+
 - [`LongitudinalGSF()`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)
   :
 
   `LongitudinalGSF`
+
+- [`LongitudinalGSFCov()`](https://genentech.github.io/jmpost/reference/LongitudinalGSFCov-class.md)
+  : Generalized Stein-Fojo longitudinal model with subject-level
+  covariates
 
 - [`LongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.md)
   :
 
   `LongitudinalSteinFojo`
 
+- [`LongitudinalSteinFojoCov()`](https://genentech.github.io/jmpost/reference/LongitudinalSteinFojoCov-class.md)
+  : Stein-Fojo longitudinal model with subject-level covariates
+
 - [`LongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.md)
   :
 
   `LongitudinalClaretBruno`
+
+- [`LongitudinalClaretBrunoCov()`](https://genentech.github.io/jmpost/reference/LongitudinalClaretBrunoCov-class.md)
+  : Claret-Bruno longitudinal model with subject-level covariates
 
 - [`LongitudinalModel()`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
   :
@@ -282,6 +372,10 @@ To cite `jmpost` please see
 
   `generateQuantities`
 
+- [`gq_population_stan_data()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
+  [`gq_population_stan_data.QuantityGeneratorPopulation()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
+  : Population Generated-Quantities Stan Data
+
 - [`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md)
   : Extract Random Effects Samples from a Longitudinal Model
 
@@ -326,6 +420,9 @@ To cite `jmpost` please see
 
 - [`populationHR()`](https://genentech.github.io/jmpost/reference/populationHR.md)
   : Calculate Population Hazard Ratios
+
+- [`coef(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/coef.JointModelSamples.md)
+  : Summarise posterior covariate coefficients
 
 - [`shrinkage()`](https://genentech.github.io/jmpost/reference/shrinkage.md)
   : Extract Covariate Shrinkage Factors from the Posterior Samples
@@ -441,6 +538,7 @@ To cite `jmpost` please see
   `ParameterList` -\> `StanModule`
 
 - [`as.StanModule(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md)
+  [`as.StanModule(`*`<TransformedPrior>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md)
   :
 
   `Prior` -\> `StanModule`
@@ -471,6 +569,7 @@ To cite `jmpost` please see
   `Parameter` -\> `Character`
 
 - [`as.character(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Prior.md)
+  [`as.character(`*`<TransformedPrior>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Prior.md)
   :
 
   `Prior` -\> `Character`
@@ -624,6 +723,15 @@ To cite `jmpost` please see
 - [`covariates(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/covariates.DataSurvival.md)
   : Extract Covariate Names for Survival Data
 
+- [`covariates(`*`<LongitudinalModel>`*`)`](https://genentech.github.io/jmpost/reference/covariates.LongitudinalModel.md)
+  : Extract covariate names for longitudinal model parameters
+
+- [`required_longitudinal_covs()`](https://genentech.github.io/jmpost/reference/required_longitudinal_covs.md)
+  : Required Longitudinal Covariates
+
+- [`required_simulation_covariates()`](https://genentech.github.io/jmpost/reference/required_simulation_covariates.md)
+  : Required Longitudinal Simulation Covariates
+
 - [`enableLink()`](https://genentech.github.io/jmpost/reference/enableLink.md)
   : Enable Link Generic
 
@@ -671,6 +779,10 @@ To cite `jmpost` please see
 
 - [`STAN_BLOCKS`](https://genentech.github.io/jmpost/reference/STAN_BLOCKS.md)
   : List of Stan Blocks
+- [`read_sas7bdat_from_zip()`](https://genentech.github.io/jmpost/reference/read_sas7bdat_from_zip.md)
+  : Read a SAS Dataset from a Zip Archive
+- [`connection_to_file()`](https://genentech.github.io/jmpost/reference/connection_to_file.md)
+  : Copy a Connection to a Temporary File
 
 ## Data Sets
 
@@ -691,7 +803,11 @@ To cite `jmpost` please see
   Prior](https://genentech.github.io/jmpost/articles/covariate-selection-horseshoe.md):
 - [Fitting a Custom Longitudinal
   Model](https://genentech.github.io/jmpost/articles/custom-model.md):
+- [Fitting a Custom Longitudinal Model with
+  Covariates](https://genentech.github.io/jmpost/articles/custom-cov-model.md):
 - [Extending
   jmpost](https://genentech.github.io/jmpost/articles/extending-jmpost.md):
 - [Simulating
   Data](https://genentech.github.io/jmpost/articles/simulating-data.md):
+- [Analyzing the PRIME Study
+  Data](https://genentech.github.io/jmpost/articles/prime-analysis.md):

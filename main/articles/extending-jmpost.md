@@ -1,11 +1,6 @@
 # Extending jmpost
 
-## IMPORTANT
-
-Please note that this document is currently a work-in-progress and does
-not contain complete information for this package yet.
-
-### Custom Survival Distributions
+## Custom Survival Distributions
 
 Survival distributions in `jmpost` are specified via their contribution
 to the log-hazard function. Note that at present all distributions are
@@ -50,9 +45,39 @@ contains the parameters for that particular distribution.
 For example the following is roughly equivalent to how the Weibull
 distribution is implemented:
 
-`SurvivalWeibullPH`` ``<-`` ``function``(`` `` ``lambda`` ``=`` `[`prior_gamma`](https://genentech.github.io/jmpost/reference/prior_gamma.md)`(``2``, ``0.5``)``,`` `` ``gamma`` ``=`` `[`prior_gamma`](https://genentech.github.io/jmpost/reference/prior_gamma.md)`(``2``, ``0.5``)``,`` `` ``beta`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)`` ``)`` ``{`` `` ``lambda`` ``<-`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(``lambda``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)`` `` ``gamma`` ``<-`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(``gamma``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)`` `` `` ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`` `` functions {`` `` matrix log_h0(matrix time, vector pars_os) {`` `` matrix[rows(time), cols(time)] result;`` `` result = log(pars_os[1]) + log(pars_os[2]) + (pars_os[2] - 1) * log(time);`` `` return result;`` `` }`` `` }`` `` `` transformed parameters {`` `` vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma]';`` `` }`` `` "``)`` `` `[`SurvivalModel`](https://genentech.github.io/jmpost/reference/SurvivalModel-class.md)`(`` `` stan ``=`` ``stan``,`` `` parameters ``=`` `[`ParameterList`](https://genentech.github.io/jmpost/reference/ParameterList-class.md)`(`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"sm_weibull_ph_lambda"``, prior ``=`` ``lambda``, size ``=`` ``1``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"sm_weibull_ph_gamma"``, prior ``=`` ``gamma``, size ``=`` ``1``)``,`` `` `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"beta_os_cov"``, prior ``=`` ``beta``, size ``=`` ``"p_os_cov_design"``)`` `` ``)`` `` ``)`` ``}`
+\
+`SurvivalWeibullPH`` ``<-`` ``function``(`\
+`    ``lambda`` ``=`` `[`prior_gamma`](https://genentech.github.io/jmpost/reference/prior_gamma.md)`(``2``, ``0.5``)``,`\
+`    ``gamma`` ``=`` `[`prior_gamma`](https://genentech.github.io/jmpost/reference/prior_gamma.md)`(``2``, ``0.5``)``,`\
+`    ``beta`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)`\
+`)`` ``{`\
+`    ``lambda`` ``<-`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(``lambda``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)`\
+`    ``gamma`` ``<-`` `[`set_limits`](https://genentech.github.io/jmpost/reference/set_limits.md)`(``gamma``, lower ``=`` `[`getOption`](https://rdrr.io/r/base/options.html)`(``"jmpost.double_eps"``)``)`\
+\
+`    ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`\
+`        functions {`\
+`            matrix log_h0(matrix time, vector pars_os) {`\
+`                matrix[rows(time), cols(time)] result;`\
+`                result = log(pars_os[1]) + log(pars_os[2]) + (pars_os[2] - 1) * log(time);`\
+`                return result;`\
+`            }`\
+`        }`\
+\
+`        transformed parameters {`\
+`            vector[2] pars_os = [sm_weibull_ph_lambda, sm_weibull_ph_gamma]';`\
+`        }`\
+`    "``)`\
+`    `[`SurvivalModel`](https://genentech.github.io/jmpost/reference/SurvivalModel-class.md)`(`\
+`        stan ``=`` ``stan``,`\
+`        parameters ``=`` `[`ParameterList`](https://genentech.github.io/jmpost/reference/ParameterList-class.md)`(`\
+`            `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"sm_weibull_ph_lambda"``, prior ``=`` ``lambda``, size ``=`` ``1``)``,`\
+`            `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"sm_weibull_ph_gamma"``, prior ``=`` ``gamma``, size ``=`` ``1``)``,`\
+`            `[`Parameter`](https://genentech.github.io/jmpost/reference/Parameter-class.md)`(``name ``=`` ``"beta_os_cov"``, prior ``=`` ``beta``, size ``=`` ``"p_os_cov_design"``)`\
+`        ``)`\
+`    ``)`\
+`}`
 
-### Custom Longitudinal Models
+## Custom Longitudinal Models
 
 Similar to the survival model the longitudinal models are implemented as
 S4 classes that inherit from the `LongitudinalModel` class. The two main
@@ -66,11 +91,16 @@ more flexible and have less constraints on how they are implemented.
 That is there aren’t any specific variables or functions that you need
 to define.
 
+For a complete worked implementation, including simulation, fitting,
+link functions, and generated quantities, see [Fitting a Custom
+Longitudinal
+Model](https://genentech.github.io/jmpost/articles/custom-model.md).
+
 That being said there are a several optional features of `jmpost` that
 do require the use of specific interfaces if you want to enable them for
 your model.
 
-#### 1) `loo` integration
+### 1) `loo` integration
 
 If you want to use the `loo` package to calculate the leave-one-out
 cross-validation then you need to populate the `long_obvs_log_lik`
@@ -97,7 +127,7 @@ log-likelihood function provided by `jmpost` (this is opposed to Stan’s
 inbuilt `normal_lpdf` function which returns a single value of the sum
 all of the log-likelihoods)
 
-#### 2) Individual Subject Generated Quantity Integration
+### 2) Individual Subject Generated Quantity Integration
 
 In order to calculate the individual subject generated quantities (via
 [`GridFixed()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
@@ -146,7 +176,7 @@ Note that the `long_gq_parameters` matrix should be structured as your
 Please see “Custom Generated Quantities” section below for
 implementation details for inserting custom generated quantity code.
 
-#### 3) Population Generated Quantity Integration
+### 3) Population Generated Quantity Integration
 
 A common use case is to calculate the quantities based on the
 “population” level parameters which is supported in `jmpost` via the
@@ -193,7 +223,75 @@ your `lm_predict_value()` function would expect it to be for the
 Please see “Custom Generated Quantities” section below for
 implementation details for inserting custom generated quantity code.
 
-### Prior Specification
+## Custom Longitudinal Models with Covariates
+
+Custom longitudinal models can make population parameters depend on
+subject-level (baseline) covariates. The covariates belong in the data
+supplied to
+[`DataSubject()`](https://genentech.github.io/jmpost/reference/DataSubject-class.md);
+the
+[`DataLongitudinal()`](https://genentech.github.io/jmpost/reference/DataLongitudinal-class.md)
+formula remains an outcome-and-time formula such as `sld ~ time`. The
+custom model is responsible for turning those subject variables into any
+design matrices declared by its Stan module.
+
+In addition to the interfaces described above, a covariate-aware model
+usually implements the following methods:
+
+- `longitudinal_model_stan_data.<class>(model, subject)` returns the
+  model-specific design-matrix dimensions and values used when fitting.
+  The method should build its rows in the harmonised `DataSubject`
+  order.
+- `required_longitudinal_covs.<class>(object, ...)` returns the subject
+  variables required by the population-mean predictors.
+  [`GridPopulation()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
+  uses this to validate its `newdata` profiles.
+- `gq_population_stan_data.<class>(object, model, data, ...)` returns a
+  list with `declarations` and `data`. The declarations are inserted
+  into the generated-quantities Stan data block, while `data` contains
+  the corresponding design matrices evaluated for `object@newdata`.
+- `enableGQ.<class>()` constructs population parameters from those
+  generated-quantities design matrices. The design matrix for `newdata`
+  must preserve the fitted factor levels, contrasts, and column order.
+
+For example, a model containing the Stan declarations
+
+``` stan
+data {
+    int<lower=0> p_baseline_cov;
+    matrix[n_subjects, p_baseline_cov] baseline_cov_design;
+}
+```
+
+can supply them at fitting time with an S3 method of the form
+
+\
+`longitudinal_model_stan_data.MyModel`` ``<-`` ``function``(``model``, ``subject``)`` ``{`\
+`    ``design`` ``<-`` `[`model.matrix`](https://rdrr.io/r/stats/model.matrix.html)`(`\
+`        ``model``@``baseline_formula``,`\
+`        data ``=`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``subject``)`\
+`    ``)``[``, ``-``1``, drop ``=`` ``FALSE``]`\
+`    `[`list`](https://rdrr.io/r/base/list.html)`(`\
+`        p_baseline_cov ``=`` `[`ncol`](https://rdrr.io/r/base/nrow.html)`(``design``)``,`\
+`        baseline_cov_design ``=`` ``design`\
+`    ``)`\
+`}`
+
+For predictions, call `GridPopulation(newdata = ...)` with one complete
+subject profile per row. At minimum, each profile contains the study,
+arm, and every variable named by
+[`required_longitudinal_covs()`](https://genentech.github.io/jmpost/reference/required_longitudinal_covs.md).
+When factors are present, do not build the prediction matrix from
+`newdata` alone: use the fitted subject data as the reference so that
+its levels and contrasts are reused.
+
+See [Fitting a Custom Longitudinal Model with
+Covariates](https://genentech.github.io/jmpost/articles/custom-cov-model.md)
+for a complete and runnable example. It defines separate covariate
+predictors, injects their Stan data, fits a joint model, and implements
+both individual and covariate-aware population generated quantities.
+
+## Prior Specification
 
 When writing your own custom longitudinal or survival model it is
 important to understand how model parameters and prior definitions are
@@ -220,11 +318,32 @@ model {
 There is however no prior specified in the Stan code for
 `lm_rs_slope_mu` or `lm_rs_slope_sigma` as these are handled by the
 `parameters` slot of the model object as mentioned above. The main
-reason for using this approach is that `jmpost` implements the priors in
-such a way that users can change them without having to re-compile the
-Stan model.
+reason for using this approach is that `jmpost` passes distribution
+hyperparameter values as Stan data, so users can change those values
+without having to re-compile the Stan model.
 
-### Custom Generated Quantities
+Custom models can also accept transformed priors through the same
+[`Parameter()`](https://genentech.github.io/jmpost/reference/Parameter-class.md)
+interface. For a declared standard deviation `sigma`, for example, a
+user can supply
+`prior_normal(100, 100, transform = prior_transform_square())` to put
+the density on `sigma^2`. `jmpost` handles the positive parameter
+domain, truncation on the variance scale and the Jacobian. Apply
+model-required bounds with
+[`set_limits()`](https://genentech.github.io/jmpost/reference/set_limits.md)
+on the declared parameter scale. Do not add the same Jacobian or prior
+density again in the custom Stan code.
+
+Changing distribution hyperparameter values reuses the generated Stan
+code; changing the distribution family or transformation changes the
+code and requires compilation. For an explicitly flat prior, accept
+[`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md);
+use
+[`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
+for parameters whose density is already specified by a hierarchical
+relationship in the model.
+
+## Custom Generated Quantities
 
 In order to avoid unnecessary processing, code that is solely used for
 generation of post sampling quantities is excluded from the Stan program
@@ -242,7 +361,29 @@ for that given model. The following is a rough implementation of this
 method for the Random-Slope model which implements both feature (2) and
 (3) outlined in the above “Custom Longitudinal Model” section:
 
-`enableGQ.LongitudinalRandomSlope`` ``<-`` ``function``(``)`` ``{`` `` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`` `` functions {`` `` vector lm_predict_value(vector time, matrix long_gq_parameters) {`` `` int nrow = rows(time);`` `` return (`` `` long_gq_parameters[, 1] + long_gq_parameters[, 2] .* time`` `` );`` `` }`` `` }`` `` `` generated quantities {`` `` matrix[n_subjects, 2] long_gq_parameters;`` `` long_gq_parameters[, 1] = lm_rs_ind_intercept;`` `` long_gq_parameters[, 2] = lm_rs_ind_rnd_slope;`` `` `` matrix[gq_n_quant, 2] long_gq_pop_parameters;`` `` long_gq_pop_parameters[, 1] = to_vector(lm_rs_intercept[gq_long_pop_study_index]);`` `` long_gq_pop_parameters[, 2] = to_vector(lm_rs_slope_mu[gq_long_pop_arm_index]);`` `` }`` `` "``)`` ``}`
+\
+`enableGQ.LongitudinalRandomSlope`` ``<-`` ``function``(``)`` ``{`\
+`    `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`\
+`        functions {`\
+`            vector lm_predict_value(vector time, matrix long_gq_parameters) {`\
+`                int nrow = rows(time);`\
+`                return (`\
+`                    long_gq_parameters[, 1] + long_gq_parameters[, 2] .* time`\
+`                );`\
+`            }`\
+`        }`\
+\
+`        generated quantities {`\
+`            matrix[n_subjects, 2] long_gq_parameters;`\
+`            long_gq_parameters[, 1] = lm_rs_ind_intercept;`\
+`            long_gq_parameters[, 2] = lm_rs_ind_rnd_slope;`\
+\
+`            matrix[gq_n_quant, 2] long_gq_pop_parameters;`\
+`            long_gq_pop_parameters[, 1] = to_vector(lm_rs_intercept[gq_long_pop_study_index]);`\
+`            long_gq_pop_parameters[, 2] = to_vector(lm_rs_slope_mu[gq_long_pop_arm_index]);`\
+`        }`\
+`    "``)`\
+`}`
 
 Note that whilst it is possible to provide an
 [`enableGQ()`](https://genentech.github.io/jmpost/reference/enableGQ.md)
@@ -250,7 +391,7 @@ method for the survival model it is not required. This is because the
 underlying framework for creating survival quantities is distribution
 agnostic and does not require any model specific code.
 
-### Custom Link Functions
+## Custom Link Functions
 
 Users can define custom link functions in several ways based upon the
 level of customisation required. In order to explain this process it is
@@ -280,7 +421,22 @@ $`\phi`$ parameter.
 For reference the following is roughly the implementation for the
 `LongitudinalGSF` model:
 
-`enableLink.LongitudinalGSF`` ``<-`` ``function``(``object``, ``...``)`` ``{`` `` ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`` ``transformed parameters {`` `` matrix[n_subjects, 4] link_function_inputs;`` `` link_function_inputs[,1] = lm_gsf_psi_bsld;`` `` link_function_inputs[,2] = lm_gsf_psi_ks;`` `` link_function_inputs[,3] = lm_gsf_psi_kg;`` `` link_function_inputs[,4] = lm_gsf_psi_phi;`` ``}"``)`` `` ``object``@``stan`` ``<-`` `[`merge`](https://genentech.github.io/jmpost/reference/merge.md)`(`` `` ``object``@``stan``,`` `` ``stan`` `` ``)`` `` ``object`` ``}`
+\
+`enableLink.LongitudinalGSF`` ``<-`` ``function``(``object``, ``...``)`` ``{`\
+`  ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`\
+`transformed parameters {`\
+`    matrix[n_subjects, 4] link_function_inputs;`\
+`    link_function_inputs[,1] = lm_gsf_psi_bsld;`\
+`    link_function_inputs[,2] = lm_gsf_psi_ks;`\
+`    link_function_inputs[,3] = lm_gsf_psi_kg;`\
+`    link_function_inputs[,4] = lm_gsf_psi_phi;`\
+`}"``)`\
+`    ``object``@``stan`` ``<-`` `[`merge`](https://genentech.github.io/jmpost/reference/merge.md)`(`\
+`        ``object``@``stan``,`\
+`        ``stan`\
+`    ``)`\
+`    ``object`\
+`}`
 
 That is to say the $`\phi`$ parameters for the `LongitudinalGSF` model
 are the 4 primary parameters of the longitudinal model. If you wish to
@@ -288,7 +444,20 @@ augment this with additional parameters then you can subclass the
 `LongitudinalGSF` model and override the `enableLink` method with the
 required additional parameters e.g.
 
-`GSFextended`` ``<-`` ``setClass``(`` `` Class ``=`` ``"GSFextended"``,`` `` contains ``=`` ``"LongitudinalGSF"`` ``)`` `` ``enableLink.GSFextended`` ``<-`` ``function``(``object``, ``...``)`` ``{`` `` ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"<stan-code-here>"``)`` `` ``object``@``stan`` ``<-`` `[`merge`](https://genentech.github.io/jmpost/reference/merge.md)`(`` `` ``object``@``stan``,`` `` ``stan`` `` ``)`` `` ``object`` ``}`
+\
+`GSFextended`` ``<-`` ``setClass``(`\
+`    Class ``=`` ``"GSFextended"``,`\
+`    contains ``=`` ``"LongitudinalGSF"`\
+`)`\
+\
+`enableLink.GSFextended`` ``<-`` ``function``(``object``, ``...``)`` ``{`\
+`  ``stan`` ``<-`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"<stan-code-here>"``)`\
+`    ``object``@``stan`` ``<-`` `[`merge`](https://genentech.github.io/jmpost/reference/merge.md)`(`\
+`        ``object``@``stan``,`\
+`        ``stan`\
+`    ``)`\
+`    ``object`\
+`}`
 
 Next, the individual link functions are implemented as Stan functions
 with the following signature:
@@ -307,18 +476,49 @@ functions into the final Stan model. For reference the following is
 roughly the implementation of the dSLD link component for the
 `LongitudinalRandomSlope` model:
 
-[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(`` `` key ``=`` ``"link_dsld"``,`` `` stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`` ``functions {`` `` matrix link_dsld_contrib(`` `` matrix time,`` `` matrix link_function_inputs`` `` ) {`` `` int nrows = rows(time);`` `` int ncols = cols(time);`` `` vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];`` `` matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);`` `` return rnd_slope_mat;`` `` }`` ``}"``)``,`` `` key ``=`` ``"link_dsld"``,`` `` prior ``=`` ``prior`` ``)`
+\
+[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(`\
+`  key ``=`` ``"link_dsld"``,`\
+`  stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"`\
+`functions {`\
+`    matrix link_dsld_contrib(`\
+`        matrix time,`\
+`        matrix link_function_inputs`\
+`    ) {`\
+`        int nrows = rows(time);`\
+`        int ncols = cols(time);`\
+`        vector[nrows] lm_rs_ind_rnd_slope = link_function_inputs[,2];`\
+`        matrix[nrows, ncols] rnd_slope_mat = rep_matrix(lm_rs_ind_rnd_slope, ncols);`\
+`        return rnd_slope_mat;`\
+`    }`\
+`}"``)``,`\
+`  key ``=`` ``"link_dsld"``,`\
+`  prior ``=`` ``prior`\
+`)`
 
 You can then pass these `LinkComponent` objects to the `link` argument
 of the `JointModel` constructor to add them to the model e.g.
 
-[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`` `` longitudinal ``=`` `[`LongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.md)`(``)``,`` `` survival ``=`` `[`SurvivalExponential`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)`(``)``,`` `` link ``=`` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)`` ``)`
+\
+[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`\
+`  longitudinal ``=`` `[`LongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.md)`(``)``,`\
+`  survival ``=`` `[`SurvivalExponential`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)`(``)``,`\
+`  link ``=`` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)`\
+`)`
 
 If you wish to add multiple link functions then you must wrap them in a
 [`Link()`](https://genentech.github.io/jmpost/reference/Link-class.md)
 object e.g.
 
-[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`` `` longitudinal ``=`` `[`LongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.md)`(``)``,`` `` survival ``=`` `[`SurvivalExponential`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)`(``)``,`` `` link ``=`` `[`Link`](https://genentech.github.io/jmpost/reference/Link-class.md)`(`` `` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)``,`` `` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)`` `` ``)`` ``)`
+\
+[`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md)`(`\
+`  longitudinal ``=`` `[`LongitudinalRandomSlope`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlope-class.md)`(``)``,`\
+`  survival ``=`` `[`SurvivalExponential`](https://genentech.github.io/jmpost/reference/SurvivalExponential-class.md)`(``)``,`\
+`  link ``=`` `[`Link`](https://genentech.github.io/jmpost/reference/Link-class.md)`(`\
+`    `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)``,`\
+`    `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(``...``)`\
+`  ``)`\
+`)`
 
 For most users the above should be sufficient for adding your own custom
 link functions for a specific analysis. The following explains how to
@@ -335,7 +535,14 @@ function will return a different implementation of the derivative of the
 SLD link depending on which longitudinal model the user has provided.
 These are implemented as standard S3 methods e.g.
 
-`linkDSLD.LongitudinalRandomSlope`` ``<-`` ``function``(``prior`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)``, ``model``, ``...``)`` ``{`` `` `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(`` `` key ``=`` ``"link_dsld"``,`` `` stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"<stan-code-here>"``)``,`` `` prior ``=`` ``prior`` `` ``)`` ``}`
+\
+`linkDSLD.LongitudinalRandomSlope`` ``<-`` ``function``(``prior`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)``, ``model``, ``...``)`` ``{`\
+`    `[`LinkComponent`](https://genentech.github.io/jmpost/reference/LinkComponent-class.md)`(`\
+`        key ``=`` ``"link_dsld"``,`\
+`        stan ``=`` `[`StanModule`](https://genentech.github.io/jmpost/reference/StanModule-class.md)`(``"<stan-code-here>"``)``,`\
+`        prior ``=`` ``prior`\
+`    ``)`\
+`}`
 
 A key design quirk to be aware of is that these methods dispatch off of
 the `model` argument not the `prior` argument. The reason for this is
@@ -352,7 +559,18 @@ constructor which will then call the `link<Type>` method again but with
 the correct model object. As an example the following is the
 implementation of the `linkDSLD` generic.
 
-`linkDSLD`` ``<-`` ``function``(``prior``, ``model`` ``=`` `[`PromiseLongitudinalModel`](https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.md)`(``)``, ``...``)`` ``{`` `` `[`UseMethod`](https://rdrr.io/r/base/UseMethod.html)`(``"linkDSLD"``, ``model``)`` ``}`` `` ``linkDSLD.PromiseLongitudinalModel`` ``<-`` ``function``(``prior`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)``, ``model``, ``...``)`` ``{`` `` `[`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md)`(``fun ``=`` ``linkDSLD``, prior ``=`` ``prior``, key ``=`` ``"link_dsld"``)`` ``}`` `` ``linkDSLD.default`` ``<-`` ``function``(``prior``, ``model``, ``...``)`` ``{`` `` `[`stop`](https://rdrr.io/r/base/stop.html)`(`[`sprintf`](https://rdrr.io/r/base/sprintf.html)`(``` "Method `linkDSLD` is not available for `%s`" ```, `[`class`](https://rdrr.io/r/base/class.html)`(``model``)``[[``1``]``]``)``)`` ``}`
+\
+`linkDSLD`` ``<-`` ``function``(``prior``, ``model`` ``=`` `[`PromiseLongitudinalModel`](https://genentech.github.io/jmpost/reference/PromiseLongitudinalModel-class.md)`(``)``, ``...``)`` ``{`\
+`    `[`UseMethod`](https://rdrr.io/r/base/UseMethod.html)`(``"linkDSLD"``, ``model``)`\
+`}`\
+\
+`linkDSLD.PromiseLongitudinalModel`` ``<-`` ``function``(``prior`` ``=`` `[`prior_normal`](https://genentech.github.io/jmpost/reference/prior_normal.md)`(``0``, ``2``)``, ``model``, ``...``)`` ``{`\
+`    `[`PromiseLinkComponent`](https://genentech.github.io/jmpost/reference/PromiseLinkComponent-class.md)`(``fun ``=`` ``linkDSLD``, prior ``=`` ``prior``, key ``=`` ``"link_dsld"``)`\
+`}`\
+\
+`linkDSLD.default`` ``<-`` ``function``(``prior``, ``model``, ``...``)`` ``{`\
+`    `[`stop`](https://rdrr.io/r/base/stop.html)`(`[`sprintf`](https://rdrr.io/r/base/sprintf.html)`(``` "Method `linkDSLD` is not available for `%s`" ```, `[`class`](https://rdrr.io/r/base/class.html)`(``model``)``[[``1``]``]``)``)`\
+`}`
 
 For reference the `JointModel` constructor will then attempt to resolve
 the promise by executing the provided function against the user provided
@@ -365,13 +583,13 @@ object@fun(
 )
 ```
 
-### Custom Simulation Functions
+## Custom Simulation Functions
 
 To assist with testing and debugging the joint models fitted via
 `jmpost` the `SimJointData` constructor function is provided to generate
 joint data from known parameters.
 
-#### Custom Survival Simulation Functions
+### Custom Survival Simulation Functions
 
 Before describing how to implement custom survival functions it is
 important to understand how the survival simulation framework works more
@@ -410,7 +628,28 @@ above in combination with the covariate and link contributions. The
 following is rough example of how the Weibull distribution has been
 implemented:
 
-`SimSurvivalWeibullPH`` ``<-`` ``function``(`` `` ``lambda``,`` `` ``gamma``,`` `` ``time_max`` ``=`` ``2000``,`` `` ``time_step`` ``=`` ``1``,`` `` ``lambda_censor`` ``=`` ``1`` ``/`` ``3000``,`` `` ``beta_cont`` ``=`` ``0.2``,`` `` ``beta_cat`` ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"A"`` ``=`` ``0``, ``"B"`` ``=`` ``-``0.4``, ``"C"`` ``=`` ``0.2``)`` ``)`` ``{`` `` `[`SimSurvival`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md)`(`` `` time_max ``=`` ``time_max``,`` `` time_step ``=`` ``time_step``,`` `` lambda_censor ``=`` ``lambda_censor``,`` `` beta_cont ``=`` ``beta_cont``,`` `` beta_cat ``=`` ``beta_cat``,`` `` loghazard ``=`` ``function``(``time``)`` ``{`` `` `[`log`](https://rdrr.io/r/base/Log.html)`(``lambda``)`` ``+`` `[`log`](https://rdrr.io/r/base/Log.html)`(``gamma``)`` ``+`` ``(``gamma`` ``-`` ``1``)`` ``*`` `[`log`](https://rdrr.io/r/base/Log.html)`(``time``)`` `` ``}``,`` `` name ``=`` ``"SimSurvivalWeibullPH"`` `` ``)`` ``}`
+\
+`SimSurvivalWeibullPH`` ``<-`` ``function``(`\
+`    ``lambda``,`\
+`    ``gamma``,`\
+`    ``time_max`` ``=`` ``2000``,`\
+`    ``time_step`` ``=`` ``1``,`\
+`    ``lambda_censor`` ``=`` ``1`` ``/`` ``3000``,`\
+`    ``beta_cont`` ``=`` ``0.2``,`\
+`    ``beta_cat`` ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"A"`` ``=`` ``0``, ``"B"`` ``=`` ``-``0.4``, ``"C"`` ``=`` ``0.2``)`\
+`)`` ``{`\
+`    `[`SimSurvival`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md)`(`\
+`        time_max ``=`` ``time_max``,`\
+`        time_step ``=`` ``time_step``,`\
+`        lambda_censor ``=`` ``lambda_censor``,`\
+`        beta_cont ``=`` ``beta_cont``,`\
+`        beta_cat ``=`` ``beta_cat``,`\
+`        loghazard ``=`` ``function``(``time``)`` ``{`\
+`            `[`log`](https://rdrr.io/r/base/Log.html)`(``lambda``)`` ``+`` `[`log`](https://rdrr.io/r/base/Log.html)`(``gamma``)`` ``+`` ``(``gamma`` ``-`` ``1``)`` ``*`` `[`log`](https://rdrr.io/r/base/Log.html)`(``time``)`\
+`        ``}``,`\
+`        name ``=`` ``"SimSurvivalWeibullPH"`\
+`    ``)`\
+`}`
 
 That is, the function is a essentially a constructor function for a
 `SimSurvival` object. This object then has the following slots defined:
@@ -428,7 +667,7 @@ That is, the function is a essentially a constructor function for a
 - `name`: The name of the simulation function; only used for printing
   purposes
 
-#### Custom Longitudinal Simulation Functions
+### Custom Longitudinal Simulation Functions
 
 Custom longitudinal simulation functions are slightly more involved.
 Essentially the user needs to define a new class which inherits from
@@ -444,7 +683,89 @@ model. The `sampleObservations` method is responsible for calculating
 the tumour size at each provided time point. The following is a rough
 example of how the `SimLongitudinalGSF` class is implemented:
 
-`# Declare the new class`` ``.SimLongitudinalGSF`` ``<-`` ``setClass``(`` `` ``"SimLongitudinalGSF"``,`` `` contains ``=`` ``"SimLongitudinal"``,`` `` slots ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`` `` sigma ``=`` ``"numeric"``,`` `` mu_s ``=`` ``"numeric"``,`` `` mu_g ``=`` ``"numeric"``,`` `` mu_b ``=`` ``"numeric"``,`` `` mu_phi ``=`` ``"numeric"``,`` `` omega_b ``=`` ``"numeric"``,`` `` omega_s ``=`` ``"numeric"``,`` `` omega_g ``=`` ``"numeric"``,`` `` omega_phi ``=`` ``"numeric"``,`` `` link_dsld ``=`` ``"numeric"``,`` `` link_ttg ``=`` ``"numeric"``,`` `` link_identity ``=`` ``"numeric"`` `` ``)`` ``)`` `` ``# Define constructor function with sensible default values`` ``SimLongitudinalGSF`` ``<-`` ``function``(`` `` ``times`` ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``100``, ``-``50``, ``0``, ``50``, ``100``, ``150``, ``250``, ``350``, ``450``, ``550``)`` ``/`` ``365``,`` `` ``sigma`` ``=`` ``0.01``,`` `` ``mu_s`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.6``, ``0.4``)``)``,`` `` ``mu_g`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.25``, ``0.35``)``)``,`` `` ``mu_b`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(``60``)``,`` `` ``mu_phi`` ``=`` `[`qlogis`](https://rdrr.io/r/stats/Logistic.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.4``, ``0.6``)``)``,`` `` ``omega_b`` ``=`` ``0.2``,`` `` ``omega_s`` ``=`` ``0.2``,`` `` ``omega_g`` ``=`` ``0.2``,`` `` ``omega_phi`` ``=`` ``0.2``,`` `` ``link_dsld`` ``=`` ``0``,`` `` ``link_ttg`` ``=`` ``0``,`` `` ``link_identity`` ``=`` ``0`` ``)`` ``{`` `` `[`.SimLongitudinalGSF`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md)`(`` `` times ``=`` ``times``,`` `` sigma ``=`` ``sigma``,`` `` mu_s ``=`` ``mu_s``,`` `` mu_g ``=`` ``mu_g``,`` `` mu_b ``=`` ``mu_b``,`` `` mu_phi ``=`` ``mu_phi``,`` `` omega_b ``=`` ``omega_b``,`` `` omega_s ``=`` ``omega_s``,`` `` omega_g ``=`` ``omega_g``,`` `` omega_phi ``=`` ``omega_phi``,`` `` link_dsld ``=`` ``link_dsld``,`` `` link_ttg ``=`` ``link_ttg``,`` `` link_identity ``=`` ``link_identity`` `` ``)`` ``}`` `` ``sampleSubjects.SimLongitudinalGSF`` ``<-`` ``function``(``object``, ``subjects_df``)`` ``{`` `` ``res`` ``<-`` ``subjects_df`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``study_idx ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``.data``$``study``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``arm_idx ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``.data``$``arm``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_b ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_b``[``.data``$``study_idx``]``, ``object``@``omega_b``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_s ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_s``[``.data``$``arm_idx``]``, ``object``@``omega_s``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_g ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_g``[``.data``$``arm_idx``]``, ``object``@``omega_g``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_phi_logit ``=`` ``stats``::`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(`` `` ``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``,`` `` ``object``@``mu_phi``[``.data``$``arm_idx``]``,`` `` ``object``@``omega_phi`` `` ``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_phi ``=`` ``stats``::`[`plogis`](https://rdrr.io/r/stats/Logistic.html)`(``.data``$``psi_phi_logit``)``)`` `` ``res``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"subject"``, ``"arm"``, ``"study"``, ``"psi_b"``, ``"psi_s"``, ``"psi_g"``, ``"psi_phi"``)``]`` ``}`` `` ``sampleObservations.SimLongitudinalGSF`` ``<-`` ``function``(``object``, ``times_df``)`` ``{`` `` ``times_df`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``mu_sld ``=`` `[`gsf_sld`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``dsld ``=`` `[`gsf_dsld`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``ttg ``=`` `[`gsf_ttg`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``sld ``=`` ``stats``::`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``.data``$``mu_sld``, ``.data``$``mu_sld`` ``*`` ``object``@``sigma``)``)`` ``|>`` `` ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(`` `` log_haz_link ``=`` `` ``(``object``@``link_dsld`` ``*`` ``.data``$``dsld``)`` ``+`` `` ``(``object``@``link_ttg`` ``*`` ``.data``$``ttg``)`` ``+`` `` ``(``object``@``link_identity`` ``*`` ``.data``$``mu_sld``)`` `` ``)`` ``}`
+\
+`# Declare the new class`\
+`.SimLongitudinalGSF`` ``<-`` ``setClass``(`\
+`    ``"SimLongitudinalGSF"``,`\
+`    contains ``=`` ``"SimLongitudinal"``,`\
+`    slots ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`\
+`        sigma ``=`` ``"numeric"``,`\
+`        mu_s ``=`` ``"numeric"``,`\
+`        mu_g ``=`` ``"numeric"``,`\
+`        mu_b ``=`` ``"numeric"``,`\
+`        mu_phi ``=`` ``"numeric"``,`\
+`        omega_b ``=`` ``"numeric"``,`\
+`        omega_s ``=`` ``"numeric"``,`\
+`        omega_g ``=`` ``"numeric"``,`\
+`        omega_phi ``=`` ``"numeric"``,`\
+`        link_dsld ``=`` ``"numeric"``,`\
+`        link_ttg ``=`` ``"numeric"``,`\
+`        link_identity ``=`` ``"numeric"`\
+`    ``)`\
+`)`\
+\
+`# Define constructor function with sensible default values`\
+`SimLongitudinalGSF`` ``<-`` ``function``(`\
+`    ``times`` ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``100``, ``-``50``, ``0``, ``50``, ``100``, ``150``, ``250``, ``350``, ``450``, ``550``)`` ``/`` ``365``,`\
+`    ``sigma`` ``=`` ``0.01``,`\
+`    ``mu_s`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.6``, ``0.4``)``)``,`\
+`    ``mu_g`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.25``, ``0.35``)``)``,`\
+`    ``mu_b`` ``=`` `[`log`](https://rdrr.io/r/base/Log.html)`(``60``)``,`\
+`    ``mu_phi`` ``=`` `[`qlogis`](https://rdrr.io/r/stats/Logistic.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0.4``, ``0.6``)``)``,`\
+`    ``omega_b`` ``=`` ``0.2``,`\
+`    ``omega_s`` ``=`` ``0.2``,`\
+`    ``omega_g`` ``=`` ``0.2``,`\
+`    ``omega_phi`` ``=`` ``0.2``,`\
+`    ``link_dsld`` ``=`` ``0``,`\
+`    ``link_ttg`` ``=`` ``0``,`\
+`    ``link_identity`` ``=`` ``0`\
+`)`` ``{`\
+`    `[`.SimLongitudinalGSF`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md)`(`\
+`        times ``=`` ``times``,`\
+`        sigma ``=`` ``sigma``,`\
+`        mu_s ``=`` ``mu_s``,`\
+`        mu_g ``=`` ``mu_g``,`\
+`        mu_b ``=`` ``mu_b``,`\
+`        mu_phi ``=`` ``mu_phi``,`\
+`        omega_b ``=`` ``omega_b``,`\
+`        omega_s ``=`` ``omega_s``,`\
+`        omega_g ``=`` ``omega_g``,`\
+`        omega_phi ``=`` ``omega_phi``,`\
+`        link_dsld ``=`` ``link_dsld``,`\
+`        link_ttg ``=`` ``link_ttg``,`\
+`        link_identity ``=`` ``link_identity`\
+`    ``)`\
+`}`\
+\
+`sampleSubjects.SimLongitudinalGSF`` ``<-`` ``function``(``object``, ``subjects_df``)`` ``{`\
+`    ``res`` ``<-`` ``subjects_df`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``study_idx ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``.data``$``study``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``arm_idx ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``.data``$``arm``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_b ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_b``[``.data``$``study_idx``]``, ``object``@``omega_b``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_s ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_s``[``.data``$``arm_idx``]``, ``object``@``omega_s``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_g ``=`` ``stats``::`[`rlnorm`](https://rdrr.io/r/stats/Lognormal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``object``@``mu_g``[``.data``$``arm_idx``]``, ``object``@``omega_g``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_phi_logit ``=`` ``stats``::`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(`\
+`            ``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``,`\
+`            ``object``@``mu_phi``[``.data``$``arm_idx``]``,`\
+`            ``object``@``omega_phi`\
+`        ``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``psi_phi ``=`` ``stats``::`[`plogis`](https://rdrr.io/r/stats/Logistic.html)`(``.data``$``psi_phi_logit``)``)`\
+`    ``res``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"subject"``, ``"arm"``, ``"study"``, ``"psi_b"``, ``"psi_s"``, ``"psi_g"``, ``"psi_phi"``)``]`\
+`}`\
+\
+`sampleObservations.SimLongitudinalGSF`` ``<-`` ``function``(``object``, ``times_df``)`` ``{`\
+`    ``times_df`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``mu_sld ``=`` `[`gsf_sld`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``dsld ``=`` `[`gsf_dsld`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``ttg ``=`` `[`gsf_ttg`](https://genentech.github.io/jmpost/reference/gsf_sld.md)`(``.data``$``time``, ``.data``$``psi_b``, ``.data``$``psi_s``, ``.data``$``psi_g``, ``.data``$``psi_phi``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``sld ``=`` ``stats``::`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``dplyr``::`[`n`](https://dplyr.tidyverse.org/reference/context.html)`(``)``, ``.data``$``mu_sld``, ``.data``$``mu_sld`` ``*`` ``object``@``sigma``)``)`` ``|>`\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(`\
+`            log_haz_link ``=`\
+`                ``(``object``@``link_dsld`` ``*`` ``.data``$``dsld``)`` ``+`\
+`                ``(``object``@``link_ttg`` ``*`` ``.data``$``ttg``)`` ``+`\
+`                ``(``object``@``link_identity`` ``*`` ``.data``$``mu_sld``)`\
+`        ``)`\
+`}`
 
 The `subjects_df` argument to the `sampleSubjects` method is a
 `data.frame` with the following columns:
@@ -472,7 +793,7 @@ columns:
 - `log_haz_link`: The contribution to the hazard function at that
   timepoint (set this to 0 if not defining a link function)
 
-### Formatting Stan Files
+## Formatting Stan Files
 
 Under the hood this library works by merging multiple Stan programs
 together into a single program. It does this by parsing the program to
@@ -521,7 +842,7 @@ parameter { real mu;      // non-whitespace after opening `{`
 } // some comment         // non-whitespace after closing `}`
 ```
 
-### Stan Data Objects
+## Stan Data Objects
 
 When writing your own Stan code to extend `jmpost` it is important to
 note that many different data objects have already been defined in the
@@ -532,7 +853,7 @@ example death times are only available if the user specifies a
 `SurvivalModel` object to
 [`JointModel()`](https://genentech.github.io/jmpost/reference/JointModel-class.md).
 
-#### Global Data Objects
+### Global Data Objects
 
 **Number of unique subjects**
 
@@ -571,7 +892,7 @@ array[n_subjects] int<lower=1,upper=n_studies> subject_study_index;
 
 - A mirror of `subject_study_index` but for the treatment arm.
 
-#### Survival Data Objects
+### Survival Data Objects
 
 **Number of events**
 
@@ -643,7 +964,7 @@ vector<lower=0, upper=1>[n_nodes] weights;
 - These are the nodes and weights for the Gaussian quadrature
   integration.
 
-#### Longitudinal Data Objects
+### Longitudinal Data Objects
 
 **Total number of tumour assessments**
 
@@ -757,7 +1078,7 @@ array[n_mat_inds_cens_y[3]] int u_mat_inds_cens_y;
 
 - Same as above but only for the tumour assessments below the LLoQ.
 
-#### Global Quantity Data Objects
+### Global Quantity Data Objects
 
 **Number of quantities to be generated**
 
@@ -787,7 +1108,7 @@ array[gq_n_quant] int<lower=1, upper=n_subjects> gq_subject_index;
   [`GridManual()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
   only
 
-#### Survival Quantity Data Objects
+### Survival Quantity Data Objects
 
 **Number of link parameters**
 
@@ -816,7 +1137,7 @@ matrix[gq_n_quant, p_os_cov_design] gq_os_cov_design;
 - [`GridPrediction()`](https://genentech.github.io/jmpost/reference/Grid-Functions.md)
   only
 
-#### Longitudinal Quantity Data Objects
+### Longitudinal Quantity Data Objects
 
 **Arm index for each quantity**
 

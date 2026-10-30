@@ -21,7 +21,7 @@ GridManual(spec)
 
 GridObserved(subjects = NULL)
 
-GridPopulation(times = NULL)
+GridPopulation(times = NULL, newdata = NULL)
 
 GridPrediction(times = NULL, newdata, params = list())
 ```
@@ -61,10 +61,13 @@ GridPrediction(times = NULL, newdata, params = list())
 
 - newdata:
 
-  (`data.frame`) new data to generate quantities for. Must contain the
-  same columns and factor levels of the original data used in the
+  (`data.frame`) new data to generate quantities for. For
+  `GridPrediction()`, it must contain the same columns and factor levels
+  as the original
   [`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md)
-  object.
+  object. For a covariate-based `GridPopulation()` prediction, one row
+  defines each population profile and contains the arm, study, and all
+  variables used by the longitudinal population-mean predictors.
 
 - params:
 
@@ -100,12 +103,13 @@ A `Grid` object of the requested type.
   dataset.
 
 - `GridPopulation()` generates longitudinal model quantities based on
-  the population parameters at the specified time points. Generates 1
-  set of quantities for each distinct combination of `arm` and `study`
-  within the
+  the population parameters at the specified time points. By default it
+  generates one set for each distinct combination of `arm` and `study`
+  in the fitted
   [`DataSubject`](https://genentech.github.io/jmpost/reference/DataSubject-class.md)
-  object provided to the
-  [`JointModel`](https://genentech.github.io/jmpost/reference/JointModel-class.md).
+  object. For covariate-based longitudinal models with additional
+  predictors, supply one population profile per row through `newdata`;
+  this keeps arm, study, and all additional covariates together.
 
 - `GridPrediction()` generates survival quantities based on any
   user-defined values at the specified time points. This is useful for
@@ -180,6 +184,21 @@ GridPopulation(times = seq(0, 100, by = 10))
 #> An object of class "GridPopulation"
 #> Slot "times":
 #>  [1]   0  10  20  30  40  50  60  70  80  90 100
+#> 
+#> Slot "newdata":
+#> NULL
+#> 
+GridPopulation(
+  times = seq(0, 100, by = 10),
+  newdata = data.frame(study = "Study 1", arm = "A", age = 60)
+)
+#> An object of class "GridPopulation"
+#> Slot "times":
+#>  [1]   0  10  20  30  40  50  60  70  80  90 100
+#> 
+#> Slot "newdata":
+#>     study arm age
+#> 1 Study 1   A  60
 #> 
 GridManual(list("subject 1" = c(0, 5), "subject 2" = c(0, 10)))
 #> An object of class "GridManual"

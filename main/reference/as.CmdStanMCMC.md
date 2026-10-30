@@ -1,7 +1,7 @@
 # Coerce to `CmdStanMCMC`
 
 Coerces an object to a
-[`cmdstanr::CmdStanMCMC`](https://rdrr.io/pkg/cmdstanr/man/CmdStanMCMC.html)
+[`cmdstanr::CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html)
 object
 
 ## Usage
@@ -23,5 +23,5 @@ as.CmdStanMCMC.JointModelSamples(object, ...)
 ## Value
 
 The underlying
-[`cmdstanr::CmdStanMCMC`](https://rdrr.io/pkg/cmdstanr/man/CmdStanMCMC.html)
+[`cmdstanr::CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html)
 object.

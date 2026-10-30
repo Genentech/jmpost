@@ -20,12 +20,19 @@ covariates(object, ...)
 
 ## Value
 
-A character vector containing the covariate names.
+For
+[`DataSurvival`](https://genentech.github.io/jmpost/reference/DataSurvival-class.md),
+a character vector containing the covariate names. For
+[`LongitudinalModel`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md),
+a named list of character vectors, one per covariate coefficient
+parameter; see
+[`covariates.LongitudinalModel()`](https://genentech.github.io/jmpost/reference/covariates.LongitudinalModel.md).
 
 ## See also
 
 Other covariates:
-[`covariates.DataSurvival()`](https://genentech.github.io/jmpost/reference/covariates.DataSurvival.md)
+[`covariates.DataSurvival()`](https://genentech.github.io/jmpost/reference/covariates.DataSurvival.md),
+[`covariates.LongitudinalModel()`](https://genentech.github.io/jmpost/reference/covariates.LongitudinalModel.md)
 
 ## Examples
 

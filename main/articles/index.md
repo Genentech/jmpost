@@ -10,7 +10,11 @@
   Prior](https://genentech.github.io/jmpost/articles/covariate-selection-horseshoe.md):
 - [Fitting a Custom Longitudinal
   Model](https://genentech.github.io/jmpost/articles/custom-model.md):
+- [Fitting a Custom Longitudinal Model with
+  Covariates](https://genentech.github.io/jmpost/articles/custom-cov-model.md):
 - [Extending
   jmpost](https://genentech.github.io/jmpost/articles/extending-jmpost.md):
 - [Simulating
   Data](https://genentech.github.io/jmpost/articles/simulating-data.md):
+- [Analyzing the PRIME Study
+  Data](https://genentech.github.io/jmpost/articles/prime-analysis.md):

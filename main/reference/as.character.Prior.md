@@ -9,6 +9,9 @@ object to a character vector
 ``` r
 # S3 method for class 'Prior'
 as.character(x, ...)
+
+# S3 method for class 'TransformedPrior'
+as.character(x, ...)
 ```
 
 ## Arguments

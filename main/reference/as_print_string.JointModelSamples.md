@@ -29,4 +29,5 @@ A character vector suitable for printing.
 ## See also
 
 Other JointModelSamples:
-[`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md)
+[`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md),
+[`coef.JointModelSamples()`](https://genentech.github.io/jmpost/reference/coef.JointModelSamples.md)

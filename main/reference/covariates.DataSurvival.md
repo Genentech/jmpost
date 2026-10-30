@@ -26,4 +26,5 @@ A character vector containing the covariate names.
 ## See also
 
 Other covariates:
-[`covariates()`](https://genentech.github.io/jmpost/reference/covariates.md)
+[`covariates()`](https://genentech.github.io/jmpost/reference/covariates.md),
+[`covariates.LongitudinalModel()`](https://genentech.github.io/jmpost/reference/covariates.LongitudinalModel.md)

@@ -10,6 +10,9 @@ set_limits(object, lower = -Inf, upper = Inf)
 
 # S3 method for class 'Prior'
 set_limits(object, lower = -Inf, upper = Inf)
+
+# S3 method for class 'TransformedPrior'
+set_limits(object, lower = -Inf, upper = Inf)
 ```
 
 ## Arguments

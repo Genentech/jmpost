@@ -49,7 +49,7 @@ bs_get_weights(
 
 - event_offset:
 
-  (`logical`) If `TRUE` then \\G(T_i)\\ is evaluated at \\G(T_i-)\\.
+  (`logical`) If `TRUE` then \\(G(T_i)\\) is evaluated at \\(G(T_i-)\\).
   Setting this as `TRUE` mirrors the implementation of the `{pec}`
   package.
 

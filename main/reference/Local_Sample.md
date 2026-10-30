@@ -72,8 +72,8 @@ Stan parameterisation the CDF is defined as: \$\$ u = F(x) =
 \frac{1}{1 + (x/ \alpha)^{-\beta}} \$\$ The inverse of this function is:
 \$\$ x = ((u / (1 - u))^(1 / beta)) \* alpha \$\$
 
-Thus we can sample u from a \\Uni(0, 1)\\ distribution and then derive x
-from this.
+Thus we can sample u from a \\(Uni(0, 1)\\) distribution and then derive
+x from this.
 
 ### Inverse-Gamma
 

@@ -10,13 +10,25 @@ sampleObservations(object, times_df)
 # S3 method for class 'SimLongitudinalClaretBruno'
 sampleObservations(object, times_df)
 
+# S3 method for class 'SimLongitudinalClaretBrunoCov'
+sampleObservations(object, times_df)
+
 # S3 method for class 'SimLongitudinalGSF'
+sampleObservations(object, times_df)
+
+# S3 method for class 'SimLongitudinalGSFCov'
 sampleObservations(object, times_df)
 
 # S3 method for class 'SimLongitudinalRandomSlope'
 sampleObservations(object, times_df)
 
+# S3 method for class 'SimLongitudinalRandomSlopeCov'
+sampleObservations(object, times_df)
+
 # S3 method for class 'SimLongitudinalSteinFojo'
+sampleObservations(object, times_df)
+
+# S3 method for class 'SimLongitudinalSteinFojoCov'
 sampleObservations(object, times_df)
 
 # S3 method for class 'SimSurvival'
@@ -60,8 +72,8 @@ sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
 subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
 subject_parameters <- sampleSubjects(sim, subjects)
 sampleObservations(sim, transform(subject_parameters, time = 0))
-#>   study arm subject intercept  slope_ind time sld_mu sld_sd      sld
-#> 1     S   A       1        50 -0.2273247    0     50      2 51.10869
+#>   study arm subject intercept slope_ind time sld_mu sld_sd      sld
+#> 1     S   A       1        50 0.7107446    0     50      2 50.31603
 #>   log_haz_link
 #> 1            0
 ```

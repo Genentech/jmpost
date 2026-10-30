@@ -15,13 +15,25 @@ getPredictionNames(object, ...)
 # S3 method for class 'LongitudinalClaretBruno'
 getPredictionNames(object, ...)
 
+# S3 method for class 'LongitudinalClaretBrunoCov'
+getPredictionNames(object, ...)
+
 # S3 method for class 'LongitudinalGSF'
+getPredictionNames(object, ...)
+
+# S3 method for class 'LongitudinalGSFCov'
 getPredictionNames(object, ...)
 
 # S3 method for class 'LongitudinalRandomSlope'
 getPredictionNames(object, ...)
 
+# S3 method for class 'LongitudinalRandomSlopeCov'
+getPredictionNames(object, ...)
+
 # S3 method for class 'LongitudinalSteinFojo'
+getPredictionNames(object, ...)
+
+# S3 method for class 'LongitudinalSteinFojoCov'
 getPredictionNames(object, ...)
 ```
 

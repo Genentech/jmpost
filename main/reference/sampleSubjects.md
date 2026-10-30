@@ -10,13 +10,25 @@ sampleSubjects(object, subjects_df)
 # S3 method for class 'SimLongitudinalClaretBruno'
 sampleSubjects(object, subjects_df)
 
+# S3 method for class 'SimLongitudinalClaretBrunoCov'
+sampleSubjects(object, subjects_df)
+
 # S3 method for class 'SimLongitudinalGSF'
+sampleSubjects(object, subjects_df)
+
+# S3 method for class 'SimLongitudinalGSFCov'
 sampleSubjects(object, subjects_df)
 
 # S3 method for class 'SimLongitudinalRandomSlope'
 sampleSubjects(object, subjects_df)
 
+# S3 method for class 'SimLongitudinalRandomSlopeCov'
+sampleSubjects(object, subjects_df)
+
 # S3 method for class 'SimLongitudinalSteinFojo'
+sampleSubjects(object, subjects_df)
+
+# S3 method for class 'SimLongitudinalSteinFojoCov'
 sampleSubjects(object, subjects_df)
 
 # S3 method for class 'SimSurvival'
@@ -60,5 +72,5 @@ subjects <- data.frame(study = factor("S"), arm = factor("A"), subject = "1")
 sim <- SimLongitudinalRandomSlope(slope_mu = 0.01, slope_sigma = 0.5)
 sampleSubjects(sim, subjects)
 #>   study arm subject intercept slope_ind
-#> 1     S   A       1        50  1.093206
+#> 1     S   A       1        50 -1.072994
 ```

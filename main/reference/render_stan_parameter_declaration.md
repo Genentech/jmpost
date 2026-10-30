@@ -5,7 +5,7 @@ Creates a Stan declaration for a sampled scalar or vector parameter.
 ## Usage
 
 ``` r
-render_stan_parameter_declaration(name, size, limits)
+render_stan_parameter_declaration(name, size, limits, multiplier = "")
 ```
 
 ## Arguments
@@ -21,6 +21,11 @@ render_stan_parameter_declaration(name, size, limits)
 - limits:
 
   (`numeric`) lower and upper parameter limits.
+
+- multiplier:
+
+  (`string`) Stan affine multiplier expression for an unbounded
+  parameter.
 
 ## Value
 

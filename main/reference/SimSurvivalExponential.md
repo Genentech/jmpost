@@ -49,7 +49,7 @@ A `SimSurvival` object.
 ## Hazard Evaluation
 
 Event times are simulated by sampling a cumulative hazard limit from a
-\\U(0, 1)\\ distribution for each subject and then counting how much
+\\(U(0, 1)\\) distribution for each subject and then counting how much
 hazard they've been exposed to by evaluating the log-hazard function at
 a set interval. The `time_max` argument sets the upper bound for the
 number of time points to evaluate the log-hazard function at with

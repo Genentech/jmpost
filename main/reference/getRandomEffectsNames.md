@@ -20,13 +20,25 @@ getRandomEffectsNames(object, ...)
 # S3 method for class 'LongitudinalGSF'
 getRandomEffectsNames(object, ...)
 
+# S3 method for class 'LongitudinalClaretBrunoCov'
+getRandomEffectsNames(object, ...)
+
 # S3 method for class 'LongitudinalGSF'
+getRandomEffectsNames(object, ...)
+
+# S3 method for class 'LongitudinalGSFCov'
 getRandomEffectsNames(object, ...)
 
 # S3 method for class 'LongitudinalRandomSlope'
 getRandomEffectsNames(object, ...)
 
+# S3 method for class 'LongitudinalRandomSlopeCov'
+getRandomEffectsNames(object, ...)
+
 # S3 method for class 'LongitudinalSteinFojo'
+getRandomEffectsNames(object, ...)
+
+# S3 method for class 'LongitudinalSteinFojoCov'
 getRandomEffectsNames(object, ...)
 ```
 

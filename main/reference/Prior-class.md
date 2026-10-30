@@ -21,7 +21,9 @@ Prior(
   limits = c(-Inf, Inf),
   .omit_zero_lower_truncation = FALSE,
   .allow_vectors = FALSE,
-  .is_const = FALSE
+  .is_const = FALSE,
+  repr_multiplier = function(name, size) "",
+  transform = NULL
 )
 ```
 
@@ -97,6 +99,20 @@ Prior(
 
   (`flag`) whether this prior fixes the parameter at a constant value.
 
+- repr_multiplier:
+
+  (`function`) a function of `name` and `size` returning a Stan affine
+  multiplier expression for an unbounded parameter, or an empty string
+  for no transform.
+
+- transform:
+
+  (`PriorTransform | NULL`) optional package-defined transformation from
+  the model parameter to the prior density scale. See
+  [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md)
+  for support, Jacobians and examples. `NULL` keeps the prior on the
+  model parameter scale.
+
 ## Value
 
 A `Prior` object.
@@ -131,6 +147,11 @@ A `Prior` object.
 - `repr_generated_quantities`:
 
   (`string`)\
+  See arguments.
+
+- `repr_multiplier`:
+
+  (`function`)\
   See arguments.
 
 - `auxiliary_initial_values`:

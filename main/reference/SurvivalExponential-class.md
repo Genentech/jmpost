@@ -30,7 +30,7 @@ A `SurvivalExponential` object.
 SurvivalExponential()
 #> 
 #> Exponential Survival Model with parameters:
-#>     sm_exp_lambda ~ gamma(alpha = 2, beta = 5)
+#>     sm_exp_lambda ~ gamma(alpha = 2, beta = 5) T[0, 8000]
 #>     beta_os_cov ~ normal(mu = 0, sigma = 2)
 #> 
 ```

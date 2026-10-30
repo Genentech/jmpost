@@ -35,7 +35,7 @@ as_stan_list(object, ...)
 as.list(x, ...)
 
 # S3 method for class 'DataJoint'
-as_stan_list(object, ...)
+as_stan_list(object, model = NULL, ...)
 
 # S3 method for class 'DataJoint'
 as.list(x, ...)
@@ -72,6 +72,11 @@ as.list(x, ...)
   (`list`)\
   The list of variable names to be used for generating the design
   matrix.
+
+- model:
+
+  (`JointModel` or `NULL`) Optional model specification used to add
+  model-specific data components.
 
 ## Value
 

@@ -9,7 +9,7 @@ Just a placeholder which will error when used.
 as_stan_list(object, data, ...)
 
 # S3 method for class 'QuantityGeneratorPopulation'
-as_stan_list(object, data, ...)
+as_stan_list(object, data, model = NULL, ...)
 
 # S3 method for class 'QuantityGeneratorPrediction'
 as_stan_list(object, data, model, ...)
@@ -31,6 +31,11 @@ as_stan_list(object, data, ...)
 - ...:
 
   Not currently used.
+
+- model:
+
+  (`JointModel` or `NULL`) optional model used to add model-specific
+  generated-quantities data.
 
 ## Value
 

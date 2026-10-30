@@ -20,7 +20,11 @@ shrinkage(object, ...)
 
 ## Value
 
-A named numeric vector or matrix of shrinkage factors.
+For
+[`JointModelSamples`](https://genentech.github.io/jmpost/reference/JointModelSamples-class.md),
+a posterior draws object containing the sampled prior shrinkage factors;
+see
+[`shrinkage.JointModelSamples()`](https://genentech.github.io/jmpost/reference/shrinkage.JointModelSamples.md).
 
 ## See also
 

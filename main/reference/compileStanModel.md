@@ -23,7 +23,7 @@ compileStanModel(object)
 ## Value
 
 A compiled
-[`cmdstanr::CmdStanModel`](https://rdrr.io/pkg/cmdstanr/man/CmdStanModel.html)
+[`cmdstanr::CmdStanModel`](https://mc-stan.org/cmdstanr/reference/CmdStanModel.html)
 object.
 
 ## Examples

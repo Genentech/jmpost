@@ -39,8 +39,8 @@ LongitudinalGSF(
 
 - mu_phi:
 
-  (`Prior`) for the mean proportion of cells affected by the treatment
-  `mu_phi`.
+  (`Prior`) for the logit-scale location of the proportion of cells
+  affected by the treatment `mu_phi`.
 
 - omega_bsld:
 
@@ -56,8 +56,8 @@ LongitudinalGSF(
 
 - omega_phi:
 
-  (`Prior`) for the standard deviation of the proportion of cells
-  affected by the treatment `omega_phi`.
+  (`Prior`) for the logit-scale standard deviation of the proportion of
+  cells affected by the treatment `omega_phi`.
 
 - sigma:
 

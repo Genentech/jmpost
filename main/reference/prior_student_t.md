@@ -5,7 +5,7 @@ Student-t Prior Distribution
 ## Usage
 
 ``` r
-prior_student_t(nu, mu, sigma)
+prior_student_t(nu, mu, sigma, transform = NULL)
 ```
 
 ## Arguments
@@ -22,6 +22,14 @@ prior_student_t(nu, mu, sigma)
 
   (`number`) Scale parameter.
 
+- transform:
+
+  (`PriorTransform | NULL`) optional package-defined transformation from
+  the model parameter to the prior density scale. See
+  [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md)
+  for support, Jacobians and examples. `NULL` keeps the prior on the
+  model parameter scale.
+
 ## Value
 
 A `Prior` object.
@@ -33,6 +41,7 @@ Other Prior:
 [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md),
 [`prior_const()`](https://genentech.github.io/jmpost/reference/prior_const.md),
 [`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md),
+[`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md),
 [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md),
 [`prior_horseshoe()`](https://genentech.github.io/jmpost/reference/prior_horseshoe.md),
 [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md),
@@ -43,6 +52,7 @@ Other Prior:
 [`prior_normal()`](https://genentech.github.io/jmpost/reference/prior_normal.md),
 [`prior_normal_vector()`](https://genentech.github.io/jmpost/reference/prior_normal_vector.md),
 [`prior_std_normal()`](https://genentech.github.io/jmpost/reference/prior_std_normal.md),
+[`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md),
 [`prior_uniform()`](https://genentech.github.io/jmpost/reference/prior_uniform.md)
 
 ## Examples

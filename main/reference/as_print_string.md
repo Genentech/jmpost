@@ -14,13 +14,25 @@ as_print_string(object, ...)
 # S3 method for class 'SimLongitudinalClaretBruno'
 as_print_string(object, ...)
 
+# S3 method for class 'SimLongitudinalClaretBrunoCov'
+as_print_string(object, ...)
+
 # S3 method for class 'SimLongitudinalGSF'
+as_print_string(object, ...)
+
+# S3 method for class 'SimLongitudinalGSFCov'
 as_print_string(object, ...)
 
 # S3 method for class 'SimLongitudinalRandomSlope'
 as_print_string(object, ...)
 
+# S3 method for class 'SimLongitudinalRandomSlopeCov'
+as_print_string(object, ...)
+
 # S3 method for class 'SimLongitudinalSteinFojo'
+as_print_string(object, ...)
+
+# S3 method for class 'SimLongitudinalSteinFojoCov'
 as_print_string(object, ...)
 
 # S3 method for class 'SimSurvival'

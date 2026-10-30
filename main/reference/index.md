@@ -27,12 +27,20 @@
   : Abstract Simulation Class for Longitudinal Data
 - [`SimLongitudinalGSF()`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSF-class.md)
   : Simulate Longitudinal Data from a GSF Model
+- [`SimLongitudinalGSFCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalGSFCov-class.md)
+  : Simulate a Generalized Stein-Fojo model with covariates
 - [`SimLongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojo-class.md)
   : Simulate Longitudinal Data from a Stein-Fojo Model
+- [`SimLongitudinalSteinFojoCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalSteinFojoCov-class.md)
+  : Simulate a Stein-Fojo longitudinal model with covariates
 - [`SimLongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBruno-class.md)
   : Simulate Longitudinal Data from a Claret-Bruno Model
+- [`SimLongitudinalClaretBrunoCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalClaretBrunoCov-class.md)
+  : Simulate a Claret-Bruno longitudinal model with covariates
 - [`SimLongitudinalRandomSlope()`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlope-class.md)
   : Simulate Longitudinal Data from a Random Slope Model
+- [`SimLongitudinalRandomSlopeCov()`](https://genentech.github.io/jmpost/reference/SimLongitudinalRandomSlopeCov-class.md)
+  : Simulate a random-slope longitudinal model with covariates
 - [`SimSurvival()`](https://genentech.github.io/jmpost/reference/SimSurvival-class.md)
   : Abstract Simulation Class for Survival Data
 - [`SimSurvivalLogLogistic()`](https://genentech.github.io/jmpost/reference/SimSurvivalLogLogistic.md)
@@ -56,6 +64,10 @@
 
 - [`Prior()`](https://genentech.github.io/jmpost/reference/Prior-class.md)
   : Prior Object and Constructor Function
+- [`PriorTransform-class`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  [`.PriorTransform`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  [`PriorTransform`](https://genentech.github.io/jmpost/reference/PriorTransform-class.md)
+  : Package-Defined Prior Transformation
 - [`prior_beta()`](https://genentech.github.io/jmpost/reference/prior_beta.md)
   : Beta Prior Distribution
 - [`prior_cauchy()`](https://genentech.github.io/jmpost/reference/prior_cauchy.md)
@@ -64,8 +76,12 @@
   : Constant Prior Distribution
 - [`prior_const_vector()`](https://genentech.github.io/jmpost/reference/prior_const_vector.md)
   : Constant Prior Distribution for a Vector
+- [`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md)
+  : Flat Prior
 - [`prior_gamma()`](https://genentech.github.io/jmpost/reference/prior_gamma.md)
   : Gamma Prior Distribution
+- [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
+  : Initial Values Specification
 - [`prior_invgamma()`](https://genentech.github.io/jmpost/reference/prior_invgamma.md)
   : Inverse-Gamma Prior Distribution
 - [`prior_logistic()`](https://genentech.github.io/jmpost/reference/prior_logistic.md)
@@ -86,8 +102,11 @@
   : Standard Normal Prior Distribution
 - [`prior_student_t()`](https://genentech.github.io/jmpost/reference/prior_student_t.md)
   : Student-t Prior Distribution
-- [`prior_init_only()`](https://genentech.github.io/jmpost/reference/prior_init_only.md)
-  : Initial Values Specification
+- [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md)
+  : Prior on a Transformed Parameter
+- [`prior_transform_exp()`](https://genentech.github.io/jmpost/reference/prior-transformations.md)
+  [`prior_transform_square()`](https://genentech.github.io/jmpost/reference/prior-transformations.md)
+  : Transformations to the Prior Density Scale
 
 ## Longitudinal Model Specification
 
@@ -96,20 +115,33 @@
 
   `LongitudinalRandomSlope`
 
+- [`LongitudinalRandomSlopeCov()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomSlopeCov-class.md)
+  : Random-slope longitudinal model with subject-level covariates
+
 - [`LongitudinalGSF()`](https://genentech.github.io/jmpost/reference/LongitudinalGSF-class.md)
   :
 
   `LongitudinalGSF`
+
+- [`LongitudinalGSFCov()`](https://genentech.github.io/jmpost/reference/LongitudinalGSFCov-class.md)
+  : Generalized Stein-Fojo longitudinal model with subject-level
+  covariates
 
 - [`LongitudinalSteinFojo()`](https://genentech.github.io/jmpost/reference/LongitudinalSteinFojo-class.md)
   :
 
   `LongitudinalSteinFojo`
 
+- [`LongitudinalSteinFojoCov()`](https://genentech.github.io/jmpost/reference/LongitudinalSteinFojoCov-class.md)
+  : Stein-Fojo longitudinal model with subject-level covariates
+
 - [`LongitudinalClaretBruno()`](https://genentech.github.io/jmpost/reference/LongitudinalClaretBruno-class.md)
   :
 
   `LongitudinalClaretBruno`
+
+- [`LongitudinalClaretBrunoCov()`](https://genentech.github.io/jmpost/reference/LongitudinalClaretBrunoCov-class.md)
+  : Claret-Bruno longitudinal model with subject-level covariates
 
 - [`LongitudinalModel()`](https://genentech.github.io/jmpost/reference/LongitudinalModel-class.md)
   :
@@ -204,6 +236,10 @@
 
   `generateQuantities`
 
+- [`gq_population_stan_data()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
+  [`gq_population_stan_data.QuantityGeneratorPopulation()`](https://genentech.github.io/jmpost/reference/gq_population_stan_data.md)
+  : Population Generated-Quantities Stan Data
+
 - [`LongitudinalRandomEffects()`](https://genentech.github.io/jmpost/reference/LongitudinalRandomEffects.md)
   : Extract Random Effects Samples from a Longitudinal Model
 
@@ -248,6 +284,9 @@
 
 - [`populationHR()`](https://genentech.github.io/jmpost/reference/populationHR.md)
   : Calculate Population Hazard Ratios
+
+- [`coef(`*`<JointModelSamples>`*`)`](https://genentech.github.io/jmpost/reference/coef.JointModelSamples.md)
+  : Summarise posterior covariate coefficients
 
 - [`shrinkage()`](https://genentech.github.io/jmpost/reference/shrinkage.md)
   : Extract Covariate Shrinkage Factors from the Posterior Samples
@@ -363,6 +402,7 @@
   `ParameterList` -\> `StanModule`
 
 - [`as.StanModule(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md)
+  [`as.StanModule(`*`<TransformedPrior>`*`)`](https://genentech.github.io/jmpost/reference/as.StanModule.Prior.md)
   :
 
   `Prior` -\> `StanModule`
@@ -393,6 +433,7 @@
   `Parameter` -\> `Character`
 
 - [`as.character(`*`<Prior>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Prior.md)
+  [`as.character(`*`<TransformedPrior>`*`)`](https://genentech.github.io/jmpost/reference/as.character.Prior.md)
   :
 
   `Prior` -\> `Character`
@@ -546,6 +587,15 @@
 - [`covariates(`*`<DataSurvival>`*`)`](https://genentech.github.io/jmpost/reference/covariates.DataSurvival.md)
   : Extract Covariate Names for Survival Data
 
+- [`covariates(`*`<LongitudinalModel>`*`)`](https://genentech.github.io/jmpost/reference/covariates.LongitudinalModel.md)
+  : Extract covariate names for longitudinal model parameters
+
+- [`required_longitudinal_covs()`](https://genentech.github.io/jmpost/reference/required_longitudinal_covs.md)
+  : Required Longitudinal Covariates
+
+- [`required_simulation_covariates()`](https://genentech.github.io/jmpost/reference/required_simulation_covariates.md)
+  : Required Longitudinal Simulation Covariates
+
 - [`enableLink()`](https://genentech.github.io/jmpost/reference/enableLink.md)
   : Enable Link Generic
 
@@ -593,6 +643,10 @@
 
 - [`STAN_BLOCKS`](https://genentech.github.io/jmpost/reference/STAN_BLOCKS.md)
   : List of Stan Blocks
+- [`read_sas7bdat_from_zip()`](https://genentech.github.io/jmpost/reference/read_sas7bdat_from_zip.md)
+  : Read a SAS Dataset from a Zip Archive
+- [`connection_to_file()`](https://genentech.github.io/jmpost/reference/connection_to_file.md)
+  : Copy a Connection to a Temporary File
 
 ## Data Sets
 

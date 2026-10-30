@@ -51,10 +51,10 @@ as.QuantityGenerator(object, data, ...)
 as.QuantityCollapser(object, data, ...)
 
 # S3 method for class 'GridPopulation'
-as.QuantityGenerator(object, data, ...)
+as.QuantityGenerator(object, data, model = NULL, ...)
 
 # S3 method for class 'GridPopulation'
-as.QuantityCollapser(object, data, ...)
+as.QuantityCollapser(object, data, model = NULL, ...)
 
 # S3 method for class 'GridPrediction'
 as.QuantityGenerator(object, data, ...)
@@ -62,7 +62,7 @@ as.QuantityGenerator(object, data, ...)
 # S3 method for class 'GridPrediction'
 as.QuantityCollapser(object, data, ...)
 
-QuantityGeneratorPopulation(times, studies = NULL, arms = NULL)
+QuantityGeneratorPopulation(times, studies = NULL, arms = NULL, newdata = NULL)
 
 QuantityGeneratorPrediction(times, newdata = NULL, params = NULL)
 
@@ -96,6 +96,16 @@ QuantityGeneratorSubject(times, subjects = NULL)
 - data:
 
   (`DataJoint`) Survival and Longitudinal Data.
+
+- model:
+
+  (`JointModel` or `NULL`) optional fitted-model specification used for
+  model-specific population profiles.
+
+- newdata:
+
+  (`data.frame` or `NULL`) population profiles carried by a population
+  quantity generator.
 
 - subjects:
 

@@ -28,6 +28,14 @@ constructors.
 
   (`numeric` or `character`) the parameter size.
 
+- transform:
+
+  (`PriorTransform | NULL`) optional package-defined transformation from
+  the model parameter to the prior density scale. See
+  [`prior_transform()`](https://genentech.github.io/jmpost/reference/prior_transform.md)
+  for support, Jacobians and examples. `NULL` keeps the prior on the
+  model parameter scale.
+
 - ...:
 
   Not Used.
