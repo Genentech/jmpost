@@ -48,7 +48,9 @@ NULL
 #'   As a default, the variance is not scaled by the expected value, corresponding to an additive model.
 #'   (See the "Statistical Specifications" vignette for more details.)
 #' @typed centred: logical
-#'   whether to use the centred parameterization.
+#'   whether to use the centred parameterization. Both modes sample internal
+#'   `lm_sf_log_psi_*` effects and retain natural-scale `lm_sf_psi_*` outputs.
+#'   Non-centred sampling uses Stan affine offsets and multipliers.
 #'
 #' @export
 #'
@@ -99,52 +101,40 @@ LongitudinalSteinFojo <- function(
     )
 
     assert_flag(centred)
-    parameters_extra <- if (centred) {
-        list(
-            Parameter(
-                name = "lm_sf_psi_bsld",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_bsld),
-                    median(omega_bsld)
-                )), lower = getOption("jmpost.double_eps")),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "lm_sf_psi_ks",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_ks),
-                    median(omega_ks)
-                )), lower = getOption("jmpost.double_eps")),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "lm_sf_psi_kg",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_kg),
-                    median(omega_kg)
-                )), lower = getOption("jmpost.double_eps")),
-                size = "n_subjects"
-            )
+    # Sample log effects in both modes, retaining natural-scale psi outputs.
+    # Constants are declared in transformed parameters, so affine expressions
+    # must refer directly to their data inputs instead.
+    parameters_extra <- lapply(c("bsld", "ks", "kg"), function(effect) {
+        index <- if (effect == "bsld") "subject_study_index" else {
+            "subject_arm_index"
+        }
+        mu <- get(paste0("mu_", effect))
+        omega <- get(paste0("omega_", effect))
+        expression <- function(prior, name) {
+            if (!prior@.is_const) {
+                return(paste0(name, "[", index, "]"))
+            }
+            value <- paste0("prior_const_", name)
+            if (prior@.allow_vectors) {
+                paste0(value, "[", index, "]")
+            } else {
+                paste0("rep_vector(", value, ", n_subjects)")
+            }
+        }
+        prior <- prior_init_only(prior_normal(median(mu), median(omega)))
+        prior@display <- "<Hierarchical normal on log scale>"
+        if (!centred) {
+            offset <- expression(mu, paste0("lm_sf_mu_", effect))
+            multiplier <- expression(omega, paste0("lm_sf_omega_", effect))
+            attr(prior, "repr_offset") <- function(name, size) offset
+            attr(prior, "repr_multiplier") <- function(name, size) multiplier
+        }
+        Parameter(
+            name = paste0("lm_sf_log_psi_", effect),
+            prior = prior,
+            size = "n_subjects"
         )
-    } else {
-        list(
-            Parameter(
-                name = "lm_sf_eta_tilde_bsld",
-                prior = prior_std_normal(),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "lm_sf_eta_tilde_ks",
-                prior = prior_std_normal(),
-                size = "n_subjects"
-            ),
-            Parameter(
-                name = "lm_sf_eta_tilde_kg",
-                prior = prior_std_normal(),
-                size = "n_subjects"
-            )
-        )
-    }
+    })
     parameters <- append(parameters, parameters_extra)
 
     x <- LongitudinalModel(

@@ -12,9 +12,9 @@
           lm_sf_omega_ks ~ lognormal(mu = -1.60944, sigma = 1)
           lm_sf_omega_kg ~ lognormal(mu = -1.60944, sigma = 1)
           lm_sf_sigma ~ lognormal(mu = -2.30259, sigma = 1)
-          lm_sf_eta_tilde_bsld ~ std_normal()
-          lm_sf_eta_tilde_ks ~ std_normal()
-          lm_sf_eta_tilde_kg ~ std_normal()
+          lm_sf_log_psi_bsld ~ <Hierarchical normal on log scale>
+          lm_sf_log_psi_ks ~ <Hierarchical normal on log scale>
+          lm_sf_log_psi_kg ~ <Hierarchical normal on log scale>
       
 
 ---
@@ -31,8 +31,8 @@
           lm_sf_omega_ks ~ lognormal(mu = -1.60944, sigma = 1)
           lm_sf_omega_kg ~ lognormal(mu = -1.60944, sigma = 1)
           lm_sf_sigma ~ normal(mu = 0, sigma = 1) T[0, ]
-          lm_sf_eta_tilde_bsld ~ std_normal()
-          lm_sf_eta_tilde_ks ~ std_normal()
-          lm_sf_eta_tilde_kg ~ std_normal()
+          lm_sf_log_psi_bsld ~ <Hierarchical normal on log scale>
+          lm_sf_log_psi_ks ~ <Hierarchical normal on log scale>
+          lm_sf_log_psi_kg ~ <Hierarchical normal on log scale>
       
 

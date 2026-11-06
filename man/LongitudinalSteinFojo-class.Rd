@@ -38,7 +38,9 @@ LongitudinalSteinFojo(
 As a default, the variance is not scaled by the expected value, corresponding to an additive model.
 (See the "Statistical Specifications" vignette for more details.)}
 
-\item{centred}{(\code{logical}) whether to use the centred parameterization.}
+\item{centred}{(\code{logical}) whether to use the centred parameterization. Both modes sample internal
+\verb{lm_sf_log_psi_*} effects and retain natural-scale \verb{lm_sf_psi_*} outputs.
+Non-centred sampling uses Stan affine offsets and multipliers.}
 }
 \value{
 A \code{LongitudinalSteinFojo} object.

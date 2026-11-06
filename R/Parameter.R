@@ -136,6 +136,9 @@ render_stan_parameter_limits <- function(limits) {
 #' @typed multiplier: string
 #'   Stan affine multiplier expression for an unbounded parameter.
 #'
+#' @typed offset: string
+#'   Stan affine offset expression for an unbounded parameter.
+#'
 #' @return A length-one character vector.
 #'
 #' @keywords internal
@@ -143,13 +146,18 @@ render_stan_parameter_declaration <- function(
     name,
     size,
     limits,
-    multiplier = ""
+    multiplier = "",
+    offset = ""
 ) {
     constraints <- render_stan_parameter_limits(limits)
     # Stan does not allow bounds and an affine multiplier together. Retain the
     # centred declaration for bounded parameters and its existing truncation.
-    if (constraints == "" && nzchar(multiplier)) {
-        constraints <- glue::glue("<multiplier={multiplier}>")
+    if (constraints == "" && (nzchar(multiplier) || nzchar(offset))) {
+        affine <- c(
+            if (nzchar(offset)) paste0("offset=", offset),
+            if (nzchar(multiplier)) paste0("multiplier=", multiplier)
+        )
+        constraints <- paste0("<", paste(affine, collapse = ", "), ">")
     }
     if (length(size) == 1 && is.numeric(size) && size == 1) {
         return(glue::glue("real{constraints} {name};"))
@@ -227,11 +235,16 @@ as.StanModule.ParameterDeclaration <- function(object, ...) {
         } else {
             repr_multiplier(name = object@name, size = object@size)
         }
+        repr_offset <- attr(object@prior, "repr_offset", exact = TRUE)
+        offset <- if (is.null(repr_offset)) "" else {
+            repr_offset(name = object@name, size = object@size)
+        }
         render_stan_parameter_declaration(
             name = object@name,
             size = object@size,
             limits = object@prior@limits,
-            multiplier = multiplier
+            multiplier = multiplier,
+            offset = offset
         )
     }
 

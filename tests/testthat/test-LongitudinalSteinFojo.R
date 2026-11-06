@@ -23,7 +23,7 @@ test_that("Centralised parameterisation compiles without issues", {
             names(jm@parameters)
     ))
     expect_true(all(
-        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
+        c("lm_sf_log_psi_kg", "lm_sf_log_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
     expect_stan_syntax(as.character(x))
@@ -33,7 +33,7 @@ test_that("Centralised parameterisation compiles without issues", {
 test_that("Non-Centralised parameterisation compiles without issues", {
     jm <- JointModel(longitudinal = LongitudinalSteinFojo(centred = FALSE))
     expect_true(all(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+        c("lm_sf_log_psi_kg", "lm_sf_log_psi_bsld") %in%
             names(jm@parameters)
     ))
     expect_false(any(
@@ -55,7 +55,7 @@ test_that("Centralised parameterisation compiles without issues", {
             names(jm@parameters)
     ))
     expect_true(all(
-        c("lm_sf_psi_kg", "lm_sf_psi_bsld") %in% names(jm@parameters)
+        c("lm_sf_log_psi_kg", "lm_sf_log_psi_bsld") %in% names(jm@parameters)
     ))
     x <- as.StanModule(jm)
     expect_stan_syntax(x)
@@ -69,7 +69,7 @@ test_that("Non-Centralised parameterisation compiles without issues", {
         link = Link()
     )
     expect_true(all(
-        c("lm_sf_eta_tilde_kg", "lm_sf_eta_tilde_bsld") %in%
+        c("lm_sf_log_psi_kg", "lm_sf_log_psi_bsld") %in%
             names(jm@parameters)
     ))
     expect_false(any(
@@ -711,4 +711,49 @@ test_that("LongitudinalSteinFojo has no covariate predictors", {
         covariates(LongitudinalSteinFojo(), data = make_covariate_subject()),
         list()
     )
+})
+
+
+test_that("Stein-Fojo affine effects support sampled and fixed hyperparameters", {
+    for (centred in c(FALSE, TRUE)) {
+        for (fixed in c(FALSE, TRUE)) {
+            args <- list(centred = centred)
+            if (fixed) {
+                args$mu_bsld <- prior_const(log(60))
+                args$omega_bsld <- prior_const_vector(c(0.2, 0.3))
+                args$mu_ks <- prior_const_vector(log(c(0.4, 0.5)))
+                args$omega_ks <- prior_const(0.2)
+            }
+            model <- JointModel(do.call(LongitudinalSteinFojo, args))
+            code <- as.character(model)
+            expect_identical(grepl("offset=", code, fixed = TRUE), !centred)
+            expect_match(code, "lm_sf_psi_kg = exp(lm_sf_log_psi_kg);",
+                fixed = TRUE)
+            expect_false(grepl("eta_tilde", code, fixed = TRUE))
+            expect_stan_syntax(model)
+            values <- initialValues(model, n_chains = 2)
+            for (chain in values) {
+                for (effect in c("bsld", "ks", "kg")) {
+                    value <- chain[[paste0("lm_sf_log_psi_", effect)]]
+                    expect_true(length(value) > 0)
+                    expect_true(all(is.finite(value)))
+                }
+            }
+        }
+    }
+})
+
+
+test_that("log effects preserve lognormal and standard-normal densities", {
+    # Include the Jacobian from psi to log(psi), then the affine Jacobian.
+    for (mu in c(-4, 0, 4)) {
+        for (omega in c(0.05, 0.5, 2)) {
+            z <- c(-3, -0.5, 0, 1, 3)
+            log_psi <- mu + omega * z
+            psi <- exp(log_psi)
+            log_density <- dlnorm(psi, mu, omega, log = TRUE) + log_psi
+            expect_equal(log_density, dnorm(log_psi, mu, omega, log = TRUE))
+            expect_equal(log_density + log(omega), dnorm(z, log = TRUE))
+        }
+    }
 })

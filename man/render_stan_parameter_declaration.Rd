@@ -4,7 +4,13 @@
 \alias{render_stan_parameter_declaration}
 \title{Render Stan Parameter Declaration}
 \usage{
-render_stan_parameter_declaration(name, size, limits, multiplier = "")
+render_stan_parameter_declaration(
+  name,
+  size,
+  limits,
+  multiplier = "",
+  offset = ""
+)
 }
 \arguments{
 \item{name}{(\code{string}) parameter name.}
@@ -14,6 +20,8 @@ render_stan_parameter_declaration(name, size, limits, multiplier = "")
 \item{limits}{(\code{numeric}) lower and upper parameter limits.}
 
 \item{multiplier}{(\code{string}) Stan affine multiplier expression for an unbounded parameter.}
+
+\item{offset}{(\code{string}) Stan affine offset expression for an unbounded parameter.}
 }
 \value{
 A length-one character vector.

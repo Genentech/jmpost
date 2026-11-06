@@ -1,0 +1,44 @@
+$date
+[1] "2026-11-06"
+
+$main_commit
+[1] "118884ebec28e4b0e9a84e4eecd2ea3179f3b907"
+
+$branch
+[1] "440-affine-trafo-syntax"
+
+$r_version
+[1] "R version 4.6.1 (2026-06-24)"
+
+$cmdstan_version
+[1] "2.39.0"
+
+$cmdstanr_version
+[1] "0.9.0"
+
+$posterior_version
+[1] "1.7.0"
+
+$platform
+[1] "aarch64-apple-darwin23"
+
+$sampler
+$sampler$chains
+[1] 4
+
+$sampler$warmup
+[1] 1000
+
+$sampler$sampling
+[1] 1000
+
+$sampler$adapt_delta
+[1] 0.9
+
+$sampler$max_treedepth
+[1] 12
+
+$sampler$seeds
+[1] 9321 9322
+
+

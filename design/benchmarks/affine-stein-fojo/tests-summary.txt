@@ -1,0 +1,12 @@
+✔ |      3 112 | LongitudinalSteinFojo [5.8s]                                   
+
+⠹ [ FAIL 0 | WARN 0 | SKIP 3 | PASS 165 ] Starting up...                        
+                                                                                
+══ Results ═════════════════════════════════════════════════════════════════════
+Duration: 7.2 s
+
+── Skipped tests (3) ───────────────────────────────────────────────────────────
+• is_full_test() is not TRUE (3): 'test-LongitudinalSteinFojo.R:104:5',
+  'test-LongitudinalSteinFojo.R:294:5', 'test-LongitudinalSteinFojo.R:562:5'
+
+[ FAIL 0 | WARN 0 | SKIP 3 | PASS 165 ]

@@ -7,17 +7,9 @@ transformed parameters{
     // Source - lm-stein-fojo/model.stan
     //
 
-{% if not centred -%}
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_bsld = exp(
-        lm_sf_mu_bsld[subject_study_index] + (lm_sf_eta_tilde_bsld .* lm_sf_omega_bsld[subject_study_index])
-    );
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_ks = exp(
-        lm_sf_mu_ks[subject_arm_index] + (lm_sf_eta_tilde_ks .* lm_sf_omega_ks[subject_arm_index])
-    );
-    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_kg = exp(
-        lm_sf_mu_kg[subject_arm_index] + (lm_sf_eta_tilde_kg .* lm_sf_omega_kg[subject_arm_index])
-    );
-{%- endif -%}
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_bsld = exp(lm_sf_log_psi_bsld);
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_ks = exp(lm_sf_log_psi_ks);
+    vector<lower={{ machine_double_eps }}>[n_subjects] lm_sf_psi_kg = exp(lm_sf_log_psi_kg);
 
     vector[n_tumour_all] Ypred;
 
@@ -55,9 +47,16 @@ model {
     //
     // Source - lm-stein-fojo/model.stan
     //
-{% if centred %}
-    lm_sf_psi_bsld ~ lognormal(lm_sf_mu_bsld[subject_study_index], lm_sf_omega_bsld[subject_study_index]);
-    lm_sf_psi_ks ~ lognormal(lm_sf_mu_ks[subject_arm_index], lm_sf_omega_ks[subject_arm_index]);
-    lm_sf_psi_kg ~ lognormal(lm_sf_mu_kg[subject_arm_index], lm_sf_omega_kg[subject_arm_index]);
-{%- endif -%}
+    lm_sf_log_psi_bsld ~ normal(
+        lm_sf_mu_bsld[subject_study_index],
+        lm_sf_omega_bsld[subject_study_index]
+    );
+    lm_sf_log_psi_ks ~ normal(
+        lm_sf_mu_ks[subject_arm_index],
+        lm_sf_omega_ks[subject_arm_index]
+    );
+    lm_sf_log_psi_kg ~ normal(
+        lm_sf_mu_kg[subject_arm_index],
+        lm_sf_omega_kg[subject_arm_index]
+    );
 }
