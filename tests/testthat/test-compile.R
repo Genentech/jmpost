@@ -22,4 +22,9 @@ test_that("compileStanModel doesn't error if the directory doesn't exist", {
     z <- compileStanModel(smod)
     options(old_path)
     expect_true(file.exists(fpath))
+    expect_true(file.exists(z$exe_file()))
+    expect_equal(normalizePath(dirname(z$exe_file())), normalizePath(fpath))
+    expect_equal(basename(z$exe_file()), tools::file_path_sans_ext(
+        basename(z$stan_file())
+    ) |> paste0(if (is_windows()) ".exe" else ""))
 })

@@ -191,12 +191,6 @@ compileStanModel.StanModule <- function(object) {
     }
     stan_code <- as.character(object)
     hash_name <- digest::digest(stan_code, "md5")
-    exe_name <- paste0(
-        "model_",
-        hash_name,
-        if (is_windows()) ".exe" else ""
-    )
-    exe_file <- file.path(exe_dir, exe_name)
     source_file <- cmdstanr::write_stan_file(
         code = stan_code,
         dir = exe_dir,
@@ -209,7 +203,6 @@ compileStanModel.StanModule <- function(object) {
         {
             x <- cmdstanr::cmdstan_model(
                 stan_file = source_file,
-                exe_file = exe_file,
                 quiet = TRUE
             )
         },
