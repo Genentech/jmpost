@@ -111,11 +111,7 @@ test_that("Priors work as expected", {
 
     ## Check that the model syntax is correct (e.g. that we have
     ## correctly specified the stan prior distribution function names)
-    model_obj <- cmdstanr::cmdstan_model(
-        test_path("models", "Prior_3.stan"),
-        compile = FALSE
-    )
-    expect_true(model_obj$check_syntax(quiet = TRUE))
+    expect_stan_syntax(StanModule(test_path("models", "Prior_3.stan")))
 })
 
 
@@ -566,12 +562,7 @@ parameters {
 }"
         )
     )
-    stan_file <- cmdstanr::write_stan_file(
-        as.character(merge(header, x_stan_module)),
-        dir = tempdir()
-    )
-    model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
-    expect_true(model_obj$check_syntax(quiet = TRUE))
+    expect_stan_syntax(merge(header, x_stan_module))
 })
 
 test_that("default auxiliary prior methods return empty lists", {

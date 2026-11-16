@@ -32,13 +32,6 @@ test_that("extract_quantities() works as expected", {
             as.character(model_code),
             dir = CACHE_DIR,
             basename = "test_extract_gq.stan"
-        ),
-        exe_file = file.path(
-            CACHE_DIR,
-            paste0(
-                "test_extract_gq",
-                if (is_windows()) ".exe" else ""
-            )
         )
     )
 
