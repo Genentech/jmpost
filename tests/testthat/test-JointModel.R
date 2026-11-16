@@ -144,8 +144,12 @@ test_that("Log_Lik variables are produced correctly", {
     stan_code <- as.character(x)
     expect_true(grepl("target \\+= sum\\(long_obvs_log_lik\\)", stan_code))
     expect_true(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
+    expect_true(grepl(
+        "vector[n_subjects] log_lik = os_subj_log_lik + long_subj_log_lik;",
+        stan_code, fixed = TRUE
+    ))
     expect_false(grepl("log_lik = long_obvs_log_lik", stan_code))
-    expect_false(grepl("log_lik = os_subj_log_lik", stan_code))
+    expect_false(grepl("log_lik = os_subj_log_lik;", stan_code, fixed = TRUE))
 
     x <- JointModel(
         longitudinal = LongitudinalRandomSlope()
@@ -153,7 +157,10 @@ test_that("Log_Lik variables are produced correctly", {
     stan_code <- as.character(x)
     expect_true(grepl("target \\+= sum\\(long_obvs_log_lik\\)", stan_code))
     expect_false(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
-    expect_true(grepl("log_lik = long_obvs_log_lik", stan_code))
+    expect_true(grepl(
+        "vector[n_subjects] log_lik = long_subj_log_lik;",
+        stan_code, fixed = TRUE
+    ))
     expect_false(grepl("log_lik = os_subj_log_lik", stan_code))
 
     x <- JointModel(
@@ -164,4 +171,41 @@ test_that("Log_Lik variables are produced correctly", {
     expect_true(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
     expect_false(grepl("log_lik = long_obvs_log_lik", stan_code))
     expect_true(grepl("log_lik = os_subj_log_lik", stan_code))
+})
+
+
+test_that("built-in models render separate prior and likelihood densities", {
+    longitudinal <- list(
+        LongitudinalRandomSlope(), LongitudinalRandomSlopeCov(),
+        LongitudinalGSF(), LongitudinalGSF(centred = TRUE),
+        LongitudinalGSFCov(), LongitudinalSteinFojo(),
+        LongitudinalSteinFojoCov(), LongitudinalClaretBruno(),
+        LongitudinalClaretBrunoCov()
+    )
+    models <- c(
+        lapply(longitudinal, function(x) {
+            JointModel(x, SurvivalWeibullPH(), linkDSLD())
+        }),
+        list(
+            JointModel(longitudinal = LongitudinalRandomSlope()),
+            JointModel(survival = SurvivalExponential()),
+            JointModel(survival = SurvivalGamma()),
+            JointModel(survival = SurvivalLogLogistic()),
+            JointModel(survival = SurvivalWeibullPH(beta = prior_horseshoe())),
+            JointModel(survival = SurvivalExponential(
+                lambda = prior_const(0.5), beta = prior_flat()
+            )),
+            JointModel(longitudinal = LongitudinalRandomSlope(
+                sigma = prior_normal(2, 1, transform = prior_transform_square())
+            ))
+        )
+    )
+    for (model in models) {
+        module <- as.StanModule(model)
+        generated <- paste(module@generated_quantities, collapse = "\n")
+        expect_match(generated, "real lprior = 0;", fixed = TRUE)
+        expect_false(grepl("target|~", generated))
+        expect_false(grepl("lprior += sum(", generated, fixed = TRUE))
+        expect_stan_syntax(model)
+    }
 })

@@ -3,6 +3,23 @@ functions {
     // Source - base/functions.stan
     //
 
+    // Scalar access for normalising vectorised truncated prior densities.
+    int prior_density_size(real x) {
+        return 1;
+    }
+
+    int prior_density_size(vector x) {
+        return num_elements(x);
+    }
+
+    real prior_density_element(real x, int i) {
+        return x;
+    }
+
+    real prior_density_element(vector x, int i) {
+        return x[num_elements(x) == 1 ? 1 : i];
+    }
+
     // Constant used in below.
     real neg_log_sqrt_2_pi() {
         return -0.9189385332046727;

@@ -65,6 +65,7 @@ Suggests:
     brms,
     tidyr,
     loo,
+    priorsense,
     withr,
     quarto
 Additional_repositories: https://stan-dev.r-universe.dev
