@@ -63,7 +63,7 @@ transformed parameters{
     {% else if has_os_submodel -%}
         vector[n_subjects] log_lik = os_subj_log_lik;
     {% else if has_long_submodel and not has_os_submodel -%}
-        vector[n_subjects] log_lik = long_subj_log_lik;
+        vector[n_tumour_all] log_lik = long_obvs_log_lik;
     {%- endif -%}
 }
 

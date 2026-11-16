@@ -438,10 +438,11 @@ priorsense::powerscale_sensitivity(
 
 New fits automatically save `lprior`, the joint log prior including hierarchical
 random-effect distributions and transformed-prior Jacobians, and `log_lik`, the
-log likelihood contributions with one entry per patient. In joint models,
-`log_lik` adds each patient's survival contribution to the sum of their
-longitudinal observation contributions; single-component models use their own
-likelihood. The separate patient-level vectors `os_subj_log_lik` (survival) and
+log likelihood contributions. In joint models, `log_lik` has one entry per
+patient, adding each patient's survival contribution to the sum of their
+longitudinal observation contributions. Survival-only models use one entry per
+patient, while longitudinal-only models use one entry per observation. The
+separate patient-level vectors `os_subj_log_lik` (survival) and
 `long_subj_log_lik` (longitudinal) are also saved when the corresponding submodel
 is present. `long_obvs_log_lik` retains the individual longitudinal observation
 contributions, including censored observations.

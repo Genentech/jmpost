@@ -158,7 +158,7 @@ test_that("Log_Lik variables are produced correctly", {
     expect_true(grepl("target \\+= sum\\(long_obvs_log_lik\\)", stan_code))
     expect_false(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
     expect_true(grepl(
-        "vector[n_subjects] log_lik = long_subj_log_lik;",
+        "vector[n_tumour_all] log_lik = long_obvs_log_lik;",
         stan_code, fixed = TRUE
     ))
     expect_false(grepl("log_lik = os_subj_log_lik", stan_code))
@@ -171,6 +171,33 @@ test_that("Log_Lik variables are produced correctly", {
     expect_true(grepl("target \\+= sum\\(os_subj_log_lik\\)", stan_code))
     expect_false(grepl("log_lik = long_obvs_log_lik", stan_code))
     expect_true(grepl("log_lik = os_subj_log_lik", stan_code))
+})
+
+test_that("longitudinal-only likelihood is recorded per observation", {
+    skip_if_not(is_full_test())
+
+    subject <- data.frame(subject = c("S1", "S2"), arm = "A", study = "X")
+    longitudinal <- data.frame(
+        subject = c("S2", "S1", "S1", "S2", "S1"),
+        time = c(0, 0, 1, 1, 2),
+        y = c(2, 1.7, 2.1, 2.2, 2.3)
+    )
+    data <- DataJoint(
+        DataSubject(subject, "subject", "arm", "study"),
+        longitudinal = DataLongitudinal(longitudinal, y ~ time, threshold = 1.8)
+    )
+    model <- JointModel(longitudinal = LongitudinalRandomSlope())
+    samples <- run_quietly(sampleStanModel(
+        model, data = data, seed = 3519, chains = 1,
+        iter_warmup = 50, iter_sampling = 50, refresh = 0
+    ))
+    fit <- cmdstanr::as.CmdStanMCMC(samples)
+    likelihood <- fit$draws("log_lik", format = "draws_matrix")
+    observation_likelihood <- fit$draws(
+        "long_obvs_log_lik", format = "draws_matrix"
+    )
+    expect_equal(ncol(likelihood), nrow(longitudinal))
+    expect_equal(as.numeric(likelihood), as.numeric(observation_likelihood))
 })
 
 
