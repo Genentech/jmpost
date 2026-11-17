@@ -1,4 +1,4 @@
-pandoc: 3.12.1
+pandoc: '3.13'
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
@@ -10,7 +10,7 @@ articles:
   quickstart: quickstart.html
   simulating-data: simulating-data.html
   statistical-specification: statistical-specification.html
-last_built: 2026-10-30T05:25Z
+last_built: 2026-11-17T06:44Z
 urls:
   reference: https://genentech.github.io/jmpost/main/reference
   article: https://genentech.github.io/jmpost/main/articles
