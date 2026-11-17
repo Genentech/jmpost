@@ -3,3 +3,4 @@
 - Please always run Air after editing or saving new files.
 - Please always document each function, also internal functions, with roxygen2 chunks.
 - Make sure to add unit tests for each new function (instead of just checking for code coverage).
+- In general try to use dplyr and tidyverse in general for data wrangling instead of base functions when working in vignettes. This keeps the code more readable.

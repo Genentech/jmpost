@@ -221,6 +221,130 @@ knitr::kable(
 )
 ```
 
+## Posterior correlations
+
+Posterior dependence can help explain uncertainty in the baseline, shrinkage
+and growth parameters. We first examine the log random effects for
+one patient, then summarise these correlations over all patients. Each
+correlation is calculated **across posterior draws for the same patient**.
+
+Here we use `log(psi)`, the patient-specific baseline, shrinkage and growth
+parameters on the log scale, including their population locations. These
+are available directly from the fitted model without standardisation or
+subtracting `mu`. The Stan data map patient IDs to Stan indices and identify
+the study and treatment arm used below to select the population means.
+
+```{r}
+#| label: sf-posterior-correlation-draws
+
+sf_draws <- mcmc_results |>
+    cmdstanr::as.CmdStanMCMC() |>
+    posterior::as_draws_matrix() |>
+    posterior::subset_draws(
+        variables = c(
+            "lm_sf_psi_bsld", "lm_sf_psi_ks", "lm_sf_psi_kg",
+            "lm_sf_mu_bsld", "lm_sf_mu_ks", "lm_sf_mu_kg"
+        )
+    )
+subject_data <- as_stan_list(joint_data@subject)
+
+# Function to extract log-scale effects for a given patient index i.
+log_effect_draws <- function(i) {
+    variables <- sprintf("lm_sf_psi_%s[%d]", c("bsld", "ks", "kg"), i)
+    log_effects <- log(as.matrix(sf_draws[, variables, drop = FALSE]))
+    colnames(log_effects) <- c("Baseline", "Shrinkage", "Growth")
+    log_effects
+}
+```
+
+For illustration, select the first patient in Stan order. The scatterplots
+show joint posterior draws, and the matrix contains empirical Pearson
+correlations. Chains are pooled after warm-up; check convergence and effective
+sample sizes before interpreting these estimates.
+
+```{r}
+#| label: sf-patient-posterior-correlations
+
+patient_index <- 1L
+patient_id <- dplyr::tibble(
+    patient_id = names(subject_data$subject_to_index),
+    patient_index = unname(subject_data$subject_to_index)
+) |>
+    dplyr::filter(.data$patient_index == .env$patient_index) |>
+    dplyr::pull(patient_id)
+patient_log_effects <- log_effect_draws(patient_index)
+bayesplot::mcmc_pairs(patient_log_effects)
+knitr::kable(cor(patient_log_effects), digits = 3)
+```
+
+We can see here that the baseline and growth log-scale effects are strongly negatively correlated. This means that patients with higher baseline values tend to have lower growth effects, and vice versa.
+
+We can repeat the calculation separately for every patient, retaining the three
+pairwise correlations per patient. The table summarises their distribution
+across patients. Its quantiles describe differences between patients; they
+are not posterior credible intervals for a correlation.
+
+```{r}
+#| label: sf-all-patient-posterior-correlations
+
+log_effect_correlations <- seq_len(subject_data$n_subjects) |>
+    lapply(function(i) cor(log_effect_draws(i)))
+pairwise_correlations <- log_effect_correlations |>
+    lapply(function(x) {
+        c(
+            "Baseline / shrinkage" = x[1, 2],
+            "Baseline / growth" = x[1, 3],
+            "Shrinkage / growth" = x[2, 3]
+        )
+    }) |>
+    dplyr::bind_rows()
+rownames(pairwise_correlations) <- names(subject_data$subject_to_index)
+correlation_summary <- pairwise_correlations |>
+    tidyr::pivot_longer(
+        cols = dplyr::everything(),
+        names_to = "Correlation",
+        values_to = "Value"
+    ) |>
+    dplyr::group_by(.data$Correlation) |>
+    dplyr::summarise(
+        dplyr::across(
+            dplyr::everything(),
+            list(
+                Mean = ~ mean(.),
+                SD = ~ sd(.),
+                Min = ~ quantile(., 0),
+                Q1 = ~ quantile(., 0.25),
+                Median = ~ quantile(., 0.5),
+                Q3 = ~ quantile(., 0.75),
+                Max = ~ quantile(., 1)
+            )
+        )
+    )
+knitr::kable(correlation_summary, digits = 3)
+```
+
+We can also inspect posterior correlations between the population location
+parameters `mu`, on their modelled log scale. Here we select the study and
+arm of the illustrated patient; repeat for other arms or studies as needed.
+These are correlations between uncertain population parameters, rather than
+correlations between patient effects.
+
+```{r}
+#| label: sf-population-posterior-correlations
+
+mu_names <- c("lm_sf_mu_bsld[1]", "lm_sf_mu_ks[1]", "lm_sf_mu_kg[1]")
+mu_draws <- as.matrix(sf_draws[, mu_names, drop = FALSE])
+colnames(mu_draws) <- c("Baseline", "Shrinkage", "Growth")
+bayesplot::mcmc_pairs(mu_draws)
+knitr::kable(cor(mu_draws), digits = 3)
+```
+
+The model specifies independent priors for the patient effects. Posterior
+correlations can nevertheless arise because the likelihood couples baseline,
+shrinkage and growth. Neither the within-patient correlations nor their
+summary across patients estimates a population random-effects correlation
+parameter.
+
 ## Simulating from a Fitted Model
 
 The package also have the functionality to generate new data based on the fitted model.
