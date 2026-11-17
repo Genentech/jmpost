@@ -69,6 +69,8 @@ Suggests:
     withr,
     quarto
 Additional_repositories: https://stan-dev.r-universe.dev
+Remotes:
+    stan-dev/cmdstanr@v1.0
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Collate: 
