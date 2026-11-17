@@ -100,8 +100,7 @@ as.StanModule.JointModelSamples <- function(object, generator, type, ...) {
                 is(generator, "QuantityGeneratorSubject"),
             include_gq_survival_pred = (type == "survival") &
                 is(generator, "QuantityGeneratorPrediction"),
-            longitudinal_gq_population_data =
-                longitudinal_gq_population_data$declarations
+            longitudinal_gq_population_data = longitudinal_gq_population_data$declarations
         ) |>
         StanModule()
 
@@ -391,7 +390,8 @@ shrinkage.JointModelSamples <- function(object, ...) {
 .shrinkage_covariate_names <- function(object, parameters) {
     result <- list()
     if (
-        "beta_os_cov" %in% parameters &&
+        "beta_os_cov" %in%
+            parameters &&
             is(object@data@survival, "DataSurvival")
     ) {
         result$beta_os_cov <- covariates(object@data@survival)
@@ -413,7 +413,10 @@ shrinkage.JointModelSamples <- function(object, ...) {
         predictor <- sub("^lm_[^_]+_", "", parameter)
         predictor <- sub("_coefficients$", "", predictor)
         result[[parameter]] <- paste0(
-            "longitudinal.", predictor, ":", covariate_names
+            "longitudinal.",
+            predictor,
+            ":",
+            covariate_names
         )
     }
     result

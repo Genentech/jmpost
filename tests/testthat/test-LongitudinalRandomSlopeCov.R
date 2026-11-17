@@ -862,7 +862,10 @@ test_that("random-slope covariate model recovers its parameters", {
 
 test_that("LongitudinalRandomSlopeCov exposes covariates by parameter", {
     expect_identical(
-        covariates(LongitudinalRandomSlopeCov(), data = make_covariate_subject()),
+        covariates(
+            LongitudinalRandomSlopeCov(),
+            data = make_covariate_subject()
+        ),
         list(
             lm_rsc_mu_coefficients = "studyY",
             lm_rsc_slope_mu_coefficients = "armB",

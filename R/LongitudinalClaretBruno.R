@@ -112,34 +112,46 @@ LongitudinalClaretBruno <- function(
         list(
             Parameter(
                 name = "lm_clbr_ind_b",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_b),
-                    median(omega_b)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_b),
+                        median(omega_b)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_g",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_g),
-                    median(omega_g)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_g),
+                        median(omega_g)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_c",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_c),
-                    median(omega_c)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_c),
+                        median(omega_c)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_clbr_ind_p",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_p),
-                    median(omega_p)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_p),
+                        median(omega_p)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             )
         )

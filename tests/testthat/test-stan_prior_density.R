@@ -39,9 +39,12 @@ test_that("Stan density arguments retain nested calls and indexing", {
 test_that("prior conversion handles empty fragments and line comments", {
     expect_identical(stan_prior_density(""), "")
     expect_equal(trimws(stan_prior_density(" \n\t")), "")
-    expect_equal(trimws(stan_prior_density(
-        "// ignored ~ normal(0, 1); target += 100;"
-    )), "")
+    expect_equal(
+        trimws(stan_prior_density(
+            "// ignored ~ normal(0, 1); target += 100;"
+        )),
+        ""
+    )
     expect_equal(
         stringr::str_squish(stan_prior_density(paste(
             "// first prior",
@@ -151,7 +154,9 @@ test_that("prior truncation uses the correct normalising probability", {
                 "lprior += normal_lpdf(x | mu, sigma);",
                 "if (prior_density_size(x) > 0) {",
                 "for (prior_j in 1:prior_density_size(x)) {",
-                "lprior -=", paste0(case[2], ";"), "} }"
+                "lprior -=",
+                paste0(case[2], ";"),
+                "} }"
             )
         )
     }
@@ -173,17 +178,27 @@ test_that("truncated priors retain nested vector distribution arguments", {
         "scales_horseshoe(local, global, c2)) T[-1, 1];"
     )
     converted <- stringr::str_squish(stan_prior_density(code))
-    expect_match(converted, paste(
-        "lprior += normal_lpdf(beta | rep_vector(0, K),",
-        "scales_horseshoe(local, global, c2));"
-    ), fixed = TRUE)
+    expect_match(
+        converted,
+        paste(
+            "lprior += normal_lpdf(beta | rep_vector(0, K),",
+            "scales_horseshoe(local, global, c2));"
+        ),
+        fixed = TRUE
+    )
     for (bound in c(-1, 1)) {
-        expect_match(converted, paste0(
-            "normal_lcdf(", bound, " | ",
-            "prior_density_element(rep_vector(0, K), prior_j), ",
-            "prior_density_element(",
-            "scales_horseshoe(local, global, c2), prior_j))"
-        ), fixed = TRUE)
+        expect_match(
+            converted,
+            paste0(
+                "normal_lcdf(",
+                bound,
+                " | ",
+                "prior_density_element(rep_vector(0, K), prior_j), ",
+                "prior_density_element(",
+                "scales_horseshoe(local, global, c2), prior_j))"
+            ),
+            fixed = TRUE
+        )
     }
     expect_false(grepl("target|~|T\\[", converted))
 })
@@ -197,14 +212,22 @@ test_that("multiple truncated priors keep their own arguments and bounds", {
         sep = "\n"
     )
     converted <- stringr::str_squish(stan_prior_density(code))
-    expect_match(converted, paste0(
-        "normal_lccdf(0 | prior_density_element(0, prior_j), ",
-        "prior_density_element(scale_x, prior_j))"
-    ), fixed = TRUE)
-    expect_match(converted, paste0(
-        "gamma_lcdf(5 | prior_density_element(shape, prior_j), ",
-        "prior_density_element(rate, prior_j))"
-    ), fixed = TRUE)
+    expect_match(
+        converted,
+        paste0(
+            "normal_lccdf(0 | prior_density_element(0, prior_j), ",
+            "prior_density_element(scale_x, prior_j))"
+        ),
+        fixed = TRUE
+    )
+    expect_match(
+        converted,
+        paste0(
+            "gamma_lcdf(5 | prior_density_element(shape, prior_j), ",
+            "prior_density_element(rate, prior_j))"
+        ),
+        fixed = TRUE
+    )
     expect_match(converted, "lprior += std_normal_lpdf(z);", fixed = TRUE)
     expect_equal(stringr::str_count(converted, stringr::fixed("lprior +=")), 3L)
     expect_equal(stringr::str_count(converted, stringr::fixed("lprior -=")), 2L)

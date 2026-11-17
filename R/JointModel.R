@@ -122,12 +122,16 @@ as.StanModule.JointModel <- function(object, ...) {
     # hierarchical distributions and explicit Jacobian adjustments. The two
     # base likelihood increments are already represented by log_lik.
     prior_code <- paste(
-        longitudinal$model, link$model, survival$model, priors$model,
+        longitudinal$model,
+        link$model,
+        survival$model,
+        priors$model,
         collapse = "\n"
     )
     prior_code <- gsub(
         "target\\s*\\+=\\s*sum\\((long_obvs_log_lik|os_subj_log_lik)\\);",
-        "", prior_code
+        "",
+        prior_code
     )
     log_prior <- stan_prior_density(prior_code)
 
@@ -222,52 +226,80 @@ stan_prior_density <- function(code) {
                 )
             )
             arguments <- trimws(parts[, 4])
-            vapply(seq_len(nrow(parts)), function(i) {
-                value <- trimws(parts[i, 2])
-                distribution <- parts[i, 3]
-                args <- arguments[i]
-                density <- paste0(
-                    "\n    lprior += ", distribution, "_lpdf(", value,
-                    if (nzchar(args)) paste0(" | ", args) else "", ");"
-                )
-                if (is.na(parts[i, 5])) return(density)
-
-                bounds <- trimws(strsplit(parts[i, 5], ",", fixed = TRUE)[[1]])
-                # strsplit drops a trailing empty upper bound.
-                lower <- bounds[1]
-                upper <- if (length(bounds) == 2) bounds[2] else ""
-                scalar_args <- vapply(
-                    stan_density_arguments(args),
-                    function(x) {
-                        paste0("prior_density_element(", x, ", prior_j)")
-                    },
-                    character(1)
-                )
-                scalar_args <- if (length(scalar_args)) {
-                    paste0(" | ", paste(scalar_args, collapse = ", "))
-                } else {
-                    ""
-                }
-                cdf <- function(bound, suffix) {
-                    paste0(distribution, suffix, "(", bound, scalar_args, ")")
-                }
-                normalisation <- if (!nzchar(lower)) {
-                    cdf(upper, "_lcdf")
-                } else if (!nzchar(upper)) {
-                    cdf(lower, "_lccdf")
-                } else {
-                    paste0(
-                        "log_diff_exp(", cdf(upper, "_lcdf"), ", ",
-                        cdf(lower, "_lcdf"), ")"
+            vapply(
+                seq_len(nrow(parts)),
+                function(i) {
+                    value <- trimws(parts[i, 2])
+                    distribution <- parts[i, 3]
+                    args <- arguments[i]
+                    density <- paste0(
+                        "\n    lprior += ",
+                        distribution,
+                        "_lpdf(",
+                        value,
+                        if (nzchar(args)) paste0(" | ", args) else "",
+                        ");"
                     )
-                }
-                paste0(
-                    density, "\n    if (prior_density_size(", value, ") > 0) {",
-                    "\n        for (prior_j in 1:prior_density_size(", value,
-                    ")) {\n            lprior -= ", normalisation, ";",
-                    "\n        }\n    }"
-                )
-            }, character(1))
+                    if (is.na(parts[i, 5])) {
+                        return(density)
+                    }
+
+                    bounds <- trimws(strsplit(parts[i, 5], ",", fixed = TRUE)[[
+                        1
+                    ]])
+                    # strsplit drops a trailing empty upper bound.
+                    lower <- bounds[1]
+                    upper <- if (length(bounds) == 2) bounds[2] else ""
+                    scalar_args <- vapply(
+                        stan_density_arguments(args),
+                        function(x) {
+                            paste0("prior_density_element(", x, ", prior_j)")
+                        },
+                        character(1)
+                    )
+                    scalar_args <- if (length(scalar_args)) {
+                        paste0(" | ", paste(scalar_args, collapse = ", "))
+                    } else {
+                        ""
+                    }
+                    cdf <- function(bound, suffix) {
+                        paste0(
+                            distribution,
+                            suffix,
+                            "(",
+                            bound,
+                            scalar_args,
+                            ")"
+                        )
+                    }
+                    normalisation <- if (!nzchar(lower)) {
+                        cdf(upper, "_lcdf")
+                    } else if (!nzchar(upper)) {
+                        cdf(lower, "_lccdf")
+                    } else {
+                        paste0(
+                            "log_diff_exp(",
+                            cdf(upper, "_lcdf"),
+                            ", ",
+                            cdf(lower, "_lcdf"),
+                            ")"
+                        )
+                    }
+                    paste0(
+                        density,
+                        "\n    if (prior_density_size(",
+                        value,
+                        ") > 0) {",
+                        "\n        for (prior_j in 1:prior_density_size(",
+                        value,
+                        ")) {\n            lprior -= ",
+                        normalisation,
+                        ";",
+                        "\n        }\n    }"
+                    )
+                },
+                character(1)
+            )
         }
     )
     gsub("target\\s*\\+=", "lprior +=", code)
@@ -296,7 +328,9 @@ stan_prior_density <- function(code) {
 #' @seealso [stan_prior_density()]
 #' @keywords internal
 stan_density_arguments <- function(code) {
-    if (!nzchar(trimws(code))) return(character())
+    if (!nzchar(trimws(code))) {
+        return(character())
+    }
     characters <- strsplit(code, "", fixed = TRUE)[[1]]
     depth <- cumsum(
         as.integer(characters %in% c("(", "[")) -

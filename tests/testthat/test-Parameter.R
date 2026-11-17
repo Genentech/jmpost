@@ -124,7 +124,11 @@ test_that("horseshoe coefficients use affine non-centring", {
             paste0("    real<multiplier=(", multiplier, ")[1]> beta;")
         } else {
             paste0(
-                "    vector<multiplier=", multiplier, ">[", size, "] beta;"
+                "    vector<multiplier=",
+                multiplier,
+                ">[",
+                size,
+                "] beta;"
             )
         }
         expect_equal(tail(module@parameters, 1), declaration)
@@ -145,7 +149,11 @@ test_that("horseshoe coefficients use affine non-centring", {
 test_that("bounded horseshoe coefficients retain their truncated prior", {
     for (limits in list(c(0, Inf), c(-Inf, 1), c(-1, 1))) {
         prior <- set_limits(prior_horseshoe(), limits[1], limits[2])
-        module <- as.StanModule(Parameter(name = "beta", prior = prior, size = 3))
+        module <- as.StanModule(Parameter(
+            name = "beta",
+            prior = prior,
+            size = 3
+        ))
         expect_false(any(grepl("multiplier=", module@parameters, fixed = TRUE)))
         expect_match(
             tail(module@parameters, 1),
@@ -154,7 +162,11 @@ test_that("bounded horseshoe coefficients retain their truncated prior", {
         )
         expect_match(
             tail(module@model, 1),
-            paste0("prior_scales_beta)", render_stan_limits.numeric(limits), ";"),
+            paste0(
+                "prior_scales_beta)",
+                render_stan_limits.numeric(limits),
+                ";"
+            ),
             fixed = TRUE
         )
         expect_stan_syntax(merge(StanModule("base/functions.stan"), module))
@@ -169,12 +181,15 @@ test_that("partial horseshoe non-centring supports scalar and vector forms", {
     )
     for (size in list(0, 1, 3, "p")) {
         module <- as.StanModule(Parameter(
-            name = "beta", prior = prior, size = size
+            name = "beta",
+            prior = prior,
+            size = size
         ))
         expect_match(tail(module@parameters, 1), "sqrt(", fixed = TRUE)
         header <- StanModule("data {\n    int<lower=0> p;\n}")
         expect_stan_syntax(merge(
-            merge(StanModule("base/functions.stan"), header), module
+            merge(StanModule("base/functions.stan"), header),
+            module
         ))
     }
 })

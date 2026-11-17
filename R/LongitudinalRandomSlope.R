@@ -56,7 +56,10 @@ LongitudinalRandomSlope <- function(
 
     # Apply constriants
     sigma <- set_limits(sigma, lower = getOption("jmpost.double_eps"))
-    slope_sigma <- set_limits(slope_sigma, lower = getOption("jmpost.double_eps"))
+    slope_sigma <- set_limits(
+        slope_sigma,
+        lower = getOption("jmpost.double_eps")
+    )
 
     .LongitudinalRandomSlope(
         LongitudinalModel(
