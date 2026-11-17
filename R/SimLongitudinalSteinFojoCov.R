@@ -124,25 +124,52 @@ SimLongitudinalSteinFojoCov <- function(
 ) {
     .SimLongitudinalSteinFojoCov(
         times = times,
-        mu_b_formula = .validate_covariate_formula(mu_b_formula, "mu_b_formula"),
-        omega_b_formula = .validate_covariate_formula(omega_b_formula, "omega_b_formula"),
-        mu_s_formula = .validate_covariate_formula(mu_s_formula, "mu_s_formula"),
-        omega_s_formula = .validate_covariate_formula(omega_s_formula, "omega_s_formula"),
-        mu_g_formula = .validate_covariate_formula(mu_g_formula, "mu_g_formula"),
-        omega_g_formula = .validate_covariate_formula(omega_g_formula, "omega_g_formula"),
-        mu_b_parametrization = .validate_covariate_parametrization(mu_b_parametrization, "mu_b_parametrization"),
+        mu_b_formula = .validate_covariate_formula(
+            mu_b_formula,
+            "mu_b_formula"
+        ),
+        omega_b_formula = .validate_covariate_formula(
+            omega_b_formula,
+            "omega_b_formula"
+        ),
+        mu_s_formula = .validate_covariate_formula(
+            mu_s_formula,
+            "mu_s_formula"
+        ),
+        omega_s_formula = .validate_covariate_formula(
+            omega_s_formula,
+            "omega_s_formula"
+        ),
+        mu_g_formula = .validate_covariate_formula(
+            mu_g_formula,
+            "mu_g_formula"
+        ),
+        omega_g_formula = .validate_covariate_formula(
+            omega_g_formula,
+            "omega_g_formula"
+        ),
+        mu_b_parametrization = .validate_covariate_parametrization(
+            mu_b_parametrization,
+            "mu_b_parametrization"
+        ),
         omega_b_parametrization = .validate_covariate_parametrization(
             omega_b_parametrization,
             "omega_b_parametrization",
             scale = TRUE
         ),
-        mu_s_parametrization = .validate_covariate_parametrization(mu_s_parametrization, "mu_s_parametrization"),
+        mu_s_parametrization = .validate_covariate_parametrization(
+            mu_s_parametrization,
+            "mu_s_parametrization"
+        ),
         omega_s_parametrization = .validate_covariate_parametrization(
             omega_s_parametrization,
             "omega_s_parametrization",
             scale = TRUE
         ),
-        mu_g_parametrization = .validate_covariate_parametrization(mu_g_parametrization, "mu_g_parametrization"),
+        mu_g_parametrization = .validate_covariate_parametrization(
+            mu_g_parametrization,
+            "mu_g_parametrization"
+        ),
         omega_g_parametrization = .validate_covariate_parametrization(
             omega_g_parametrization,
             "omega_g_parametrization",
@@ -177,7 +204,14 @@ sampleSubjects.SimLongitudinalSteinFojoCov <- function(object, subjects_df) {
         nrow(subjects_df) == length(unique(subjects_df[["subject"]])),
         msg = "The number of rows in `subjects_df` should equal the number of unique subjects"
     )
-    parameter_names <- c("mu_b", "omega_b", "mu_s", "omega_s", "mu_g", "omega_g")
+    parameter_names <- c(
+        "mu_b",
+        "omega_b",
+        "mu_s",
+        "omega_s",
+        "mu_g",
+        "omega_g"
+    )
     predicted <- lapply(parameter_names, function(name) {
         design <- .covariate_design_matrix(
             slot(object, paste0(name, "_formula")),
@@ -200,14 +234,25 @@ sampleSubjects.SimLongitudinalSteinFojoCov <- function(object, subjects_df) {
     for (name in c("omega_b", "omega_s", "omega_g")) {
         assert_that(
             all(predicted[[name]] > 0),
-            msg = sprintf("The %s predictor must be positive for every subject", name)
+            msg = sprintf(
+                "The %s predictor must be positive for every subject",
+                name
+            )
         )
     }
 
     subjects_df |>
         dplyr::mutate(
-            psi_b = stats::rlnorm(dplyr::n(), predicted$mu_b, predicted$omega_b),
-            psi_s = stats::rlnorm(dplyr::n(), predicted$mu_s, predicted$omega_s),
+            psi_b = stats::rlnorm(
+                dplyr::n(),
+                predicted$mu_b,
+                predicted$omega_b
+            ),
+            psi_s = stats::rlnorm(
+                dplyr::n(),
+                predicted$mu_s,
+                predicted$omega_s
+            ),
             psi_g = stats::rlnorm(dplyr::n(), predicted$mu_g, predicted$omega_g)
         )
 }

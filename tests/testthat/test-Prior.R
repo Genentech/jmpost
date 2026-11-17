@@ -111,11 +111,7 @@ test_that("Priors work as expected", {
 
     ## Check that the model syntax is correct (e.g. that we have
     ## correctly specified the stan prior distribution function names)
-    model_obj <- cmdstanr::cmdstan_model(
-        test_path("models", "Prior_3.stan"),
-        compile = FALSE
-    )
-    expect_true(model_obj$check_syntax(quiet = TRUE))
+    expect_stan_syntax(StanModule(test_path("models", "Prior_3.stan")))
 })
 
 
@@ -566,12 +562,7 @@ parameters {
 }"
         )
     )
-    stan_file <- cmdstanr::write_stan_file(
-        as.character(merge(header, x_stan_module)),
-        dir = tempdir()
-    )
-    model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
-    expect_true(model_obj$check_syntax(quiet = TRUE))
+    expect_stan_syntax(merge(header, x_stan_module))
 })
 
 test_that("default auxiliary prior methods return empty lists", {
@@ -666,28 +657,43 @@ test_that("scale_noncentred preserves the horseshoe prior including Jacobians", 
             prior@repr_multiplier <- \(name, size) ""
         }
         parameter <- Parameter(
-            name = "beta", size = 3, prior = prior
+            name = "beta",
+            size = 3,
+            prior = prior
         )
         model <- compileStanModel(merge(
-            StanModule("base/functions.stan"), as.StanModule(parameter)
+            StanModule("base/functions.stan"),
+            as.StanModule(parameter)
         ))
         fits[[name]] <- model$sample(
             data = as_stan_list(parameter),
             init = list(list(
-                prior_local_beta = c(0.1, 1, 5), prior_global_beta = 0.2,
-                prior_slab_beta = 1.3, beta = c(0.01, -0.08, 0.4)
+                prior_local_beta = c(0.1, 1, 5),
+                prior_global_beta = 0.2,
+                prior_slab_beta = 1.3,
+                beta = c(0.01, -0.08, 0.4)
             )),
-            chains = 1, iter_warmup = 0, iter_sampling = 1,
-            fixed_param = TRUE, seed = 12345, refresh = 0
+            chains = 1,
+            iter_warmup = 0,
+            iter_sampling = 1,
+            fixed_param = TRUE,
+            seed = 12345,
+            refresh = 0
         )
     }
     for (tau in c(0.005, 0.2, 2)) {
         values <- list(
-            prior_local_beta = c(0.1, 1, 5), prior_global_beta = tau,
-            prior_slab_beta = 1.3, beta = c(0.01, -0.08, 0.4)
+            prior_local_beta = c(0.1, 1, 5),
+            prior_global_beta = tau,
+            prior_slab_beta = 1.3,
+            beta = c(0.01, -0.08, 0.4)
         )
-        scales <- tau * sqrt(5.2 * values$prior_local_beta^2 /
-            (5.2 + tau^2 * values$prior_local_beta^2))
+        scales <- tau *
+            sqrt(
+                5.2 *
+                    values$prior_local_beta^2 /
+                    (5.2 + tau^2 * values$prior_local_beta^2)
+            )
         reference <- fits$centred
         reference_u <- reference$unconstrain_variables(values)
         reference_density <- reference$log_prob(reference_u, jacobian = FALSE)
@@ -704,7 +710,8 @@ test_that("scale_noncentred preserves the horseshoe prior including Jacobians", 
             # the same physical coefficients AND auxiliary shrinkage scales.
             expect_equal(
                 fit$log_prob(unconstrained, jacobian = FALSE),
-                reference_density, info = context
+                reference_density,
+                info = context
             )
             # Sampling uses the density in raw coordinates. Its difference
             # from the centred target must be precisely log |d beta / d raw|.
@@ -714,16 +721,20 @@ test_that("scale_noncentred preserves the horseshoe prior including Jacobians", 
             expect_equal(
                 fit$log_prob(unconstrained, jacobian = TRUE) -
                     reference_target,
-                sum(log(multiplier)), info = context
+                sum(log(multiplier)),
+                info = context
             )
             expect_equal(
-                tail(unconstrained, 3), values$beta / multiplier,
-                ignore_attr = TRUE, info = context
+                tail(unconstrained, 3),
+                values$beta / multiplier,
+                ignore_attr = TRUE,
+                info = context
             )
             expect_equal(
                 tail(fit$grad_log_prob(unconstrained), 3),
                 -values$beta * multiplier / scales^2,
-                ignore_attr = TRUE, info = context
+                ignore_attr = TRUE,
+                info = context
             )
         }
     }

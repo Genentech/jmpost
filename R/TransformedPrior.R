@@ -53,17 +53,31 @@ prior_transform <- function(dist, transform) {
     validObject(transform)
     density <- sub("^\\{name\\} ~ ([a-z_]+)\\(.*$", "\\1", dist@repr_model)
     supported <- c(
-        "normal", "std_normal", "cauchy", "gamma", "lognormal", "beta",
-        "uniform", "student_t", "logistic", "loglogistic", "inv_gamma"
+        "normal",
+        "std_normal",
+        "cauchy",
+        "gamma",
+        "lognormal",
+        "beta",
+        "uniform",
+        "student_t",
+        "logistic",
+        "loglogistic",
+        "inv_gamma"
     )
     assert_that(
-        !is(dist, "TransformedPrior") && !dist@.is_const &&
-            !dist@.allow_vectors && density %in% supported,
+        !is(dist, "TransformedPrior") &&
+            !dist@.is_const &&
+            !dist@.allow_vectors &&
+            density %in% supported,
         msg = "`dist` must be a supported, untransformed scalar prior"
     )
     support <- switch(
         density,
-        gamma = , lognormal = , loglogistic = , inv_gamma = c(0, Inf),
+        gamma = ,
+        lognormal = ,
+        loglogistic = ,
+        inv_gamma = c(0, Inf),
         beta = c(0, 1),
         uniform = c(dist@parameters$alpha, dist@parameters$beta),
         c(-Inf, Inf)
@@ -130,7 +144,8 @@ prior_transform <- function(dist, transform) {
         for (attempt in seq_len(100)) {
             draws <- dist@sample(max(100, 2 * n))
             draws <- draws[
-                is.finite(draws) & draws > density_limits[1] &
+                is.finite(draws) &
+                    draws > density_limits[1] &
                     draws < density_limits[2]
             ]
             values <- c(values, .prior_transform_inverse(transform, draws))
@@ -149,7 +164,8 @@ prior_transform <- function(dist, transform) {
 #' @export
 set_limits.TransformedPrior <- function(object, lower = -Inf, upper = Inf) {
     support <- .prior_transform_inverse(
-        object@transform, object@distribution@limits
+        object@transform,
+        object@distribution@limits
     )
     object@limits <- c(max(lower, support[1]), min(upper, support[2]))
     validObject(object)
@@ -163,7 +179,9 @@ as.character.TransformedPrior <- function(x, ...) {
     transform <- .prior_transform_stan(x@transform, "x")$value
     limits <- render_stan_limits(x@limits)
     paste0(
-        as.character(x@distribution), " on ", transform,
+        as.character(x@distribution),
+        " on ",
+        transform,
         if (nzchar(limits)) paste0("; x", limits) else ""
     )
 }
@@ -183,10 +201,16 @@ as.StanModule.TransformedPrior <- function(object, name, size = 1, ...) {
     module@model <- paste0(module@model, "\n    target += ", jacobian, ";")
     if (!scalar) {
         module@model <- paste0(
-            "    if (", size, " > 0) {\n",
-            "        for (prior_i in 1:", size, ") {\n",
+            "    if (",
+            size,
+            " > 0) {\n",
+            "        for (prior_i in 1:",
+            size,
+            ") {\n",
             paste0(
-                "        ", strsplit(module@model, "\n")[[1]], collapse = "\n"
+                "        ",
+                strsplit(module@model, "\n")[[1]],
+                collapse = "\n"
             ),
             "\n        }\n    }"
         )

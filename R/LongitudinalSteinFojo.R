@@ -103,26 +103,35 @@ LongitudinalSteinFojo <- function(
         list(
             Parameter(
                 name = "lm_sf_psi_bsld",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_bsld),
-                    median(omega_bsld)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_bsld),
+                        median(omega_bsld)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_ks",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_ks),
-                    median(omega_ks)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_ks),
+                        median(omega_ks)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             ),
             Parameter(
                 name = "lm_sf_psi_kg",
-                prior = set_limits(prior_init_only(prior_lognormal(
-                    median(mu_kg),
-                    median(omega_kg)
-                )), lower = getOption("jmpost.double_eps")),
+                prior = set_limits(
+                    prior_init_only(prior_lognormal(
+                        median(mu_kg),
+                        median(omega_kg)
+                    )),
+                    lower = getOption("jmpost.double_eps")
+                ),
                 size = "n_subjects"
             )
         )

@@ -15,16 +15,19 @@ test_that("transformation inverses and bounds use the intended branch", {
         transform <- prior_transform_exp(scale)
         expect_equal(
             .prior_transform_inverse(
-                transform, .prior_transform_forward(transform, x)
+                transform,
+                .prior_transform_forward(transform, x)
             ),
             x
         )
         expect_equal(.prior_transform_domain(transform), c(-Inf, Inf))
         expect_equal(
-            .prior_transform_forward(transform, c(-Inf, Inf)), c(0, Inf)
+            .prior_transform_forward(transform, c(-Inf, Inf)),
+            c(0, Inf)
         )
         expect_equal(
-            .prior_transform_inverse(transform, c(0, Inf)), c(-Inf, Inf)
+            .prior_transform_inverse(transform, c(0, Inf)),
+            c(-Inf, Inf)
         )
         expect_error(.prior_transform_inverse(transform, -1), "non-negative")
     }
@@ -32,10 +35,12 @@ test_that("transformation inverses and bounds use the intended branch", {
     transform <- prior_transform_square()
     expect_equal(.prior_transform_domain(transform), c(0, Inf))
     expect_equal(
-        .prior_transform_forward(transform, c(0, 2, Inf)), c(0, 4, Inf)
+        .prior_transform_forward(transform, c(0, 2, Inf)),
+        c(0, 4, Inf)
     )
     expect_equal(
-        .prior_transform_inverse(transform, c(0, 4, Inf)), c(0, 2, Inf)
+        .prior_transform_inverse(transform, c(0, 4, Inf)),
+        c(0, 2, Inf)
     )
     expect_error(.prior_transform_forward(transform, -2), "non-negative")
     expect_error(.prior_transform_inverse(transform, -4), "non-negative")
@@ -56,10 +61,11 @@ test_that("Stan expressions include the complete change-of-variable Jacobian", {
         # derivative of the transformation on its valid domain.
         x <- 0.7
         h <- 1e-6
-        derivative <- (
-            .prior_transform_forward(case[[1]], x + h) -
-                .prior_transform_forward(case[[1]], x - h)
-        ) / (2 * h)
+        # nolint start
+        derivative <- (.prior_transform_forward(case[[1]], x + h) -
+            .prior_transform_forward(case[[1]], x - h)) /
+            (2 * h)
+        # nolint end
         log_jacobian <- eval(parse(text = code$log_jacobian))
         expect_equal(log_jacobian, log(abs(derivative)), tolerance = 1e-8)
     }
@@ -98,8 +104,11 @@ test_that("scalar helper and wrapper transformations are equivalent", {
         }
     }
     for (dist in list(
-        prior_flat(), prior_const(1), prior_init_only(prior_normal(0, 1)),
-        prior_horseshoe(), prior_normal_vector(c(0, 1), c(1, 2)),
+        prior_flat(),
+        prior_const(1),
+        prior_init_only(prior_normal(0, 1)),
+        prior_horseshoe(),
+        prior_normal_vector(c(0, 1), c(1, 2)),
         prior_normal(1, 1, transform = prior_transform_exp())
     )) {
         expect_error(
@@ -116,7 +125,9 @@ test_that("density support and truncation are mapped between scales", {
     x <- prior_normal(60, 60, transform = prior_transform_exp())
     expect_equal(x@limits, c(-Inf, Inf))
     code <- as.StanModule(x, name = "x")@model
-    expect_match(code, "exp(x) ~ normal(prior_mu_x, prior_sigma_x) T[0, ];",
+    expect_match(
+        code,
+        "exp(x) ~ normal(prior_mu_x, prior_sigma_x) T[0, ];",
         fixed = TRUE
     )
     expect_match(code, "target += x;", fixed = TRUE)
@@ -147,7 +158,9 @@ test_that("density support and truncation are mapped between scales", {
     x <- set_limits(x, lower = 1.5, upper = 10)
     expect_equal(x@limits, c(1.5, 2))
     expect_match(
-        as.StanModule(x, name = "x")@model, "T[2.25, 4];", fixed = TRUE
+        as.StanModule(x, name = "x")@model,
+        "T[2.25, 4];",
+        fixed = TRUE
     )
 
     x <- prior_beta(2, 3, transform = prior_transform_exp())
@@ -165,9 +178,11 @@ test_that("density support and truncation are mapped between scales", {
     # A Cauchy density requires its positive-range truncation normaliser too.
     expect_match(
         as.StanModule(
-            prior_cauchy(0, 1, transform = prior_transform_exp()), name = "x"
+            prior_cauchy(0, 1, transform = prior_transform_exp()),
+            name = "x"
         )@model,
-        "T[0, ];", fixed = TRUE
+        "T[0, ];",
+        fixed = TRUE
     )
 })
 
@@ -236,32 +251,50 @@ test_that("transformed priors render scalar and vector Stan models", {
 
 
 test_that("the PRIME prior specification renders and initializes", {
-    model <- JointModel(longitudinal = LongitudinalSteinFojoCov(
-        mu_b_intercept_prior = prior_normal(
-            60, 60, transform = prior_transform_exp()
-        ),
-        mu_s_intercept_prior = prior_normal(
-            0.50091, 0.50091, transform = prior_transform_exp()
-        ),
-        mu_g_intercept_prior = prior_normal(
-            0.3, 0.3, transform = prior_transform_exp()
-        ),
-        omega_b_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(2)
-        ),
-        omega_s_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(2)
-        ),
-        omega_g_intercept_prior = prior_invgamma(
-            1.5, 0.3, transform = prior_transform_exp(2)
-        ),
-        mu_b_coefficients_prior = prior_flat(),
-        mu_s_coefficients_prior = prior_flat(),
-        mu_g_coefficients_prior = prior_flat(),
-        sigma = prior_normal(100, 100, transform = prior_transform_square()),
-        centred_baseline = TRUE,
-        scaled_variance = FALSE
-    ))
+    model <- JointModel(
+        longitudinal = LongitudinalSteinFojoCov(
+            mu_b_intercept_prior = prior_normal(
+                60,
+                60,
+                transform = prior_transform_exp()
+            ),
+            mu_s_intercept_prior = prior_normal(
+                0.50091,
+                0.50091,
+                transform = prior_transform_exp()
+            ),
+            mu_g_intercept_prior = prior_normal(
+                0.3,
+                0.3,
+                transform = prior_transform_exp()
+            ),
+            omega_b_intercept_prior = prior_invgamma(
+                1.5,
+                0.3,
+                transform = prior_transform_exp(2)
+            ),
+            omega_s_intercept_prior = prior_invgamma(
+                1.5,
+                0.3,
+                transform = prior_transform_exp(2)
+            ),
+            omega_g_intercept_prior = prior_invgamma(
+                1.5,
+                0.3,
+                transform = prior_transform_exp(2)
+            ),
+            mu_b_coefficients_prior = prior_flat(),
+            mu_s_coefficients_prior = prior_flat(),
+            mu_g_coefficients_prior = prior_flat(),
+            sigma = prior_normal(
+                100,
+                100,
+                transform = prior_transform_square()
+            ),
+            centred_baseline = TRUE,
+            scaled_variance = FALSE
+        )
+    )
     expect_stan_syntax(as.StanModule(model))
     initial <- initialValues(model@longitudinal@parameters, n_chains = 2)
     expect_length(initial, 2)
@@ -273,7 +306,8 @@ test_that("compiled transformed densities match independent calculations", {
     skip_if_not(is_full_test())
     parameters <- ParameterList(
         Parameter(
-            prior_normal(2, 1, transform = prior_transform_exp()), "intercept"
+            prior_normal(2, 1, transform = prior_transform_exp()),
+            "intercept"
         ),
         Parameter(
             prior_invgamma(1.5, 0.3, transform = prior_transform_exp(2)),
@@ -282,13 +316,16 @@ test_that("compiled transformed densities match independent calculations", {
         Parameter(
             set_limits(
                 prior_normal(2, 2, transform = prior_transform_square()),
-                lower = 0.2, upper = 3
+                lower = 0.2,
+                upper = 3
             ),
-            "sigma", size = 2
+            "sigma",
+            size = 2
         ),
         Parameter(
             prior_normal(0, 1, transform = prior_transform_exp()),
-            "empty", size = "n"
+            "empty",
+            size = "n"
         )
     )
     module <- merge(
@@ -297,18 +334,25 @@ test_that("compiled transformed densities match independent calculations", {
     )
     # Model methods need the compiled source, not only a cached executable.
     model <- cmdstanr::cmdstan_model(
-        cmdstanr::write_stan_file(as.character(module)), quiet = TRUE
+        cmdstanr::write_stan_file(as.character(module)),
+        quiet = TRUE
     )
     baseline <- list(
-        intercept = log(2), log_omega = log(0.2),
-        sigma = c(1, 1.5), empty = numeric()
+        intercept = log(2),
+        log_omega = log(0.2),
+        sigma = c(1, 1.5),
+        empty = numeric()
     )
     suppressMessages(capture.output(
         fit <- model$sample(
             data = c(list(n = 0L), as_stan_list(parameters)),
-            init = list(baseline), fixed_param = TRUE,
-            iter_warmup = 0, iter_sampling = 1, chains = 1,
-            seed = 12345, refresh = 0
+            init = list(baseline),
+            fixed_param = TRUE,
+            iter_warmup = 0,
+            iter_sampling = 1,
+            chains = 1,
+            seed = 12345,
+            refresh = 0
         )
     ))
     expected <- function(values) {
@@ -316,9 +360,14 @@ test_that("compiled transformed densities match independent calculations", {
         dnorm(exp(values$intercept), 2, 1, log = TRUE) +
             values$intercept +
             dgamma(1 / variance, 1.5, rate = 0.3, log = TRUE) -
-            2 * log(variance) + log(2) + 2 * values$log_omega +
-            sum(dnorm(values$sigma^2, 2, 2, log = TRUE) +
-                log(2) + log(values$sigma))
+            2 * log(variance) +
+            log(2) +
+            2 * values$log_omega +
+            sum(
+                dnorm(values$sigma^2, 2, 2, log = TRUE) +
+                    log(2) +
+                    log(values$sigma)
+            )
     }
     log_density <- function(values) {
         fit$log_prob(fit$unconstrain_variables(values), jacobian = FALSE)

@@ -11,14 +11,6 @@ run_stan_function <- function(stan_data, fun_files, dir, basename) {
             as.character(stan_plus_user),
             dir = dir,
             basename = paste0("testfuns_", basename, ".stan")
-        ),
-        exe_file = file.path(
-            dir,
-            paste0(
-                "testfuns_",
-                basename,
-                if (is_windows()) ".exe" else ""
-            )
         )
     )
 

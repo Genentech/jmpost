@@ -88,6 +88,8 @@ make_covariate_subject <- function() {
             study = c("X", "X", "Y", "Y"),
             age = c(50, 60, 55, 65)
         ),
-        "subject", "arm", "study"
+        "subject",
+        "arm",
+        "study"
     )
 }

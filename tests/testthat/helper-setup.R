@@ -25,11 +25,13 @@ is_graph_snapshot_enabled <- function() {
 # Runs stans syntax parser and will throw an error if stan detects an
 # issue that would prevent compilation
 expect_stan_syntax <- function(code) {
-    model_obj <- cmdstanr::cmdstan_model(
-        cmdstanr::write_stan_file(as.character(code)),
-        compile = FALSE
-    )
-    expect_true(model_obj$check_syntax(quiet = TRUE))
+    stan_file <- cmdstanr::write_stan_file(as.character(code))
+    if ("check_syntax_stan_file" %in% getNamespaceExports("cmdstanr")) {
+        expect_true(cmdstanr::check_syntax_stan_file(stan_file, quiet = TRUE))
+    } else {
+        model_obj <- cmdstanr::cmdstan_model(stan_file, compile = FALSE)
+        expect_true(model_obj$check_syntax(quiet = TRUE))
+    }
 }
 
 
