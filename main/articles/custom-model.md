@@ -75,7 +75,6 @@ For reference the following libraries will be used during this example:
 `#>   method                  from   `\
 `#>   heightDetails.titleGrob ggplot2`\
 `#>   widthDetails.titleGrob  ggplot2`\
-`#> CmdStan path set to: /root/.cmdstan/cmdstan-2.40.0`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
 `#> `\
@@ -434,31 +433,31 @@ the full joint model.
 `)`\
 `#> Running MCMC with 1 chain...`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp8vlRq9/file15f877db1d6e/model_fdc48724c770a64cd12f93940f84cd35.stan', line 574, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp8vlRq9/file15f877db1d6e/model_fdc48724c770a64cd12f93940f84cd35.stan', line 574, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp8vlRq9/file15f877db1d6e/model_fdc48724c770a64cd12f93940f84cd35.stan', line 574, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp8vlRq9/file15f877db1d6e/model_fdc48724c770a64cd12f93940f84cd35.stan', line 574, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp3RMH2e/model-158040ba131.stan', line 551, column 4 to column 90)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/Rtmp8vlRq9/file15f877db1d6e/model_fdc48724c770a64cd12f93940f84cd35.stan', line 574, column 4 to column 90)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
-`#> Chain 1 finished in 8.2 seconds.`\
+`#> Chain 1 finished in 10.5 seconds.`\
 \
 `vars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(`\
 `    ``"mu_baseline"``, ``"mu_shrinkage"``, ``"mu_growth"``, ``"sigma"``,`\

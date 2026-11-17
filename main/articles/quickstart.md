@@ -387,9 +387,9 @@ It is always possible to read out the Stan code that is contained in the
 `#>     // Source - base/functions.stan`\
 `#>     //`\
 `#> `\
-`#>     // Constant used in below.`\
-`#>     real neg_log_sqrt_2_pi() {`\
-`#>         return -0.9189385332046727;`\
+`#>     // Scalar access for normalising vectorised truncated prior densities.`\
+`#>     int prior_density_size(real x) {`\
+`#>         return 1;`\
 `#>     }`
 
 ### Sampling Parameters
@@ -413,42 +413,42 @@ iterations.
 `#> `\
 `#> Chain 1 Iteration:   1 / 1000 [  0%]  (Warmup)`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 548, column 4 to column 100)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 571, column 4 to column 100)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 548, column 4 to column 100)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 571, column 4 to column 100)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 548, column 4 to column 100)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 571, column 4 to column 100)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 548, column 4 to column 100)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 571, column 4 to column 100)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 548, column 4 to column 100)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 571, column 4 to column 100)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 549, column 4 to column 97)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 572, column 4 to column 97)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 549, column 4 to column 97)`\
+`#> Chain 1 Exception: gamma_lpdf: Random variable is 0, but must be positive finite! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 572, column 4 to column 97)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
 `#> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:`\
-`#> Chain 1 Exception: normal_lpdf: Scale parameter[1] is 0, but must be positive! (in '/tmp/RtmpvFkRox/model-168b3742800.stan', line 530, column 4 to line 533, column 6)`\
+`#> Chain 1 Exception: normal_lpdf: Scale parameter[1] is 0, but must be positive! (in '/tmp/RtmpBPXm1o/file16f5637a29d1/model_d6844b8d3dee956c3473194e9aacc122.stan', line 553, column 4 to line 556, column 6)`\
 `#> Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,`\
 `#> Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.`\
 `#> Chain 1`\
@@ -463,7 +463,7 @@ iterations.
 `#> Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) `\
 `#> Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) `\
 `#> Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) `\
-`#> Chain 1 finished in 16.6 seconds.`
+`#> Chain 1 finished in 17.0 seconds.`
 
 ### Convergence checks
 
@@ -483,21 +483,25 @@ of class `CmdStanMCMC`.
 `    ``"beta_os_cov"`\
 `)`\
 `cmdstanr``::`[`as.CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/cmdstan_coercion.html)`(``mcmc_results``)``$``summary``(``vars``)`\
+`#> Warning: The ESS has been capped to avoid unstable estimates.`\
+`#> Warning: The ESS has been capped to avoid unstable estimates.`\
+`#> Warning: The ESS has been capped to avoid unstable estimates.`\
+`#> Warning: The ESS has been capped to avoid unstable estimates.`\
 `#> # A tibble: 12 × 10`\
 `#>    variable        mean   median      sd     mad       q5     q95  rhat ess_bulk`\
 `#>    <chr>          <dbl>    <dbl>   <dbl>   <dbl>    <dbl>   <dbl> <dbl>    <dbl>`\
-`#>  1 lm_rs_inte…  2.76e+1  2.76e+1 1.08    1.09    25.9     29.3    0.999     281.`\
-`#>  2 lm_rs_slop…  1.02e+0  1.02e+0 0.0295  0.0299   0.971    1.07   1.000     642.`\
-`#>  3 lm_rs_slop…  1.97e+0  1.97e+0 0.0289  0.0278   1.92     2.02   0.999     875.`\
-`#>  4 lm_rs_slop…  2.09e-1  2.07e-1 0.0204  0.0196   0.180    0.245  1.00      639.`\
-`#>  5 lm_rs_slop…  2.13e-1  2.11e-1 0.0242  0.0219   0.177    0.254  0.998     786.`\
-`#>  6 lm_rs_sigma  1.95e+1  1.94e+1 0.531   0.521   18.6     20.4    1.00      483.`\
-`#>  7 link_dsld   -1.43e-2 -1.07e-2 0.205   0.204   -0.349    0.308  1.00      645.`\
-`#>  8 sm_weibull…  9.23e-3  7.98e-3 0.00577 0.00402  0.00300  0.0187 1.00      387.`\
-`#>  9 sm_weibull…  8.92e-1  8.91e-1 0.0738  0.0712   0.786    1.02   1.00      432.`\
-`#> 10 beta_os_co…  3.11e-4 -5.53e-4 0.244   0.243   -0.405    0.393  0.999     512.`\
-`#> 11 beta_os_co…  3.25e-1  3.14e-1 0.271   0.264   -0.145    0.760  1.01      414.`\
-`#> 12 beta_os_co…  3.64e-1  3.59e-1 0.0981  0.0934   0.208    0.541  1.00      717.`\
+`#>  1 lm_rs_inte… 27.5      2.76e+1 1.12    1.05    25.6     29.3    1.01      278.`\
+`#>  2 lm_rs_slop…  1.02     1.02e+0 0.0305  0.0314   0.968    1.07   0.999    1348.`\
+`#>  3 lm_rs_slop…  1.97     1.97e+0 0.0313  0.0316   1.92     2.02   1.000    1112.`\
+`#>  4 lm_rs_slop…  0.209    2.08e-1 0.0235  0.0235   0.174    0.247  1.00     1349.`\
+`#>  5 lm_rs_slop…  0.214    2.12e-1 0.0244  0.0250   0.177    0.257  1.01     1349.`\
+`#>  6 lm_rs_sigma 19.4      1.94e+1 0.585   0.617   18.5     20.4    0.998    1163.`\
+`#>  7 link_dsld   -0.0248  -3.21e-2 0.202   0.210   -0.363    0.308  0.999     780.`\
+`#>  8 sm_weibull…  0.01000  8.73e-3 0.00581 0.00496  0.00319  0.0205 0.998     499.`\
+`#>  9 sm_weibull…  0.882    8.79e-1 0.0745  0.0736   0.766    1.01   0.998     663.`\
+`#> 10 beta_os_co… -0.00468  7.53e-4 0.224   0.222   -0.394    0.359  0.998    1349.`\
+`#> 11 beta_os_co…  0.331    3.30e-1 0.251   0.260   -0.0868   0.752  1.01      824.`\
+`#> 12 beta_os_co…  0.355    3.54e-1 0.111   0.109    0.165    0.533  0.998    1349.`\
 `#> # ℹ 1 more variable: ess_tail <dbl>`
 
 We can already see here from the `rhat` statistic whether the MCMC
@@ -512,6 +516,47 @@ In general, convergence is sensitive to the choice of:
 
 If you don’t achieve convergence, then play around with different
 choices of the above.
+
+### Prior and likelihood sensitivity
+
+Use
+[priorsense](https://mc-stan.org/priorsense/articles/priorsense_with_stan.html)
+to assess how small power-scaling changes to the prior or likelihood
+affect the posterior. Pass the fitted model through
+[`cmdstanr::as.CmdStanMCMC()`](https://mc-stan.org/cmdstanr/reference/cmdstan_coercion.html):
+
+\
+`priorsense``::`[`powerscale_sensitivity`](https://mc-stan.org/priorsense/reference/powerscale-sensitivity.html)`(`\
+`    ``cmdstanr``::`[`as.CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/cmdstan_coercion.html)`(``mcmc_results``)``,`\
+`    variables ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"sm_weibull_ph_lambda"``, ``"link_dsld"``)`\
+`)`\
+`#> Sensitivity based on cjs_dist`\
+`#> Prior selection: all priors`\
+`#> Likelihood selection: all data`\
+`#> `\
+`#>              variable prior likelihood                           diagnosis`\
+`#>  sm_weibull_ph_lambda 0.163      0.555 potential prior-likelihood conflict`\
+`#>             link_dsld 0.075      0.253 potential prior-likelihood conflict`
+
+New fits automatically save `lprior`, the joint log prior including
+hierarchical random-effect distributions and transformed-prior
+Jacobians, and `log_lik`, the log likelihood contributions. In joint
+models, `log_lik` has one entry per patient, adding each patient’s
+survival contribution to the sum of their longitudinal observation
+contributions. Survival-only models use one entry per patient, while
+longitudinal-only models use one entry per observation. The separate
+patient-level vectors `os_subj_log_lik` (survival) and
+`long_subj_log_lik` (longitudinal) are also saved when the corresponding
+submodel is present. `long_obvs_log_lik` retains the individual
+longitudinal observation contributions, including censored observations.
+Check convergence before interpreting the sensitivity diagnostics. Refit
+models fitted with older versions of `jmpost` to obtain these outputs.
+
+Saving `lprior` evaluates the prior again in generated quantities, once
+per saved draw. This adds some work when saving draws while keeping the
+extra calculation out of HMC leapfrog steps; computing it in transformed
+parameters would perform that work at every step. The likelihood outputs
+reuse the existing evaluations.
 
 ## Plotting
 
@@ -554,20 +599,20 @@ that we are interested in. For illustration, we will plot here the first
 `)`\
 [`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``long_quantities``)`` ``|>`` `[`head`](https://rdrr.io/r/utils/head.html)`(``)`\
 `#>         group time   values`\
-`#> 1 subject_001    0 26.75623`\
-`#> 2 subject_001    0 27.41221`\
-`#> 3 subject_001    0 26.43415`\
-`#> 4 subject_001    0 28.08950`\
-`#> 5 subject_001    0 27.20243`\
-`#> 6 subject_001    0 26.72683`\
+`#> 1 subject_001    0 26.85577`\
+`#> 2 subject_001    0 28.47609`\
+`#> 3 subject_001    0 28.51924`\
+`#> 4 subject_001    0 27.78944`\
+`#> 5 subject_001    0 27.86513`\
+`#> 6 subject_001    0 25.97977`\
 [`summary`](https://rdrr.io/r/base/summary.html)`(``long_quantities``)`` ``|>`` `[`head`](https://rdrr.io/r/utils/head.html)`(``)`\
-`#>         group time   median    lower    upper`\
-`#> 1 subject_001    0 27.60525 25.58923 29.74009`\
-`#> 2 subject_002    0 27.60525 25.58923 29.74009`\
-`#> 3 subject_003    0 27.60525 25.58923 29.74009`\
-`#> 4 subject_004    0 27.60525 25.58923 29.74009`\
-`#> 5 subject_005    0 27.60525 25.58923 29.74009`\
-`#> 6 subject_006    0 27.60525 25.58923 29.74009`\
+`#>         group time   median    lower   upper`\
+`#> 1 subject_001    0 27.55234 25.13772 29.5798`\
+`#> 2 subject_002    0 27.55234 25.13772 29.5798`\
+`#> 3 subject_003    0 27.55234 25.13772 29.5798`\
+`#> 4 subject_004    0 27.55234 25.13772 29.5798`\
+`#> 5 subject_005    0 27.55234 25.13772 29.5798`\
+`#> 6 subject_006    0 27.55234 25.13772 29.5798`\
 [`autoplot`](https://genentech.github.io/jmpost/reference/autoplot.md)`(``long_quantities``)`
 
 ![](quickstart_files/figure-html/unnamed-chunk-2-1.png)
@@ -675,7 +720,7 @@ measure) from our `SurvivalQuantities` object.
 `)`\
 [`brierScore`](https://genentech.github.io/jmpost/reference/brierScore.md)`(``sq``)`\
 `#>          1         50        100        400        800 `\
-`#> 0.01951984 0.17178304 0.23765596 0.14866746 0.06090117`
+`#> 0.01948867 0.17217803 0.23768563 0.14856694 0.06105830`
 
 ### Initial Values
 
@@ -810,7 +855,7 @@ workflow is otherwise unchanged.
 `#> Chain 1            init_buffer = 15 `\
 `#> Chain 1            adapt_window = 75 `\
 `#> Chain 1            term_buffer = 10 `\
-`#> Chain 1 finished in 0.3 seconds.`\
+`#> Chain 1 finished in 0.4 seconds.`\
 \
 `cmdstanr``::`[`as.CmdStanMCMC`](https://mc-stan.org/cmdstanr/reference/cmdstan_coercion.html)`(``covariate_results``)``$``summary``(`\
 `    `[`c`](https://rdrr.io/r/base/c.html)`(`\

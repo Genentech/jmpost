@@ -2,6 +2,15 @@
 
 ## jmpost (development version)
 
+- New fits save `lprior` for prior-sensitivity analysis with
+  `priorsense`. Custom Stan models must use braced bodies for
+  conditional or loop statements containing priors: write
+  `if (condition) { x ~ normal(0, 1); }` rather than
+  `if (condition) x ~ normal(0, 1);`, and likewise use braces with
+  `else`, `for` and `while`. Automatic prior-density conversion does not
+  support unbraced bodies, so previously valid custom models using this
+  syntax need updating before they can compile. This requirement also
+  keeps truncation normalisation within the intended condition or loop.
 - Added
   [`prior_flat()`](https://genentech.github.io/jmpost/reference/prior_flat.md)
   for a constant prior density on the model parameter scale, with a

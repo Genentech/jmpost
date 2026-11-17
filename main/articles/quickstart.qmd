@@ -420,6 +420,40 @@ In general, convergence is sensitive to the choice of:
 If you don't achieve convergence, then play around with different choices
 of the above.
 
+## Prior and likelihood sensitivity
+
+Use [priorsense](https://mc-stan.org/priorsense/articles/priorsense_with_stan.html)
+to assess how small power-scaling changes to the prior or likelihood affect the
+posterior. Pass the fitted model through `cmdstanr::as.CmdStanMCMC()`:
+
+```{r}
+#| label: prior-sensitivity
+#| eval: !expr requireNamespace("priorsense", quietly = TRUE)
+
+priorsense::powerscale_sensitivity(
+    cmdstanr::as.CmdStanMCMC(mcmc_results),
+    variables = c("sm_weibull_ph_lambda", "link_dsld")
+)
+```
+
+New fits automatically save `lprior`, the joint log prior including hierarchical
+random-effect distributions and transformed-prior Jacobians, and `log_lik`, the
+log likelihood contributions. In joint models, `log_lik` has one entry per
+patient, adding each patient's survival contribution to the sum of their
+longitudinal observation contributions. Survival-only models use one entry per
+patient, while longitudinal-only models use one entry per observation. The
+separate patient-level vectors `os_subj_log_lik` (survival) and
+`long_subj_log_lik` (longitudinal) are also saved when the corresponding submodel
+is present. `long_obvs_log_lik` retains the individual longitudinal observation
+contributions, including censored observations.
+Check convergence before interpreting the sensitivity diagnostics. Refit models
+fitted with older versions of `jmpost` to obtain these outputs.
+
+Saving `lprior` evaluates the prior again in generated quantities, once per saved
+draw. This adds some work when saving draws while keeping the extra calculation
+out of HMC leapfrog steps; computing it in transformed parameters would perform
+that work at every step. The likelihood outputs reuse the existing evaluations.
+
 # Plotting
 
 We can now proceed towards investigating the results of the MCMC chain with 

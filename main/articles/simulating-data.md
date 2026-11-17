@@ -5,8 +5,7 @@
 `#> Registered S3 methods overwritten by 'ggpp':`\
 `#>   method                  from   `\
 `#>   heightDetails.titleGrob ggplot2`\
-`#>   widthDetails.titleGrob  ggplot2`\
-`#> CmdStan path set to: /root/.cmdstan/cmdstan-2.40.0`
+`#>   widthDetails.titleGrob  ggplot2`
 
 The `jmpost` package includes data simulation functionality for the
 included joint models. The data simulation is based on specifying the

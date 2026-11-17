@@ -48,7 +48,6 @@ trajectory.
 `#>   method                  from   `\
 `#>   heightDetails.titleGrob ggplot2`\
 `#>   widthDetails.titleGrob  ggplot2`\
-`#> CmdStan path set to: /root/.cmdstan/cmdstan-2.40.0`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
 `#> `\

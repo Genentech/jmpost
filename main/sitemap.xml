@@ -250,6 +250,8 @@
 <url><loc>https://genentech.github.io/jmpost/reference/shrinkage.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/simulate.JointModelSamples.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/size.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/stan_density_arguments.html</loc></url>
+<url><loc>https://genentech.github.io/jmpost/reference/stan_prior_density.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/standard-link-user.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/stanmodel_arguments.html</loc></url>
 <url><loc>https://genentech.github.io/jmpost/reference/subjects_to_list.html</loc></url>
