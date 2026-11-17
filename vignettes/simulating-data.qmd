@@ -266,12 +266,7 @@ sample sizes before interpreting these estimates.
 #| label: sf-patient-posterior-correlations
 
 patient_index <- 1L
-patient_id <- dplyr::tibble(
-    patient_id = names(subject_data$subject_to_index),
-    patient_index = unname(subject_data$subject_to_index)
-) |>
-    dplyr::filter(.data$patient_index == .env$patient_index) |>
-    dplyr::pull(patient_id)
+patient_id <- names(subject_data$subject_to_index)[subject_data$subject_to_index == patient_index]
 patient_log_effects <- log_effect_draws(patient_index)
 bayesplot::mcmc_pairs(patient_log_effects)
 knitr::kable(cor(patient_log_effects), digits = 3)
