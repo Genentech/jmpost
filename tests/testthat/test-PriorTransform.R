@@ -61,9 +61,11 @@ test_that("Stan expressions include the complete change-of-variable Jacobian", {
         # derivative of the transformation on its valid domain.
         x <- 0.7
         h <- 1e-6
+        # nolint start
         derivative <- (.prior_transform_forward(case[[1]], x + h) -
             .prior_transform_forward(case[[1]], x - h)) /
             (2 * h)
+        # nolint end
         log_jacobian <- eval(parse(text = code$log_jacobian))
         expect_equal(log_jacobian, log(abs(derivative)), tolerance = 1e-8)
     }
